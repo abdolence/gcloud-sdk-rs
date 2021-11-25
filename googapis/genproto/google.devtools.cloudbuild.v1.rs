@@ -34,7 +34,7 @@ pub struct RunBuildTriggerRequest {
 pub struct StorageSource {
     /// Google Cloud Storage bucket containing the source (see
     /// [Bucket Name
-    /// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+    /// Requirements](<https://cloud.google.com/storage/docs/bucket-naming#requirements>)).
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Google Cloud Storage object containing the source.
@@ -87,13 +87,13 @@ pub mod repo_source {
         /// Regex matching branches to build.
         ///
         /// The syntax of the regular expressions accepted is the syntax accepted by
-        /// RE2 and described at https://github.com/google/re2/wiki/Syntax
+        /// RE2 and described at <https://github.com/google/re2/wiki/Syntax>
         #[prost(string, tag = "3")]
         BranchName(::prost::alloc::string::String),
         /// Regex matching tags to build.
         ///
         /// The syntax of the regular expressions accepted is the syntax accepted by
-        /// RE2 and described at https://github.com/google/re2/wiki/Syntax
+        /// RE2 and described at <https://github.com/google/re2/wiki/Syntax>
         #[prost(string, tag = "4")]
         TagName(::prost::alloc::string::String),
         /// Explicit commit SHA to build.
@@ -103,12 +103,12 @@ pub mod repo_source {
 }
 /// Location of the source manifest in Google Cloud Storage.
 /// This feature is in Preview; see description
-/// [here](https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher).
+/// \[here\](<https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageSourceManifest {
     /// Google Cloud Storage bucket containing the source manifest (see [Bucket
     /// Name
-    /// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+    /// Requirements](<https://cloud.google.com/storage/docs/bucket-naming#requirements>)).
     #[prost(string, tag = "1")]
     pub bucket: ::prost::alloc::string::String,
     /// Google Cloud Storage object containing the source manifest.
@@ -142,7 +142,7 @@ pub mod source {
         RepoSource(super::RepoSource),
         /// If provided, get the source from this manifest in Google Cloud Storage.
         /// This feature is in Preview; see description
-        /// [here](https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher).
+        /// \[here\](<https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher>).
         #[prost(message, tag = "8")]
         StorageSourceManifest(super::StorageSourceManifest),
     }
@@ -173,7 +173,7 @@ pub struct BuildStep {
     ///
     /// The Docker daemon's cache will already have the latest versions of all of
     /// the officially supported build steps
-    /// ([https://github.com/GoogleCloudPlatform/cloud-builders](https://github.com/GoogleCloudPlatform/cloud-builders)).
+    /// (\[<https://github.com/GoogleCloudPlatform/cloud-builders\](https://github.com/GoogleCloudPlatform/cloud-builders>)).
     /// The Docker daemon will also have cached many of the layers for some popular
     /// images, like "ubuntu", "debian", but they will be refreshed at the time you
     /// attempt to use them.
@@ -256,6 +256,11 @@ pub struct BuildStep {
     /// as the build progresses.
     #[prost(enumeration = "build::Status", tag = "12")]
     pub status: i32,
+    /// A shell script to be executed in the step.
+    ///
+    /// When script is provided, the user cannot specify the entrypoint or args.
+    #[prost(string, tag = "19")]
+    pub script: ::prost::alloc::string::String,
 }
 /// Volume describes a Docker container volume which is mounted into build steps
 /// in order to persist files across build step execution.
@@ -293,7 +298,7 @@ pub struct Results {
     /// List of build step outputs, produced by builder images, in the order
     /// corresponding to build step indices.
     ///
-    /// [Cloud Builders](https://cloud.google.com/cloud-build/docs/cloud-builders)
+    /// [Cloud Builders](<https://cloud.google.com/cloud-build/docs/cloud-builders>)
     /// can produce this output by writing to `$BUILDER_OUTPUT/output`.
     /// Only the first 4KB of data is stored.
     #[prost(bytes = "vec", repeated, tag = "6")]
@@ -407,7 +412,7 @@ pub struct Build {
     pub artifacts: ::core::option::Option<Artifacts>,
     /// Google Cloud Storage bucket where logs should be written (see
     /// [Bucket Name
-    /// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+    /// Requirements](<https://cloud.google.com/storage/docs/bucket-naming#requirements>)).
     /// Logs file names will be of the format `${logs_bucket}/log-${build_id}.txt`.
     #[prost(string, tag = "19")]
     pub logs_bucket: ::prost::alloc::string::String,
@@ -435,20 +440,25 @@ pub struct Build {
     /// Note: Secret Manager is the recommended technique
     /// for managing sensitive data with Cloud Build. Use `available_secrets` to
     /// configure builds to access secrets from Secret Manager. For instructions,
-    /// see: https://cloud.google.com/cloud-build/docs/securing-builds/use-secrets
+    /// see: <https://cloud.google.com/cloud-build/docs/securing-builds/use-secrets>
     #[prost(message, repeated, tag = "32")]
     pub secrets: ::prost::alloc::vec::Vec<Secret>,
     /// Output only. Stores timing information for phases of the build. Valid keys
     /// are:
     ///
-    /// * BUILD: time to execute all build steps
+    /// * BUILD: time to execute all build steps.
     /// * PUSH: time to push all specified images.
     /// * FETCHSOURCE: time to fetch source.
+    /// * SETUPBUILD: time to set up build.
     ///
     /// If the build does not specify source or images,
     /// these keys will not be included.
     #[prost(map = "string, message", tag = "33")]
     pub timing: ::std::collections::HashMap<::prost::alloc::string::String, TimeSpan>,
+    /// Output only. Describes this build's approval configuration, status,
+    /// and result.
+    #[prost(message, optional, tag = "44")]
+    pub approval: ::core::option::Option<BuildApproval>,
     /// IAM service account whose credentials will be used at build runtime.
     /// Must be of the format `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
     /// ACCOUNT can be email address or uniqueId of the service account.
@@ -537,6 +547,9 @@ pub mod build {
     pub enum Status {
         /// Status of the build is unknown.
         Unknown = 0,
+        /// Build has been created and is pending execution and queuing. It has not
+        /// been queued.
+        Pending = 10,
         /// Build or step is queued; work has not yet begun.
         Queued = 1,
         /// Build or step is being executed.
@@ -592,7 +605,7 @@ pub mod artifacts {
     pub struct ArtifactObjects {
         /// Cloud Storage bucket and optional object path, in the form
         /// "gs://bucket/path/to/somewhere/". (see [Bucket Name
-        /// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+        /// Requirements](<https://cloud.google.com/storage/docs/bucket-naming#requirements>)).
         ///
         /// Files in the workspace matching any path pattern will be uploaded to
         /// Cloud Storage with this location as a prefix.
@@ -731,7 +744,7 @@ pub struct SecretManagerSecret {
 /// values with the Cloud KMS key to use to decrypt the value.
 /// Note: Use `kmsKeyName` with  `available_secrets` instead of using
 /// `kmsKeyName` with `secret`. For instructions see:
-/// https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-credentials.
+/// <https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-credentials.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Secret {
     /// Cloud KMS key name to use to decrypt these envs.
@@ -796,7 +809,7 @@ pub struct ListBuildsRequest {
     /// In this case, the token should be discarded, and pagination should be
     /// restarted from the first page of results.
     ///
-    /// See https://google.aip.dev/158 for more.
+    /// See <https://google.aip.dev/158> for more.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The raw filter text to constrain the results.
@@ -827,6 +840,97 @@ pub struct CancelBuildRequest {
     /// Required. ID of the build.
     #[prost(string, tag = "2")]
     pub id: ::prost::alloc::string::String,
+}
+/// Request to approve or reject a pending build.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApproveBuildRequest {
+    /// Required. Name of the target build.
+    /// For example: "projects/{$project_id}/builds/{$build_id}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Approval decision and metadata.
+    #[prost(message, optional, tag = "2")]
+    pub approval_result: ::core::option::Option<ApprovalResult>,
+}
+/// BuildApproval describes a build's approval configuration, state, and
+/// result.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BuildApproval {
+    /// Output only. The state of this build's approval.
+    #[prost(enumeration = "build_approval::State", tag = "1")]
+    pub state: i32,
+    /// Output only. Configuration for manual approval of this build.
+    #[prost(message, optional, tag = "2")]
+    pub config: ::core::option::Option<ApprovalConfig>,
+    /// Output only. Result of manual approval for this Build.
+    #[prost(message, optional, tag = "3")]
+    pub result: ::core::option::Option<ApprovalResult>,
+}
+/// Nested message and enum types in `BuildApproval`.
+pub mod build_approval {
+    /// Specifies the current state of a build's approval.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// Default enum type. This should not be used.
+        Unspecified = 0,
+        /// Build approval is pending.
+        Pending = 1,
+        /// Build approval has been approved.
+        Approved = 2,
+        /// Build approval has been rejected.
+        Rejected = 3,
+        /// Build was cancelled while it was still pending approval.
+        Cancelled = 5,
+    }
+}
+/// ApprovalConfig describes configuration for manual approval of a build.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApprovalConfig {
+    /// Whether or not approval is needed. If this is set on a build, it will
+    /// become pending when created, and will need to be explicitly approved
+    /// to start.
+    #[prost(bool, tag = "1")]
+    pub approval_required: bool,
+}
+/// ApprovalResult describes the decision and associated metadata of a manual
+/// approval of a build.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApprovalResult {
+    /// Output only. Email of the user that called the ApproveBuild API to
+    /// approve or reject a build at the time that the API was called.
+    #[prost(string, tag = "2")]
+    pub approver_account: ::prost::alloc::string::String,
+    /// Output only. The time when the approval decision was made.
+    #[prost(message, optional, tag = "3")]
+    pub approval_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Required. The decision of this manual approval.
+    #[prost(enumeration = "approval_result::Decision", tag = "4")]
+    pub decision: i32,
+    /// Optional. An optional comment for this manual approval result.
+    #[prost(string, tag = "5")]
+    pub comment: ::prost::alloc::string::String,
+    /// Optional. An optional URL tied to this manual approval result. This field
+    /// is essentially the same as comment, except that it will be rendered by the
+    /// UI differently. An example use case is a link to an external job that
+    /// approved this Build.
+    #[prost(string, tag = "6")]
+    pub url: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `ApprovalResult`.
+pub mod approval_result {
+    /// Specifies whether or not this manual approval result is to approve
+    /// or reject a build.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Decision {
+        /// Default enum type. This should not be used.
+        Unspecified = 0,
+        /// Build is approved.
+        Approved = 1,
+        /// Build is rejected.
+        Rejected = 2,
+    }
 }
 /// Configuration for an automated build in response to source repository
 /// changes.
@@ -884,12 +988,12 @@ pub struct BuildTrigger {
     #[prost(bool, tag = "9")]
     pub disabled: bool,
     /// Substitutions for Build resource. The keys must match the following
-    /// regular expression: `^_[A-Z0-9_]+$`.
+    /// regular expression: `^_\[A-Z0-9_\]+$`.
     #[prost(map = "string, string", tag = "11")]
     pub substitutions:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// ignored_files and included_files are file glob matches using
-    /// https://golang.org/pkg/path/filepath/#Match extended with support for "**".
+    /// <https://golang.org/pkg/path/filepath/#Match> extended with support for "**".
     ///
     /// If ignored_files and changed files are both empty, then they are
     /// not used to determine whether or not to trigger a build.
@@ -912,6 +1016,13 @@ pub struct BuildTrigger {
     /// Optional. A Common Expression Language string.
     #[prost(string, tag = "30")]
     pub filter: ::prost::alloc::string::String,
+    /// The service account used for all user-controlled operations including
+    /// UpdateBuildTrigger, RunBuildTrigger, CreateBuild, and CancelBuild.
+    /// If no service account is set, then the standard Cloud Build service account
+    /// (\[PROJECT_NUM\]@system.gserviceaccount.com) will be used instead.
+    /// Format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_ID_OR_EMAIL}`
+    #[prost(string, tag = "33")]
+    pub service_account: ::prost::alloc::string::String,
     /// Template describing the Build request to make when the trigger is matched.
     #[prost(oneof = "build_trigger::BuildTemplate", tags = "18, 4, 8")]
     pub build_template: ::core::option::Option<build_trigger::BuildTemplate>,
@@ -952,12 +1063,12 @@ pub struct GitHubEventsConfig {
     #[prost(int64, tag = "1")]
     pub installation_id: i64,
     /// Owner of the repository. For example: The owner for
-    /// https://github.com/googlecloudplatform/cloud-builders is
+    /// <https://github.com/googlecloudplatform/cloud-builders> is
     /// "googlecloudplatform".
     #[prost(string, tag = "6")]
     pub owner: ::prost::alloc::string::String,
     /// Name of the repository. For example: The name for
-    /// https://github.com/googlecloudplatform/cloud-builders is "cloud-builders".
+    /// <https://github.com/googlecloudplatform/cloud-builders> is "cloud-builders".
     #[prost(string, tag = "7")]
     pub name: ::prost::alloc::string::String,
     /// Filter describing the types of events to trigger a build.
@@ -1090,7 +1201,7 @@ pub mod pull_request_filter {
         /// Regex of branches to match.
         ///
         /// The syntax of the regular expressions accepted is the syntax accepted by
-        /// RE2 and described at https://github.com/google/re2/wiki/Syntax
+        /// RE2 and described at <https://github.com/google/re2/wiki/Syntax>
         #[prost(string, tag = "2")]
         Branch(::prost::alloc::string::String),
     }
@@ -1116,13 +1227,13 @@ pub mod push_filter {
         /// Regexes matching branches to build.
         ///
         /// The syntax of the regular expressions accepted is the syntax accepted by
-        /// RE2 and described at https://github.com/google/re2/wiki/Syntax
+        /// RE2 and described at <https://github.com/google/re2/wiki/Syntax>
         #[prost(string, tag = "2")]
         Branch(::prost::alloc::string::String),
         /// Regexes matching tags to build.
         ///
         /// The syntax of the regular expressions accepted is the syntax accepted by
-        /// RE2 and described at https://github.com/google/re2/wiki/Syntax
+        /// RE2 and described at <https://github.com/google/re2/wiki/Syntax>
         #[prost(string, tag = "3")]
         Tag(::prost::alloc::string::String),
     }
@@ -1254,7 +1365,7 @@ pub struct BuildOptions {
     /// Optional. Specification for execution on a `WorkerPool`.
     ///
     /// See [running builds in a private
-    /// pool](https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool)
+    /// pool](<https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool>)
     /// for more information.
     #[prost(message, optional, tag = "19")]
     pub pool: ::core::option::Option<build_options::PoolOption>,
@@ -1293,7 +1404,7 @@ pub mod build_options {
     /// Details about how a build should be executed on a `WorkerPool`.
     ///
     /// See [running builds in a private
-    /// pool](https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool)
+    /// pool](<https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool>)
     /// for more information.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PoolOption {
@@ -1316,7 +1427,7 @@ pub mod build_options {
     }
     /// Supported Compute Engine machine types.
     /// For more information, see [Machine
-    /// types](https://cloud.google.com/compute/docs/machine-types).
+    /// types](<https://cloud.google.com/compute/docs/machine-types>).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum MachineType {
@@ -1374,7 +1485,7 @@ pub mod build_options {
         None = 4,
     }
 }
-/// ReceiveTriggerWebhookRequest [Experimental] is the request object accepted by
+/// ReceiveTriggerWebhookRequest \[Experimental\] is the request object accepted by
 /// the ReceiveTriggerWebhook method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceiveTriggerWebhookRequest {
@@ -1395,7 +1506,7 @@ pub struct ReceiveTriggerWebhookRequest {
     #[prost(string, tag = "4")]
     pub secret: ::prost::alloc::string::String,
 }
-/// ReceiveTriggerWebhookResponse [Experimental] is the response object for the
+/// ReceiveTriggerWebhookResponse \[Experimental\] is the response object for the
 /// ReceiveTriggerWebhook method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceiveTriggerWebhookResponse {}
@@ -1411,7 +1522,7 @@ pub struct ReceiveTriggerWebhookResponse {}
 /// administer, including any on-prem resources connected to that VPC
 /// network. For an overview of private pools, see
 /// [Private pools
-/// overview](https://cloud.google.com/build/docs/private-pools/private-pools-overview).
+/// overview](<https://cloud.google.com/build/docs/private-pools/private-pools-overview>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkerPool {
     /// Output only. The resource name of the `WorkerPool`, with format
@@ -1428,7 +1539,7 @@ pub struct WorkerPool {
     /// Output only. A unique identifier for the `WorkerPool`.
     #[prost(string, tag = "3")]
     pub uid: ::prost::alloc::string::String,
-    /// User specified annotations. See https://google.aip.dev/128#annotations
+    /// User specified annotations. See <https://google.aip.dev/128#annotations>
     /// for more details such as format and size limitations.
     #[prost(map = "string, string", tag = "4")]
     pub annotations:
@@ -1500,13 +1611,13 @@ pub mod private_pool_v1_config {
     pub struct WorkerConfig {
         /// Machine type of a worker, such as `e2-medium`.
         /// See [Worker pool config
-        /// file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema).
+        /// file](<https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema>).
         /// If left blank, Cloud Build will use a sensible default.
         #[prost(string, tag = "1")]
         pub machine_type: ::prost::alloc::string::String,
         /// Size of the disk attached to the worker, in GB.
         /// See [Worker pool config
-        /// file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema).
+        /// file](<https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema>).
         /// Specify a value of up to 1000. If `0` is specified, Cloud Build will use
         /// a standard disk size.
         #[prost(int64, tag = "2")]
@@ -1522,7 +1633,7 @@ pub mod private_pool_v1_config {
         /// is a project number, such as `12345`, and `{network}` is the name of a
         /// VPC network in the project. See
         /// [Understanding network configuration
-        /// options](https://cloud.google.com/build/docs/private-pools/set-up-private-pool-environment)
+        /// options](<https://cloud.google.com/build/docs/private-pools/set-up-private-pool-environment>)
         #[prost(string, tag = "1")]
         pub peered_network: ::prost::alloc::string::String,
         /// Option to configure network egress for the workers.
@@ -1562,7 +1673,7 @@ pub struct CreateWorkerPoolRequest {
     /// the final component of the resource name.
     ///
     /// This value should be 1-63 characters, and valid characters
-    /// are /[a-z][0-9]-/.
+    /// are /\[a-z][0-9\]-/.
     #[prost(string, tag = "3")]
     pub worker_pool_id: ::prost::alloc::string::String,
     /// If set, validate the request and preview the response, but do not actually
@@ -1708,7 +1819,7 @@ pub mod cloud_build_client {
     impl<T> CloudBuildClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1721,7 +1832,7 @@ pub mod cloud_build_client {
             interceptor: F,
         ) -> CloudBuildClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1870,6 +1981,31 @@ pub mod cloud_build_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudbuild.v1.CloudBuild/RetryBuild",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Approves or rejects a pending build."]
+        #[doc = ""]
+        #[doc = " If approved, the returned LRO will be analogous to the LRO returned from"]
+        #[doc = " a CreateBuild call."]
+        #[doc = ""]
+        #[doc = " If rejected, the returned LRO will be immediately done."]
+        pub async fn approve_build(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ApproveBuildRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.devtools.cloudbuild.v1.CloudBuild/ApproveBuild",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

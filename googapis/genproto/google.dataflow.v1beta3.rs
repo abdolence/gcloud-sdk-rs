@@ -75,14 +75,14 @@ pub struct Environment {
     #[prost(enumeration = "FlexResourceSchedulingGoal", tag = "11")]
     pub flex_resource_scheduling_goal: i32,
     /// The Compute Engine region
-    /// (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+    /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1". Mutually exclusive
     /// with worker_zone. If neither worker_region nor worker_zone is specified,
     /// default to the control plane's region.
     #[prost(string, tag = "13")]
     pub worker_region: ::prost::alloc::string::String,
     /// The Compute Engine zone
-    /// (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+    /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1-a". Mutually exclusive
     /// with worker_region. If neither worker_region nor worker_zone is specified,
     /// a zone in the control plane's region is chosen based on available capacity.
@@ -160,7 +160,7 @@ pub struct WorkerSettings {
     /// algorithm used is defined by RFC 1808, "Relative Uniform Resource
     /// Locators".
     ///
-    /// If not specified, the default value is "http://www.googleapis.com/"
+    /// If not specified, the default value is "<http://www.googleapis.com/">
     #[prost(string, tag = "1")]
     pub base_url: ::prost::alloc::string::String,
     /// Whether to send work progress updates to the service.
@@ -212,7 +212,7 @@ pub struct TaskRunnerSettings {
     /// algorithm used is defined by RFC 1808, "Relative Uniform Resource
     /// Locators".
     ///
-    /// If not specified, the default value is "http://www.googleapis.com/"
+    /// If not specified, the default value is "<http://www.googleapis.com/">
     #[prost(string, tag = "4")]
     pub base_url: ::prost::alloc::string::String,
     /// The API version of endpoint, e.g. "v1b3"
@@ -425,7 +425,7 @@ pub struct DebugOptions {
     pub enable_hot_key_logging: bool,
 }
 /// Specifies the processing model used by a
-/// [google.dataflow.v1beta3.Job], which determines the way the Job is
+/// \[google.dataflow.v1beta3.Job\], which determines the way the Job is
 /// managed by the Cloud Dataflow service (how workers are scheduled, how
 /// inputs are sharded, etc).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -452,7 +452,7 @@ pub enum FlexResourceSchedulingGoal {
     FlexrsCostOptimized = 2,
 }
 /// Specifies what happens to a resource when a Cloud Dataflow
-/// [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job] has completed.
+/// \[google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job\] has completed.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TeardownPolicy {
@@ -507,9 +507,9 @@ pub enum WorkerIpAddressConfiguration {
     WorkerIpPrivate = 2,
 }
 /// Specifies the shuffle mode used by a
-/// [google.dataflow.v1beta3.Job], which determines the approach data is shuffled
+/// \[google.dataflow.v1beta3.Job\], which determines the approach data is shuffled
 /// during processing. More details in:
-/// https://cloud.google.com/dataflow/docs/guides/deploying-a-pipeline#dataflow-shuffle
+/// <https://cloud.google.com/dataflow/docs/guides/deploying-a-pipeline#dataflow-shuffle>
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ShuffleMode {
@@ -647,7 +647,7 @@ pub mod snapshots_v1_beta3_client {
     impl<T> SnapshotsV1Beta3Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -660,7 +660,7 @@ pub mod snapshots_v1_beta3_client {
             interceptor: F,
         ) -> SnapshotsV1Beta3Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -759,7 +759,7 @@ pub struct Job {
     /// existing Job.
     ///
     /// The name must match the regular expression
-    /// `[a-z]([-a-z0-9]{0,38}[a-z0-9])?`
+    /// `\[a-z]([-a-z0-9]{0,38}[a-z0-9\])?`
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
     /// The type of Cloud Dataflow job.
@@ -854,15 +854,15 @@ pub struct Job {
     /// The labels map can contain no more than 64 entries.  Entries of the labels
     /// map are UTF8 strings that comply with the following restrictions:
     ///
-    /// * Keys must conform to regexp:  [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
-    /// * Values must conform to regexp:  [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+    /// * Keys must conform to regexp:  \[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-\]{0,62}
+    /// * Values must conform to regexp:  \[\p{Ll}\p{Lo}\p{N}_-\]{0,63}
     /// * Both keys and values are additionally constrained to be <= 128 bytes in
     /// size.
     #[prost(map = "string, string", tag = "17")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "18")]
     pub location: ::prost::alloc::string::String,
@@ -1265,7 +1265,7 @@ pub struct JobExecutionInfo {
     pub stages: ::std::collections::HashMap<::prost::alloc::string::String, JobExecutionStageInfo>,
 }
 /// Contains information about how a particular
-/// [google.dataflow.v1beta3.Step][google.dataflow.v1beta3.Step] will be executed.
+/// \[google.dataflow.v1beta3.Step][google.dataflow.v1beta3.Step\] will be executed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobExecutionStageInfo {
     /// The steps associated with the execution stage.
@@ -1290,7 +1290,7 @@ pub struct CreateJobRequest {
     #[prost(string, tag = "4")]
     pub replace_job_id: ::prost::alloc::string::String,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "5")]
     pub location: ::prost::alloc::string::String,
@@ -1308,7 +1308,7 @@ pub struct GetJobRequest {
     #[prost(enumeration = "JobView", tag = "3")]
     pub view: i32,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "4")]
     pub location: ::prost::alloc::string::String,
@@ -1327,7 +1327,7 @@ pub struct UpdateJobRequest {
     #[prost(message, optional, tag = "3")]
     pub job: ::core::option::Option<Job>,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "4")]
     pub location: ::prost::alloc::string::String,
@@ -1356,7 +1356,7 @@ pub struct ListJobsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains this job.
     #[prost(string, tag = "17")]
     pub location: ::prost::alloc::string::String,
@@ -1384,12 +1384,12 @@ pub mod list_jobs_request {
     }
 }
 /// Indicates which [regional endpoint]
-/// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) failed
+/// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) failed
 /// to respond to a request for data.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FailedLocation {
     /// The name of the [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// failed to respond.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1408,7 +1408,7 @@ pub struct ListJobsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Zero or more messages describing the [regional endpoints]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// failed to respond.
     #[prost(message, repeated, tag = "3")]
     pub failed_location: ::prost::alloc::vec::Vec<FailedLocation>,
@@ -1472,7 +1472,7 @@ pub enum KindType {
     /// Opening or closing a shuffle session, often as part of a GroupByKey.
     ShuffleKind = 8,
 }
-/// Describes the overall state of a [google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job].
+/// Describes the overall state of a \[google.dataflow.v1beta3.Job][google.dataflow.v1beta3.Job\].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum JobState {
@@ -1566,7 +1566,7 @@ pub mod jobs_v1_beta3_client {
     impl<T> JobsV1Beta3Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1579,7 +1579,7 @@ pub mod jobs_v1_beta3_client {
             interceptor: F,
         ) -> JobsV1Beta3Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1883,7 +1883,7 @@ pub struct ListJobMessagesRequest {
     #[prost(message, optional, tag = "7")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains the job specified by job_id.
     #[prost(string, tag = "8")]
     pub location: ::prost::alloc::string::String,
@@ -1949,7 +1949,7 @@ pub mod messages_v1_beta3_client {
     impl<T> MessagesV1Beta3Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1962,7 +1962,7 @@ pub mod messages_v1_beta3_client {
             interceptor: F,
         ) -> MessagesV1Beta3Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2027,8 +2027,8 @@ pub struct MetricStructuredName {
     /// metric is associated with, such as the name of a step or collection.
     ///
     /// For example, built-in counters associated with steps will have
-    /// context['step'] = <step-name>. Counters associated with PCollections
-    /// in the SDK will have context['pcollection'] = <pcollection-name>.
+    /// context\['step'\] = <step-name>. Counters associated with PCollections
+    /// in the SDK will have context\['pcollection'\] = <pcollection-name>.
     #[prost(map = "string, string", tag = "3")]
     pub context:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -2107,7 +2107,7 @@ pub struct GetJobMetricsRequest {
     #[prost(message, optional, tag = "3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains the job specified by job_id.
     #[prost(string, tag = "4")]
     pub location: ::prost::alloc::string::String,
@@ -2138,7 +2138,7 @@ pub struct GetJobExecutionDetailsRequest {
     #[prost(string, tag = "2")]
     pub job_id: ::prost::alloc::string::String,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains the job specified by job_id.
     #[prost(string, tag = "3")]
     pub location: ::prost::alloc::string::String,
@@ -2156,7 +2156,7 @@ pub struct GetJobExecutionDetailsRequest {
 /// Information about the progress of some component of job execution.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProgressTimeseries {
-    /// The current progress of the component, in the range [0,1].
+    /// The current progress of the component, in the range \[0,1\].
     #[prost(double, tag = "1")]
     pub current_progress: f64,
     /// History of progress for the component.
@@ -2227,7 +2227,7 @@ pub struct GetStageExecutionDetailsRequest {
     #[prost(string, tag = "2")]
     pub job_id: ::prost::alloc::string::String,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) that
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) that
     /// contains the job specified by job_id.
     #[prost(string, tag = "3")]
     pub location: ::prost::alloc::string::String,
@@ -2331,7 +2331,7 @@ pub mod metrics_v1_beta3_client {
     impl<T> MetricsV1Beta3Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2344,7 +2344,7 @@ pub mod metrics_v1_beta3_client {
             interceptor: F,
         ) -> MetricsV1Beta3Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2746,7 +2746,7 @@ pub struct FlexTemplateRuntimeEnvironment {
     #[prost(int32, tag = "2")]
     pub max_workers: i32,
     /// The Compute Engine [availability
-    /// zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones)
+    /// zone](<https://cloud.google.com/compute/docs/regions-zones/regions-zones>)
     /// for launching worker instances to run your pipeline.
     /// In the future, worker_zone will take precedence.
     #[prost(string, tag = "3")]
@@ -2772,14 +2772,14 @@ pub struct FlexTemplateRuntimeEnvironment {
     /// Subnetwork to which VMs will be assigned, if desired. You can specify a
     /// subnetwork using either a complete URL or an abbreviated path. Expected to
     /// be of the form
-    /// "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
+    /// "<https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK">
     /// or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in
     /// a Shared VPC network, you must use the complete URL.
     #[prost(string, tag = "9")]
     pub subnetwork: ::prost::alloc::string::String,
     /// Additional user labels to be specified for the job.
     /// Keys and values must follow the restrictions specified in the [labeling
-    /// restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions)
+    /// restrictions](<https://cloud.google.com/compute/docs/labeling-resources#restrictions>)
     /// page.
     /// An object containing a list of "key": value pairs.
     /// Example: { "name": "wrench", "mass": "1kg", "count": "3" }.
@@ -2795,14 +2795,14 @@ pub struct FlexTemplateRuntimeEnvironment {
     #[prost(enumeration = "WorkerIpAddressConfiguration", tag = "12")]
     pub ip_configuration: i32,
     /// The Compute Engine region
-    /// (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+    /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1". Mutually exclusive
     /// with worker_zone. If neither worker_region nor worker_zone is specified,
     /// default to the control plane's region.
     #[prost(string, tag = "13")]
     pub worker_region: ::prost::alloc::string::String,
     /// The Compute Engine zone
-    /// (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+    /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1-a". Mutually exclusive
     /// with worker_region. If neither worker_region nor worker_zone is specified,
     /// a zone in the control plane's region is chosen based on available capacity.
@@ -2813,7 +2813,7 @@ pub struct FlexTemplateRuntimeEnvironment {
     #[prost(bool, tag = "15")]
     pub enable_streaming_engine: bool,
     /// Set FlexRS goal for the job.
-    /// https://cloud.google.com/dataflow/docs/guides/flexrs
+    /// <https://cloud.google.com/dataflow/docs/guides/flexrs>
     #[prost(enumeration = "FlexResourceSchedulingGoal", tag = "16")]
     pub flexrs_goal: i32,
     /// The Cloud Storage path for staging local files.
@@ -2836,7 +2836,7 @@ pub struct LaunchFlexTemplateRequest {
     #[prost(message, optional, tag = "2")]
     pub launch_parameter: ::core::option::Option<LaunchFlexTemplateParameter>,
     /// Required. The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) to
     /// which to direct the request. E.g., us-central1, us-west1.
     #[prost(string, tag = "3")]
     pub location: ::prost::alloc::string::String,
@@ -2856,7 +2856,7 @@ pub struct RuntimeEnvironment {
     #[prost(int32, tag = "1")]
     pub max_workers: i32,
     /// The Compute Engine [availability
-    /// zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones)
+    /// zone](<https://cloud.google.com/compute/docs/regions-zones/regions-zones>)
     /// for launching worker instances to run your pipeline.
     /// In the future, worker_zone will take precedence.
     #[prost(string, tag = "2")]
@@ -2886,14 +2886,14 @@ pub struct RuntimeEnvironment {
     /// Subnetwork to which VMs will be assigned, if desired. You can specify a
     /// subnetwork using either a complete URL or an abbreviated path. Expected to
     /// be of the form
-    /// "https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK"
+    /// "<https://www.googleapis.com/compute/v1/projects/HOST_PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK">
     /// or "regions/REGION/subnetworks/SUBNETWORK". If the subnetwork is located in
     /// a Shared VPC network, you must use the complete URL.
     #[prost(string, tag = "9")]
     pub subnetwork: ::prost::alloc::string::String,
     /// Additional user labels to be specified for the job.
     /// Keys and values should follow the restrictions specified in the [labeling
-    /// restrictions](https://cloud.google.com/compute/docs/labeling-resources#restrictions)
+    /// restrictions](<https://cloud.google.com/compute/docs/labeling-resources#restrictions>)
     /// page.
     /// An object containing a list of "key": value pairs.
     /// Example: { "name": "wrench", "mass": "1kg", "count": "3" }.
@@ -2909,14 +2909,14 @@ pub struct RuntimeEnvironment {
     #[prost(enumeration = "WorkerIpAddressConfiguration", tag = "14")]
     pub ip_configuration: i32,
     /// The Compute Engine region
-    /// (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+    /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1". Mutually exclusive
     /// with worker_zone. If neither worker_region nor worker_zone is specified,
     /// default to the control plane's region.
     #[prost(string, tag = "15")]
     pub worker_region: ::prost::alloc::string::String,
     /// The Compute Engine zone
-    /// (https://cloud.google.com/compute/docs/regions-zones/regions-zones) in
+    /// (<https://cloud.google.com/compute/docs/regions-zones/regions-zones>) in
     /// which worker processing should occur, e.g. "us-west1-a". Mutually exclusive
     /// with worker_region. If neither worker_region nor worker_zone is specified,
     /// a zone in the control plane's region is chosen based on available capacity.
@@ -3018,7 +3018,7 @@ pub struct CreateJobFromTemplateRequest {
     #[prost(message, optional, tag = "5")]
     pub environment: ::core::option::Option<RuntimeEnvironment>,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) to
     /// which to direct the request.
     #[prost(string, tag = "6")]
     pub location: ::prost::alloc::string::String,
@@ -3048,7 +3048,7 @@ pub struct GetTemplateRequest {
     #[prost(enumeration = "get_template_request::TemplateView", tag = "3")]
     pub view: i32,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) to
     /// which to direct the request.
     #[prost(string, tag = "4")]
     pub location: ::prost::alloc::string::String,
@@ -3146,7 +3146,7 @@ pub struct LaunchTemplateRequest {
     #[prost(message, optional, tag = "4")]
     pub launch_parameters: ::core::option::Option<LaunchTemplateParameters>,
     /// The [regional endpoint]
-    /// (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints) to
+    /// (<https://cloud.google.com/dataflow/docs/concepts/regional-endpoints>) to
     /// which to direct the request.
     #[prost(string, tag = "5")]
     pub location: ::prost::alloc::string::String,
@@ -3248,7 +3248,7 @@ pub mod templates_service_client {
     impl<T> TemplatesServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -3261,7 +3261,7 @@ pub mod templates_service_client {
             interceptor: F,
         ) -> TemplatesServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -3351,7 +3351,7 @@ pub mod flex_templates_service_client {
     impl<T> FlexTemplatesServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -3364,7 +3364,7 @@ pub mod flex_templates_service_client {
             interceptor: F,
         ) -> FlexTemplatesServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

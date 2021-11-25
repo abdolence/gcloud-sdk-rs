@@ -1,4 +1,4 @@
-/// [Google Cloud Endpoints](https://cloud.google.com/appengine/docs/python/endpoints/)
+/// [Google Cloud Endpoints](<https://cloud.google.com/appengine/docs/python/endpoints/>)
 /// configuration for API handlers.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApiConfigHandler {
@@ -352,7 +352,7 @@ pub struct Application {
     /// Defaults to `us-central`.
     ///
     /// View the list of
-    /// [supported locations](https://cloud.google.com/appengine/docs/locations).
+    /// [supported locations](<https://cloud.google.com/appengine/docs/locations>).
     #[prost(string, tag = "7")]
     pub location_id: ::prost::alloc::string::String,
     /// Google Cloud Storage bucket that can be used for storing files
@@ -435,7 +435,7 @@ pub mod application {
         /// be removed.
         #[prost(bool, tag = "1")]
         pub split_health_checks: bool,
-        /// If true, use [Container-Optimized OS](https://cloud.google.com/container-optimized-os/)
+        /// If true, use [Container-Optimized OS](<https://cloud.google.com/container-optimized-os/>)
         /// base image for VMs, rather than a base Debian image.
         #[prost(bool, tag = "2")]
         pub use_container_optimized_os: bool,
@@ -516,7 +516,7 @@ pub struct AuthorizedCertificate {
     pub domain_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The time when this certificate expires. To update the renewal time on this
     /// certificate, upload an SSL certificate with a different expiration time
-    /// using [`AuthorizedCertificates.UpdateAuthorizedCertificate`]().
+    /// using \[`AuthorizedCertificates.UpdateAuthorizedCertificate`\]().
     ///
     /// @OutputOnly
     #[prost(message, optional, tag = "5")]
@@ -632,7 +632,7 @@ pub enum ManagementStatus {
 }
 /// A domain that a user has been authorized to administer. To authorize use
 /// of a domain, verify ownership via
-/// [Webmaster Central](https://www.google.com/webmasters/verification/home).
+/// [Webmaster Central](<https://www.google.com/webmasters/verification/home>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizedDomain {
     /// Full path to the `AuthorizedDomain` resource in the API. Example:
@@ -969,7 +969,7 @@ pub struct CloudBuildOptions {
     ///
     /// Required for flexible environment builds.
     ///
-    /// See https://cloud.google.com/appengine/docs/standard/python/config/appref
+    /// See <https://cloud.google.com/appengine/docs/standard/python/config/appref>
     /// for more details.
     #[prost(string, tag = "1")]
     pub app_yaml_path: ::prost::alloc::string::String,
@@ -1103,7 +1103,7 @@ pub struct Version {
     pub disk_usage_bytes: i64,
     /// The version of the API in the given runtime environment. Please see the
     /// app.yaml reference for valid values at
-    /// https://cloud.google.com/appengine/docs/standard/<language>/config/appref
+    /// <https://cloud.google.com/appengine/docs/standard/<language>/config/appref>
     #[prost(string, tag = "21")]
     pub runtime_api_version: ::prost::alloc::string::String,
     /// The path or name of the app's main executable.
@@ -1133,7 +1133,7 @@ pub struct Version {
     #[prost(message, repeated, tag = "102")]
     pub libraries: ::prost::alloc::vec::Vec<Library>,
     /// Serving configuration for
-    /// [Google Cloud Endpoints](https://cloud.google.com/appengine/docs/python/endpoints/).
+    /// [Google Cloud Endpoints](<https://cloud.google.com/appengine/docs/python/endpoints/>).
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
     #[prost(message, optional, tag = "103")]
@@ -1152,7 +1152,7 @@ pub struct Version {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Duration that static files should be cached by web proxies and browsers.
     /// Only applicable if the corresponding
-    /// [StaticFilesHandler](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StaticFilesHandler)
+    /// \[StaticFilesHandler\](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#StaticFilesHandler>)
     /// does not specify its own expiration time.
     ///
     /// Only returned in `GET` requests if `view=FULL` is set.
@@ -1189,7 +1189,7 @@ pub struct Version {
     #[prost(message, optional, tag = "108")]
     pub deployment: ::core::option::Option<Deployment>,
     /// Serving URL for this version. Example:
-    /// "https://myversion-dot-myservice-dot-myapp.appspot.com"
+    /// "<https://myversion-dot-myservice-dot-myapp.appspot.com">
     ///
     /// @OutputOnly
     #[prost(string, tag = "109")]
@@ -1237,13 +1237,13 @@ pub mod version {
         ManualScaling(super::ManualScaling),
     }
 }
-/// [Cloud Endpoints](https://cloud.google.com/endpoints) configuration.
+/// [Cloud Endpoints](<https://cloud.google.com/endpoints>) configuration.
 /// The Endpoints API Service provides tooling for serving Open API and gRPC
 /// endpoints via an NGINX proxy. Only valid for App Engine Flexible environment
 /// deployments.
 ///
 /// The fields here refer to the name and configuration ID of a "service"
-/// resource in the [Service Management API](https://cloud.google.com/service-management/overview).
+/// resource in the [Service Management API](<https://cloud.google.com/service-management/overview>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EndpointsApiService {
     /// Endpoints service name which is the name of the "service" resource in the
@@ -1293,7 +1293,7 @@ pub mod endpoints_api_service {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutomaticScaling {
     /// The time period that the
-    /// [Autoscaler](https://cloud.google.com/compute/docs/autoscaler/)
+    /// \[Autoscaler\](<https://cloud.google.com/compute/docs/autoscaler/>)
     /// should wait before it starts collecting information from a new instance.
     /// This prevents the autoscaler from collecting information when the instance
     /// is initializing, during which the collected usage would not be reliable.
@@ -1366,7 +1366,7 @@ pub struct BasicScaling {
 pub struct ManualScaling {
     /// Number of instances to assign to the service at the start. This number
     /// can later be altered by using the
-    /// [Modules API](https://cloud.google.com/appengine/docs/python/modules/functions)
+    /// [Modules API](<https://cloud.google.com/appengine/docs/python/modules/functions>)
     /// `set_num_instances()` function.
     #[prost(int32, tag = "1")]
     pub instances: i32,
@@ -1736,14 +1736,14 @@ pub struct UpdateServiceRequest {
     /// specify. By default, traffic is shifted immediately.
     /// For gradual traffic migration, the target versions
     /// must be located within instances that are configured for both
-    /// [warmup requests](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#InboundServiceType)
+    /// [warmup requests](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#InboundServiceType>)
     /// and
-    /// [automatic scaling](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#AutomaticScaling).
+    /// [automatic scaling](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#AutomaticScaling>).
     /// You must specify the
-    /// [`shardBy`](https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services#ShardBy)
+    /// \[`shardBy`\](<https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services#ShardBy>)
     /// field in the Service resource. Gradual traffic migration is not
     /// supported in the App Engine flexible environment. For examples, see
-    /// [Migrating and Splitting Traffic](https://cloud.google.com/appengine/docs/admin-api/migrating-splitting-traffic).
+    /// [Migrating and Splitting Traffic](<https://cloud.google.com/appengine/docs/admin-api/migrating-splitting-traffic>).
     #[prost(bool, tag = "4")]
     pub migrate_traffic: bool,
 }
@@ -1875,11 +1875,11 @@ pub struct DebugInstanceRequest {
     pub name: ::prost::alloc::string::String,
     /// Public SSH key to add to the instance. Examples:
     ///
-    /// * `[USERNAME]:ssh-rsa [KEY_VALUE] [USERNAME]`
-    /// * `[USERNAME]:ssh-rsa [KEY_VALUE] google-ssh {"userName":"[USERNAME]","expireOn":"[EXPIRE_TIME]"}`
+    /// * `\[USERNAME\]:ssh-rsa \[KEY_VALUE\] \[USERNAME\]`
+    /// * `\[USERNAME\]:ssh-rsa \[KEY_VALUE\] google-ssh {"userName":"\[USERNAME]","expireOn":"[EXPIRE_TIME\]"}`
     ///
     /// For more information, see
-    /// [Adding and Removing SSH Keys](https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys).
+    /// [Adding and Removing SSH Keys](<https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys>).
     #[prost(string, tag = "2")]
     pub ssh_key: ::prost::alloc::string::String,
 }
@@ -2142,7 +2142,7 @@ pub struct DeleteDomainMappingRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Fields that should be returned when [Version][google.appengine.v1.Version] resources
+/// Fields that should be returned when \[Version][google.appengine.v1.Version\] resources
 /// are retrieved.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -2195,7 +2195,7 @@ pub mod applications_client {
     impl<T> ApplicationsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2208,7 +2208,7 @@ pub mod applications_client {
             interceptor: F,
         ) -> ApplicationsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2337,7 +2337,7 @@ pub mod services_client {
     impl<T> ServicesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2350,7 +2350,7 @@ pub mod services_client {
             interceptor: F,
         ) -> ServicesClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2455,7 +2455,7 @@ pub mod versions_client {
     impl<T> VersionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2468,7 +2468,7 @@ pub mod versions_client {
             interceptor: F,
         ) -> VersionsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2627,7 +2627,7 @@ pub mod instances_client {
     impl<T> InstancesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2640,7 +2640,7 @@ pub mod instances_client {
             interceptor: F,
         ) -> InstancesClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2778,7 +2778,7 @@ pub mod firewall_client {
     impl<T> FirewallClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2791,7 +2791,7 @@ pub mod firewall_client {
             interceptor: F,
         ) -> FirewallClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2939,7 +2939,7 @@ pub mod authorized_domains_client {
     impl<T> AuthorizedDomainsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2952,7 +2952,7 @@ pub mod authorized_domains_client {
             interceptor: F,
         ) -> AuthorizedDomainsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -3009,7 +3009,7 @@ pub mod authorized_certificates_client {
     impl<T> AuthorizedCertificatesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -3022,7 +3022,7 @@ pub mod authorized_certificates_client {
             interceptor: F,
         ) -> AuthorizedCertificatesClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -3151,7 +3151,7 @@ pub mod domain_mappings_client {
     impl<T> DomainMappingsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -3164,7 +3164,7 @@ pub mod domain_mappings_client {
             interceptor: F,
         ) -> DomainMappingsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -3326,7 +3326,7 @@ pub struct CreateVersionMethod {
     #[prost(message, optional, tag = "1")]
     pub request: ::core::option::Option<CreateVersionRequest>,
 }
-/// Metadata for the given [google.cloud.location.Location][google.cloud.location.Location].
+/// Metadata for the given \[google.cloud.location.Location][google.cloud.location.Location\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {
     /// App Engine standard environment is available in the given location.
@@ -3339,12 +3339,12 @@ pub struct LocationMetadata {
     /// @OutputOnly
     #[prost(bool, tag = "4")]
     pub flexible_environment_available: bool,
-    /// Output only. [Search API](https://cloud.google.com/appengine/docs/standard/python/search)
+    /// Output only. [Search API](<https://cloud.google.com/appengine/docs/standard/python/search>)
     /// is available in the given location.
     #[prost(bool, tag = "6")]
     pub search_api_available: bool,
 }
-/// Metadata for the given [google.longrunning.Operation][google.longrunning.Operation].
+/// Metadata for the given \[google.longrunning.Operation][google.longrunning.Operation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadataV1 {
     /// API method that initiated this operation. Example:
@@ -3397,8 +3397,8 @@ pub mod operation_metadata_v1 {
         CreateVersionMetadata(super::CreateVersionMetadataV1),
     }
 }
-/// Metadata for the given [google.longrunning.Operation][google.longrunning.Operation] during a
-/// [google.appengine.v1.CreateVersionRequest][google.appengine.v1.CreateVersionRequest].
+/// Metadata for the given \[google.longrunning.Operation][google.longrunning.Operation\] during a
+/// \[google.appengine.v1.CreateVersionRequest][google.appengine.v1.CreateVersionRequest\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateVersionMetadataV1 {
     /// The Cloud Build ID if one was created as part of the version create.

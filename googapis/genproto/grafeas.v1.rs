@@ -42,7 +42,7 @@ pub struct Signature {
     pub signature: ::prost::alloc::vec::Vec<u8>,
     /// The identifier for the public key that verifies this signature.
     ///   * The `public_key_id` is required.
-    ///   * The `public_key_id` MUST be an RFC3986 conformant URI.
+    ///   * The `public_key_id` SHOULD be an RFC3986 conformant URI.
     ///   * When possible, the `public_key_id` SHOULD be an immutable reference,
     ///     such as a cryptographic digest.
     ///
@@ -50,7 +50,7 @@ pub struct Signature {
     ///
     /// OpenPGP V4 public key fingerprint:
     ///   * "openpgp4fpr:74FAF3B861BDA0870C7B6DEF607E48D2A663AEEA"
-    /// See https://www.iana.org/assignments/uri-schemes/prov/openpgp4fpr for more
+    /// See <https://www.iana.org/assignments/uri-schemes/prov/openpgp4fpr> for more
     /// details on this scheme.
     ///
     /// RFC6920 digest-named SubjectPublicKeyInfo (digest of the DER
@@ -60,11 +60,30 @@ pub struct Signature {
     #[prost(string, tag = "2")]
     pub public_key_id: ::prost::alloc::string::String,
 }
+/// MUST match
+/// <https://github.com/secure-systems-lab/dsse/blob/master/envelope.proto.> An
+/// authenticated message of arbitrary type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Envelope {
+    #[prost(bytes = "vec", tag = "1")]
+    pub payload: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "2")]
+    pub payload_type: ::prost::alloc::string::String,
+    #[prost(message, repeated, tag = "3")]
+    pub signatures: ::prost::alloc::vec::Vec<EnvelopeSignature>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnvelopeSignature {
+    #[prost(bytes = "vec", tag = "1")]
+    pub sig: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "2")]
+    pub keyid: ::prost::alloc::string::String,
+}
 /// Kind represents the kinds of notes supported.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum NoteKind {
-    /// Unknown.
+    /// Default value. This value is unused.
     Unspecified = 0,
     /// The note and occurrence represent a package vulnerability.
     Vulnerability = 1,
@@ -82,9 +101,88 @@ pub enum NoteKind {
     Attestation = 7,
     /// This represents an available package upgrade.
     Upgrade = 8,
+    /// This represents a Compliance Note
+    Compliance = 9,
+    /// This represents a DSSE attestation Note
+    DsseAttestation = 10,
+}
+// An attestation wrapper with a PGP-compatible signature. This message only
+// supports `ATTACHED` signatures, where the payload that is signed is included
+// alongside the signature itself in the same file.
+
+/// Note kind that represents a logical attestation "role" or "authority". For
+/// example, an organization might have one `Authority` for "QA" and one for
+/// "build". This note is intended to act strictly as a grouping mechanism for
+/// the attached occurrences (Attestations). This grouping mechanism also
+/// provides a security boundary, since IAM ACLs gate the ability for a principle
+/// to attach an occurrence to a given note. It also provides a single point of
+/// lookup to find all attached attestation occurrences, even if they don't all
+/// live in the same project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AttestationNote {
+    /// Hint hints at the purpose of the attestation authority.
+    #[prost(message, optional, tag = "1")]
+    pub hint: ::core::option::Option<attestation_note::Hint>,
+}
+/// Nested message and enum types in `AttestationNote`.
+pub mod attestation_note {
+    /// This submessage provides human-readable hints about the purpose of the
+    /// authority. Because the name of a note acts as its resource reference, it is
+    /// important to disambiguate the canonical name of the Note (which might be a
+    /// UUID for security purposes) from "readable" names more suitable for debug
+    /// output. Note that these hints should not be used to look up authorities in
+    /// security sensitive contexts, such as when looking up attestations to
+    /// verify.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Hint {
+        /// Required. The human readable name of this attestation authority, for
+        /// example "qa".
+        #[prost(string, tag = "1")]
+        pub human_readable_name: ::prost::alloc::string::String,
+    }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Jwt {
+    /// The compact encoding of a JWS, which is always three base64 encoded strings
+    /// joined by periods. For details, see:
+    /// <https://tools.ietf.org/html/rfc7515.html#section-3.1>
+    #[prost(string, tag = "1")]
+    pub compact_jwt: ::prost::alloc::string::String,
+}
+/// Occurrence that represents a single "attestation". The authenticity of an
+/// attestation can be verified using the attached signature. If the verifier
+/// trusts the public key of the signer, then verifying the signature is
+/// sufficient to establish trust. In this circumstance, the authority to which
+/// this attestation is attached is primarily useful for lookup (how to find
+/// this attestation if you already know the authority and artifact to be
+/// verified) and intent (for which authority this attestation was intended to
+/// sign.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AttestationOccurrence {
+    /// Required. The serialized payload that is verified by one or more
+    /// `signatures`.
+    #[prost(bytes = "vec", tag = "1")]
+    pub serialized_payload: ::prost::alloc::vec::Vec<u8>,
+    /// One or more signatures over `serialized_payload`.  Verifier implementations
+    /// should consider this attestation message verified if at least one
+    /// `signature` verifies `serialized_payload`.  See `Signature` in common.proto
+    /// for more details on signature structure and verification.
+    #[prost(message, repeated, tag = "2")]
+    pub signatures: ::prost::alloc::vec::Vec<Signature>,
+    /// One or more JWTs encoding a self-contained attestation.
+    /// Each JWT encodes the payload that it verifies within the JWT itself.
+    /// Verifier implementation SHOULD ignore the `serialized_payload` field
+    /// when verifying these JWTs.
+    /// If only JWTs are present on this AttestationOccurrence, then the
+    /// `serialized_payload` SHOULD be left empty.
+    /// Each JWT SHOULD encode a claim specific to the `resource_uri` of this
+    /// Occurrence, but this is not validated by Grafeas metadata API
+    /// implementations.  The JWT itself is opaque to Grafeas.
+    #[prost(message, repeated, tag = "3")]
+    pub jwts: ::prost::alloc::vec::Vec<Jwt>,
 }
 /// Common Vulnerability Scoring System version 3.
-/// For details, see https://www.first.org/cvss/specification-document
+/// For details, see <https://www.first.org/cvss/specification-document>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CvsSv3 {
     /// The base score is a function of the base metric scores.
@@ -167,7 +265,7 @@ pub mod cvs_sv3 {
 /// E.g., Debian's jessie-backports dpkg mirror.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Distribution {
-    /// Required. The cpe_uri in [CPE format](https://cpe.mitre.org/specification/)
+    /// Required. The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
     /// denoting the package manager version distributing a package.
     #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,
@@ -192,7 +290,7 @@ pub struct Distribution {
 /// filesystem. E.g., glibc was found in `/var/lib/dpkg/status`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
-    /// Required. The CPE URI in [CPE format](https://cpe.mitre.org/specification/)
+    /// Required. The CPE URI in [CPE format](<https://cpe.mitre.org/specification/>)
     /// denoting the package manager version distributing a package.
     #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,
@@ -239,6 +337,14 @@ pub struct Version {
     /// The iteration of the package build from the above version.
     #[prost(string, tag = "3")]
     pub revision: ::prost::alloc::string::String,
+    /// Whether this version is specifying part of an inclusive range. Grafeas
+    /// does not have the capability to specify version ranges; instead we have
+    /// fields that specify start version and end versions. At times this is
+    /// insufficient - we also need to specify whether the version is included in
+    /// the range or is excluded from the range. This boolean is expected to be set
+    /// to true when the version is included in a range.
+    #[prost(bool, tag = "6")]
+    pub inclusive: bool,
     /// Required. Distinguishes between sentinel MIN/MAX versions and normal
     /// versions.
     #[prost(enumeration = "version::VersionKind", tag = "4")]
@@ -319,7 +425,7 @@ pub mod vulnerability_note {
         /// node.js packages, etc.).
         #[prost(string, tag = "3")]
         pub package_type: ::prost::alloc::string::String,
-        /// Required. The [CPE URI](https://cpe.mitre.org/specification/) this
+        /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
         /// vulnerability affects.
         #[prost(string, tag = "4")]
         pub affected_cpe_uri: ::prost::alloc::string::String,
@@ -329,7 +435,7 @@ pub mod vulnerability_note {
         /// The version number at the start of an interval in which this
         /// vulnerability exists. A vulnerability can affect a package between
         /// version numbers that are disjoint sets of intervals (example:
-        /// [1.0.0-1.1.0], [2.4.6-2.4.8] and [4.5.6-4.6.8]) each of which will be
+        /// \[1.0.0-1.1.0\], \[2.4.6-2.4.8\] and \[4.5.6-4.6.8\]) each of which will be
         /// represented in its own Detail. If a specific affected version is provided
         /// by a vulnerability database, affected_version_start and
         /// affected_version_end will be the same in that Detail.
@@ -337,14 +443,14 @@ pub mod vulnerability_note {
         pub affected_version_start: ::core::option::Option<super::Version>,
         /// The version number at the end of an interval in which this vulnerability
         /// exists. A vulnerability can affect a package between version numbers
-        /// that are disjoint sets of intervals (example: [1.0.0-1.1.0],
-        /// [2.4.6-2.4.8] and [4.5.6-4.6.8]) each of which will be represented in its
+        /// that are disjoint sets of intervals (example: \[1.0.0-1.1.0\],
+        /// \[2.4.6-2.4.8\] and \[4.5.6-4.6.8\]) each of which will be represented in its
         /// own Detail. If a specific affected version is provided by a vulnerability
         /// database, affected_version_start and affected_version_end will be the
         /// same in that Detail.
         #[prost(message, optional, tag = "7")]
         pub affected_version_end: ::core::option::Option<super::Version>,
-        /// The distro recommended [CPE URI](https://cpe.mitre.org/specification/)
+        /// The distro recommended [CPE URI](<https://cpe.mitre.org/specification/>)
         /// to update to that contains a fix for this vulnerability. It is possible
         /// for this to be different from the affected_cpe_uri.
         #[prost(string, tag = "8")]
@@ -368,10 +474,16 @@ pub mod vulnerability_note {
         /// security tracker.
         #[prost(message, optional, tag = "12")]
         pub source_update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The source from which the information in this Detail was obtained.
+        #[prost(string, tag = "13")]
+        pub source: ::prost::alloc::string::String,
+        /// The name of the vendor of the product.
+        #[prost(string, tag = "14")]
+        pub vendor: ::prost::alloc::string::String,
     }
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WindowsDetail {
-        /// Required. The [CPE URI](https://cpe.mitre.org/specification/) this
+        /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
         /// vulnerability affects.
         #[prost(string, tag = "1")]
         pub cpe_uri: ::prost::alloc::string::String,
@@ -392,11 +504,11 @@ pub mod vulnerability_note {
     pub mod windows_detail {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct KnowledgeBase {
-            /// The KB name (generally of the form KB[0-9]+ (e.g., KB123456)).
+            /// The KB name (generally of the form KB\[0-9\]+ (e.g., KB123456)).
             #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
             /// A link to the KB in the [Windows update catalog]
-            /// (https://www.catalog.update.microsoft.com/).
+            /// (<https://www.catalog.update.microsoft.com/>).
             #[prost(string, tag = "2")]
             pub url: ::prost::alloc::string::String,
         }
@@ -417,6 +529,9 @@ pub struct VulnerabilityOccurrence {
     /// severity.
     #[prost(float, tag = "3")]
     pub cvss_score: f32,
+    /// The cvss v3 score for the vulnerability.
+    #[prost(message, optional, tag = "10")]
+    pub cvssv3: ::core::option::Option<vulnerability_occurrence::Cvssv3>,
     /// Required. The set of affected locations and their fixes (if available)
     /// within the associated resource.
     #[prost(message, repeated, tag = "4")]
@@ -432,6 +547,14 @@ pub struct VulnerabilityOccurrence {
     pub related_urls: ::prost::alloc::vec::Vec<RelatedUrl>,
     /// The distro assigned severity for this vulnerability when it is available,
     /// otherwise this is the note provider assigned severity.
+    ///
+    /// When there are multiple PackageIssues for this vulnerability, they can have
+    /// different effective severities because some might be provided by the distro
+    /// while others are provided by the language ecosystem for a language pack.
+    /// For this reason, it is advised to use the effective severity on the
+    /// PackageIssue level. In the case where multiple PackageIssues have differing
+    /// effective severities, this field should be the highest severity for any of
+    /// the PackageIssues.
     #[prost(enumeration = "Severity", tag = "8")]
     pub effective_severity: i32,
     /// Output only. Whether at least one of the affected packages has a fix
@@ -441,11 +564,22 @@ pub struct VulnerabilityOccurrence {
 }
 /// Nested message and enum types in `VulnerabilityOccurrence`.
 pub mod vulnerability_occurrence {
+    /// The CVSS v3 score for this vulnerability.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Cvssv3 {
+        /// The base score for for this vulnerability according to cvss v3.
+        #[prost(float, tag = "1")]
+        pub base_score: f32,
+        /// The severity rating assigned to this vulnerability by vulnerability
+        /// provider.
+        #[prost(enumeration = "super::Severity", tag = "2")]
+        pub severity: i32,
+    }
     /// A detail for a distro and package this vulnerability occurrence was found
     /// in and its associated fix (if one is available).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PackageIssue {
-        /// Required. The [CPE URI](https://cpe.mitre.org/specification/) this
+        /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
         /// vulnerability was found in.
         #[prost(string, tag = "1")]
         pub affected_cpe_uri: ::prost::alloc::string::String,
@@ -456,7 +590,7 @@ pub mod vulnerability_occurrence {
         /// affected by this vulnerability.
         #[prost(message, optional, tag = "3")]
         pub affected_version: ::core::option::Option<super::Version>,
-        /// The [CPE URI](https://cpe.mitre.org/specification/) this vulnerability
+        /// The [CPE URI](<https://cpe.mitre.org/specification/>) this vulnerability
         /// was fixed in. It is possible for this to be different from the
         /// affected_cpe_uri.
         #[prost(string, tag = "4")]
@@ -472,6 +606,14 @@ pub mod vulnerability_occurrence {
         /// Output only. Whether a fix is available for this package.
         #[prost(bool, tag = "7")]
         pub fix_available: bool,
+        /// The type of package (e.g. OS, MAVEN, GO).
+        #[prost(string, tag = "8")]
+        pub package_type: ::prost::alloc::string::String,
+        /// The distro or language system assigned severity for this vulnerability
+        /// when that is available and note provider assigned severity when it is not
+        /// available.
+        #[prost(enumeration = "super::Severity", tag = "9")]
+        pub effective_severity: i32,
     }
 }
 /// Note provider assigned severity/impact ranking.
@@ -491,61 +633,270 @@ pub enum Severity {
     /// Critical severity.
     Critical = 5,
 }
-// An attestation wrapper with a PGP-compatible signature. This message only
-// supports `ATTACHED` signatures, where the payload that is signed is included
-// alongside the signature itself in the same file.
+// Spec defined at
+// <https://github.com/in-toto/attestation/blob/main/spec/predicates/provenance.md>
 
-/// Note kind that represents a logical attestation "role" or "authority". For
-/// example, an organization might have one `Authority` for "QA" and one for
-/// "build". This note is intended to act strictly as a grouping mechanism for
-/// the attached occurrences (Attestations). This grouping mechanism also
-/// provides a security boundary, since IAM ACLs gate the ability for a principle
-/// to attach an occurrence to a given note. It also provides a single point of
-/// lookup to find all attached attestation occurrences, even if they don't all
-/// live in the same project.
+/// Steps taken to build the artifact.
+/// For a TaskRun, typically each container corresponds to one step in the
+/// recipe.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AttestationNote {
-    /// Hint hints at the purpose of the attestation authority.
-    #[prost(message, optional, tag = "1")]
-    pub hint: ::core::option::Option<attestation_note::Hint>,
+pub struct Recipe {
+    /// URI indicating what type of recipe was performed. It determines the meaning
+    /// of recipe.entryPoint, recipe.arguments, recipe.environment, and materials.
+    #[prost(string, tag = "1")]
+    pub r#type: ::prost::alloc::string::String,
+    /// Index in materials containing the recipe steps that are not implied by
+    /// recipe.type. For example, if the recipe type were "make", then this would
+    /// point to the source containing the Makefile, not the make program itself.
+    /// Set to -1 if the recipe doesn't come from a material, as zero is default
+    /// unset value for int64.
+    #[prost(int64, tag = "2")]
+    pub defined_in_material: i64,
+    /// String identifying the entry point into the build.
+    /// This is often a path to a configuration file and/or a target label within
+    /// that file. The syntax and meaning are defined by recipe.type. For example,
+    /// if the recipe type were "make", then this would reference the directory in
+    /// which to run make as well as which target to use.
+    #[prost(string, tag = "3")]
+    pub entry_point: ::prost::alloc::string::String,
+    /// Collection of all external inputs that influenced the build on top of
+    /// recipe.definedInMaterial and recipe.entryPoint. For example, if the recipe
+    /// type were "make", then this might be the flags passed to make aside from
+    /// the target, which is captured in recipe.entryPoint. Since the arguments
+    /// field can greatly vary in structure, depending on the builder and recipe
+    /// type, this is of form "Any".
+    #[prost(message, repeated, tag = "4")]
+    pub arguments: ::prost::alloc::vec::Vec<::prost_types::Any>,
+    /// Any other builder-controlled inputs necessary for correctly evaluating the
+    /// recipe. Usually only needed for reproducing the build but not evaluated as
+    /// part of policy. Since the environment field can greatly vary in structure,
+    /// depending on the builder and recipe type, this is of form "Any".
+    #[prost(message, repeated, tag = "5")]
+    pub environment: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
-/// Nested message and enum types in `AttestationNote`.
-pub mod attestation_note {
-    /// This submessage provides human-readable hints about the purpose of the
-    /// authority. Because the name of a note acts as its resource reference, it is
-    /// important to disambiguate the canonical name of the Note (which might be a
-    /// UUID for security purposes) from "readable" names more suitable for debug
-    /// output. Note that these hints should not be used to look up authorities in
-    /// security sensitive contexts, such as when looking up attestations to
-    /// verify.
+/// Indicates that the builder claims certain fields in this message to be
+/// complete.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Completeness {
+    /// If true, the builder claims that recipe.arguments is complete, meaning that
+    /// all external inputs are properly captured in the recipe.
+    #[prost(bool, tag = "1")]
+    pub arguments: bool,
+    /// If true, the builder claims that recipe.environment is claimed to be
+    /// complete.
+    #[prost(bool, tag = "2")]
+    pub environment: bool,
+    /// If true, the builder claims that materials are complete, usually through
+    /// some controls to prevent network access. Sometimes called "hermetic".
+    #[prost(bool, tag = "3")]
+    pub materials: bool,
+}
+/// Other properties of the build.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Metadata {
+    /// Identifies the particular build invocation, which can be useful for finding
+    /// associated logs or other ad-hoc analysis. The value SHOULD be globally
+    /// unique, per in-toto Provenance spec.
+    #[prost(string, tag = "1")]
+    pub build_invocation_id: ::prost::alloc::string::String,
+    /// The timestamp of when the build started.
+    #[prost(message, optional, tag = "2")]
+    pub build_started_on: ::core::option::Option<::prost_types::Timestamp>,
+    /// The timestamp of when the build completed.
+    #[prost(message, optional, tag = "3")]
+    pub build_finished_on: ::core::option::Option<::prost_types::Timestamp>,
+    /// Indicates that the builder claims certain fields in this message to be
+    /// complete.
+    #[prost(message, optional, tag = "4")]
+    pub completeness: ::core::option::Option<Completeness>,
+    /// If true, the builder claims that running the recipe on materials will
+    /// produce bit-for-bit identical output.
+    #[prost(bool, tag = "5")]
+    pub reproducible: bool,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BuilderConfig {
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InTotoProvenance {
+    /// required
+    #[prost(message, optional, tag = "1")]
+    pub builder_config: ::core::option::Option<BuilderConfig>,
+    /// Identifies the configuration used for the build.
+    /// When combined with materials, this SHOULD fully describe the build,
+    /// such that re-running this recipe results in bit-for-bit identical output
+    /// (if the build is reproducible).
+    ///
+    /// required
+    #[prost(message, optional, tag = "2")]
+    pub recipe: ::core::option::Option<Recipe>,
+    #[prost(message, optional, tag = "3")]
+    pub metadata: ::core::option::Option<Metadata>,
+    /// The collection of artifacts that influenced the build including sources,
+    /// dependencies, build tools, base images, and so on. This is considered to be
+    /// incomplete unless metadata.completeness.materials is true. Unset or null is
+    /// equivalent to empty.
+    #[prost(string, repeated, tag = "4")]
+    pub materials: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SlsaProvenance {
+    /// required
+    #[prost(message, optional, tag = "1")]
+    pub builder: ::core::option::Option<slsa_provenance::SlsaBuilder>,
+    /// Identifies the configuration used for the build.
+    /// When combined with materials, this SHOULD fully describe the build,
+    /// such that re-running this recipe results in bit-for-bit identical output
+    /// (if the build is reproducible).
+    ///
+    /// required
+    #[prost(message, optional, tag = "2")]
+    pub recipe: ::core::option::Option<slsa_provenance::SlsaRecipe>,
+    #[prost(message, optional, tag = "3")]
+    pub metadata: ::core::option::Option<slsa_provenance::SlsaMetadata>,
+    /// The collection of artifacts that influenced the build including sources,
+    /// dependencies, build tools, base images, and so on. This is considered to be
+    /// incomplete unless metadata.completeness.materials is true. Unset or null is
+    /// equivalent to empty.
+    #[prost(message, repeated, tag = "4")]
+    pub materials: ::prost::alloc::vec::Vec<slsa_provenance::Material>,
+}
+/// Nested message and enum types in `SlsaProvenance`.
+pub mod slsa_provenance {
+    /// Steps taken to build the artifact.
+    /// For a TaskRun, typically each container corresponds to one step in the
+    /// recipe.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Hint {
-        /// Required. The human readable name of this attestation authority, for
-        /// example "qa".
+    pub struct SlsaRecipe {
+        /// URI indicating what type of recipe was performed. It determines the
+        /// meaning of recipe.entryPoint, recipe.arguments, recipe.environment, and
+        /// materials.
         #[prost(string, tag = "1")]
-        pub human_readable_name: ::prost::alloc::string::String,
+        pub r#type: ::prost::alloc::string::String,
+        /// Index in materials containing the recipe steps that are not implied by
+        /// recipe.type. For example, if the recipe type were "make", then this would
+        /// point to the source containing the Makefile, not the make program itself.
+        /// Set to -1 if the recipe doesn't come from a material, as zero is default
+        /// unset value for int64.
+        #[prost(int64, tag = "2")]
+        pub defined_in_material: i64,
+        /// String identifying the entry point into the build.
+        /// This is often a path to a configuration file and/or a target label within
+        /// that file. The syntax and meaning are defined by recipe.type. For
+        /// example, if the recipe type were "make", then this would reference the
+        /// directory in which to run make as well as which target to use.
+        #[prost(string, tag = "3")]
+        pub entry_point: ::prost::alloc::string::String,
+        /// Collection of all external inputs that influenced the build on top of
+        /// recipe.definedInMaterial and recipe.entryPoint. For example, if the
+        /// recipe type were "make", then this might be the flags passed to make
+        /// aside from the target, which is captured in recipe.entryPoint. Depending
+        /// on the recipe Type, the structure may be different.
+        #[prost(message, optional, tag = "4")]
+        pub arguments: ::core::option::Option<::prost_types::Any>,
+        /// Any other builder-controlled inputs necessary for correctly evaluating
+        /// the recipe. Usually only needed for reproducing the build but not
+        /// evaluated as part of policy. Depending on the recipe Type, the structure
+        /// may be different.
+        #[prost(message, optional, tag = "5")]
+        pub environment: ::core::option::Option<::prost_types::Any>,
+    }
+    /// Indicates that the builder claims certain fields in this message to be
+    /// complete.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SlsaCompleteness {
+        /// If true, the builder claims that recipe.arguments is complete, meaning
+        /// that all external inputs are properly captured in the recipe.
+        #[prost(bool, tag = "1")]
+        pub arguments: bool,
+        /// If true, the builder claims that recipe.environment is claimed to be
+        /// complete.
+        #[prost(bool, tag = "2")]
+        pub environment: bool,
+        /// If true, the builder claims that materials are complete, usually through
+        /// some controls to prevent network access. Sometimes called "hermetic".
+        #[prost(bool, tag = "3")]
+        pub materials: bool,
+    }
+    /// Other properties of the build.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SlsaMetadata {
+        /// Identifies the particular build invocation, which can be useful for
+        /// finding associated logs or other ad-hoc analysis. The value SHOULD be
+        /// globally unique, per in-toto Provenance spec.
+        #[prost(string, tag = "1")]
+        pub build_invocation_id: ::prost::alloc::string::String,
+        /// The timestamp of when the build started.
+        #[prost(message, optional, tag = "2")]
+        pub build_started_on: ::core::option::Option<::prost_types::Timestamp>,
+        /// The timestamp of when the build completed.
+        #[prost(message, optional, tag = "3")]
+        pub build_finished_on: ::core::option::Option<::prost_types::Timestamp>,
+        /// Indicates that the builder claims certain fields in this message to be
+        /// complete.
+        #[prost(message, optional, tag = "4")]
+        pub completeness: ::core::option::Option<SlsaCompleteness>,
+        /// If true, the builder claims that running the recipe on materials will
+        /// produce bit-for-bit identical output.
+        #[prost(bool, tag = "5")]
+        pub reproducible: bool,
+    }
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SlsaBuilder {
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+    }
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Material {
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        #[prost(map = "string, string", tag = "2")]
+        pub digest: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
 }
-/// Occurrence that represents a single "attestation". The authenticity of an
-/// attestation can be verified using the attached signature. If the verifier
-/// trusts the public key of the signer, then verifying the signature is
-/// sufficient to establish trust. In this circumstance, the authority to which
-/// this attestation is attached is primarily useful for lookup (how to find
-/// this attestation if you already know the authority and artifact to be
-/// verified) and intent (for which authority this attestation was intended to
-/// sign.
+/// Spec defined at
+/// <https://github.com/in-toto/attestation/tree/main/spec#statement> The
+/// serialized InTotoStatement will be stored as Envelope.payload.
+/// Envelope.payloadType is always "application/vnd.in-toto+json".
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AttestationOccurrence {
-    /// Required. The serialized payload that is verified by one or more
-    /// `signatures`.
-    #[prost(bytes = "vec", tag = "1")]
-    pub serialized_payload: ::prost::alloc::vec::Vec<u8>,
-    /// One or more signatures over `serialized_payload`.  Verifier implementations
-    /// should consider this attestation message verified if at least one
-    /// `signature` verifies `serialized_payload`.  See `Signature` in common.proto
-    /// for more details on signature structure and verification.
+pub struct InTotoStatement {
+    /// Always `<https://in-toto.io/Statement/v0.1`.>
+    #[prost(string, tag = "1")]
+    pub r#type: ::prost::alloc::string::String,
     #[prost(message, repeated, tag = "2")]
-    pub signatures: ::prost::alloc::vec::Vec<Signature>,
+    pub subject: ::prost::alloc::vec::Vec<Subject>,
+    /// `<https://slsa.dev/provenance/v0.1`> for SlsaProvenance.
+    #[prost(string, tag = "3")]
+    pub predicate_type: ::prost::alloc::string::String,
+    #[prost(oneof = "in_toto_statement::Predicate", tags = "4, 5")]
+    pub predicate: ::core::option::Option<in_toto_statement::Predicate>,
+}
+/// Nested message and enum types in `InTotoStatement`.
+pub mod in_toto_statement {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Predicate {
+        #[prost(message, tag = "4")]
+        Provenance(super::InTotoProvenance),
+        #[prost(message, tag = "5")]
+        SlsaProvenance(super::SlsaProvenance),
+    }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Subject {
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// `"<ALGORITHM>": "<HEX_VALUE>"`
+    /// Algorithms can be e.g. sha256, sha512
+    /// See
+    /// <https://github.com/in-toto/attestation/blob/main/spec/field_types.md#DigestSet>
+    #[prost(map = "string, string", tag = "2")]
+    pub digest:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Provenance of a build. Contains all information needed to verify the full
 /// details about the build from source to completion.
@@ -850,7 +1201,7 @@ pub struct BuildNote {
 /// Details of a build occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildOccurrence {
-    /// Required. The actual provenance for the build.
+    /// The actual provenance for the build.
     #[prost(message, optional, tag = "1")]
     pub provenance: ::core::option::Option<BuildProvenance>,
     /// Serialized JSON representation of the provenance, used in generating the
@@ -866,6 +1217,94 @@ pub struct BuildOccurrence {
     /// future changes.
     #[prost(string, tag = "2")]
     pub provenance_bytes: ::prost::alloc::string::String,
+    /// Deprecated. See InTotoStatement for the replacement.
+    /// In-toto Provenance representation as defined in spec.
+    #[prost(message, optional, tag = "3")]
+    pub intoto_provenance: ::core::option::Option<InTotoProvenance>,
+    /// In-toto Statement representation as defined in spec.
+    /// The intoto_statement can contain any type of provenance. The serialized
+    /// payload of the statement can be stored and signed in the Occurrence's
+    /// envelope.
+    #[prost(message, optional, tag = "4")]
+    pub intoto_statement: ::core::option::Option<InTotoStatement>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComplianceNote {
+    /// The title that identifies this compliance check.
+    #[prost(string, tag = "1")]
+    pub title: ::prost::alloc::string::String,
+    /// A description about this compliance check.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// The OS and config versions the benchmark applies to.
+    #[prost(message, repeated, tag = "3")]
+    pub version: ::prost::alloc::vec::Vec<ComplianceVersion>,
+    /// A rationale for the existence of this compliance check.
+    #[prost(string, tag = "4")]
+    pub rationale: ::prost::alloc::string::String,
+    /// A description of remediation steps if the compliance check fails.
+    #[prost(string, tag = "5")]
+    pub remediation: ::prost::alloc::string::String,
+    /// Serialized scan instructions with a predefined format.
+    #[prost(bytes = "vec", tag = "7")]
+    pub scan_instructions: ::prost::alloc::vec::Vec<u8>,
+    #[prost(oneof = "compliance_note::ComplianceType", tags = "6")]
+    pub compliance_type: ::core::option::Option<compliance_note::ComplianceType>,
+}
+/// Nested message and enum types in `ComplianceNote`.
+pub mod compliance_note {
+    /// A compliance check that is a CIS benchmark.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CisBenchmark {
+        #[prost(int32, tag = "1")]
+        pub profile_level: i32,
+        #[prost(enumeration = "super::Severity", tag = "2")]
+        pub severity: i32,
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ComplianceType {
+        #[prost(message, tag = "6")]
+        CisBenchmark(CisBenchmark),
+    }
+}
+/// Describes the CIS benchmark version that is applicable to a given OS and
+/// os version.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComplianceVersion {
+    /// The CPE URI (<https://cpe.mitre.org/specification/>) this benchmark is
+    /// applicable to.
+    #[prost(string, tag = "1")]
+    pub cpe_uri: ::prost::alloc::string::String,
+    /// The version of the benchmark. This is set to the version of the OS-specific
+    /// CIS document the benchmark is defined in.
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
+}
+/// An indication that the compliance checks in the associated ComplianceNote
+/// were not satisfied for particular resources or a specified reason.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComplianceOccurrence {
+    #[prost(message, repeated, tag = "2")]
+    pub non_compliant_files: ::prost::alloc::vec::Vec<NonCompliantFile>,
+    #[prost(string, tag = "3")]
+    pub non_compliance_reason: ::prost::alloc::string::String,
+}
+/// Details about files that caused a compliance check to fail.
+///
+/// display_command is a single command that can be used to display a list of
+/// non compliant files. When there is no such command, we can also iterate a
+/// list of non compliant file using 'path'.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NonCompliantFile {
+    /// Empty if `display_command` is set.
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+    /// Command to display the non-compliant files.
+    #[prost(string, tag = "2")]
+    pub display_command: ::prost::alloc::string::String,
+    /// Explains why a file is non compliant for a CIS check.
+    #[prost(string, tag = "3")]
+    pub reason: ::prost::alloc::string::String,
 }
 /// An artifact that can be deployed in some runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -980,11 +1419,53 @@ pub mod discovery_occurrence {
         FinishedUnsupported = 5,
     }
 }
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DsseAttestationNote {
+    /// DSSEHint hints at the purpose of the attestation authority.
+    #[prost(message, optional, tag = "1")]
+    pub hint: ::core::option::Option<dsse_attestation_note::DsseHint>,
+}
+/// Nested message and enum types in `DSSEAttestationNote`.
+pub mod dsse_attestation_note {
+    /// This submessage provides human-readable hints about the purpose of the
+    /// authority. Because the name of a note acts as its resource reference, it is
+    /// important to disambiguate the canonical name of the Note (which might be a
+    /// UUID for security purposes) from "readable" names more suitable for debug
+    /// output. Note that these hints should not be used to look up authorities in
+    /// security sensitive contexts, such as when looking up attestations to
+    /// verify.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DsseHint {
+        /// Required. The human readable name of this attestation authority, for
+        /// example "cloudbuild-prod".
+        #[prost(string, tag = "1")]
+        pub human_readable_name: ::prost::alloc::string::String,
+    }
+}
+/// Deprecated. Prefer to use a regular Occurrence, and populate the
+/// Envelope at the top level of the Occurrence.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DsseAttestationOccurrence {
+    /// If doing something security critical, make sure to verify the signatures in
+    /// this metadata.
+    #[prost(message, optional, tag = "1")]
+    pub envelope: ::core::option::Option<Envelope>,
+    #[prost(oneof = "dsse_attestation_occurrence::DecodedPayload", tags = "2")]
+    pub decoded_payload: ::core::option::Option<dsse_attestation_occurrence::DecodedPayload>,
+}
+/// Nested message and enum types in `DSSEAttestationOccurrence`.
+pub mod dsse_attestation_occurrence {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DecodedPayload {
+        #[prost(message, tag = "2")]
+        Statement(super::InTotoStatement),
+    }
+}
 /// Layer holds metadata specific to a layer of a Docker image.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Layer {
     /// Required. The recovered Dockerfile directive used to construct this layer.
-    /// See https://docs.docker.com/engine/reference/builder/ for more information.
+    /// See <https://docs.docker.com/engine/reference/builder/> for more information.
     #[prost(string, tag = "1")]
     pub directive: ::prost::alloc::string::String,
     /// The recovered arguments to the Dockerfile directive.
@@ -1002,8 +1483,8 @@ pub struct Fingerprint {
     #[prost(string, repeated, tag = "2")]
     pub v2_blob: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The name of the image's v2 blobs computed via:
-    ///   [bottom] := v2_blob[bottom]
-    ///   [N] := sha256(v2_blob[N] + " " + v2_name[N+1])
+    ///   \[bottom\] := v2_blob\[bottom\]
+    ///   \[N\] := sha256(v2_blob\[N\] + " " + v2_name\[N+1\])
     /// Only the name of the final blob is kept.
     #[prost(string, tag = "3")]
     pub v2_name: ::prost::alloc::string::String,
@@ -1036,8 +1517,8 @@ pub struct ImageOccurrence {
     #[prost(int32, tag = "2")]
     pub distance: i32,
     /// This contains layer-specific metadata, if populated it has length
-    /// "distance" and is ordered with [distance] being the layer immediately
-    /// following the base image and [1] being the final layer.
+    /// "distance" and is ordered with \[distance\] being the layer immediately
+    /// following the base image and \[1\] being the final layer.
     #[prost(message, repeated, tag = "3")]
     pub layer_info: ::prost::alloc::vec::Vec<Layer>,
     /// Output only. This contains the base image URL for the derived image
@@ -1071,13 +1552,13 @@ pub struct UpgradeNote {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeDistribution {
     /// Required - The specific operating system this metadata applies to. See
-    /// https://cpe.mitre.org/specification/.
+    /// <https://cpe.mitre.org/specification/.>
     #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,
     /// The operating system classification of this Upgrade, as specified by the
     /// upstream operating system upgrade feed. For Windows the classification is
     /// one of the category_ids listed at
-    /// https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ff357803(v=vs.85)
+    /// <https://docs.microsoft.com/en-us/previous-versions/windows/desktop/ff357803(v=vs.85>)
     #[prost(string, tag = "2")]
     pub classification: ::prost::alloc::string::String,
     /// The severity as specified by the upstream operating system.
@@ -1090,7 +1571,7 @@ pub struct UpgradeDistribution {
 /// Windows Update represents the metadata about the update for the Windows
 /// operating system. The fields in this message come from the Windows Update API
 /// documented at
-/// https://docs.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdate.
+/// <https://docs.microsoft.com/en-us/windows/win32/api/wuapi/nn-wuapi-iupdate.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WindowsUpdate {
     /// Required - The unique identifier for the update.
@@ -1166,16 +1647,16 @@ pub struct UpgradeOccurrence {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Occurrence {
     /// Output only. The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Immutable. A URI that represents the resource for which the
     /// occurrence applies. For example,
-    /// `https://gcr.io/project/image@sha256:123abc` for a Docker image.
+    /// `<https://gcr.io/project/image@sha256:123abc`> for a Docker image.
     #[prost(string, tag = "2")]
     pub resource_uri: ::prost::alloc::string::String,
     /// Required. Immutable. The analysis note associated with this occurrence, in
-    /// the form of `projects/[PROVIDER_ID]/notes/[NOTE_ID]`. This field can be
+    /// the form of `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`. This field can be
     /// used as a filter in list requests.
     #[prost(string, tag = "3")]
     pub note_name: ::prost::alloc::string::String,
@@ -1192,9 +1673,12 @@ pub struct Occurrence {
     /// Output only. The time this occurrence was last updated.
     #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// <https://github.com/secure-systems-lab/dsse>
+    #[prost(message, optional, tag = "18")]
+    pub envelope: ::core::option::Option<Envelope>,
     /// Required. Immutable. Describes the details of the note kind found on this
     /// resource.
-    #[prost(oneof = "occurrence::Details", tags = "8, 9, 10, 11, 12, 13, 14, 15")]
+    #[prost(oneof = "occurrence::Details", tags = "8, 9, 10, 11, 12, 13, 14, 15, 16, 17")]
     pub details: ::core::option::Option<occurrence::Details>,
 }
 /// Nested message and enum types in `Occurrence`.
@@ -1228,13 +1712,19 @@ pub mod occurrence {
         /// Describes an available package upgrade on the linked resource.
         #[prost(message, tag = "15")]
         Upgrade(super::UpgradeOccurrence),
+        /// Describes a compliance violation on a linked resource.
+        #[prost(message, tag = "16")]
+        Compliance(super::ComplianceOccurrence),
+        /// Describes an attestation of an artifact using dsse.
+        #[prost(message, tag = "17")]
+        DsseAttestation(super::DsseAttestationOccurrence),
     }
 }
 /// A type of analysis that can be done for a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Note {
     /// Output only. The name of the note in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A one sentence description of this note.
@@ -1265,7 +1755,7 @@ pub struct Note {
     #[prost(string, repeated, tag = "9")]
     pub related_note_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Immutable. The type of analysis this note represents.
-    #[prost(oneof = "note::Type", tags = "10, 11, 12, 13, 14, 15, 16, 17")]
+    #[prost(oneof = "note::Type", tags = "10, 11, 12, 13, 14, 15, 16, 17, 18, 19")]
     pub r#type: ::core::option::Option<note::Type>,
 }
 /// Nested message and enum types in `Note`.
@@ -1297,13 +1787,19 @@ pub mod note {
         /// A note describing available package upgrades.
         #[prost(message, tag = "17")]
         Upgrade(super::UpgradeNote),
+        /// A note describing a compliance check.
+        #[prost(message, tag = "18")]
+        Compliance(super::ComplianceNote),
+        /// A note describing a dsse attestation note.
+        #[prost(message, tag = "19")]
+        DsseAttestation(super::DsseAttestationNote),
     }
 }
 /// Request to get an occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOccurrenceRequest {
     /// The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1311,7 +1807,7 @@ pub struct GetOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOccurrencesRequest {
     /// The name of the project to list occurrences for in the form of
-    /// `projects/[PROJECT_ID]`.
+    /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression.
@@ -1341,14 +1837,14 @@ pub struct ListOccurrencesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOccurrenceRequest {
     /// The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOccurrenceRequest {
-    /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
+    /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the occurrence is to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1360,7 +1856,7 @@ pub struct CreateOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOccurrenceRequest {
     /// The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The updated occurrence.
@@ -1374,7 +1870,7 @@ pub struct UpdateOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNoteRequest {
     /// The name of the note in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1382,7 +1878,7 @@ pub struct GetNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOccurrenceNoteRequest {
     /// The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1390,7 +1886,7 @@ pub struct GetOccurrenceNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotesRequest {
     /// The name of the project to list notes for in the form of
-    /// `projects/[PROJECT_ID]`.
+    /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression.
@@ -1420,14 +1916,14 @@ pub struct ListNotesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNoteRequest {
     /// The name of the note in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new note.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNoteRequest {
-    /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
+    /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the note is to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1442,7 +1938,7 @@ pub struct CreateNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNoteRequest {
     /// The name of the note in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The updated note.
@@ -1456,7 +1952,7 @@ pub struct UpdateNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNoteOccurrencesRequest {
     /// The name of the note to list occurrences for in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The filter expression.
@@ -1482,7 +1978,7 @@ pub struct ListNoteOccurrencesResponse {
 /// Request to create notes in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateNotesRequest {
-    /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
+    /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the notes are to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1500,7 +1996,7 @@ pub struct BatchCreateNotesResponse {
 /// Request to create occurrences in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateOccurrencesRequest {
-    /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
+    /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the occurrences are to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -1540,7 +2036,7 @@ pub mod grafeas_client {
     impl<T> GrafeasClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1553,7 +2049,7 @@ pub mod grafeas_client {
             interceptor: F,
         ) -> GrafeasClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

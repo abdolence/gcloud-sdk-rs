@@ -24,7 +24,7 @@ pub mod phishing_protection_service_v1_beta1_client {
     impl<T> PhishingProtectionServiceV1Beta1Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -37,7 +37,7 @@ pub mod phishing_protection_service_v1_beta1_client {
             interceptor: F,
         ) -> PhishingProtectionServiceV1Beta1Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

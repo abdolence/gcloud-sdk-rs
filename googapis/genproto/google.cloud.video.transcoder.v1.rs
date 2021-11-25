@@ -2,7 +2,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// The resource name of the job.
-    /// Format: `projects/{project}/locations/{location}/jobs/{job}`
+    /// Format: `projects/{project_number}/locations/{location}/jobs/{job}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Input only. Specify the `input_uri` to populate empty `uri` fields in each element of
@@ -88,7 +88,7 @@ pub mod job {
 pub struct JobTemplate {
     /// The resource name of the job template.
     /// Format:
-    /// `projects/{project}/locations/{location}/jobTemplates/{job_template}`
+    /// `projects/{project_number}/locations/{location}/jobTemplates/{job_template}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The configuration for this template.
@@ -216,43 +216,41 @@ pub mod elementary_stream {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MuxStream {
     /// A unique key for this multiplexed stream. HLS media manifests will be
-    /// named `MuxStream.key` with the `".m3u8"` extension suffix.
+    /// named `MuxStream.key` with the `.m3u8` extension suffix.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
     /// The name of the generated file. The default is `MuxStream.key` with the
     /// extension suffix corresponding to the `MuxStream.container`.
     ///
     /// Individual segments also have an incremental 10-digit zero-padded suffix
-    /// starting from 0 before the extension, such as `"mux_stream0000000123.ts"`.
+    /// starting from 0 before the extension, such as `mux_stream0000000123.ts`.
     #[prost(string, tag = "2")]
     pub file_name: ::prost::alloc::string::String,
-    /// The container format. The default is `"mp4"`
+    /// The container format. The default is `mp4`
     ///
     /// Supported container formats:
-    /// - 'ts'
-    /// - 'fmp4'- the corresponding file extension is `".m4s"`
-    /// - 'mp4'
-    /// - 'vtt'
+    ///
+    /// - `ts`
+    /// - `fmp4`- the corresponding file extension is `.m4s`
+    /// - `mp4`
+    /// - `vtt`
     #[prost(string, tag = "3")]
     pub container: ::prost::alloc::string::String,
     /// List of `ElementaryStream.key`s multiplexed in this stream.
     #[prost(string, repeated, tag = "4")]
     pub elementary_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Segment settings for `"ts"`, `"fmp4"` and `"vtt"`.
+    /// Segment settings for `ts`, `fmp4` and `vtt`.
     #[prost(message, optional, tag = "5")]
     pub segment_settings: ::core::option::Option<SegmentSettings>,
-    /// Encryption settings.
-    #[prost(message, optional, tag = "6")]
-    pub encryption: ::core::option::Option<Encryption>,
 }
 /// Manifest configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Manifest {
-    /// The name of the generated file. The default is `"manifest"` with the
+    /// The name of the generated file. The default is `manifest` with the
     /// extension suffix corresponding to the `Manifest.type`.
     #[prost(string, tag = "1")]
     pub file_name: ::prost::alloc::string::String,
-    /// Required. Type of the manifest, can be "HLS" or "DASH".
+    /// Required. Type of the manifest, can be `HLS` or `DASH`.
     #[prost(enumeration = "manifest::ManifestType", tag = "2")]
     pub r#type: i32,
     /// Required. List of user given `MuxStream.key`s that should appear in this manifest.
@@ -265,15 +263,15 @@ pub struct Manifest {
 }
 /// Nested message and enum types in `Manifest`.
 pub mod manifest {
-    /// The manifest type can be either `"HLS"` or `"DASH"`.
+    /// The manifest type can be either `HLS` or `DASH`.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ManifestType {
         /// The manifest type is not specified.
         Unspecified = 0,
-        /// Create `"HLS"` manifest. The corresponding file extension is `".m3u8"`.
+        /// Create `HLS` manifest. The corresponding file extension is `.m3u8`.
         Hls = 1,
-        /// Create `"DASH"` manifest. The corresponding file extension is `".mpd"`.
+        /// Create `DASH` manifest. The corresponding file extension is `.mpd`.
         Dash = 2,
     }
 }
@@ -288,27 +286,28 @@ pub struct PubsubDestination {
 /// Sprite sheet configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpriteSheet {
-    /// Format type. The default is `"jpeg"`.
+    /// Format type. The default is `jpeg`.
     ///
     /// Supported formats:
-    /// - 'jpeg'
+    ///
+    /// - `jpeg`
     #[prost(string, tag = "1")]
     pub format: ::prost::alloc::string::String,
     /// Required. File name prefix for the generated sprite sheets.
     ///
     /// Each sprite sheet has an incremental 10-digit zero-padded suffix starting
-    /// from 0 before the extension, such as `"sprite_sheet0000000123.jpeg"`.
+    /// from 0 before the extension, such as `sprite_sheet0000000123.jpeg`.
     #[prost(string, tag = "2")]
     pub file_prefix: ::prost::alloc::string::String,
     /// Required. The width of sprite in pixels. Must be an even integer. To preserve the
-    /// source aspect ratio, set the [SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels] field or
-    /// the [SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels] field, but not both (the API will
+    /// source aspect ratio, set the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\] field or
+    /// the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\] field, but not both (the API will
     /// automatically calculate the missing field).
     #[prost(int32, tag = "3")]
     pub sprite_width_pixels: i32,
     /// Required. The height of sprite in pixels. Must be an even integer. To preserve the
-    /// source aspect ratio, set the [SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels] field or
-    /// the [SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels] field, but not both (the API will
+    /// source aspect ratio, set the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\] field or
+    /// the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\] field, but not both (the API will
     /// automatically calculate the missing field).
     #[prost(int32, tag = "4")]
     pub sprite_height_pixels: i32,
@@ -526,11 +525,12 @@ pub mod preprocessing_config {
         /// the value, the smoother the image. 0 is no denoising. The default is 0.
         #[prost(double, tag = "1")]
         pub strength: f64,
-        /// Set the denoiser mode. The default is `"standard"`.
+        /// Set the denoiser mode. The default is `standard`.
         ///
         /// Supported denoiser modes:
-        /// - 'standard'
-        /// - 'grain'
+        ///
+        /// - `standard`
+        /// - `grain`
         #[prost(string, tag = "2")]
         pub tune: ::prost::alloc::string::String,
     }
@@ -631,33 +631,35 @@ pub mod video_stream {
         /// input frame rate. The API will generate an output FPS that is divisible
         /// by the input FPS, and smaller or equal to the target FPS. See
         /// [Calculating frame
-        /// rate](https://cloud.google.com/transcoder/docs/concepts/frame-rate) for
+        /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
         /// more information.
         #[prost(double, tag = "3")]
         pub frame_rate: f64,
-        /// Required. The video bitrate in bits per second. Must be between 1 and
-        /// 1,000,000,000.
+        /// Required. The video bitrate in bits per second. The minimum value is 1,000.
+        /// The maximum value is 800,000,000.
         #[prost(int32, tag = "4")]
         pub bitrate_bps: i32,
-        /// Pixel format to use. The default is `"yuv420p"`.
+        /// Pixel format to use. The default is `yuv420p`.
         ///
         /// Supported pixel formats:
-        /// - 'yuv420p' pixel format.
-        /// - 'yuv422p' pixel format.
-        /// - 'yuv444p' pixel format.
-        /// - 'yuv420p10' 10-bit HDR pixel format.
-        /// - 'yuv422p10' 10-bit HDR pixel format.
-        /// - 'yuv444p10' 10-bit HDR pixel format.
-        /// - 'yuv420p12' 12-bit HDR pixel format.
-        /// - 'yuv422p12' 12-bit HDR pixel format.
-        /// - 'yuv444p12' 12-bit HDR pixel format.
+        ///
+        /// - `yuv420p` pixel format
+        /// - `yuv422p` pixel format
+        /// - `yuv444p` pixel format
+        /// - `yuv420p10` 10-bit HDR pixel format
+        /// - `yuv422p10` 10-bit HDR pixel format
+        /// - `yuv444p10` 10-bit HDR pixel format
+        /// - `yuv420p12` 12-bit HDR pixel format
+        /// - `yuv422p12` 12-bit HDR pixel format
+        /// - `yuv444p12` 12-bit HDR pixel format
         #[prost(string, tag = "5")]
         pub pixel_format: ::prost::alloc::string::String,
-        /// Specify the `rate_control_mode`. The default is `"vbr"`.
+        /// Specify the `rate_control_mode`. The default is `vbr`.
         ///
         /// Supported rate control modes:
-        /// - 'vbr' - variable bitrate
-        /// - 'crf' - constant rate factor
+        ///
+        /// - `vbr` - variable bitrate
+        /// - `crf` - constant rate factor
         #[prost(string, tag = "6")]
         pub rate_control_mode: ::prost::alloc::string::String,
         /// Target CRF level. Must be between 10 and 36, where 10 is the highest
@@ -669,7 +671,7 @@ pub mod video_stream {
         #[prost(bool, tag = "8")]
         pub allow_open_gop: bool,
         /// Use two-pass encoding strategy to achieve better video quality.
-        /// `VideoStream.rate_control_mode` must be `"vbr"`. The default is `false`.
+        /// `VideoStream.rate_control_mode` must be `vbr`. The default is `false`.
         #[prost(bool, tag = "11")]
         pub enable_two_pass: bool,
         /// Size of the Video Buffering Verifier (VBV) buffer in bits. Must be
@@ -681,11 +683,12 @@ pub mod video_stream {
         /// `VideoStream.vbv_size_bits`.
         #[prost(int32, tag = "13")]
         pub vbv_fullness_bits: i32,
-        /// The entropy coder to use. The default is `"cabac"`.
+        /// The entropy coder to use. The default is `cabac`.
         ///
         /// Supported entropy coders:
-        /// - 'cavlc'
-        /// - 'cabac'
+        ///
+        /// - `cavlc`
+        /// - `cabac`
         #[prost(string, tag = "14")]
         pub entropy_coder: ::prost::alloc::string::String,
         /// Allow B-pyramid for reference frame selection. This may not be supported
@@ -710,23 +713,23 @@ pub mod video_stream {
         /// *   `high` (default)
         ///
         /// The available options are
-        /// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.264#Profile){:
-        /// class="external" }. Note that certain values for this field may cause the
+        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>).
+        /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H264CodecSettings`
         /// message.
         #[prost(string, tag = "18")]
         pub profile: ::prost::alloc::string::String,
         /// Enforces the specified codec tune. The available options are
-        /// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.264#Tune){:
-        /// class="external" }. Note that certain values for this field may cause the
+        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>).
+        /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H264CodecSettings`
         /// message.
         #[prost(string, tag = "19")]
         pub tune: ::prost::alloc::string::String,
         /// Enforces the specified codec preset. The default is `veryfast`. The
         /// available options are
-        /// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.264#Preset){:
-        /// class="external" }. Note that certain values for this field may cause the
+        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.264#Preset>).
+        /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H264CodecSettings`
         /// message.
         #[prost(string, tag = "20")]
@@ -745,9 +748,9 @@ pub mod video_stream {
             #[prost(int32, tag = "9")]
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
-            /// `"3s"`. Note that `gopDuration` must be less than or equal to
-            /// [`segmentDuration`](#SegmentSettings), and
-            /// [`segmentDuration`](#SegmentSettings) must be divisible by
+            /// `3s`. Note that `gopDuration` must be less than or equal to
+            /// \[`segmentDuration`\](#SegmentSettings), and
+            /// \[`segmentDuration`\](#SegmentSettings) must be divisible by
             /// `gopDuration`.
             #[prost(message, tag = "10")]
             GopDuration(::prost_types::Duration),
@@ -771,33 +774,35 @@ pub mod video_stream {
         /// input frame rate. The API will generate an output FPS that is divisible
         /// by the input FPS, and smaller or equal to the target FPS. See
         /// [Calculating frame
-        /// rate](https://cloud.google.com/transcoder/docs/concepts/frame-rate) for
+        /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
         /// more information.
         #[prost(double, tag = "3")]
         pub frame_rate: f64,
-        /// Required. The video bitrate in bits per second. Must be between 1 and
-        /// 1,000,000,000.
+        /// Required. The video bitrate in bits per second. The minimum value is 1,000.
+        /// The maximum value is 800,000,000.
         #[prost(int32, tag = "4")]
         pub bitrate_bps: i32,
-        /// Pixel format to use. The default is `"yuv420p"`.
+        /// Pixel format to use. The default is `yuv420p`.
         ///
         /// Supported pixel formats:
-        /// - 'yuv420p' pixel format.
-        /// - 'yuv422p' pixel format.
-        /// - 'yuv444p' pixel format.
-        /// - 'yuv420p10' 10-bit HDR pixel format.
-        /// - 'yuv422p10' 10-bit HDR pixel format.
-        /// - 'yuv444p10' 10-bit HDR pixel format.
-        /// - 'yuv420p12' 12-bit HDR pixel format.
-        /// - 'yuv422p12' 12-bit HDR pixel format.
-        /// - 'yuv444p12' 12-bit HDR pixel format.
+        ///
+        /// - `yuv420p` pixel format
+        /// - `yuv422p` pixel format
+        /// - `yuv444p` pixel format
+        /// - `yuv420p10` 10-bit HDR pixel format
+        /// - `yuv422p10` 10-bit HDR pixel format
+        /// - `yuv444p10` 10-bit HDR pixel format
+        /// - `yuv420p12` 12-bit HDR pixel format
+        /// - `yuv422p12` 12-bit HDR pixel format
+        /// - `yuv444p12` 12-bit HDR pixel format
         #[prost(string, tag = "5")]
         pub pixel_format: ::prost::alloc::string::String,
-        /// Specify the `rate_control_mode`. The default is `"vbr"`.
+        /// Specify the `rate_control_mode`. The default is `vbr`.
         ///
         /// Supported rate control modes:
-        /// - 'vbr' - variable bitrate
-        /// - 'crf' - constant rate factor
+        ///
+        /// - `vbr` - variable bitrate
+        /// - `crf` - constant rate factor
         #[prost(string, tag = "6")]
         pub rate_control_mode: ::prost::alloc::string::String,
         /// Target CRF level. Must be between 10 and 36, where 10 is the highest
@@ -809,7 +814,7 @@ pub mod video_stream {
         #[prost(bool, tag = "8")]
         pub allow_open_gop: bool,
         /// Use two-pass encoding strategy to achieve better video quality.
-        /// `VideoStream.rate_control_mode` must be `"vbr"`. The default is `false`.
+        /// `VideoStream.rate_control_mode` must be `vbr`. The default is `false`.
         #[prost(bool, tag = "11")]
         pub enable_two_pass: bool,
         /// Size of the Video Buffering Verifier (VBV) buffer in bits. Must be
@@ -838,45 +843,43 @@ pub mod video_stream {
         /// Enforces the specified codec profile. The following profiles are
         /// supported:
         ///
-        /// 8bit profiles
-        /// *   `main` (default)
-        /// *   `main-intra`
-        /// *   `mainstillpicture`
-        ///
-        /// 10bit profiles
-        /// *   `main10` (default)
-        /// *   `main10-intra`
-        /// *   `main422-10`
-        /// *   `main422-10-intra`
-        /// *   `main444-10`
-        /// *   `main444-10-intra`
-        ///
-        /// 12bit profiles
-        /// *   `main12` (default)
-        /// *   `main12-intra`
-        /// *   `main422-12`
-        /// *   `main422-12-intra`
-        /// *   `main444-12`
-        /// *   `main444-12-intra`
+        /// *   8-bit profiles
+        ///     *   `main` (default)
+        ///     *   `main-intra`
+        ///     *   `mainstillpicture`
+        /// *   10-bit profiles
+        ///     *   `main10` (default)
+        ///     *   `main10-intra`
+        ///     *   `main422-10`
+        ///     *   `main422-10-intra`
+        ///     *   `main444-10`
+        ///     *   `main444-10-intra`
+        /// *   12-bit profiles
+        ///     *   `main12` (default)
+        ///     *   `main12-intra`
+        ///     *   `main422-12`
+        ///     *   `main422-12-intra`
+        ///     *   `main444-12`
+        ///     *   `main444-12-intra`
         ///
         /// The available options are
-        /// [FFmpeg-compatible](https://x265.readthedocs.io/){:
-        /// class="external" }. Note that certain values for this field may cause the
+        /// \[FFmpeg-compatible\](<https://x265.readthedocs.io/>).
+        /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H265CodecSettings`
         /// message.
         #[prost(string, tag = "17")]
         pub profile: ::prost::alloc::string::String,
         /// Enforces the specified codec tune. The available options are
-        /// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.265){:
-        /// class="external" }. Note that certain values for this field may cause the
+        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.265>).
+        /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H265CodecSettings`
         /// message.
         #[prost(string, tag = "18")]
         pub tune: ::prost::alloc::string::String,
         /// Enforces the specified codec preset. The default is `veryfast`. The
         /// available options are
-        /// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.265){:
-        /// class="external" }. Note that certain values for this field may cause the
+        /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.265>).
+        /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H265CodecSettings`
         /// message.
         #[prost(string, tag = "19")]
@@ -895,9 +898,9 @@ pub mod video_stream {
             #[prost(int32, tag = "9")]
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
-            /// `"3s"`. Note that `gopDuration` must be less than or equal to
-            /// [`segmentDuration`](#SegmentSettings), and
-            /// [`segmentDuration`](#SegmentSettings) must be divisible by
+            /// `3s`. Note that `gopDuration` must be less than or equal to
+            /// \[`segmentDuration`\](#SegmentSettings), and
+            /// \[`segmentDuration`\](#SegmentSettings) must be divisible by
             /// `gopDuration`.
             #[prost(message, tag = "10")]
             GopDuration(::prost_types::Duration),
@@ -921,33 +924,35 @@ pub mod video_stream {
         /// input frame rate. The API will generate an output FPS that is divisible
         /// by the input FPS, and smaller or equal to the target FPS. See
         /// [Calculating frame
-        /// rate](https://cloud.google.com/transcoder/docs/concepts/frame-rate) for
+        /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
         /// more information.
         #[prost(double, tag = "3")]
         pub frame_rate: f64,
-        /// Required. The video bitrate in bits per second. Must be between 1 and
-        /// 1,000,000,000.
+        /// Required. The video bitrate in bits per second. The minimum value is 1,000.
+        /// The maximum value is 480,000,000.
         #[prost(int32, tag = "4")]
         pub bitrate_bps: i32,
-        /// Pixel format to use. The default is `"yuv420p"`.
+        /// Pixel format to use. The default is `yuv420p`.
         ///
         /// Supported pixel formats:
-        /// - 'yuv420p' pixel format.
-        /// - 'yuv422p' pixel format.
-        /// - 'yuv444p' pixel format.
-        /// - 'yuv420p10' 10-bit HDR pixel format.
-        /// - 'yuv422p10' 10-bit HDR pixel format.
-        /// - 'yuv444p10' 10-bit HDR pixel format.
-        /// - 'yuv420p12' 12-bit HDR pixel format.
-        /// - 'yuv422p12' 12-bit HDR pixel format.
-        /// - 'yuv444p12' 12-bit HDR pixel format.
+        ///
+        /// - `yuv420p` pixel format
+        /// - `yuv422p` pixel format
+        /// - `yuv444p` pixel format
+        /// - `yuv420p10` 10-bit HDR pixel format
+        /// - `yuv422p10` 10-bit HDR pixel format
+        /// - `yuv444p10` 10-bit HDR pixel format
+        /// - `yuv420p12` 12-bit HDR pixel format
+        /// - `yuv422p12` 12-bit HDR pixel format
+        /// - `yuv444p12` 12-bit HDR pixel format
         #[prost(string, tag = "5")]
         pub pixel_format: ::prost::alloc::string::String,
-        /// Specify the `rate_control_mode`. The default is `"vbr"`.
+        /// Specify the `rate_control_mode`. The default is `vbr`.
         ///
         /// Supported rate control modes:
-        /// - 'vbr' - variable bitrate
-        /// - 'crf' - constant rate factor
+        ///
+        /// - `vbr` - variable bitrate
+        /// - `crf` - constant rate factor
         #[prost(string, tag = "6")]
         pub rate_control_mode: ::prost::alloc::string::String,
         /// Target CRF level. Must be between 10 and 36, where 10 is the highest
@@ -963,8 +968,8 @@ pub mod video_stream {
         /// *   `profile3`
         ///
         /// The available options are
-        /// [WebM-compatible](https://www.webmproject.org/vp9/profiles/){:
-        /// class="external" }. Note that certain values for this field may cause the
+        /// \[WebM-compatible\](<https://www.webmproject.org/vp9/profiles/>).
+        /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `Vp9CodecSettings`
         /// message.
         #[prost(string, tag = "10")]
@@ -983,9 +988,9 @@ pub mod video_stream {
             #[prost(int32, tag = "8")]
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
-            /// `"3s"`. Note that `gopDuration` must be less than or equal to
-            /// [`segmentDuration`](#SegmentSettings), and
-            /// [`segmentDuration`](#SegmentSettings) must be divisible by
+            /// `3s`. Note that `gopDuration` must be less than or equal to
+            /// \[`segmentDuration`\](#SegmentSettings), and
+            /// \[`segmentDuration`\](#SegmentSettings) must be divisible by
             /// `gopDuration`.
             #[prost(message, tag = "9")]
             GopDuration(::prost_types::Duration),
@@ -1008,15 +1013,16 @@ pub mod video_stream {
 /// Audio stream resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioStream {
-    /// The codec for this audio stream. The default is `"aac"`.
+    /// The codec for this audio stream. The default is `aac`.
     ///
     /// Supported audio codecs:
-    /// - 'aac'
-    /// - 'aac-he'
-    /// - 'aac-he-v2'
-    /// - 'mp3'
-    /// - 'ac3'
-    /// - 'eac3'
+    ///
+    /// - `aac`
+    /// - `aac-he`
+    /// - `aac-he-v2`
+    /// - `mp3`
+    /// - `ac3`
+    /// - `eac3`
     #[prost(string, tag = "1")]
     pub codec: ::prost::alloc::string::String,
     /// Required. Audio bitrate in bits per second. Must be between 1 and 10,000,000.
@@ -1030,12 +1036,13 @@ pub struct AudioStream {
     /// supported by the specified format. The default is `["fl", "fr"]`.
     ///
     /// Supported channel names:
-    /// - 'fl' - Front left channel
-    /// - 'fr' - Front right channel
-    /// - 'sl' - Side left channel
-    /// - 'sr' - Side right channel
-    /// - 'fc' - Front center channel
-    /// - 'lfe' - Low frequency
+    ///
+    /// - `fl` - Front left channel
+    /// - `fr` - Front right channel
+    /// - `sl` - Side left channel
+    /// - `sr` - Side right channel
+    /// - `fc` - Front center channel
+    /// - `lfe` - Low frequency
     #[prost(string, repeated, tag = "4")]
     pub channel_layout: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The mapping for the `Job.edit_list` atoms with audio `EditAtom.inputs`.
@@ -1075,14 +1082,15 @@ pub mod audio_stream {
 /// Encoding of a text stream. For example, closed captions or subtitles.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextStream {
-    /// The codec for this text stream. The default is `"webvtt"`.
+    /// The codec for this text stream. The default is `webvtt`.
     ///
     /// Supported text codecs:
-    /// - 'srt'
-    /// - 'ttml'
-    /// - 'cea608'
-    /// - 'cea708'
-    /// - 'webvtt'
+    ///
+    /// - `srt`
+    /// - `ttml`
+    /// - `cea608`
+    /// - `cea708`
+    /// - `webvtt`
     #[prost(string, tag = "1")]
     pub codec: ::prost::alloc::string::String,
     /// The mapping for the `Job.edit_list` atoms with text `EditAtom.inputs`.
@@ -1106,79 +1114,18 @@ pub mod text_stream {
         pub input_track: i32,
     }
 }
-/// Segment settings for `"ts"`, `"fmp4"` and `"vtt"`.
+/// Segment settings for `ts`, `fmp4` and `vtt`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentSettings {
-    /// Duration of the segments in seconds. The default is `"6.0s"`. Note that
+    /// Duration of the segments in seconds. The default is `6.0s`. Note that
     /// `segmentDuration` must be greater than or equal to
-    /// [`gopDuration`](#videostream), and `segmentDuration` must be divisible by
-    /// [`gopDuration`](#videostream).
+    /// \[`gopDuration`\](#videostream), and `segmentDuration` must be divisible by
+    /// \[`gopDuration`\](#videostream).
     #[prost(message, optional, tag = "1")]
     pub segment_duration: ::core::option::Option<::prost_types::Duration>,
     /// Required. Create an individual segment file. The default is `false`.
     #[prost(bool, tag = "3")]
     pub individual_segments: bool,
-}
-/// Encryption settings.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Encryption {
-    /// Required. 128 bit encryption key represented as lowercase hexadecimal digits.
-    #[prost(string, tag = "1")]
-    pub key: ::prost::alloc::string::String,
-    /// Required. 128 bit Initialization Vector (IV) represented as lowercase hexadecimal
-    /// digits.
-    #[prost(string, tag = "2")]
-    pub iv: ::prost::alloc::string::String,
-    /// Encryption mode can be either `aes` or `cenc`.
-    #[prost(oneof = "encryption::EncryptionMode", tags = "3, 4, 5")]
-    pub encryption_mode: ::core::option::Option<encryption::EncryptionMode>,
-}
-/// Nested message and enum types in `Encryption`.
-pub mod encryption {
-    /// Configuration for AES-128 encryption.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Aes128Encryption {
-        /// Required. URI of the key delivery service. This URI is inserted into the M3U8
-        /// header.
-        #[prost(string, tag = "1")]
-        pub key_uri: ::prost::alloc::string::String,
-    }
-    /// Configuration for SAMPLE-AES encryption.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct SampleAesEncryption {
-        /// Required. URI of the key delivery service. This URI is inserted into the M3U8
-        /// header.
-        #[prost(string, tag = "1")]
-        pub key_uri: ::prost::alloc::string::String,
-    }
-    /// Configuration for MPEG Common Encryption (MPEG-CENC).
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct MpegCommonEncryption {
-        /// Required. 128 bit Key ID represented as lowercase hexadecimal digits for use with
-        /// common encryption.
-        #[prost(string, tag = "1")]
-        pub key_id: ::prost::alloc::string::String,
-        /// Required. Specify the encryption scheme.
-        ///
-        /// Supported encryption schemes:
-        /// - 'cenc'
-        /// - 'cbcs'
-        #[prost(string, tag = "2")]
-        pub scheme: ::prost::alloc::string::String,
-    }
-    /// Encryption mode can be either `aes` or `cenc`.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum EncryptionMode {
-        /// Configuration for AES-128 encryption.
-        #[prost(message, tag = "3")]
-        Aes128(Aes128Encryption),
-        /// Configuration for SAMPLE-AES encryption.
-        #[prost(message, tag = "4")]
-        SampleAes(SampleAesEncryption),
-        /// Configuration for MPEG Common Encryption (MPEG-CENC).
-        #[prost(message, tag = "5")]
-        MpegCenc(MpegCommonEncryption),
-    }
 }
 /// Request message for `TranscoderService.CreateJob`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1206,11 +1153,11 @@ pub struct ListJobsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The filter expression, following the syntax outlined in
-    /// https://google.aip.dev/160.
+    /// <https://google.aip.dev/160.>
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// One or more fields to compare and use to sort the output.
-    /// See https://google.aip.dev/132#ordering.
+    /// See <https://google.aip.dev/132#ordering.>
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1229,6 +1176,10 @@ pub struct DeleteJobRequest {
     /// Format: `projects/{project}/locations/{location}/jobs/{job}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// If set to true, and the job is not found, the request will succeed but no
+    /// action will be taken on the server.
+    #[prost(bool, tag = "2")]
+    pub allow_missing: bool,
 }
 /// Response message for `TranscoderService.ListJobs`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1257,7 +1208,7 @@ pub struct CreateJobTemplateRequest {
     /// of the job template's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters must match the
-    /// regular expression `[a-zA-Z][a-zA-Z0-9_-]*`.
+    /// regular expression `\[a-zA-Z][a-zA-Z0-9_-\]*`.
     #[prost(string, tag = "3")]
     pub job_template_id: ::prost::alloc::string::String,
 }
@@ -1276,11 +1227,11 @@ pub struct ListJobTemplatesRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// The filter expression, following the syntax outlined in
-    /// https://google.aip.dev/160.
+    /// <https://google.aip.dev/160.>
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// One or more fields to compare and use to sort the output.
-    /// See https://google.aip.dev/132#ordering.
+    /// See <https://google.aip.dev/132#ordering.>
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1300,6 +1251,10 @@ pub struct DeleteJobTemplateRequest {
     /// `projects/{project}/locations/{location}/jobTemplates/{job_template}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// If set to true, and the job template is not found, the request will succeed
+    /// but no action will be taken on the server.
+    #[prost(bool, tag = "2")]
+    pub allow_missing: bool,
 }
 /// Response message for `TranscoderService.ListJobTemplates`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1331,7 +1286,7 @@ pub mod transcoder_service_client {
     impl<T> TranscoderServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1344,7 +1299,7 @@ pub mod transcoder_service_client {
             interceptor: F,
         ) -> TranscoderServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

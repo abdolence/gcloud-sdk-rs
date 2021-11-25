@@ -309,7 +309,7 @@ pub struct Breakpoint {
     /// *   `Field f not found in class C` referring to condition
     #[prost(message, optional, tag = "10")]
     pub status: ::core::option::Option<StatusMessage>,
-    /// The stack at breakpoint time, where stack_frames[0] represents the most
+    /// The stack at breakpoint time, where stack_frames\[0\] represents the most
     /// recently entered function.
     #[prost(message, repeated, tag = "7")]
     pub stack_frames: ::prost::alloc::vec::Vec<StackFrame>,
@@ -535,7 +535,7 @@ pub mod controller2_client {
     impl<T> Controller2Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -548,7 +548,7 @@ pub mod controller2_client {
             interceptor: F,
         ) -> Controller2Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -820,7 +820,7 @@ pub mod debugger2_client {
     impl<T> Debugger2Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -833,7 +833,7 @@ pub mod debugger2_client {
             interceptor: F,
         ) -> Debugger2Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

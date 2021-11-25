@@ -124,7 +124,7 @@ pub mod byte_stream_client {
     impl<T> ByteStreamClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -137,7 +137,7 @@ pub mod byte_stream_client {
             interceptor: F,
         ) -> ByteStreamClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -178,9 +178,7 @@ pub mod byte_stream_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/google.bytestream.ByteStream/Read");
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " `Write()` is used to send the contents of a resource as a sequence of"]
         #[doc = " bytes. The bytes are sent in a sequence of request protos of a client-side"]
@@ -216,9 +214,7 @@ pub mod byte_stream_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/google.bytestream.ByteStream/Write");
-            self.inner
-                .client_streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
         }
         #[doc = " `QueryWriteStatus()` is used to find the `committed_size` for a resource"]
         #[doc = " that is being written, which can then be used as the `write_offset` for"]

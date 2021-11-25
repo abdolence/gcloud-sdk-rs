@@ -6,12 +6,12 @@ pub struct Device {
     pub id: ::prost::alloc::string::String,
     /// Hardware type of the device.
     /// See [device
-    /// types](https://developers.google.com/assistant/smarthome/guides).
+    /// types](<https://developers.google.com/assistant/smarthome/guides>).
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
     /// Traits supported by the device.
     /// See [device
-    /// traits](https://developers.google.com/assistant/smarthome/traits).
+    /// traits](<https://developers.google.com/assistant/smarthome/traits>).
     #[prost(string, repeated, tag = "3")]
     pub traits: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Names given to this device by your smart home Action.
@@ -19,7 +19,7 @@ pub struct Device {
     pub name: ::core::option::Option<DeviceNames>,
     /// Indicates whether your smart home Action will report state of this device
     /// to Google via
-    /// [ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification].
+    /// \[ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification\].
     #[prost(bool, tag = "5")]
     pub will_report_state: bool,
     /// Suggested name for the room where this device is installed.
@@ -38,24 +38,24 @@ pub struct Device {
     pub attributes: ::core::option::Option<::prost_types::Struct>,
     /// Custom device attributes stored in Home Graph and provided to your
     /// smart home Action in each
-    /// [QUERY](https://developers.google.com/assistant/smarthome/reference/intent/query)
+    /// \[QUERY\](<https://developers.google.com/assistant/smarthome/reference/intent/query>)
     /// and
-    /// [EXECUTE](https://developers.google.com/assistant/smarthome/reference/intent/execute)
+    /// \[EXECUTE\](<https://developers.google.com/assistant/smarthome/reference/intent/execute>)
     /// intent.
     #[prost(message, optional, tag = "10")]
     pub custom_data: ::core::option::Option<::prost_types::Struct>,
     /// Alternate IDs associated with this device.
     /// This is used to identify cloud synced devices enabled for [local
-    /// fulfillment](https://developers.google.com/assistant/smarthome/concepts/local).
+    /// fulfillment](<https://developers.google.com/assistant/smarthome/concepts/local>).
     #[prost(message, repeated, tag = "11")]
     pub other_device_ids: ::prost::alloc::vec::Vec<AgentOtherDeviceId>,
     /// Indicates whether your smart home Action will report notifications
     /// to Google for this device via
-    /// [ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification].
+    /// \[ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification\].
     ///
     /// If your smart home Action enables users to control device notifications,
     /// you should update this field and call
-    /// [RequestSyncDevices][google.home.graph.v1.HomeGraphApiService.RequestSyncDevices].
+    /// \[RequestSyncDevices][google.home.graph.v1.HomeGraphApiService.RequestSyncDevices\].
     #[prost(bool, tag = "12")]
     pub notification_supported_by_agent: bool,
 }
@@ -100,7 +100,7 @@ pub struct AgentOtherDeviceId {
     pub device_id: ::prost::alloc::string::String,
 }
 /// Request type for the
-/// [`RequestSyncDevices`](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)
+/// \[`RequestSyncDevices`\](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)
 /// call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestSyncDevicesRequest {
@@ -114,7 +114,7 @@ pub struct RequestSyncDevicesRequest {
     pub r#async: bool,
 }
 /// Response type for the
-/// [`RequestSyncDevices`](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)
+/// \[`RequestSyncDevices`\](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)
 /// call.
 ///
 /// Intentionally empty upon success. An HTTP response code is returned
@@ -122,7 +122,7 @@ pub struct RequestSyncDevicesRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestSyncDevicesResponse {}
 /// Request type for the
-/// [`ReportStateAndNotification`](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)
+/// \[`ReportStateAndNotification`\](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)
 /// call. It may include states, notifications, or both. States and notifications
 /// are defined per `device_id` (for example, "123" and "456" in the following
 /// example).
@@ -161,7 +161,7 @@ pub struct ReportStateAndNotificationRequest {
     /// Deprecated.
     /// (-- Token to maintain state in the follow up notification response. See the
     /// notifications guide at
-    /// https://developers.google.com/assistant/smarthome/develop/notifications for
+    /// <https://developers.google.com/assistant/smarthome/develop/notifications> for
     /// details on implementing follow up notifications --)
     #[deprecated]
     #[prost(string, tag = "5")]
@@ -171,12 +171,12 @@ pub struct ReportStateAndNotificationRequest {
     pub payload: ::core::option::Option<StateAndNotificationPayload>,
 }
 /// Response type for the
-/// [`ReportStateAndNotification`](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)
+/// \[`ReportStateAndNotification`\](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)
 /// call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportStateAndNotificationResponse {
     /// Request ID copied from
-    /// [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest].
+    /// \[ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest\].
     #[prost(string, tag = "1")]
     pub request_id: ::prost::alloc::string::String,
 }
@@ -192,17 +192,17 @@ pub struct StateAndNotificationPayload {
 pub struct ReportStateAndNotificationDevice {
     /// States of devices to update. See the **Device STATES** section
     /// of the individual trait [reference
-    /// guides](https://developers.google.com/assistant/smarthome/traits).
+    /// guides](<https://developers.google.com/assistant/smarthome/traits>).
     #[prost(message, optional, tag = "1")]
     pub states: ::core::option::Option<::prost_types::Struct>,
     /// Notifications metadata for devices. See the **Device NOTIFICATIONS**
     /// section of the individual trait [reference
-    /// guides](https://developers.google.com/assistant/smarthome/traits).
+    /// guides](<https://developers.google.com/assistant/smarthome/traits>).
     #[prost(message, optional, tag = "2")]
     pub notifications: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request type for the
-/// [`DeleteAgentUser`](#google.home.graph.v1.HomeGraphApiService.DeleteAgentUser)
+/// \[`DeleteAgentUser`\](#google.home.graph.v1.HomeGraphApiService.DeleteAgentUser)
 /// call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAgentUserRequest {
@@ -214,7 +214,7 @@ pub struct DeleteAgentUserRequest {
     pub agent_user_id: ::prost::alloc::string::String,
 }
 /// Request type for the
-/// [`Query`](#google.home.graph.v1.HomeGraphApiService.Query) call.
+/// \[`Query`\](#google.home.graph.v1.HomeGraphApiService.Query) call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequest {
     /// Request ID used for debugging.
@@ -228,7 +228,7 @@ pub struct QueryRequest {
     #[prost(message, repeated, tag = "3")]
     pub inputs: ::prost::alloc::vec::Vec<QueryRequestInput>,
 }
-/// Device ID inputs to [QueryRequest][google.home.graph.v1.QueryRequest].
+/// Device ID inputs to \[QueryRequest][google.home.graph.v1.QueryRequest\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequestInput {
     /// Payload containing third-party device IDs.
@@ -250,10 +250,10 @@ pub struct AgentDeviceId {
     pub id: ::prost::alloc::string::String,
 }
 /// Response type for the
-/// [`Query`](#google.home.graph.v1.HomeGraphApiService.Query) call.
+/// \[`Query`\](#google.home.graph.v1.HomeGraphApiService.Query) call.
 /// This should follow the same format as the Google smart home
 /// `action.devices.QUERY`
-/// [response](https://developers.google.com/assistant/smarthome/reference/intent/query).
+/// \[response\](<https://developers.google.com/assistant/smarthome/reference/intent/query>).
 /// # Example
 ///
 /// ```json
@@ -295,7 +295,7 @@ pub struct QueryResponsePayload {
     #[prost(map = "string, message", tag = "1")]
     pub devices: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Struct>,
 }
-/// Request type for the [`Sync`](#google.home.graph.v1.HomeGraphApiService.Sync)
+/// Request type for the \[`Sync`\](#google.home.graph.v1.HomeGraphApiService.Sync)
 /// call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncRequest {
@@ -307,10 +307,10 @@ pub struct SyncRequest {
     pub agent_user_id: ::prost::alloc::string::String,
 }
 /// Response type for the
-/// [`Sync`](#google.home.graph.v1.HomeGraphApiService.Sync) call.
+/// \[`Sync`\](#google.home.graph.v1.HomeGraphApiService.Sync) call.
 /// This should follow the same format as the Google smart home
 /// `action.devices.SYNC`
-/// [response](https://developers.google.com/assistant/smarthome/reference/intent/sync).
+/// \[response\](<https://developers.google.com/assistant/smarthome/reference/intent/sync>).
 /// # Example
 ///
 /// ```json
@@ -382,7 +382,7 @@ pub mod home_graph_api_service_client {
     impl<T> HomeGraphApiServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -395,7 +395,7 @@ pub mod home_graph_api_service_client {
             interceptor: F,
         ) -> HomeGraphApiServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

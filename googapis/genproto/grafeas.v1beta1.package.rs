@@ -2,7 +2,7 @@
 /// E.g., Debian's jessie-backports dpkg mirror.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Distribution {
-    /// Required. The cpe_uri in [CPE format](https://cpe.mitre.org/specification/)
+    /// Required. The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
     /// denoting the package manager version distributing a package.
     #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,
@@ -27,7 +27,7 @@ pub struct Distribution {
 /// filesystem. E.g., glibc was found in `/var/lib/dpkg/status`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
-    /// Required. The CPE URI in [CPE format](https://cpe.mitre.org/specification/)
+    /// Required. The CPE URI in [CPE format](<https://cpe.mitre.org/specification/>)
     /// denoting the package manager version distributing a package.
     #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,

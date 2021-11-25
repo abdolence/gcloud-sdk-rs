@@ -2,7 +2,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkConfig {
     /// The name of the Google Compute Engine
-    /// [VPC network](/compute/docs/networks-and-firewalls#networks) to which the
+    /// [VPC network](<https://cloud.google.com/vpc/docs/vpc>) to which the
     /// instance is connected.
     #[prost(string, tag = "1")]
     pub network: ::prost::alloc::string::String,
@@ -12,17 +12,16 @@ pub struct NetworkConfig {
     pub modes: ::prost::alloc::vec::Vec<i32>,
     /// A /29 CIDR block for Basic or a /23 CIDR block for High Scale in one of the
     /// [internal IP address
-    /// ranges](https://www.arin.net/knowledge/address_filters.html) that
-    /// identifies the range of IP addresses reserved for this instance. For
+    /// ranges](<https://www.arin.net/reference/research/statistics/address_filters/>)
+    /// that identifies the range of IP addresses reserved for this instance. For
     /// example, 10.0.0.0/29 or 192.168.0.0/23. The range you specify can't overlap
     /// with either existing subnets or assigned IP address ranges for other Cloud
     /// Filestore instances in the selected VPC network.
     #[prost(string, tag = "4")]
     pub reserved_ip_range: ::prost::alloc::string::String,
     /// Output only. IPv4 addresses in the format
-    /// {octet 1}.{octet 2}.{octet 3}.{octet 4} or IPv6 addresses in the format
-    /// {block 1}:{block 2}:{block 3}:{block 4}:{block 5}:{block 6}:{block
-    /// 7}:{block 8}.
+    /// `{octet1}.{octet2}.{octet3}.{octet4}` or IPv6 addresses in the format
+    /// `{block1}:{block2}:{block3}:{block4}:{block5}:{block6}:{block7}:{block8}`.
     #[prost(string, repeated, tag = "5")]
     pub ip_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -64,7 +63,7 @@ pub mod file_share_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The resource name of the backup, in the format
-        /// projects/{project_id}/locations/{location_id}/backups/{backup_id}, that
+        /// `projects/{project_id}/locations/{location_id}/backups/{backup_id}`, that
         /// this file share has been restored from.
         #[prost(string, tag = "9")]
         SourceBackup(::prost::alloc::string::String),
@@ -74,8 +73,8 @@ pub mod file_share_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NfsExportOptions {
     /// List of either an IPv4 addresses in the format
-    /// {octet 1}.{octet 2}.{octet 3}.{octet 4} or CIDR ranges in the format
-    /// {octet 1}.{octet 2}.{octet 3}.{octet 4}/{mask size} which may mount the
+    /// `{octet1}.{octet2}.{octet3}.{octet4}` or CIDR ranges in the format
+    /// `{octet1}.{octet2}.{octet3}.{octet4}/{mask size}` which may mount the
     /// file share.
     /// Overlapping IP ranges are not allowed, both within and across
     /// NfsExportOptions. An error will be returned.
@@ -135,7 +134,7 @@ pub mod nfs_export_options {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// Output only. The resource name of the instance, in the format
-    /// projects/{project_id}/locations/{location_id}/instances/{instance_id}.
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The description of the instance (2048 characters or less).
@@ -225,7 +224,7 @@ pub mod instance {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateInstanceRequest {
     /// Required. The instance's project and location, in the format
-    /// projects/{project_id}/locations/{location}. In Cloud Filestore,
+    /// `projects/{project_id}/locations/{location}`. In Cloud Filestore,
     /// locations map to GCP zones, for example **us-west1-b**.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -236,8 +235,7 @@ pub struct CreateInstanceRequest {
     /// lowercase letters, numbers, or hyphens, and cannot end with a hyphen.
     #[prost(string, tag = "2")]
     pub instance_id: ::prost::alloc::string::String,
-    /// Required. A [instance resource]
-    /// (/cloud-filestore/reference/rest/v1beta1/projects.locations.instances)
+    /// Required. An [instance resource]\[google.cloud.filestore.v1beta1.Instance\]
     #[prost(message, optional, tag = "3")]
     pub instance: ::core::option::Option<Instance>,
 }
@@ -245,7 +243,7 @@ pub struct CreateInstanceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetInstanceRequest {
     /// Required. The instance resource name, in the format
-    /// projects/{project_id}/locations/{location}/instances/{instance_id}.
+    /// `projects/{project_id}/locations/{location}/instances/{instance_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -270,7 +268,7 @@ pub struct UpdateInstanceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreInstanceRequest {
     /// Required. The resource name of the instance, in the format
-    /// projects/{project_id}/locations/{location_id}/instances/{instance_id}.
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Name of the file share in the Cloud Filestore instance that the snapshot
@@ -285,11 +283,11 @@ pub mod restore_instance_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
         /// The resource name of the snapshot, in the format
-        /// projects/{project_id}/locations/{location_id}/snapshots/{snapshot_id}.
+        /// `projects/{project_id}/locations/{location_id}/snapshots/{snapshot_id}`.
         #[prost(string, tag = "3")]
         SourceSnapshot(::prost::alloc::string::String),
         /// The resource name of the backup, in the format
-        /// projects/{project_id}/locations/{location_id}/backups/{backup_id}.
+        /// `projects/{project_id}/locations/{location_id}/backups/{backup_id}`.
         #[prost(string, tag = "4")]
         SourceBackup(::prost::alloc::string::String),
     }
@@ -298,7 +296,7 @@ pub mod restore_instance_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteInstanceRequest {
     /// Required. The instance resource name, in the format
-    /// projects/{project_id}/locations/{location}/instances/{instance_id}
+    /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -306,10 +304,10 @@ pub struct DeleteInstanceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListInstancesRequest {
     /// Required. The project and location for which to retrieve instance information,
-    /// in the format projects/{project_id}/locations/{location}. In Cloud
+    /// in the format `projects/{project_id}/locations/{location}`. In Cloud
     /// Filestore, locations map to GCP zones, for example **us-west1-b**. To
-    /// retrieve instance information for all locations, use "-" for the {location}
-    /// value.
+    /// retrieve instance information for all locations, use "-" for the
+    /// `{location}` value.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
@@ -331,8 +329,8 @@ pub struct ListInstancesRequest {
 pub struct ListInstancesResponse {
     /// A list of instances in the project for the specified location.
     ///
-    /// If the {location} value in the request is "-", the response contains a list
-    /// of instances from all locations. If any location is unreachable, the
+    /// If the `{location}` value in the request is "-", the response contains a
+    /// list of instances from all locations. If any location is unreachable, the
     /// response will only return instances in reachable locations and the
     /// "unreachable" field will be populated with a list of unreachable locations.
     #[prost(message, repeated, tag = "1")]
@@ -349,7 +347,7 @@ pub struct ListInstancesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {
     /// Output only. The resource name of the backup, in the format
-    /// projects/{project_id}/locations/{location_id}/backups/{backup_id}.
+    /// `projects/{project_id}/locations/{location_id}/backups/{backup_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A description of the backup with 2048 characters or less.
@@ -374,7 +372,7 @@ pub struct Backup {
     #[prost(int64, tag = "7")]
     pub storage_bytes: i64,
     /// The resource name of the source Cloud Filestore instance, in the format
-    /// projects/{project_id}/locations/{location_id}/instances/{instance_id},
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}`,
     /// used to create this backup.
     #[prost(string, tag = "8")]
     pub source_instance: ::prost::alloc::string::String,
@@ -416,12 +414,11 @@ pub mod backup {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupRequest {
     /// Required. The backup's project and location, in the format
-    /// projects/{project_id}/locations/{location}. In Cloud Filestore,
+    /// `projects/{project_id}/locations/{location}`. In Cloud Filestore,
     /// backup locations map to GCP regions, for example **us-west1**.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. A [backup resource]
-    /// (/cloud-filestore/reference/rest/v1beta1/projects.locations.backups)
+    /// Required. A [backup resource]\[google.cloud.filestore.v1beta1.Backup\]
     #[prost(message, optional, tag = "2")]
     pub backup: ::core::option::Option<Backup>,
     /// Required. The ID to use for the backup.
@@ -436,15 +433,14 @@ pub struct CreateBackupRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. The backup resource name, in the format
-    /// projects/{project_id}/locations/{location}/backups/{backup_id}
+    /// `projects/{project_id}/locations/{location}/backups/{backup_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// UpdateBackupRequest updates description and/or labels for a backup.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackupRequest {
-    /// Required. A [backup resource]
-    /// (/cloud-filestore/reference/rest/v1beta1/projects.locations.backups)
+    /// Required. A [backup resource]\[google.cloud.filestore.v1beta1.Backup\]
     #[prost(message, optional, tag = "1")]
     pub backup: ::core::option::Option<Backup>,
     /// Required. Mask of fields to update.  At least one path must be supplied in this
@@ -456,7 +452,7 @@ pub struct UpdateBackupRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. The backup resource name, in the format
-    /// projects/{project_id}/locations/{location}/backups/{backup_id}.
+    /// `projects/{project_id}/locations/{location}/backups/{backup_id}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -464,11 +460,11 @@ pub struct GetBackupRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The project and location for which to retrieve backup information,
-    /// in the format projects/{project_id}/locations/{location}.
+    /// in the format `projects/{project_id}/locations/{location}`.
     /// In Cloud Filestore, backup locations map to GCP regions,
     /// for example **us-west1**.
     /// To retrieve backup information for all locations, use "-" for the
-    /// {location} value.
+    /// `{location}` value.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
@@ -490,8 +486,8 @@ pub struct ListBackupsRequest {
 pub struct ListBackupsResponse {
     /// A list of backups in the project for the specified location.
     ///
-    /// If the {location} value in the request is "-", the response contains a list
-    /// of backups from all locations. If any location is unreachable, the
+    /// If the `{location}` value in the request is "-", the response contains a
+    /// list of backups from all locations. If any location is unreachable, the
     /// response will only return backups in reachable locations and the
     /// "unreachable" field will be populated with a list of unreachable
     /// locations.
@@ -538,7 +534,7 @@ pub mod cloud_filestore_manager_client {
     impl<T> CloudFilestoreManagerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -551,7 +547,7 @@ pub mod cloud_filestore_manager_client {
             interceptor: F,
         ) -> CloudFilestoreManagerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

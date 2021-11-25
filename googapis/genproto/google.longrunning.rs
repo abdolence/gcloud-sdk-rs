@@ -46,14 +46,14 @@ pub mod operation {
         Response(::prost_types::Any),
     }
 }
-/// The request message for [Operations.GetOperation][google.longrunning.Operations.GetOperation].
+/// The request message for \[Operations.GetOperation][google.longrunning.Operations.GetOperation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOperationRequest {
     /// The name of the operation resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Operations.ListOperations][google.longrunning.Operations.ListOperations].
+/// The request message for \[Operations.ListOperations][google.longrunning.Operations.ListOperations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOperationsRequest {
     /// The name of the operation's parent resource.
@@ -69,7 +69,7 @@ pub struct ListOperationsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Operations.ListOperations][google.longrunning.Operations.ListOperations].
+/// The response message for \[Operations.ListOperations][google.longrunning.Operations.ListOperations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOperationsResponse {
     /// A list of operations that matches the specified filter in the request.
@@ -79,21 +79,21 @@ pub struct ListOperationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [Operations.CancelOperation][google.longrunning.Operations.CancelOperation].
+/// The request message for \[Operations.CancelOperation][google.longrunning.Operations.CancelOperation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelOperationRequest {
     /// The name of the operation resource to be cancelled.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Operations.DeleteOperation][google.longrunning.Operations.DeleteOperation].
+/// The request message for \[Operations.DeleteOperation][google.longrunning.Operations.DeleteOperation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOperationRequest {
     /// The name of the operation resource to be deleted.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [Operations.WaitOperation][google.longrunning.Operations.WaitOperation].
+/// The request message for \[Operations.WaitOperation][google.longrunning.Operations.WaitOperation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WaitOperationRequest {
     /// The name of the operation resource to wait on.
@@ -158,7 +158,7 @@ pub mod operations_client {
     impl<T> OperationsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -171,7 +171,7 @@ pub mod operations_client {
             interceptor: F,
         ) -> OperationsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

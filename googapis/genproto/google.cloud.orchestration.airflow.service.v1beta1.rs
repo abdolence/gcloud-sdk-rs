@@ -175,7 +175,7 @@ pub struct UpdateEnvironmentRequest {
     ///       a version downgrade and must match the current image version's
     ///       Composer major version and Airflow major and minor versions. Consult
     ///       the [Cloud Composer Version
-    ///       List](https://cloud.google.com/composer/docs/concepts/versioning/composer-versions)
+    ///       List](<https://cloud.google.com/composer/docs/concepts/versioning/composer-versions>)
     ///       for valid values.
     /// * `config.softwareConfig.schedulerCount`
     ///     * Horizontally scale the number of schedulers in Airflow. A positive
@@ -327,12 +327,12 @@ pub struct SoftwareConfig {
     /// The version of the software running in the environment.
     /// This encapsulates both the version of Cloud Composer functionality and the
     /// version of Apache Airflow. It must match the regular expression
-    /// `composer-([0-9]+\.[0-9]+\.[0-9]+|latest)-airflow-[0-9]+\.[0-9]+(\.[0-9]+.*)?`.
+    /// `composer-(\[0-9]+\.[0-9]+\.[0-9]+|latest)-airflow-[0-9]+\.[0-9]+(\.[0-9\]+.*)?`.
     /// When used as input, the server also checks if the provided version is
     /// supported and denies the request for an unsupported version.
     ///
     /// The Cloud Composer portion of the version is a
-    /// [semantic version](https://semver.org) or `latest`. When the patch version
+    /// [semantic version](<https://semver.org>) or `latest`. When the patch version
     /// is omitted, the current Cloud Composer patch version is selected.
     /// When `latest` is provided instead of an explicit version number,
     /// the server replaces `latest` with the current Cloud Composer version
@@ -340,7 +340,7 @@ pub struct SoftwareConfig {
     ///
     /// The portion of the image version that follows *airflow-* is an
     /// official Apache Airflow repository
-    /// [release name](https://github.com/apache/incubator-airflow/releases).
+    /// [release name](<https://github.com/apache/incubator-airflow/releases>).
     ///
     /// See also [Version
     /// List](/composer/docs/concepts/versioning/composer-versions).
@@ -355,11 +355,11 @@ pub struct SoftwareConfig {
     /// contain an equals sign ("=") or semicolon (";"). Section and property names
     /// must not contain a period ("."). Apache Airflow configuration property
     /// names must be written in
-    /// [snake_case](https://en.wikipedia.org/wiki/Snake_case). Property values can
+    /// \[snake_case\](<https://en.wikipedia.org/wiki/Snake_case>). Property values can
     /// contain any character, and can be written in any lower/upper case format.
     ///
     /// Certain Apache Airflow configuration property values are
-    /// [blocked](/composer/docs/concepts/airflow-configurations),
+    /// \[blocked\](/composer/docs/concepts/airflow-configurations),
     /// and cannot be overridden.
     #[prost(map = "string, string", tag = "2")]
     pub airflow_config_overrides:
@@ -369,7 +369,7 @@ pub struct SoftwareConfig {
     ///
     /// Keys refer to the lowercase package name such as "numpy"
     /// and values are the lowercase extras and version specifier such as
-    /// "==1.12.0", "[devel,gcp_api]", or "[devel]>=1.8.2, <1.9.2". To specify a
+    /// "==1.12.0", "\[devel,gcp_api\]", or "\[devel\]>=1.8.2, <1.9.2". To specify a
     /// package without pinning it to a version specifier, use the empty string as
     /// the value.
     #[prost(map = "string, string", tag = "3")]
@@ -379,9 +379,9 @@ pub struct SoftwareConfig {
     /// scheduler, worker, and webserver processes.
     ///
     /// Environment variable names must match the regular expression
-    /// `[a-zA-Z_][a-zA-Z0-9_]*`. They cannot specify Apache Airflow
+    /// `\[a-zA-Z_][a-zA-Z0-9_\]*`. They cannot specify Apache Airflow
     /// software configuration overrides (they cannot match the regular expression
-    /// `AIRFLOW__[A-Z0-9_]+__[A-Z0-9_]+`), and they cannot match any of the
+    /// `AIRFLOW__\[A-Z0-9_]+__[A-Z0-9_\]+`), and they cannot match any of the
     /// following reserved names:
     ///
     /// * `AIRFLOW_HOME`
@@ -442,7 +442,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+    /// \[CIDR\](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -462,7 +462,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+    /// \[CIDR\](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -475,7 +475,7 @@ pub struct IpAllocationPolicy {
 /// the Apache Airflow software.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeConfig {
-    /// Optional. The Compute Engine [zone](/compute/docs/regions-zones) in which
+    /// Optional. The Compute Engine \[zone\](/compute/docs/regions-zones) in which
     /// to deploy the VMs used to run the Apache Airflow software, specified as a
     /// [relative resource
     /// name](/apis/design/resource_names#relative_resource_name). For example:
@@ -544,7 +544,7 @@ pub struct NodeConfig {
     pub disk_size_gb: i32,
     /// Optional. The set of Google API scopes to be made available on all
     /// node VMs. If `oauth_scopes` is empty, defaults to
-    /// ["https://www.googleapis.com/auth/cloud-platform"]. Cannot be updated.
+    /// \["<https://www.googleapis.com/auth/cloud-platform"\].> Cannot be updated.
     #[prost(string, repeated, tag = "6")]
     pub oauth_scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. The Google Cloud Platform Service Account to be used by the workloads. If a
@@ -554,7 +554,7 @@ pub struct NodeConfig {
     pub service_account: ::prost::alloc::string::String,
     /// Optional. The list of instance tags applied to all node VMs. Tags are used
     /// to identify valid sources or targets for network firewalls. Each tag within
-    /// the list must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt).
+    /// the list must comply with \[RFC1035\](<https://www.ietf.org/rfc/rfc1035.txt>).
     /// Cannot be updated.
     #[prost(string, repeated, tag = "8")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -569,7 +569,7 @@ pub struct NodeConfig {
     /// default "Maximum Pods per Node" value which is used for newly created
     /// node pools if their value is not explicitly set during node pool creation.
     /// For more information, see [Optimizing IP address allocation]
-    /// (https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr).
+    /// (<https://cloud.google.com/kubernetes-engine/docs/how-to/flexible-pod-cidr>).
     /// Cannot be updated.
     #[prost(int32, tag = "10")]
     pub max_pods_per_node: i32,
@@ -668,14 +668,15 @@ pub struct EncryptionConfig {
     pub kms_key_name: ::prost::alloc::string::String,
 }
 /// The configuration settings for Cloud Composer maintenance window.
-///
 /// The following example:
 ///
+/// ```
 ///    {
 ///      "startTime":"2019-08-01T01:00:00Z"
 ///      "endTime":"2019-08-01T07:00:00Z"
 ///      "recurrence":"FREQ=WEEKLY;BYDAY=TU,WE"
 ///    }
+/// ```
 ///
 /// would define a maintenance window between 01 and 07 hours UTC during
 /// each Tuesday and Wednesday.
@@ -690,7 +691,7 @@ pub struct MaintenanceWindow {
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Required. Maintenance window recurrence. Format is a subset of
-    /// [RFC-5545](https://tools.ietf.org/html/rfc5545) `RRULE`. The only allowed
+    /// \[RFC-5545\](<https://tools.ietf.org/html/rfc5545>) `RRULE`. The only allowed
     /// values for `FREQ` field are `FREQ=DAILY` and `FREQ=WEEKLY;BYDAY=...`
     /// Example values: `FREQ=WEEKLY;BYDAY=TU,WE`, `FREQ=DAILY`.
     #[prost(string, tag = "3")]
@@ -792,8 +793,8 @@ pub struct Environment {
     /// The labels map can contain no more than 64 entries. Entries of the labels
     /// map are UTF8 strings that comply with the following restrictions:
     ///
-    /// * Keys must conform to regexp: [\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}
-    /// * Values must conform to regexp:  [\p{Ll}\p{Lo}\p{N}_-]{0,63}
+    /// * Keys must conform to regexp: \[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-\]{0,62}
+    /// * Values must conform to regexp:  \[\p{Ll}\p{Lo}\p{N}_-\]{0,63}
     /// * Both keys and values are additionally constrained to be <= 128 bytes in
     /// size.
     #[prost(map = "string, string", tag = "7")]
@@ -832,12 +833,12 @@ pub struct CheckUpgradeRequest {
     /// The version of the software running in the environment.
     /// This encapsulates both the version of Cloud Composer functionality and the
     /// version of Apache Airflow. It must match the regular expression
-    /// `composer-([0-9]+\.[0-9]+\.[0-9]+|latest)-airflow-[0-9]+\.[0-9]+(\.[0-9]+.*)?`.
+    /// `composer-(\[0-9]+\.[0-9]+\.[0-9]+|latest)-airflow-[0-9]+\.[0-9]+(\.[0-9\]+.*)?`.
     /// When used as input, the server also checks if the provided version is
     /// supported and denies the request for an unsupported version.
     ///
     /// The Cloud Composer portion of the version is a
-    /// [semantic version](https://semver.org) or `latest`. When the patch version
+    /// [semantic version](<https://semver.org>) or `latest`. When the patch version
     /// is omitted, the current Cloud Composer patch version is selected.
     /// When `latest` is provided instead of an explicit version number,
     /// the server replaces `latest` with the current Cloud Composer version
@@ -845,7 +846,7 @@ pub struct CheckUpgradeRequest {
     ///
     /// The portion of the image version that follows `airflow-` is an
     /// official Apache Airflow repository
-    /// [release name](https://github.com/apache/incubator-airflow/releases).
+    /// [release name](<https://github.com/apache/incubator-airflow/releases>).
     ///
     /// See also [Version List]
     /// (/composer/docs/concepts/versioning/composer-versions).
@@ -901,7 +902,7 @@ pub mod environments_client {
     impl<T> EnvironmentsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -914,7 +915,7 @@ pub mod environments_client {
             interceptor: F,
         ) -> EnvironmentsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1135,7 +1136,7 @@ pub mod image_versions_client {
     impl<T> ImageVersionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1148,7 +1149,7 @@ pub mod image_versions_client {
             interceptor: F,
         ) -> ImageVersionsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

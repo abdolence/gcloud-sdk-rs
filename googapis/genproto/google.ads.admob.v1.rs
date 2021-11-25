@@ -170,9 +170,9 @@ pub mod network_report_spec {
         /// dimension.
         ///
         /// **Warning:** The dimension is incompatible with
-        /// [AD_REQUESTS](#Metric.ENUM_VALUES.AD_REQUESTS),
-        /// [MATCH_RATE](#Metric.ENUM_VALUES.MATCH_RATE) and
-        /// [IMPRESSION_RPM](#Metric.ENUM_VALUES.IMPRESSION_RPM) metrics.
+        /// \[AD_REQUESTS\](#Metric.ENUM_VALUES.AD_REQUESTS),
+        /// \[MATCH_RATE\](#Metric.ENUM_VALUES.MATCH_RATE) and
+        /// \[IMPRESSION_RPM\](#Metric.ENUM_VALUES.IMPRESSION_RPM) metrics.
         AdType = 6,
         /// CLDR country code of the place where the ad views/clicks occur (for
         /// example, "US" or "FR"). This is a geography dimension.
@@ -195,7 +195,7 @@ pub mod network_report_spec {
         /// The number of ad requests. The value is an integer.
         ///
         /// **Warning:** The metric is incompatible with
-        /// [AD_TYPE](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
+        /// \[AD_TYPE\](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
         AdRequests = 1,
         /// The number of times a user clicks an ad. The value is an integer.
         Clicks = 2,
@@ -213,7 +213,7 @@ pub mod network_report_spec {
         /// micros. For example, $1.03 would be represented as 1030000.
         ///
         /// **Warning:** The metric is incompatible with
-        /// [AD_TYPE](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
+        /// \[AD_TYPE\](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
         ImpressionRpm = 6,
         /// The number of times ads are returned in response to a request. The value
         /// is an integer.
@@ -222,7 +222,7 @@ pub mod network_report_spec {
         /// a double precision (approximate) decimal value.
         ///
         /// **Warning:** The metric is incompatible with
-        /// [AD_TYPE](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
+        /// \[AD_TYPE\](#Dimension.ENUM_VALUES.AD_TYPE) dimension.
         MatchRate = 8,
         /// The ratio of ads that are displayed over ads that are returned, defined
         /// as impressions / matched requests. The value is a double precision
@@ -240,7 +240,7 @@ pub mod network_report_spec {
 ///         "end_date": {"year": 2018, "month": 9, "day": 30}
 ///       },
 ///       "dimensions": ["AD_SOURCE", "APP", "COUNTRY"],
-///       "metrics": ["OBSERVED_ECPM"],
+///       "metrics": \["OBSERVED_ECPM"\],
 ///       "dimension_filters": [
 ///         {
 ///           "dimension": "COUNTRY",
@@ -688,10 +688,7 @@ pub struct GenerateMediationReportRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateMediationReportResponse {
     /// Each stream response message contains one type of payload.
-    #[prost(
-        oneof = "generate_mediation_report_response::Payload",
-        tags = "1, 2, 3"
-    )]
+    #[prost(oneof = "generate_mediation_report_response::Payload", tags = "1, 2, 3")]
     pub payload: ::core::option::Option<generate_mediation_report_response::Payload>,
 }
 /// Nested message and enum types in `GenerateMediationReportResponse`.
@@ -795,7 +792,7 @@ pub mod ad_mob_api_client {
     impl<T> AdMobApiClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -808,7 +805,7 @@ pub mod ad_mob_api_client {
             interceptor: F,
         ) -> AdMobApiClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -887,9 +884,7 @@ pub mod ad_mob_api_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.admob.v1.AdMobApi/GenerateNetworkReport",
             );
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Generates an AdMob Mediation report based on the provided report"]
         #[doc = " specification."]
@@ -910,9 +905,7 @@ pub mod ad_mob_api_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.admob.v1.AdMobApi/GenerateMediationReport",
             );
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
     }
 }

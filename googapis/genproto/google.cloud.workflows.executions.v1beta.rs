@@ -1,4 +1,4 @@
-/// A running instance of a [Workflow][google.cloud.workflows.v1beta.Workflow].
+/// A running instance of a \[Workflow][google.cloud.workflows.v1beta.Workflow\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Execution {
     /// Output only. The resource name of the execution.
@@ -62,7 +62,7 @@ pub mod execution {
     }
 }
 /// Request for the
-/// [ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions]
+/// \[ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsRequest {
@@ -90,7 +90,7 @@ pub struct ListExecutionsRequest {
     pub view: i32,
 }
 /// Response for the
-/// [ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions]
+/// \[ListExecutions][google.cloud.workflows.executions.v1beta.Executions.ListExecutions\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsResponse {
@@ -103,7 +103,7 @@ pub struct ListExecutionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [CreateExecution][google.cloud.workflows.executions.v1beta.Executions.CreateExecution]
+/// \[CreateExecution][google.cloud.workflows.executions.v1beta.Executions.CreateExecution\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExecutionRequest {
@@ -117,7 +117,7 @@ pub struct CreateExecutionRequest {
     pub execution: ::core::option::Option<Execution>,
 }
 /// Request for the
-/// [GetExecution][google.cloud.workflows.executions.v1beta.Executions.GetExecution]
+/// \[GetExecution][google.cloud.workflows.executions.v1beta.Executions.GetExecution\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExecutionRequest {
@@ -132,7 +132,7 @@ pub struct GetExecutionRequest {
     pub view: i32,
 }
 /// Request for the
-/// [CancelExecution][google.cloud.workflows.executions.v1beta.Executions.CancelExecution]
+/// \[CancelExecution][google.cloud.workflows.executions.v1beta.Executions.CancelExecution\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelExecutionRequest {
@@ -168,7 +168,7 @@ pub mod executions_client {
     impl<T> ExecutionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -181,7 +181,7 @@ pub mod executions_client {
             interceptor: F,
         ) -> ExecutionsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

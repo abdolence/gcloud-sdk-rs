@@ -5,11 +5,11 @@
 pub struct RuntimeConfig {
     /// The resource name of a runtime config. The name must have the format:
     ///
-    ///     projects/[PROJECT_ID]/configs/[CONFIG_NAME]
+    ///     projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]
     ///
-    /// The `[PROJECT_ID]` must be a valid project ID, and `[CONFIG_NAME]` is an
+    /// The `\[PROJECT_ID\]` must be a valid project ID, and `\[CONFIG_NAME\]` is an
     /// arbitrary name that matches RFC 1035 segment specification. The length of
-    /// `[CONFIG_NAME]` must be less than 64 bytes.
+    /// `\[CONFIG_NAME\]` must be less than 64 bytes.
     ///
     /// You pick the RuntimeConfig resource name, but the server will validate that
     /// the name adheres to this format. After you create the resource, you cannot
@@ -29,18 +29,18 @@ pub struct RuntimeConfig {
 pub struct Variable {
     /// The name of the variable resource, in the format:
     ///
-    ///     projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME]
+    ///     projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME\]
     ///
-    /// The `[PROJECT_ID]` must be a valid project ID, `[CONFIG_NAME]` must be a
-    /// valid RuntimeConfig reource and `[VARIABLE_NAME]` follows Unix file system
+    /// The `\[PROJECT_ID\]` must be a valid project ID, `\[CONFIG_NAME\]` must be a
+    /// valid RuntimeConfig reource and `\[VARIABLE_NAME\]` follows Unix file system
     /// file path naming.
     ///
-    /// The `[VARIABLE_NAME]` can contain ASCII letters, numbers, slashes and
+    /// The `\[VARIABLE_NAME\]` can contain ASCII letters, numbers, slashes and
     /// dashes. Slashes are used as path element separators and are not part of the
-    /// `[VARIABLE_NAME]` itself, so `[VARIABLE_NAME]` must contain at least one
+    /// `\[VARIABLE_NAME\]` itself, so `\[VARIABLE_NAME\]` must contain at least one
     /// non-slash character. Multiple slashes are coalesced into single slash
     /// character. Each path segment should follow RFC 1035 segment specification.
-    /// The length of a `[VARIABLE_NAME]` must be less than 256 bytes.
+    /// The length of a `\[VARIABLE_NAME\]` must be less than 256 bytes.
     ///
     /// Once you create a variable, you cannot change the variable name.
     #[prost(string, tag = "1")]
@@ -141,30 +141,30 @@ pub mod end_condition {
 pub struct Waiter {
     /// The name of the Waiter resource, in the format:
     ///
-    ///     projects/[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME]
+    ///     projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME\]
     ///
-    /// The `[PROJECT_ID]` must be a valid Google Cloud project ID,
-    /// the `[CONFIG_NAME]` must be a valid RuntimeConfig resource, the
-    /// `[WAITER_NAME]` must match RFC 1035 segment specification, and the length
-    /// of `[WAITER_NAME]` must be less than 64 bytes.
+    /// The `\[PROJECT_ID\]` must be a valid Google Cloud project ID,
+    /// the `\[CONFIG_NAME\]` must be a valid RuntimeConfig resource, the
+    /// `\[WAITER_NAME\]` must match RFC 1035 segment specification, and the length
+    /// of `\[WAITER_NAME\]` must be less than 64 bytes.
     ///
     /// After you create a Waiter resource, you cannot change the resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// [Required] Specifies the timeout of the waiter in seconds, beginning from
+    /// \[Required\] Specifies the timeout of the waiter in seconds, beginning from
     /// the instant that `waiters().create` method is called. If this time elapses
     /// before the success or failure conditions are met, the waiter fails and sets
     /// the `error` code to `DEADLINE_EXCEEDED`.
     #[prost(message, optional, tag = "2")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
-    /// [Optional] The failure condition of this waiter. If this condition is met,
+    /// \[Optional\] The failure condition of this waiter. If this condition is met,
     /// `done` will be set to `true` and the `error` code will be set to `ABORTED`.
     /// The failure condition takes precedence over the success condition. If both
     /// conditions are met, a failure will be indicated. This value is optional; if
     /// no failure condition is set, the only failure scenario will be a timeout.
     #[prost(message, optional, tag = "3")]
     pub failure: ::core::option::Option<EndCondition>,
-    /// [Required] The success condition. If this condition is met, `done` will be
+    /// \[Required\] The success condition. If this condition is met, `done` will be
     /// set to `true` and the `error` value will remain unset. The failure
     /// condition takes precedence over the success condition. If both conditions
     /// are met, a failure will be indicated.
@@ -204,8 +204,8 @@ pub enum VariableState {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConfigsRequest {
     /// The [project
-    /// ID](https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848)
-    /// for this request, in the format `projects/[PROJECT_ID]`.
+    /// ID](<https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848>)
+    /// for this request, in the format `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Specifies the number of results to return per page. If there are fewer
@@ -238,7 +238,7 @@ pub struct ListConfigsResponse {
 pub struct GetConfigRequest {
     /// The name of the RuntimeConfig resource to retrieve, in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
 }
@@ -246,8 +246,8 @@ pub struct GetConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateConfigRequest {
     /// The [project
-    /// ID](https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848)
-    /// for this request, in the format `projects/[PROJECT_ID]`.
+    /// ID](<https://support.google.com/cloud/answer/6158840?hl=en&ref_topic=6158848>)
+    /// for this request, in the format `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The RuntimeConfig to create.
@@ -271,7 +271,7 @@ pub struct CreateConfigRequest {
 pub struct UpdateConfigRequest {
     /// The name of the RuntimeConfig resource to update, in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The config resource to update.
@@ -283,7 +283,7 @@ pub struct UpdateConfigRequest {
 pub struct DeleteConfigRequest {
     /// The RuntimeConfig resource to delete, in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -294,12 +294,12 @@ pub struct ListVariablesRequest {
     /// variables. The configuration must exist beforehand; the path must by in the
     /// format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Filters variables by matching the specified filter. For example:
     ///
-    /// `projects/example-project/config/[CONFIG_NAME]/variables/example-variable`.
+    /// `projects/example-project/config/\[CONFIG_NAME\]/variables/example-variable`.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Specifies the number of results to return per page. If there are fewer
@@ -336,7 +336,7 @@ pub struct ListVariablesResponse {
 pub struct WatchVariableRequest {
     /// The name of the variable to watch, in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// If specified, checks the current timestamp of the variable and if the
@@ -353,7 +353,7 @@ pub struct WatchVariableRequest {
 pub struct GetVariableRequest {
     /// The name of the variable to return, in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIBLE_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIBLE_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -363,7 +363,7 @@ pub struct CreateVariableRequest {
     /// The path to the RutimeConfig resource that this variable should belong to.
     /// The configuration must exist beforehand; the path must by in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The variable to create.
@@ -387,7 +387,7 @@ pub struct CreateVariableRequest {
 pub struct UpdateVariableRequest {
     /// The name of the variable to update, in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The variable to update.
@@ -399,7 +399,7 @@ pub struct UpdateVariableRequest {
 pub struct DeleteVariableRequest {
     /// The name of the variable to delete, in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/variables/[VARIABLE_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Set to `true` to recursively delete multiple variables with the same
@@ -413,7 +413,7 @@ pub struct ListWaitersRequest {
     /// The path to the configuration for which you want to get a list of waiters.
     /// The configuration must exist beforehand; the path must by in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Specifies the number of results to return per page. If there are fewer
@@ -446,7 +446,7 @@ pub struct GetWaiterRequest {
     /// The fully-qualified name of the Waiter resource object to retrieve, in the
     /// format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME]`
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -456,7 +456,7 @@ pub struct CreateWaiterRequest {
     /// The path to the configuration that will own the waiter.
     /// The configuration must exist beforehand; the path must by in the format:
     ///
-    /// `projects/[PROJECT_ID]/configs/[CONFIG_NAME]`.
+    /// `projects/\[PROJECT_ID]/configs/[CONFIG_NAME\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The Waiter resource to create.
@@ -480,7 +480,7 @@ pub struct CreateWaiterRequest {
 pub struct DeleteWaiterRequest {
     /// The Waiter resource to delete, in the format:
     ///
-    ///  `projects/[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME]`
+    ///  `projects/\[PROJECT_ID]/configs/[CONFIG_NAME]/waiters/[WAITER_NAME\]`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -505,7 +505,7 @@ pub mod runtime_config_manager_client {
     impl<T> RuntimeConfigManagerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -518,7 +518,7 @@ pub mod runtime_config_manager_client {
             interceptor: F,
         ) -> RuntimeConfigManagerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

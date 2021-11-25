@@ -287,21 +287,21 @@ pub mod software_recipe {
         pub struct Gcs {
             /// Bucket of the Cloud Storage object.
             /// Given an example URL:
-            /// `https://storage.googleapis.com/my-bucket/foo/bar#1234567`
+            /// `<https://storage.googleapis.com/my-bucket/foo/bar#1234567`>
             /// this value would be `my-bucket`.
             #[prost(string, tag = "1")]
             pub bucket: ::prost::alloc::string::String,
             /// Name of the Cloud Storage object.
-            /// As specified [here]
-            /// (https://cloud.google.com/storage/docs/naming#objectnames)
+            /// As specified \[here\]
+            /// (<https://cloud.google.com/storage/docs/naming#objectnames>)
             /// Given an example URL:
-            /// `https://storage.googleapis.com/my-bucket/foo/bar#1234567`
+            /// `<https://storage.googleapis.com/my-bucket/foo/bar#1234567`>
             /// this value would be `foo/bar`.
             #[prost(string, tag = "2")]
             pub object: ::prost::alloc::string::String,
             /// Must be provided if allow_insecure is false.
             /// Generation number of the Cloud Storage object.
-            /// `https://storage.googleapis.com/my-bucket/foo/bar#1234567`
+            /// `<https://storage.googleapis.com/my-bucket/foo/bar#1234567`>
             /// this value would be `1234567`.
             #[prost(int64, tag = "3")]
             pub generation: i64,
@@ -401,11 +401,11 @@ pub mod software_recipe {
             #[prost(string, tag = "1")]
             pub artifact_id: ::prost::alloc::string::String,
             /// The flags to use when installing the MSI
-            /// defaults to ["/i"] (i.e. the install flag).
+            /// defaults to \["/i"\] (i.e. the install flag).
             #[prost(string, repeated, tag = "2")]
             pub flags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Return codes that indicate that the software installed or updated
-            /// successfully. Behaviour defaults to [0]
+            /// successfully. Behaviour defaults to \[0\]
             #[prost(int32, repeated, tag = "3")]
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
         }
@@ -429,7 +429,7 @@ pub mod software_recipe {
             /// Arguments to be passed to the provided executable.
             #[prost(string, repeated, tag = "3")]
             pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// Defaults to [0]. A list of possible return values that the program
+            /// Defaults to \[0\]. A list of possible return values that the program
             /// can return to indicate a success.
             #[prost(int32, repeated, tag = "4")]
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
@@ -457,13 +457,13 @@ pub mod software_recipe {
             #[prost(string, tag = "1")]
             pub script: ::prost::alloc::string::String,
             /// Return codes that indicate that the software installed or updated
-            /// successfully. Behaviour defaults to [0]
+            /// successfully. Behaviour defaults to \[0\]
             #[prost(int32, repeated, tag = "2")]
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
             /// The script interpreter to use to run the script. If no interpreter is
             /// specified the script is executed directly, which likely
             /// only succeed for scripts with
-            /// [shebang lines](https://en.wikipedia.org/wiki/Shebang_(Unix)).
+            /// [shebang lines](<https://en.wikipedia.org/wiki/Shebang_(Unix>)).
             #[prost(enumeration = "run_script::Interpreter", tag = "3")]
             pub interpreter: i32,
         }
@@ -515,7 +515,7 @@ pub mod software_recipe {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupEffectiveGuestPolicyRequest {
     /// Required. This is the GCE instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -710,7 +710,7 @@ pub struct YumSettings {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GooSettings {}
 /// Zypper patching is performed by running `zypper patch`.
-/// See also https://en.opensuse.org/SDB:Zypper_manual.
+/// See also <https://en.opensuse.org/SDB:Zypper_manual.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZypperSettings {
     /// Adds the `--with-optional` flag to `zypper patch`.
@@ -741,11 +741,7 @@ pub struct ZypperSettings {
 pub struct WindowsUpdateSettings {
     /// Only apply updates of these windows update classifications. If empty, all
     /// updates will be applied.
-    #[prost(
-        enumeration = "windows_update_settings::Classification",
-        repeated,
-        tag = "1"
-    )]
+    #[prost(enumeration = "windows_update_settings::Classification", repeated, tag = "1")]
     pub classifications: ::prost::alloc::vec::Vec<i32>,
     /// List of KBs to exclude from update.
     #[prost(string, repeated, tag = "2")]
@@ -759,47 +755,47 @@ pub struct WindowsUpdateSettings {
 /// Nested message and enum types in `WindowsUpdateSettings`.
 pub mod windows_update_settings {
     /// Microsoft Windows update classifications as defined in
-    /// [1]
-    /// https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro
+    /// \[1\]
+    /// <https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro>
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Classification {
         /// Invalid. If classifications are included, they must be specified.
         Unspecified = 0,
         /// "A widely released fix for a specific problem that addresses a critical,
-        /// non-security-related bug." [1]
+        /// non-security-related bug." \[1\]
         Critical = 1,
         /// "A widely released fix for a product-specific, security-related
         /// vulnerability. Security vulnerabilities are rated by their severity. The
         /// severity rating is indicated in the Microsoft security bulletin as
-        /// critical, important, moderate, or low." [1]
+        /// critical, important, moderate, or low." \[1\]
         Security = 2,
         /// "A widely released and frequent software update that contains additions
         /// to a product’s definition database. Definition databases are often used
         /// to detect objects that have specific attributes, such as malicious code,
-        /// phishing websites, or junk mail." [1]
+        /// phishing websites, or junk mail." \[1\]
         Definition = 3,
-        /// "Software that controls the input and output of a device." [1]
+        /// "Software that controls the input and output of a device." \[1\]
         Driver = 4,
         /// "New product functionality that is first distributed outside the context
         /// of a product release and that is typically included in the next full
-        /// product release." [1]
+        /// product release." \[1\]
         FeaturePack = 5,
         /// "A tested, cumulative set of all hotfixes, security updates, critical
         /// updates, and updates. Additionally, service packs may contain additional
         /// fixes for problems that are found internally since the release of the
         /// product. Service packs my also contain a limited number of
-        /// customer-requested design changes or features." [1]
+        /// customer-requested design changes or features." \[1\]
         ServicePack = 6,
-        /// "A utility or feature that helps complete a task or set of tasks." [1]
+        /// "A utility or feature that helps complete a task or set of tasks." \[1\]
         Tool = 7,
         /// "A tested, cumulative set of hotfixes, security updates, critical
         /// updates, and updates that are packaged together for easy deployment. A
         /// rollup generally targets a specific area, such as security, or a
-        /// component of a product, such as Internet Information Services (IIS)." [1]
+        /// component of a product, such as Internet Information Services (IIS)." \[1\]
         UpdateRollup = 8,
         /// "A widely released fix for a specific problem. An update addresses a
-        /// noncritical, non-security-related bug." [1]
+        /// noncritical, non-security-related bug." \[1\]
         Update = 9,
     }
 }
@@ -824,14 +820,14 @@ pub struct ExecStep {
 /// Common configurations for an ExecStep.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecStepConfig {
-    /// Defaults to [0]. A list of possible return values that the
+    /// Defaults to \[0\]. A list of possible return values that the
     /// execution can return to indicate a success.
     #[prost(int32, repeated, tag = "3")]
     pub allowed_success_codes: ::prost::alloc::vec::Vec<i32>,
     /// The script interpreter to use to run the script. If no interpreter is
     /// specified the script will be executed directly, which will likely
     /// only succeed for scripts with shebang lines.
-    /// [Wikipedia shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)).
+    /// [Wikipedia shebang](<https://en.wikipedia.org/wiki/Shebang_(Unix>)).
     #[prost(enumeration = "exec_step_config::Interpreter", tag = "4")]
     pub interpreter: i32,
     /// Location of the executable.
@@ -1057,7 +1053,7 @@ pub enum TaskType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceiveTaskNotificationRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1073,7 +1069,7 @@ pub struct ReceiveTaskNotificationResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartNextTaskRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1090,7 +1086,7 @@ pub struct StartNextTaskResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportTaskProgressRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1133,7 +1129,7 @@ pub struct ReportTaskProgressResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportTaskCompleteRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1175,7 +1171,7 @@ pub struct ReportTaskCompleteResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterAgentRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1203,7 +1199,7 @@ pub mod agent_endpoint_service_client {
     impl<T> AgentEndpointServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1216,7 +1212,7 @@ pub mod agent_endpoint_service_client {
             interceptor: F,
         ) -> AgentEndpointServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1257,9 +1253,7 @@ pub mod agent_endpoint_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReceiveTaskNotification") ;
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Signals the start of a task execution and returns the task info."]
         pub async fn start_next_task(

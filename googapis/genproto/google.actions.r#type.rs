@@ -7,7 +7,7 @@
 /// * A range beginning in a year, e.g. the Common Era
 /// * A range ending on a specific date, e.g. the period of time before an event
 ///
-/// While [google.type.Date][google.type.Date] allows zero years, DateRange does not. Year must
+/// While \[google.type.Date][google.type.Date\] allows zero years, DateRange does not. Year must
 /// always be non-zero.
 ///
 /// End cannot be chronologically before start. For example, if start has year
@@ -41,7 +41,7 @@
 ///    December 31, 2000. And the date December 31, 2001 is within the date range
 ///    with start equal to the year 2000 and end equal to the year 2001.
 ///
-/// The semantics of start and end are the same as those of [google.type.Date][google.type.Date],
+/// The semantics of start and end are the same as those of \[google.type.Date][google.type.Date\],
 /// except that year must always be non-zero in DateRange.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateRange {
@@ -70,7 +70,7 @@ pub struct DateRange {
 /// When considering whether a DateTime falls within a DateTimeRange, the start
 /// of the range is inclusive and the end is exclusive.
 ///
-/// While [google.type.DateTime][google.type.DateTime] allows zero years, DateTimeRange does not.
+/// While \[google.type.DateTime][google.type.DateTime\] allows zero years, DateTimeRange does not.
 /// Year must always be non-zero.
 ///
 /// When both start and end are set, either both or neither must have a
@@ -83,7 +83,7 @@ pub struct DateRange {
 /// equal to end. When start and end are equal, the range is empty.
 ///
 /// The semantics of start and end are the same as those of
-/// [google.type.DateTime][google.type.DateTime].
+/// \[google.type.DateTime][google.type.DateTime\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateTimeRange {
     /// DateTime at which the date range begins. If unset, the range has no

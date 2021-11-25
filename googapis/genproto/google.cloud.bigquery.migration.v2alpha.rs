@@ -298,6 +298,9 @@ pub mod migration_subtask {
         Succeeded = 3,
         /// The subtask finished unsuccessfully.
         Failed = 4,
+        /// The subtask is paused, i.e., it will not be scheduled. If it was already
+        /// assigned,it might still finish but no new lease renewals will be granted.
+        Paused = 5,
     }
 }
 /// Request to create a migration workflow resource.
@@ -432,7 +435,7 @@ pub mod migration_service_client {
     impl<T> MigrationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -445,7 +448,7 @@ pub mod migration_service_client {
             interceptor: F,
         ) -> MigrationServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -589,6 +592,163 @@ pub mod migration_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.migration.v2alpha.MigrationService/ListMigrationSubtasks",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+}
+/// The request of translating a SQL query to Standard SQL.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranslateQueryRequest {
+    /// Required. Project ID of the project that will be charged for the quota.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The source SQL dialect of `queries`.
+    #[prost(enumeration = "translate_query_request::SqlTranslationSourceDialect", tag = "2")]
+    pub source_dialect: i32,
+    /// Required. The query to be translated.
+    #[prost(string, tag = "3")]
+    pub query: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `TranslateQueryRequest`.
+pub mod translate_query_request {
+    /// Supported SQL translation source dialects.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SqlTranslationSourceDialect {
+        /// SqlTranslationSourceDialect not specified.
+        Unspecified = 0,
+        /// Teradata SQL.
+        Teradata = 1,
+    }
+}
+/// The response of translating a SQL query to Standard SQL.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranslateQueryResponse {
+    /// The translated result. This will be empty if the translation fails.
+    #[prost(string, tag = "1")]
+    pub translated_query: ::prost::alloc::string::String,
+    /// The list of errors encountered during the translation, if present.
+    #[prost(message, repeated, tag = "2")]
+    pub errors: ::prost::alloc::vec::Vec<SqlTranslationError>,
+    /// The list of warnings encountered during the translation, if present,
+    /// indicates non-semantically correct translation.
+    #[prost(message, repeated, tag = "3")]
+    pub warnings: ::prost::alloc::vec::Vec<SqlTranslationWarning>,
+}
+/// Structured error object capturing the error message and the location in the
+/// source text where the error occurs.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlTranslationErrorDetail {
+    /// Specifies the row from the source text where the error occurred.
+    #[prost(int64, tag = "1")]
+    pub row: i64,
+    /// Specifie the column from the source texts where the error occurred.
+    #[prost(int64, tag = "2")]
+    pub column: i64,
+    /// A human-readable description of the error.
+    #[prost(string, tag = "3")]
+    pub message: ::prost::alloc::string::String,
+}
+/// The detailed error object if the SQL translation job fails.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlTranslationError {
+    /// The type of SQL translation error.
+    #[prost(enumeration = "sql_translation_error::SqlTranslationErrorType", tag = "1")]
+    pub error_type: i32,
+    /// Specifies the details of the error, including the error message and
+    /// location from the source text.
+    #[prost(message, optional, tag = "2")]
+    pub error_detail: ::core::option::Option<SqlTranslationErrorDetail>,
+}
+/// Nested message and enum types in `SqlTranslationError`.
+pub mod sql_translation_error {
+    /// The error type of the SQL translation job.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SqlTranslationErrorType {
+        /// SqlTranslationErrorType not specified.
+        Unspecified = 0,
+        /// Failed to parse the input text as a SQL query.
+        SqlParseError = 1,
+        /// Found unsupported functions in the input SQL query that are not able to
+        /// translate.
+        UnsupportedSqlFunction = 2,
+    }
+}
+/// The detailed warning object if the SQL translation job is completed but not
+/// semantically correct.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SqlTranslationWarning {
+    /// Specifies the details of the warning, including the warning message and
+    /// location from the source text.
+    #[prost(message, optional, tag = "1")]
+    pub warning_detail: ::core::option::Option<SqlTranslationErrorDetail>,
+}
+#[doc = r" Generated client implementations."]
+pub mod sql_translation_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    #[doc = " Provides other SQL dialects to GoogleSQL translation operations."]
+    #[derive(Debug, Clone)]
+    pub struct SqlTranslationServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl<T> SqlTranslationServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SqlTranslationServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SqlTranslationServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
+        }
+        #[doc = " Translates input queries from source dialects to GoogleSQL."]
+        pub async fn translate_query(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TranslateQueryRequest>,
+        ) -> Result<tonic::Response<super::TranslateQueryResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.migration.v2alpha.SqlTranslationService/TranslateQuery",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

@@ -62,7 +62,7 @@ pub struct Contact {
     pub notification_category_subscriptions: ::prost::alloc::vec::Vec<i32>,
     /// The preferred language for notifications, as a ISO 639-1 language code. See
     /// [Supported
-    /// languages](https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages)
+    /// languages](<https://cloud.google.com/resource-manager/docs/managing-notification-contacts#supported-languages>)
     /// for a list of supported languages.
     #[prost(string, tag = "4")]
     pub language_tag: ::prost::alloc::string::String,
@@ -152,7 +152,7 @@ pub struct UpdateContactRequest {
     pub contact: ::core::option::Option<Contact>,
     /// Optional. The update mask applied to the resource. For the `FieldMask`
     /// definition, see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -230,7 +230,7 @@ pub mod essential_contacts_service_client {
     impl<T> EssentialContactsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -243,7 +243,7 @@ pub mod essential_contacts_service_client {
             interceptor: F,
         ) -> EssentialContactsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

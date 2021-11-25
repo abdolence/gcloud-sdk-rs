@@ -8,12 +8,12 @@ pub struct Bucket {
     #[prost(message, repeated, tag = "2")]
     pub default_object_acl: ::prost::alloc::vec::Vec<ObjectAccessControl>,
     /// The bucket's lifecycle configuration. See
-    /// [https://developers.google.com/storage/docs/lifecycle]Lifecycle Management]
+    /// \[<https://developers.google.com/storage/docs/lifecycle\]Lifecycle> Management]
     /// for more information.
     #[prost(message, optional, tag = "3")]
     pub lifecycle: ::core::option::Option<bucket::Lifecycle>,
     /// The creation time of the bucket in
-    /// [https://tools.ietf.org/html/rfc3339][RFC 3339] format.
+    /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
     /// Attempting to set this field will result in an error.
     #[prost(message, optional, tag = "4")]
     pub time_created: ::core::option::Option<::prost_types::Timestamp>,
@@ -36,13 +36,13 @@ pub struct Bucket {
     /// Attempting to set this field will result in an error.
     #[prost(int64, tag = "8")]
     pub metageneration: i64,
-    /// The bucket's [https://www.w3.org/TR/cors/][Cross-Origin Resource Sharing]
+    /// The bucket's \[<https://www.w3.org/TR/cors/\][Cross-Origin> Resource Sharing]
     /// (CORS) configuration.
     #[prost(message, repeated, tag = "9")]
     pub cors: ::prost::alloc::vec::Vec<bucket::Cors>,
     /// The location of the bucket. Object data for objects in the bucket resides
     /// in physical storage within this region.  Defaults to `US`. See the
-    /// [https://developers.google.com/storage/docs/concepts-techniques#specifyinglocations"][developer's
+    /// \[<https://developers.google.com/storage/docs/concepts-techniques#specifyinglocations"\][developer's>
     /// guide] for the authoritative list. Attempting to update this field after
     /// the bucket is created will result in an error.
     #[prost(string, tag = "10")]
@@ -52,10 +52,10 @@ pub struct Bucket {
     /// bucket are stored and determines the SLA and the cost of storage.
     /// If this value is not specified when the bucket is created, it will default
     /// to `STANDARD`. For more information, see
-    /// https://developers.google.com/storage/docs/storage-classes.
+    /// <https://developers.google.com/storage/docs/storage-classes.>
     #[prost(string, tag = "11")]
     pub storage_class: ::prost::alloc::string::String,
-    /// HTTP 1.1 [https://tools.ietf.org/html/rfc7232#section-2.3"]Entity tag]
+    /// HTTP 1.1 \[<https://tools.ietf.org/html/rfc7232#section-2.3"\]Entity> tag]
     /// for the bucket.
     /// Attempting to set this field will result in an error.
     #[prost(string, tag = "12")]
@@ -85,7 +85,7 @@ pub struct Bucket {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The bucket's website configuration, controlling how the service behaves
     /// when accessing bucket contents as a web site. See the
-    /// [https://cloud.google.com/storage/docs/static-website][Static Website
+    /// \[<https://cloud.google.com/storage/docs/static-website\][Static> Website
     /// Examples] for more information.
     #[prost(message, optional, tag = "16")]
     pub website: ::core::option::Option<bucket::Website>,
@@ -141,12 +141,12 @@ pub mod bucket {
     }
     /// Cross-Origin Response sharing (CORS) properties for a bucket.
     /// For more on GCS and CORS, see
-    /// https://cloud.google.com/storage/docs/cross-origin.
-    /// For more on CORS in general, see https://tools.ietf.org/html/rfc6454.
+    /// <https://cloud.google.com/storage/docs/cross-origin.>
+    /// For more on CORS in general, see <https://tools.ietf.org/html/rfc6454.>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Cors {
         /// The list of Origins eligible to receive CORS response headers. See
-        /// [https://tools.ietf.org/html/rfc6454][RFC 6454] for more on origins.
+        /// \[<https://tools.ietf.org/html/rfc6454\][RFC> 6454] for more on origins.
         /// Note: "*" is permitted in the list of origins, and means "any Origin".
         #[prost(string, repeated, tag = "1")]
         pub origin: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -156,12 +156,12 @@ pub mod bucket {
         #[prost(string, repeated, tag = "2")]
         pub method: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The list of HTTP headers other than the
-        /// [https://www.w3.org/TR/cors/#simple-response-header][simple response
+        /// \[<https://www.w3.org/TR/cors/#simple-response-header\][simple> response
         /// headers] to give permission for the user-agent to share across domains.
         #[prost(string, repeated, tag = "3")]
         pub response_header: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The value, in seconds, to return in the
-        /// [https://www.w3.org/TR/cors/#access-control-max-age-response-header][Access-Control-Max-Age
+        /// \[<https://www.w3.org/TR/cors/#access-control-max-age-response-header\][Access-Control-Max-Age>
         /// header] used in preflight responses.
         #[prost(int32, tag = "4")]
         pub max_age_seconds: i32,
@@ -190,14 +190,14 @@ pub mod bucket {
             pub enabled: bool,
             /// The deadline time for changing
             /// <code>iamConfiguration.uniformBucketLevelAccess.enabled</code> from
-            /// true to false in [https://tools.ietf.org/html/rfc3339][RFC 3339]. After
+            /// true to false in \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339]. After
             /// the deadline is passed the field is immutable.
             #[prost(message, optional, tag = "2")]
             pub locked_time: ::core::option::Option<::prost_types::Timestamp>,
         }
     }
     /// Lifecycle properties of a bucket.
-    /// For more information, see https://cloud.google.com/storage/docs/lifecycle.
+    /// For more information, see <https://cloud.google.com/storage/docs/lifecycle.>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Lifecycle {
         /// A lifecycle management rule, which is made of an action to take and the
@@ -239,10 +239,10 @@ pub mod bucket {
                 /// object reaches the specified age.
                 #[prost(int32, tag = "1")]
                 pub age: i32,
-                /// A date in [RFC 3339][1] format with only the date part (for
+                /// A date in [RFC 3339]\[1\] format with only the date part (for
                 /// instance, "2013-01-15"). This condition is satisfied when an
                 /// object is created before midnight of the specified date in UTC.
-                /// [1]: https://tools.ietf.org/html/rfc3339
+                /// \[1\]: <https://tools.ietf.org/html/rfc3339>
                 #[prost(message, optional, tag = "2")]
                 pub created_before: ::core::option::Option<::prost_types::Timestamp>,
                 /// Relevant only for versioned objects. If the value is
@@ -287,7 +287,7 @@ pub mod bucket {
     pub struct RetentionPolicy {
         /// Server-determined value that indicates the time from which policy was
         /// enforced and effective. This value is in
-        /// [https://tools.ietf.org/html/rfc3339][RFC 3339] format.
+        /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
         #[prost(message, optional, tag = "1")]
         pub effective_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Once locked, an object retention policy cannot be modified.
@@ -302,7 +302,7 @@ pub mod bucket {
     }
     /// Properties of a bucket related to versioning.
     /// For more on GCS versioning, see
-    /// https://cloud.google.com/storage/docs/object-versioning.
+    /// <https://cloud.google.com/storage/docs/object-versioning.>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Versioning {
         /// While set to true, versioning is fully enabled for this bucket.
@@ -311,7 +311,7 @@ pub mod bucket {
     }
     /// Properties of a bucket related to accessing the contents as a static
     /// website. For more on hosting a static website via GCS, see
-    /// https://cloud.google.com/storage/docs/hosting-static-website.
+    /// <https://cloud.google.com/storage/docs/hosting-static-website.>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Website {
         /// If the requested object path is missing, the service will ensure the path
@@ -323,7 +323,7 @@ pub mod bucket {
         /// If the requested object path is missing, and any
         /// `mainPageSuffix` object is missing, if applicable, the service
         /// will return the named object from this bucket as the content for a
-        /// [https://tools.ietf.org/html/rfc7231#section-6.5.4][404 Not Found]
+        /// \[<https://tools.ietf.org/html/rfc7231#section-6.5.4\][404> Not Found]
         /// result.
         #[prost(string, tag = "2")]
         pub not_found_page: ::prost::alloc::string::String,
@@ -335,7 +335,7 @@ pub struct BucketAccessControl {
     /// The access permission for the entity.
     #[prost(string, tag = "1")]
     pub role: ::prost::alloc::string::String,
-    /// HTTP 1.1 ["https://tools.ietf.org/html/rfc7232#section-2.3][Entity tag]
+    /// HTTP 1.1 \["<https://tools.ietf.org/html/rfc7232#section-2.3\][Entity> tag]
     /// for the access-control entry.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
@@ -598,7 +598,7 @@ pub struct Notification {
     #[prost(map = "string, string", tag = "3")]
     pub custom_attributes:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// HTTP 1.1 [https://tools.ietf.org/html/rfc7232#section-2.3][Entity tag]
+    /// HTTP 1.1 \[<https://tools.ietf.org/html/rfc7232#section-2.3\][Entity> tag]
     /// for this subscription notification.
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
@@ -624,15 +624,15 @@ pub struct ListNotificationsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Object {
     /// Content-Encoding of the object data, matching
-    /// [https://tools.ietf.org/html/rfc7231#section-3.1.2.2][RFC 7231 §3.1.2.2]
+    /// \[<https://tools.ietf.org/html/rfc7231#section-3.1.2.2\][RFC> 7231 §3.1.2.2]
     #[prost(string, tag = "1")]
     pub content_encoding: ::prost::alloc::string::String,
     /// Content-Disposition of the object data, matching
-    /// [https://tools.ietf.org/html/rfc6266][RFC 6266].
+    /// \[<https://tools.ietf.org/html/rfc6266\][RFC> 6266].
     #[prost(string, tag = "2")]
     pub content_disposition: ::prost::alloc::string::String,
     /// Cache-Control directive for the object data, matching
-    /// [https://tools.ietf.org/html/rfc7234#section-5.2"][RFC 7234 §5.2].
+    /// \[<https://tools.ietf.org/html/rfc7234#section-5.2"\][RFC> 7234 §5.2].
     /// If omitted, and the object is accessible to all anonymous users, the
     /// default will be `public, max-age=3600`.
     #[prost(string, tag = "3")]
@@ -641,7 +641,7 @@ pub struct Object {
     #[prost(message, repeated, tag = "4")]
     pub acl: ::prost::alloc::vec::Vec<ObjectAccessControl>,
     /// Content-Language of the object data, matching
-    /// [https://tools.ietf.org/html/rfc7231#section-3.1.3.2][RFC 7231 §3.1.3.2].
+    /// \[<https://tools.ietf.org/html/rfc7231#section-3.1.3.2\][RFC> 7231 §3.1.3.2].
     #[prost(string, tag = "5")]
     pub content_language: ::prost::alloc::string::String,
     /// The version of the metadata for this object at this generation. Used for
@@ -657,13 +657,13 @@ pub struct Object {
     #[prost(message, optional, tag = "7")]
     pub time_deleted: ::core::option::Option<::prost_types::Timestamp>,
     /// Content-Type of the object data, matching
-    /// [https://tools.ietf.org/html/rfc7231#section-3.1.1.5][RFC 7231 §3.1.1.5].
+    /// \[<https://tools.ietf.org/html/rfc7231#section-3.1.1.5\][RFC> 7231 §3.1.1.5].
     /// If an object is stored without a Content-Type, it is served as
     /// `application/octet-stream`.
     #[prost(string, tag = "8")]
     pub content_type: ::prost::alloc::string::String,
     /// Content-Length of the object data in bytes, matching
-    /// [https://tools.ietf.org/html/rfc7230#section-3.3.2][RFC 7230 §3.3.2].
+    /// \[<https://tools.ietf.org/html/rfc7230#section-3.3.2\][RFC> 7230 §3.3.2].
     /// Attempting to set this field will result in an error.
     #[prost(int64, tag = "9")]
     pub size: i64,
@@ -673,7 +673,7 @@ pub struct Object {
     pub time_created: ::core::option::Option<::prost_types::Timestamp>,
     /// CRC32c checksum. For more information about using the CRC32c
     /// checksum, see
-    /// [https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI][Hashes and
+    /// \[<https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI\][Hashes> and
     /// ETags: Best Practices]. This is a server determined value and should not be
     /// supplied by the user when sending an Object. The server will ignore any
     /// value provided. Users should instead use the object_checksums field on the
@@ -686,9 +686,9 @@ pub struct Object {
     #[prost(int32, tag = "12")]
     pub component_count: i32,
     /// MD5 hash of the data; encoded using base64 as per
-    /// [https://tools.ietf.org/html/rfc4648#section-4][RFC 4648 §4]. For more
+    /// \[<https://tools.ietf.org/html/rfc4648#section-4\][RFC> 4648 §4]. For more
     /// information about using the MD5 hash, see
-    /// [https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI][Hashes and
+    /// \[<https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI\][Hashes> and
     /// ETags: Best Practices]. This is a server determined value and should not be
     /// supplied by the user when sending an Object. The server will ignore any
     /// value provided. Users should instead use the object_checksums field on the
@@ -696,7 +696,7 @@ pub struct Object {
     #[prost(string, tag = "13")]
     pub md5_hash: ::prost::alloc::string::String,
     /// HTTP 1.1 Entity tag for the object. See
-    /// [https://tools.ietf.org/html/rfc7232#section-2.3][RFC 7232 §2.3].
+    /// \[<https://tools.ietf.org/html/rfc7232#section-2.3\][RFC> 7232 §2.3].
     /// Attempting to set this field will result in an error.
     #[prost(string, tag = "14")]
     pub etag: ::prost::alloc::string::String,
@@ -725,7 +725,7 @@ pub struct Object {
     pub temporary_hold: bool,
     /// A server-determined value that specifies the earliest time that the
     /// object's retention period expires. This value is in
-    /// [https://tools.ietf.org/html/rfc3339][RFC 3339] format.
+    /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
     /// Note 1: This field is not provided for objects with an active event-based
     /// hold, since retention expiration is unknown until the hold is removed.
     /// Note 2: This value can be provided even when temporary hold is set (so that
@@ -799,7 +799,7 @@ pub struct ObjectAccessControl {
     #[prost(string, tag = "1")]
     pub role: ::prost::alloc::string::String,
     /// HTTP 1.1 Entity tag for the access-control entry.
-    /// See [https://tools.ietf.org/html/rfc7232#section-2.3][RFC 7232 §2.3].
+    /// See \[<https://tools.ietf.org/html/rfc7232#section-2.3\][RFC> 7232 §2.3].
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
     /// The ID of the access-control entry.
@@ -2024,7 +2024,7 @@ pub struct ListObjectsRequest {
     /// If `true`, lists all versions of an object as distinct results.
     /// The default is `false`. For more information, see
     /// [Object
-    /// Versioning](https://cloud.google.com/storage/docs/object-versioning).
+    /// Versioning](<https://cloud.google.com/storage/docs/object-versioning>).
     #[prost(bool, tag = "9")]
     pub versions: bool,
     /// A set of parameters common to all Storage API requests.
@@ -2325,7 +2325,7 @@ pub struct WatchAllObjectsRequest {
     /// If `true`, lists all versions of an object as distinct results.
     /// The default is `false`. For more information, see
     /// [Object
-    /// Versioning](https://cloud.google.com/storage/docs/object-versioning).
+    /// Versioning](<https://cloud.google.com/storage/docs/object-versioning>).
     #[prost(bool, tag = "2")]
     pub versions: bool,
     /// Returns results in a directory-like mode. `items` will contain
@@ -2607,7 +2607,7 @@ pub mod storage_client {
     impl<T> StorageClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2620,7 +2620,7 @@ pub mod storage_client {
             interceptor: F,
         ) -> StorageClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -3327,9 +3327,7 @@ pub mod storage_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.storage.v1.Storage/GetObjectMedia");
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Stores a new object and metadata."]
         #[doc = ""]
@@ -3368,9 +3366,7 @@ pub mod storage_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.storage.v1.Storage/InsertObject");
-            self.inner
-                .client_streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
         }
         #[doc = " Retrieves a list of objects matching the criteria."]
         pub async fn list_objects(

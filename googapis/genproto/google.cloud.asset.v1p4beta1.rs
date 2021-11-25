@@ -2,23 +2,23 @@
 /// access control lists.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IamPolicyAnalysisResult {
-    /// The full name of the resource to which the [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding] policy attaches.
+    /// The full name of the resource to which the \[iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding\] policy attaches.
     #[prost(string, tag = "1")]
     pub attached_resource_full_name: ::prost::alloc::string::String,
     /// The Cloud IAM policy binding under analysis.
     #[prost(message, optional, tag = "2")]
     pub iam_binding: ::core::option::Option<super::super::super::iam::v1::Binding>,
-    /// The access control lists derived from the [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding] that match or
+    /// The access control lists derived from the \[iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding\] that match or
     /// potentially match resource and access selectors specified in the request.
     #[prost(message, repeated, tag = "3")]
     pub access_control_lists:
         ::prost::alloc::vec::Vec<iam_policy_analysis_result::AccessControlList>,
-    /// The identity list derived from members of the [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding] that match or
+    /// The identity list derived from members of the \[iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding\] that match or
     /// potentially match identity selector specified in the request.
     #[prost(message, optional, tag = "4")]
     pub identity_list: ::core::option::Option<iam_policy_analysis_result::IdentityList>,
     /// Represents whether all nodes in the transitive closure of the
-    /// [iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding] node have been explored.
+    /// \[iam_binding][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.iam_binding\] node have been explored.
     #[prost(bool, tag = "5")]
     pub fully_explored: bool,
 }
@@ -42,7 +42,7 @@ pub mod iam_policy_analysis_result {
     /// A GCP resource that appears in an access control list.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Resource {
-        /// The [full resource name](https://aip.dev/122#full-resource-names).
+        /// The [full resource name](<https://aip.dev/122#full-resource-names>).
         #[prost(string, tag = "1")]
         pub full_resource_name: ::prost::alloc::string::String,
         /// The analysis state of this resource node.
@@ -85,7 +85,7 @@ pub mod iam_policy_analysis_result {
     pub struct Identity {
         /// The identity name in any form of members appear in
         /// [IAM policy
-        /// binding](https://cloud.google.com/iam/reference/rest/v1/Binding), such
+        /// binding](<https://cloud.google.com/iam/reference/rest/v1/Binding>), such
         /// as:
         /// - user:foo@google.com
         /// - group:group1@google.com
@@ -114,7 +114,7 @@ pub mod iam_policy_analysis_result {
     ///
     /// This will result in the following access control lists:
     /// - AccessControlList 1: [R1, R2], [P1, P2]
-    /// - AccessControlList 2: [R2, R3], [P3]
+    /// - AccessControlList 2: [R2, R3], \[P3\]
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AccessControlList {
         /// The resources that match one of the following conditions:
@@ -128,8 +128,8 @@ pub mod iam_policy_analysis_result {
         #[prost(message, repeated, tag = "2")]
         pub accesses: ::prost::alloc::vec::Vec<Access>,
         /// Resource edges of the graph starting from the policy attached
-        /// resource to any descendant resources. The [Edge.source_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.source_node] contains
-        /// the full resource name of a parent resource and [Edge.target_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.target_node]
+        /// resource to any descendant resources. The \[Edge.source_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.source_node\] contains
+        /// the full resource name of a parent resource and \[Edge.target_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.target_node\]
         /// contains the full resource name of a child resource. This field is
         /// present only if the output_resource_edges option is enabled in request.
         #[prost(message, repeated, tag = "3")]
@@ -144,9 +144,9 @@ pub mod iam_policy_analysis_result {
         #[prost(message, repeated, tag = "1")]
         pub identities: ::prost::alloc::vec::Vec<Identity>,
         /// Group identity edges of the graph starting from the binding's
-        /// group members to any node of the [identities][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.IdentityList.identities]. The [Edge.source_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.source_node]
+        /// group members to any node of the \[identities][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.IdentityList.identities\]. The \[Edge.source_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.source_node\]
         /// contains a group, such as "group:parent@google.com". The
-        /// [Edge.target_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.target_node] contains a member of the group,
+        /// \[Edge.target_node][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult.Edge.target_node\] contains a member of the group,
         /// such as "group:child@google.com" or "user:foo@google.com".
         /// This field is present only if the output_group_edges option is enabled in
         /// request.
@@ -177,12 +177,12 @@ pub struct IamPolicyAnalysisQuery {
 pub mod iam_policy_analysis_query {
     /// Specifies the resource to analyze for access policies, which may be set
     /// directly on the resource, or on ancestors such as organizations, folders or
-    /// projects. At least one of [ResourceSelector][google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.ResourceSelector], [IdentitySelector][google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.IdentitySelector] or
-    /// [AccessSelector][google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.AccessSelector] must be specified in a request.
+    /// projects. At least one of \[ResourceSelector][google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.ResourceSelector\], \[IdentitySelector][google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.IdentitySelector\] or
+    /// \[AccessSelector][google.cloud.asset.v1p4beta1.IamPolicyAnalysisQuery.AccessSelector\] must be specified in a request.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceSelector {
         /// Required. The [full resource
-        /// name](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+        /// name](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
         /// .
         #[prost(string, tag = "1")]
         pub full_resource_name: ::prost::alloc::string::String,
@@ -194,7 +194,7 @@ pub mod iam_policy_analysis_query {
     pub struct IdentitySelector {
         /// Required. The identity appear in the form of members in
         /// [IAM policy
-        /// binding](https://cloud.google.com/iam/reference/rest/v1/Binding).
+        /// binding](<https://cloud.google.com/iam/reference/rest/v1/Binding>).
         #[prost(string, tag = "1")]
         pub identity: ::prost::alloc::string::String,
     }
@@ -212,7 +212,7 @@ pub mod iam_policy_analysis_query {
         pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
-/// A request message for [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy].
+/// A request message for \[AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeIamPolicyRequest {
     /// Required. The request query.
@@ -230,7 +230,7 @@ pub mod analyze_iam_policy_request {
         /// Optional. If true, the identities section of the result will expand any
         /// Google groups appearing in an IAM policy binding.
         ///
-        /// If [identity_selector][] is specified, the identity in the result will
+        /// If \[identity_selector][\] is specified, the identity in the result will
         /// be determined by the selector, and this flag will have no effect.
         ///
         /// Default is false.
@@ -239,7 +239,7 @@ pub mod analyze_iam_policy_request {
         /// Optional. If true, the access section of result will expand any roles
         /// appearing in IAM policy bindings to include their permissions.
         ///
-        /// If [access_selector][] is specified, the access section of the result
+        /// If \[access_selector][\] is specified, the access section of the result
         /// will be determined by the selector, and this flag will have no effect.
         ///
         /// Default is false.
@@ -254,7 +254,7 @@ pub mod analyze_iam_policy_request {
         /// folder, the results will also include resources in that folder with
         /// permission P.
         ///
-        /// If [resource_selector][] is specified, the resource section of the result
+        /// If \[resource_selector][\] is specified, the resource section of the result
         /// will be determined by the selector, and this flag will have no effect.
         /// Default is false.
         #[prost(bool, tag = "3")]
@@ -280,7 +280,7 @@ pub mod analyze_iam_policy_request {
         /// and there's another IAM policy states service account SA has permission P
         /// to a GCP folder F, then user A potentially has access to the GCP folder
         /// F. And those advanced analysis results will be included in
-        /// [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
+        /// \[AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis\].
         ///
         /// Another example, if the request analyzes for who has
         /// permission P to a GCP folder F, and there's an IAM policy states user A
@@ -288,13 +288,13 @@ pub mod analyze_iam_policy_request {
         /// there's another IAM policy states service account SA has permission P to
         /// the GCP folder F, then user A potentially has access to the GCP folder
         /// F. And those advanced analysis results will be included in
-        /// [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
+        /// \[AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis\].
         ///
         /// Default is false.
         #[prost(bool, tag = "6")]
         pub analyze_service_account_impersonation: bool,
         /// Optional. Amount of time executable has to complete.  See JSON representation of
-        /// [Duration](https://developers.google.com/protocol-buffers/docs/proto3#json).
+        /// \[Duration\](<https://developers.google.com/protocol-buffers/docs/proto3#json>).
         ///
         /// If this field is set with a value less than the RPC deadline, and the
         /// execution of your query hasn't finished in the specified
@@ -307,20 +307,20 @@ pub mod analyze_iam_policy_request {
         pub execution_timeout: ::core::option::Option<::prost_types::Duration>,
     }
 }
-/// A response message for [AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy].
+/// A response message for \[AssetService.AnalyzeIamPolicy][google.cloud.asset.v1p4beta1.AssetService.AnalyzeIamPolicy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeIamPolicyResponse {
     /// The main analysis that matches the original request.
     #[prost(message, optional, tag = "1")]
     pub main_analysis: ::core::option::Option<analyze_iam_policy_response::IamPolicyAnalysis>,
     /// The service account impersonation analysis if
-    /// [AnalyzeIamPolicyRequest.analyze_service_account_impersonation][] is
+    /// \[AnalyzeIamPolicyRequest.analyze_service_account_impersonation][\] is
     /// enabled.
     #[prost(message, repeated, tag = "2")]
     pub service_account_impersonation_analysis:
         ::prost::alloc::vec::Vec<analyze_iam_policy_response::IamPolicyAnalysis>,
-    /// Represents whether all entries in the [main_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.main_analysis] and
-    /// [service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis] have been fully explored to
+    /// Represents whether all entries in the \[main_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.main_analysis\] and
+    /// \[service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis\] have been fully explored to
     /// answer the query in the request.
     #[prost(bool, tag = "3")]
     pub fully_explored: bool,
@@ -337,11 +337,11 @@ pub mod analyze_iam_policy_response {
         /// The analysis query.
         #[prost(message, optional, tag = "1")]
         pub analysis_query: ::core::option::Option<super::IamPolicyAnalysisQuery>,
-        /// A list of [IamPolicyAnalysisResult][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult] that matches the analysis query, or
+        /// A list of \[IamPolicyAnalysisResult][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult\] that matches the analysis query, or
         /// empty if no result is found.
         #[prost(message, repeated, tag = "2")]
         pub analysis_results: ::prost::alloc::vec::Vec<super::IamPolicyAnalysisResult>,
-        /// Represents whether all entries in the [analysis_results][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.IamPolicyAnalysis.analysis_results] have been
+        /// Represents whether all entries in the \[analysis_results][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.IamPolicyAnalysis.analysis_results\] have been
         /// fully explored to answer the query.
         #[prost(bool, tag = "3")]
         pub fully_explored: bool,
@@ -362,7 +362,7 @@ pub mod iam_policy_analysis_output_config {
         /// Required. The uri of the Cloud Storage object. It's the same uri that is used by
         /// gsutil. For example: "gs://bucket_name/object_name". See [Viewing and
         /// Editing Object
-        /// Metadata](https://cloud.google.com/storage/docs/viewing-editing-metadata)
+        /// Metadata](<https://cloud.google.com/storage/docs/viewing-editing-metadata>)
         /// for more information.
         #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
@@ -375,7 +375,7 @@ pub mod iam_policy_analysis_output_config {
         GcsDestination(GcsDestination),
     }
 }
-/// A request message for [AssetService.ExportIamPolicyAnalysis][google.cloud.asset.v1p4beta1.AssetService.ExportIamPolicyAnalysis].
+/// A request message for \[AssetService.ExportIamPolicyAnalysis][google.cloud.asset.v1p4beta1.AssetService.ExportIamPolicyAnalysis\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportIamPolicyAnalysisRequest {
     /// Required. The request query.
@@ -396,7 +396,7 @@ pub mod export_iam_policy_analysis_request {
         /// Optional. If true, the identities section of the result will expand any
         /// Google groups appearing in an IAM policy binding.
         ///
-        /// If [identity_selector][] is specified, the identity in the result will
+        /// If \[identity_selector][\] is specified, the identity in the result will
         /// be determined by the selector, and this flag will have no effect.
         ///
         /// Default is false.
@@ -405,7 +405,7 @@ pub mod export_iam_policy_analysis_request {
         /// Optional. If true, the access section of result will expand any roles
         /// appearing in IAM policy bindings to include their permissions.
         ///
-        /// If [access_selector][] is specified, the access section of the result
+        /// If \[access_selector][\] is specified, the access section of the result
         /// will be determined by the selector, and this flag will have no effect.
         ///
         /// Default is false.
@@ -420,7 +420,7 @@ pub mod export_iam_policy_analysis_request {
         /// folder, the results will also include resources in that folder with
         /// permission P.
         ///
-        /// If [resource_selector][] is specified, the resource section of the result
+        /// If \[resource_selector][\] is specified, the resource section of the result
         /// will be determined by the selector, and this flag will have no effect.
         /// Default is false.
         #[prost(bool, tag = "3")]
@@ -445,7 +445,7 @@ pub mod export_iam_policy_analysis_request {
         /// and there's another IAM policy states service account SA has permission P
         /// to a GCP folder F, then user A potentially has access to the GCP folder
         /// F. And those advanced analysis results will be included in
-        /// [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
+        /// \[AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis\].
         ///
         /// Another example, if the request analyzes for who has
         /// permission P to a GCP folder F, and there's an IAM policy states user A
@@ -453,7 +453,7 @@ pub mod export_iam_policy_analysis_request {
         /// there's another IAM policy states service account SA has permission P to
         /// the GCP folder F, then user A potentially has access to the GCP folder
         /// F. And those advanced analysis results will be included in
-        /// [AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis].
+        /// \[AnalyzeIamPolicyResponse.service_account_impersonation_analysis][google.cloud.asset.v1p4beta1.AnalyzeIamPolicyResponse.service_account_impersonation_analysis\].
         ///
         /// Default is false.
         #[prost(bool, tag = "6")]
@@ -461,8 +461,8 @@ pub mod export_iam_policy_analysis_request {
     }
 }
 /// The export IAM policy analysis response. This message is returned by the
-/// [google.longrunning.Operations.GetOperation][] method in the returned
-/// [google.longrunning.Operation.response][] field.
+/// \[google.longrunning.Operations.GetOperation][\] method in the returned
+/// \[google.longrunning.Operation.response][\] field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportIamPolicyAnalysisResponse {
     /// Output configuration indicating where the results were output to.
@@ -481,7 +481,7 @@ pub mod asset_service_client {
     impl<T> AssetServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -494,7 +494,7 @@ pub mod asset_service_client {
             interceptor: F,
         ) -> AssetServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

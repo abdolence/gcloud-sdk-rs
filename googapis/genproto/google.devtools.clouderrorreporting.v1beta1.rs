@@ -21,7 +21,7 @@ pub struct ErrorGroup {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrackingIssue {
     /// A URL pointing to a related entry in an issue tracking system.
-    /// Example: `https://github.com/user/project/issues/4`
+    /// Example: `<https://github.com/user/project/issues/4`>
     #[prost(string, tag = "1")]
     pub url: ::prost::alloc::string::String,
 }
@@ -63,7 +63,7 @@ pub struct ServiceContext {
     #[prost(string, tag = "3")]
     pub version: ::prost::alloc::string::String,
     /// Type of the MonitoredResource. List of possible values:
-    /// https://cloud.google.com/monitoring/api/resources
+    /// <https://cloud.google.com/monitoring/api/resources>
     ///
     /// Value is set automatically for incoming errors and must not be set when
     /// reporting errors.
@@ -168,7 +168,7 @@ pub enum ResolutionStatus {
 pub struct GetGroupRequest {
     /// Required. The group resource name. Written as
     /// `projects/{projectID}/groups/{group_name}`. Call
-    /// [`groupStats.list`](https://cloud.google.com/error-reporting/reference/rest/v1beta1/projects.groupStats/list)
+    /// \[`groupStats.list`\](<https://cloud.google.com/error-reporting/reference/rest/v1beta1/projects.groupStats/list>)
     /// to return a list of groups belonging to this project.
     ///
     /// Example: `projects/my-project-123/groups/my-group`
@@ -194,7 +194,7 @@ pub mod error_group_service_client {
     impl<T> ErrorGroupServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -207,7 +207,7 @@ pub mod error_group_service_client {
             interceptor: F,
         ) -> ErrorGroupServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -275,7 +275,7 @@ pub struct ListGroupStatsRequest {
     /// Required. The resource name of the Google Cloud Platform project. Written
     /// as `projects/{projectID}` or `projects/{projectNumber}`, where `{projectID}`
     /// and `{projectNumber}` can be found in the
-    /// [Google Cloud Console](https://support.google.com/cloud/answer/6158840).
+    /// [Google Cloud Console](<https://support.google.com/cloud/answer/6158840>).
     ///
     /// Examples: `projects/my-project-123`, `projects/5551234`.
     #[prost(string, tag = "1")]
@@ -423,7 +423,7 @@ pub struct ListEventsRequest {
     /// Required. The resource name of the Google Cloud Platform project. Written
     /// as `projects/{projectID}`, where `{projectID}` is the
     /// [Google Cloud Platform project
-    /// ID](https://support.google.com/cloud/answer/6158840).
+    /// ID](<https://support.google.com/cloud/answer/6158840>).
     ///
     /// Example: `projects/my-project-123`.
     #[prost(string, tag = "1")]
@@ -503,15 +503,15 @@ pub mod query_time_range {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceContextFilter {
     /// Optional. The exact value to match against
-    /// [`ServiceContext.service`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
+    /// \[`ServiceContext.service`\](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.service).
     #[prost(string, tag = "2")]
     pub service: ::prost::alloc::string::String,
     /// Optional. The exact value to match against
-    /// [`ServiceContext.version`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
+    /// \[`ServiceContext.version`\](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.version).
     #[prost(string, tag = "3")]
     pub version: ::prost::alloc::string::String,
     /// Optional. The exact value to match against
-    /// [`ServiceContext.resource_type`](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.resource_type).
+    /// \[`ServiceContext.resource_type`\](/error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.resource_type).
     #[prost(string, tag = "4")]
     pub resource_type: ::prost::alloc::string::String,
 }
@@ -521,7 +521,7 @@ pub struct DeleteEventsRequest {
     /// Required. The resource name of the Google Cloud Platform project. Written
     /// as `projects/{projectID}`, where `{projectID}` is the
     /// [Google Cloud Platform project
-    /// ID](https://support.google.com/cloud/answer/6158840).
+    /// ID](<https://support.google.com/cloud/answer/6158840>).
     ///
     /// Example: `projects/my-project-123`.
     #[prost(string, tag = "1")]
@@ -580,7 +580,7 @@ pub mod error_stats_service_client {
     impl<T> ErrorStatsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -593,7 +593,7 @@ pub mod error_stats_service_client {
             interceptor: F,
         ) -> ErrorStatsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -677,7 +677,7 @@ pub struct ReportErrorEventRequest {
     /// Required. The resource name of the Google Cloud Platform project. Written
     /// as `projects/{projectId}`, where `{projectId}` is the
     /// [Google Cloud Platform project
-    /// ID](https://support.google.com/cloud/answer/6158840).
+    /// ID](<https://support.google.com/cloud/answer/6158840>).
     ///
     /// Example: // `projects/my-project-123`.
     #[prost(string, tag = "1")]
@@ -710,21 +710,21 @@ pub struct ReportedErrorEvent {
     /// Supported stack trace formats are:
     ///
     /// * **Java**: Must be the return value of
-    /// [`Throwable.printStackTrace()`](https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html#printStackTrace%28%29).
+    /// \[`Throwable.printStackTrace()`\](<https://docs.oracle.com/javase/7/docs/api/java/lang/Throwable.html#printStackTrace%28%29>).
     /// * **Python**: Must be the return value of
-    /// [`traceback.format_exc()`](https://docs.python.org/2/library/traceback.html#traceback.format_exc).
+    /// \[`traceback.format_exc()`\](<https://docs.python.org/2/library/traceback.html#traceback.format_exc>).
     /// * **JavaScript**: Must be the value of
-    /// [`error.stack`](https://github.com/v8/v8/wiki/Stack-Trace-API) as returned
+    /// \[`error.stack`\](<https://github.com/v8/v8/wiki/Stack-Trace-API>) as returned
     /// by V8.
     /// * **Ruby**: Must contain frames returned by
-    /// [`Exception.backtrace`](https://ruby-doc.org/core-2.2.0/Exception.html#method-i-backtrace).
+    /// \[`Exception.backtrace`\](<https://ruby-doc.org/core-2.2.0/Exception.html#method-i-backtrace>).
     /// * **C#**: Must be the return value of
-    /// [`Exception.ToString()`](https://msdn.microsoft.com/en-us/library/system.exception.tostring.aspx).
+    /// \[`Exception.ToString()`\](<https://msdn.microsoft.com/en-us/library/system.exception.tostring.aspx>).
     /// * **PHP**: Must start with `PHP (Notice|Parse error|Fatal error|Warning)`
     /// and contain the result of
-    /// [`(string)$exception`](http://php.net/manual/en/exception.tostring.php).
+    /// \[`(string)$exception`\](<http://php.net/manual/en/exception.tostring.php>).
     /// * **Go**: Must be the return value of
-    /// [`runtime.Stack()`](https://golang.org/pkg/runtime/debug/#Stack).
+    /// \[`runtime.Stack()`\](<https://golang.org/pkg/runtime/debug/#Stack>).
     #[prost(string, tag = "3")]
     pub message: ::prost::alloc::string::String,
     /// Optional. A description of the context in which the error occurred.
@@ -743,7 +743,7 @@ pub mod report_errors_service_client {
     impl<T> ReportErrorsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -756,7 +756,7 @@ pub mod report_errors_service_client {
             interceptor: F,
         ) -> ReportErrorsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

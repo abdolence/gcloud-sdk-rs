@@ -1,4 +1,4 @@
-/// A billing account in [GCP Console](https://console.cloud.google.com/).
+/// A billing account in [GCP Console](<https://console.cloud.google.com/>).
 /// You can assign a billing account to one or more projects.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BillingAccount {
@@ -18,7 +18,7 @@ pub struct BillingAccount {
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
     /// If this account is a
-    /// [subaccount](https://cloud.google.com/billing/docs/concepts), then this
+    /// \[subaccount\](<https://cloud.google.com/billing/docs/concepts>), then this
     /// will be the resource name of the master billing account that it is being
     /// resold through.
     /// Otherwise this will be empty.
@@ -74,7 +74,7 @@ pub struct ListBillingAccountsRequest {
     pub page_token: ::prost::alloc::string::String,
     /// Options for how to filter the returned billing accounts.
     /// Currently this only supports filtering for
-    /// [subaccounts](https://cloud.google.com/billing/docs/concepts) under a
+    /// \[subaccounts\](<https://cloud.google.com/billing/docs/concepts>) under a
     /// single provided reseller billing account.
     /// (e.g. "master_billing_account=billingAccounts/012345-678901-ABCDEF").
     /// Boolean algebra and other fields are not currently supported.
@@ -179,7 +179,7 @@ pub mod cloud_billing_client {
     impl<T> CloudBillingClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -192,7 +192,7 @@ pub mod cloud_billing_client {
             interceptor: F,
         ) -> CloudBillingClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -498,7 +498,7 @@ pub struct Sku {
     pub category: ::core::option::Option<Category>,
     /// List of service regions this SKU is offered at.
     /// Example: "asia-east1"
-    /// Service regions can be found at https://cloud.google.com/about/locations/
+    /// Service regions can be found at <https://cloud.google.com/about/locations/>
     #[prost(string, repeated, tag = "5")]
     pub service_regions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A timeline of pricing info for this SKU in chronological order.
@@ -748,7 +748,7 @@ pub mod cloud_catalog_client {
     impl<T> CloudCatalogClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -761,7 +761,7 @@ pub mod cloud_catalog_client {
             interceptor: F,
         ) -> CloudCatalogClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

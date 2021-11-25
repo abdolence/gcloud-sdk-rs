@@ -26,7 +26,7 @@ pub struct ClientInfo {
     pub device_model: ::prost::alloc::string::String,
     /// Language code (in BCP-47 format) indicating the UI language of the client.
     /// Examples are "en", "en-US" or "ja-Latn". For more information, see
-    /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
     #[prost(string, tag = "7")]
     pub language_code: ::prost::alloc::string::String,
     /// Build number/version of the operating system. e.g., the contents of

@@ -125,7 +125,7 @@ pub struct CommonAddOnManifest {
     /// An OpenLink action
     /// can only use a URL with an HTTPS, MAILTO or TEL scheme.  For HTTPS links,
     /// the URL must also
-    /// [match](/gmail/add-ons/concepts/manifests#whitelisting_urls) one of the
+    /// \[match\](/gmail/add-ons/concepts/manifests#whitelisting_urls) one of the
     /// prefixes specified in this whitelist. If the prefix omits the scheme, HTTPS
     /// is assumed.  Notice that HTTP links are automatically rewritten to HTTPS
     /// links.

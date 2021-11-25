@@ -52,10 +52,7 @@ pub struct BuildEvent {
     /// //////////////////////////////////////////////////////////////////////////
     /// Events that indicate a state change of a build request in the build
     /// queue.
-    #[prost(
-        oneof = "build_event::Event",
-        tags = "51, 52, 53, 55, 56, 59, 60, 61, 62"
-    )]
+    #[prost(oneof = "build_event::Event", tags = "51, 52, 53, 55, 56, 59, 60, 61, 62")]
     pub event: ::core::option::Option<build_event::Event>,
 }
 /// Nested message and enum types in `BuildEvent`.
@@ -240,10 +237,7 @@ pub enum ConsoleOutputStream {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishLifecycleEventRequest {
     /// The interactivity of this build.
-    #[prost(
-        enumeration = "publish_lifecycle_event_request::ServiceLevel",
-        tag = "1"
-    )]
+    #[prost(enumeration = "publish_lifecycle_event_request::ServiceLevel", tag = "1")]
     pub service_level: i32,
     /// Required. The lifecycle build event. If this is a build tool event, the RPC
     /// will fail with INVALID_REQUEST.
@@ -355,7 +349,7 @@ pub mod publish_build_event_client {
     impl<T> PublishBuildEventClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -368,7 +362,7 @@ pub mod publish_build_event_client {
             interceptor: F,
         ) -> PublishBuildEventClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -440,9 +434,7 @@ pub mod publish_build_event_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.build.v1.PublishBuildEvent/PublishBuildToolEventStream",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }

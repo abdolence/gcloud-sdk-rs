@@ -18,7 +18,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -80,8 +80,10 @@ pub struct RealmSelector {
 /// If only cron_spec + cron_job_duration are specified, the event is effective
 /// starting at the local time specified by cron_spec, and is recurring.
 ///
-///   start_time|-------[cron job]-------[cron job]-------[cron job]---|end_time
-///   cron job: cron spec start time + duration
+/// ```
+/// start_time|-------[cron job]-------[cron job]-------[cron job]---|end_time
+/// cron job: cron spec start time + duration
+/// ```
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schedule {
     /// The start time of the event.
@@ -95,7 +97,7 @@ pub struct Schedule {
     #[prost(message, optional, tag = "3")]
     pub cron_job_duration: ::core::option::Option<::prost_types::Duration>,
     /// The cron definition of the scheduled event. See
-    /// https://en.wikipedia.org/wiki/Cron. Cron spec specifies the local time as
+    /// <https://en.wikipedia.org/wiki/Cron.> Cron spec specifies the local time as
     /// defined by the realm.
     #[prost(string, tag = "4")]
     pub cron_spec: ::prost::alloc::string::String,
@@ -253,7 +255,7 @@ pub struct ListGameServerClustersRequest {
     /// Optional. The maximum number of items to return.  If unspecified, the
     /// server will pick an appropriate default. The server may return fewer items
     /// than requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerClustersResponse.next_page_token]
+    /// \[next_page_token][google.cloud.gaming.v1beta.ListGameServerClustersResponse.next_page_token\]
     /// to determine if there are more GameServerClusters left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -265,7 +267,7 @@ pub struct ListGameServerClustersRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results following syntax at
-    /// https://cloud.google.com/apis/design/design_patterns#sorting_order.
+    /// <https://cloud.google.com/apis/design/design_patterns#sorting_order.>
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -418,10 +420,7 @@ pub struct GameServerClusterConnectionInfo {
     #[prost(string, tag = "5")]
     pub namespace: ::prost::alloc::string::String,
     /// The location of the Kubernetes cluster.
-    #[prost(
-        oneof = "game_server_cluster_connection_info::ClusterReference",
-        tags = "7"
-    )]
+    #[prost(oneof = "game_server_cluster_connection_info::ClusterReference", tags = "7")]
     pub cluster_reference:
         ::core::option::Option<game_server_cluster_connection_info::ClusterReference>,
 }
@@ -495,7 +494,7 @@ pub mod game_server_clusters_service_client {
     impl<T> GameServerClustersServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -508,7 +507,7 @@ pub mod game_server_clusters_service_client {
             interceptor: F,
         ) -> GameServerClustersServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -689,7 +688,7 @@ pub struct ListGameServerConfigsRequest {
     /// Optional. The maximum number of items to return.  If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerConfigsResponse.next_page_token]
+    /// \[next_page_token][google.cloud.gaming.v1beta.ListGameServerConfigsResponse.next_page_token\]
     /// to determine if there are more GameServerConfigs left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -701,7 +700,7 @@ pub struct ListGameServerConfigsRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results following syntax at
-    /// https://cloud.google.com/apis/design/design_patterns#sorting_order.
+    /// <https://cloud.google.com/apis/design/design_patterns#sorting_order.>
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -759,7 +758,7 @@ pub struct ScalingConfig {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Agones fleet autoscaler spec. Example spec:
-    /// https://agones.dev/site/docs/reference/fleetautoscaler/
+    /// <https://agones.dev/site/docs/reference/fleetautoscaler/>
     #[prost(string, tag = "2")]
     pub fleet_autoscaler_spec: ::prost::alloc::string::String,
     /// Labels used to identify the game server clusters to which this Agones
@@ -775,7 +774,7 @@ pub struct ScalingConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FleetConfig {
     /// Agones fleet spec. Example spec:
-    /// `https://agones.dev/site/docs/reference/fleet/`.
+    /// `<https://agones.dev/site/docs/reference/fleet/`.>
     #[prost(string, tag = "1")]
     pub fleet_spec: ::prost::alloc::string::String,
     /// The name of the FleetConfig.
@@ -827,7 +826,7 @@ pub mod game_server_configs_service_client {
     impl<T> GameServerConfigsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -840,7 +839,7 @@ pub mod game_server_configs_service_client {
             interceptor: F,
         ) -> GameServerConfigsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -955,7 +954,7 @@ pub struct ListGameServerDeploymentsRequest {
     /// Optional. The maximum number of items to return.  If unspecified, the
     /// server will pick an appropriate default. The server may return fewer items
     /// than requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.gaming.v1beta.ListGameServerDeploymentsResponse.next_page_token]
+    /// \[next_page_token][google.cloud.gaming.v1beta.ListGameServerDeploymentsResponse.next_page_token\]
     /// to determine if there are more GameServerDeployments left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -967,7 +966,7 @@ pub struct ListGameServerDeploymentsRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results following syntax at
-    /// https://cloud.google.com/apis/design/design_patterns#sorting_order.
+    /// <https://cloud.google.com/apis/design/design_patterns#sorting_order.>
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1233,7 +1232,7 @@ pub mod game_server_deployments_service_client {
     impl<T> GameServerDeploymentsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1246,7 +1245,7 @@ pub mod game_server_deployments_service_client {
             interceptor: F,
         ) -> GameServerDeploymentsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1444,7 +1443,7 @@ pub struct ListRealmsRequest {
     /// Optional. The maximum number of items to return.  If unspecified, server
     /// will pick an appropriate default. Server may return fewer items than
     /// requested. A caller should only rely on response's
-    /// [next_page_token][google.cloud.gaming.v1beta.ListRealmsResponse.next_page_token]
+    /// \[next_page_token][google.cloud.gaming.v1beta.ListRealmsResponse.next_page_token\]
     /// to determine if there are more realms left to be queried.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
@@ -1456,7 +1455,7 @@ pub struct ListRealmsRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results following syntax at
-    /// https://cloud.google.com/apis/design/design_patterns#sorting_order.
+    /// <https://cloud.google.com/apis/design/design_patterns#sorting_order.>
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -1569,7 +1568,7 @@ pub struct Realm {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Time zone where all policies targeting this realm are evaluated.
     /// The value of this field must be from the IANA time zone database:
-    /// https://www.iana.org/time-zones.
+    /// <https://www.iana.org/time-zones.>
     #[prost(string, tag = "6")]
     pub time_zone: ::prost::alloc::string::String,
     /// ETag of the resource.
@@ -1592,7 +1591,7 @@ pub mod realms_service_client {
     impl<T> RealmsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1605,7 +1604,7 @@ pub mod realms_service_client {
             interceptor: F,
         ) -> RealmsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

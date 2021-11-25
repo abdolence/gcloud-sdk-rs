@@ -52,7 +52,7 @@ pub struct Position {
 /// Each structural component, starting from Page, may further have their own
 /// properties. Properties describe detected languages, breaks etc.. Please refer
 /// to the
-/// [TextAnnotation.TextProperty][google.cloud.vision.v1p2beta1.TextAnnotation.TextProperty]
+/// \[TextAnnotation.TextProperty][google.cloud.vision.v1p2beta1.TextAnnotation.TextProperty\]
 /// message definition below for more detail.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextAnnotation {
@@ -70,7 +70,7 @@ pub mod text_annotation {
     pub struct DetectedLanguage {
         /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
         /// information, see
-        /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+        /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
         #[prost(string, tag = "1")]
         pub language_code: ::prost::alloc::string::String,
         /// Confidence of detected language. Range [0, 1].
@@ -373,7 +373,7 @@ pub mod web_detection {
         pub label: ::prost::alloc::string::String,
         /// The BCP-47 language code for `label`, such as "en-US" or "sr-Latn".
         /// For more information, see
-        /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+        /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
         #[prost(string, tag = "2")]
         pub language_code: ::prost::alloc::string::String,
     }
@@ -439,7 +439,7 @@ pub struct ImageSource {
     /// The Google Cloud Storage  URI of the form
     /// `gs://bucket_name/object_name`. Object versioning is not supported. See
     /// [Google Cloud Storage Request
-    /// URIs](https://cloud.google.com/storage/docs/reference-uris) for more info.
+    /// URIs](<https://cloud.google.com/storage/docs/reference-uris>) for more info.
     #[prost(string, tag = "1")]
     pub gcs_image_uri: ::prost::alloc::string::String,
     /// The URI of the source image. Can be either:
@@ -447,7 +447,7 @@ pub struct ImageSource {
     /// 1. A Google Cloud Storage URI of the form
     ///    `gs://bucket_name/object_name`. Object versioning is not supported. See
     ///    [Google Cloud Storage Request
-    ///    URIs](https://cloud.google.com/storage/docs/reference-uris) for more
+    ///    URIs](<https://cloud.google.com/storage/docs/reference-uris>) for more
     ///    info.
     ///
     /// 2. A publicly-accessible image HTTP/HTTPS URL. When fetching images from
@@ -501,16 +501,16 @@ pub struct FaceAnnotation {
     pub landmarks: ::prost::alloc::vec::Vec<face_annotation::Landmark>,
     /// Roll angle, which indicates the amount of clockwise/anti-clockwise rotation
     /// of the face relative to the image vertical about the axis perpendicular to
-    /// the face. Range [-180,180].
+    /// the face. Range \[-180,180\].
     #[prost(float, tag = "4")]
     pub roll_angle: f32,
     /// Yaw angle, which indicates the leftward/rightward angle that the face is
     /// pointing relative to the vertical plane perpendicular to the image. Range
-    /// [-180,180].
+    /// \[-180,180\].
     #[prost(float, tag = "5")]
     pub pan_angle: f32,
     /// Pitch angle, which indicates the upwards/downwards angle that the face is
-    /// pointing relative to the image's horizontal plane. Range [-180,180].
+    /// pointing relative to the image's horizontal plane. Range \[-180,180\].
     #[prost(float, tag = "6")]
     pub tilt_angle: f32,
     /// Detection confidence. Range [0, 1].
@@ -662,7 +662,7 @@ pub struct Property {
 pub struct EntityAnnotation {
     /// Opaque entity ID. Some IDs may be available in
     /// [Google Knowledge Graph Search
-    /// API](https://developers.google.com/knowledge-graph/).
+    /// API](<https://developers.google.com/knowledge-graph/>).
     #[prost(string, tag = "1")]
     pub mid: ::prost::alloc::string::String,
     /// The language code for the locale in which the entity textual
@@ -836,7 +836,7 @@ pub struct ImageContext {
     /// setting a hint will help get better results (although it will be a
     /// significant hindrance if the hint is wrong). Text detection returns an
     /// error if one or more of the specified languages is not one of the
-    /// [supported languages](https://cloud.google.com/vision/docs/languages).
+    /// [supported languages](<https://cloud.google.com/vision/docs/languages>).
     #[prost(string, repeated, tag = "2")]
     pub language_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Parameters for crop hints annotation request.
@@ -1107,7 +1107,7 @@ pub mod image_annotator_client {
     impl<T> ImageAnnotatorClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1120,7 +1120,7 @@ pub mod image_annotator_client {
             interceptor: F,
         ) -> ImageAnnotatorClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

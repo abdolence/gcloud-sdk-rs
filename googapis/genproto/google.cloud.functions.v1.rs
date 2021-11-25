@@ -1,5 +1,6 @@
 /// Describes a Cloud Function that contains user computation executed in
 /// response to an event. It encapsulate function and triggers configurations.
+/// Next tag: 36
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudFunction {
     /// A user-defined name of the function. Function names must be unique
@@ -24,7 +25,7 @@ pub struct CloudFunction {
     /// function, optional when updating an existing function. For a complete
     /// list of possible choices, see the
     /// [`gcloud` command
-    /// reference](/sdk/gcloud/reference/functions/deploy#--runtime).
+    /// reference](<https://cloud.google.com/sdk/gcloud/reference/functions/deploy#--runtime>).
     #[prost(string, tag = "19")]
     pub runtime: ::prost::alloc::string::String,
     /// The function execution timeout. Execution is considered failed and
@@ -55,26 +56,44 @@ pub struct CloudFunction {
     #[prost(map = "string, string", tag = "17")]
     pub environment_variables:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Build environment variables that shall be available during build time.
+    #[prost(map = "string, string", tag = "28")]
+    pub build_environment_variables:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The VPC Network that this cloud function can connect to. It can be
     /// either the fully-qualified URI, or the short name of the network resource.
     /// If the short network name is used, the network must belong to the same
     /// project. Otherwise, it must belong to a project within the same
     /// organization. The format of this field is either
     /// `projects/{project}/global/networks/{network}` or `{network}`, where
-    /// {project} is a project id where the network is defined, and {network} is
-    /// the short name of the network.
+    /// `{project}` is a project id where the network is defined, and `{network}`
+    /// is the short name of the network.
     ///
     /// This field is mutually exclusive with `vpc_connector` and will be replaced
     /// by it.
     ///
-    /// See [the VPC documentation](https://cloud.google.com/compute/docs/vpc) for
+    /// See [the VPC documentation](<https://cloud.google.com/compute/docs/vpc>) for
     /// more information on connecting Cloud projects.
     #[prost(string, tag = "18")]
     pub network: ::prost::alloc::string::String,
     /// The limit on the maximum number of function instances that may coexist at a
     /// given time.
+    ///
+    /// In some cases, such as rapid traffic surges, Cloud Functions may, for a
+    /// short period of time, create more instances than the specified max
+    /// instances limit. If your function cannot tolerate this temporary behavior,
+    /// you may want to factor in a safety margin and set a lower max instances
+    /// value than your function can tolerate.
+    ///
+    /// See the [Max
+    /// Instances](<https://cloud.google.com/functions/docs/max-instances>) Guide for
+    /// more details.
     #[prost(int32, tag = "20")]
     pub max_instances: i32,
+    /// A lower bound for the number function instances that may coexist at a
+    /// given time.
+    #[prost(int32, tag = "32")]
+    pub min_instances: i32,
     /// The VPC Network Connector that this cloud function can connect to. It can
     /// be either the fully-qualified URI, or the short name of the network
     /// connector resource. The format of this field is
@@ -83,7 +102,7 @@ pub struct CloudFunction {
     /// This field is mutually exclusive with `network` field and will eventually
     /// replace it.
     ///
-    /// See [the VPC documentation](https://cloud.google.com/compute/docs/vpc) for
+    /// See [the VPC documentation](<https://cloud.google.com/compute/docs/vpc>) for
     /// more information on connecting Cloud projects.
     #[prost(string, tag = "22")]
     pub vpc_connector: ::prost::alloc::string::String,
@@ -95,10 +114,83 @@ pub struct CloudFunction {
     /// it.
     #[prost(enumeration = "cloud_function::IngressSettings", tag = "24")]
     pub ingress_settings: i32,
+    /// Resource name of a KMS crypto key (managed by the user) used to
+    /// encrypt/decrypt function resources.
+    ///
+    /// It must match the pattern
+    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+    ///
+    /// If specified, you must also provide an artifact registry repository using
+    /// the `docker_repository` field that was created with the same KMS crypto
+    /// key.
+    ///
+    /// The following service accounts need to be granted Cloud KMS crypto key
+    /// encrypter/decrypter roles on the key.
+    ///
+    /// 1. Google Cloud Functions service account
+    ///    (service-{project_number}@gcf-admin-robot.iam.gserviceaccount.com) -
+    ///    Required to protect the function's image.
+    /// 2. Google Storage service account
+    ///    (service-{project_number}@gs-project-accounts.iam.gserviceaccount.com) -
+    ///    Required to protect the function's source code.
+    ///    If this service account does not exist, deploying a function without a
+    ///    KMS key or retrieving the service agent name provisions it. For more
+    ///    information, see
+    ///    <https://cloud.google.com/storage/docs/projects#service-agents> and
+    ///    <https://cloud.google.com/storage/docs/getting-service-agent#gsutil.>
+    ///
+    /// Google Cloud Functions delegates access to service agents to protect
+    /// function resources in internal projects that are not accessible by the
+    /// end user.
+    #[prost(string, tag = "25")]
+    pub kms_key_name: ::prost::alloc::string::String,
+    /// Name of the Cloud Build Custom Worker Pool that should be used to build the
+    /// function. The format of this field is
+    /// `projects/{project}/locations/{region}/workerPools/{workerPool}` where
+    /// `{project}` and `{region}` are the project id and region respectively where
+    /// the worker pool is defined and `{workerPool}` is the short name of the
+    /// worker pool.
+    ///
+    /// If the project id is not the same as the function, then the Cloud
+    /// Functions Service Agent
+    /// (`service-<project_number>@gcf-admin-robot.iam.gserviceaccount.com`) must
+    /// be granted the role Cloud Build Custom Workers Builder
+    /// (`roles/cloudbuild.customworkers.builder`) in the project.
+    #[prost(string, tag = "26")]
+    pub build_worker_pool: ::prost::alloc::string::String,
     /// Output only. The Cloud Build ID of the latest successful deployment of the
     /// function.
     #[prost(string, tag = "27")]
     pub build_id: ::prost::alloc::string::String,
+    /// Output only. The Cloud Build Name of the function deployment.
+    /// `projects/<project-number>/locations/<region>/builds/<build-id>`.
+    #[prost(string, tag = "33")]
+    pub build_name: ::prost::alloc::string::String,
+    /// Secret environment variables configuration.
+    #[prost(message, repeated, tag = "29")]
+    pub secret_environment_variables: ::prost::alloc::vec::Vec<SecretEnvVar>,
+    /// Secret volumes configuration.
+    #[prost(message, repeated, tag = "30")]
+    pub secret_volumes: ::prost::alloc::vec::Vec<SecretVolume>,
+    /// Input only. An identifier for Firebase function sources. Disclaimer: This field is only
+    /// supported for Firebase function deployments.
+    #[prost(string, tag = "31")]
+    pub source_token: ::prost::alloc::string::String,
+    /// User managed repository created in Artifact Registry optionally with a
+    /// customer managed encryption key. If specified, deployments will use
+    /// Artifact Registry. If unspecified and the deployment is eligible to use
+    /// Artifact Registry, GCF will create and use a repository named
+    /// 'gcf-artifacts' for every deployed region. This is the repository to which
+    /// the function docker image will be pushed after it is built by Cloud Build.
+    ///
+    /// It must match the pattern
+    /// `projects/{project}/locations/{location}/repositories/{repository}`.
+    ///
+    /// Cross-project repositories are not supported.
+    /// Cross-location repositories are not supported.
+    /// Repository format must be 'DOCKER'.
+    #[prost(string, tag = "34")]
+    pub docker_repository: ::prost::alloc::string::String,
     /// The location of the function source code.
     #[prost(oneof = "cloud_function::SourceCode", tags = "3, 4, 16")]
     pub source_code: ::core::option::Option<cloud_function::SourceCode>,
@@ -143,7 +235,7 @@ pub mod cloud_function {
     /// The location of the function source code.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceCode {
-        /// The Google Cloud Storage URL, starting with gs://, pointing to the zip
+        /// The Google Cloud Storage URL, starting with `gs://`, pointing to the zip
         /// archive which contains the function.
         #[prost(string, tag = "3")]
         SourceArchiveUrl(::prost::alloc::string::String),
@@ -153,7 +245,11 @@ pub mod cloud_function {
         #[prost(message, tag = "4")]
         SourceRepository(super::SourceRepository),
         /// The Google Cloud Storage signed URL used for source uploading, generated
-        /// by [google.cloud.functions.v1.GenerateUploadUrl][]
+        /// by calling \[google.cloud.functions.v1.GenerateUploadUrl\].
+        ///
+        /// The signature is validated on write methods (Create, Update)
+        /// The signature is stripped from the Function object on read methods (Get,
+        /// List)
         #[prost(string, tag = "16")]
         SourceUploadUrl(::prost::alloc::string::String),
     }
@@ -177,12 +273,12 @@ pub struct SourceRepository {
     /// formats:
     ///
     /// To refer to a specific commit:
-    /// `https://source.developers.google.com/projects/*/repos/*/revisions/*/paths/*`
+    /// `<https://source.developers.google.com/projects/*/repos/*/revisions/*/paths/*`>
     /// To refer to a moveable alias (branch):
-    /// `https://source.developers.google.com/projects/*/repos/*/moveable-aliases/*/paths/*`
+    /// `<https://source.developers.google.com/projects/*/repos/*/moveable-aliases/*/paths/*`>
     /// In particular, to refer to HEAD use `master` moveable alias.
     /// To refer to a specific fixed alias (tag):
-    /// `https://source.developers.google.com/projects/*/repos/*/fixed-aliases/*/paths/*`
+    /// `<https://source.developers.google.com/projects/*/repos/*/fixed-aliases/*/paths/*`>
     ///
     /// You may omit `paths/*` if you want to use the main directory.
     #[prost(string, tag = "1")]
@@ -199,6 +295,31 @@ pub struct HttpsTrigger {
     /// Output only. The deployed url for the function.
     #[prost(string, tag = "1")]
     pub url: ::prost::alloc::string::String,
+    /// The security level for the function.
+    #[prost(enumeration = "https_trigger::SecurityLevel", tag = "2")]
+    pub security_level: i32,
+}
+/// Nested message and enum types in `HttpsTrigger`.
+pub mod https_trigger {
+    /// Available security level settings.
+    ///
+    /// This controls the methods to enforce security (HTTPS) on a URL.
+    ///
+    /// If unspecified, SECURE_OPTIONAL will be used.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SecurityLevel {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Requests for a URL that match this handler that do not use HTTPS are
+        /// automatically redirected to the HTTPS URL with the same path. Query
+        /// parameters are reserved for the redirect.
+        SecureAlways = 1,
+        /// Both HTTP and HTTPS requests with URLs that match the handler succeed
+        /// without redirects. The application can examine the request to determine
+        /// which protocol was used and respond accordingly.
+        SecureOptional = 2,
+    }
 }
 /// Describes EventTrigger, used to request events be sent from another
 /// service.
@@ -277,6 +398,79 @@ pub mod failure_policy {
         Retry(Retry),
     }
 }
+/// Configuration for a secret environment variable. It has the information
+/// necessary to fetch the secret value from secret manager and expose it as an
+/// environment variable. Secret value is not a part of the configuration. Secret
+/// values are only fetched when a new clone starts.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretEnvVar {
+    /// Name of the environment variable.
+    #[prost(string, tag = "1")]
+    pub key: ::prost::alloc::string::String,
+    /// Project identifier (preferrably project number but can also be the project
+    /// ID) of the project that contains the secret. If not set, it will be
+    /// populated with the function's project assuming that the secret exists in
+    /// the same project as of the function.
+    #[prost(string, tag = "2")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Name of the secret in secret manager (not the full resource name).
+    #[prost(string, tag = "3")]
+    pub secret: ::prost::alloc::string::String,
+    /// Version of the secret (version number or the string 'latest'). It is
+    /// recommended to use a numeric version for secret environment variables as
+    /// any updates to the secret value is not reflected until new clones start.
+    #[prost(string, tag = "4")]
+    pub version: ::prost::alloc::string::String,
+}
+/// Configuration for a secret volume. It has the information necessary to fetch
+/// the secret value from secret manager and make it available as files mounted
+/// at the requested paths within the application container. Secret value is not
+/// a part of the configuration. Every filesystem read operation performs a
+/// lookup in secret manager to retrieve the secret value.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SecretVolume {
+    /// The path within the container to mount the secret volume. For example,
+    /// setting the mount_path as `/etc/secrets` would mount the secret value files
+    /// under the `/etc/secrets` directory. This directory will also be completely
+    /// shadowed and unavailable to mount any other secrets.
+    ///
+    /// Recommended mount paths: /etc/secrets
+    /// Restricted mount paths: /cloudsql, /dev/log, /pod, /proc, /var/log
+    #[prost(string, tag = "1")]
+    pub mount_path: ::prost::alloc::string::String,
+    /// Project identifier (preferrably project number but can also be the project
+    /// ID) of the project that contains the secret. If not set, it will be
+    /// populated with the function's project assuming that the secret exists in
+    /// the same project as of the function.
+    #[prost(string, tag = "2")]
+    pub project_id: ::prost::alloc::string::String,
+    /// Name of the secret in secret manager (not the full resource name).
+    #[prost(string, tag = "3")]
+    pub secret: ::prost::alloc::string::String,
+    /// List of secret versions to mount for this secret. If empty, the `latest`
+    /// version of the secret will be made available in a file named after the
+    /// secret under the mount point.
+    #[prost(message, repeated, tag = "4")]
+    pub versions: ::prost::alloc::vec::Vec<secret_volume::SecretVersion>,
+}
+/// Nested message and enum types in `SecretVolume`.
+pub mod secret_volume {
+    /// Configuration for a single version.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SecretVersion {
+        /// Version of the secret (version number or the string 'latest'). It is
+        /// preferrable to use `latest` version with secret volumes as secret value
+        /// changes are reflected immediately.
+        #[prost(string, tag = "1")]
+        pub version: ::prost::alloc::string::String,
+        /// Relative path of the file under the mount path where the secret value for
+        /// this version will be fetched and made available. For example, setting the
+        /// mount_path as '/etc/secrets' and path as `/secret_foo` would mount the
+        /// secret value file at `/etc/secrets/secret_foo`.
+        #[prost(string, tag = "2")]
+        pub path: ::prost::alloc::string::String,
+    }
+}
 /// Request for the `CreateFunction` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFunctionRequest {
@@ -334,7 +528,7 @@ pub struct ListFunctionsResponse {
     pub functions: ::prost::alloc::vec::Vec<CloudFunction>,
     /// If not empty, indicates that there may be more functions that match
     /// the request; this value should be passed in a new
-    /// [google.cloud.functions.v1.ListFunctionsRequest][google.cloud.functions.v1.ListFunctionsRequest]
+    /// \[google.cloud.functions.v1.ListFunctionsRequest][google.cloud.functions.v1.ListFunctionsRequest\]
     /// to get more functions.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -442,7 +636,7 @@ pub mod cloud_functions_service_client {
     impl<T> CloudFunctionsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -455,7 +649,7 @@ pub mod cloud_functions_service_client {
             interceptor: F,
         ) -> CloudFunctionsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -726,11 +920,11 @@ pub mod cloud_functions_service_client {
         }
     }
 }
-/// Metadata describing an [Operation][google.longrunning.Operation]
+/// Metadata describing an \[Operation][google.longrunning.Operation\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadataV1 {
     /// Target of the operation - for example
-    /// projects/project-1/locations/region-1/functions/function-1
+    /// `projects/project-1/locations/region-1/functions/function-1`
     #[prost(string, tag = "1")]
     pub target: ::prost::alloc::string::String,
     /// Type of operation.
@@ -750,6 +944,15 @@ pub struct OperationMetadataV1 {
     /// This field is only populated for Create and Update operations.
     #[prost(string, tag = "6")]
     pub build_id: ::prost::alloc::string::String,
+    /// An identifier for Firebase function sources. Disclaimer: This field is only
+    /// supported for Firebase function deployments.
+    #[prost(string, tag = "7")]
+    pub source_token: ::prost::alloc::string::String,
+    /// The Cloud Build Name of the function deployment.
+    /// This field is only populated for Create and Update operations.
+    /// `projects/<project-number>/locations/<region>/builds/<build-id>`.
+    #[prost(string, tag = "8")]
+    pub build_name: ::prost::alloc::string::String,
 }
 /// A type of an operation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

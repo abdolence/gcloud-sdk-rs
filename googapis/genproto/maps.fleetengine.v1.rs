@@ -378,10 +378,10 @@ pub struct Trip {
     #[prost(message, optional, tag = "25")]
     pub intermediate_destinations_version: ::core::option::Option<::prost_types::Timestamp>,
     /// When TripStatus is ENROUTE_TO_INTERMEDIATE_DESTINATION, a number between
-    /// [0..N-1] indicating which intermediate destination the vehicle will cross
+    /// \[0..N-1\] indicating which intermediate destination the vehicle will cross
     /// next.
     /// When TripStatus is ARRIVED_AT_INTERMEDIATE_DESTINATION, a number between
-    /// [0..N-1] indicating which intermediate destination the vehicle is at.
+    /// \[0..N-1\] indicating which intermediate destination the vehicle is at.
     /// The provider sets this value. If there are no intermediate_destinations,
     /// this field is ignored.
     #[prost(int32, tag = "15")]
@@ -548,7 +548,7 @@ pub enum BillingPlatformIdentifier {
     Others = 5,
 }
 /// Selector for different sets of Trip fields in a `GetTrip` response.  See
-/// [AIP-157](https://google.aip.dev/157) for context. Additional views are
+/// \[AIP-157\](<https://google.aip.dev/157>) for context. Additional views are
 /// likely to be added.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -807,7 +807,7 @@ pub mod trip_service_client {
     impl<T> TripServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -820,7 +820,7 @@ pub mod trip_service_client {
             interceptor: F,
         ) -> TripServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1084,7 +1084,7 @@ pub struct BatteryInfo {
     /// Status of battery power source.
     #[prost(enumeration = "PowerSource", tag = "2")]
     pub power_source: i32,
-    /// Current battery percentage [0-100].
+    /// Current battery percentage \[0-100\].
     #[prost(float, tag = "3")]
     pub battery_percentage: f32,
 }
@@ -1137,7 +1137,7 @@ pub enum VehicleState {
 }
 /// How location features are set to behave on the device when battery saver is
 /// on.
-/// (https://developer.android.com/reference/android/os/PowerManager#getLocationPowerSaveMode())
+/// (<https://developer.android.com/reference/android/os/PowerManager#getLocationPowerSaveMode(>))
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LocationPowerSaveMode {
@@ -1397,11 +1397,11 @@ pub struct SearchVehiclesRequest {
     /// composition of this expression:
     ///
     /// ```
-    /// (required_attribute[0] AND required_attribute[1] AND ...)
+    /// (required_attribute\[0\] AND required_attribute\[1\] AND ...)
     /// AND
-    /// (required_one_of_attribute[0][0] OR required_one_of_attribute[0][1] OR ...)
+    /// (required_one_of_attribute\[0][0\] OR required_one_of_attribute\[0][1\] OR ...)
     /// AND
-    /// (required_one_of_attribute[1][0] OR required_one_of_attribute[1][1] OR ...)
+    /// (required_one_of_attribute\[1][0\] OR required_one_of_attribute\[1][1\] OR ...)
     /// ```
     ///
     /// Restricts the search to only those vehicles with the specified attributes.
@@ -1532,11 +1532,11 @@ pub struct ListVehiclesRequest {
     /// composition of this expression:
     ///
     /// ```
-    /// (required_attribute[0] AND required_attribute[1] AND ...)
+    /// (required_attribute\[0\] AND required_attribute\[1\] AND ...)
     /// AND
-    /// (required_one_of_attribute[0][0] OR required_one_of_attribute[0][1] OR ...)
+    /// (required_one_of_attribute\[0][0\] OR required_one_of_attribute\[0][1\] OR ...)
     /// AND
-    /// (required_one_of_attribute[1][0] OR required_one_of_attribute[1][1] OR ...)
+    /// (required_one_of_attribute\[1][0\] OR required_one_of_attribute\[1][1\] OR ...)
     /// ```
     ///
     /// Restrict the search to only those vehicles
@@ -1698,7 +1698,7 @@ pub mod vehicle_service_client {
     impl<T> VehicleServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1711,7 +1711,7 @@ pub mod vehicle_service_client {
             interceptor: F,
         ) -> VehicleServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

@@ -17,7 +17,7 @@ pub struct UpdateIapSettingsRequest {
     pub iap_settings: ::core::option::Option<IapSettings>,
     /// The field mask specifying which IAP settings should be updated.
     /// If omitted, the all of the settings are updated. See
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -79,7 +79,7 @@ pub struct CorsSettings {
 pub struct OAuthSettings {
     /// Domain hint to send as hd=? parameter in OAuth request flow. Enables
     /// redirect to primary IDP by skipping Google's login screen.
-    /// https://developers.google.com/identity/protocols/OpenIDConnect#hd-param
+    /// <https://developers.google.com/identity/protocols/OpenIDConnect#hd-param>
     /// Note: IAP does not verify that the id token's hd claim matches this value
     /// since access behavior is managed by IAM policies.
     #[prost(message, optional, tag = "2")]
@@ -276,7 +276,7 @@ pub mod identity_aware_proxy_admin_service_client {
     impl<T> IdentityAwareProxyAdminServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -289,7 +289,7 @@ pub mod identity_aware_proxy_admin_service_client {
             interceptor: F,
         ) -> IdentityAwareProxyAdminServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -432,7 +432,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
     impl<T> IdentityAwareProxyOAuthServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -445,7 +445,7 @@ pub mod identity_aware_proxy_o_auth_service_client {
             interceptor: F,
         ) -> IdentityAwareProxyOAuthServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

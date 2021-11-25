@@ -60,14 +60,14 @@ pub struct MinuteRange {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dimension {
     /// The name of the dimension. See the [API
-    /// Dimensions](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions)
+    /// Dimensions](<https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#dimensions>)
     /// for the list of dimension names.
     ///
     /// If `dimensionExpression` is specified, `name` can be any string that you
     /// would like within the allowed character set. For example if a
     /// `dimensionExpression` concatenates `country` and `city`, you could call
     /// that dimension `countryAndCity`. Dimension names that you choose must match
-    /// the regular expression "^[a-zA-Z0-9_]$".
+    /// the regular expression `^\[a-zA-Z0-9_\]$`.
     ///
     /// Dimensions are referenced by `name` in `dimensionFilter`, `orderBys`,
     /// `dimensionExpression`, and `pivots`.
@@ -136,14 +136,14 @@ pub mod dimension_expression {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metric {
     /// The name of the metric. See the [API
-    /// Metrics](https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics)
+    /// Metrics](<https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema#metrics>)
     /// for the list of metric names.
     ///
     /// If `expression` is specified, `name` can be any string that you would like
     /// within the allowed character set. For example if `expression` is
     /// `screenPageViews/sessions`, you could call that metric's name =
     /// `viewsPerSession`. Metric names that you choose must match the regular
-    /// expression "^[a-zA-Z0-9_]$".
+    /// expression `^\[a-zA-Z0-9_\]$`.
     ///
     /// Metrics are referenced by `name` in `metricFilter`, `orderBys`, and metric
     /// `expression`.
@@ -467,7 +467,7 @@ pub struct Pivot {
 /// the `cohortsRange` object.
 ///
 /// For examples, see [Cohort Report
-/// Examples](https://developers.google.com/analytics/devguides/reporting/data/v1/advanced#cohort_report_examples).
+/// Examples](<https://developers.google.com/analytics/devguides/reporting/data/v1/advanced#cohort_report_examples>).
 ///
 /// The report response could show a weekly time series where say your app has
 /// retained 60% of this cohort after three weeks and 25% of this cohort after
@@ -597,6 +597,62 @@ pub struct ResponseMetaData {
     /// "(other)" row. This can happen for high cardinality reports.
     #[prost(bool, tag = "3")]
     pub data_loss_from_other_row: bool,
+    /// Describes the schema restrictions actively enforced in creating this
+    /// report. To learn more, see [Access and data-restriction
+    /// management](<https://support.google.com/analytics/answer/10851388>).
+    #[prost(message, optional, tag = "4")]
+    pub schema_restriction_response:
+        ::core::option::Option<response_meta_data::SchemaRestrictionResponse>,
+    /// The currency code used in this report. Intended to be used in formatting
+    /// currency metrics like `purchaseRevenue` for visualization. If currency_code
+    /// was specified in the request, this response parameter will echo the request
+    /// parameter; otherwise, this response parameter is the property's current
+    /// currency_code.
+    ///
+    /// Currency codes are string encodings of currency types from the ISO 4217
+    /// standard (<https://en.wikipedia.org/wiki/ISO_4217>); for example "USD",
+    /// "EUR", "JPY". To learn more, see
+    /// <https://support.google.com/analytics/answer/9796179.>
+    #[prost(string, optional, tag = "5")]
+    pub currency_code: ::core::option::Option<::prost::alloc::string::String>,
+    /// The property's current timezone. Intended to be used to interpret
+    /// time-based dimensions like `hour` and `minute`. Formatted as strings from
+    /// the IANA Time Zone database (<https://www.iana.org/time-zones>); for example
+    /// "America/New_York" or "Asia/Tokyo".
+    #[prost(string, optional, tag = "6")]
+    pub time_zone: ::core::option::Option<::prost::alloc::string::String>,
+    /// If empty reason is specified, the report is empty for this reason.
+    #[prost(string, optional, tag = "7")]
+    pub empty_reason: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `ResponseMetaData`.
+pub mod response_meta_data {
+    /// The schema restrictions actively enforced in creating this report. To learn
+    /// more, see [Access and data-restriction
+    /// management](<https://support.google.com/analytics/answer/10851388>).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SchemaRestrictionResponse {
+        /// All restrictions actively enforced in creating the report. For example,
+        /// `purchaseRevenue` always has the restriction type `REVENUE_DATA`.
+        /// However, this active response restriction is only populated if the user's
+        /// custom role disallows access to `REVENUE_DATA`.
+        #[prost(message, repeated, tag = "1")]
+        pub active_metric_restrictions:
+            ::prost::alloc::vec::Vec<schema_restriction_response::ActiveMetricRestriction>,
+    }
+    /// Nested message and enum types in `SchemaRestrictionResponse`.
+    pub mod schema_restriction_response {
+        /// A metric actively restricted in creating the report.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ActiveMetricRestriction {
+            /// The name of the restricted metric.
+            #[prost(string, optional, tag = "1")]
+            pub metric_name: ::core::option::Option<::prost::alloc::string::String>,
+            /// The reason for this metric's restriction.
+            #[prost(enumeration = "super::super::RestrictedMetricType", repeated, tag = "2")]
+            pub restricted_metric_types: ::prost::alloc::vec::Vec<i32>,
+        }
+    }
 }
 /// Describes a dimension column in the report. Dimensions requested in a report
 /// produce column entries within rows and DimensionHeaders. However, dimensions
@@ -787,7 +843,7 @@ pub struct QuotaStatus {
 /// Explains a dimension.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DimensionMetadata {
-    /// This dimension's name. Useable in [Dimension](#Dimension)'s `name`. For
+    /// This dimension's name. Useable in \[Dimension\](#Dimension)'s `name`. For
     /// example, `eventName`.
     #[prost(string, tag = "1")]
     pub api_name: ::prost::alloc::string::String,
@@ -807,11 +863,15 @@ pub struct DimensionMetadata {
     /// True if the dimension is a custom dimension for this property.
     #[prost(bool, tag = "5")]
     pub custom_definition: bool,
+    /// The display name of the category that this dimension belongs to. Similar
+    /// dimensions and metrics are categorized together.
+    #[prost(string, tag = "7")]
+    pub category: ::prost::alloc::string::String,
 }
 /// Explains a metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricMetadata {
-    /// A metric name. Useable in [Metric](#Metric)'s `name`. For example,
+    /// A metric name. Useable in \[Metric\](#Metric)'s `name`. For example,
     /// `eventCount`.
     #[prost(string, tag = "1")]
     pub api_name: ::prost::alloc::string::String,
@@ -832,13 +892,69 @@ pub struct MetricMetadata {
     #[prost(enumeration = "MetricType", tag = "5")]
     pub r#type: i32,
     /// The mathematical expression for this derived metric. Can be used in
-    /// [Metric](#Metric)'s `expression` field for equivalent reports. Most metrics
+    /// \[Metric\](#Metric)'s `expression` field for equivalent reports. Most metrics
     /// are not expressions, and for non-expressions, this field is empty.
     #[prost(string, tag = "6")]
     pub expression: ::prost::alloc::string::String,
     /// True if the metric is a custom metric for this property.
     #[prost(bool, tag = "7")]
     pub custom_definition: bool,
+    /// If reasons are specified, your access is blocked to this metric for this
+    /// property. API requests from you to this property for this metric will
+    /// succeed; however, the report will contain only zeros for this metric. API
+    /// requests with metric filters on blocked metrics will fail. If reasons are
+    /// empty, you have access to this metric.
+    ///
+    /// To learn more, see [Access and data-restriction
+    /// management](<https://support.google.com/analytics/answer/10851388>).
+    #[prost(enumeration = "metric_metadata::BlockedReason", repeated, tag = "8")]
+    pub blocked_reasons: ::prost::alloc::vec::Vec<i32>,
+    /// The display name of the category that this metrics belongs to. Similar
+    /// dimensions and metrics are categorized together.
+    #[prost(string, tag = "10")]
+    pub category: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `MetricMetadata`.
+pub mod metric_metadata {
+    /// Justifications for why this metric is blocked.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum BlockedReason {
+        /// Will never be specified in API response.
+        Unspecified = 0,
+        /// If present, your access is blocked to revenue related metrics for this
+        /// property, and this metric is revenue related.
+        NoRevenueMetrics = 1,
+        /// If present, your access is blocked to cost related metrics for this
+        /// property, and this metric is cost related.
+        NoCostMetrics = 2,
+    }
+}
+/// The compatibility for a single dimension.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DimensionCompatibility {
+    /// The dimension metadata contains the API name for this compatibility
+    /// information. The dimension metadata also contains other helpful information
+    /// like the UI name and description.
+    #[prost(message, optional, tag = "1")]
+    pub dimension_metadata: ::core::option::Option<DimensionMetadata>,
+    /// The compatibility of this dimension. If the compatibility is COMPATIBLE,
+    /// this dimension can be successfully added to the report.
+    #[prost(enumeration = "Compatibility", optional, tag = "2")]
+    pub compatibility: ::core::option::Option<i32>,
+}
+/// The compatibility for a single metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetricCompatibility {
+    /// The metric metadata contains the API name for this compatibility
+    /// information. The metric metadata also contains other helpful information
+    /// like the UI name and description.
+    #[prost(message, optional, tag = "1")]
+    pub metric_metadata: ::core::option::Option<MetricMetadata>,
+    /// The compatibility of this metric. If the compatibility is COMPATIBLE,
+    /// this metric can be successfully added to the report.
+    #[prost(enumeration = "Compatibility", optional, tag = "2")]
+    pub compatibility: ::core::option::Option<i32>,
 }
 /// Represents aggregation of metrics.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -886,6 +1002,81 @@ pub enum MetricType {
     /// A length in kilometers; a special floating point type.
     TypeKilometers = 13,
 }
+/// Categories of data that you may be restricted from viewing on certain GA4
+/// properties.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum RestrictedMetricType {
+    /// Unspecified type.
+    Unspecified = 0,
+    /// Cost metrics such as `adCost`.
+    CostData = 1,
+    /// Revenue metrics such as `purchaseRevenue`.
+    RevenueData = 2,
+}
+/// The compatibility types for a single dimension or metric.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Compatibility {
+    /// Unspecified compatibility.
+    Unspecified = 0,
+    /// The dimension or metric is compatible. This dimension or metric can be
+    /// successfully added to a report.
+    Compatible = 1,
+    /// The dimension or metric is incompatible. This dimension or metric cannot be
+    /// successfully added to a report.
+    Incompatible = 2,
+}
+/// The request for compatibility information for a report's dimensions and
+/// metrics. Check compatibility provides a preview of the compatibility of a
+/// report; fields shared with the `runReport` request should be the same values
+/// as in your `runReport` request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckCompatibilityRequest {
+    /// A Google Analytics GA4 property identifier whose events are tracked. To
+    /// learn more, see [where to find your Property
+    /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
+    /// `property` should be the same value as in your `runReport` request.
+    ///
+    /// Example: properties/1234
+    ///
+    /// Set the Property ID to 0 for compatibility checking on dimensions and
+    /// metrics common to all properties. In this special mode, this method will
+    /// not return custom dimensions and metrics.
+    #[prost(string, tag = "1")]
+    pub property: ::prost::alloc::string::String,
+    /// The dimensions in this report. `dimensions` should be the same value as in
+    /// your `runReport` request.
+    #[prost(message, repeated, tag = "2")]
+    pub dimensions: ::prost::alloc::vec::Vec<Dimension>,
+    /// The metrics in this report. `metrics` should be the same value as in your
+    /// `runReport` request.
+    #[prost(message, repeated, tag = "3")]
+    pub metrics: ::prost::alloc::vec::Vec<Metric>,
+    /// The filter clause of dimensions. `dimensionFilter` should be the same value
+    /// as in your `runReport` request.
+    #[prost(message, optional, tag = "4")]
+    pub dimension_filter: ::core::option::Option<FilterExpression>,
+    /// The filter clause of metrics. `metricFilter` should be the same value as in
+    /// your `runReport` request
+    #[prost(message, optional, tag = "5")]
+    pub metric_filter: ::core::option::Option<FilterExpression>,
+    /// Filters the dimensions and metrics in the response to just this
+    /// compatibility. Commonly used as `”compatibilityFilter”: “COMPATIBLE”`
+    /// to only return compatible dimensions & metrics.
+    #[prost(enumeration = "Compatibility", tag = "6")]
+    pub compatibility_filter: i32,
+}
+/// The compatibility response with the compatibility of each dimension & metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckCompatibilityResponse {
+    /// The compatibility of each dimension.
+    #[prost(message, repeated, tag = "1")]
+    pub dimension_compatibilities: ::prost::alloc::vec::Vec<DimensionCompatibility>,
+    /// The compatibility of each metric.
+    #[prost(message, repeated, tag = "2")]
+    pub metric_compatibilities: ::prost::alloc::vec::Vec<MetricCompatibility>,
+}
 /// The dimensions and metrics currently accepted in reporting methods.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metadata {
@@ -905,7 +1096,7 @@ pub struct RunReportRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
-    /// ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+    /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     /// Within a batch request, this property should either be unspecified or
     /// consistent with the batch-level property.
     ///
@@ -925,13 +1116,14 @@ pub struct RunReportRequest {
     /// must be unspecified.
     #[prost(message, repeated, tag = "4")]
     pub date_ranges: ::prost::alloc::vec::Vec<DateRange>,
-    /// The filter clause of dimensions. Dimensions must be requested to be used in
-    /// this filter. Metrics cannot be used in this filter.
+    /// Dimension filters allow you to ask for only specific dimension values in
+    /// the report. To learn more, see [Fundamentals of Dimension
+    /// Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
+    /// for examples. Metrics cannot be used in this filter.
     #[prost(message, optional, tag = "5")]
     pub dimension_filter: ::core::option::Option<FilterExpression>,
     /// The filter clause of metrics. Applied at post aggregation phase, similar to
-    /// SQL having-clause. Metrics must be requested to be used in this filter.
-    /// Dimensions cannot be used in this filter.
+    /// SQL having-clause. Dimensions cannot be used in this filter.
     #[prost(message, optional, tag = "6")]
     pub metric_filter: ::core::option::Option<FilterExpression>,
     /// The row count of the start row. The first row is counted as row 0.
@@ -942,7 +1134,7 @@ pub struct RunReportRequest {
     /// request returns the second `limit` of rows.
     ///
     /// To learn more about this pagination parameter, see
-    /// [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
+    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int64, tag = "7")]
     pub offset: i64,
     /// The number of rows to return. If unspecified, 10,000 rows are returned. The
@@ -956,7 +1148,7 @@ pub struct RunReportRequest {
     /// set `limit` to a higher value.
     ///
     /// To learn more about this pagination parameter, see
-    /// [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
+    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int64, tag = "8")]
     pub limit: i64,
     /// Aggregation of metrics. Aggregated metric values will be shown in rows
@@ -980,7 +1172,7 @@ pub struct RunReportRequest {
     #[prost(bool, tag = "13")]
     pub keep_empty_rows: bool,
     /// Toggles whether to return the current state of this Analytics Property's
-    /// quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+    /// quota. Quota is returned in \[PropertyQuota\](#PropertyQuota).
     #[prost(bool, tag = "14")]
     pub return_property_quota: bool,
 }
@@ -1014,7 +1206,7 @@ pub struct RunReportResponse {
     /// response will contain `rowCount` of 175 but only 50 rows.
     ///
     /// To learn more about this pagination parameter, see
-    /// [Pagination](https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination).
+    /// \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
     #[prost(int32, tag = "7")]
     pub row_count: i32,
     /// Metadata for the report.
@@ -1035,7 +1227,7 @@ pub struct RunPivotReportRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
-    /// ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+    /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     /// Within a batch request, this property should either be unspecified or
     /// consistent with the batch-level property.
     ///
@@ -1087,7 +1279,7 @@ pub struct RunPivotReportRequest {
     #[prost(bool, tag = "10")]
     pub keep_empty_rows: bool,
     /// Toggles whether to return the current state of this Analytics Property's
-    /// quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+    /// quota. Quota is returned in \[PropertyQuota\](#PropertyQuota).
     #[prost(bool, tag = "11")]
     pub return_property_quota: bool,
 }
@@ -1167,7 +1359,7 @@ pub struct BatchRunReportsRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
-    /// ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+    /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     /// This property must be specified for the batch. The property within
     /// RunReportRequest may either be unspecified or consistent with this
     /// property.
@@ -1198,7 +1390,7 @@ pub struct BatchRunPivotReportsRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
-    /// ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+    /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     /// This property must be specified for the batch. The property within
     /// RunPivotReportRequest may either be unspecified or consistent with this
     /// property.
@@ -1230,7 +1422,7 @@ pub struct GetMetadataRequest {
     /// specified in the URL path and not URL parameters. Property is a numeric
     /// Google Analytics GA4 Property identifier. To learn more, see [where to find
     /// your Property
-    /// ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+    /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     ///
     /// Example: properties/1234/metadata
     ///
@@ -1246,7 +1438,7 @@ pub struct RunRealtimeReportRequest {
     /// A Google Analytics GA4 property identifier whose events are tracked.
     /// Specified in the URL path and not the body. To learn more, see [where to
     /// find your Property
-    /// ID](https://developers.google.com/analytics/devguides/reporting/data/v1/property-id).
+    /// ID](<https://developers.google.com/analytics/devguides/reporting/data/v1/property-id>).
     ///
     /// Example: properties/1234
     #[prost(string, tag = "1")]
@@ -1285,7 +1477,7 @@ pub struct RunRealtimeReportRequest {
     #[prost(message, repeated, tag = "8")]
     pub order_bys: ::prost::alloc::vec::Vec<OrderBy>,
     /// Toggles whether to return the current state of this Analytics Property's
-    /// Realtime quota. Quota is returned in [PropertyQuota](#PropertyQuota).
+    /// Realtime quota. Quota is returned in \[PropertyQuota\](#PropertyQuota).
     #[prost(bool, tag = "9")]
     pub return_property_quota: bool,
     /// The minute ranges of event data to read. If unspecified, one minute range
@@ -1347,7 +1539,7 @@ pub mod beta_analytics_data_client {
     impl<T> BetaAnalyticsDataClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1360,7 +1552,7 @@ pub mod beta_analytics_data_client {
             interceptor: F,
         ) -> BetaAnalyticsDataClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1507,6 +1699,32 @@ pub mod beta_analytics_data_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.data.v1beta.BetaAnalyticsData/RunRealtimeReport",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " This compatibility method lists dimensions and metrics that can be added to"]
+        #[doc = " a report request and maintain compatibility. This method fails if the"]
+        #[doc = " request's dimensions and metrics are incompatible."]
+        #[doc = ""]
+        #[doc = " In Google Analytics, reports fail if they request incompatible dimensions"]
+        #[doc = " and/or metrics; in that case, you will need to remove dimensions and/or"]
+        #[doc = " metrics from the incompatible report until the report is compatible."]
+        #[doc = ""]
+        #[doc = " The Realtime and Core reports have different compatibility rules. This"]
+        #[doc = " method checks compatibility for Core reports."]
+        pub async fn check_compatibility(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CheckCompatibilityRequest>,
+        ) -> Result<tonic::Response<super::CheckCompatibilityResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.data.v1beta.BetaAnalyticsData/CheckCompatibility",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

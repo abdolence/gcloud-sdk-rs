@@ -57,7 +57,7 @@ pub struct ServiceConfig {
     #[prost(message, repeated, tag = "18")]
     pub endpoints: ::prost::alloc::vec::Vec<super::super::Endpoint>,
     /// Defines the monitored resources used by this service. This is required
-    /// by the [Service.monitoring][google.api.Service.monitoring] and [Service.logging][google.api.Service.logging] configurations.
+    /// by the \[Service.monitoring][google.api.Service.monitoring\] and \[Service.logging][google.api.Service.logging\] configurations.
     #[prost(message, repeated, tag = "25")]
     pub monitored_resources: ::prost::alloc::vec::Vec<super::super::MonitoredResourceDescriptor>,
     /// Monitoring configuration.
@@ -319,7 +319,7 @@ pub struct ServiceIdentity {
     #[prost(string, tag = "1")]
     pub email: ::prost::alloc::string::String,
     /// The unique and stable id of the service account.
-    /// https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts#ServiceAccount
+    /// <https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts#ServiceAccount>
     #[prost(string, tag = "2")]
     pub unique_id: ::prost::alloc::string::String,
 }
@@ -895,10 +895,7 @@ pub struct GetServiceIdentityResponse {
     #[prost(message, optional, tag = "1")]
     pub identity: ::core::option::Option<ServiceIdentity>,
     /// Service identity state.
-    #[prost(
-        enumeration = "get_service_identity_response::IdentityState",
-        tag = "2"
-    )]
+    #[prost(enumeration = "get_service_identity_response::IdentityState", tag = "2")]
     pub state: i32,
 }
 /// Nested message and enum types in `GetServiceIdentityResponse`.
@@ -929,7 +926,7 @@ pub mod service_usage_client {
     impl<T> ServiceUsageClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -942,7 +939,7 @@ pub mod service_usage_client {
             interceptor: F,
         ) -> ServiceUsageClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

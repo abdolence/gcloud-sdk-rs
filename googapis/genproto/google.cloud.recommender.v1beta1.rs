@@ -47,7 +47,7 @@ pub mod insight {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RecommendationReference {
         /// Recommendation resource name, e.g.
-        /// projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID]
+        /// projects/\[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]/recommendations/[RECOMMENDATION_ID\]
         #[prost(string, tag = "1")]
         pub recommendation: ::prost::alloc::string::String,
     }
@@ -155,7 +155,7 @@ pub mod recommendation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InsightReference {
         /// Insight resource name, e.g.
-        /// projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/insights/[INSIGHT_ID]
+        /// projects/\[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]/insights/[INSIGHT_ID\]
         #[prost(string, tag = "1")]
         pub insight: ::prost::alloc::string::String,
     }
@@ -185,7 +185,7 @@ pub struct OperationGroup {
 /// * Custom fields for describing the resource for which the operation is being
 ///   described.
 /// * Allows extension to custom operations not natively supported by RFC6902.
-/// See https://tools.ietf.org/html/rfc6902 for details on the original RFC.
+/// See <https://tools.ietf.org/html/rfc6902> for details on the original RFC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Operation {
     /// Type of this operation. Contains one of 'and', 'remove', 'replace', 'move',
@@ -223,18 +223,27 @@ pub struct Operation {
     /// This is intended to be an exact match per filter. To perform advanced
     /// matching, use path_value_matchers.
     ///
-    /// * Example: {
+    /// * Example:
+    /// ```
+    /// {
     ///   "/versions/*/name" : "it-123"
     ///   "/versions/*/targetSize/percent": 20
-    ///   }
-    /// * Example: {
+    /// }
+    /// ```
+    /// * Example:
+    /// ```
+    /// {
     ///   "/bindings/*/role": "roles/owner"
     ///   "/bindings/*/condition" : null
-    ///   }
-    /// * Example: {
+    /// }
+    /// ```
+    /// * Example:
+    /// ```
+    /// {
     ///   "/bindings/*/role": "roles/owner"
     ///   "/bindings/*/members/*" : ["x@example.com", "y@example.com"]
-    ///   }
+    /// }
+    /// ```
     /// When both path_filters and path_value_matchers are set, an implicit AND
     /// must be performed.
     #[prost(map = "string, message", tag = "8")]
@@ -281,7 +290,7 @@ pub mod value_matcher {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum MatchVariant {
         /// To be used for full regex matching. The regular expression is using the
-        /// Google RE2 syntax (https://github.com/google/re2/wiki/Syntax), so to be
+        /// Google RE2 syntax (<https://github.com/google/re2/wiki/Syntax>), so to be
         /// used with RE2::FullMatch
         #[prost(string, tag = "1")]
         MatchesPattern(::prost::alloc::string::String),
@@ -387,12 +396,12 @@ pub struct ListInsightsRequest {
     /// Acceptable formats:
     ///
     /// 1.
-    /// "projects/[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID]",
+    /// "projects/\[PROJECT_NUMBER]/locations/[LOCATION]/insightTypes/[INSIGHT_TYPE_ID\]",
     ///
     /// LOCATION here refers to GCP Locations:
-    /// https://cloud.google.com/about/locations/
+    /// <https://cloud.google.com/about/locations/>
     /// INSIGHT_TYPE_ID refers to supported insight types:
-    /// https://cloud.google.com/recommender/docs/insights/insight-types.
+    /// <https://cloud.google.com/recommender/docs/insights/insight-types.>
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return from this request.  Non-positive
@@ -452,12 +461,12 @@ pub struct ListRecommendationsRequest {
     /// Acceptable formats:
     ///
     /// 1.
-    /// "projects/[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID]",
+    /// "projects/\[PROJECT_NUMBER]/locations/[LOCATION]/recommenders/[RECOMMENDER_ID\]",
     ///
     /// LOCATION here refers to GCP Locations:
-    /// https://cloud.google.com/about/locations/
+    /// <https://cloud.google.com/about/locations/>
     /// RECOMMENDER_ID refers to supported recommenders:
-    /// https://cloud.google.com/recommender/docs/recommenders.
+    /// <https://cloud.google.com/recommender/docs/recommenders.>
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return from this request.  Non-positive
@@ -503,8 +512,8 @@ pub struct MarkRecommendationClaimedRequest {
     pub name: ::prost::alloc::string::String,
     /// State properties to include with this state. Overwrites any existing
     /// `state_metadata`.
-    /// Keys must match the regex /^[a-z0-9][a-z0-9_.-]{0,62}$/.
-    /// Values must match the regex /^[a-zA-Z0-9_./-]{0,255}$/.
+    /// Keys must match the regex `/^\[a-z0-9][a-z0-9_.-\]{0,62}$/`.
+    /// Values must match the regex `/^\[a-zA-Z0-9_./-\]{0,255}$/`.
     #[prost(map = "string, string", tag = "2")]
     pub state_metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -520,8 +529,8 @@ pub struct MarkRecommendationSucceededRequest {
     pub name: ::prost::alloc::string::String,
     /// State properties to include with this state. Overwrites any existing
     /// `state_metadata`.
-    /// Keys must match the regex /^[a-z0-9][a-z0-9_.-]{0,62}$/.
-    /// Values must match the regex /^[a-zA-Z0-9_./-]{0,255}$/.
+    /// Keys must match the regex `/^\[a-z0-9][a-z0-9_.-\]{0,62}$/`.
+    /// Values must match the regex `/^\[a-zA-Z0-9_./-\]{0,255}$/`.
     #[prost(map = "string, string", tag = "2")]
     pub state_metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -537,8 +546,8 @@ pub struct MarkRecommendationFailedRequest {
     pub name: ::prost::alloc::string::String,
     /// State properties to include with this state. Overwrites any existing
     /// `state_metadata`.
-    /// Keys must match the regex /^[a-z0-9][a-z0-9_.-]{0,62}$/.
-    /// Values must match the regex /^[a-zA-Z0-9_./-]{0,255}$/.
+    /// Keys must match the regex `/^\[a-z0-9][a-z0-9_.-\]{0,62}$/`.
+    /// Values must match the regex `/^\[a-zA-Z0-9_./-\]{0,255}$/`.
     #[prost(map = "string, string", tag = "2")]
     pub state_metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -561,7 +570,7 @@ pub mod recommender_client {
     impl<T> RecommenderClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -574,7 +583,7 @@ pub mod recommender_client {
             interceptor: F,
         ) -> RecommenderClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

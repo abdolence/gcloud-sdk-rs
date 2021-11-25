@@ -83,10 +83,7 @@ pub struct ComponentSettings {
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Component specific settings.  This must match the component value.
-    #[prost(
-        oneof = "component_settings::SpecificSettings",
-        tags = "41, 42, 44, 40"
-    )]
+    #[prost(oneof = "component_settings::SpecificSettings", tags = "41, 42, 44, 40")]
     pub specific_settings: ::core::option::Option<component_settings::SpecificSettings>,
 }
 /// Nested message and enum types in `ComponentSettings`.
@@ -611,7 +608,7 @@ pub mod security_center_settings_service_client {
     impl<T> SecurityCenterSettingsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -624,7 +621,7 @@ pub mod security_center_settings_service_client {
             interceptor: F,
         ) -> SecurityCenterSettingsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

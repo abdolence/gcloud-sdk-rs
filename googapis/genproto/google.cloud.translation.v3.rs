@@ -2,8 +2,12 @@
 /// and defines options for applying that glossary.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateTextGlossaryConfig {
-    /// Required. Specifies the glossary used for this translation. Use
-    /// this format: projects/*/locations/*/glossaries/*
+    /// Required. The `glossary` to be applied for this translation.
+    ///
+    /// The format depends on glossary:
+    ///
+    /// - User provided custom glossary:
+    ///   `projects/{project-number-or-id}/locations/{location-id}/glossaries/{glossary-id}`
     #[prost(string, tag = "1")]
     pub glossary: ::prost::alloc::string::String,
     /// Optional. Indicates match is case-insensitive.
@@ -15,7 +19,8 @@ pub struct TranslateTextGlossaryConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TranslateTextRequest {
     /// Required. The content of the input in string format.
-    /// We recommend the total content be less than 30k codepoints.
+    /// We recommend the total content be less than 30k codepoints. The max length
+    /// of this field is 1024.
     /// Use BatchTranslateText for larger text.
     #[prost(string, repeated, tag = "1")]
     pub contents: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -59,14 +64,13 @@ pub struct TranslateTextRequest {
     ///
     /// - General (built-in) models:
     ///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,
-    ///   `projects/{project-number-or-id}/locations/{location-id}/models/general/base`
     ///
     ///
     /// For global (non-regionalized) requests, use `location-id` `global`.
     /// For example,
     /// `projects/{project-number-or-id}/locations/global/models/general/nmt`.
     ///
-    /// If missing, the system decides which google base model to use.
+    /// If not provided, the default Google model (NMT) will be used.
     #[prost(string, tag = "6")]
     pub model: ::prost::alloc::string::String,
     /// Optional. Glossary to be applied. The glossary must be
@@ -81,7 +85,8 @@ pub struct TranslateTextRequest {
     /// characters, underscores and dashes. International characters are allowed.
     /// Label values are optional. Label keys must start with a letter.
     ///
-    /// See https://cloud.google.com/translate/docs/labels for more information.
+    /// See <https://cloud.google.com/translate/docs/advanced/labels> for more
+    /// information.
     #[prost(map = "string, string", tag = "10")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -90,14 +95,14 @@ pub struct TranslateTextRequest {
 pub struct TranslateTextResponse {
     /// Text translation responses with no glossary applied.
     /// This field has the same length as
-    /// [`contents`][google.cloud.translation.v3.TranslateTextRequest.contents].
+    /// \[`contents`][google.cloud.translation.v3.TranslateTextRequest.contents\].
     #[prost(message, repeated, tag = "1")]
     pub translations: ::prost::alloc::vec::Vec<Translation>,
     /// Text translation responses if a glossary is provided in the request.
     /// This can be the same as
-    /// [`translations`][google.cloud.translation.v3.TranslateTextResponse.translations]
+    /// \[`translations`][google.cloud.translation.v3.TranslateTextResponse.translations\]
     /// if no terms apply. This field has the same length as
-    /// [`contents`][google.cloud.translation.v3.TranslateTextRequest.contents].
+    /// \[`contents`][google.cloud.translation.v3.TranslateTextRequest.contents\].
     #[prost(message, repeated, tag = "3")]
     pub glossary_translations: ::prost::alloc::vec::Vec<Translation>,
 }
@@ -105,6 +110,8 @@ pub struct TranslateTextResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Translation {
     /// Text translated into the target language.
+    /// If an error occurs during translation, this field might be excluded from
+    /// the response.
     #[prost(string, tag = "1")]
     pub translated_text: ::prost::alloc::string::String,
     /// Only present when `model` is present in the request.
@@ -165,7 +172,8 @@ pub struct DetectLanguageRequest {
     /// characters, underscores and dashes. International characters are allowed.
     /// Label values are optional. Label keys must start with a letter.
     ///
-    /// See https://cloud.google.com/translate/docs/labels for more information.
+    /// See <https://cloud.google.com/translate/docs/advanced/labels> for more
+    /// information.
     #[prost(map = "string, string", tag = "6")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -197,8 +205,8 @@ pub struct DetectedLanguage {
 /// The response message for language detection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DetectLanguageResponse {
-    /// A list of detected languages sorted by detection confidence in descending
-    /// order. The most probable language first.
+    /// The most probable language detected by the Translation API. For each
+    /// request, the Translation API will always return only one result.
     #[prost(message, repeated, tag = "1")]
     pub languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
 }
@@ -234,11 +242,10 @@ pub struct GetSupportedLanguagesRequest {
     ///
     /// - General (built-in) models:
     ///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,
-    ///   `projects/{project-number-or-id}/locations/{location-id}/models/general/base`
     ///
     ///
     /// Returns languages supported by the specified model.
-    /// If missing, we get supported languages of Google general base (PBMT) model.
+    /// If missing, we get supported languages of Google general NMT model.
     #[prost(string, tag = "2")]
     pub model: ::prost::alloc::string::String,
 }
@@ -308,7 +315,7 @@ pub mod input_config {
         /// otherwise an error might be returned.
         /// Note that the input tsv must be RFC 4180 compliant.
         ///
-        /// You could use https://github.com/Clever/csvlint to check potential
+        /// You could use <https://github.com/Clever/csvlint> to check potential
         /// formatting errors in your tsv file.
         /// csvlint --delimiter='\t' your_input_file.tsv
         ///
@@ -321,9 +328,11 @@ pub mod input_config {
 /// The Google Cloud Storage location for the output content.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
-    /// Required. There must be no files under 'output_uri_prefix'.
-    /// 'output_uri_prefix' must end with "/" and start with "gs://", otherwise an
-    /// INVALID_ARGUMENT (400) error is returned.
+    /// Required. The bucket used in 'output_uri_prefix' must exist and there must
+    /// be no files under 'output_uri_prefix'. 'output_uri_prefix' must end with
+    /// "/" and start with "gs://". One 'output_uri_prefix' can only be used by one
+    /// batch translation job at a time. Otherwise an INVALID_ARGUMENT (400) error
+    /// is returned.
     #[prost(string, tag = "1")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
@@ -340,7 +349,7 @@ pub mod output_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// Google Cloud Storage destination for output content.
-        /// For every single input file (for example, gs://a/b/c.[extension]), we
+        /// For every single input file (for example, gs://a/b/c.\[extension\]), we
         /// generate at most 2 * n output files. (n is the # of target_language_codes
         /// in the BatchTranslateTextRequest).
         ///
@@ -371,8 +380,13 @@ pub mod output_config {
         /// processed and ready to be consumed (that is, no partial output file is
         /// written).
         ///
+        /// Since index.csv will be keeping updated during the process, please make
+        /// sure there is no custom retention policy applied on the output bucket
+        /// that may avoid file updating.
+        /// (<https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy>)
+        ///
         /// The format of translations_file (for target language code 'trg') is:
-        /// `gs://translation_test/a_b_c_'trg'_translations.[extension]`
+        /// gs://translation_test/a_b_c_'trg'_translations.\[extension\]
         ///
         /// If the input file extension is tsv, the output has the following
         /// columns:
@@ -389,10 +403,10 @@ pub mod output_config {
         /// If input file extension is a txt or html, the translation is directly
         /// written to the output file. If glossary is requested, a separate
         /// glossary_translations_file has format of
-        /// `gs://translation_test/a_b_c_'trg'_glossary_translations.[extension]`
+        /// gs://translation_test/a_b_c_'trg'_glossary_translations.\[extension\]
         ///
         /// The format of errors file (for target language code 'trg') is:
-        /// `gs://translation_test/a_b_c_'trg'_errors.[extension]`
+        /// gs://translation_test/a_b_c_'trg'_errors.\[extension\]
         ///
         /// If the input file extension is tsv, errors_file contains the following:
         /// Column 1: ID of the request provided in the input, if it's not
@@ -404,10 +418,251 @@ pub mod output_config {
         ///
         /// If the input file extension is txt or html, glossary_error_file will be
         /// generated that contains error details. glossary_error_file has format of
-        /// `gs://translation_test/a_b_c_'trg'_glossary_errors.[extension]`
+        /// gs://translation_test/a_b_c_'trg'_glossary_errors.\[extension\]
         #[prost(message, tag = "1")]
         GcsDestination(super::GcsDestination),
     }
+}
+/// A document translation request input config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DocumentInputConfig {
+    /// Specifies the input document's mime_type.
+    ///
+    /// If not specified it will be determined using the file extension for
+    /// gcs_source provided files. For a file provided through bytes content the
+    /// mime_type must be provided.
+    /// Currently supported mime types are:
+    /// - application/pdf
+    /// - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    /// - application/vnd.openxmlformats-officedocument.presentationml.presentation
+    /// - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    #[prost(string, tag = "4")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// Specifies the source for the document's content.
+    /// The input file size should be <= 20MB for
+    /// - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    /// - application/vnd.openxmlformats-officedocument.presentationml.presentation
+    /// - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    /// The input file size should be <= 20MB and the maximum page limit is 20 for
+    /// - application/pdf
+    #[prost(oneof = "document_input_config::Source", tags = "1, 2")]
+    pub source: ::core::option::Option<document_input_config::Source>,
+}
+/// Nested message and enum types in `DocumentInputConfig`.
+pub mod document_input_config {
+    /// Specifies the source for the document's content.
+    /// The input file size should be <= 20MB for
+    /// - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    /// - application/vnd.openxmlformats-officedocument.presentationml.presentation
+    /// - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    /// The input file size should be <= 20MB and the maximum page limit is 20 for
+    /// - application/pdf
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Document's content represented as a stream of bytes.
+        #[prost(bytes, tag = "1")]
+        Content(::prost::alloc::vec::Vec<u8>),
+        /// Google Cloud Storage location. This must be a single file.
+        /// For example: gs://example_bucket/example_file.pdf
+        #[prost(message, tag = "2")]
+        GcsSource(super::GcsSource),
+    }
+}
+/// A document translation request output config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DocumentOutputConfig {
+    /// Optional. Specifies the translated document's mime_type.
+    /// If not specified, the translated file's mime type will be the same as the
+    /// input file's mime type.
+    /// Currently only support the output mime type to be the same as input mime
+    /// type.
+    /// - application/pdf
+    /// - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+    /// - application/vnd.openxmlformats-officedocument.presentationml.presentation
+    /// - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    #[prost(string, tag = "3")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// A URI destination for the translated document.
+    /// It is optional to provide a destination. If provided the results from
+    /// TranslateDocument will be stored in the destination.
+    /// Whether a destination is provided or not, the translated documents will be
+    /// returned within TranslateDocumentResponse.document_translation and
+    /// TranslateDocumentResponse.glossary_document_translation.
+    #[prost(oneof = "document_output_config::Destination", tags = "1")]
+    pub destination: ::core::option::Option<document_output_config::Destination>,
+}
+/// Nested message and enum types in `DocumentOutputConfig`.
+pub mod document_output_config {
+    /// A URI destination for the translated document.
+    /// It is optional to provide a destination. If provided the results from
+    /// TranslateDocument will be stored in the destination.
+    /// Whether a destination is provided or not, the translated documents will be
+    /// returned within TranslateDocumentResponse.document_translation and
+    /// TranslateDocumentResponse.glossary_document_translation.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Optional. Google Cloud Storage destination for the translation output,
+        /// e.g., `gs://my_bucket/my_directory/`.
+        ///
+        /// The destination directory provided does not have to be empty, but the
+        /// bucket must exist. If a file with the same name as the output file
+        /// already exists in the destination an error will be returned.
+        ///
+        /// For a DocumentInputConfig.contents provided document, the output file
+        /// will have the name "output_\[trg]_translations.[ext\]", where
+        /// - \[trg\] corresponds to the translated file's language code,
+        /// - \[ext\] corresponds to the translated file's extension according to its
+        /// mime type.
+        ///
+        ///
+        /// For a DocumentInputConfig.gcs_uri provided document, the output file will
+        /// have a name according to its URI. For example: an input file with URI:
+        /// "gs://a/b/c.\[extension\]" stored in a gcs_destination bucket with name
+        /// "my_bucket" will have an output URI:
+        /// "gs://my_bucket/a_b_c_\[trg]_translations.[ext\]", where
+        /// - \[trg\] corresponds to the translated file's language code,
+        /// - \[ext\] corresponds to the translated file's extension according to its
+        /// mime type.
+        ///
+        ///
+        /// If the document was directly provided through the request, then the
+        /// output document will have the format:
+        /// "gs://my_bucket/translated_document_\[trg]_translations.[ext\], where
+        /// - \[trg\] corresponds to the translated file's language code,
+        /// - \[ext\] corresponds to the translated file's extension according to its
+        /// mime type.
+        ///
+        /// If a glossary was provided, then the output URI for the glossary
+        /// translation will be equal to the default output URI but have
+        /// `glossary_translations` instead of `translations`. For the previous
+        /// example, its glossary URI would be:
+        /// "gs://my_bucket/a_b_c_\[trg]_glossary_translations.[ext\]".
+        ///
+        /// Thus the max number of output files will be 2 (Translated document,
+        /// Glossary translated document).
+        ///
+        /// Callers should expect no partial outputs. If there is any error during
+        /// document translation, no output will be stored in the Cloud Storage
+        /// bucket.
+        #[prost(message, tag = "1")]
+        GcsDestination(super::GcsDestination),
+    }
+}
+/// A document translation request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranslateDocumentRequest {
+    /// Required. Location to make a regional call.
+    ///
+    /// Format: `projects/{project-number-or-id}/locations/{location-id}`.
+    ///
+    /// For global calls, use `projects/{project-number-or-id}/locations/global` or
+    /// `projects/{project-number-or-id}`.
+    ///
+    /// Non-global location is required for requests using AutoML models or custom
+    /// glossaries.
+    ///
+    /// Models and glossaries must be within the same region (have the same
+    /// location-id), otherwise an INVALID_ARGUMENT (400) error is returned.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The BCP-47 language code of the input document if known, for
+    /// example, "en-US" or "sr-Latn". Supported language codes are listed in
+    /// Language Support. If the source language isn't specified, the API attempts
+    /// to identify the source language automatically and returns the source
+    /// language within the response. Source language must be specified if the
+    /// request contains a glossary or a custom model.
+    #[prost(string, tag = "2")]
+    pub source_language_code: ::prost::alloc::string::String,
+    /// Required. The BCP-47 language code to use for translation of the input
+    /// document, set to one of the language codes listed in Language Support.
+    #[prost(string, tag = "3")]
+    pub target_language_code: ::prost::alloc::string::String,
+    /// Required. Input configurations.
+    #[prost(message, optional, tag = "4")]
+    pub document_input_config: ::core::option::Option<DocumentInputConfig>,
+    /// Optional. Output configurations.
+    /// Defines if the output file should be stored within Cloud Storage as well
+    /// as the desired output format. If not provided the translated file will
+    /// only be returned through a byte-stream and its output mime type will be
+    /// the same as the input file's mime type.
+    #[prost(message, optional, tag = "5")]
+    pub document_output_config: ::core::option::Option<DocumentOutputConfig>,
+    /// Optional. The `model` type requested for this translation.
+    ///
+    /// The format depends on model type:
+    ///
+    /// - AutoML Translation models:
+    ///   `projects/{project-number-or-id}/locations/{location-id}/models/{model-id}`
+    ///
+    /// - General (built-in) models:
+    ///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,
+    ///
+    ///
+    /// If not provided, the default Google model (NMT) will be used for
+    /// translation.
+    #[prost(string, tag = "6")]
+    pub model: ::prost::alloc::string::String,
+    /// Optional. Glossary to be applied. The glossary must be within the same
+    /// region (have the same location-id) as the model, otherwise an
+    /// INVALID_ARGUMENT (400) error is returned.
+    #[prost(message, optional, tag = "7")]
+    pub glossary_config: ::core::option::Option<TranslateTextGlossaryConfig>,
+    /// Optional. The labels with user-defined metadata for the request.
+    ///
+    /// Label keys and values can be no longer than 63 characters (Unicode
+    /// codepoints), can only contain lowercase letters, numeric characters,
+    /// underscores and dashes. International characters are allowed. Label values
+    /// are optional. Label keys must start with a letter.
+    ///
+    /// See <https://cloud.google.com/translate/docs/advanced/labels> for more
+    /// information.
+    #[prost(map = "string, string", tag = "8")]
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+}
+/// A translated document message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DocumentTranslation {
+    /// The array of translated documents. It is expected to be size 1 for now. We
+    /// may produce multiple translated documents in the future for other type of
+    /// file formats.
+    #[prost(bytes = "vec", repeated, tag = "1")]
+    pub byte_stream_outputs: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+    /// The translated document's mime type.
+    #[prost(string, tag = "2")]
+    pub mime_type: ::prost::alloc::string::String,
+    /// The detected language for the input document.
+    /// If the user did not provide the source language for the input document,
+    /// this field will have the language code automatically detected. If the
+    /// source language was passed, auto-detection of the language does not occur
+    /// and this field is empty.
+    #[prost(string, tag = "3")]
+    pub detected_language_code: ::prost::alloc::string::String,
+}
+/// A translated document response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranslateDocumentResponse {
+    /// Translated document.
+    #[prost(message, optional, tag = "1")]
+    pub document_translation: ::core::option::Option<DocumentTranslation>,
+    /// The document's translation output if a glossary is provided in the request.
+    /// This can be the same as \[TranslateDocumentResponse.document_translation\]
+    /// if no glossary terms apply.
+    #[prost(message, optional, tag = "2")]
+    pub glossary_document_translation: ::core::option::Option<DocumentTranslation>,
+    /// Only present when 'model' is present in the request.
+    /// 'model' is normalized to have a project number.
+    ///
+    /// For example:
+    /// If the 'model' field in TranslateDocumentRequest is:
+    /// `projects/{project-id}/locations/{location-id}/models/general/nmt` then
+    /// `model` here would be normalized to
+    /// `projects/{project-number}/locations/{location-id}/models/general/nmt`.
+    #[prost(string, tag = "3")]
+    pub model: ::prost::alloc::string::String,
+    /// The `glossary_config` used for this translation.
+    #[prost(message, optional, tag = "4")]
+    pub glossary_config: ::core::option::Option<TranslateTextGlossaryConfig>,
 }
 /// The batch translation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -440,7 +695,6 @@ pub struct BatchTranslateTextRequest {
     ///
     /// - General (built-in) models:
     ///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,
-    ///   `projects/{project-number-or-id}/locations/{location-id}/models/general/base`
     ///
     ///
     /// If the map is empty or a specific model is
@@ -449,7 +703,7 @@ pub struct BatchTranslateTextRequest {
     pub models:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Required. Input configurations.
-    /// The total number of files matched should be <= 1000.
+    /// The total number of files matched should be <= 100.
     /// The total content size should be <= 100M Unicode codepoints.
     /// The files must use UTF-8 encoding.
     #[prost(message, repeated, tag = "5")]
@@ -471,7 +725,8 @@ pub struct BatchTranslateTextRequest {
     /// characters, underscores and dashes. International characters are allowed.
     /// Label values are optional. Label keys must start with a letter.
     ///
-    /// See https://cloud.google.com/translate/docs/labels for more information.
+    /// See <https://cloud.google.com/translate/docs/advanced/labels> for more
+    /// information.
     #[prost(map = "string, string", tag = "9")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -523,7 +778,7 @@ pub mod batch_translate_metadata {
     }
 }
 /// Stored in the
-/// [google.longrunning.Operation.response][google.longrunning.Operation.response]
+/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
 /// field returned by BatchTranslateText if at least one sentence is translated
 /// successfully.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -541,7 +796,7 @@ pub struct BatchTranslateResponse {
     #[prost(message, optional, tag = "4")]
     pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the operation is finished and
-    /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is
+    /// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is
     /// set to true.
     #[prost(message, optional, tag = "5")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -560,7 +815,7 @@ pub mod glossary_input_config {
     pub enum Source {
         /// Required. Google Cloud Storage location of glossary data.
         /// File format is determined based on the filename extension. API returns
-        /// [google.rpc.Code.INVALID_ARGUMENT] for unsupported URI-s and file
+        /// \[google.rpc.Code.INVALID_ARGUMENT\] for unsupported URI-s and file
         /// formats. Wildcards are not allowed. This must be a single file in one of
         /// the following formats:
         ///
@@ -577,9 +832,8 @@ pub mod glossary_input_config {
         /// For equivalent term sets glossaries:
         ///
         /// - CSV (`.csv`): Multi-column CSV file defining equivalent glossary terms
-        ///   in multiple languages. The format is defined for Google Translation
-        ///   Toolkit and documented in [Use a
-        ///   glossary](https://support.google.com/translatortoolkit/answer/6306379?hl=en).
+        ///   in multiple languages. See documentation for more information -
+        ///   \[glossaries\](<https://cloud.google.com/translate/docs/advanced/glossary>).
         #[prost(message, tag = "1")]
         GcsSource(super::GcsSource),
     }
@@ -677,13 +931,26 @@ pub struct ListGlossariesRequest {
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. A token identifying a page of results the server should return.
-    /// Typically, this is the value of [ListGlossariesResponse.next_page_token]
+    /// Typically, this is the value of \[ListGlossariesResponse.next_page_token\]
     /// returned from the previous call to `ListGlossaries` method.
     /// The first page is returned if `page_token`is empty or missing.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Filter specifying constraints of a list operation.
-    /// Filtering is not supported yet, and the parameter currently has no effect.
+    /// Specify the constraint by the format of "key=value", where key must be
+    /// "src" or "tgt", and the value must be a valid language code.
+    /// For multiple restrictions, concatenate them by "AND" (uppercase only),
+    /// such as: "src=en-US AND tgt=zh-CN". Notice that the exact match is used
+    /// here, which means using 'en-US' and 'en' can lead to different results,
+    /// which depends on the language code you used when you create the glossary.
+    /// For the unidirectional glossaries, the "src" and "tgt" add restrictions
+    /// on the source and target language code separately.
+    /// For the equivalent term set glossaries, the "src" and/or "tgt" add
+    /// restrictions on the term set.
+    /// For example: "src=en-US AND tgt=zh-CN" will only pick the unidirectional
+    /// glossaries which exactly match the source language code as "en-US" and the
+    /// target language code "zh-CN", but all equivalent term set glossaries which
+    /// contain "en-US" and "zh-CN" in their language set will be picked.
     /// If missing, no filtering is performed.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -695,13 +962,13 @@ pub struct ListGlossariesResponse {
     #[prost(message, repeated, tag = "1")]
     pub glossaries: ::prost::alloc::vec::Vec<Glossary>,
     /// A token to retrieve a page of results. Pass this value in the
-    /// [ListGlossariesRequest.page_token] field in the subsequent call to
+    /// \[ListGlossariesRequest.page_token\] field in the subsequent call to
     /// `ListGlossaries` method to retrieve the next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Stored in the
-/// [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata]
+/// \[google.longrunning.Operation.metadata][google.longrunning.Operation.metadata\]
 /// field returned by CreateGlossary.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateGlossaryMetadata {
@@ -737,7 +1004,7 @@ pub mod create_glossary_metadata {
     }
 }
 /// Stored in the
-/// [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata]
+/// \[google.longrunning.Operation.metadata][google.longrunning.Operation.metadata\]
 /// field returned by DeleteGlossary.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlossaryMetadata {
@@ -773,7 +1040,7 @@ pub mod delete_glossary_metadata {
     }
 }
 /// Stored in the
-/// [google.longrunning.Operation.response][google.longrunning.Operation.response]
+/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
 /// field returned by DeleteGlossary.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteGlossaryResponse {
@@ -784,10 +1051,288 @@ pub struct DeleteGlossaryResponse {
     #[prost(message, optional, tag = "2")]
     pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the glossary deletion is finished and
-    /// [google.longrunning.Operation.done][google.longrunning.Operation.done] is
+    /// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is
     /// set to true.
     #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// The BatchTranslateDocument request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchTranslateDocumentRequest {
+    /// Required. Location to make a regional call.
+    ///
+    /// Format: `projects/{project-number-or-id}/locations/{location-id}`.
+    ///
+    /// The `global` location is not supported for batch translation.
+    ///
+    /// Only AutoML Translation models or glossaries within the same region (have
+    /// the same location-id) can be used, otherwise an INVALID_ARGUMENT (400)
+    /// error is returned.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The BCP-47 language code of the input document if known, for
+    /// example, "en-US" or "sr-Latn". Supported language codes are listed in
+    /// Language Support (<https://cloud.google.com/translate/docs/languages>).
+    #[prost(string, tag = "2")]
+    pub source_language_code: ::prost::alloc::string::String,
+    /// Required. The BCP-47 language code to use for translation of the input
+    /// document. Specify up to 10 language codes here.
+    #[prost(string, repeated, tag = "3")]
+    pub target_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Required. Input configurations.
+    /// The total number of files matched should be <= 100.
+    /// The total content size to translate should be <= 100M Unicode codepoints.
+    /// The files must use UTF-8 encoding.
+    #[prost(message, repeated, tag = "4")]
+    pub input_configs: ::prost::alloc::vec::Vec<BatchDocumentInputConfig>,
+    /// Required. Output configuration.
+    /// If 2 input configs match to the same file (that is, same input path),
+    /// we don't generate output for duplicate inputs.
+    #[prost(message, optional, tag = "5")]
+    pub output_config: ::core::option::Option<BatchDocumentOutputConfig>,
+    /// Optional. The models to use for translation. Map's key is target language
+    /// code. Map's value is the model name. Value can be a built-in general model,
+    /// or an AutoML Translation model.
+    ///
+    /// The value format depends on model type:
+    ///
+    /// - AutoML Translation models:
+    ///   `projects/{project-number-or-id}/locations/{location-id}/models/{model-id}`
+    ///
+    /// - General (built-in) models:
+    ///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,
+    ///
+    ///
+    /// If the map is empty or a specific model is
+    /// not requested for a language pair, then default google model (nmt) is used.
+    #[prost(map = "string, string", tag = "6")]
+    pub models:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Optional. Glossaries to be applied. It's keyed by target language code.
+    #[prost(map = "string, message", tag = "7")]
+    pub glossaries:
+        ::std::collections::HashMap<::prost::alloc::string::String, TranslateTextGlossaryConfig>,
+    /// Optional. File format conversion map to be applied to all input files.
+    /// Map's key is the original mime_type. Map's value is the target mime_type of
+    /// translated documents.
+    ///
+    /// Supported file format conversion includes:
+    /// - `application/pdf` to
+    ///   `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
+    ///
+    /// If nothing specified, output files will be in the same format as the
+    /// original file.
+    #[prost(map = "string, string", tag = "8")]
+    pub format_conversions:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+}
+/// Input configuration for BatchTranslateDocument request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchDocumentInputConfig {
+    /// Specify the input.
+    #[prost(oneof = "batch_document_input_config::Source", tags = "1")]
+    pub source: ::core::option::Option<batch_document_input_config::Source>,
+}
+/// Nested message and enum types in `BatchDocumentInputConfig`.
+pub mod batch_document_input_config {
+    /// Specify the input.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Source {
+        /// Google Cloud Storage location for the source input.
+        /// This can be a single file (for example,
+        /// `gs://translation-test/input.docx`) or a wildcard (for example,
+        /// `gs://translation-test/*`).
+        ///
+        /// File mime type is determined based on extension. Supported mime type
+        /// includes:
+        /// - `pdf`, application/pdf
+        /// - `docx`,
+        /// application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        /// - `pptx`,
+        /// application/vnd.openxmlformats-officedocument.presentationml.presentation
+        /// - `xlsx`,
+        /// application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+        ///
+        /// The max file size to support for `.docx`, `.pptx` and `.xlsx` is 100MB.
+        /// The max file size to support for `.pdf` is 1GB and the max page limit is
+        /// 1000 pages.
+        /// The max file size to support for all input documents is 1GB.
+        #[prost(message, tag = "1")]
+        GcsSource(super::GcsSource),
+    }
+}
+/// Output configuration for BatchTranslateDocument request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchDocumentOutputConfig {
+    /// The destination of output. The destination directory provided must exist
+    /// and be empty.
+    #[prost(oneof = "batch_document_output_config::Destination", tags = "1")]
+    pub destination: ::core::option::Option<batch_document_output_config::Destination>,
+}
+/// Nested message and enum types in `BatchDocumentOutputConfig`.
+pub mod batch_document_output_config {
+    /// The destination of output. The destination directory provided must exist
+    /// and be empty.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        /// Google Cloud Storage destination for output content.
+        /// For every single input document (for example, gs://a/b/c.\[extension\]), we
+        /// generate at most 2 * n output files. (n is the # of target_language_codes
+        /// in the BatchTranslateDocumentRequest).
+        ///
+        /// While the input documents are being processed, we write/update an index
+        /// file `index.csv` under `gcs_destination.output_uri_prefix` (for example,
+        /// gs://translation_output/index.csv) The index file is generated/updated as
+        /// new files are being translated. The format is:
+        ///
+        /// input_document,target_language_code,translation_output,error_output,
+        /// glossary_translation_output,glossary_error_output
+        ///
+        /// `input_document` is one file we matched using gcs_source.input_uri.
+        /// `target_language_code` is provided in the request.
+        /// `translation_output` contains the translations. (details provided below)
+        /// `error_output` contains the error message during processing of the file.
+        /// Both translations_file and errors_file could be empty strings if we have
+        /// no content to output.
+        /// `glossary_translation_output` and `glossary_error_output` are the
+        /// translated output/error when we apply glossaries. They could also be
+        /// empty if we have no content to output.
+        ///
+        /// Once a row is present in index.csv, the input/output matching never
+        /// changes. Callers should also expect all the content in input_file are
+        /// processed and ready to be consumed (that is, no partial output file is
+        /// written).
+        ///
+        /// Since index.csv will be keeping updated during the process, please make
+        /// sure there is no custom retention policy applied on the output bucket
+        /// that may avoid file updating.
+        /// (<https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy>)
+        ///
+        /// The naming format of translation output files follows (for target
+        /// language code \[trg\]): `translation_output`:
+        /// gs://translation_output/a_b_c_\[trg]_translation.[extension\]
+        /// `glossary_translation_output`:
+        /// gs://translation_test/a_b_c_\[trg]_glossary_translation.[extension\] The
+        /// output document will maintain the same file format as the input document.
+        ///
+        /// The naming format of error output files follows (for target language code
+        /// \[trg\]): `error_output`: gs://translation_test/a_b_c_\[trg\]_errors.txt
+        /// `glossary_error_output`:
+        /// gs://translation_test/a_b_c_\[trg\]_glossary_translation.txt The error
+        /// output is a txt file containing error details.
+        #[prost(message, tag = "1")]
+        GcsDestination(super::GcsDestination),
+    }
+}
+/// Stored in the
+/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
+/// field returned by BatchTranslateDocument if at least one document is
+/// translated successfully.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchTranslateDocumentResponse {
+    /// Total number of pages to translate in all documents. Documents without
+    /// clear page definition (such as XLSX) are not counted.
+    #[prost(int64, tag = "1")]
+    pub total_pages: i64,
+    /// Number of successfully translated pages in all documents. Documents without
+    /// clear page definition (such as XLSX) are not counted.
+    #[prost(int64, tag = "2")]
+    pub translated_pages: i64,
+    /// Number of pages that failed to process in all documents. Documents without
+    /// clear page definition (such as XLSX) are not counted.
+    #[prost(int64, tag = "3")]
+    pub failed_pages: i64,
+    /// Number of billable pages in documents with clear page definition (such as
+    /// PDF, DOCX, PPTX)
+    #[prost(int64, tag = "4")]
+    pub total_billable_pages: i64,
+    /// Total number of characters (Unicode codepoints) in all documents.
+    #[prost(int64, tag = "5")]
+    pub total_characters: i64,
+    /// Number of successfully translated characters (Unicode codepoints) in all
+    /// documents.
+    #[prost(int64, tag = "6")]
+    pub translated_characters: i64,
+    /// Number of characters that have failed to process (Unicode codepoints) in
+    /// all documents.
+    #[prost(int64, tag = "7")]
+    pub failed_characters: i64,
+    /// Number of billable characters (Unicode codepoints) in documents without
+    /// clear page definition, such as XLSX.
+    #[prost(int64, tag = "8")]
+    pub total_billable_characters: i64,
+    /// Time when the operation was submitted.
+    #[prost(message, optional, tag = "9")]
+    pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time when the operation is finished and
+    /// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is
+    /// set to true.
+    #[prost(message, optional, tag = "10")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// State metadata for the batch translation operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchTranslateDocumentMetadata {
+    /// The state of the operation.
+    #[prost(enumeration = "batch_translate_document_metadata::State", tag = "1")]
+    pub state: i32,
+    /// Total number of pages to translate in all documents so far. Documents
+    /// without clear page definition (such as XLSX) are not counted.
+    #[prost(int64, tag = "2")]
+    pub total_pages: i64,
+    /// Number of successfully translated pages in all documents so far. Documents
+    /// without clear page definition (such as XLSX) are not counted.
+    #[prost(int64, tag = "3")]
+    pub translated_pages: i64,
+    /// Number of pages that failed to process in all documents so far. Documents
+    /// without clear page definition (such as XLSX) are not counted.
+    #[prost(int64, tag = "4")]
+    pub failed_pages: i64,
+    /// Number of billable pages in documents with clear page definition (such as
+    /// PDF, DOCX, PPTX) so far.
+    #[prost(int64, tag = "5")]
+    pub total_billable_pages: i64,
+    /// Total number of characters (Unicode codepoints) in all documents so far.
+    #[prost(int64, tag = "6")]
+    pub total_characters: i64,
+    /// Number of successfully translated characters (Unicode codepoints) in all
+    /// documents so far.
+    #[prost(int64, tag = "7")]
+    pub translated_characters: i64,
+    /// Number of characters that have failed to process (Unicode codepoints) in
+    /// all documents so far.
+    #[prost(int64, tag = "8")]
+    pub failed_characters: i64,
+    /// Number of billable characters (Unicode codepoints) in documents without
+    /// clear page definition (such as XLSX) so far.
+    #[prost(int64, tag = "9")]
+    pub total_billable_characters: i64,
+    /// Time when the operation was submitted.
+    #[prost(message, optional, tag = "10")]
+    pub submit_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `BatchTranslateDocumentMetadata`.
+pub mod batch_translate_document_metadata {
+    /// State of the job.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// Invalid.
+        Unspecified = 0,
+        /// Request is being processed.
+        Running = 1,
+        /// The batch is processed, and at least one item was successfully processed.
+        Succeeded = 2,
+        /// The batch is done and no item was successfully processed.
+        Failed = 3,
+        /// Request is in the process of being canceled after caller invoked
+        /// longrunning.Operations.CancelOperation on the request id.
+        Cancelling = 4,
+        /// The batch is done after the user has called the
+        /// longrunning.Operations.CancelOperation. Any records processed before the
+        /// cancel command are output as specified in the request.
+        Cancelled = 5,
+    }
 }
 #[doc = r" Generated client implementations."]
 pub mod translation_service_client {
@@ -801,7 +1346,7 @@ pub mod translation_service_client {
     impl<T> TranslationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -814,7 +1359,7 @@ pub mod translation_service_client {
             interceptor: F,
         ) -> TranslationServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -890,6 +1435,23 @@ pub mod translation_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Translates documents in synchronous mode."]
+        pub async fn translate_document(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TranslateDocumentRequest>,
+        ) -> Result<tonic::Response<super::TranslateDocumentResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/TranslateDocument",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Translates a large volume of text in asynchronous batch mode."]
         #[doc = " This function provides real-time output as the inputs are being processed."]
         #[doc = " If caller cancels a request, the partial results (for an input file, it's"]
@@ -913,6 +1475,32 @@ pub mod translation_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.translation.v3.TranslationService/BatchTranslateText",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Translates a large volume of document in asynchronous batch mode."]
+        #[doc = " This function provides real-time output as the inputs are being processed."]
+        #[doc = " If caller cancels a request, the partial results (for an input file, it's"]
+        #[doc = " all or nothing) may still be available on the specified output location."]
+        #[doc = ""]
+        #[doc = " This call returns immediately and you can use"]
+        #[doc = " google.longrunning.Operation.name to poll the status of the call."]
+        pub async fn batch_translate_document(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchTranslateDocumentRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.translation.v3.TranslationService/BatchTranslateDocument",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

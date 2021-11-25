@@ -1,7 +1,7 @@
 /// Arrow schema as specified in
-/// https://arrow.apache.org/docs/python/api/datatypes.html
+/// <https://arrow.apache.org/docs/python/api/datatypes.html>
 /// and serialized to bytes using IPC:
-/// https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc
+/// <https://arrow.apache.org/docs/format/Columnar.html#serialization-and-interprocess-communication-ipc>
 ///
 /// See code samples on how this message can be deserialized.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -42,7 +42,7 @@ pub mod arrow_serialization_options {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroSchema {
     /// Json serialized schema, as described at
-    /// https://avro.apache.org/docs/1.8.1/spec.html.
+    /// <https://avro.apache.org/docs/1.8.1/spec.html.>
     #[prost(string, tag = "1")]
     pub schema: ::prost::alloc::string::String,
 }
@@ -58,7 +58,7 @@ pub struct AvroRows {
 pub struct ProtoSchema {
     /// Descriptor for input message. The descriptor has to be self contained,
     /// including all the nested types, excepted for proto buffer well known types
-    /// (https://developers.google.com/protocol-buffers/docs/reference/google.protobuf).
+    /// (<https://developers.google.com/protocol-buffers/docs/reference/google.protobuf>).
     #[prost(message, optional, tag = "1")]
     pub proto_descriptor: ::core::option::Option<::prost_types::DescriptorProto>,
 }
@@ -66,7 +66,7 @@ pub struct ProtoSchema {
 pub struct ProtoRows {
     /// A sequence of rows serialized as a Protocol Buffer.
     ///
-    /// See https://developers.google.com/protocol-buffers/docs/overview for more
+    /// See <https://developers.google.com/protocol-buffers/docs/overview> for more
     /// information on deserializing this field.
     #[prost(bytes = "vec", repeated, tag = "1")]
     pub serialized_rows: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
@@ -293,10 +293,10 @@ pub mod write_stream {
 pub enum DataFormat {
     Unspecified = 0,
     /// Avro is a standard open source row based file format.
-    /// See https://avro.apache.org/ for more details.
+    /// See <https://avro.apache.org/> for more details.
     Avro = 1,
     /// Arrow is a standard open source column-based message format.
-    /// See https://arrow.apache.org/ for more details.
+    /// See <https://arrow.apache.org/> for more details.
     Arrow = 2,
 }
 /// Request message for `CreateReadSession`.
@@ -688,7 +688,7 @@ pub mod big_query_read_client {
     impl<T> BigQueryReadClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -701,7 +701,7 @@ pub mod big_query_read_client {
             interceptor: F,
         ) -> BigQueryReadClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -743,7 +743,7 @@ pub mod big_query_read_client {
         #[doc = " limits are enforced based on the number of pre-filtered rows, so some"]
         #[doc = " filters can lead to lopsided assignments."]
         #[doc = ""]
-        #[doc = " Read sessions automatically expire 24 hours after they are created and do"]
+        #[doc = " Read sessions automatically expire 6 hours after they are created and do"]
         #[doc = " not require manual clean-up by the caller."]
         pub async fn create_read_session(
             &mut self,
@@ -783,9 +783,7 @@ pub mod big_query_read_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1beta2.BigQueryRead/ReadRows",
             );
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Splits a given `ReadStream` into two `ReadStream` objects. These"]
         #[doc = " `ReadStream` objects are referred to as the primary and the residual"]
@@ -831,7 +829,7 @@ pub mod big_query_write_client {
     impl<T> BigQueryWriteClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -844,7 +842,7 @@ pub mod big_query_write_client {
             interceptor: F,
         ) -> BigQueryWriteClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -927,9 +925,7 @@ pub mod big_query_write_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1beta2.BigQueryWrite/AppendRows",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
         #[doc = " Gets a write stream."]
         pub async fn get_write_stream(

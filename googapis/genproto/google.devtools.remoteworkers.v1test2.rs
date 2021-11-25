@@ -32,7 +32,7 @@
 ///
 /// Keys are not context sensitive.
 ///
-/// See http://goo.gl/NurY8g for more information on the Worker message.
+/// See <http://goo.gl/NurY8g> for more information on the Worker message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Worker {
     /// A list of devices; the first device is the primary device. See the `Device`
@@ -293,7 +293,7 @@ pub struct Lease {
 /// be `"admin"` in these cases.
 ///
 /// This message is heavily based on Swarming administration tasks from the LUCI
-/// project (http://github.com/luci/luci-py/appengine/swarming).
+/// project (<http://github.com/luci/luci-py/appengine/swarming>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdminTemp {
     /// The admin action; see `Command` for legal values.
@@ -437,7 +437,7 @@ pub mod bots_client {
     impl<T> BotsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -447,7 +447,7 @@ pub mod bots_client {
         }
         pub fn with_interceptor<F>(inner: T, interceptor: F) -> BotsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -734,7 +734,7 @@ pub struct FileMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectoryMetadata {
     /// The path of the directory, as in
-    /// [FileMetadata.path][google.devtools.remoteworkers.v1test2.FileMetadata.path].
+    /// \[FileMetadata.path][google.devtools.remoteworkers.v1test2.FileMetadata.path\].
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
     /// A pointer to the contents of the directory, in the form of a marshalled

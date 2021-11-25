@@ -30,7 +30,7 @@ pub struct Asset {
     /// The full name of the asset. For example:
     /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
     /// See [Resource
-    /// Names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more information.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -61,7 +61,7 @@ pub struct Resource {
     pub version: ::prost::alloc::string::String,
     /// The URL of the discovery document containing the resource's JSON schema.
     /// For example:
-    /// `"https://www.googleapis.com/discovery/v1/apis/compute/v1/rest"`.
+    /// `"<https://www.googleapis.com/discovery/v1/apis/compute/v1/rest"`.>
     /// It will be left unspecified for resources without a discovery-based API,
     /// such as Cloud Bigtable.
     #[prost(string, tag = "2")]
@@ -74,17 +74,17 @@ pub struct Resource {
     /// The REST URL for accessing the resource. An HTTP GET operation using this
     /// URL returns the resource itself.
     /// Example:
-    /// `https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`.
+    /// `<https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`.>
     /// It will be left unspecified for resources without a REST API.
     #[prost(string, tag = "4")]
     pub resource_url: ::prost::alloc::string::String,
     /// The full name of the immediate parent of this resource. See
     /// [Resource
-    /// Names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more information.
     ///
     /// For GCP assets, it is the parent resource defined in the [Cloud IAM policy
-    /// hierarchy](https://cloud.google.com/iam/docs/overview#policy_hierarchy).
+    /// hierarchy](<https://cloud.google.com/iam/docs/overview#policy_hierarchy>).
     /// For example:
     /// `"//cloudresourcemanager.googleapis.com/projects/my_project_123"`.
     ///
@@ -200,7 +200,7 @@ pub mod gcs_destination {
         /// The uri of the Cloud Storage object. It's the same uri that is used by
         /// gsutil. For example: "gs://bucket_name/object_name". See [Viewing and
         /// Editing Object
-        /// Metadata](https://cloud.google.com/storage/docs/viewing-editing-metadata)
+        /// Metadata](<https://cloud.google.com/storage/docs/viewing-editing-metadata>)
         /// for more information.
         #[prost(string, tag = "1")]
         Uri(::prost::alloc::string::String),
@@ -253,7 +253,7 @@ pub struct Feed {
     /// example:
     /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
     /// See [Resource
-    /// Names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more info.
     #[prost(string, repeated, tag = "2")]
     pub asset_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -262,7 +262,7 @@ pub struct Feed {
     /// specified asset_names and asset_types are exported to the feed.
     /// For example:
     /// "compute.googleapis.com/Disk" See [Introduction to Cloud Asset
-    /// Inventory](https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview)
+    /// Inventory](<https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>)
     /// for all supported asset types.
     #[prost(string, repeated, tag = "3")]
     pub asset_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -298,7 +298,7 @@ pub mod asset_service_client {
     impl<T> AssetServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -311,7 +311,7 @@ pub mod asset_service_client {
             interceptor: F,
         ) -> AssetServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

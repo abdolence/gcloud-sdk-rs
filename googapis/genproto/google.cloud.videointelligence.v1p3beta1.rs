@@ -2,12 +2,12 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoRequest {
     /// Input video location. Currently, only
-    /// [Cloud Storage](https://cloud.google.com/storage/) URIs are
+    /// [Cloud Storage](<https://cloud.google.com/storage/>) URIs are
     /// supported. URIs must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
+    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For
     /// more information, see [Request
-    /// URIs](https://cloud.google.com/storage/docs/request-endpoints). To identify
+    /// URIs](<https://cloud.google.com/storage/docs/request-endpoints>). To identify
     /// multiple videos, a video URI may include wildcards in the `object-id`.
     /// Supported wildcards: '*' to match 0 or more characters;
     /// '?' to match 1 character. If unset, the input video should be embedded
@@ -26,12 +26,12 @@ pub struct AnnotateVideoRequest {
     #[prost(message, optional, tag = "3")]
     pub video_context: ::core::option::Option<VideoContext>,
     /// Optional. Location where the output (in JSON format) should be stored.
-    /// Currently, only [Cloud Storage](https://cloud.google.com/storage/)
+    /// Currently, only [Cloud Storage](<https://cloud.google.com/storage/>)
     /// URIs are supported. These must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For
+    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For
     /// more information, see [Request
-    /// URIs](https://cloud.google.com/storage/docs/request-endpoints).
+    /// URIs](<https://cloud.google.com/storage/docs/request-endpoints>).
     #[prost(string, tag = "4")]
     pub output_uri: ::prost::alloc::string::String,
     /// Optional. Cloud region where annotation should take place. Supported cloud
@@ -224,7 +224,7 @@ pub struct LabelFrame {
 pub struct Entity {
     /// Opaque entity ID. Some IDs may be available in
     /// [Google Knowledge Graph Search
-    /// API](https://developers.google.com/knowledge-graph/).
+    /// API](<https://developers.google.com/knowledge-graph/>).
     #[prost(string, tag = "1")]
     pub entity_id: ::prost::alloc::string::String,
     /// Textual description, e.g., `Fixed-gear bicycle`.
@@ -426,7 +426,7 @@ pub struct PersonDetectionAnnotation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationResults {
     /// Video file location in
-    /// [Cloud Storage](https://cloud.google.com/storage/).
+    /// [Cloud Storage](<https://cloud.google.com/storage/>).
     #[prost(string, tag = "1")]
     pub input_uri: ::prost::alloc::string::String,
     /// Video segment on which the annotation is run.
@@ -506,7 +506,7 @@ pub struct AnnotateVideoResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationProgress {
     /// Video file location in
-    /// [Cloud Storage](https://cloud.google.com/storage/).
+    /// [Cloud Storage](<https://cloud.google.com/storage/>).
     #[prost(string, tag = "1")]
     pub input_uri: ::prost::alloc::string::String,
     /// Approximate percentage processed thus far. Guaranteed to be
@@ -541,9 +541,9 @@ pub struct AnnotateVideoProgress {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechTranscriptionConfig {
     /// Required. *Required* The language of the supplied audio as a
-    /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
+    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
     /// Example: "en-US".
-    /// See [Language Support](https://cloud.google.com/speech/docs/languages)
+    /// See [Language Support](<https://cloud.google.com/speech/docs/languages>)
     /// for a list of the currently supported language codes.
     #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
@@ -604,7 +604,7 @@ pub struct SpeechContext {
     /// to improve the accuracy for specific words and phrases, for example, if
     /// specific commands are typically spoken by the user. This can also be used
     /// to add additional words to the vocabulary of the recognizer. See
-    /// [usage limits](https://cloud.google.com/speech/limits#content).
+    /// [usage limits](<https://cloud.google.com/speech/limits#content>).
     #[prost(string, repeated, tag = "1")]
     pub phrases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -617,7 +617,7 @@ pub struct SpeechTranscription {
     /// ranked by the recognizer.
     #[prost(message, repeated, tag = "1")]
     pub alternatives: ::prost::alloc::vec::Vec<SpeechRecognitionAlternative>,
-    /// Output only. The [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt)
+    /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>)
     /// language tag of the language in this result. This language code was
     /// detected to have the most likelihood of being spoken in the audio.
     #[prost(string, tag = "2")]
@@ -826,10 +826,7 @@ pub struct LogoRecognitionAnnotation {
 pub struct StreamingAnnotateVideoRequest {
     /// *Required* The streaming request, which is either a streaming config or
     /// video content.
-    #[prost(
-        oneof = "streaming_annotate_video_request::StreamingRequest",
-        tags = "1, 2"
-    )]
+    #[prost(oneof = "streaming_annotate_video_request::StreamingRequest", tags = "1, 2")]
     pub streaming_request:
         ::core::option::Option<streaming_annotate_video_request::StreamingRequest>,
 }
@@ -866,10 +863,7 @@ pub struct StreamingVideoConfig {
     #[prost(message, optional, tag = "30")]
     pub storage_config: ::core::option::Option<StreamingStorageConfig>,
     /// Config for requested annotation feature.
-    #[prost(
-        oneof = "streaming_video_config::StreamingConfig",
-        tags = "2, 3, 4, 5, 23, 21, 22"
-    )]
+    #[prost(oneof = "streaming_video_config::StreamingConfig", tags = "2, 3, 4, 5, 23, 21, 22")]
     pub streaming_config: ::core::option::Option<streaming_video_config::StreamingConfig>,
 }
 /// Nested message and enum types in `StreamingVideoConfig`.
@@ -905,7 +899,7 @@ pub mod streaming_video_config {
 /// `StreamingAnnotateVideoResponse` messages are streamed back to the client.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingAnnotateVideoResponse {
-    /// If set, returns a [google.rpc.Status][google.rpc.Status] message that
+    /// If set, returns a \[google.rpc.Status][google.rpc.Status\] message that
     /// specifies the error for the operation.
     #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
@@ -1088,7 +1082,7 @@ pub mod video_intelligence_service_client {
     impl<T> VideoIntelligenceServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1101,7 +1095,7 @@ pub mod video_intelligence_service_client {
             interceptor: F,
         ) -> VideoIntelligenceServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1163,7 +1157,7 @@ pub mod streaming_video_intelligence_service_client {
     impl<T> StreamingVideoIntelligenceServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1176,7 +1170,7 @@ pub mod streaming_video_intelligence_service_client {
             interceptor: F,
         ) -> StreamingVideoIntelligenceServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1222,9 +1216,7 @@ pub mod streaming_video_intelligence_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.videointelligence.v1p3beta1.StreamingVideoIntelligenceService/StreamingAnnotateVideo") ;
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }

@@ -8,19 +8,19 @@
 pub struct Span {
     /// Required. The resource name of the span in the following format:
     ///
-    ///     projects/[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID]
+    ///     projects/\[PROJECT_ID]/traces/[TRACE_ID]/spans/[SPAN_ID\]
     ///
-    /// [TRACE_ID] is a unique identifier for a trace within a project;
+    /// \[TRACE_ID\] is a unique identifier for a trace within a project;
     /// it is a 32-character hexadecimal encoding of a 16-byte array.
     ///
-    /// [SPAN_ID] is a unique identifier for a span within a trace; it
+    /// \[SPAN_ID\] is a unique identifier for a span within a trace; it
     /// is a 16-character hexadecimal encoding of an 8-byte array.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The [SPAN_ID] portion of the span's resource name.
+    /// Required. The \[SPAN_ID\] portion of the span's resource name.
     #[prost(string, tag = "2")]
     pub span_id: ::prost::alloc::string::String,
-    /// The [SPAN_ID] of this span's parent span. If this is a root span,
+    /// The \[SPAN_ID\] of this span's parent span. If this is a root span,
     /// then this field must be empty.
     #[prost(string, tag = "3")]
     pub parent_span_id: ::prost::alloc::string::String,
@@ -78,7 +78,7 @@ pub struct Span {
 }
 /// Nested message and enum types in `Span`.
 pub mod span {
-    /// A set of attributes, each in the format `[KEY]:[VALUE]`.
+    /// A set of attributes, each in the format `\[KEY]:[VALUE\]`.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Attributes {
         /// The set of attributes. Each attribute's key can be up to 128 bytes
@@ -193,10 +193,10 @@ pub mod span {
     /// traces or when the handler receives a request from a different project.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Link {
-        /// The [TRACE_ID] for a trace within a project.
+        /// The \[TRACE_ID\] for a trace within a project.
         #[prost(string, tag = "1")]
         pub trace_id: ::prost::alloc::string::String,
-        /// The [SPAN_ID] for a span within a trace.
+        /// The \[SPAN_ID\] for a span within a trace.
         #[prost(string, tag = "2")]
         pub span_id: ::prost::alloc::string::String,
         /// The relationship of the current span relative to the linked span.
@@ -264,7 +264,7 @@ pub mod span {
         Consumer = 5,
     }
 }
-/// The allowed types for [VALUE] in a `[KEY]:[VALUE]` attribute.
+/// The allowed types for \[VALUE\] in a `\[KEY]:[VALUE\]` attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttributeValue {
     /// The type of the value.
@@ -315,7 +315,7 @@ pub mod stack_trace {
         #[prost(message, optional, tag = "1")]
         pub function_name: ::core::option::Option<super::TruncatableString>,
         /// An un-mangled function name, if `function_name` is
-        /// [mangled](http://www.avabodh.com/cxxin/namemangling.html). The name can
+        /// \[mangled\](<http://www.avabodh.com/cxxin/namemangling.html>). The name can
         /// be fully-qualified (up to 1024 bytes).
         #[prost(message, optional, tag = "2")]
         pub original_function_name: ::core::option::Option<super::TruncatableString>,
@@ -383,7 +383,7 @@ pub struct TruncatableString {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchWriteSpansRequest {
     /// Required. The name of the project where the spans belong. The format is
-    /// `projects/[PROJECT_ID]`.
+    /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. A list of new spans. The span names must not match existing
@@ -407,7 +407,7 @@ pub mod trace_service_client {
     impl<T> TraceServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -420,7 +420,7 @@ pub mod trace_service_client {
             interceptor: F,
         ) -> TraceServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

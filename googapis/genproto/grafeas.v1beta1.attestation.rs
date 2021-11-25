@@ -40,7 +40,7 @@ pub mod pgp_signed_attestation {
         /// `ContentType` is not set.
         Unspecified = 0,
         /// Atomic format attestation signature. See
-        /// https://github.com/containers/image/blob/8a5d2f82a6e3263290c8e0276c3e0f64e77723e7/docs/atomic-signature.md
+        /// <https://github.com/containers/image/blob/8a5d2f82a6e3263290c8e0276c3e0f64e77723e7/docs/atomic-signature.md>
         /// The payload extracted from `signature` is a JSON blob conforming to the
         /// linked schema.
         SimpleSigningJson = 1,
@@ -58,7 +58,7 @@ pub mod pgp_signed_attestation {
         /// The cryptographic fingerprint of the key used to generate the signature,
         /// as output by, e.g. `gpg --list-keys`. This should be the version 4, full
         /// 160-bit fingerprint, expressed as a 40 character hexidecimal string. See
-        /// https://tools.ietf.org/html/rfc4880#section-12.2 for details.
+        /// <https://tools.ietf.org/html/rfc4880#section-12.2> for details.
         /// Implementations may choose to acknowledge "LONG", "SHORT", or other
         /// abbreviated key IDs, but only the full fingerprint is guaranteed to work.
         /// In gpg, the full fingerprint can be retrieved from the `fpr` field
@@ -108,7 +108,7 @@ pub mod generic_signed_attestation {
         /// `ContentType` is not set.
         Unspecified = 0,
         /// Atomic format attestation signature. See
-        /// https://github.com/containers/image/blob/8a5d2f82a6e3263290c8e0276c3e0f64e77723e7/docs/atomic-signature.md
+        /// <https://github.com/containers/image/blob/8a5d2f82a6e3263290c8e0276c3e0f64e77723e7/docs/atomic-signature.md>
         /// The payload extracted in `plaintext` is a JSON blob conforming to the
         /// linked schema.
         SimpleSigningJson = 1,

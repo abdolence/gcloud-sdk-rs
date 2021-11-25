@@ -46,7 +46,7 @@ pub struct HttpRequest {
     pub request_method: ::prost::alloc::string::String,
     /// The scheme (http, https), the host name, the path and the query
     /// portion of the URL that was requested.
-    /// Example: `"http://example.com/some/info?color=red"`.
+    /// Example: `"<http://example.com/some/info?color=red"`.>
     #[prost(string, tag = "2")]
     pub request_url: ::prost::alloc::string::String,
     /// The size of the HTTP request message in bytes, including the request
@@ -78,7 +78,7 @@ pub struct HttpRequest {
     pub server_ip: ::prost::alloc::string::String,
     /// The referer URL of the request, as defined in
     /// [HTTP/1.1 Header Field
-    /// Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html).
+    /// Definitions](<http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html>).
     #[prost(string, tag = "8")]
     pub referer: ::prost::alloc::string::String,
     /// The request processing latency on the server, from the time the request was

@@ -69,7 +69,7 @@ pub mod environment {
     }
 }
 /// Request message for
-/// [GetEnvironment][google.cloud.shell.v1.CloudShellService.GetEnvironment].
+/// \[GetEnvironment][google.cloud.shell.v1.CloudShellService.GetEnvironment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEnvironmentRequest {
     /// Required. Name of the requested resource, for example `users/me/environments/default`
@@ -78,15 +78,15 @@ pub struct GetEnvironmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Message included in the metadata field of operations returned from
-/// [CreateEnvironment][google.cloud.shell.v1.CloudShellService.CreateEnvironment].
+/// \[CreateEnvironment][google.cloud.shell.v1.CloudShellService.CreateEnvironment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEnvironmentMetadata {}
 /// Message included in the metadata field of operations returned from
-/// [DeleteEnvironment][google.cloud.shell.v1.CloudShellService.DeleteEnvironment].
+/// \[DeleteEnvironment][google.cloud.shell.v1.CloudShellService.DeleteEnvironment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEnvironmentMetadata {}
 /// Request message for
-/// [StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment].
+/// \[StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartEnvironmentRequest {
     /// Name of the resource that should be started, for example
@@ -105,7 +105,7 @@ pub struct StartEnvironmentRequest {
     pub public_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// [AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment].
+/// \[AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizeEnvironmentRequest {
     /// Name of the resource that should receive the credentials, for example
@@ -125,15 +125,15 @@ pub struct AuthorizeEnvironmentRequest {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response message for
-/// [AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment].
+/// \[AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizeEnvironmentResponse {}
 /// Message included in the metadata field of operations returned from
-/// [AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment].
+/// \[AuthorizeEnvironment][google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizeEnvironmentMetadata {}
 /// Message included in the metadata field of operations returned from
-/// [StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment].
+/// \[StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartEnvironmentMetadata {
     /// Current state of the environment being started.
@@ -171,7 +171,7 @@ pub mod start_environment_metadata {
     }
 }
 /// Message included in the response field of operations returned from
-/// [StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment]
+/// \[StartEnvironment][google.cloud.shell.v1.CloudShellService.StartEnvironment\]
 /// once the operation is complete.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartEnvironmentResponse {
@@ -180,7 +180,7 @@ pub struct StartEnvironmentResponse {
     pub environment: ::core::option::Option<Environment>,
 }
 /// Request message for
-/// [AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey].
+/// \[AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddPublicKeyRequest {
     /// Environment this key should be added to, e.g.
@@ -197,7 +197,7 @@ pub struct AddPublicKeyRequest {
     pub key: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey].
+/// \[AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddPublicKeyResponse {
     /// Key that was added to the environment.
@@ -205,11 +205,11 @@ pub struct AddPublicKeyResponse {
     pub key: ::prost::alloc::string::String,
 }
 /// Message included in the metadata field of operations returned from
-/// [AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey].
+/// \[AddPublicKey][google.cloud.shell.v1.CloudShellService.AddPublicKey\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddPublicKeyMetadata {}
 /// Request message for
-/// [RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey].
+/// \[RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemovePublicKeyRequest {
     /// Environment this key should be removed from, e.g.
@@ -221,11 +221,11 @@ pub struct RemovePublicKeyRequest {
     pub key: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey].
+/// \[RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemovePublicKeyResponse {}
 /// Message included in the metadata field of operations returned from
-/// [RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey].
+/// \[RemovePublicKey][google.cloud.shell.v1.CloudShellService.RemovePublicKey\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemovePublicKeyMetadata {}
 /// Cloud-shell specific information that will be included as details in failure
@@ -233,10 +233,7 @@ pub struct RemovePublicKeyMetadata {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudShellErrorDetails {
     /// Code indicating the specific error the occurred.
-    #[prost(
-        enumeration = "cloud_shell_error_details::CloudShellErrorCode",
-        tag = "1"
-    )]
+    #[prost(enumeration = "cloud_shell_error_details::CloudShellErrorCode", tag = "1")]
     pub code: i32,
 }
 /// Nested message and enum types in `CloudShellErrorDetails`.
@@ -279,7 +276,7 @@ pub mod cloud_shell_service_client {
     impl<T> CloudShellServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -292,7 +289,7 @@ pub mod cloud_shell_service_client {
             interceptor: F,
         ) -> CloudShellServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

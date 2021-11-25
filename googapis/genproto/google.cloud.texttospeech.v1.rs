@@ -2,13 +2,13 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVoicesRequest {
     /// Optional. Recommended.
-    /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag. If
+    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag. If
     /// specified, the ListVoices call will only return voices that can be used to
-    /// synthesize this language_code. E.g. when specifying "en-NZ", you will get
-    /// supported "en-\*" voices; when specifying "no", you will get supported
-    /// "no-\*" (Norwegian) and "nb-\*" (Norwegian Bokmal) voices; specifying "zh"
-    /// will also get supported "cmn-\*" voices; specifying "zh-hk" will also get
-    /// supported "yue-\*" voices.
+    /// synthesize this language_code. E.g. when specifying `"en-NZ"`, you will get
+    /// supported `"en-\*"` voices; when specifying `"no"`, you will get supported
+    /// `"no-\*"` (Norwegian) and `"nb-\*"` (Norwegian Bokmal) voices; specifying
+    /// `"zh"` will also get supported `"cmn-\*"` voices; specifying `"zh-hk"` will
+    /// also get supported `"yue-\*"` voices.
     #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -23,7 +23,7 @@ pub struct ListVoicesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Voice {
     /// The languages that this voice supports, expressed as
-    /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tags (e.g.
+    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tags (e.g.
     /// "en-US", "es-419", "cmn-tw").
     #[prost(string, repeated, tag = "1")]
     pub language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -52,7 +52,7 @@ pub struct SynthesizeSpeechRequest {
 }
 /// Contains text input to be synthesized. Either `text` or `ssml` must be
 /// supplied. Supplying both or neither returns
-/// [google.rpc.Code.INVALID_ARGUMENT][]. The input size is limited to 5000
+/// \[google.rpc.Code.INVALID_ARGUMENT][\]. The input size is limited to 5000
 /// characters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SynthesisInput {
@@ -70,8 +70,8 @@ pub mod synthesis_input {
         Text(::prost::alloc::string::String),
         /// The SSML document to be synthesized. The SSML document must be valid
         /// and well-formed. Otherwise the RPC will fail and return
-        /// [google.rpc.Code.INVALID_ARGUMENT][]. For more information, see
-        /// [SSML](https://cloud.google.com/text-to-speech/docs/ssml).
+        /// \[google.rpc.Code.INVALID_ARGUMENT][\]. For more information, see
+        /// \[SSML\](<https://cloud.google.com/text-to-speech/docs/ssml>).
         #[prost(string, tag = "2")]
         Ssml(::prost::alloc::string::String),
     }
@@ -80,7 +80,7 @@ pub mod synthesis_input {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VoiceSelectionParams {
     /// Required. The language (and potentially also the region) of the voice expressed as a
-    /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag, e.g.
+    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag, e.g.
     /// "en-US". This should not include a script tag (e.g. use
     /// "cmn-cn" rather than "cmn-Hant-cn"), because the script will be inferred
     /// from the input provided in the SynthesisInput.  The TTS service
@@ -137,14 +137,14 @@ pub struct AudioConfig {
     /// converting to the desired sample rate (which might result in worse audio
     /// quality), unless the specified sample rate is not supported for the
     /// encoding chosen, in which case it will fail the request and return
-    /// [google.rpc.Code.INVALID_ARGUMENT][].
+    /// \[google.rpc.Code.INVALID_ARGUMENT][\].
     #[prost(int32, tag = "5")]
     pub sample_rate_hertz: i32,
     /// Optional. Input only. An identifier which selects 'audio effects' profiles
     /// that are applied on (post synthesized) text to speech. Effects are applied
     /// on top of each other in the order they are given. See
     /// [audio
-    /// profiles](https://cloud.google.com/text-to-speech/docs/audio-profiles) for
+    /// profiles](<https://cloud.google.com/text-to-speech/docs/audio-profiles>) for
     /// current supported profile ids.
     #[prost(string, repeated, tag = "6")]
     pub effects_profile_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -161,7 +161,7 @@ pub struct SynthesizeSpeechResponse {
     pub audio_content: ::prost::alloc::vec::Vec<u8>,
 }
 /// Gender of the voice as described in
-/// [SSML voice element](https://www.w3.org/TR/speech-synthesis11/#edef_voice).
+/// [SSML voice element](<https://www.w3.org/TR/speech-synthesis11/#edef_voice>).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SsmlVoiceGender {
@@ -175,7 +175,7 @@ pub enum SsmlVoiceGender {
     Male = 1,
     /// A female voice.
     Female = 2,
-    /// A gender-neutral voice.
+    /// A gender-neutral voice. This voice is not yet supported.
     Neutral = 3,
 }
 /// Configuration to set up audio encoder. The encoding determines the output
@@ -183,7 +183,7 @@ pub enum SsmlVoiceGender {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum AudioEncoding {
-    /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].
+    /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].
     Unspecified = 0,
     /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
     /// Audio content returned as LINEAR16 also contains a WAV header.
@@ -195,6 +195,12 @@ pub enum AudioEncoding {
     /// Chrome and Firefox). The quality of the encoding is considerably higher
     /// than MP3 while using approximately the same bitrate.
     OggOpus = 3,
+    /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
+    /// Audio content returned as MULAW also contains a WAV header.
+    Mulaw = 5,
+    /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/A-law.
+    /// Audio content returned as ALAW also contains a WAV header.
+    Alaw = 6,
 }
 #[doc = r" Generated client implementations."]
 pub mod text_to_speech_client {
@@ -208,7 +214,7 @@ pub mod text_to_speech_client {
     impl<T> TextToSpeechClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -221,7 +227,7 @@ pub mod text_to_speech_client {
             interceptor: F,
         ) -> TextToSpeechClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

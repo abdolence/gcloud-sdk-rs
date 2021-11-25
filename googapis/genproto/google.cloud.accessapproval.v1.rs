@@ -108,7 +108,7 @@ pub struct ApprovalRequest {
     pub name: ::prost::alloc::string::String,
     /// The resource for which approval is being requested. The format of the
     /// resource name is defined at
-    /// https://cloud.google.com/apis/design/resource_names. The resource name here
+    /// <https://cloud.google.com/apis/design/resource_names.> The resource name here
     /// may either be a "full" resource name (e.g.
     /// "//library.googleapis.com/shelves/shelf1/books/book2") or a "relative"
     /// resource name (e.g. "shelves/shelf1/books/book2") as described in the
@@ -288,7 +288,7 @@ pub struct UpdateAccessApprovalSettingsMessage {
     /// request.
     ///
     /// For the `FieldMask` definition, see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
     /// If this field is left unset, only the notification_emails field will be
     /// updated.
     #[prost(message, optional, tag = "2")]
@@ -354,7 +354,7 @@ pub mod access_approval_client {
     impl<T> AccessApprovalClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -367,7 +367,7 @@ pub mod access_approval_client {
             interceptor: F,
         ) -> AccessApprovalClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

@@ -78,7 +78,7 @@ pub mod standard_sql_data_type {
         Json = 25,
         /// Encoded as a list with types matching Type.array_type.
         Array = 16,
-        /// Encoded as a list with fields of type Type.struct_type[i]. List is used
+        /// Encoded as a list with fields of type Type.struct_type\[i\]. List is used
         /// because a JSON object cannot have duplicate field names.
         Struct = 17,
     }
@@ -787,7 +787,7 @@ pub mod model {
             /// rows (from smallest to largest) in the corresponding column are used
             /// as training data, and the rest are eval data. It respects the order
             /// in Orderable data types:
-            /// https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#data-type-properties
+            /// <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#data-type-properties>
             #[prost(string, tag = "12")]
             pub data_split_column: ::prost::alloc::string::String,
             /// The strategy to determine learn rate for the current iteration.
@@ -852,10 +852,7 @@ pub mod model {
             #[prost(message, optional, tag = "32")]
             pub wals_alpha: ::core::option::Option<f64>,
             /// The method used to initialize the centroids for kmeans algorithm.
-            #[prost(
-                enumeration = "super::kmeans_enums::KmeansInitializationMethod",
-                tag = "33"
-            )]
+            #[prost(enumeration = "super::kmeans_enums::KmeansInitializationMethod", tag = "33")]
             pub kmeans_initialization_method: i32,
             /// The column used to provide the initial centroids for kmeans algorithm
             /// when kmeans_initialization_method is CUSTOM.
@@ -1067,9 +1064,9 @@ pub mod model {
         BoostedTreeClassifier = 10,
         /// ARIMA model.
         Arima = 11,
-        /// [Beta] AutoML Tables regression model.
+        /// \[Beta\] AutoML Tables regression model.
         AutomlRegressor = 12,
-        /// [Beta] AutoML Tables classification model.
+        /// \[Beta\] AutoML Tables classification model.
         AutomlClassifier = 13,
         /// New name for the ARIMA model.
         ArimaPlus = 19,
@@ -1388,7 +1385,7 @@ pub mod model_service_client {
     impl<T> ModelServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1401,7 +1398,7 @@ pub mod model_service_client {
             interceptor: F,
         ) -> ModelServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

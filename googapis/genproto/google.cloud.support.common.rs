@@ -84,7 +84,7 @@ pub struct Case {
     #[prost(string, tag = "5")]
     pub subcomponent: ::prost::alloc::string::String,
     /// Timezone the client sending this request is in.
-    /// It should be in a format IANA recognizes: https://www.iana.org/time-zone
+    /// It should be in a format IANA recognizes: <https://www.iana.org/time-zone>
     /// There is no additional validation done by the API.
     #[prost(string, tag = "6")]
     pub client_timezone: ::prost::alloc::string::String,

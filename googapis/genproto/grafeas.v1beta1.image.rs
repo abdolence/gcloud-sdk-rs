@@ -16,39 +16,39 @@ pub mod layer {
     pub enum Directive {
         /// Default value for unsupported/missing directive.
         Unspecified = 0,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Maintainer = 1,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Run = 2,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Cmd = 3,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Label = 4,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Expose = 5,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Env = 6,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Add = 7,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Copy = 8,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Entrypoint = 9,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Volume = 10,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         User = 11,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Workdir = 12,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Arg = 13,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Onbuild = 14,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Stopsignal = 15,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Healthcheck = 16,
-        /// https://docs.docker.com/engine/reference/builder/
+        /// <https://docs.docker.com/engine/reference/builder/>
         Shell = 17,
     }
 }
@@ -63,8 +63,8 @@ pub struct Fingerprint {
     #[prost(string, repeated, tag = "2")]
     pub v2_blob: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The name of the image's v2 blobs computed via:
-    ///   [bottom] := v2_blob[bottom]
-    ///   [N] := sha256(v2_blob[N] + " " + v2_name[N+1])
+    ///   \[bottom\] := v2_blob\[bottom\]
+    ///   \[N\] := sha256(v2_blob\[N\] + " " + v2_name\[N+1\])
     /// Only the name of the final blob is kept.
     #[prost(string, tag = "3")]
     pub v2_name: ::prost::alloc::string::String,
@@ -104,8 +104,8 @@ pub struct Derived {
     #[prost(int32, tag = "2")]
     pub distance: i32,
     /// This contains layer-specific metadata, if populated it has length
-    /// "distance" and is ordered with [distance] being the layer immediately
-    /// following the base image and [1] being the final layer.
+    /// "distance" and is ordered with \[distance\] being the layer immediately
+    /// following the base image and \[1\] being the final layer.
     #[prost(message, repeated, tag = "3")]
     pub layer_info: ::prost::alloc::vec::Vec<Layer>,
     /// Output only. This contains the base image URL for the derived image

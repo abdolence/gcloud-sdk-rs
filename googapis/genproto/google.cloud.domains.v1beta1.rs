@@ -1,6 +1,7 @@
 /// The `Registration` resource facilitates managing and configuring domain name
 /// registrations.
 ///
+/// There are several ways to create a new `Registration` resource:
 ///
 /// To create a new `Registration` resource, find a suitable domain name by
 /// calling the `SearchDomains` method with a query to see available domain name
@@ -8,6 +9,11 @@
 /// ensure availability and obtain information like pricing, which is needed to
 /// build a call to `RegisterDomain`.
 ///
+/// Another way to create a new `Registration` is to transfer an existing
+/// domain from another registrar. First, go to the current registrar to unlock
+/// the domain for transfer and retrieve the domain's transfer authorization
+/// code. Then call `RetrieveTransferParameters` to confirm that the domain is
+/// unlocked and to get values needed to build a call to `TransferDomain`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Registration {
     /// Output only. Name of the `Registration` resource, in the format
@@ -27,12 +33,7 @@ pub struct Registration {
     #[prost(enumeration = "registration::State", tag = "7")]
     pub state: i32,
     /// Output only. The set of issues with the `Registration` that require attention.
-    #[prost(
-        enumeration = "registration::Issue",
-        repeated,
-        packed = "false",
-        tag = "8"
-    )]
+    #[prost(enumeration = "registration::Issue", repeated, packed = "false", tag = "8")]
     pub issues: ::prost::alloc::vec::Vec<i32>,
     /// Set of labels associated with the `Registration`.
     #[prost(map = "string, string", tag = "9")]
@@ -58,7 +59,7 @@ pub struct Registration {
     /// `contact_settings` field that change its `registrant_contact` or `privacy`
     /// fields require email confirmation by the `registrant_contact`
     /// before taking effect. This field is set only if there are pending updates
-    /// to the `contact_settings` that have not yet been confirmed. To confirm the
+    /// to the `contact_settings` that have not been confirmed. To confirm the
     /// changes, the `registrant_contact` must follow the instructions in the
     /// email they receive.
     #[prost(message, optional, tag = "13")]
@@ -81,17 +82,23 @@ pub mod registration {
         /// The domain registration failed. You can delete resources in this state
         /// to allow registration to be retried.
         RegistrationFailed = 2,
+        /// The domain is being transferred from another registrar to Cloud Domains.
+        TransferPending = 3,
+        /// The attempt to transfer the domain from another registrar to
+        /// Cloud Domains failed. You can delete resources in this state and retry
+        /// the transfer.
+        TransferFailed = 4,
         /// The domain is registered and operational. The domain renews automatically
         /// as long as it remains in this state.
         Active = 6,
         /// The domain is suspended and inoperative. For more details, see the
         /// `issues` field.
         Suspended = 7,
-        /// The domain has been exported from Cloud Domains to
-        /// [Google Domains](https://domains.google/). You can no longer update it
-        /// with this API, and information shown about it may be stale. Without further action, domains in this
-        /// state expire at their `expire_time`. You can delete the resource
-        /// after the `expire_time` has passed.
+        /// The domain is no longer managed with Cloud Domains. It may have been
+        /// transferred to another registrar or exported for management in
+        /// [Google Domains](<https://domains.google/>). You can no longer update it
+        /// with this API, and information shown about it may be stale. Domains in
+        /// this state are not automatically renewed by Cloud Domains.
         Exported = 8,
     }
     /// Possible issues with a `Registration` that require attention.
@@ -102,12 +109,12 @@ pub mod registration {
         Unspecified = 0,
         /// Contact the Cloud Support team to resolve a problem with this domain.
         ContactSupport = 1,
-        /// [ICANN](https://icann.org/) requires verification of the email address
+        /// \[ICANN\](<https://icann.org/>) requires verification of the email address
         /// in the `Registration`'s `contact_settings.registrant_contact` field. To
         /// verify the email address, follow the
         /// instructions in the email the `registrant_contact` receives following
         /// registration. If you do not complete email verification within
-        /// 14 days of registration, the domain is suspended. To resend the
+        /// 15 days of registration, the domain is suspended. To resend the
         /// verification email, call ConfigureContactSettings and provide the current
         /// `registrant_contact.email`.
         UnverifiedEmail = 2,
@@ -133,15 +140,15 @@ pub mod management_settings {
         Unspecified = 0,
         /// The domain is automatically renewed each year .
         ///
-        /// To disable automatic renewals, export the domain by calling
-        /// `ExportRegistration` .
+        /// To disable automatic renewals, delete the resource by calling
+        /// `DeleteRegistration` or export it by calling `ExportRegistration`.
         AutomaticRenewal = 1,
         /// The domain must be explicitly renewed each year before its
         /// `expire_time`. This option is only available when the `Registration`
         /// is in state `EXPORTED`.
         ///
         /// To manage the domain's current billing and
-        /// renewal settings, go to [Google Domains](https://domains.google/).
+        /// renewal settings, go to [Google Domains](<https://domains.google/>).
         ManualRenewal = 2,
     }
 }
@@ -175,7 +182,7 @@ pub mod dns_settings {
     /// Configuration for using the free DNS zone provided by Google Domains as a
     /// `Registration`'s `dns_provider`. You cannot configure the DNS zone itself
     /// using the API. To configure the DNS zone, go to
-    /// [Google Domains](https://domains.google/).
+    /// [Google Domains](<https://domains.google/>).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GoogleDomainsDns {
         /// Output only. A list of name servers that store the DNS zone for this domain. Each name
@@ -223,6 +230,10 @@ pub mod dns_settings {
         pub enum Algorithm {
             /// The algorithm is unspecified.
             Unspecified = 0,
+            /// RSA/MD5. Cannot be used for new deployments.
+            Rsamd5 = 1,
+            /// Diffie-Hellman. Cannot be used for new deployments.
+            Dh = 2,
             /// DSA/SHA1. Not recommended for new deployments.
             Dsa = 3,
             /// ECC. Not recommended for new deployments.
@@ -247,6 +258,12 @@ pub mod dns_settings {
             Ed25519 = 15,
             /// Ed448.
             Ed448 = 16,
+            /// Reserved for Indirect Keys. Cannot be used for new deployments.
+            Indirect = 252,
+            /// Private algorithm. Cannot be used for new deployments.
+            Privatedns = 253,
+            /// Private algorithm OID. Cannot be used for new deployments.
+            Privateoid = 254,
         }
         /// List of hash functions that may have been used to generate a digest of a
         /// DNSKEY.
@@ -311,14 +328,14 @@ pub mod dns_settings {
         #[prost(message, tag = "1")]
         CustomDns(CustomDns),
         /// The free DNS zone provided by
-        /// [Google Domains](https://domains.google/).
+        /// [Google Domains](<https://domains.google/>).
         #[prost(message, tag = "2")]
         GoogleDomainsDns(GoogleDomainsDns),
     }
 }
 /// Defines the contact information associated with a `Registration`.
 ///
-/// [ICANN](https://icann.org/) requires all domain names to have associated
+/// \[ICANN\](<https://icann.org/>) requires all domain names to have associated
 /// contact information. The `registrant_contact` is considered the
 /// domain's legal owner, and often the other contacts are identical.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -331,8 +348,8 @@ pub struct ContactSettings {
     /// *Caution: Anyone with access to this email address, phone number,
     /// and/or postal address can take control of the domain.*
     ///
-    /// *Warning: For new `Registration`s, the registrant will receive an email
-    /// confirmation that they must complete within 14 days to avoid domain
+    /// *Warning: For new `Registration`s, the registrant receives an email
+    /// confirmation that they must complete within 15 days to avoid domain
     /// suspension.*
     #[prost(message, optional, tag = "2")]
     pub registrant_contact: ::core::option::Option<contact_settings::Contact>,
@@ -414,7 +431,7 @@ pub struct RegisterDomainRequest {
     #[prost(enumeration = "DomainNotice", repeated, tag = "3")]
     pub domain_notices: ::prost::alloc::vec::Vec<i32>,
     /// The list of contact notices that the caller acknowledges. The notices
-    /// required here depend on the values specified in
+    /// needed here depend on the values specified in
     /// `registration.contact_settings`.
     #[prost(enumeration = "ContactNotice", repeated, tag = "4")]
     pub contact_notices: ::prost::alloc::vec::Vec<i32>,
@@ -423,9 +440,60 @@ pub struct RegisterDomainRequest {
     /// RetrieveRegisterParameters or SearchDomains calls.
     #[prost(message, optional, tag = "5")]
     pub yearly_price: ::core::option::Option<super::super::super::r#type::Money>,
-    /// When true, only validation will be performed, without actually registering
+    /// When true, only validation is performed, without actually registering
     /// the domain. Follows:
-    /// https://cloud.google.com/apis/design/design_patterns#request_validation
+    /// <https://cloud.google.com/apis/design/design_patterns#request_validation>
+    #[prost(bool, tag = "6")]
+    pub validate_only: bool,
+}
+/// Request for the `RetrieveTransferParameters` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrieveTransferParametersRequest {
+    /// Required. The domain name. Unicode domain names must be expressed in Punycode format.
+    #[prost(string, tag = "1")]
+    pub domain_name: ::prost::alloc::string::String,
+    /// Required. The location. Must be in the format `projects/*/locations/*`.
+    #[prost(string, tag = "2")]
+    pub location: ::prost::alloc::string::String,
+}
+/// Response for the `RetrieveTransferParameters` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RetrieveTransferParametersResponse {
+    /// Parameters to use when calling the `TransferDomain` method.
+    #[prost(message, optional, tag = "1")]
+    pub transfer_parameters: ::core::option::Option<TransferParameters>,
+}
+/// Request for the `TransferDomain` method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransferDomainRequest {
+    /// Required. The parent resource of the `Registration`. Must be in the
+    /// format `projects/*/locations/*`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The complete `Registration` resource to be created.
+    ///
+    /// You can leave `registration.dns_settings` unset to import the
+    /// domain's current DNS configuration from its current registrar. Use this
+    /// option only if you are sure that the domain's current DNS service
+    /// does not cease upon transfer, as is often the case for DNS services
+    /// provided for free by the registrar.
+    #[prost(message, optional, tag = "2")]
+    pub registration: ::core::option::Option<Registration>,
+    /// The list of contact notices that you acknowledge. The notices
+    /// needed here depend on the values specified in
+    /// `registration.contact_settings`.
+    #[prost(enumeration = "ContactNotice", repeated, tag = "3")]
+    pub contact_notices: ::prost::alloc::vec::Vec<i32>,
+    /// Required. Acknowledgement of the price to transfer or renew the domain for one year.
+    /// Call `RetrieveTransferParameters` to obtain the price, which you must
+    /// acknowledge.
+    #[prost(message, optional, tag = "4")]
+    pub yearly_price: ::core::option::Option<super::super::super::r#type::Money>,
+    /// The domain's transfer authorization code. You can obtain this from the
+    /// domain's current registrar.
+    #[prost(message, optional, tag = "5")]
+    pub authorization_code: ::core::option::Option<AuthorizationCode>,
+    /// Validate the request without actually transferring the domain.
     #[prost(bool, tag = "6")]
     pub validate_only: bool,
 }
@@ -488,8 +556,8 @@ pub struct UpdateRegistrationRequest {
     #[prost(message, optional, tag = "1")]
     pub registration: ::core::option::Option<Registration>,
     /// Required. The field mask describing which fields to update as a comma-separated list.
-    /// For example, if only the labels are being updated, the `update_mask` would
-    /// be `"labels"`.
+    /// For example, if only the labels are being updated, the `update_mask` is
+    /// `"labels"`.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -505,7 +573,7 @@ pub struct ConfigureManagementSettingsRequest {
     pub management_settings: ::core::option::Option<ManagementSettings>,
     /// Required. The field mask describing which fields to update as a comma-separated list.
     /// For example, if only the transfer lock is being updated, the `update_mask`
-    /// would be `"transfer_lock_state"`.
+    /// is `"transfer_lock_state"`.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -521,13 +589,13 @@ pub struct ConfigureDnsSettingsRequest {
     pub dns_settings: ::core::option::Option<DnsSettings>,
     /// Required. The field mask describing which fields to update as a comma-separated list.
     /// For example, if only the name servers are being updated for an existing
-    /// Custom DNS configuration, the `update_mask` would be
+    /// Custom DNS configuration, the `update_mask` is
     /// `"custom_dns.name_servers"`.
     ///
     /// When changing the DNS provider from one type to another, pass the new
     /// provider's field name as part of the field mask. For example, when changing
     /// from a Google Domains DNS configuration to a Custom DNS configuration, the
-    /// `update_mask` would be `"custom_dns"`. //
+    /// `update_mask` is `"custom_dns"`. //
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Validate the request without actually updating the DNS settings.
@@ -546,11 +614,11 @@ pub struct ConfigureContactSettingsRequest {
     pub contact_settings: ::core::option::Option<ContactSettings>,
     /// Required. The field mask describing which fields to update as a comma-separated list.
     /// For example, if only the registrant contact is being updated, the
-    /// `update_mask` would be `"registrant_contact"`.
+    /// `update_mask` is `"registrant_contact"`.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The list of contact notices that the caller acknowledges. The notices
-    /// required here depend on the values specified in `contact_settings`.
+    /// needed here depend on the values specified in `contact_settings`.
     #[prost(enumeration = "ContactNotice", repeated, tag = "4")]
     pub contact_notices: ::prost::alloc::vec::Vec<i32>,
     /// Validate the request without actually updating the contact settings.
@@ -631,6 +699,30 @@ pub mod register_parameters {
         Unknown = 4,
     }
 }
+/// Parameters required to transfer a domain from another registrar.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TransferParameters {
+    /// The domain name. Unicode domain names are expressed in Punycode format.
+    #[prost(string, tag = "1")]
+    pub domain_name: ::prost::alloc::string::String,
+    /// The registrar that currently manages the domain.
+    #[prost(string, tag = "2")]
+    pub current_registrar: ::prost::alloc::string::String,
+    /// The name servers that currently store the configuration of the domain.
+    #[prost(string, repeated, tag = "3")]
+    pub name_servers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Indicates whether the domain is protected by a transfer lock. For a
+    /// transfer to succeed, this must show `UNLOCKED`. To unlock a domain,
+    /// go to its current registrar.
+    #[prost(enumeration = "TransferLockState", tag = "4")]
+    pub transfer_lock_state: i32,
+    /// Contact privacy options that the domain supports.
+    #[prost(enumeration = "ContactPrivacy", repeated, tag = "5")]
+    pub supported_privacy: ::prost::alloc::vec::Vec<i32>,
+    /// Price to transfer or renew the domain for one year.
+    #[prost(message, optional, tag = "6")]
+    pub yearly_price: ::core::option::Option<super::super::super::r#type::Money>,
+}
 /// Defines an authorization code.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizationCode {
@@ -663,7 +755,7 @@ pub struct OperationMetadata {
 }
 /// Defines a set of possible contact privacy settings for a `Registration`.
 ///
-/// [ICANN](https://icann.org/) maintains the WHOIS database, a publicly
+/// \[ICANN\](<https://icann.org/>) maintains the WHOIS database, a publicly
 /// accessible mapping from domain name to contact information, and requires that
 /// each domain name have an entry. Choose from these options to control how much
 /// information in your `ContactSettings` is published.
@@ -685,7 +777,7 @@ pub enum ContactPrivacy {
     /// Some data from `ContactSettings` is publicly available. The actual
     /// information redacted depends on the domain. For details, see [the
     /// registration privacy
-    /// article](https://support.google.com/domains/answer/3251242).
+    /// article](<https://support.google.com/domains/answer/3251242>).
     RedactedContactData = 3,
 }
 /// Notices about special properties of certain domains.
@@ -698,7 +790,7 @@ pub enum DomainNotice {
     /// Security list in browsers. Serving a website on such domain requires
     /// an SSL certificate. For details, see
     /// [how to get an SSL
-    /// certificate](https://support.google.com/domains/answer/7638036).
+    /// certificate](<https://support.google.com/domains/answer/7638036>).
     HstsPreloaded = 1,
 }
 /// Notices related to contact information.
@@ -734,7 +826,7 @@ pub mod domains_client {
     impl<T> DomainsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -747,7 +839,7 @@ pub mod domains_client {
             interceptor: F,
         ) -> DomainsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -841,6 +933,69 @@ pub mod domains_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.domains.v1beta1.Domains/RegisterDomain",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets parameters needed to transfer a domain name from another registrar to"]
+        #[doc = " Cloud Domains. For domains managed by Google Domains, transferring to Cloud"]
+        #[doc = " Domains is not supported."]
+        #[doc = ""]
+        #[doc = ""]
+        #[doc = " Use the returned values to call `TransferDomain`."]
+        pub async fn retrieve_transfer_parameters(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RetrieveTransferParametersRequest>,
+        ) -> Result<tonic::Response<super::RetrieveTransferParametersResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.domains.v1beta1.Domains/RetrieveTransferParameters",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Transfers a domain name from another registrar to Cloud Domains.  For"]
+        #[doc = " domains managed by Google Domains, transferring to Cloud Domains is not"]
+        #[doc = " supported."]
+        #[doc = ""]
+        #[doc = ""]
+        #[doc = " Before calling this method, go to the domain's current registrar to unlock"]
+        #[doc = " the domain for transfer and retrieve the domain's transfer authorization"]
+        #[doc = " code. Then call `RetrieveTransferParameters` to confirm that the domain is"]
+        #[doc = " unlocked and to get values needed to build a call to this method."]
+        #[doc = ""]
+        #[doc = " A successful call creates a `Registration` resource in state"]
+        #[doc = " `TRANSFER_PENDING`. It can take several days to complete the transfer"]
+        #[doc = " process. The registrant can often speed up this process by approving the"]
+        #[doc = " transfer through the current registrar, either by clicking a link in an"]
+        #[doc = " email from the registrar or by visiting the registrar's website."]
+        #[doc = ""]
+        #[doc = " A few minutes after transfer approval, the resource transitions to state"]
+        #[doc = " `ACTIVE`, indicating that the transfer was successful. If the transfer is"]
+        #[doc = " rejected or the request expires without being approved, the resource can"]
+        #[doc = " end up in state `TRANSFER_FAILED`. If transfer fails, you can safely delete"]
+        #[doc = " the resource and retry the transfer."]
+        pub async fn transfer_domain(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TransferDomainRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.domains.v1beta1.Domains/TransferDomain",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -964,20 +1119,15 @@ pub mod domains_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Exports a `Registration` that you no longer want to use with"]
-        #[doc = " Cloud Domains. You can continue to use the domain in"]
-        #[doc = " [Google Domains](https://domains.google/) until it expires."]
+        #[doc = " Exports a `Registration` resource, such that it is no longer managed by"]
+        #[doc = " Cloud Domains."]
         #[doc = ""]
-        #[doc = " If the export is successful:"]
-        #[doc = ""]
-        #[doc = " * The resource's `state` becomes `EXPORTED`, meaning that it is no longer"]
-        #[doc = " managed by Cloud Domains"]
-        #[doc = " * Because individual users can own domains in Google Domains, the calling"]
-        #[doc = " user becomes the domain's sole owner. Permissions for the domain are"]
-        #[doc = " subsequently managed in Google Domains."]
-        #[doc = " * Without further action, the domain does not renew automatically."]
-        #[doc = " The new owner can set up billing in Google Domains to renew the domain"]
-        #[doc = " if needed."]
+        #[doc = " When an active domain is successfully exported, you can continue to use the"]
+        #[doc = " domain in [Google Domains](https://domains.google/) until it expires. The"]
+        #[doc = " calling user becomes the domain's sole owner in Google Domains, and"]
+        #[doc = " permissions for the domain are subsequently managed there. The domain does"]
+        #[doc = " not renew automatically unless the new owner sets up billing in Google"]
+        #[doc = " Domains."]
         pub async fn export_registration(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportRegistrationRequest>,
@@ -999,10 +1149,23 @@ pub mod domains_client {
         }
         #[doc = " Deletes a `Registration` resource."]
         #[doc = ""]
-        #[doc = " This method only works on resources in one of the following states:"]
+        #[doc = " This method works on any `Registration` resource using [Subscription or"]
+        #[doc = " Commitment billing](/domains/pricing#billing-models), provided that the"]
+        #[doc = " resource was created at least 1 day in the past."]
+        #[doc = ""]
+        #[doc = " For `Registration` resources using"]
+        #[doc = " [Monthly billing](/domains/pricing#billing-models), this method works if:"]
         #[doc = ""]
         #[doc = " * `state` is `EXPORTED` with `expire_time` in the past"]
         #[doc = " * `state` is `REGISTRATION_FAILED`"]
+        #[doc = " * `state` is `TRANSFER_FAILED`"]
+        #[doc = ""]
+        #[doc = " When an active registration is successfully deleted, you can continue to"]
+        #[doc = " use the domain in [Google Domains](https://domains.google/) until it"]
+        #[doc = " expires. The calling user becomes the domain's sole owner in Google"]
+        #[doc = " Domains, and permissions for the domain are subsequently managed there. The"]
+        #[doc = " domain does not renew automatically unless the new owner sets up billing in"]
+        #[doc = " Google Domains."]
         pub async fn delete_registration(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRegistrationRequest>,

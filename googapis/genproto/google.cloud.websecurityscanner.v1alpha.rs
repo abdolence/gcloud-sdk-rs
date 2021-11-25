@@ -164,7 +164,7 @@ pub mod finding {
         RosettaFlash = 5,
         /// A cross-site scripting (XSS) bug is found via JavaScript callback. For
         /// detailed explanations on XSS, see
-        /// https://www.google.com/about/appsecurity/learning/xss/.
+        /// <https://www.google.com/about/appsecurity/learning/xss/.>
         XssCallback = 3,
         /// A potential cross-site scripting (XSS) bug due to JavaScript breakage.
         /// In some circumstances, the application under test might modify the test
@@ -174,7 +174,7 @@ pub mod finding {
         /// However, it may not be exploitable. Manual verification is needed to see
         /// if the test string modifications can be evaded and confirm that the issue
         /// is in fact an XSS vulnerability. For detailed explanations on XSS, see
-        /// https://www.google.com/about/appsecurity/learning/xss/.
+        /// <https://www.google.com/about/appsecurity/learning/xss/.>
         XssError = 4,
         /// An application appears to be transmitting a password field in clear text.
         /// An attacker can eavesdrop network traffic and sniff the password field.
@@ -306,7 +306,7 @@ pub struct ScanConfig {
     #[prost(enumeration = "scan_config::UserAgent", tag = "6")]
     pub user_agent: i32,
     /// The blacklist URL patterns as described in
-    /// https://cloud.google.com/security-scanner/docs/excluded-urls
+    /// <https://cloud.google.com/security-scanner/docs/excluded-urls>
     #[prost(string, repeated, tag = "7")]
     pub blacklist_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The schedule of the ScanConfig.
@@ -463,7 +463,7 @@ pub struct UpdateScanConfigRequest {
     pub scan_config: ::core::option::Option<ScanConfig>,
     /// Required. The update mask applies to the resource. For the `FieldMask` definition,
     /// see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -638,7 +638,7 @@ pub mod web_security_scanner_client {
     impl<T> WebSecurityScannerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -651,7 +651,7 @@ pub mod web_security_scanner_client {
             interceptor: F,
         ) -> WebSecurityScannerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

@@ -14,20 +14,20 @@ pub struct AccessTuple {
     /// `//compute.googleapis.com/projects/my-project/zones/us-central1-a/instances/my-instance`.
     ///
     /// For examples of full resource names for Google Cloud services, see
-    /// https://cloud.google.com/iam/help/troubleshooter/full-resource-names.
+    /// <https://cloud.google.com/iam/help/troubleshooter/full-resource-names.>
     #[prost(string, tag = "2")]
     pub full_resource_name: ::prost::alloc::string::String,
     /// Required. The IAM permission to check for the specified member and resource.
     ///
     /// For a complete list of IAM permissions, see
-    /// https://cloud.google.com/iam/help/permissions/reference.
+    /// <https://cloud.google.com/iam/help/permissions/reference.>
     ///
     /// For a complete list of predefined IAM roles and the permissions in each
-    /// role, see https://cloud.google.com/iam/help/roles/reference.
+    /// role, see <https://cloud.google.com/iam/help/roles/reference.>
     #[prost(string, tag = "3")]
     pub permission: ::prost::alloc::string::String,
 }
-/// Details about how a specific IAM [Policy][google.iam.v1.Policy] contributed
+/// Details about how a specific IAM \[Policy][google.iam.v1.Policy\] contributed
 /// to the access check.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplainedPolicy {
@@ -38,7 +38,7 @@ pub struct ExplainedPolicy {
     /// permission for the resource. There might be another policy that overrides
     /// this policy. To determine whether the member actually has the permission,
     /// use the `access` field in the
-    /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
+    /// \[TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse\].
     #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
     /// The full resource name that identifies the resource. For example,
@@ -48,7 +48,7 @@ pub struct ExplainedPolicy {
     /// is omitted.
     ///
     /// For examples of full resource names for Google Cloud services, see
-    /// https://cloud.google.com/iam/help/troubleshooter/full-resource-names.
+    /// <https://cloud.google.com/iam/help/troubleshooter/full-resource-names.>
     #[prost(string, tag = "2")]
     pub full_resource_name: ::prost::alloc::string::String,
     /// The IAM policy attached to the resource.
@@ -65,7 +65,7 @@ pub struct ExplainedPolicy {
     #[prost(message, repeated, tag = "4")]
     pub binding_explanations: ::prost::alloc::vec::Vec<BindingExplanation>,
     /// The relevance of this policy to the overall determination in the
-    /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
+    /// \[TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse\].
     ///
     /// If the sender of the request does not have access to the policy, this field
     /// is omitted.
@@ -83,14 +83,14 @@ pub struct BindingExplanation {
     /// permission for the resource. There might be another binding that overrides
     /// this binding. To determine whether the member actually has the permission,
     /// use the `access` field in the
-    /// [TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse].
+    /// \[TroubleshootIamPolicyResponse][IamChecker.TroubleshootIamPolicyResponse\].
     #[prost(enumeration = "AccessState", tag = "1")]
     pub access: i32,
     /// The role that this binding grants. For example,
     /// `roles/compute.serviceAgent`.
     ///
     /// For a complete list of predefined IAM roles, as well as the permissions in
-    /// each role, see https://cloud.google.com/iam/help/roles/reference.
+    /// each role, see <https://cloud.google.com/iam/help/roles/reference.>
     #[prost(string, tag = "2")]
     pub role: ::prost::alloc::string::String,
     /// Indicates whether the role granted by this binding contains the specified
@@ -134,7 +134,7 @@ pub struct BindingExplanation {
     /// to `true`.
     ///
     /// To learn about IAM Conditions, see
-    /// http://cloud.google.com/iam/help/conditions/overview.
+    /// <http://cloud.google.com/iam/help/conditions/overview.>
     #[prost(message, optional, tag = "7")]
     pub condition: ::core::option::Option<super::super::super::r#type::Expr>,
 }
@@ -217,7 +217,7 @@ pub enum HeuristicRelevance {
     /// is likely to affect the overall determination.
     High = 2,
 }
-/// Request for [TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy].
+/// Request for \[TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TroubleshootIamPolicyRequest {
     /// The information to use for checking whether a member has a permission for a
@@ -225,7 +225,7 @@ pub struct TroubleshootIamPolicyRequest {
     #[prost(message, optional, tag = "1")]
     pub access_tuple: ::core::option::Option<AccessTuple>,
 }
-/// Response for [TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy].
+/// Response for \[TroubleshootIamPolicy][google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TroubleshootIamPolicyResponse {
     /// Indicates whether the member has the specified permission for the specified
@@ -241,7 +241,7 @@ pub struct TroubleshootIamPolicyResponse {
     /// hierarchy, including the organization, the folder, and the project.
     ///
     /// To learn more about the resource hierarchy, see
-    /// https://cloud.google.com/iam/help/resource-hierarchy.
+    /// <https://cloud.google.com/iam/help/resource-hierarchy.>
     #[prost(message, repeated, tag = "2")]
     pub explained_policies: ::prost::alloc::vec::Vec<ExplainedPolicy>,
 }
@@ -259,7 +259,7 @@ pub mod iam_checker_client {
     impl<T> IamCheckerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -272,7 +272,7 @@ pub mod iam_checker_client {
             interceptor: F,
         ) -> IamCheckerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

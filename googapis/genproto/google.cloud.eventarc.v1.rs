@@ -26,12 +26,12 @@ pub struct Trigger {
     ///
     /// The principal who calls this API must have `iam.serviceAccounts.actAs`
     /// permission in the service account. See
-    /// https://cloud.google.com/iam/docs/understanding-service-accounts?hl=en#sa_common
+    /// <https://cloud.google.com/iam/docs/understanding-service-accounts?hl=en#sa_common>
     /// for more information.
     ///
     /// For Cloud Run destinations, this service account is used to generate
     /// identity tokens when invoking the service. See
-    /// https://cloud.google.com/run/docs/triggering/pubsub-push#create-service-account
+    /// <https://cloud.google.com/run/docs/triggering/pubsub-push#create-service-account>
     /// for information on how to invoke authenticated Cloud Run services.
     /// In order to create Audit Log triggers, the service account should also
     /// have `roles/eventarc.eventReceiver` IAM role.
@@ -107,7 +107,7 @@ pub mod transport {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudRun {
     /// Required. The name of the Cloud Run service being addressed. See
-    /// https://cloud.google.com/run/docs/reference/rest/v1/namespaces.services.
+    /// <https://cloud.google.com/run/docs/reference/rest/v1/namespaces.services.>
     ///
     /// Only services located in the same project of the trigger object
     /// can be addressed.
@@ -263,7 +263,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -284,7 +284,7 @@ pub mod eventarc_client {
     impl<T> EventarcClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -297,7 +297,7 @@ pub mod eventarc_client {
             interceptor: F,
         ) -> EventarcClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

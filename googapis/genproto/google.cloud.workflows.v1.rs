@@ -14,9 +14,11 @@ pub struct Workflow {
     pub state: i32,
     /// Output only. The revision of the workflow.
     /// A new revision of a workflow is created as a result of updating the
-    /// following fields of a workflow:
-    /// - `source_code`
-    /// - `service_account`
+    /// following properties of a workflow:
+    ///
+    /// - [Service account]\[google.cloud.workflows.v1.Workflow.service_account\]
+    /// - [Workflow code to be executed]\[google.cloud.workflows.v1.Workflow.source_contents\]
+    ///
     /// The format is "000001-a4d", where the first 6 characters define
     /// the zero-padded revision ordinal number. They are followed by a hyphen and
     /// 3 hexadecimal random characters.
@@ -40,14 +42,14 @@ pub struct Workflow {
     #[prost(map = "string, string", tag = "8")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Name of the service account associated with the latest workflow version.
+    /// The service account associated with the latest workflow version.
     /// This service account represents the identity of the workflow and determines
     /// what permissions the workflow has.
-    /// Format: projects/{project}/serviceAccounts/{account}
+    /// Format: projects/{project}/serviceAccounts/{account} or {account}
     ///
-    /// Using `-` as a wildcard for the `{project}` will infer the project from
-    /// the account. The `{account}` value can be the `email` address or the
-    /// `unique_id` of the service account.
+    /// Using `-` as a wildcard for the `{project}` or not providing one at all
+    /// will infer the project from the account. The `{account}` value can be the
+    /// `email` address or the `unique_id` of the service account.
     ///
     /// If not provided, workflow will use the project's default service account.
     /// Modifying this field for an existing workflow results in a new workflow
@@ -77,13 +79,13 @@ pub mod workflow {
     /// revision.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceCode {
-        /// Workflow code to be executed. The size limit is 32KB.
+        /// Workflow code to be executed. The size limit is 128KB.
         #[prost(string, tag = "10")]
         SourceContents(::prost::alloc::string::String),
     }
 }
 /// Request for the
-/// [ListWorkflows][google.cloud.workflows.v1.Workflows.ListWorkflows]
+/// \[ListWorkflows][google.cloud.workflows.v1.Workflows.ListWorkflows\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowsRequest {
@@ -115,7 +117,7 @@ pub struct ListWorkflowsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the
-/// [ListWorkflows][google.cloud.workflows.v1.Workflows.ListWorkflows]
+/// \[ListWorkflows][google.cloud.workflows.v1.Workflows.ListWorkflows\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowsResponse {
@@ -131,7 +133,7 @@ pub struct ListWorkflowsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the
-/// [GetWorkflow][google.cloud.workflows.v1.Workflows.GetWorkflow] method.
+/// \[GetWorkflow][google.cloud.workflows.v1.Workflows.GetWorkflow\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkflowRequest {
     /// Required. Name of the workflow which information should be retrieved.
@@ -140,7 +142,7 @@ pub struct GetWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [CreateWorkflow][google.cloud.workflows.v1.Workflows.CreateWorkflow]
+/// \[CreateWorkflow][google.cloud.workflows.v1.Workflows.CreateWorkflow\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkflowRequest {
@@ -163,7 +165,7 @@ pub struct CreateWorkflowRequest {
     pub workflow_id: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [DeleteWorkflow][google.cloud.workflows.v1.Workflows.DeleteWorkflow]
+/// \[DeleteWorkflow][google.cloud.workflows.v1.Workflows.DeleteWorkflow\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkflowRequest {
@@ -173,7 +175,7 @@ pub struct DeleteWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [UpdateWorkflow][google.cloud.workflows.v1.Workflows.UpdateWorkflow]
+/// \[UpdateWorkflow][google.cloud.workflows.v1.Workflows.UpdateWorkflow\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkflowRequest {
@@ -218,7 +220,7 @@ pub mod workflows_client {
     impl<T> WorkflowsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -231,7 +233,7 @@ pub mod workflows_client {
             interceptor: F,
         ) -> WorkflowsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

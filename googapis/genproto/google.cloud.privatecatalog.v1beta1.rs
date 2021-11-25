@@ -1,4 +1,4 @@
-/// Request message for [PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs].
+/// Request message for \[PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogsRequest {
     /// Required. The name of the resource context. It can be in following formats:
@@ -21,7 +21,7 @@ pub struct SearchCatalogsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for [PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs].
+/// Response message for \[PrivateCatalog.SearchCatalogs][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchCatalogs\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogsResponse {
     /// The `Catalog`s computed from the resource context.
@@ -32,10 +32,10 @@ pub struct SearchCatalogsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts].
+/// Request message for \[PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchProductsRequest {
-    /// Required. The name of the resource context. See [SearchCatalogsRequest.resource][google.cloud.privatecatalog.v1beta1.SearchCatalogsRequest.resource]
+    /// Required. The name of the resource context. See \[SearchCatalogsRequest.resource][google.cloud.privatecatalog.v1beta1.SearchCatalogsRequest.resource\]
     /// for details.
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
@@ -56,7 +56,7 @@ pub struct SearchProductsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for [PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts].
+/// Response message for \[PrivateCatalog.SearchProducts][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchProducts\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchProductsResponse {
     /// The `Product` resources computed from the resource context.
@@ -67,10 +67,10 @@ pub struct SearchProductsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions].
+/// Request message for \[PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchVersionsRequest {
-    /// Required. The name of the resource context. See [SearchCatalogsRequest.resource][google.cloud.privatecatalog.v1beta1.SearchCatalogsRequest.resource]
+    /// Required. The name of the resource context. See \[SearchCatalogsRequest.resource][google.cloud.privatecatalog.v1beta1.SearchCatalogsRequest.resource\]
     /// for details.
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
@@ -91,7 +91,7 @@ pub struct SearchVersionsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for [PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions].
+/// Response message for \[PrivateCatalog.SearchVersions][google.cloud.privatecatalog.v1beta1.PrivateCatalog.SearchVersions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchVersionsResponse {
     /// The `Version` resources computed from the resource context.
@@ -128,7 +128,7 @@ pub struct Catalog {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Product {
     /// Output only. The resource name of the target product, in the format of
-    /// `products/[a-z][-a-z0-9]*[a-z0-9]'.
+    /// `products/\[a-z][-a-z0-9]*[a-z0-9\]'.
     ///
     /// A unique identifier for the product under a catalog.
     #[prost(string, tag = "1")]
@@ -141,12 +141,12 @@ pub struct Product {
     #[prost(string, tag = "2")]
     pub asset_type: ::prost::alloc::string::String,
     /// Required. Output only. The display metadata to describe the product. The JSON schema of the
-    /// metadata differs by [Product.asset_type][google.cloud.privatecatalog.v1beta1.Product.asset_type].
+    /// metadata differs by \[Product.asset_type][google.cloud.privatecatalog.v1beta1.Product.asset_type\].
     /// When the type is `google.deploymentmanager.Template`, the schema is as
     /// follows:
     ///
     /// ```
-    /// "$schema": http://json-schema.org/draft-04/schema#
+    /// "$schema": <http://json-schema.org/draft-04/schema#>
     /// type: object
     /// properties:
     ///   name:
@@ -177,7 +177,7 @@ pub struct Product {
     ///         url:
     ///           type: string
     ///           pattern:
-    ///           "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"
+    ///           "^(https?)://\[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|\]"
     ///         title:
     ///           type: string
     ///           minLength: 1
@@ -197,7 +197,7 @@ pub struct Product {
     /// is as follows:
     ///
     /// ```
-    /// "$schema": http://json-schema.org/draft-04/schema#
+    /// "$schema": <http://json-schema.org/draft-04/schema#>
     /// type: object
     /// properties:
     ///   name:
@@ -228,7 +228,7 @@ pub struct Product {
     ///         url:
     ///           type: string
     ///           pattern:
-    ///           "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"
+    ///           "^(https?)://\[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|\]"
     ///         title:
     ///           type: string
     ///           minLength: 1
@@ -240,7 +240,7 @@ pub struct Product {
     ///   signup_url:
     ///     type: string
     ///     pattern:
-    ///     "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"
+    ///     "^(https?)://\[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|\]"
     /// required:
     /// - name
     /// - description
@@ -253,7 +253,7 @@ pub struct Product {
     /// is as follows:
     ///
     /// ```
-    /// "$schema": http://json-schema.org/draft-04/schema#
+    /// "$schema": <http://json-schema.org/draft-04/schema#>
     /// type: object
     /// properties:
     ///   name:
@@ -284,7 +284,7 @@ pub struct Product {
     ///         url:
     ///           type: string
     ///           pattern:
-    ///           "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]"
+    ///           "^(https?)://\[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|\]"
     ///         title:
     ///           type: string
     ///           minLength: 1
@@ -438,7 +438,7 @@ pub mod git_source {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
     /// Output only. The resource name of the version, in the format
-    /// `catalogs/{catalog}/products/{product}/versions/[a-z][-a-z0-9]*[a-z0-9]'.
+    /// `catalogs/{catalog}/products/{product}/versions/\[a-z][-a-z0-9]*[a-z0-9\]'.
     ///
     /// A unique identifier for the version under a product.
     #[prost(string, tag = "1")]
@@ -449,7 +449,7 @@ pub struct Version {
     pub description: ::prost::alloc::string::String,
     /// Output only. The asset which has been validated and is ready to be
     /// provisioned. See
-    /// [google.cloud.privatecatalogproducer.v1beta.Version.asset][] for details.
+    /// \[google.cloud.privatecatalogproducer.v1beta.Version.asset][\] for details.
     #[prost(message, optional, tag = "3")]
     pub asset: ::core::option::Option<::prost_types::Struct>,
     /// Output only. The time when the version was created.
@@ -491,7 +491,7 @@ pub mod private_catalog_client {
     impl<T> PrivateCatalogClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -504,7 +504,7 @@ pub mod private_catalog_client {
             interceptor: F,
         ) -> PrivateCatalogClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

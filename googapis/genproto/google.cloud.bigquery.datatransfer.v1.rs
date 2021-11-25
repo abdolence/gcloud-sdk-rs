@@ -38,12 +38,11 @@ pub struct ScheduleOptions {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferConfig {
     /// The resource name of the transfer config.
-    /// Transfer config names have the form of
+    /// Transfer config names have the form
     /// `projects/{project_id}/locations/{region}/transferConfigs/{config_id}`.
-    /// The name is automatically generated based on the config_id specified in
-    /// CreateTransferConfigRequest along with project_id and region. If config_id
-    /// is not provided, usually a uuid, even though it is not guaranteed or
-    /// required, will be generated for config_id.
+    /// Where `config_id` is usually a uuid, even though it is not
+    /// guaranteed or required. The name is ignored when creating a transfer
+    /// config.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// User specified display name for the data transfer.
@@ -52,7 +51,10 @@ pub struct TransferConfig {
     /// Data source id. Cannot be changed once data transfer is created.
     #[prost(string, tag = "5")]
     pub data_source_id: ::prost::alloc::string::String,
-    /// Data transfer specific parameters.
+    /// Parameters specific to each data source. For more information see the
+    /// bq tab in the 'Setting up a data transfer' section for each data source.
+    /// For example the parameters for Cloud Storage transfers are listed here:
+    /// <https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq>
     #[prost(message, optional, tag = "9")]
     pub params: ::core::option::Option<::prost_types::Struct>,
     /// Data transfer schedule.
@@ -65,7 +67,7 @@ pub struct TransferConfig {
     /// `every wed,fri of jan,jun 13:15`, and
     /// `first sunday of quarter 00:00`.
     /// See more explanation about the format here:
-    /// https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format
+    /// <https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format>
     /// NOTE: the granularity should be at least 8 hours, or less frequent.
     #[prost(string, tag = "7")]
     pub schedule: ::prost::alloc::string::String,
@@ -75,7 +77,7 @@ pub struct TransferConfig {
     /// The number of days to look back to automatically refresh the data.
     /// For example, if `data_refresh_window_days = 10`, then every day
     /// BigQuery reingests data for [today-10, today-1], rather than ingesting data
-    /// for just [today-1].
+    /// for just \[today-1\].
     /// Only valid if the data source supports the feature. Set the value to  0
     /// to use the default value.
     #[prost(int32, tag = "12")]
@@ -101,6 +103,9 @@ pub struct TransferConfig {
     pub dataset_region: ::prost::alloc::string::String,
     /// Pub/Sub topic where notifications will be sent after transfer runs
     /// associated with this transfer config finish.
+    ///
+    /// The format for specifying a pubsub topic is:
+    /// `projects/{project}/topics/{topic}`
     #[prost(string, tag = "15")]
     pub notification_pubsub_topic: ::prost::alloc::string::String,
     /// Email notifications will be sent according to these preferences
@@ -151,7 +156,10 @@ pub struct TransferRun {
     /// Output only. Last time the data transfer run state was updated.
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Data transfer specific parameters.
+    /// Output only. Parameters specific to each data source. For more information see the
+    /// bq tab in the 'Setting up a data transfer' section for each data source.
+    /// For example the parameters for Cloud Storage transfers are listed here:
+    /// <https://cloud.google.com/bigquery-transfer/docs/cloud-storage-transfer#bq>
     #[prost(message, optional, tag = "9")]
     pub params: ::core::option::Option<::prost_types::Struct>,
     /// Output only. Data source id.
@@ -171,7 +179,10 @@ pub struct TransferRun {
     #[prost(string, tag = "12")]
     pub schedule: ::prost::alloc::string::String,
     /// Output only. Pub/Sub topic where a notification will be sent after this
-    /// transfer run finishes
+    /// transfer run finishes.
+    ///
+    /// The format for specifying a pubsub topic is:
+    /// `projects/{project}/topics/{topic}`
     #[prost(string, tag = "23")]
     pub notification_pubsub_topic: ::prost::alloc::string::String,
     /// Output only. Email notifications will be sent according to these
@@ -238,18 +249,18 @@ pub enum TransferType {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TransferState {
-    /// State placeholder.
+    /// State placeholder (0).
     Unspecified = 0,
     /// Data transfer is scheduled and is waiting to be picked up by
-    /// data transfer backend.
+    /// data transfer backend (2).
     Pending = 2,
-    /// Data transfer is in progress.
+    /// Data transfer is in progress (3).
     Running = 3,
-    /// Data transfer completed successfully.
+    /// Data transfer completed successfully (4).
     Succeeded = 4,
-    /// Data transfer failed.
+    /// Data transfer failed (5).
     Failed = 5,
-    /// Data transfer is cancelled.
+    /// Data transfer is cancelled (6).
     Cancelled = 6,
 }
 /// Represents a data source parameter with validation rules, so that
@@ -355,7 +366,7 @@ pub struct DataSource {
     pub client_id: ::prost::alloc::string::String,
     /// Api auth scopes for which refresh token needs to be obtained. These are
     /// scopes needed by a data source to prepare data and ingest them into
-    /// BigQuery, e.g., https://www.googleapis.com/auth/bigquery
+    /// BigQuery, e.g., <https://www.googleapis.com/auth/bigquery>
     #[prost(string, repeated, tag = "6")]
     pub scopes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Deprecated. This field has no effect.
@@ -423,9 +434,7 @@ pub mod data_source {
         /// Return an authorization code for a given Google+ page that can then be
         /// exchanged for a refresh token on the backend.
         GooglePlusAuthorizationCode = 2,
-        /// Use First Party Client OAuth. First Party Client OAuth doesn't require a
-        /// refresh token to get an offline access token. Instead, it uses a
-        /// client-signed JWT assertion to retrieve an access token.
+        /// Use First Party OAuth.
         FirstPartyOauth = 3,
     }
     /// Represents how the data source supports data auto refresh.
@@ -507,7 +516,7 @@ pub struct CreateTransferConfigRequest {
     /// `CheckValidCreds`.
     /// In order to obtain authorization_code, please make a
     /// request to
-    /// https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=<datatransferapiclientid>&scope=<data_source_scopes>&redirect_uri=<redirect_uri>
+    /// <https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=<datatransferapiclientid>&scope=<data_source_scopes>&redirect_uri=<redirect_uri>>
     ///
     /// * client_id should be OAuth client_id of BigQuery DTS API for the given
     ///   data source returned by ListDataSources method.
@@ -547,7 +556,7 @@ pub struct UpdateTransferConfigRequest {
     /// authorizing user.
     /// In order to obtain authorization_code, please make a
     /// request to
-    /// https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=<datatransferapiclientid>&scope=<data_source_scopes>&redirect_uri=<redirect_uri>
+    /// <https://www.gstatic.com/bigquerydatatransfer/oauthz/auth?client_id=<datatransferapiclientid>&scope=<data_source_scopes>&redirect_uri=<redirect_uri>>
     ///
     /// * client_id should be OAuth client_id of BigQuery DTS API for the given
     ///   data source returned by ListDataSources method.
@@ -806,14 +815,14 @@ pub mod start_manual_transfer_runs_request {
     pub struct TimeRange {
         /// Start time of the range of transfer runs. For example,
         /// `"2017-05-25T00:00:00+00:00"`. The start_time must be strictly less than
-        /// the end_time. Creates transfer runs where run_time is in the range betwen
-        /// start_time (inclusive) and end_time (exlusive).
+        /// the end_time. Creates transfer runs where run_time is in the range
+        /// between start_time (inclusive) and end_time (exclusive).
         #[prost(message, optional, tag = "1")]
         pub start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// End time of the range of transfer runs. For example,
         /// `"2017-05-30T00:00:00+00:00"`. The end_time must not be in the future.
-        /// Creates transfer runs where run_time is in the range betwen start_time
-        /// (inclusive) and end_time (exlusive).
+        /// Creates transfer runs where run_time is in the range between start_time
+        /// (inclusive) and end_time (exclusive).
         #[prost(message, optional, tag = "2")]
         pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     }
@@ -852,7 +861,7 @@ pub mod data_transfer_service_client {
     impl<T> DataTransferServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -865,7 +874,7 @@ pub mod data_transfer_service_client {
             interceptor: F,
         ) -> DataTransferServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -996,7 +1005,8 @@ pub mod data_transfer_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns information about all data transfers in the project."]
+        #[doc = " Returns information about all transfer configs owned by a project in the"]
+        #[doc = " specified location."]
         pub async fn list_transfer_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTransferConfigsRequest>,

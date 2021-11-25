@@ -28,7 +28,7 @@ pub mod downstream_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ResponseType {
         /// Message sent to FCM via the [Send
-        /// API](https://firebase.google.com/docs/cloud-messaging/send-message)
+        /// API](<https://firebase.google.com/docs/cloud-messaging/send-message>)
         /// targeting this client.
         #[prost(message, tag = "1")]
         Message(super::Message),
@@ -45,7 +45,7 @@ pub struct Ack {
     pub message_id: ::prost::alloc::string::String,
 }
 /// Message created through the [Send
-/// API](https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#resource-message).
+/// API](<https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#resource-message>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Message {
     /// The identifier of the message. Used to ack the message.
@@ -58,7 +58,7 @@ pub struct Message {
     #[prost(message, optional, tag = "3")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The arbitrary payload set in the [Send
-    /// API](https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#resource-message).
+    /// API](<https://firebase.google.com/docs/reference/fcm/rest/v1/projects.messages#resource-message>).
     #[prost(map = "string, string", tag = "4")]
     pub data:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -75,7 +75,7 @@ pub mod connection_api_client {
     impl<T> ConnectionApiClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -88,7 +88,7 @@ pub mod connection_api_client {
             interceptor: F,
         ) -> ConnectionApiClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -142,9 +142,7 @@ pub mod connection_api_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firebase.fcm.connection.v1alpha1.ConnectionApi/Connect",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }

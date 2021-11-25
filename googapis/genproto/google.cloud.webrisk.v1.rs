@@ -39,10 +39,7 @@ pub mod compute_threat_list_diff_request {
 pub struct ComputeThreatListDiffResponse {
     /// The type of response. This may indicate that an action must be taken by the
     /// client when the response is received.
-    #[prost(
-        enumeration = "compute_threat_list_diff_response::ResponseType",
-        tag = "4"
-    )]
+    #[prost(enumeration = "compute_threat_list_diff_response::ResponseType", tag = "4")]
     pub response_type: i32,
     /// A set of entries to add to a local threat type's list.
     #[prost(message, optional, tag = "5")]
@@ -297,7 +294,7 @@ pub mod web_risk_service_client {
     impl<T> WebRiskServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -310,7 +307,7 @@ pub mod web_risk_service_client {
             interceptor: F,
         ) -> WebRiskServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

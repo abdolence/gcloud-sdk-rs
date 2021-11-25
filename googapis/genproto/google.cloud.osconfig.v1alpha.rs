@@ -110,7 +110,7 @@ pub enum OsPolicyComplianceState {
 /// VM as well as the compliance state of an individual OS policy.
 ///
 /// For more information, see [View
-/// compliance](https://cloud.google.com/compute/docs/os-configuration-management/view-compliance).
+/// compliance](<https://cloud.google.com/compute/docs/os-configuration-management/view-compliance>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstanceOsPoliciesCompliance {
     /// Output only. The `InstanceOSPoliciesCompliance` API resource name.
@@ -244,7 +244,7 @@ pub struct ListInstanceOsPoliciesCompliancesResponse {
 /// You can use this API resource to determine the inventory data of your VM.
 ///
 /// For more information, see [Information provided by OS inventory
-/// management](https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).
+/// management](<https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Inventory {
     /// Output only. The `Inventory` API resource name.
@@ -256,10 +256,10 @@ pub struct Inventory {
     /// Output only. Base level operating system information for the VM.
     #[prost(message, optional, tag = "1")]
     pub os_info: ::core::option::Option<inventory::OsInfo>,
-    /// Output only. Inventory items related to the VM keyed by an opaque unique identifier for
-    /// each inventory item. The identifier is unique to each distinct and
-    /// addressable inventory item and will change, when there is a new package
-    /// version.
+    /// Output only. Inventory items related to the VM keyed by an opaque unique
+    /// identifier for each inventory item. The identifier is unique to each
+    /// distinct and addressable inventory item and will change, when there is a
+    /// new package version.
     #[prost(map = "string, message", tag = "2")]
     pub items: ::std::collections::HashMap<::prost::alloc::string::String, inventory::Item>,
     /// Output only. Timestamp of the last reported inventory for the VM.
@@ -363,7 +363,7 @@ pub mod inventory {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SoftwarePackage {
         /// Information about the different types of software packages.
-        #[prost(oneof = "software_package::Details", tags = "1, 2, 3, 4, 5, 6, 7, 8")]
+        #[prost(oneof = "software_package::Details", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9")]
         pub details: ::core::option::Option<software_package::Details>,
     }
     /// Nested message and enum types in `SoftwarePackage`.
@@ -373,43 +373,46 @@ pub mod inventory {
         pub enum Details {
             /// Yum package info.
             /// For details about the yum package manager, see
-            /// https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.
+            /// <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.>
             #[prost(message, tag = "1")]
             YumPackage(super::VersionedPackage),
             /// Details of an APT package.
             /// For details about the apt package manager, see
-            /// https://wiki.debian.org/Apt.
+            /// <https://wiki.debian.org/Apt.>
             #[prost(message, tag = "2")]
             AptPackage(super::VersionedPackage),
             /// Details of a Zypper package.
             /// For details about the Zypper package manager, see
-            /// https://en.opensuse.org/SDB:Zypper_manual.
+            /// <https://en.opensuse.org/SDB:Zypper_manual.>
             #[prost(message, tag = "3")]
             ZypperPackage(super::VersionedPackage),
             /// Details of a Googet package.
             ///  For details about the googet package manager, see
-            ///  https://github.com/google/googet.
+            ///  <https://github.com/google/googet.>
             #[prost(message, tag = "4")]
             GoogetPackage(super::VersionedPackage),
             /// Details of a Zypper patch.
             /// For details about the Zypper package manager, see
-            /// https://en.opensuse.org/SDB:Zypper_manual.
+            /// <https://en.opensuse.org/SDB:Zypper_manual.>
             #[prost(message, tag = "5")]
             ZypperPatch(super::ZypperPatch),
             /// Details of a Windows Update package.
-            /// See https://docs.microsoft.com/en-us/windows/win32/api/_wua/ for
+            /// See <https://docs.microsoft.com/en-us/windows/win32/api/_wua/> for
             /// information about Windows Update.
             #[prost(message, tag = "6")]
             WuaPackage(super::WindowsUpdatePackage),
             /// Details of a Windows Quick Fix engineering package.
             /// See
-            /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+            /// <https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering>
             /// for info in Windows Quick Fix Engineering.
             #[prost(message, tag = "7")]
             QfePackage(super::WindowsQuickFixEngineeringPackage),
             /// Details of a COS package.
             #[prost(message, tag = "8")]
             CosPackage(super::VersionedPackage),
+            /// Details of Windows Application.
+            #[prost(message, tag = "9")]
+            WindowsApplication(super::WindowsApplication),
         }
     }
     /// Information related to the a standard versioned package.  This includes
@@ -444,7 +447,7 @@ pub mod inventory {
     }
     /// Details related to a Windows Update package.
     /// Field data and names are taken from Windows Update API IUpdate Interface:
-    /// https://docs.microsoft.com/en-us/windows/win32/api/_wua/
+    /// <https://docs.microsoft.com/en-us/windows/win32/api/_wua/>
     /// Descriptive fields like title, and description are localized based on
     /// the locale of the VM being updated.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -496,7 +499,7 @@ pub mod inventory {
     /// Information related to a Quick Fix Engineering package.
     /// Fields are taken from Windows QuickFixEngineering Interface and match
     /// the source names:
-    /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+    /// <https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WindowsQuickFixEngineeringPackage {
         /// A short textual description of the QFE update.
@@ -511,6 +514,32 @@ pub mod inventory {
         /// Date that the QFE update was installed.  Mapped from installed_on field.
         #[prost(message, optional, tag = "5")]
         pub install_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
+    /// Contains information about a Windows application as retrieved from the
+    /// Windows Registry. For more information about these fields, see
+    ///
+    /// [Windows Installer Properties for the Uninstall
+    /// Registry](<https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key>){:
+    /// class="external" }
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WindowsApplication {
+        /// The name of the application or product.
+        #[prost(string, tag = "1")]
+        pub display_name: ::prost::alloc::string::String,
+        /// The version of the product or application in string format.
+        #[prost(string, tag = "2")]
+        pub display_version: ::prost::alloc::string::String,
+        /// The name of the manufacturer for the product or application.
+        #[prost(string, tag = "3")]
+        pub publisher: ::prost::alloc::string::String,
+        /// The last time this product received service. The value of this property
+        /// is replaced each time a patch is applied or removed from the product or
+        /// the command-line option is used to repair the product.
+        #[prost(message, optional, tag = "4")]
+        pub install_date: ::core::option::Option<super::super::super::super::r#type::Date>,
+        /// The internet address for technical support.
+        #[prost(string, tag = "5")]
+        pub help_link: ::prost::alloc::string::String,
     }
 }
 /// A request message for getting inventory data for the specified VM.
@@ -722,10 +751,7 @@ pub mod os_policy {
             #[prost(enumeration = "package_resource::DesiredState", tag = "1")]
             pub desired_state: i32,
             /// A system package.
-            #[prost(
-                oneof = "package_resource::SystemPackage",
-                tags = "2, 3, 4, 5, 6, 7, 8"
-            )]
+            #[prost(oneof = "package_resource::SystemPackage", tags = "2, 3, 4, 5, 6, 7, 8")]
             pub system_package: ::core::option::Option<package_resource::SystemPackage>,
         }
         /// Nested message and enum types in `PackageResource`.
@@ -744,8 +770,8 @@ pub mod os_policy {
                 pub pull_deps: bool,
             }
             /// A package managed by APT.
-            /// - install: `apt-get update && apt-get -y install [name]`
-            /// - remove: `apt-get -y remove [name]`
+            /// - install: `apt-get update && apt-get -y install \[name\]`
+            /// - remove: `apt-get -y remove \[name\]`
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Apt {
                 /// Required. Package name.
@@ -1041,7 +1067,7 @@ pub mod os_policy {
                     /// source will be executed directly, which will likely only
                     /// succeed for executables and scripts with shebang lines.
                     /// [Wikipedia
-                    /// shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)).
+                    /// shebang](<https://en.wikipedia.org/wiki/Shebang_(Unix>)).
                     None = 1,
                     /// Indicates that the script will be run with /bin/sh on Linux and
                     /// cmd.exe on windows.
@@ -1202,7 +1228,7 @@ pub mod fixed_or_percent {
 /// executing a script.
 ///
 /// For more information, see [OS policy and OS policy
-/// assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).
+/// assignment](<https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OsPolicyAssignment {
     /// Resource name.
@@ -1357,16 +1383,10 @@ pub struct OsPolicyAssignmentOperationMetadata {
     #[prost(string, tag = "1")]
     pub os_policy_assignment: ::prost::alloc::string::String,
     /// The OS policy assignment API method.
-    #[prost(
-        enumeration = "os_policy_assignment_operation_metadata::ApiMethod",
-        tag = "2"
-    )]
+    #[prost(enumeration = "os_policy_assignment_operation_metadata::ApiMethod", tag = "2")]
     pub api_method: i32,
     /// State of the rollout
-    #[prost(
-        enumeration = "os_policy_assignment_operation_metadata::RolloutState",
-        tag = "3"
-    )]
+    #[prost(enumeration = "os_policy_assignment_operation_metadata::RolloutState", tag = "3")]
     pub rollout_state: i32,
     /// Rollout start time
     #[prost(message, optional, tag = "4")]
@@ -1509,7 +1529,7 @@ pub struct DeleteOsPolicyAssignmentRequest {
 /// Compute Engine virtual machine (VM) instance at a given point in time.
 ///
 /// For more information, see [Vulnerability
-/// reports](https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports).
+/// reports](<https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VulnerabilityReport {
     /// Output only. The `vulnerabilityReport` API resource name.
@@ -1650,16 +1670,16 @@ pub struct ListVulnerabilityReportsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Common Vulnerability Scoring System version 3.
-/// For details, see https://www.first.org/cvss/specification-document
+/// For details, see <https://www.first.org/cvss/specification-document>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CvsSv3 {
     /// The base score is a function of the base metric scores.
-    /// https://www.first.org/cvss/specification-document#Base-Metrics
+    /// <https://www.first.org/cvss/specification-document#Base-Metrics>
     #[prost(float, tag = "1")]
     pub base_score: f32,
     /// The Exploitability sub-score equation is derived from the Base
     /// Exploitability metrics.
-    /// https://www.first.org/cvss/specification-document#2-1-Exploitability-Metrics
+    /// <https://www.first.org/cvss/specification-document#2-1-Exploitability-Metrics>
     #[prost(float, tag = "2")]
     pub exploitability_score: f32,
     /// The Impact sub-score equation is derived from the Base Impact metrics.
@@ -1821,7 +1841,7 @@ pub mod os_config_zonal_service_client {
     impl<T> OsConfigZonalServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1834,7 +1854,7 @@ pub mod os_config_zonal_service_client {
             interceptor: F,
         ) -> OsConfigZonalServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

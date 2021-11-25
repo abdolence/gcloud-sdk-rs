@@ -61,7 +61,7 @@ pub struct Profile {
     #[prost(message, optional, tag = "4")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// Input only. Profile bytes, as a gzip compressed serialized proto, the
-    /// format is https://github.com/google/pprof/blob/master/proto/profile.proto.
+    /// format is <https://github.com/google/pprof/blob/master/proto/profile.proto.>
     #[prost(bytes = "vec", tag = "5")]
     pub profile_bytes: ::prost::alloc::vec::Vec<u8>,
     /// Input only. Labels associated to this specific profile. These labels will
@@ -75,7 +75,7 @@ pub struct Profile {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
     /// Project ID is the ID of a cloud project.
-    /// Validation regex: `^[a-z][-a-z0-9:.]{4,61}[a-z0-9]$`.
+    /// Validation regex: `^\[a-z][-a-z0-9:.]{4,61}[a-z0-9\]$`.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Target is the service name used to group related deployments:
@@ -83,11 +83,11 @@ pub struct Deployment {
     /// * Cluster and container name for GKE.
     /// * User-specified string for direct GCE profiling (e.g. Java).
     /// * Job name for Dataflow.
-    /// Validation regex: `^[a-z]([-a-z0-9_.]{0,253}[a-z0-9])?$`.
+    /// Validation regex: `^\[a-z]([-a-z0-9_.]{0,253}[a-z0-9\])?$`.
     #[prost(string, tag = "2")]
     pub target: ::prost::alloc::string::String,
     /// Labels identify the deployment within the user universe and same target.
-    /// Validation regex for label names: `^[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?$`.
+    /// Validation regex for label names: `^\[a-z0-9]([a-z0-9-]{0,61}[a-z0-9\])?$`.
     /// Value for an individual label must be <= 512 bytes, the total
     /// size of all label names and values must be <= 1024 bytes.
     ///
@@ -149,7 +149,7 @@ pub mod profiler_service_client {
     impl<T> ProfilerServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -162,7 +162,7 @@ pub mod profiler_service_client {
             interceptor: F,
         ) -> ProfilerServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

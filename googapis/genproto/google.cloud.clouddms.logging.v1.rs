@@ -31,7 +31,7 @@ pub struct LoggedMigrationJob {
     /// Required. The migration job type.
     #[prost(enumeration = "logged_migration_job::Type", tag = "6")]
     pub r#type: i32,
-    /// Optional. An optional dump path (gs://[BUCKET_NAME]/[OBJECT_NAME]).
+    /// Optional. An optional dump path (gs://\[BUCKET_NAME]/[OBJECT_NAME\]).
     #[prost(string, tag = "7")]
     pub dump_path: ::prost::alloc::string::String,
     /// Required. The migration job source connection profile name.
@@ -74,7 +74,7 @@ pub mod logged_migration_job {
         Draft = 2,
         /// The migration job is being created.
         Creating = 3,
-        /// The migration job is created, not started and is fully editable.
+        /// The migration job is created and not started.
         NotStarted = 4,
         /// The migration job is running
         Running = 5,
@@ -230,10 +230,7 @@ pub struct LoggedConnectionProfile {
     #[prost(enumeration = "DatabaseProvider", tag = "6")]
     pub provider: i32,
     /// The connection profile definition
-    #[prost(
-        oneof = "logged_connection_profile::ConnectionProfile",
-        tags = "100, 101, 102"
-    )]
+    #[prost(oneof = "logged_connection_profile::ConnectionProfile", tags = "100, 101, 102")]
     pub connection_profile: ::core::option::Option<logged_connection_profile::ConnectionProfile>,
 }
 /// Nested message and enum types in `LoggedConnectionProfile`.
@@ -321,10 +318,7 @@ pub struct ConnectionProfileEventLog {
     #[prost(string, tag = "4")]
     pub text_message: ::prost::alloc::string::String,
     /// Original event data
-    #[prost(
-        oneof = "connection_profile_event_log::OriginalCause",
-        tags = "200, 201"
-    )]
+    #[prost(oneof = "connection_profile_event_log::OriginalCause", tags = "200, 201")]
     pub original_cause: ::core::option::Option<connection_profile_event_log::OriginalCause>,
 }
 /// Nested message and enum types in `ConnectionProfileEventLog`.

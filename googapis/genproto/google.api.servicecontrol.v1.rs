@@ -1,5 +1,5 @@
 /// Defines the errors to be returned in
-/// [google.api.servicecontrol.v1.CheckResponse.check_errors][google.api.servicecontrol.v1.CheckResponse.check_errors].
+/// \[google.api.servicecontrol.v1.CheckResponse.check_errors][google.api.servicecontrol.v1.CheckResponse.check_errors\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckError {
     /// The error code.
@@ -31,12 +31,12 @@ pub mod check_error {
         /// This is never used in `CheckResponse`.
         ErrorCodeUnspecified = 0,
         /// The consumer's project id, network container, or resource container was
-        /// not found. Same as [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND].
+        /// not found. Same as \[google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND\].
         NotFound = 5,
         /// The consumer doesn't have access to the specified resource.
-        /// Same as [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].
+        /// Same as \[google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED\].
         PermissionDenied = 7,
-        /// Quota check failed. Same as [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].
+        /// Quota check failed. Same as \[google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED\].
         ResourceExhausted = 8,
         /// The consumer hasn't activated the service.
         ServiceNotActivated = 104,
@@ -83,10 +83,10 @@ pub mod check_error {
 /// points. It contains the size of the population of sample points plus
 /// additional optional information:
 ///
-///   - the arithmetic mean of the samples
-///   - the minimum and maximum of the samples
-///   - the sum-squared-deviation of the samples, used to compute variance
-///   - a histogram of the values of the sample points
+/// * the arithmetic mean of the samples
+/// * the minimum and maximum of the samples
+/// * the sum-squared-deviation of the samples, used to compute variance
+/// * a histogram of the values of the sample points
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Distribution {
     /// The total number of samples in the distribution. Must be >= 0.
@@ -103,7 +103,7 @@ pub struct Distribution {
     #[prost(double, tag = "4")]
     pub maximum: f64,
     /// The sum of squared deviations from the mean:
-    ///   Sum[i=1..count]((x_i - mean)^2)
+    ///   Sum\[i=1..count\]((x_i - mean)^2)
     /// where each x_i is a sample values. If `count` is zero then this field
     /// must be zero, otherwise validation of the request fails.
     #[prost(double, tag = "5")]
@@ -112,9 +112,9 @@ pub struct Distribution {
     /// optional. If present, they must sum to the `count` value.
     ///
     /// The buckets are defined below in `bucket_option`. There are N buckets.
-    /// `bucket_counts[0]` is the number of samples in the underflow bucket.
-    /// `bucket_counts[1]` to `bucket_counts[N-1]` are the numbers of samples
-    /// in each of the finite buckets. And `bucket_counts[N] is the number
+    /// `bucket_counts\[0\]` is the number of samples in the underflow bucket.
+    /// `bucket_counts\[1\]` to `bucket_counts\[N-1\]` are the numbers of samples
+    /// in each of the finite buckets. And `bucket_counts\[N\] is the number
     /// of samples in the overflow bucket. See the comments of `bucket_option`
     /// below for more details.
     ///
@@ -201,16 +201,16 @@ pub mod distribution {
         /// of fenceposting. See comments on `bucket_options` for details.
         ///
         /// The i'th finite bucket covers the interval
-        ///   [bound[i-1], bound[i])
+        ///   \[bound[i-1\], bound\[i\])
         /// where i ranges from 1 to bound_size() - 1. Note that there are no
         /// finite buckets at all if 'bound' only contains a single element; in
         /// that special case the single bound defines the boundary between the
         /// underflow and overflow buckets.
         ///
         /// bucket number                   lower bound    upper bound
-        ///  i == 0 (underflow)              -inf           bound[i]
-        ///  0 < i < bound_size()            bound[i-1]     bound[i]
-        ///  i == bound_size() (overflow)    bound[i-1]     +inf
+        ///  i == 0 (underflow)              -inf           bound\[i\]
+        ///  0 < i < bound_size()            bound\[i-1\]     bound\[i\]
+        ///  i == bound_size() (overflow)    bound\[i-1\]     +inf
         #[prost(double, repeated, tag = "1")]
         pub bounds: ::prost::alloc::vec::Vec<f64>,
     }
@@ -260,7 +260,7 @@ pub struct HttpRequest {
     pub request_method: ::prost::alloc::string::String,
     /// The scheme (http, https), the host name, the path, and the query
     /// portion of the URL that was requested.
-    /// Example: `"http://example.com/some/info?color=red"`.
+    /// Example: `"<http://example.com/some/info?color=red"`.>
     #[prost(string, tag = "2")]
     pub request_url: ::prost::alloc::string::String,
     /// The size of the HTTP request message in bytes, including the request
@@ -290,7 +290,7 @@ pub struct HttpRequest {
     pub server_ip: ::prost::alloc::string::String,
     /// The referer URL of the request, as defined in
     /// [HTTP/1.1 Header Field
-    /// Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html).
+    /// Definitions](<http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html>).
     #[prost(string, tag = "8")]
     pub referer: ::prost::alloc::string::String,
     /// The request processing latency on the server, from the time the request was
@@ -330,10 +330,7 @@ pub struct LogEntry {
     pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
     /// The severity of the log entry. The default value is
     /// `LogSeverity.DEFAULT`.
-    #[prost(
-        enumeration = "super::super::super::logging::r#type::LogSeverity",
-        tag = "12"
-    )]
+    #[prost(enumeration = "super::super::super::logging::r#type::LogSeverity", tag = "12")]
     pub severity: i32,
     /// Optional. Information about the HTTP request associated with this
     /// log entry, if applicable.
@@ -373,7 +370,7 @@ pub mod log_entry {
     pub enum Payload {
         /// The log entry payload, represented as a protocol buffer that is
         /// expressed as a JSON object. The only accepted type currently is
-        /// [AuditLog][google.cloud.audit.AuditLog].
+        /// \[AuditLog][google.cloud.audit.AuditLog\].
         #[prost(message, tag = "2")]
         ProtoPayload(::prost_types::Any),
         /// The log entry payload, represented as a Unicode string (UTF-8).
@@ -430,7 +427,7 @@ pub struct LogEntrySourceLocation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MetricValue {
     /// The labels describing the metric value.
-    /// See comments on [google.api.servicecontrol.v1.Operation.labels][google.api.servicecontrol.v1.Operation.labels] for
+    /// See comments on \[google.api.servicecontrol.v1.Operation.labels][google.api.servicecontrol.v1.Operation.labels\] for
     /// the overriding relationship.
     /// Note that this map must not contain monitored resource labels.
     #[prost(map = "string, string", tag = "1")]
@@ -440,12 +437,12 @@ pub struct MetricValue {
     /// applies. The time period has different semantics for different metric
     /// types (cumulative, delta, and gauge). See the metric definition
     /// documentation in the service configuration for details. If not specified,
-    /// [google.api.servicecontrol.v1.Operation.start_time][google.api.servicecontrol.v1.Operation.start_time] will be used.
+    /// \[google.api.servicecontrol.v1.Operation.start_time][google.api.servicecontrol.v1.Operation.start_time\] will be used.
     #[prost(message, optional, tag = "2")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end of the time period over which this metric value's measurement
     /// applies.  If not specified,
-    /// [google.api.servicecontrol.v1.Operation.end_time][google.api.servicecontrol.v1.Operation.end_time] will be used.
+    /// \[google.api.servicecontrol.v1.Operation.end_time][google.api.servicecontrol.v1.Operation.end_time\] will be used.
     #[prost(message, optional, tag = "3")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The value. The type of value used in the request must
@@ -526,9 +523,9 @@ pub struct Operation {
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End time of the operation.
     /// Required when the operation is used in
-    /// [ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report],
+    /// \[ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report\],
     /// but optional when the operation is used in
-    /// [ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check].
+    /// \[ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check\].
     #[prost(message, optional, tag = "5")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Labels describing the operation. Only the following labels are allowed:
@@ -593,7 +590,7 @@ pub struct AllocateQuotaRequest {
     /// Name of the service as specified in the service configuration. For example,
     /// `"pubsub.googleapis.com"`.
     ///
-    /// See [google.api.Service][google.api.Service] for the definition of a service name.
+    /// See \[google.api.Service][google.api.Service\] for the definition of a service name.
     #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
     /// Operation that describes the quota allocation.
@@ -730,7 +727,7 @@ pub struct AllocateQuotaResponse {
     #[prost(string, tag = "4")]
     pub service_config_id: ::prost::alloc::string::String,
 }
-/// Represents error information for [QuotaOperation][google.api.servicecontrol.v1.QuotaOperation].
+/// Represents error information for \[QuotaOperation][google.api.servicecontrol.v1.QuotaOperation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaError {
     /// Error code.
@@ -762,7 +759,7 @@ pub mod quota_error {
         /// This is never used.
         Unspecified = 0,
         /// Quota allocation failed.
-        /// Same as [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].
+        /// Same as \[google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED\].
         ResourceExhausted = 8,
         /// Consumer cannot access the service because the service requires active
         /// billing.
@@ -790,7 +787,7 @@ pub mod quota_controller_client {
     impl<T> QuotaControllerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -803,7 +800,7 @@ pub mod quota_controller_client {
             interceptor: F,
         ) -> QuotaControllerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -864,7 +861,7 @@ pub struct CheckRequest {
     /// `"pubsub.googleapis.com"`.
     ///
     /// See
-    /// [google.api.Service](https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service)
+    /// \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
     /// for the definition of a service name.
     #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
@@ -883,7 +880,7 @@ pub struct CheckRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckResponse {
     /// The same operation_id value used in the
-    /// [CheckRequest][google.api.servicecontrol.v1.CheckRequest]. Used for logging
+    /// \[CheckRequest][google.api.servicecontrol.v1.CheckRequest\]. Used for logging
     /// and diagnostics purposes.
     #[prost(string, tag = "1")]
     pub operation_id: ::prost::alloc::string::String,
@@ -929,7 +926,7 @@ pub mod check_response {
         #[prost(int64, tag = "1")]
         pub project_number: i64,
         /// The type of the consumer which should have been defined in
-        /// [Google Resource Manager](https://cloud.google.com/resource-manager/).
+        /// [Google Resource Manager](<https://cloud.google.com/resource-manager/>).
         #[prost(enumeration = "consumer_info::ConsumerType", tag = "2")]
         pub r#type: i32,
         /// The consumer identity number, can be Google cloud project number, folder
@@ -941,7 +938,7 @@ pub mod check_response {
     /// Nested message and enum types in `ConsumerInfo`.
     pub mod consumer_info {
         /// The type of the consumer as defined in
-        /// [Google Resource Manager](https://cloud.google.com/resource-manager/).
+        /// [Google Resource Manager](<https://cloud.google.com/resource-manager/>).
         #[derive(
             Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
         )]
@@ -969,7 +966,7 @@ pub struct ReportRequest {
     /// `"pubsub.googleapis.com"`.
     ///
     /// See
-    /// [google.api.Service](https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service)
+    /// \[google.api.Service\](<https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service>)
     /// for the definition of a service name.
     #[prost(string, tag = "1")]
     pub service_name: ::prost::alloc::string::String,
@@ -982,7 +979,7 @@ pub struct ReportRequest {
     ///
     /// There is no limit on the number of operations in the same ReportRequest,
     /// however the ReportRequest size should be no larger than 1MB. See
-    /// [ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors]
+    /// \[ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors\]
     /// for partial failure behavior.
     #[prost(message, repeated, tag = "2")]
     pub operations: ::prost::alloc::vec::Vec<Operation>,
@@ -1023,16 +1020,16 @@ pub struct ReportResponse {
 /// Nested message and enum types in `ReportResponse`.
 pub mod report_response {
     /// Represents the processing error of one
-    /// [Operation][google.api.servicecontrol.v1.Operation] in the request.
+    /// \[Operation][google.api.servicecontrol.v1.Operation\] in the request.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReportError {
         /// The
-        /// [Operation.operation_id][google.api.servicecontrol.v1.Operation.operation_id]
+        /// \[Operation.operation_id][google.api.servicecontrol.v1.Operation.operation_id\]
         /// value from the request.
         #[prost(string, tag = "1")]
         pub operation_id: ::prost::alloc::string::String,
         /// Details of the error when processing the
-        /// [Operation][google.api.servicecontrol.v1.Operation].
+        /// \[Operation][google.api.servicecontrol.v1.Operation\].
         #[prost(message, optional, tag = "2")]
         pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
     }
@@ -1052,7 +1049,7 @@ pub mod service_controller_client {
     impl<T> ServiceControllerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1065,7 +1062,7 @@ pub mod service_controller_client {
             interceptor: F,
         ) -> ServiceControllerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

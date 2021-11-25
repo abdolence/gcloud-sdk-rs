@@ -5,7 +5,7 @@ pub struct Asset {
     /// The full name of the asset. For example:
     /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
     /// See [Resource
-    /// Names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more information.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -59,7 +59,7 @@ pub struct Resource {
     pub version: ::prost::alloc::string::String,
     /// The URL of the discovery document containing the resource's JSON schema.
     /// For example:
-    /// `"https://www.googleapis.com/discovery/v1/apis/compute/v1/rest"`.
+    /// `"<https://www.googleapis.com/discovery/v1/apis/compute/v1/rest"`.>
     /// It will be left unspecified for resources without a discovery-based API,
     /// such as Cloud Bigtable.
     #[prost(string, tag = "2")]
@@ -72,17 +72,17 @@ pub struct Resource {
     /// The REST URL for accessing the resource. An HTTP GET operation using this
     /// URL returns the resource itself.
     /// Example:
-    /// `https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`.
+    /// `<https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`.>
     /// It will be left unspecified for resources without a REST API.
     #[prost(string, tag = "4")]
     pub resource_url: ::prost::alloc::string::String,
     /// The full name of the immediate parent of this resource. See
     /// [Resource
-    /// Names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more information.
     ///
     /// For GCP assets, it is the parent resource defined in the [Cloud IAM policy
-    /// hierarchy](https://cloud.google.com/iam/docs/overview#policy_hierarchy).
+    /// hierarchy](<https://cloud.google.com/iam/docs/overview#policy_hierarchy>).
     /// For example:
     /// `"//cloudresourcemanager.googleapis.com/projects/my_project_123"`.
     ///
@@ -98,9 +98,9 @@ pub struct Resource {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Name of the organization or project the assets belong to. Format:
-    /// "organizations/[organization-number]" (such as "organizations/123"),
-    /// "projects/[project-number]" (such as "projects/my-project-id"), or
-    /// "projects/[project-id]" (such as "projects/12345").
+    /// "organizations/\[organization-number\]" (such as "organizations/123"),
+    /// "projects/\[project-number\]" (such as "projects/my-project-id"), or
+    /// "projects/\[project-id\]" (such as "projects/12345").
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Timestamp to take an asset snapshot. This can only be set to a timestamp
@@ -113,7 +113,7 @@ pub struct ListAssetsRequest {
     /// A list of asset types of which to take a snapshot for. For  example:
     /// "compute.googleapis.com/Disk". If specified, only matching assets will be
     /// returned. See [Introduction to Cloud Asset
-    /// Inventory](https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview)
+    /// Inventory](<https://cloud.google.com/resource-manager/docs/cloud-asset-inventory/overview>)
     /// for all supported asset types.
     #[prost(string, repeated, tag = "3")]
     pub asset_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -172,7 +172,7 @@ pub mod asset_service_client {
     impl<T> AssetServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -185,7 +185,7 @@ pub mod asset_service_client {
             interceptor: F,
         ) -> AssetServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

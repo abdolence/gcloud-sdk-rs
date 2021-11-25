@@ -244,7 +244,7 @@ pub struct UpdateRepositoryRequest {
     pub repository: ::core::option::Option<Repository>,
     /// The update mask applies to the resource. For the `FieldMask` definition,
     /// see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -332,7 +332,7 @@ pub struct UpdateTagRequest {
     pub tag: ::core::option::Option<Tag>,
     /// The update mask applies to the resource. For the `FieldMask` definition,
     /// see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -455,7 +455,7 @@ pub mod artifact_registry_client {
     impl<T> ArtifactRegistryClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -468,7 +468,7 @@ pub mod artifact_registry_client {
             interceptor: F,
         ) -> ArtifactRegistryClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

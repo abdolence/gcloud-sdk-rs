@@ -30,7 +30,7 @@ pub struct TranslateSpeechConfig {
     /// - `ogg-opus`
     ///
     ///   Opus encoded audio frames in Ogg container
-    ///   ([OggOpus](https://wiki.xiph.org/OggOpus)).
+    ///   (\[OggOpus\](<https://wiki.xiph.org/OggOpus>)).
     ///   `sample_rate_hertz` must be one of 8000, 12000, 16000, 24000, or 48000.
     ///
     /// - `mp3`
@@ -147,10 +147,7 @@ pub struct StreamingTranslateSpeechConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechRequest {
     /// The streaming request, which is either a streaming config or content.
-    #[prost(
-        oneof = "streaming_translate_speech_request::StreamingRequest",
-        tags = "1, 2"
-    )]
+    #[prost(oneof = "streaming_translate_speech_request::StreamingRequest", tags = "1, 2")]
     pub streaming_request:
         ::core::option::Option<streaming_translate_speech_request::StreamingRequest>,
 }
@@ -226,7 +223,7 @@ pub mod streaming_translate_speech_result {
 /// the audio currently processed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechResponse {
-    /// Output only. If set, returns a [google.rpc.Status][google.rpc.Status] message that
+    /// Output only. If set, returns a \[google.rpc.Status][google.rpc.Status\] message that
     /// specifies the error for the operation.
     #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
@@ -239,10 +236,7 @@ pub struct StreamingTranslateSpeechResponse {
     #[prost(message, optional, tag = "2")]
     pub result: ::core::option::Option<StreamingTranslateSpeechResult>,
     /// Output only. Indicates the type of speech event.
-    #[prost(
-        enumeration = "streaming_translate_speech_response::SpeechEventType",
-        tag = "3"
-    )]
+    #[prost(enumeration = "streaming_translate_speech_response::SpeechEventType", tag = "3")]
     pub speech_event_type: i32,
 }
 /// Nested message and enum types in `StreamingTranslateSpeechResponse`.
@@ -278,7 +272,7 @@ pub mod speech_translation_service_client {
     impl<T> SpeechTranslationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -291,7 +285,7 @@ pub mod speech_translation_service_client {
             interceptor: F,
         ) -> SpeechTranslationServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -333,9 +327,7 @@ pub mod speech_translation_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.mediatranslation.v1alpha1.SpeechTranslationService/StreamingTranslateSpeech") ;
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }

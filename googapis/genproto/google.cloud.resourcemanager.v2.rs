@@ -8,7 +8,7 @@ pub struct Folder {
     pub name: ::prost::alloc::string::String,
     /// Required. The Folder’s parent's resource name.
     /// Updates to the folder's parent must be performed via
-    /// [MoveFolder][google.cloud.resourcemanager.v2.Folders.MoveFolder].
+    /// \[MoveFolder][google.cloud.resourcemanager.v2.Folders.MoveFolder\].
     #[prost(string, tag = "2")]
     pub parent: ::prost::alloc::string::String,
     /// The folder’s display name.
@@ -17,13 +17,13 @@ pub struct Folder {
     /// The display name must start and end with a letter or digit, may contain
     /// letters, digits, spaces, hyphens and underscores and can be no longer
     /// than 30 characters. This is captured by the regular expression:
-    /// [\p{L}\p{N}]([\p{L}\p{N}_- ]{0,28}[\p{L}\p{N}])?.
+    /// \[\p{L}\p{N}\]([\p{L}\p{N}_- ]{0,28}\[\p{L}\p{N}\])?.
     #[prost(string, tag = "3")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. The lifecycle state of the folder.
     /// Updates to the lifecycle_state must be performed via
-    /// [DeleteFolder][google.cloud.resourcemanager.v2.Folders.DeleteFolder] and
-    /// [UndeleteFolder][google.cloud.resourcemanager.v2.Folders.UndeleteFolder].
+    /// \[DeleteFolder][google.cloud.resourcemanager.v2.Folders.DeleteFolder\] and
+    /// \[UndeleteFolder][google.cloud.resourcemanager.v2.Folders.UndeleteFolder\].
     #[prost(enumeration = "folder::LifecycleState", tag = "4")]
     pub lifecycle_state: i32,
     /// Output only. Timestamp when the Folder was created. Assigned by the server.
@@ -65,7 +65,7 @@ pub struct ListFoldersRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Controls whether Folders in the
-    /// [DELETE_REQUESTED][google.cloud.resourcemanager.v2.Folder.LifecycleState.DELETE_REQUESTED]
+    /// \[DELETE_REQUESTED][google.cloud.resourcemanager.v2.Folder.LifecycleState.DELETE_REQUESTED\]
     /// state should be returned. Defaults to false.
     #[prost(bool, tag = "4")]
     pub show_deleted: bool,
@@ -242,7 +242,7 @@ pub mod folders_client {
     impl<T> FoldersClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -255,7 +255,7 @@ pub mod folders_client {
             interceptor: F,
         ) -> FoldersClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

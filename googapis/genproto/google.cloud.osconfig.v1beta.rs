@@ -70,7 +70,7 @@ pub struct Assignment {
     #[prost(string, repeated, tag = "2")]
     pub zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Targets any of the instances specified. Instances are specified by their
-    /// URI in the form `zones/[ZONE]/instances/[INSTANCE_NAME]`.
+    /// URI in the form `zones/\[ZONE]/instances/[INSTANCE_NAME\]`.
     ///
     /// Instance targeting is uncommon and is supported to facilitate the
     /// management of changes by the instance or to target specific VM instances
@@ -414,21 +414,21 @@ pub mod software_recipe {
         pub struct Gcs {
             /// Bucket of the Google Cloud Storage object.
             /// Given an example URL:
-            /// `https://storage.googleapis.com/my-bucket/foo/bar#1234567`
+            /// `<https://storage.googleapis.com/my-bucket/foo/bar#1234567`>
             /// this value would be `my-bucket`.
             #[prost(string, tag = "1")]
             pub bucket: ::prost::alloc::string::String,
             /// Name of the Google Cloud Storage object.
-            /// As specified [here]
-            /// (https://cloud.google.com/storage/docs/naming#objectnames)
+            /// As specified \[here\]
+            /// (<https://cloud.google.com/storage/docs/naming#objectnames>)
             /// Given an example URL:
-            /// `https://storage.googleapis.com/my-bucket/foo/bar#1234567`
+            /// `<https://storage.googleapis.com/my-bucket/foo/bar#1234567`>
             /// this value would be `foo/bar`.
             #[prost(string, tag = "2")]
             pub object: ::prost::alloc::string::String,
             /// Must be provided if allow_insecure is false.
             /// Generation number of the Google Cloud Storage object.
-            /// `https://storage.googleapis.com/my-bucket/foo/bar#1234567`
+            /// `<https://storage.googleapis.com/my-bucket/foo/bar#1234567`>
             /// this value would be `1234567`.
             #[prost(int64, tag = "3")]
             pub generation: i64,
@@ -528,11 +528,11 @@ pub mod software_recipe {
             #[prost(string, tag = "1")]
             pub artifact_id: ::prost::alloc::string::String,
             /// The flags to use when installing the MSI
-            /// defaults to ["/i"] (i.e. the install flag).
+            /// defaults to \["/i"\] (i.e. the install flag).
             #[prost(string, repeated, tag = "2")]
             pub flags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Return codes that indicate that the software installed or updated
-            /// successfully. Behaviour defaults to [0]
+            /// successfully. Behaviour defaults to \[0\]
             #[prost(int32, repeated, tag = "3")]
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
         }
@@ -556,7 +556,7 @@ pub mod software_recipe {
             /// Arguments to be passed to the provided executable.
             #[prost(string, repeated, tag = "3")]
             pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// Defaults to [0]. A list of possible return values that the program
+            /// Defaults to \[0\]. A list of possible return values that the program
             /// can return to indicate a success.
             #[prost(int32, repeated, tag = "4")]
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
@@ -584,13 +584,13 @@ pub mod software_recipe {
             #[prost(string, tag = "1")]
             pub script: ::prost::alloc::string::String,
             /// Return codes that indicate that the software installed or updated
-            /// successfully. Behaviour defaults to [0]
+            /// successfully. Behaviour defaults to \[0\]
             #[prost(int32, repeated, tag = "2")]
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
             /// The script interpreter to use to run the script. If no interpreter is
             /// specified the script is executed directly, which likely
             /// only succeed for scripts with
-            /// [shebang lines](https://en.wikipedia.org/wiki/Shebang_\(Unix\)).
+            /// [shebang lines](<https://en.wikipedia.org/wiki/Shebang_\(Unix\>)).
             #[prost(enumeration = "run_script::Interpreter", tag = "3")]
             pub interpreter: i32,
         }
@@ -1218,7 +1218,7 @@ pub struct YumSettings {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GooSettings {}
 /// Zypper patching is performed by running `zypper patch`.
-/// See also https://en.opensuse.org/SDB:Zypper_manual.
+/// See also <https://en.opensuse.org/SDB:Zypper_manual.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZypperSettings {
     /// Adds the `--with-optional` flag to `zypper patch`.
@@ -1249,11 +1249,7 @@ pub struct ZypperSettings {
 pub struct WindowsUpdateSettings {
     /// Only apply updates of these windows update classifications. If empty, all
     /// updates are applied.
-    #[prost(
-        enumeration = "windows_update_settings::Classification",
-        repeated,
-        tag = "1"
-    )]
+    #[prost(enumeration = "windows_update_settings::Classification", repeated, tag = "1")]
     pub classifications: ::prost::alloc::vec::Vec<i32>,
     /// List of KBs to exclude from update.
     #[prost(string, repeated, tag = "2")]
@@ -1267,47 +1263,47 @@ pub struct WindowsUpdateSettings {
 /// Nested message and enum types in `WindowsUpdateSettings`.
 pub mod windows_update_settings {
     /// Microsoft Windows update classifications as defined in
-    /// [1]
-    /// https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro
+    /// \[1\]
+    /// <https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro>
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Classification {
         /// Invalid. If classifications are included, they must be specified.
         Unspecified = 0,
         /// "A widely released fix for a specific problem that addresses a critical,
-        /// non-security-related bug." [1]
+        /// non-security-related bug." \[1\]
         Critical = 1,
         /// "A widely released fix for a product-specific, security-related
         /// vulnerability. Security vulnerabilities are rated by their severity. The
         /// severity rating is indicated in the Microsoft security bulletin as
-        /// critical, important, moderate, or low." [1]
+        /// critical, important, moderate, or low." \[1\]
         Security = 2,
         /// "A widely released and frequent software update that contains additions
         /// to a product's definition database. Definition databases are often used
         /// to detect objects that have specific attributes, such as malicious code,
-        /// phishing websites, or junk mail." [1]
+        /// phishing websites, or junk mail." \[1\]
         Definition = 3,
-        /// "Software that controls the input and output of a device." [1]
+        /// "Software that controls the input and output of a device." \[1\]
         Driver = 4,
         /// "New product functionality that is first distributed outside the context
         /// of a product release and that is typically included in the next full
-        /// product release." [1]
+        /// product release." \[1\]
         FeaturePack = 5,
         /// "A tested, cumulative set of all hotfixes, security updates, critical
         /// updates, and updates. Additionally, service packs may contain additional
         /// fixes for problems that are found internally since the release of the
         /// product. Service packs my also contain a limited number of
-        /// customer-requested design changes or features." [1]
+        /// customer-requested design changes or features." \[1\]
         ServicePack = 6,
-        /// "A utility or feature that helps complete a task or set of tasks." [1]
+        /// "A utility or feature that helps complete a task or set of tasks." \[1\]
         Tool = 7,
         /// "A tested, cumulative set of hotfixes, security updates, critical
         /// updates, and updates that are packaged together for easy deployment. A
         /// rollup generally targets a specific area, such as security, or a
-        /// component of a product, such as Internet Information Services (IIS)." [1]
+        /// component of a product, such as Internet Information Services (IIS)." \[1\]
         UpdateRollup = 8,
         /// "A widely released fix for a specific problem. An update addresses a
-        /// noncritical, non-security-related bug." [1]
+        /// noncritical, non-security-related bug." \[1\]
         Update = 9,
     }
 }
@@ -1324,14 +1320,14 @@ pub struct ExecStep {
 /// Common configurations for an ExecStep.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecStepConfig {
-    /// Defaults to [0]. A list of possible return values that the
+    /// Defaults to \[0\]. A list of possible return values that the
     /// execution can return to indicate a success.
     #[prost(int32, repeated, tag = "3")]
     pub allowed_success_codes: ::prost::alloc::vec::Vec<i32>,
     /// The script interpreter to use to run the script. If no interpreter is
     /// specified the script will be executed directly, which will likely
     /// only succeed for scripts with [shebang lines]
-    /// (https://en.wikipedia.org/wiki/Shebang_\(Unix\)).
+    /// (<https://en.wikipedia.org/wiki/Shebang_\(Unix\>)).
     #[prost(enumeration = "exec_step_config::Interpreter", tag = "4")]
     pub interpreter: i32,
     /// Location of the executable.
@@ -1399,9 +1395,9 @@ pub struct PatchInstanceFilter {
     #[prost(string, repeated, tag = "3")]
     pub zones: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Targets any of the VM instances specified. Instances are specified by their
-    /// URI in the form `zones/[ZONE]/instances/[INSTANCE_NAME]`,
-    /// `projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]`, or
-    /// `https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME]`
+    /// URI in the form `zones/\[ZONE]/instances/[INSTANCE_NAME\]`,
+    /// `projects/\[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME\]`, or
+    /// `<https://www.googleapis.com/compute/v1/projects/\[PROJECT_ID]/zones/[ZONE]/instances/[INSTANCE_NAME\]`>
     #[prost(string, repeated, tag = "4")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Targets VMs whose name starts with one of these prefixes. Similar to
@@ -1452,18 +1448,18 @@ pub struct PatchDeployment {
     #[prost(message, optional, tag = "5")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// Output only. Time the patch deployment was created. Timestamp is in
-    /// <a href="https://www.ietf.org/rfc/rfc3339.txt" target="_blank">RFC3339</a>
+    /// <a href="<https://www.ietf.org/rfc/rfc3339.txt"> target="_blank">RFC3339</a>
     /// text format.
     #[prost(message, optional, tag = "8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time the patch deployment was last updated. Timestamp is in
-    /// <a href="https://www.ietf.org/rfc/rfc3339.txt" target="_blank">RFC3339</a>
+    /// <a href="<https://www.ietf.org/rfc/rfc3339.txt"> target="_blank">RFC3339</a>
     /// text format.
     #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last time a patch job was started by this deployment.
     /// Timestamp is in
-    /// <a href="https://www.ietf.org/rfc/rfc3339.txt" target="_blank">RFC3339</a>
+    /// <a href="<https://www.ietf.org/rfc/rfc3339.txt"> target="_blank">RFC3339</a>
     /// text format.
     #[prost(message, optional, tag = "10")]
     pub last_execute_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -1485,7 +1481,7 @@ pub mod patch_deployment {
     }
 }
 /// Sets the time for a one time patch deployment. Timestamp is in
-/// <a href="https://www.ietf.org/rfc/rfc3339.txt" target="_blank">RFC3339</a>
+/// <a href="<https://www.ietf.org/rfc/rfc3339.txt"> target="_blank">RFC3339</a>
 /// text format.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OneTimeSchedule {
@@ -1539,6 +1535,9 @@ pub mod recurring_schedule {
         /// Indicates that the frequency should be expressed in terms of
         /// months.
         Monthly = 2,
+        /// Indicates that the frequency should be expressed in terms of
+        /// days.
+        Daily = 3,
     }
     /// Configurations for this recurring schedule.
     /// Configurations must match frequency.
@@ -1669,7 +1668,7 @@ pub mod os_config_service_client {
     impl<T> OsConfigServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1682,7 +1681,7 @@ pub mod os_config_service_client {
             interceptor: F,
         ) -> OsConfigServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

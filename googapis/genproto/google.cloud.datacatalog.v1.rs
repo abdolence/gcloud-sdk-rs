@@ -1,5 +1,69 @@
-/// This enum describes all the possible systems that Data Catalog integrates
-/// with.
+/// Specification for the BigQuery connection.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigQueryConnectionSpec {
+    /// The type of the BigQuery connection.
+    #[prost(enumeration = "big_query_connection_spec::ConnectionType", tag = "1")]
+    pub connection_type: i32,
+    /// True if there are credentials attached to the BigQuery connection; false
+    /// otherwise.
+    #[prost(bool, tag = "3")]
+    pub has_credential: bool,
+    #[prost(oneof = "big_query_connection_spec::ConnectionSpec", tags = "2")]
+    pub connection_spec: ::core::option::Option<big_query_connection_spec::ConnectionSpec>,
+}
+/// Nested message and enum types in `BigQueryConnectionSpec`.
+pub mod big_query_connection_spec {
+    /// The type of the BigQuery connection.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConnectionType {
+        /// Unspecified type.
+        Unspecified = 0,
+        /// Cloud SQL connection.
+        CloudSql = 1,
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ConnectionSpec {
+        /// Specification for the BigQuery connection to a Cloud SQL instance.
+        #[prost(message, tag = "2")]
+        CloudSql(super::CloudSqlBigQueryConnectionSpec),
+    }
+}
+/// Specification for the BigQuery connection to a Cloud SQL instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudSqlBigQueryConnectionSpec {
+    /// Cloud SQL instance ID in the format of `project:location:instance`.
+    #[prost(string, tag = "1")]
+    pub instance_id: ::prost::alloc::string::String,
+    /// Database name.
+    #[prost(string, tag = "2")]
+    pub database: ::prost::alloc::string::String,
+    /// Type of the Cloud SQL database.
+    #[prost(enumeration = "cloud_sql_big_query_connection_spec::DatabaseType", tag = "3")]
+    pub r#type: i32,
+}
+/// Nested message and enum types in `CloudSqlBigQueryConnectionSpec`.
+pub mod cloud_sql_big_query_connection_spec {
+    /// Supported Cloud SQL database types.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum DatabaseType {
+        /// Unspecified database type.
+        Unspecified = 0,
+        /// Cloud SQL for PostgreSQL.
+        Postgres = 1,
+        /// Cloud SQL for MySQL.
+        Mysql = 2,
+    }
+}
+/// Fields specific for BigQuery routines.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigQueryRoutineSpec {
+    /// Paths of the imported libraries.
+    #[prost(string, repeated, tag = "1")]
+    pub imported_libraries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// This enum lists all the systems that Data Catalog integrates with.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum IntegratedSystem {
@@ -12,20 +76,21 @@ pub enum IntegratedSystem {
     /// Dataproc Metastore.
     DataprocMetastore = 3,
 }
-/// Describes the physical location of an entry.
+/// Physical location of an entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSource {
-    /// Service in which the data is physically stored.
+    /// Service that physically stores the data.
     #[prost(enumeration = "data_source::Service", tag = "1")]
     pub service: i32,
-    /// Full name of the resource as defined by the service, e.g.
-    /// //bigquery.googleapis.com/projects/{project_id}/locations/{location}/datasets/{dataset_id}/tables/{table_id}
+    /// Full name of a resource as defined by the service. For example:
+    ///
+    /// `//bigquery.googleapis.com/projects/{PROJECT_ID}/locations/{LOCATION}/datasets/{DATASET_ID}/tables/{TABLE_ID}`
     #[prost(string, tag = "2")]
     pub resource: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `DataSource`.
 pub mod data_source {
-    /// Service name where the data is stored.
+    /// Name of a service that stores the data.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Service {
@@ -37,17 +102,24 @@ pub mod data_source {
         Bigquery = 2,
     }
 }
-/// Timestamps about this resource according to a particular system.
+/// Timestamps associated with this resource in a particular system.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SystemTimestamps {
-    /// The creation time of the resource within the given system.
+    /// Creation timestamp of the resource within the given system.
     #[prost(message, optional, tag = "1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The last-modified time of the resource within the given system.
+    /// Timestamp of the last modification of the resource or its metadata within
+    /// a given system.
+    ///
+    /// Note: Depending on the source system, not every modification updates this
+    /// timestamp.
+    /// For example, BigQuery timestamps every metadata modification but not data
+    /// or permission changes.
     #[prost(message, optional, tag = "2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The expiration time of the resource within the given system.
-    /// Currently only apllicable to BigQuery resources.
+    /// Output only. Expiration timestamp of the resource within the given system.
+    ///
+    /// Currently only applicable to BigQuery resources.
     #[prost(message, optional, tag = "3")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -55,33 +127,34 @@ pub struct SystemTimestamps {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsFilesetSpec {
     /// Required. Patterns to identify a set of files in Google Cloud Storage.
-    /// See [Cloud Storage
-    /// documentation](https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames)
-    /// for more information. Note that bucket wildcards are currently not
-    /// supported.
     ///
-    /// Examples of valid file_patterns:
+    /// For more information, see [Wildcard Names]
+    /// (<https://cloud.google.com/storage/docs/gsutil/addlhelp/WildcardNames>).
     ///
-    ///  * `gs://bucket_name/dir/*`: matches all files within `bucket_name/dir`
-    ///                              directory.
+    /// Note: Currently, bucket wildcards are not supported.
+    ///
+    /// Examples of valid `file_patterns`:
+    ///
+    ///  * `gs://bucket_name/dir/*`: matches all files in `bucket_name/dir`
+    ///                              directory
     ///  * `gs://bucket_name/dir/**`: matches all files in `bucket_name/dir`
-    ///                               spanning all subdirectories.
+    ///                               and all subdirectories
     ///  * `gs://bucket_name/file*`: matches files prefixed by `file` in
     ///                              `bucket_name`
     ///  * `gs://bucket_name/??.txt`: matches files with two characters followed by
     ///                               `.txt` in `bucket_name`
-    ///  * `gs://bucket_name/[aeiou].txt`: matches files that contain a single
+    ///  * `gs://bucket_name/\[aeiou\].txt`: matches files that contain a single
     ///                                    vowel character followed by `.txt` in
     ///                                    `bucket_name`
-    ///  * `gs://bucket_name/[a-m].txt`: matches files that contain `a`, `b`, ...
+    ///  * `gs://bucket_name/\[a-m\].txt`: matches files that contain `a`, `b`, ...
     ///                                  or `m` followed by `.txt` in `bucket_name`
     ///  * `gs://bucket_name/a/*/b`: matches all files in `bucket_name` that match
-    ///                              `a/*/b` pattern, such as `a/c/b`, `a/d/b`
+    ///                              the `a/*/b` pattern, such as `a/c/b`, `a/d/b`
     ///  * `gs://another_bucket/a.txt`: matches `gs://another_bucket/a.txt`
     ///
-    /// You can combine wildcards to provide more powerful matches, for example:
+    /// You can combine wildcards to match complex sets of files, for example:
     ///
-    ///  * `gs://bucket_name/[a-m]??.j*g`
+    /// `gs://bucket_name/\[a-m\]??.j*g`
     #[prost(string, repeated, tag = "1")]
     pub file_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. Sample files contained in this fileset, not all files
@@ -89,20 +162,20 @@ pub struct GcsFilesetSpec {
     #[prost(message, repeated, tag = "2")]
     pub sample_gcs_file_specs: ::prost::alloc::vec::Vec<GcsFileSpec>,
 }
-/// Specifications of a single file in Cloud Storage.
+/// Specification of a single file in Cloud Storage.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsFileSpec {
-    /// Required. The full file path. Example: `gs://bucket_name/a/b.txt`.
+    /// Required. Full file path. Example: `gs://bucket_name/a/b.txt`.
     #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
-    /// Output only. Timestamps about the Cloud Storage file.
+    /// Output only. Creation, modification, and expiration timestamps of a Cloud Storage file.
     #[prost(message, optional, tag = "2")]
     pub gcs_timestamps: ::core::option::Option<SystemTimestamps>,
-    /// Output only. The size of the file, in bytes.
+    /// Output only. File size in bytes.
     #[prost(int64, tag = "4")]
     pub size_bytes: i64,
 }
-/// Represents a schema (e.g. BigQuery, GoogleSQL, Avro schema).
+/// Represents a schema, for example, a BigQuery, GoogleSQL, or Avro schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Schema {
     /// The unified GoogleSQL-like schema of columns.
@@ -112,7 +185,7 @@ pub struct Schema {
     #[prost(message, repeated, tag = "2")]
     pub columns: ::prost::alloc::vec::Vec<ColumnSchema>,
 }
-/// Representation of a column within a schema. Columns could be nested inside
+/// A column within a schema. Columns can be nested inside
 /// other columns.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColumnSchema {
@@ -133,7 +206,7 @@ pub struct ColumnSchema {
     /// bytes.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Optional. A column's mode indicates if values in this column are required,
+    /// Optional. A column's mode indicates whether values in this column are required,
     /// nullable, or repeated.
     ///
     /// Only `NULLABLE`, `REQUIRED`, and `REPEATED` values are supported.
@@ -144,80 +217,101 @@ pub struct ColumnSchema {
     #[prost(message, repeated, tag = "7")]
     pub subcolumns: ::prost::alloc::vec::Vec<ColumnSchema>,
 }
-/// A result that appears in the response of a search request. Each result
-/// captures details of one entry that matches the search.
+/// Result in the response to a search request.
+///
+/// Each result captures details of one entry that matches the search.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogResult {
-    /// Type of the search result. This field can be used to determine which Get
-    /// method to call to fetch the full resource.
+    /// Type of the search result.
+    ///
+    /// You can use this field to determine which get method to call to fetch the
+    /// full resource.
     #[prost(enumeration = "SearchResultType", tag = "1")]
     pub search_result_type: i32,
-    /// Sub-type of the search result. This is a dot-delimited description of the
-    /// resource's full type, and is the same as the value callers would provide in
-    /// the "type" search facet.  Examples: `entry.table`, `entry.dataStream`,
-    /// `tagTemplate`.
+    /// Sub-type of the search result.
+    ///
+    /// A dot-delimited full type of the resource. The same type you
+    /// specify in the `type` search predicate.
+    ///
+    /// Examples: `entry.table`, `entry.dataStream`, `tagTemplate`.
     #[prost(string, tag = "2")]
     pub search_result_subtype: ::prost::alloc::string::String,
-    /// The relative resource name of the resource in URL format.
+    /// The relative name of the resource in URL format.
+    ///
     /// Examples:
     ///
-    ///  * `projects/{project_id}/locations/{location_id}/entryGroups/{entry_group_id}/entries/{entry_id}`
-    ///  * `projects/{project_id}/tagTemplates/{tag_template_id}`
+    ///  * `projects/{PROJECT_ID}/locations/{LOCATION_ID}/entryGroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`
+    ///  * `projects/{PROJECT_ID}/tagTemplates/{TAG_TEMPLATE_ID}`
     #[prost(string, tag = "3")]
     pub relative_resource_name: ::prost::alloc::string::String,
-    /// The full name of the cloud resource the entry belongs to. See:
-    /// https://cloud.google.com/apis/design/resource_names#full_resource_name.
+    /// The full name of the Google Cloud resource the entry belongs to.
+    ///
+    /// For more information, see [Full Resource Name]
+    /// (/apis/design/resource_names#full_resource_name).
+    ///
     /// Example:
     ///
-    ///  * `//bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId`
+    /// `//bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID`
     #[prost(string, tag = "4")]
     pub linked_resource: ::prost::alloc::string::String,
-    /// Last-modified timestamp of the entry from the managing system.
+    /// The last modification timestamp of the entry in the source system.
     #[prost(message, optional, tag = "7")]
     pub modify_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Fully Qualified Name of the resource.
-    /// There are two main forms of FQNs:
-    /// {system}:{project}.{dot-separated path to resource}
-    ///     for non-regionalized resources
-    /// {system}:{project}.{location id}.{dot-separated path to resource}
-    ///     for regionalized resources
-    /// Examples:
-    /// * dataproc_metastore:projectId.locationId.instanceId.databaseId.tableId
-    /// * bigquery:table.project_id.dataset_id.table_id
+    /// Fully qualified name (FQN) of the resource.
+    ///
+    /// FQNs take two forms:
+    ///
+    /// * For non-regionalized resources:
+    ///
+    ///   `{SYSTEM}:{PROJECT}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}`
+    ///
+    /// * For regionalized resources:
+    ///
+    ///   `{SYSTEM}:{PROJECT}.{LOCATION_ID}.{PATH_TO_RESOURCE_SEPARATED_WITH_DOTS}`
+    ///
+    /// Example for a DPMS table:
+    ///
+    /// `dataproc_metastore:PROJECT_ID.LOCATION_ID.INSTANCE_ID.DATABASE_ID.TABLE_ID`
     #[prost(string, tag = "10")]
     pub fully_qualified_name: ::prost::alloc::string::String,
-    /// The source system of the entry. Only applicable when `search_result_type`
-    /// is ENTRY.
+    /// The display name of the result.
+    #[prost(string, tag = "12")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Entry description that can consist of several sentences or paragraphs that
+    /// describe entry contents.
+    #[prost(string, tag = "13")]
+    pub description: ::prost::alloc::string::String,
+    /// The source system of the entry. Applicable only when the
+    /// `search_result_type` is `ENTRY`.
     #[prost(oneof = "search_catalog_result::System", tags = "8, 9")]
     pub system: ::core::option::Option<search_catalog_result::System>,
 }
 /// Nested message and enum types in `SearchCatalogResult`.
 pub mod search_catalog_result {
-    /// The source system of the entry. Only applicable when `search_result_type`
-    /// is ENTRY.
+    /// The source system of the entry. Applicable only when the
+    /// `search_result_type` is `ENTRY`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum System {
-        /// Output only. This field indicates the entry's source system that Data Catalog
-        /// integrates with, such as BigQuery or Cloud Pub/Sub.
+        /// Output only. The source system that Data Catalog automatically integrates  with, such
+        /// as BigQuery, Cloud Pub/Sub, or Dataproc Metastore.
         #[prost(enumeration = "super::IntegratedSystem", tag = "8")]
         IntegratedSystem(i32),
-        /// This field indicates the entry's source system that Data Catalog does not
-        /// integrate with.
+        /// Custom source system that you can manually integrate Data Catalog with.
         #[prost(string, tag = "9")]
         UserSpecifiedSystem(::prost::alloc::string::String),
     }
 }
-/// The different types of resources that can be returned in search.
+/// The resource types that can be returned in search results.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SearchResultType {
     /// Default unknown type.
     Unspecified = 0,
-    /// An [Entry][google.cloud.datacatalog.v1.Entry].
+    /// An \[Entry][google.cloud.datacatalog.v1.Entry\].
     Entry = 1,
-    /// A [TagTemplate][google.cloud.datacatalog.v1.TagTemplate].
+    /// A \[TagTemplate][google.cloud.datacatalog.v1.TagTemplate\].
     TagTemplate = 2,
-    /// An [EntryGroup][google.cloud.datacatalog.v1.EntryGroup].
+    /// An \[EntryGroup][google.cloud.datacatalog.v1.EntryGroup\].
     EntryGroup = 3,
 }
 /// Describes a BigQuery table.
@@ -235,12 +329,12 @@ pub mod big_query_table_spec {
     /// Output only.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TypeSpec {
-        /// Table view specification. This field should only be populated if
-        /// `table_source_type` is `BIGQUERY_VIEW`.
+        /// Table view specification. Populated only if
+        /// the `table_source_type` is `BIGQUERY_VIEW`.
         #[prost(message, tag = "2")]
         ViewSpec(super::ViewSpec),
-        /// Spec of a BigQuery table. This field should only be populated if
-        /// `table_source_type` is `BIGQUERY_TABLE`.
+        /// Specification of a BigQuery table. Populated only if
+        /// the `table_source_type` is `BIGQUERY_TABLE`.
         #[prost(message, tag = "3")]
         TableSpec(super::TableSpec),
     }
@@ -252,35 +346,45 @@ pub struct ViewSpec {
     #[prost(string, tag = "1")]
     pub view_query: ::prost::alloc::string::String,
 }
-/// Normal BigQuery table spec.
+/// Normal BigQuery table specification.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSpec {
-    /// Output only. If the table is a dated shard, i.e., with name pattern `[prefix]YYYYMMDD`,
-    /// `grouped_entry` is the Data Catalog resource name of the date sharded
-    /// grouped entry, for example,
-    /// `projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}`.
+    /// Output only. If the table is date-sharded, that is, it matches the `\[prefix\]YYYYMMDD`
+    /// name pattern, this field is the Data Catalog resource name of the
+    /// date-sharded grouped entry. For example:
+    ///
+    /// `projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`.
+    ///
     /// Otherwise, `grouped_entry` is empty.
     #[prost(string, tag = "1")]
     pub grouped_entry: ::prost::alloc::string::String,
 }
-/// Spec for a group of BigQuery tables with name pattern `[prefix]YYYYMMDD`.
-/// Context:
-/// https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding
+/// Specification for a group of BigQuery tables with the `\[prefix\]YYYYMMDD` name
+/// pattern.
+///
+/// For more information, see [Introduction to partitioned tables]
+/// (<https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryDateShardedSpec {
     /// Output only. The Data Catalog resource name of the dataset entry the current table
-    /// belongs to, for example,
-    /// `projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}`.
+    /// belongs to. For example:
+    ///
+    /// `projects/{PROJECT_ID}/locations/{LOCATION}/entrygroups/{ENTRY_GROUP_ID}/entries/{ENTRY_ID}`.
     #[prost(string, tag = "1")]
     pub dataset: ::prost::alloc::string::String,
-    /// Output only. The table name prefix of the shards. The name of any given shard is
-    /// `[table_prefix]YYYYMMDD`, for example, for shard `MyTable20180101`, the
+    /// Output only. The table name prefix of the shards.
+    ///
+    /// The name of any given shard is `\[table_prefix\]YYYYMMDD`.
+    /// For example, for the `MyTable20180101` shard, the
     /// `table_prefix` is `MyTable`.
     #[prost(string, tag = "2")]
     pub table_prefix: ::prost::alloc::string::String,
     /// Output only. Total number of shards.
     #[prost(int64, tag = "3")]
     pub shard_count: i64,
+    /// Output only. BigQuery resource name of the latest shard.
+    #[prost(string, tag = "4")]
+    pub latest_shard_resource: ::prost::alloc::string::String,
 }
 /// Table source type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -295,27 +399,24 @@ pub enum TableSourceType {
     /// BigQuery materialized view.
     BigqueryMaterializedView = 7,
 }
-/// Tags are used to attach custom metadata to Data Catalog resources. Tags
-/// conform to the specifications within their tag template.
+/// Tags contain custom metadata and are attached to Data Catalog resources. Tags
+/// conform with the specification of their tag template.
 ///
 /// See [Data Catalog
-/// IAM](https://cloud.google.com/data-catalog/docs/concepts/iam) for information
+/// IAM](<https://cloud.google.com/data-catalog/docs/concepts/iam>) for information
 /// on the permissions needed to create or view tags.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Tag {
-    /// The resource name of the tag in URL format. Example:
-    ///
-    /// `projects/{project_id}/locations/{location}/entrygroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}`
-    ///
-    /// where `tag_id` is a system-generated identifier.
+    /// The resource name of the tag in URL format where tag ID is a
+    /// system-generated identifier.
     ///
     /// Note: The tag itself might not be stored in the location specified in its
     /// name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The resource name of the tag template that this tag uses. Example:
+    /// Required. The resource name of the tag template this tag uses. Example:
     ///
-    /// `projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}`
+    /// `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE_ID}`
     ///
     /// This field cannot be modified after creation.
     #[prost(string, tag = "2")]
@@ -323,15 +424,20 @@ pub struct Tag {
     /// Output only. The display name of the tag template.
     #[prost(string, tag = "5")]
     pub template_display_name: ::prost::alloc::string::String,
-    /// Required. This maps the ID of a tag field to the value of and additional information
-    /// about that field. Valid field IDs are defined by the tag's template. A tag
+    /// Required. Maps the ID of a tag field to its value and additional information
+    /// about that field.
+    ///
+    /// Tag template defines valid field IDs. A tag
     /// must have at least 1 field and at most 500 fields.
     #[prost(map = "string, message", tag = "3")]
     pub fields: ::std::collections::HashMap<::prost::alloc::string::String, TagField>,
     /// The scope within the parent resource that this tag is attached to. If not
     /// provided, the tag is attached to the parent resource itself.
-    /// Deleting the scope from the parent resource will delete all tags attached
-    /// to that scope. These fields cannot be updated after creation.
+    ///
+    /// Deleting the scope from the parent resource deletes all tags attached
+    /// to that scope.
+    ///
+    /// These fields cannot be updated after creation.
     #[prost(oneof = "tag::Scope", tags = "4")]
     pub scope: ::core::option::Option<tag::Scope>,
 }
@@ -339,12 +445,15 @@ pub struct Tag {
 pub mod tag {
     /// The scope within the parent resource that this tag is attached to. If not
     /// provided, the tag is attached to the parent resource itself.
-    /// Deleting the scope from the parent resource will delete all tags attached
-    /// to that scope. These fields cannot be updated after creation.
+    ///
+    /// Deleting the scope from the parent resource deletes all tags attached
+    /// to that scope.
+    ///
+    /// These fields cannot be updated after creation.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Scope {
         /// Resources like entry can have schemas associated with them. This scope
-        /// allows users to attach tags to an individual column based on that schema.
+        /// allows you to attach tags to an individual column based on that schema.
         ///
         /// To attach a tag to a nested column, separate column names with a dot
         /// (`.`). Example: `column.nested_column`.
@@ -352,27 +461,28 @@ pub mod tag {
         Column(::prost::alloc::string::String),
     }
 }
-/// Contains the value and supporting information for a field within
-/// a [Tag][google.cloud.datacatalog.v1.Tag].
+/// Contains the value and additional information on a field within
+/// a \[Tag][google.cloud.datacatalog.v1.Tag\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagField {
     /// Output only. The display name of this field.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
-    /// Output only. The order of this field with respect to other fields in this tag. It can be
-    /// set in [Tag][google.cloud.datacatalog.v1.TagTemplateField.order]. For
-    /// example, a higher value can indicate a more important field. The value can
-    /// be negative. Multiple fields can have the same order, and field orders
-    /// within a tag do not have to be sequential.
+    /// Output only. The order of this field with respect to other fields in this tag. Can be
+    /// set by \[Tag][google.cloud.datacatalog.v1.TagTemplateField.order\].
+    ///
+    /// For example, a higher value can indicate a more important field.
+    /// The value can be negative. Multiple fields can have the same order, and
+    /// field orders within a tag don't have to be sequential.
     #[prost(int32, tag = "7")]
     pub order: i32,
     /// Required. The value of this field.
-    #[prost(oneof = "tag_field::Kind", tags = "2, 3, 4, 5, 6")]
+    #[prost(oneof = "tag_field::Kind", tags = "2, 3, 4, 5, 6, 8")]
     pub kind: ::core::option::Option<tag_field::Kind>,
 }
 /// Nested message and enum types in `TagField`.
 pub mod tag_field {
-    /// Holds an enum value.
+    /// An enum value.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EnumValue {
         /// The display name of the enum value.
@@ -382,38 +492,46 @@ pub mod tag_field {
     /// Required. The value of this field.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
-        /// Holds the value for a tag field with double type.
+        /// The value of a tag field with a double type.
         #[prost(double, tag = "2")]
         DoubleValue(f64),
-        /// Holds the value for a tag field with string type.
+        /// The value of a tag field with a string type.
+        ///
         /// The maximum length is 2000 UTF-8 characters.
         #[prost(string, tag = "3")]
         StringValue(::prost::alloc::string::String),
-        /// Holds the value for a tag field with boolean type.
+        /// The value of a tag field with a boolean type.
         #[prost(bool, tag = "4")]
         BoolValue(bool),
-        /// Holds the value for a tag field with timestamp type.
+        /// The value of a tag field with a timestamp type.
         #[prost(message, tag = "5")]
         TimestampValue(::prost_types::Timestamp),
-        /// Holds the value for a tag field with enum type. This value must be
-        /// one of the allowed values in the definition of this enum.
+        /// The value of a tag field with an enum type.
+        ///
+        /// This value must be one of the allowed values listed in this enum.
         #[prost(message, tag = "6")]
         EnumValue(EnumValue),
+        /// The value of a tag field with a rich text type.
+        ///
+        /// The maximum length is 10 MiB as this value holds HTML descriptions
+        /// including encoded images. The maximum length of the text without images
+        /// is 100 KiB.
+        #[prost(string, tag = "8")]
+        RichtextValue(::prost::alloc::string::String),
     }
 }
-/// A tag template defines a tag, which can have one or more typed fields.
-/// The template is used to create and attach the tag to GCP resources.
-/// [Tag template
-/// roles](https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles)
-/// provide permissions to create, edit, and use the template. See, for example,
-/// the [TagTemplate
-/// User](https://cloud.google.com/data-catalog/docs/how-to/template-user) role,
-/// which includes permission to use the tag template to tag resources.
+/// A tag template defines a tag that can have one or more typed fields.
+///
+/// The template is used to create tags that are attached to GCP resources.
+/// [Tag template roles]
+/// (<https://cloud.google.com/iam/docs/understanding-roles#data-catalog-roles>)
+/// provide permissions to create, edit, and use the template. For example,
+/// see the [TagTemplate User]
+/// (<https://cloud.google.com/data-catalog/docs/how-to/template-user>) role
+/// that includes a permission to use the tag template to tag resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagTemplate {
-    /// The resource name of the tag template in URL format. Example:
-    ///
-    /// `projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}`
+    /// The resource name of the tag template in URL format.
     ///
     /// Note: The tag template itself and its child resources might not be
     /// stored in the location specified in its name.
@@ -426,14 +544,46 @@ pub struct TagTemplate {
     /// The maximum length is 200 characters.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
+    /// Indicates whether this is a public tag template.
+    ///
+    /// Every user has view access to a *public* tag template by default.
+    /// This means that:
+    ///
+    ///   * Every user can use this tag template to tag an entry.
+    ///   * If an entry is tagged using the tag template, the tag is always
+    ///     shown in the response to ``ListTags`` called on the entry.
+    ///   * To get the template using the GetTagTemplate method, you
+    ///     need view access either on the project or the organization the tag
+    ///     template resides in but no other permission is needed.
+    ///   * Operations on the tag template other than viewing (for example,
+    ///     editing IAM policies) follow standard IAM structures.
+    ///
+    /// Tags created with a public tag template are referred to as public tags.
+    ///
+    /// You can search for a public tag by value with a
+    /// simple search query instead of using a ``tag:`` predicate.
+    ///
+    /// Public tag templates may not appear in search results depending on scope,
+    /// see:
+    /// \[include_public_tag_templates][google.cloud.datacatalog.v1.SearchCatalogRequest.Scope.include_public_tag_templates\]
+    ///
+    /// Note: If an [IAM domain
+    /// restriction](<https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains>)
+    /// is configured in the tag template's location, the public access will not be
+    /// enabled but the simple search for tag values will still work.
+    #[prost(bool, tag = "5")]
+    pub is_publicly_readable: bool,
     /// Required. Map of tag template field IDs to the settings for the field.
-    /// This map is an exhaustive list of the allowed fields. This map must contain
+    /// This map is an exhaustive list of the allowed fields. The map must contain
     /// at least one field and at most 500 fields.
     ///
-    /// The keys to this map are tag template field IDs. Field IDs can contain
-    /// letters (both uppercase and lowercase), numbers (0-9) and underscores (_).
-    /// Field IDs must be at least 1 character long and at most
-    /// 64 characters long. Field IDs must start with a letter or underscore.
+    /// The keys to this map are tag template field IDs. The IDs have the
+    /// following limitations:
+    ///
+    /// * Can contain uppercase and lowercase letters, numbers (0-9) and
+    ///   underscores (_).
+    /// * Must be at least 1 character and at most 64 characters long.
+    /// * Must start with a letter or underscore.
     #[prost(map = "string, message", tag = "3")]
     pub fields: ::std::collections::HashMap<::prost::alloc::string::String, TagTemplateField>,
 }
@@ -442,9 +592,9 @@ pub struct TagTemplate {
 pub struct TagTemplateField {
     /// Output only. The resource name of the tag template field in URL format. Example:
     ///
-    /// `projects/{project_id}/locations/{location}/tagTemplates/{tag_template}/fields/{field}`
+    /// `projects/{PROJECT_ID}/locations/{LOCATION}/tagTemplates/{TAG_TEMPLATE}/fields/{FIELD}`
     ///
-    /// Note: The `TagTemplateField` itself might not be stored in the location
+    /// Note: The tag template field itself might not be stored in the location
     /// specified in its name.
     ///
     /// The name must contain only letters (a-z, A-Z), numbers (0-9),
@@ -462,16 +612,18 @@ pub struct TagTemplateField {
     /// Required. The type of value this tag field can contain.
     #[prost(message, optional, tag = "2")]
     pub r#type: ::core::option::Option<FieldType>,
-    /// Whether this is a required field. Defaults to false.
+    /// If true, this field is required. Defaults to false.
     #[prost(bool, tag = "3")]
     pub is_required: bool,
     /// The description for this field. Defaults to an empty string.
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
     /// The order of this field with respect to other fields in this tag
-    /// template. For example, a higher value can indicate a more important field.
-    /// The value can be negative. Multiple fields can have the same order, and
-    /// field orders within a tag do not have to be sequential.
+    /// template.
+    ///
+    /// For example, a higher value can indicate a more important field.
+    /// The value can be negative. Multiple fields can have the same order and
+    /// field orders within a tag don't have to be sequential.
     #[prost(int32, tag = "5")]
     pub order: i32,
 }
@@ -492,7 +644,7 @@ pub mod field_type {
         /// be case-insensitively unique within this set.
         ///
         /// The order of items in this set is preserved. This field can be used to
-        /// create, remove and reorder enum values. To rename enum values, use the
+        /// create, remove, and reorder enum values. To rename enum values, use the
         /// `RenameTagTemplateFieldEnumValue` method.
         #[prost(message, repeated, tag = "1")]
         pub allowed_values: ::prost::alloc::vec::Vec<enum_type::EnumValue>,
@@ -513,7 +665,7 @@ pub mod field_type {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PrimitiveType {
-        /// This is the default invalid value for a type.
+        /// The default invalid value for a type.
         Unspecified = 0,
         /// A double precision number.
         Double = 1,
@@ -523,63 +675,111 @@ pub mod field_type {
         Bool = 3,
         /// A timestamp.
         Timestamp = 4,
+        /// A Richtext description.
+        Richtext = 5,
     }
     /// Required.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TypeDecl {
-        /// Represents primitive types - string, bool etc.
+        /// Primitive types, such as string, boolean, etc.
         #[prost(enumeration = "PrimitiveType", tag = "1")]
         PrimitiveType(i32),
-        /// Represents an enum type.
+        /// An enum type.
         #[prost(message, tag = "2")]
         EnumType(EnumType),
     }
 }
+/// Detailed statistics on the entry's usage.
+///
+/// Usage statistics have the following limitations:
+///
+/// - Only BigQuery tables have them.
+/// - They only include BigQuery query jobs.
+/// - They might be underestimated because wildcard table references
+///   are not yet counted. For more information, see
+///   [Querying multiple tables using a wildcard table]
+///   (<https://cloud.google.com/bigquery/docs/querying-wildcard-tables>)
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UsageStats {
+    /// The number of successful uses of the underlying entry.
+    #[prost(float, tag = "1")]
+    pub total_completions: f32,
+    /// The number of failed attempts to use the underlying entry.
+    #[prost(float, tag = "2")]
+    pub total_failures: f32,
+    /// The number of cancelled attempts to use the underlying entry.
+    #[prost(float, tag = "3")]
+    pub total_cancellations: f32,
+    /// Total time spent only on successful uses, in milliseconds.
+    #[prost(float, tag = "4")]
+    pub total_execution_time_for_completions_millis: f32,
+}
+/// The set of all usage signals that Data Catalog stores.
+///
+/// Note: Usually, these signals are updated daily. In rare cases, an update may
+/// fail but will be performed again on the next day.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UsageSignal {
+    /// The end timestamp of the duration of usage statistics.
+    #[prost(message, optional, tag = "1")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Usage statistics over each of the predefined time ranges.
+    ///
+    /// Supported time ranges are `{"24H", "7D", "30D"}`.
+    #[prost(map = "string, message", tag = "2")]
+    pub usage_within_time_range:
+        ::std::collections::HashMap<::prost::alloc::string::String, UsageStats>,
+}
 /// Request message for
-/// [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
+/// \[SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogRequest {
-    /// Required. The scope of this search request. A `scope` that has empty
-    /// `include_org_ids`, `include_project_ids` AND false
-    /// `include_gcp_public_datasets` is considered invalid. Data Catalog will
-    /// return an error in such a case.
+    /// Required. The scope of this search request.
+    ///
+    /// The `scope` is invalid if `include_org_ids`, `include_project_ids` are
+    /// empty AND `include_gcp_public_datasets` is set to `false`. In this case,
+    /// the request returns an error.
     #[prost(message, optional, tag = "6")]
     pub scope: ::core::option::Option<search_catalog_request::Scope>,
-    /// Optional. The query string in search query syntax. An empty query string will result
-    /// in all data assets (in the specified scope) that the user has access to.
+    /// Optional. The query string with a minimum of 3 characters and specific syntax.
+    /// For more information, see
+    /// [Data Catalog search
+    /// syntax](<https://cloud.google.com/data-catalog/docs/how-to/search-reference>).
     ///
-    /// Query strings can be simple as "x" or more qualified as:
+    /// An empty query string returns all data assets (in the specified scope)
+    /// that you have access to.
     ///
-    /// * name:x
-    /// * column:x
-    /// * description:y
+    /// A query string can be a simple `xyz` or qualified by predicates:
     ///
-    /// Note: Query tokens need to have a minimum of 3 characters for substring
-    /// matching to work correctly. See [Data Catalog Search
-    /// Syntax](https://cloud.google.com/data-catalog/docs/how-to/search-reference)
-    /// for more information.
+    /// * `name:x`
+    /// * `column:y`
+    /// * `description:z`
     #[prost(string, tag = "1")]
     pub query: ::prost::alloc::string::String,
-    /// Number of results in the search page. If <=0 then defaults to 10. Max limit
-    /// for page_size is 1000. Throws an invalid argument for page_size > 1000.
+    /// Number of results to return in a single search page.
+    ///
+    /// Can't be negative or 0, defaults to 10 in this case.
+    /// The maximum number is 1000. If exceeded, throws an "invalid argument"
+    /// exception.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Pagination token returned in an earlier
-    /// [SearchCatalogResponse.next_page_token][google.cloud.datacatalog.v1.SearchCatalogResponse.next_page_token], which
-    /// indicates that this is a continuation of a prior
-    /// [SearchCatalogRequest][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog]
-    /// call, and that the system should return the next page of data. If empty,
-    /// the first page is returned.
+    /// Optional. Pagination token that, if specified, returns the next page of search
+    /// results. If empty, returns the first page.
+    ///
+    /// This token is returned in the \[SearchCatalogResponse.next_page_token][google.cloud.datacatalog.v1.SearchCatalogResponse.next_page_token\]
+    /// field of the response to a previous
+    /// \[SearchCatalogRequest][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog\]
+    /// call.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Specifies the ordering of results, currently supported case-sensitive
-    /// choices are:
+    /// Specifies the order of results.
     ///
-    ///   * `relevance`, only supports descending
-    ///   * `last_modified_timestamp [asc|desc]`, defaults to descending if not
-    ///     specified
+    /// Currently supported case-sensitive values are:
     ///
-    /// If not specified, defaults to `relevance` descending.
+    /// * `relevance` that can only be descending
+    /// * `last_modified_timestamp \[asc|desc\]` with descending (`desc`) as default
+    ///
+    /// If this parameter is omitted, it defaults to the descending `relevance`.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
@@ -588,60 +788,76 @@ pub mod search_catalog_request {
     /// The criteria that select the subspace used for query matching.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Scope {
-        /// The list of organization IDs to search within. To find your organization
-        /// ID, follow instructions in
-        /// https://cloud.google.com/resource-manager/docs/creating-managing-organization.
+        /// The list of organization IDs to search within.
+        ///
+        /// To find your organization ID, follow the steps from
+        /// [Creating and managing organizations]
+        /// (/resource-manager/docs/creating-managing-organization).
         #[prost(string, repeated, tag = "2")]
         pub include_org_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// The list of project IDs to search within. To learn more about the
-        /// distinction between project names/IDs/numbers, go to
-        /// https://cloud.google.com/docs/overview/#projects.
+        /// The list of project IDs to search within.
+        ///
+        /// For more information on the distinction between project names, IDs, and
+        /// numbers, see \[Projects\](/docs/overview/#projects).
         #[prost(string, repeated, tag = "3")]
         pub include_project_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// If `true`, include Google Cloud Platform (GCP) public datasets in the
-        /// search results. Info on GCP public datasets is available at
-        /// https://cloud.google.com/public-datasets/. By default, GCP public
-        /// datasets are excluded.
+        /// If `true`, include Google Cloud Platform (GCP) public datasets in
+        /// search results. By default, they are excluded.
+        ///
+        /// See [Google Cloud Public Datasets](/public-datasets) for more
+        /// information.
         #[prost(bool, tag = "7")]
         pub include_gcp_public_datasets: bool,
-        /// Optional. The list of locations to search within.
-        /// 1. If empty, search will be performed in all locations;
-        /// 2. If any of the locations are NOT [supported
-        /// regions](https://cloud.google.com/data-catalog/docs/concepts/regions#supported_regions),
-        /// error will be returned;
-        /// 3. Otherwise, search only the given locations for matching results.
-        /// Typical usage is to leave this field empty. When a location is
-        /// unreachable as returned in the `SearchCatalogResponse.unreachable` field,
-        /// users can repeat the search request with this parameter set to get
-        /// additional information on the error.
+        /// Optional. The list of locations to search within. If empty, all locations are
+        /// searched.
+        ///
+        /// Returns an error if any location in the list isn't one of the [Supported
+        /// regions](<https://cloud.google.com/data-catalog/docs/concepts/regions#supported_regions>).
+        ///
+        /// If a location is unreachable, its name is returned in the
+        /// `SearchCatalogResponse.unreachable` field. To get additional information
+        /// on the error, repeat the search request and set the location name as the
+        /// value of this parameter.
         #[prost(string, repeated, tag = "16")]
         pub restricted_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// Optional. If `true`, include [public tag
+        /// templates]\[google.cloud.datacatalog.v1.TagTemplate.is_publicly_readable\]
+        /// in the search results. By default, they are included only if you have
+        /// explicit permissions on them to view them. For example, if you are the
+        /// owner.
+        ///
+        /// Other scope fields, for example, `include_org_ids`,
+        /// still restrict the returned public tag templates and at least one of
+        /// them is required.
+        #[prost(bool, tag = "19")]
+        pub include_public_tag_templates: bool,
     }
 }
 /// Response message for
-/// [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
+/// \[SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchCatalogResponse {
     /// Search results.
     #[prost(message, repeated, tag = "1")]
     pub results: ::prost::alloc::vec::Vec<SearchCatalogResult>,
-    /// The token that can be used to retrieve the next page of results.
+    /// Pagination token that can be used in subsequent calls to retrieve the next
+    /// page of results.
     #[prost(string, tag = "3")]
     pub next_page_token: ::prost::alloc::string::String,
-    /// Unreachable locations. Search result does not include data from those
-    /// locations. Users can get additional information on the error by repeating
-    /// the search request with a more restrictive parameter -- setting the value
-    /// for `SearchDataCatalogRequest.scope.restricted_locations`.
+    /// Unreachable locations. Search results don't include data from those
+    /// locations.
+    ///
+    /// To get additional information on an error, repeat the search request and
+    /// restrict it to specific locations by setting the
+    /// `SearchCatalogRequest.scope.restricted_locations` parameter.
     #[prost(string, repeated, tag = "6")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// [CreateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.CreateEntryGroup].
+/// \[CreateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.CreateEntryGroup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntryGroupRequest {
-    /// Required. The name of the project this entry group belongs to. Example:
-    ///
-    /// `projects/{project_id}/locations/{location}`
+    /// Required. The names of the project and location that the new entry group belongs to.
     ///
     /// Note: The entry group itself and its child resources might not be
     /// stored in the location specified in its name.
@@ -654,15 +870,15 @@ pub struct CreateEntryGroupRequest {
     /// The maximum size is 64 bytes when encoded in UTF-8.
     #[prost(string, tag = "3")]
     pub entry_group_id: ::prost::alloc::string::String,
-    /// The entry group to create. Defaults to an empty entry group.
+    /// The entry group to create. Defaults to empty.
     #[prost(message, optional, tag = "2")]
     pub entry_group: ::core::option::Option<EntryGroup>,
 }
 /// Request message for
-/// [UpdateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.UpdateEntryGroup].
+/// \[UpdateEntryGroup][google.cloud.datacatalog.v1.DataCatalog.UpdateEntryGroup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntryGroupRequest {
-    /// Required. The updated entry group. "name" field must be set.
+    /// Required. Updates for the entry group. The `name` field must be set.
     #[prost(message, optional, tag = "1")]
     pub entry_group: ::core::option::Option<EntryGroup>,
     /// Names of fields whose values to overwrite on an entry group.
@@ -674,23 +890,21 @@ pub struct UpdateEntryGroupRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
-/// [GetEntryGroup][google.cloud.datacatalog.v1.DataCatalog.GetEntryGroup].
+/// \[GetEntryGroup][google.cloud.datacatalog.v1.DataCatalog.GetEntryGroup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntryGroupRequest {
-    /// Required. The name of the entry group. For example,
-    /// `projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}`.
+    /// Required. The name of the entry group to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The fields to return. If not set or empty, all fields are returned.
+    /// The fields to return. If empty or omitted, all fields are returned.
     #[prost(message, optional, tag = "2")]
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
-/// [DeleteEntryGroup][google.cloud.datacatalog.v1.DataCatalog.DeleteEntryGroup].
+/// \[DeleteEntryGroup][google.cloud.datacatalog.v1.DataCatalog.DeleteEntryGroup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntryGroupRequest {
-    /// Required. The name of the entry group. For example,
-    /// `projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}`.
+    /// Required. The name of the entry group to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. If true, deletes all entries in the entry group.
@@ -698,43 +912,42 @@ pub struct DeleteEntryGroupRequest {
     pub force: bool,
 }
 /// Request message for
-/// [ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups].
+/// \[ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntryGroupsRequest {
-    /// Required. The name of the location that contains the entry groups, which can be
-    /// provided in URL format. Example:
+    /// Required. The name of the location that contains the entry groups to list.
     ///
-    /// * projects/{project_id}/locations/{location}
+    /// Can be provided as a URL.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of items to return. Default is 10. Max limit is 1000.
-    /// Throws an invalid argument for `page_size > 1000`.
+    /// Optional. The maximum number of items to return.
+    ///
+    /// Default is 10. Maximum limit is 1000.
+    /// Throws an invalid argument if `page_size` is greater than 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. Token that specifies which page is requested. If empty, the first page is
-    /// returned.
+    /// Optional. Pagination token that specifies the next page to return.
+    /// If empty, returns the first page.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups].
+/// \[ListEntryGroups][google.cloud.datacatalog.v1.DataCatalog.ListEntryGroups\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntryGroupsResponse {
-    /// EntryGroup details.
+    /// Entry group details.
     #[prost(message, repeated, tag = "1")]
     pub entry_groups: ::prost::alloc::vec::Vec<EntryGroup>,
-    /// Token to retrieve the next page of results. It is set to empty if no items
-    /// remain in results.
+    /// Pagination token to specify in the next call to retrieve the next page of
+    /// results. Empty if there are no more items.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CreateEntry][google.cloud.datacatalog.v1.DataCatalog.CreateEntry].
+/// \[CreateEntry][google.cloud.datacatalog.v1.DataCatalog.CreateEntry\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntryRequest {
-    /// Required. The name of the entry group this entry belongs to. Example:
-    ///
-    /// `projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}`
+    /// Required. The name of the entry group this entry belongs to.
     ///
     /// Note: The entry itself and its child resources might not be stored in
     /// the location specified in its name.
@@ -752,10 +965,10 @@ pub struct CreateEntryRequest {
     pub entry: ::core::option::Option<Entry>,
 }
 /// Request message for
-/// [UpdateEntry][google.cloud.datacatalog.v1.DataCatalog.UpdateEntry].
+/// \[UpdateEntry][google.cloud.datacatalog.v1.DataCatalog.UpdateEntry\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEntryRequest {
-    /// Required. The updated entry. The "name" field must be set.
+    /// Required. Updates for the entry. The `name` field must be set.
     #[prost(message, optional, tag = "1")]
     pub entry: ::core::option::Option<Entry>,
     /// Names of fields whose values to overwrite on an entry.
@@ -764,85 +977,86 @@ pub struct UpdateEntryRequest {
     /// are overwritten. If such fields are non-required and omitted in the
     /// request body, their values are emptied.
     ///
-    /// The following fields are modifiable:
+    /// You can modify only the fields listed below.
     ///
-    /// * For entries with type `DATA_STREAM`:
-    ///    * `schema`
-    /// * For entries with type `FILESET`:
-    ///    * `schema`
-    ///    * `display_name`
-    ///    * `description`
-    ///    * `gcs_fileset_spec`
-    ///    * `gcs_fileset_spec.file_patterns`
-    /// * For entries with `user_specified_type`:
-    ///    * `schema`
-    ///    * `display_name`
-    ///    * `description`
-    ///    * `user_specified_type`
-    ///    * `user_specified_system`
-    ///    * `linked_resource`
-    ///    * `source_system_timestamps`
+    /// For entries with type `DATA_STREAM`:
+    ///
+    /// * `schema`
+    ///
+    /// For entries with type `FILESET`:
+    ///
+    /// * `schema`
+    /// * `display_name`
+    /// * `description`
+    /// * `gcs_fileset_spec`
+    /// * `gcs_fileset_spec.file_patterns`
+    ///
+    /// For entries with `user_specified_type`:
+    ///
+    /// * `schema`
+    /// * `display_name`
+    /// * `description`
+    /// * `user_specified_type`
+    /// * `user_specified_system`
+    /// * `linked_resource`
+    /// * `source_system_timestamps`
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
-/// [DeleteEntry][google.cloud.datacatalog.v1.DataCatalog.DeleteEntry].
+/// \[DeleteEntry][google.cloud.datacatalog.v1.DataCatalog.DeleteEntry\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEntryRequest {
-    /// Required. The name of the entry. Example:
-    ///
-    /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+    /// Required. The name of the entry to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [GetEntry][google.cloud.datacatalog.v1.DataCatalog.GetEntry].
+/// \[GetEntry][google.cloud.datacatalog.v1.DataCatalog.GetEntry\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEntryRequest {
-    /// Required. The name of the entry. Example:
-    ///
-    /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+    /// Required. The name of the entry to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [LookupEntry][google.cloud.datacatalog.v1.DataCatalog.LookupEntry].
+/// \[LookupEntry][google.cloud.datacatalog.v1.DataCatalog.LookupEntry\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupEntryRequest {
-    /// Required. Represents either the Google Cloud Platform resource or SQL name
-    /// for a Google Cloud Platform resource.
+    /// Required. A full name, SQL name, or a fully qualified name of a
+    /// Google Cloud Platform resource.
     #[prost(oneof = "lookup_entry_request::TargetName", tags = "1, 3, 5")]
     pub target_name: ::core::option::Option<lookup_entry_request::TargetName>,
 }
 /// Nested message and enum types in `LookupEntryRequest`.
 pub mod lookup_entry_request {
-    /// Required. Represents either the Google Cloud Platform resource or SQL name
-    /// for a Google Cloud Platform resource.
+    /// Required. A full name, SQL name, or a fully qualified name of a
+    /// Google Cloud Platform resource.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TargetName {
         /// The full name of the Google Cloud Platform resource the Data Catalog
-        /// entry represents. See:
-        /// https://cloud.google.com/apis/design/resource_names#full_resource_name.
-        /// Full names are case-sensitive.
+        /// entry represents. For more information, see [Full Resource Name]
+        /// (<https://cloud.google.com/apis/design/resource_names#full_resource_name>).
         ///
-        /// Examples:
+        /// Full names are case-sensitive. For example:
         ///
-        ///  * //bigquery.googleapis.com/projects/projectId/datasets/datasetId/tables/tableId
-        ///  * //pubsub.googleapis.com/projects/projectId/topics/topicId
+        ///  * `//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/{DATASET_ID}/tables/{TABLE_ID}`
+        ///  * `//pubsub.googleapis.com/projects/{PROJECT_ID}/topics/{TOPIC_ID}`
         #[prost(string, tag = "1")]
         LinkedResource(::prost::alloc::string::String),
         /// The SQL name of the entry. SQL names are case-sensitive.
         ///
         /// Examples:
         ///
-        ///   * `pubsub.project_id.topic_id`
-        ///   * ``pubsub.project_id.`topic.id.with.dots` ``
-        ///   * `bigquery.table.project_id.dataset_id.table_id`
-        ///   * `bigquery.dataset.project_id.dataset_id`
-        ///   * `datacatalog.entry.project_id.location_id.entry_group_id.entry_id`
+        /// * `pubsub.topic.{PROJECT_ID}.{TOPIC_ID}`
+        /// * `pubsub.topic.{PROJECT_ID}.`\``{TOPIC.ID.SEPARATED.WITH.DOTS}`\`
+        /// * `bigquery.table.{PROJECT_ID}.{DATASET_ID}.{TABLE_ID}`
+        /// * `bigquery.dataset.{PROJECT_ID}.{DATASET_ID}`
+        /// * `datacatalog.entry.{PROJECT_ID}.{LOCATION_ID}.{ENTRY_GROUP_ID}.{ENTRY_ID}`
         ///
-        /// `*_id`s should satisfy the standard SQL rules for identifiers.
-        /// https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical.
+        /// Identifiers (`*_ID`) should comply with the
+        /// [Lexical structure in Standard SQL]
+        /// (<https://cloud.google.com/bigquery/docs/reference/standard-sql/lexical>).
         #[prost(string, tag = "3")]
         SqlResource(::prost::alloc::string::String),
         /// Fully qualified name (FQN) of the resource.
@@ -859,27 +1073,24 @@ pub mod lookup_entry_request {
         ///
         /// Example for a DPMS table:
         ///
-        /// `dataproc_metastore:project_id.location_id.instance_id.database_id.table_id`
+        /// `dataproc_metastore:{PROJECT_ID}.{LOCATION_ID}.{INSTANCE_ID}.{DATABASE_ID}.{TABLE_ID}`
         #[prost(string, tag = "5")]
         FullyQualifiedName(::prost::alloc::string::String),
     }
 }
-/// Entry Metadata.
-/// A Data Catalog Entry resource represents another resource in Google
+/// Entry metadata.
+/// A Data Catalog entry represents another resource in Google
 /// Cloud Platform (such as a BigQuery dataset or a Pub/Sub topic) or
-/// outside of Google Cloud Platform. Clients can use the `linked_resource` field
-/// in the Entry resource to refer to the original resource ID of the source
+/// outside of it. You can use the `linked_resource` field
+/// in the entry resource to refer to the original resource ID of the source
 /// system.
 ///
-/// An Entry resource contains resource details, such as its schema. An Entry can
-/// also be used to attach flexible metadata, such as a
-/// [Tag][google.cloud.datacatalog.v1.Tag].
+/// An entry resource contains resource details, for example, its schema.
+/// Additionally, you can attach flexible metadata to an entry in the form of a
+/// \[Tag][google.cloud.datacatalog.v1.Tag\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Entry {
     /// Output only. The resource name of an entry in URL format.
-    /// Example:
-    ///
-    /// `projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}`
     ///
     /// Note: The entry itself and its child resources might not be
     /// stored in the location specified in its name.
@@ -887,14 +1098,14 @@ pub struct Entry {
     pub name: ::prost::alloc::string::String,
     /// The resource this metadata entry refers to.
     ///
-    /// For Google Cloud Platform resources, `linked_resource` is the [full name of
-    /// the
-    /// resource](https://cloud.google.com/apis/design/resource_names#full_resource_name).
+    /// For Google Cloud Platform resources, `linked_resource` is the
+    /// [Full Resource Name]
+    /// (<https://cloud.google.com/apis/design/resource_names#full_resource_name>).
     /// For example, the `linked_resource` for a table resource from BigQuery is:
     ///
-    /// `//bigquery.googleapis.com/projects/{projectId}/datasets/{datasetId}/tables/{tableId}`
+    /// `//bigquery.googleapis.com/projects/{PROJECT_ID}/datasets/{DATASET_ID}/tables/{TABLE_ID}`
     ///
-    /// Output only when entry is one of the types in the `EntryType` enum.
+    /// Output only when the entry is one of the types in the `EntryType` enum.
     ///
     /// For entries with a `user_specified_type`, this field is optional and
     /// defaults to an empty string.
@@ -910,6 +1121,7 @@ pub struct Entry {
     /// and read-only afterwards. Can be used for search and lookup of the entries.
     ///
     ///
+    ///
     /// FQNs take two forms:
     ///
     /// * For non-regionalized resources:
@@ -922,7 +1134,7 @@ pub struct Entry {
     ///
     /// Example for a DPMS table:
     ///
-    /// `dataproc_metastore:project_id.location_id.instance_id.database_id.table_id`
+    /// `dataproc_metastore:{PROJECT_ID}.{LOCATION_ID}.{INSTANCE_ID}.{DATABASE_ID}.{TABLE_ID}`
     #[prost(string, tag = "29")]
     pub fully_qualified_name: ::prost::alloc::string::String,
     /// Display name of an entry.
@@ -946,12 +1158,25 @@ pub struct Entry {
     /// Schema of the entry. An entry might not have any schema attached to it.
     #[prost(message, optional, tag = "5")]
     pub schema: ::core::option::Option<Schema>,
-    /// Timestamps about the underlying resource, not about this Data Catalog
-    /// entry. Output only when Entry is of type in the EntryType enum. For entries
-    /// with user_specified_type, this field is optional and defaults to an empty
-    /// timestamp.
+    /// Timestamps from the underlying resource, not from the Data Catalog
+    /// entry.
+    ///
+    /// Output only when the entry has a type listed in the `EntryType` enum.
+    /// For entries with `user_specified_type`, this field is optional and defaults
+    /// to an empty timestamp.
     #[prost(message, optional, tag = "7")]
     pub source_system_timestamps: ::core::option::Option<SystemTimestamps>,
+    /// Output only. Resource usage statistics.
+    #[prost(message, optional, tag = "13")]
+    pub usage_signal: ::core::option::Option<UsageSignal>,
+    /// Cloud labels attached to the entry.
+    ///
+    /// In Data Catalog, you can create and modify labels attached only to custom
+    /// entries. Synced entries have unmodifiable labels that come from the source
+    /// system.
+    #[prost(map = "string, string", tag = "14")]
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. Physical location of the entry.
     #[prost(message, optional, tag = "20")]
     pub data_source: ::core::option::Option<DataSource>,
@@ -961,15 +1186,16 @@ pub struct Entry {
     /// The source system of the entry.
     #[prost(oneof = "entry::System", tags = "17, 18")]
     pub system: ::core::option::Option<entry::System>,
-    /// Type specification information.
+    /// Type specification.
     #[prost(oneof = "entry::TypeSpec", tags = "6, 12, 15")]
     pub type_spec: ::core::option::Option<entry::TypeSpec>,
-    /// Type- and system- specific information. Specifications for types contain
-    /// fields common to all entries of a given type, and sub-specs with fields
-    /// specific to a given source system.
-    /// When extending the API with new types and systems please use this instead
-    /// of legacy type_spec field.
-    #[prost(oneof = "entry::Spec", tags = "24")]
+    /// Type- and system-specific information. Specifications for types contain
+    /// fields common to all entries of a given type, and sub-specifications with
+    /// fields specific to a given source system.
+    ///
+    /// When extending the API with new types and systems, use this field instead
+    /// of the legacy `type_spec`.
+    #[prost(oneof = "entry::Spec", tags = "24, 27, 28")]
     pub spec: ::core::option::Option<entry::Spec>,
 }
 /// Nested message and enum types in `Entry`.
@@ -978,69 +1204,90 @@ pub mod entry {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum EntryType {
         /// The type of the entry.
-        /// Only used for Entries with types in the EntryType enum.
+        /// Only used for entries with types listed in the `EntryType` enum.
+        ///
+        /// Currently, only `FILESET` enum value is allowed. All other entries
+        /// created in Data Catalog must use the `user_specified_type`.
         #[prost(enumeration = "super::EntryType", tag = "2")]
         Type(i32),
-        /// Entry type if it does not fit any of the input-allowed values listed in
-        /// `EntryType` enum above. When creating an entry, users should check the
-        /// enum values first, if nothing matches the entry to be created, then
-        /// provide a custom value, for example "my_special_type".
-        /// `user_specified_type` strings must begin with a letter or underscore and
-        /// can only contain letters, numbers, and underscores; are case insensitive;
-        /// must be at least 1 character and at most 64 characters long.
+        /// Custom entry type that doesn't match any of the values allowed for input
+        /// and listed in the `EntryType` enum.
         ///
-        /// Currently, only FILESET enum value is allowed. All other entries created
-        /// through Data Catalog must use `user_specified_type`.
+        /// When creating an entry, first check the type values in the enum.
+        /// If there are no appropriate types for the new entry,
+        /// provide a custom value, for example, `my_special_type`.
+        ///
+        /// The `user_specified_type` string has the following limitations:
+        ///
+        /// * Is case insensitive.
+        /// * Must begin with a letter or underscore.
+        /// * Can only contain letters, numbers, and underscores.
+        /// * Must be at least 1 character and at most 64 characters long.
         #[prost(string, tag = "16")]
         UserSpecifiedType(::prost::alloc::string::String),
     }
     /// The source system of the entry.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum System {
-        /// Output only. This field indicates the entry's source system that Data Catalog
-        /// integrates with, such as BigQuery or Pub/Sub.
+        /// Output only. Indicates the entry's source system that Data Catalog
+        /// integrates with, such as BigQuery, Pub/Sub, or Dataproc Metastore.
         #[prost(enumeration = "super::IntegratedSystem", tag = "17")]
         IntegratedSystem(i32),
-        /// This field indicates the entry's source system that Data Catalog does not
-        /// integrate with. `user_specified_system` strings must begin with a letter
-        /// or underscore and can only contain letters, numbers, and underscores; are
-        /// case insensitive; must be at least 1 character and at most 64 characters
-        /// long.
+        /// Indicates the entry's source system that Data Catalog doesn't
+        /// automatically integrate with.
+        ///
+        /// The `user_specified_system` string has the following limitations:
+        ///
+        /// * Is case insensitive.
+        /// * Must begin with a letter or underscore.
+        /// * Can only contain letters, numbers, and underscores.
+        /// * Must be at least 1 character and at most 64 characters long.
         #[prost(string, tag = "18")]
         UserSpecifiedSystem(::prost::alloc::string::String),
     }
-    /// Type specification information.
+    /// Type specification.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TypeSpec {
-        /// Specification that applies to a Cloud Storage fileset. This is only valid
-        /// on entries of type FILESET.
+        /// Specification that applies to a Cloud Storage fileset. Valid only
+        /// for entries with the `FILESET` type.
         #[prost(message, tag = "6")]
         GcsFilesetSpec(super::GcsFilesetSpec),
-        /// Specification that applies to a BigQuery table. This is only valid on
-        /// entries of type `TABLE`.
+        /// Specification that applies to a BigQuery table. Valid only for
+        /// entries with the `TABLE` type.
         #[prost(message, tag = "12")]
         BigqueryTableSpec(super::BigQueryTableSpec),
-        /// Specification for a group of BigQuery tables with name pattern
-        /// `[prefix]YYYYMMDD`. Context:
-        /// https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding.
+        /// Specification for a group of BigQuery tables with the `\[prefix\]YYYYMMDD`
+        /// name pattern.
+        ///
+        /// For more information, see [Introduction to partitioned tables]
+        /// (<https://cloud.google.com/bigquery/docs/partitioned-tables#partitioning_versus_sharding>).
         #[prost(message, tag = "15")]
         BigqueryDateShardedSpec(super::BigQueryDateShardedSpec),
     }
-    /// Type- and system- specific information. Specifications for types contain
-    /// fields common to all entries of a given type, and sub-specs with fields
-    /// specific to a given source system.
-    /// When extending the API with new types and systems please use this instead
-    /// of legacy type_spec field.
+    /// Type- and system-specific information. Specifications for types contain
+    /// fields common to all entries of a given type, and sub-specifications with
+    /// fields specific to a given source system.
+    ///
+    /// When extending the API with new types and systems, use this field instead
+    /// of the legacy `type_spec`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Spec {
-        /// Specification that applies to a table resource. Only valid
-        /// for entries of `TABLE` type.
+        /// Specification that applies to a table resource. Valid only
+        /// for entries with the `TABLE` type.
         #[prost(message, tag = "24")]
         DatabaseTableSpec(super::DatabaseTableSpec),
+        /// Specification that applies to a data source connection. Valid only
+        /// for entries with the `DATA_SOURCE_CONNECTION` type.
+        #[prost(message, tag = "27")]
+        DataSourceConnectionSpec(super::DataSourceConnectionSpec),
+        /// Specification that applies to a user-defined function or procedure. Valid
+        /// only for entries with the `ROUTINE` type.
+        #[prost(message, tag = "28")]
+        RoutineSpec(super::RoutineSpec),
     }
 }
-/// Specification that applies to a table resource. Only valid
-/// for entries of `TABLE` type.
+/// Specification that applies to a table resource. Valid only
+/// for entries with the `TABLE` type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatabaseTableSpec {
     /// Type of this table.
@@ -1061,14 +1308,103 @@ pub mod database_table_spec {
         External = 2,
     }
 }
-/// EntryGroup Metadata.
-/// An EntryGroup resource represents a logical grouping of zero or more
-/// Data Catalog [Entry][google.cloud.datacatalog.v1.Entry] resources.
+/// Specification that applies to a data source connection. Valid only for
+/// entries with the `DATA_SOURCE_CONNECTION` type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataSourceConnectionSpec {
+    /// Fields specific to BigQuery connections.
+    #[prost(message, optional, tag = "1")]
+    pub bigquery_connection_spec: ::core::option::Option<BigQueryConnectionSpec>,
+}
+/// Specification that applies to a routine. Valid only for
+/// entries with the `ROUTINE` type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RoutineSpec {
+    /// The type of the routine.
+    #[prost(enumeration = "routine_spec::RoutineType", tag = "1")]
+    pub routine_type: i32,
+    /// The language the routine is written in. The exact value depends on the
+    /// source system. For BigQuery routines, possible values are:
+    ///
+    /// * `SQL`
+    /// * `JAVASCRIPT`
+    #[prost(string, tag = "2")]
+    pub language: ::prost::alloc::string::String,
+    /// Arguments of the routine.
+    #[prost(message, repeated, tag = "3")]
+    pub routine_arguments: ::prost::alloc::vec::Vec<routine_spec::Argument>,
+    /// Return type of the argument. The exact value depends on the source system
+    /// and the language.
+    #[prost(string, tag = "4")]
+    pub return_type: ::prost::alloc::string::String,
+    /// The body of the routine.
+    #[prost(string, tag = "5")]
+    pub definition_body: ::prost::alloc::string::String,
+    /// Contains fields specific to the source system.
+    #[prost(oneof = "routine_spec::SystemSpec", tags = "6")]
+    pub system_spec: ::core::option::Option<routine_spec::SystemSpec>,
+}
+/// Nested message and enum types in `RoutineSpec`.
+pub mod routine_spec {
+    /// Input or output argument of a function or stored procedure.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Argument {
+        /// The name of the argument. A return argument of a function might not have
+        /// a name.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// Specifies whether the argument is input or output.
+        #[prost(enumeration = "argument::Mode", tag = "2")]
+        pub mode: i32,
+        /// Type of the argument. The exact value depends on the source system and
+        /// the language.
+        #[prost(string, tag = "3")]
+        pub r#type: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `Argument`.
+    pub mod argument {
+        /// The input or output mode of the argument.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum Mode {
+            /// Unspecified mode.
+            Unspecified = 0,
+            /// The argument is input-only.
+            In = 1,
+            /// The argument is output-only.
+            Out = 2,
+            /// The argument is both an input and an output.
+            Inout = 3,
+        }
+    }
+    /// The fine-grained type of the routine.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RoutineType {
+        /// Unspecified type.
+        Unspecified = 0,
+        /// Non-builtin permanent scalar function.
+        ScalarFunction = 1,
+        /// Stored procedure.
+        Procedure = 2,
+    }
+    /// Contains fields specific to the source system.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum SystemSpec {
+        /// Fields specific for BigQuery routines.
+        #[prost(message, tag = "6")]
+        BigqueryRoutineSpec(super::BigQueryRoutineSpec),
+    }
+}
+/// Entry group metadata.
+///
+/// An `EntryGroup` resource represents a logical grouping of zero or more
+/// Data Catalog \[Entry][google.cloud.datacatalog.v1.Entry\] resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntryGroup {
-    /// The resource name of the entry group in URL format. Example:
-    ///
-    /// `projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}`
+    /// The resource name of the entry group in URL format.
     ///
     /// Note: The entry group itself and its child resources might not be
     /// stored in the location specified in its name.
@@ -1078,25 +1414,21 @@ pub struct EntryGroup {
     /// "analytics data - jan 2011". Default value is an empty string.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Entry group description, which can consist of several sentences or
-    /// paragraphs that describe entry group contents. Default value is an empty
-    /// string.
+    /// Entry group description. Can consist of several sentences or
+    /// paragraphs that describe the entry group contents.
+    /// Default value is an empty string.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. Timestamps about this EntryGroup. Default value is empty timestamps.
+    /// Output only. Timestamps of the entry group. Default value is empty.
     #[prost(message, optional, tag = "4")]
     pub data_catalog_timestamps: ::core::option::Option<SystemTimestamps>,
 }
 /// Request message for
-/// [CreateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplate].
+/// \[CreateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTagTemplateRequest {
     /// Required. The name of the project and the template location
-    /// [region](https://cloud.google.com/data-catalog/docs/concepts/regions).
-    ///
-    /// Example:
-    ///
-    /// * projects/{project_id}/locations/us-central1
+    /// \[region\](<https://cloud.google.com/data-catalog/docs/concepts/regions>).
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the tag template to create.
@@ -1111,54 +1443,55 @@ pub struct CreateTagTemplateRequest {
     pub tag_template: ::core::option::Option<TagTemplate>,
 }
 /// Request message for
-/// [GetTagTemplate][google.cloud.datacatalog.v1.DataCatalog.GetTagTemplate].
+/// \[GetTagTemplate][google.cloud.datacatalog.v1.DataCatalog.GetTagTemplate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTagTemplateRequest {
-    /// Required. The name of the tag template. Example:
-    ///
-    /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+    /// Required. The name of the tag template to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [UpdateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplate].
+/// \[UpdateTagTemplate][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTagTemplateRequest {
-    /// Required. The template to update. The "name" field must be set.
+    /// Required. The template to update. The `name` field must be set.
     #[prost(message, optional, tag = "1")]
     pub tag_template: ::core::option::Option<TagTemplate>,
     /// Names of fields whose values to overwrite on a tag template. Currently,
-    /// only `display_name` can be overwritten.
+    /// only `display_name` and `is_publicly_readable` can be overwritten.
     ///
-    /// In general, if this parameter is absent or empty, all modifiable fields
+    /// If this parameter is absent or empty, all modifiable fields
     /// are overwritten. If such fields are non-required and omitted in the
     /// request body, their values are emptied.
+    ///
+    /// Note: Updating the `is_publicly_readable` field may require up to 12
+    /// hours to take effect in search results. Additionally, it also requires
+    /// the `tagTemplates.getIamPolicy` and `tagTemplates.setIamPolicy`
+    /// permissions.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
-/// [DeleteTagTemplate][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplate].
+/// \[DeleteTagTemplate][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTagTemplateRequest {
-    /// Required. The name of the tag template to delete. Example:
-    ///
-    /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}
+    /// Required. The name of the tag template to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Currently, this field must always be set to `true`.
-    /// This confirms the deletion of any possible tags using this template.
-    /// `force = false` will be supported in the future.
+    /// Required. If true, deletes all tags that use this template.
+    ///
+    /// Currently, `true` is the only supported value.
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
 /// Request message for
-/// [CreateTag][google.cloud.datacatalog.v1.DataCatalog.CreateTag].
+/// \[CreateTag][google.cloud.datacatalog.v1.DataCatalog.CreateTag\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTagRequest {
-    /// Required. The name of the resource to attach this tag to. Tags can be attached to
-    /// entries. An entry can have up to 1000 attached tags. Example:
+    /// Required. The name of the resource to attach this tag to.
     ///
-    /// `projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}`
+    /// Tags can be attached to entries or entry groups. An entry can have up to
+    /// 1000 attached tags.
     ///
     /// Note: The tag and its child resources might not be stored in
     /// the location specified in its name.
@@ -1169,7 +1502,7 @@ pub struct CreateTagRequest {
     pub tag: ::core::option::Option<Tag>,
 }
 /// Request message for
-/// [UpdateTag][google.cloud.datacatalog.v1.DataCatalog.UpdateTag].
+/// \[UpdateTag][google.cloud.datacatalog.v1.DataCatalog.UpdateTag\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTagRequest {
     /// Required. The updated tag. The "name" field must be set.
@@ -1185,25 +1518,19 @@ pub struct UpdateTagRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
-/// [DeleteTag][google.cloud.datacatalog.v1.DataCatalog.DeleteTag].
+/// \[DeleteTag][google.cloud.datacatalog.v1.DataCatalog.DeleteTag\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTagRequest {
-    /// Required. The name of the tag to delete. Example:
-    ///
-    /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}/tags/{tag_id}
+    /// Required. The name of the tag to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CreateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplateField].
+/// \[CreateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.CreateTagTemplateField\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTagTemplateFieldRequest {
     /// Required. The name of the project and the template location
-    /// [region](https://cloud.google.com/data-catalog/docs/concepts/regions).
-    ///
-    /// Example:
-    ///
-    /// * projects/{project_id}/locations/us-central1/tagTemplates/{tag_template_id}
+    /// \[region\](<https://cloud.google.com/data-catalog/docs/concepts/regions>).
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the tag template field to create.
@@ -1221,12 +1548,10 @@ pub struct CreateTagTemplateFieldRequest {
     pub tag_template_field: ::core::option::Option<TagTemplateField>,
 }
 /// Request message for
-/// [UpdateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplateField].
+/// \[UpdateTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.UpdateTagTemplateField\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTagTemplateFieldRequest {
-    /// Required. The name of the tag template field. Example:
-    ///
-    /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+    /// Required. The name of the tag template field.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The template to update.
@@ -1235,9 +1560,9 @@ pub struct UpdateTagTemplateFieldRequest {
     /// Optional. Names of fields whose values to overwrite on an individual field of a tag
     /// template. The following fields are modifiable:
     ///
-    ///   * `display_name`
-    ///   * `type.enum_type`
-    ///   * `is_required`
+    /// * `display_name`
+    /// * `type.enum_type`
+    /// * `is_required`
     ///
     /// If this parameter is absent or empty, all modifiable fields
     /// are overwritten. If such fields are non-required and omitted in the request
@@ -1252,12 +1577,10 @@ pub struct UpdateTagTemplateFieldRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
-/// [RenameTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateField].
+/// \[RenameTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateField\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenameTagTemplateFieldRequest {
-    /// Required. The name of the tag template. Example:
-    ///
-    /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+    /// Required. The name of the tag template field.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The new ID of this tag template field. For example, `my_new_field`.
@@ -1265,12 +1588,10 @@ pub struct RenameTagTemplateFieldRequest {
     pub new_tag_template_field_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [RenameTagTemplateFieldEnumValue][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateFieldEnumValue].
+/// \[RenameTagTemplateFieldEnumValue][google.cloud.datacatalog.v1.DataCatalog.RenameTagTemplateFieldEnumValue\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RenameTagTemplateFieldEnumValueRequest {
-    /// Required. The name of the enum field value. Example:
-    ///
-    /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}/enumValues/{enum_value_display_name}
+    /// Required. The name of the enum field value.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The new display name of the enum value. For example, `my_new_enum_value`.
@@ -1278,113 +1599,115 @@ pub struct RenameTagTemplateFieldEnumValueRequest {
     pub new_enum_value_display_name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [DeleteTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplateField].
+/// \[DeleteTagTemplateField][google.cloud.datacatalog.v1.DataCatalog.DeleteTagTemplateField\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTagTemplateFieldRequest {
-    /// Required. The name of the tag template field to delete. Example:
-    ///
-    /// * projects/{project_id}/locations/{location}/tagTemplates/{tag_template_id}/fields/{tag_template_field_id}
+    /// Required. The name of the tag template field to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Currently, this field must always be set to `true`.
-    /// This confirms the deletion of this field from any tags using this field.
-    /// `force = false` will be supported in the future.
+    /// Required. If true, deletes this field from any tags that use it.
+    ///
+    /// Currently, `true` is the only supported value.
     #[prost(bool, tag = "2")]
     pub force: bool,
 }
 /// Request message for
-/// [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags].
+/// \[ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagsRequest {
-    /// Required. The name of the Data Catalog resource to list the tags of. The resource
-    /// could be an [Entry][google.cloud.datacatalog.v1.Entry] or an
-    /// [EntryGroup][google.cloud.datacatalog.v1.EntryGroup].
+    /// Required. The name of the Data Catalog resource to list the tags of.
     ///
-    /// Examples:
-    ///
-    /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
-    /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}/entries/{entry_id}
+    /// The resource can be an \[Entry][google.cloud.datacatalog.v1.Entry\]
+    /// or an \[EntryGroup][google.cloud.datacatalog.v1.EntryGroup\]
+    /// (without `/entries/{entries}` at the end).
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of tags to return. Default is 10. Max limit is 1000.
+    /// The maximum number of tags to return. Default is 10. Maximum limit is 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Token that specifies which page is requested. If empty, the first page is
-    /// returned.
+    /// Pagination token that specifies the next page to return. If empty, the
+    /// first page is returned.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags].
+/// \[ListTags][google.cloud.datacatalog.v1.DataCatalog.ListTags\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTagsResponse {
-    /// [Tag][google.cloud.datacatalog.v1.Tag] details.
+    /// \[Tag][google.cloud.datacatalog.v1.Tag\] details.
     #[prost(message, repeated, tag = "1")]
     pub tags: ::prost::alloc::vec::Vec<Tag>,
-    /// Token to retrieve the next page of results. It is set to empty if no items
-    /// remain in results.
+    /// Pagination token of the next results page. Empty if there are
+    /// no more items in results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
+/// \[ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntriesRequest {
-    /// Required. The name of the entry group that contains the entries, which can
-    /// be provided in URL format. Example:
+    /// Required. The name of the entry group that contains the entries to list.
     ///
-    /// * projects/{project_id}/locations/{location}/entryGroups/{entry_group_id}
+    /// Can be provided in URL format.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of items to return. Default is 10. Max limit is 1000.
-    /// Throws an invalid argument for `page_size > 1000`.
+    /// The maximum number of items to return. Default is 10. Maximum limit is
+    /// 1000. Throws an invalid argument if `page_size` is more than 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Token that specifies which page is requested. If empty, the first page is
-    /// returned.
+    /// Pagination token that specifies the next page to return. If empty, the
+    /// first page is returned.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// The fields to return for each Entry. If not set or empty, all
+    /// The fields to return for each entry. If empty or omitted, all
     /// fields are returned.
-    /// For example, setting read_mask to contain only one path "name" will cause
-    /// ListEntries to return a list of Entries with only "name" field.
+    ///
+    /// For example, to return a list of entries with only the `name` field,
+    /// set `read_mask` to only one path with the `name` value.
     #[prost(message, optional, tag = "4")]
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Response message for
-/// [ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries].
+/// \[ListEntries][google.cloud.datacatalog.v1.DataCatalog.ListEntries\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEntriesResponse {
     /// Entry details.
     #[prost(message, repeated, tag = "1")]
     pub entries: ::prost::alloc::vec::Vec<Entry>,
-    /// Token to retrieve the next page of results. It is set to empty if no items
-    /// remain in results.
+    /// Pagination token of the next results page. Empty if there are no more items
+    /// in results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Entry resources in Data Catalog can be of different types e.g. a BigQuery
-/// Table entry is of type `TABLE`. This enum describes all the possible types
-/// Data Catalog contains.
+/// The enum field that lists all the types of entry resources in Data
+/// Catalog. For example, a BigQuery table entry has the `TABLE` type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum EntryType {
     /// Default unknown type.
     Unspecified = 0,
-    /// Output only. The type of entry that has a GoogleSQL schema, including
+    /// Output only. The entry type that has a GoogleSQL schema, including
     /// logical views.
     Table = 2,
-    /// Output only. The type of models, examples include
-    /// https://cloud.google.com/bigquery-ml/docs/bigqueryml-intro
+    /// Output only. The type of models.
+    ///
+    /// For more information, see [Supported models in BigQuery ML]
+    /// (<https://cloud.google.com/bigquery-ml/docs/introduction#supported_models_in>).
     Model = 5,
-    /// An entry type which is used for streaming entries. Example:
-    /// Pub/Sub topic.
+    /// An entry type for streaming entries. For example, a Pub/Sub topic.
     DataStream = 3,
-    /// An entry type which is a set of files or objects. Example:
+    /// An entry type for a set of files or objects. For example, a
     /// Cloud Storage fileset.
     Fileset = 4,
+    /// A group of servers that work together. For example, a Kafka cluster.
+    Cluster = 6,
     /// A database.
     Database = 7,
+    /// Output only. Connection to a data source. For example, a BigQuery
+    /// connection.
+    DataSourceConnection = 8,
+    /// Output only. Routine, for example, a BigQuery routine.
+    Routine = 9,
     /// A service, for example, a Dataproc Metastore service.
     Service = 14,
 }
@@ -1392,8 +1715,8 @@ pub enum EntryType {
 pub mod data_catalog_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Data Catalog API service allows clients to discover, understand, and manage"]
-    #[doc = " their data."]
+    #[doc = " Data Catalog API service allows you to discover, understand, and manage"]
+    #[doc = " your data."]
     #[derive(Debug, Clone)]
     pub struct DataCatalogClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -1401,7 +1724,7 @@ pub mod data_catalog_client {
     impl<T> DataCatalogClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1414,7 +1737,7 @@ pub mod data_catalog_client {
             interceptor: F,
         ) -> DataCatalogClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1439,22 +1762,21 @@ pub mod data_catalog_client {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Searches Data Catalog for multiple resources like entries, tags that"]
+        #[doc = " Searches Data Catalog for multiple resources like entries and tags that"]
         #[doc = " match a query."]
         #[doc = ""]
-        #[doc = " This is a custom method"]
-        #[doc = " (https://cloud.google.com/apis/design/custom_methods) and does not return"]
-        #[doc = " the complete resource, only the resource identifier and high level"]
-        #[doc = " fields. Clients can subsequently call `Get` methods."]
+        #[doc = " This is a [Custom Method]"]
+        #[doc = " (https://cloud.google.com/apis/design/custom_methods) that doesn't return"]
+        #[doc = " all information on a resource, only its ID and high level fields. To get"]
+        #[doc = " more information, you can subsequently call specific get methods."]
         #[doc = ""]
-        #[doc = " Note that Data Catalog search queries do not guarantee full recall. Query"]
-        #[doc = " results that match your query may not be returned, even in subsequent"]
-        #[doc = " result pages. Also note that results returned (and not returned) can vary"]
-        #[doc = " across repeated search queries."]
+        #[doc = " Note: Data Catalog search queries don't guarantee full recall. Results"]
+        #[doc = " that match your query might not be returned, even in subsequent"]
+        #[doc = " result pages. Additionally, returned (and not returned) results can vary"]
+        #[doc = " if you repeat search queries."]
         #[doc = ""]
-        #[doc = " See [Data Catalog Search"]
-        #[doc = " Syntax](https://cloud.google.com/data-catalog/docs/how-to/search-reference)"]
-        #[doc = " for more information."]
+        #[doc = " For more information, see [Data Catalog search syntax]"]
+        #[doc = " (https://cloud.google.com/data-catalog/docs/how-to/search-reference)."]
         pub async fn search_catalog(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchCatalogRequest>,
@@ -1471,25 +1793,33 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates an EntryGroup."]
+        #[doc = " Creates an entry group."]
         #[doc = ""]
-        #[doc = " An entry group contains logically related entries together with Cloud"]
-        #[doc = " Identity and Access Management policies that specify the users who can"]
-        #[doc = " create, edit, and view entries within the entry group."]
+        #[doc = " An entry group contains logically related entries together with [Cloud"]
+        #[doc = " Identity and Access Management](/data-catalog/docs/concepts/iam) policies."]
+        #[doc = " These policies specify users who can create, edit, and view entries"]
+        #[doc = " within entry groups."]
         #[doc = ""]
-        #[doc = " Data Catalog automatically creates an entry group for BigQuery entries"]
-        #[doc = " (\"@bigquery\") and Pub/Sub topics (\"@pubsub\"). Users create their own entry"]
-        #[doc = " group to contain Cloud Storage fileset entries or custom type entries,"]
-        #[doc = " and the IAM policies associated with those entries. Entry groups, like"]
-        #[doc = " entries, can be searched."]
+        #[doc = " Data Catalog automatically creates entry groups with names that start with"]
+        #[doc = " the `@` symbol for the following resources:"]
+        #[doc = ""]
+        #[doc = " * BigQuery entries (`@bigquery`)"]
+        #[doc = " * Pub/Sub topics (`@pubsub`)"]
+        #[doc = " * Dataproc Metastore services (`@dataproc_metastore_{SERVICE_NAME_HASH}`)"]
+        #[doc = ""]
+        #[doc = " You can create your own entry groups for Cloud Storage fileset entries"]
+        #[doc = " and custom entries together with the corresponding IAM policies."]
+        #[doc = " User-created entry groups can't contain the `@` symbol, it is reserved"]
+        #[doc = " for automatically created groups."]
+        #[doc = ""]
+        #[doc = " Entry groups, like entries, can be searched."]
         #[doc = ""]
         #[doc = " A maximum of 10,000 entry groups may be created per organization across all"]
         #[doc = " locations."]
         #[doc = ""]
-        #[doc = " Users should enable the Data Catalog API in the project identified by"]
-        #[doc = " the `parent` parameter (see [Data Catalog Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = " You must enable the Data Catalog API in the project identified by"]
+        #[doc = " the `parent` parameter. For more information, see [Data Catalog resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn create_entry_group(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEntryGroupRequest>,
@@ -1506,7 +1836,7 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets an EntryGroup."]
+        #[doc = " Gets an entry group."]
         pub async fn get_entry_group(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEntryGroupRequest>,
@@ -1523,11 +1853,12 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates an EntryGroup. The user should enable the Data Catalog API in the"]
-        #[doc = " project identified by the `entry_group.name` parameter (see [Data Catalog"]
-        #[doc = " Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = " Updates an entry group."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project identified by"]
+        #[doc = " the `entry_group.name` parameter. For more information, see [Data Catalog"]
+        #[doc = " resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn update_entry_group(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEntryGroupRequest>,
@@ -1544,11 +1875,12 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes an EntryGroup. Only entry groups that do not contain entries can be"]
-        #[doc = " deleted. Users should enable the Data Catalog API in the project"]
-        #[doc = " identified by the `name` parameter (see [Data Catalog Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = " Deletes an entry group."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project"]
+        #[doc = " identified by the `name` parameter. For more information, see [Data Catalog"]
+        #[doc = " resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn delete_entry_group(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEntryGroupRequest>,
@@ -1582,15 +1914,17 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates an entry. Only entries of types 'FILESET', 'CLUSTER', 'DATA_STREAM'"]
-        #[doc = " or with a user-specified type can be created."]
+        #[doc = " Creates an entry."]
         #[doc = ""]
-        #[doc = " Users should enable the Data Catalog API in the project identified by"]
-        #[doc = " the `parent` parameter (see [Data Catalog Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = " You can create entries only with 'FILESET', 'CLUSTER', 'DATA_STREAM',"]
+        #[doc = " or custom types. Data Catalog automatically creates entries with other"]
+        #[doc = " types during metadata ingestion from integrated systems."]
         #[doc = ""]
-        #[doc = " A maximum of 100,000 entries may be created per entry group."]
+        #[doc = " You must enable the Data Catalog API in the project identified by"]
+        #[doc = " the `parent` parameter. For more information, see [Data Catalog resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
+        #[doc = ""]
+        #[doc = " An entry group can have a maximum of 100,000 entries."]
         pub async fn create_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEntryRequest>,
@@ -1608,10 +1942,11 @@ pub mod data_catalog_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates an existing entry."]
-        #[doc = " Users should enable the Data Catalog API in the project identified by"]
-        #[doc = " the `entry.name` parameter (see [Data Catalog Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project identified by"]
+        #[doc = " the `entry.name` parameter. For more information, see [Data Catalog"]
+        #[doc = " resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn update_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEntryRequest>,
@@ -1628,13 +1963,16 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes an existing entry. Only entries created through"]
+        #[doc = " Deletes an existing entry."]
+        #[doc = ""]
+        #[doc = " You can delete only the entries created by the"]
         #[doc = " [CreateEntry][google.cloud.datacatalog.v1.DataCatalog.CreateEntry]"]
-        #[doc = " method can be deleted."]
-        #[doc = " Users should enable the Data Catalog API in the project identified by"]
-        #[doc = " the `name` parameter (see [Data Catalog Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = " method."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project identified by"]
+        #[doc = " the `name` parameter. For more information, see [Data Catalog"]
+        #[doc = " resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn delete_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEntryRequest>,
@@ -1668,9 +2006,9 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Get an entry by target resource name. This method allows clients to use"]
-        #[doc = " the resource name from the source Google Cloud Platform service to get the"]
-        #[doc = " Data Catalog Entry."]
+        #[doc = " Gets an entry by its target resource name."]
+        #[doc = ""]
+        #[doc = " The resource name comes from the source Google Cloud Platform service."]
         pub async fn lookup_entry(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupEntryRequest>,
@@ -1688,6 +2026,10 @@ pub mod data_catalog_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists entries."]
+        #[doc = ""]
+        #[doc = " Note: Currently, this method can list only custom entries."]
+        #[doc = " To get a list of both custom and automatically created entries, use"]
+        #[doc = " [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog]."]
         pub async fn list_entries(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEntriesRequest>,
@@ -1704,11 +2046,12 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a tag template. The user should enable the Data Catalog API in"]
-        #[doc = " the project identified by the `parent` parameter (see [Data Catalog"]
-        #[doc = " Resource"]
-        #[doc = " Project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)"]
-        #[doc = " for more information)."]
+        #[doc = " Creates a tag template."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project identified by the"]
+        #[doc = " `parent` parameter."]
+        #[doc = " For more information, see [Data Catalog resource project]"]
+        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn create_tag_template(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTagTemplateRequest>,
@@ -1742,13 +2085,15 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a tag template. This method cannot be used to update the fields of"]
-        #[doc = " a template. The tag template fields are represented as separate resources"]
-        #[doc = " and should be updated using their own create/update/delete methods."]
-        #[doc = " Users should enable the Data Catalog API in the project identified by"]
-        #[doc = " the `tag_template.name` parameter (see [Data Catalog Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = " Updates a tag template."]
+        #[doc = ""]
+        #[doc = " You can't update template fields with this method. These fields are"]
+        #[doc = " separate resources with their own create, update, and delete methods."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project identified by"]
+        #[doc = " the `tag_template.name` parameter. For more information, see [Data Catalog"]
+        #[doc = " resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn update_tag_template(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTagTemplateRequest>,
@@ -1765,11 +2110,11 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a tag template and all tags using the template."]
-        #[doc = " Users should enable the Data Catalog API in the project identified by"]
-        #[doc = " the `name` parameter (see [Data Catalog Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = " Deletes a tag template and all tags that use it."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project identified by"]
+        #[doc = " the `name` parameter. For more information, see [Data Catalog resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn delete_tag_template(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTagTemplateRequest>,
@@ -1786,11 +2131,11 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a field in a tag template. The user should enable the Data Catalog"]
-        #[doc = " API in the project identified by the `parent` parameter (see"]
-        #[doc = " [Data Catalog Resource"]
-        #[doc = " Project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)"]
-        #[doc = " for more information)."]
+        #[doc = " Creates a field in a tag template."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project identified by"]
+        #[doc = " the `parent` parameter. For more information, see [Data Catalog resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn create_tag_template_field(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTagTemplateFieldRequest>,
@@ -1807,11 +2152,14 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a field in a tag template. This method cannot be used to update the"]
-        #[doc = " field type. Users should enable the Data Catalog API in the project"]
-        #[doc = " identified by the `name` parameter (see [Data Catalog Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = " Updates a field in a tag template."]
+        #[doc = ""]
+        #[doc = " You can't update the field type with this method."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project"]
+        #[doc = " identified by the `name` parameter. For more information, see [Data Catalog"]
+        #[doc = " resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn update_tag_template_field(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTagTemplateFieldRequest>,
@@ -1828,11 +2176,11 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Renames a field in a tag template. The user should enable the Data Catalog"]
-        #[doc = " API in the project identified by the `name` parameter (see [Data Catalog"]
-        #[doc = " Resource"]
-        #[doc = " Project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)"]
-        #[doc = " for more information)."]
+        #[doc = " Renames a field in a tag template."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project identified by the"]
+        #[doc = " `name` parameter. For more information, see [Data Catalog resource project]"]
+        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn rename_tag_template_field(
             &mut self,
             request: impl tonic::IntoRequest<super::RenameTagTemplateFieldRequest>,
@@ -1849,8 +2197,9 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Renames an enum value in a tag template. The enum values have to be unique"]
-        #[doc = " within one enum field."]
+        #[doc = " Renames an enum value in a tag template."]
+        #[doc = ""]
+        #[doc = " Within a single enum field, enum values must be unique."]
         pub async fn rename_tag_template_field_enum_value(
             &mut self,
             request: impl tonic::IntoRequest<super::RenameTagTemplateFieldEnumValueRequest>,
@@ -1867,11 +2216,12 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a field in a tag template and all uses of that field."]
-        #[doc = " Users should enable the Data Catalog API in the project identified by"]
-        #[doc = " the `name` parameter (see [Data Catalog Resource Project]"]
-        #[doc = " (https://cloud.google.com/data-catalog/docs/concepts/resource-project) for"]
-        #[doc = " more information)."]
+        #[doc = " Deletes a field in a tag template and all uses of this field from the tags"]
+        #[doc = " based on this template."]
+        #[doc = ""]
+        #[doc = " You must enable the Data Catalog API in the project identified by"]
+        #[doc = " the `name` parameter. For more information, see [Data Catalog resource"]
+        #[doc = " project](https://cloud.google.com/data-catalog/docs/concepts/resource-project)."]
         pub async fn delete_tag_template_field(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTagTemplateFieldRequest>,
@@ -1888,13 +2238,18 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a tag on an [Entry][google.cloud.datacatalog.v1.Entry]."]
-        #[doc = " Note: The project identified by the `parent` parameter for the"]
-        #[doc = " [tag](https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries.tags/create#path-parameters)"]
-        #[doc = " and the"]
-        #[doc = " [tag"]
-        #[doc = " template](https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters)"]
-        #[doc = " used to create the tag must be from the same organization."]
+        #[doc = " Creates a tag and assigns it to:"]
+        #[doc = ""]
+        #[doc = " * An [Entry][google.cloud.datacatalog.v1.Entry] if the method name is"]
+        #[doc = "   `projects.locations.entryGroups.entries.tags.create`."]
+        #[doc = " * Or [EntryGroup][google.cloud.datacatalog.v1.EntryGroup]if the method"]
+        #[doc = "   name is `projects.locations.entryGroups.tags.create`."]
+        #[doc = ""]
+        #[doc = " Note: The project identified by the `parent` parameter for the [tag]"]
+        #[doc = " (https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.entryGroups.entries.tags/create#path-parameters)"]
+        #[doc = " and the [tag template]"]
+        #[doc = " (https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters)"]
+        #[doc = " used to create the tag must be in the same organization."]
         pub async fn create_tag(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTagRequest>,
@@ -1945,7 +2300,7 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists the tags on an [Entry][google.cloud.datacatalog.v1.Entry]."]
+        #[doc = " Lists tags assigned to an [Entry][google.cloud.datacatalog.v1.Entry]."]
         pub async fn list_tags(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTagsRequest>,
@@ -1962,20 +2317,23 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Sets the access control policy for a resource. Replaces any existing"]
+        #[doc = " Sets an access control policy for a resource. Replaces any existing"]
         #[doc = " policy."]
-        #[doc = " Supported resources are:"]
-        #[doc = "   - Tag templates."]
-        #[doc = "   - Entries."]
-        #[doc = "   - Entry groups."]
-        #[doc = " Note, this method cannot be used to manage policies for BigQuery, Pub/Sub"]
-        #[doc = " and any external Google Cloud Platform resources synced to Data Catalog."]
         #[doc = ""]
-        #[doc = " Callers must have following Google IAM permission"]
-        #[doc = "   - `datacatalog.tagTemplates.setIamPolicy` to set policies on tag"]
-        #[doc = "     templates."]
-        #[doc = "   - `datacatalog.entries.setIamPolicy` to set policies on entries."]
-        #[doc = "   - `datacatalog.entryGroups.setIamPolicy` to set policies on entry groups."]
+        #[doc = " Supported resources are:"]
+        #[doc = ""]
+        #[doc = " - Tag templates"]
+        #[doc = " - Entry groups"]
+        #[doc = ""]
+        #[doc = " Note: This method sets policies only within Data Catalog and can't be"]
+        #[doc = " used to manage policies in BigQuery, Pub/Sub, Dataproc Metastore, and any"]
+        #[doc = " external Google Cloud Platform resources synced with the Data Catalog."]
+        #[doc = ""]
+        #[doc = " To call this method, you must have the following Google IAM permissions:"]
+        #[doc = ""]
+        #[doc = " - `datacatalog.tagTemplates.setIamPolicy` to set policies on tag"]
+        #[doc = "   templates."]
+        #[doc = " - `datacatalog.entryGroups.setIamPolicy` to set policies on entry groups."]
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::super::super::super::iam::v1::SetIamPolicyRequest>,
@@ -1993,22 +2351,27 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets the access control policy for a resource. A `NOT_FOUND` error"]
-        #[doc = " is returned if the resource does not exist. An empty policy is returned"]
-        #[doc = " if the resource exists but does not have a policy set on it."]
+        #[doc = " Gets the access control policy for a resource."]
+        #[doc = ""]
+        #[doc = " May return:"]
+        #[doc = ""]
+        #[doc = " * A`NOT_FOUND` error if the resource doesn't exist or you don't have the"]
+        #[doc = "   permission to view it."]
+        #[doc = " * An empty policy if the resource exists but doesn't have a set policy."]
         #[doc = ""]
         #[doc = " Supported resources are:"]
-        #[doc = "   - Tag templates."]
-        #[doc = "   - Entries."]
-        #[doc = "   - Entry groups."]
-        #[doc = " Note, this method cannot be used to manage policies for BigQuery, Pub/Sub"]
-        #[doc = " and any external Google Cloud Platform resources synced to Data Catalog."]
         #[doc = ""]
-        #[doc = " Callers must have following Google IAM permission"]
-        #[doc = "   - `datacatalog.tagTemplates.getIamPolicy` to get policies on tag"]
-        #[doc = "     templates."]
-        #[doc = "   - `datacatalog.entries.getIamPolicy` to get policies on entries."]
-        #[doc = "   - `datacatalog.entryGroups.getIamPolicy` to get policies on entry groups."]
+        #[doc = " - Tag templates"]
+        #[doc = " - Entry groups"]
+        #[doc = ""]
+        #[doc = " Note: This method doesn't get policies from Google Cloud Platform"]
+        #[doc = " resources ingested into Data Catalog."]
+        #[doc = ""]
+        #[doc = " To call this method, you must have the following Google IAM permissions:"]
+        #[doc = ""]
+        #[doc = " - `datacatalog.tagTemplates.getIamPolicy` to get policies on tag"]
+        #[doc = "   templates."]
+        #[doc = " - `datacatalog.entryGroups.getIamPolicy` to get policies on entry groups."]
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::super::super::super::iam::v1::GetIamPolicyRequest>,
@@ -2026,19 +2389,20 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns the caller's permissions on a resource."]
-        #[doc = " If the resource does not exist, an empty set of permissions is returned"]
-        #[doc = " (We don't return a `NOT_FOUND` error)."]
+        #[doc = " Gets your permissions on a resource."]
+        #[doc = ""]
+        #[doc = " Returns an empty set of permissions if the resource doesn't exist."]
         #[doc = ""]
         #[doc = " Supported resources are:"]
-        #[doc = "   - Tag templates."]
-        #[doc = "   - Entries."]
-        #[doc = "   - Entry groups."]
-        #[doc = " Note, this method cannot be used to manage policies for BigQuery, Pub/Sub"]
-        #[doc = " and any external Google Cloud Platform resources synced to Data Catalog."]
         #[doc = ""]
-        #[doc = " A caller is not required to have Google IAM permission to make this"]
-        #[doc = " request."]
+        #[doc = " - Tag templates"]
+        #[doc = " - Entry groups"]
+        #[doc = ""]
+        #[doc = " Note: This method gets policies only within Data Catalog and can't be"]
+        #[doc = " used to get policies from BigQuery, Pub/Sub, Dataproc Metastore, and any"]
+        #[doc = " external Google Cloud Platform resources ingested into Data Catalog."]
+        #[doc = ""]
+        #[doc = " No Google IAM permissions are required to call this method."]
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -2063,8 +2427,10 @@ pub mod data_catalog_client {
     }
 }
 /// A taxonomy is a collection of hierarchical policy tags that classify data
-/// along a common axis. For instance a "data sensitivity" taxonomy could contain
-/// the following policy tags:
+/// along a common axis.
+///
+/// For example, a "data sensitivity" taxonomy might contain the following policy
+/// tags:
 ///
 /// ```
 /// + PII
@@ -2076,7 +2442,7 @@ pub mod data_catalog_client {
 ///   + Revenue
 /// ```
 ///
-/// A "data origin" taxonomy could contain the following policy tags:
+/// A "data origin" taxonomy might contain the following policy tags:
 ///
 /// ```
 /// + User data
@@ -2086,35 +2452,34 @@ pub mod data_catalog_client {
 /// ```
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Taxonomy {
-    /// Output only. Resource name of this taxonomy in format:
-    /// "projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}".
-    /// Note that taxonomy_id's are unique and generated by Policy Tag Manager.
+    /// Output only. Resource name of this taxonomy in URL format.
+    ///
+    /// Note: Policy tag manager generates unique taxonomy IDs.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. User-defined name of this taxonomy. It must: contain only unicode letters,
-    /// numbers, underscores, dashes and spaces; not start or end with spaces; and
-    /// be at most 200 bytes long when encoded in UTF-8.
+    /// Required. User-defined name of this taxonomy.
+    ///
+    /// The name can't start or end with spaces, must contain only Unicode letters,
+    /// numbers, underscores, dashes, and spaces, and be at most 200 bytes long
+    /// when encoded in UTF-8.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. Description of this taxonomy. It must: contain only unicode characters,
-    /// tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes
-    /// long when encoded in UTF-8. If not set, defaults to an empty description.
+    /// Optional. Description of this taxonomy. If not set, defaults to empty.
+    ///
+    /// The description must contain only Unicode characters, tabs, newlines,
+    /// carriage returns, and page breaks, and be at most 2000 bytes long when
+    /// encoded in UTF-8.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. Number of policy tags contained in this taxonomy.
+    /// Output only. Number of policy tags in this taxonomy.
     #[prost(int32, tag = "4")]
     pub policy_tag_count: i32,
-    /// Output only. Timestamps about this taxonomy. Only create_time and update_time are used.
+    /// Output only. Creation and modification timestamps of this taxonomy.
     #[prost(message, optional, tag = "5")]
     pub taxonomy_timestamps: ::core::option::Option<SystemTimestamps>,
     /// Optional. A list of policy types that are activated for this taxonomy. If not set,
     /// defaults to an empty list.
-    #[prost(
-        enumeration = "taxonomy::PolicyType",
-        repeated,
-        packed = "false",
-        tag = "6"
-    )]
+    #[prost(enumeration = "taxonomy::PolicyType", repeated, packed = "false", tag = "6")]
     pub activated_policy_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `Taxonomy`.
@@ -2125,13 +2490,14 @@ pub mod taxonomy {
     pub enum PolicyType {
         /// Unspecified policy type.
         Unspecified = 0,
-        /// Fine-grained access control policy, which enables access control on
+        /// Fine-grained access control policy that enables access control on
         /// tagged sub-resources.
         FineGrainedAccessControl = 1,
     }
 }
-/// Denotes one policy tag in a taxonomy (e.g. ssn). Policy tags can be defined
-/// in a hierarchy. For example, consider the following hierarchy:
+/// Denotes one policy tag in a taxonomy, for example, SSN.
+///
+/// Policy tags can be defined in a hierarchy. For example:
 ///
 /// ```
 /// + Geolocation
@@ -2140,34 +2506,34 @@ pub mod taxonomy {
 ///   + ZipCode
 /// ```
 ///
-/// Policy tag "Geolocation" contains 3 child policy tags: "LatLong", "City", and
-/// "ZipCode".
+/// Where the "Geolocation" policy tag contains three children.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyTag {
-    /// Output only. Resource name of this policy tag in format:
-    /// "projects/{project_number}/locations/{location_id}/taxonomies/{taxonomy_id}/policyTags/{policy_tag_id}".
-    /// Both taxonomy_ids and policy_tag_ids are unique and generated by Policy Tag
-    /// Manager.
+    /// Output only. Resource name of this policy tag in the URL format.
+    ///
+    /// The policy tag manager generates unique taxonomy IDs and policy tag IDs.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. User-defined name of this policy tag. It must: be unique within the parent
-    /// taxonomy; contain only unicode letters, numbers, underscores, dashes and
-    /// spaces; not start or end with spaces; and be at most 200 bytes long when
-    /// encoded in UTF-8.
+    /// Required. User-defined name of this policy tag.
+    ///
+    /// The name can't start or end with spaces and must be unique within the
+    /// parent taxonomy, contain only Unicode letters, numbers, underscores, dashes
+    /// and spaces, and be at most 200 bytes long when encoded in UTF-8.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Description of this policy tag. It must: contain only unicode characters,
-    /// tabs, newlines, carriage returns and page breaks; and be at most 2000 bytes
-    /// long when encoded in UTF-8. If not set, defaults to an empty description.
-    /// If not set, defaults to an empty description.
+    /// Description of this policy tag. If not set, defaults to empty.
+    ///
+    /// The description must contain only Unicode characters,
+    /// tabs, newlines, carriage returns and page breaks, and be at most 2000 bytes
+    /// long when encoded in UTF-8.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
-    /// Resource name of this policy tag's parent policy tag (e.g. for the
-    /// "LatLong" policy tag in the example above, this field contains the
-    /// resource name of the "Geolocation" policy tag). If empty, it means this
-    /// policy tag is a top level policy tag (e.g. this field is empty for the
-    /// "Geolocation" policy tag in the example above). If not set, defaults to an
-    /// empty string.
+    /// Resource name of this policy tag's parent policy tag. If empty, this is a
+    /// top level tag. If not set, defaults to an empty string.
+    ///
+    /// For example, for the "LatLong" policy tag in the example above, this field
+    /// contains the resource name of the "Geolocation" policy tag, and, for
+    /// "Geolocation", this field is empty.
     #[prost(string, tag = "4")]
     pub parent_policy_tag: ::prost::alloc::string::String,
     /// Output only. Resource names of child policy tags of this policy tag.
@@ -2175,147 +2541,154 @@ pub struct PolicyTag {
     pub child_policy_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// [CreateTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.CreateTaxonomy].
+/// \[CreateTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.CreateTaxonomy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTaxonomyRequest {
     /// Required. Resource name of the project that the taxonomy will belong to.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The taxonomy to be created.
+    /// The taxonomy to create.
     #[prost(message, optional, tag = "2")]
     pub taxonomy: ::core::option::Option<Taxonomy>,
 }
 /// Request message for
-/// [DeleteTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.DeleteTaxonomy].
+/// \[DeleteTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.DeleteTaxonomy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTaxonomyRequest {
-    /// Required. Resource name of the taxonomy to be deleted. All policy tags in
-    /// this taxonomy will also be deleted.
+    /// Required. Resource name of the taxonomy to delete.
+    ///
+    /// Note: All policy tags in this taxonomy are also deleted.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [UpdateTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.UpdateTaxonomy].
+/// \[UpdateTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.UpdateTaxonomy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTaxonomyRequest {
-    /// The taxonomy to update. Only description, display_name, and activated
-    /// policy types can be updated.
+    /// The taxonomy to update. You can update only its description, display name,
+    /// and activated policy types.
     #[prost(message, optional, tag = "1")]
     pub taxonomy: ::core::option::Option<Taxonomy>,
-    /// The update mask applies to the resource. For the `FieldMask` definition,
-    /// see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-    /// If not set, defaults to all of the fields that are allowed to update.
+    /// Specifies fields to update. If not set, defaults to all fields you can
+    /// update.
+    ///
+    /// For more information, see \[FieldMask\]
+    /// (<https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>).
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
-/// [ListTaxonomies][google.cloud.datacatalog.v1.PolicyTagManager.ListTaxonomies].
+/// \[ListTaxonomies][google.cloud.datacatalog.v1.PolicyTagManager.ListTaxonomies\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTaxonomiesRequest {
     /// Required. Resource name of the project to list the taxonomies of.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of items to return. Must be a value between 1 and 1000.
-    /// If not set, defaults to 50.
+    /// The maximum number of items to return. Must be a value between 1 and 1000
+    /// inclusively. If not set, defaults to 50.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The next_page_token value returned from a previous list request, if any. If
-    /// not set, defaults to an empty string.
+    /// The pagination token of the next results page. If not set,
+    /// the first page is returned.
+    ///
+    /// The token is returned in the response to a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ListTaxonomies][google.cloud.datacatalog.v1.PolicyTagManager.ListTaxonomies].
+/// \[ListTaxonomies][google.cloud.datacatalog.v1.PolicyTagManager.ListTaxonomies\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTaxonomiesResponse {
     /// Taxonomies that the project contains.
     #[prost(message, repeated, tag = "1")]
     pub taxonomies: ::prost::alloc::vec::Vec<Taxonomy>,
-    /// Token used to retrieve the next page of results, or empty if there are no
+    /// Pagination token of the next results page. Empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [GetTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.GetTaxonomy].
+/// \[GetTaxonomy][google.cloud.datacatalog.v1.PolicyTagManager.GetTaxonomy\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTaxonomyRequest {
-    /// Required. Resource name of the requested taxonomy.
+    /// Required. Resource name of the taxonomy to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CreatePolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.CreatePolicyTag].
+/// \[CreatePolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.CreatePolicyTag\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyTagRequest {
     /// Required. Resource name of the taxonomy that the policy tag will belong to.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The policy tag to be created.
+    /// The policy tag to create.
     #[prost(message, optional, tag = "2")]
     pub policy_tag: ::core::option::Option<PolicyTag>,
 }
 /// Request message for
-/// [DeletePolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.DeletePolicyTag].
+/// \[DeletePolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.DeletePolicyTag\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePolicyTagRequest {
-    /// Required. Resource name of the policy tag to be deleted. All of its descendant
-    /// policy tags will also be deleted.
+    /// Required. Resource name of the policy tag to delete.
+    ///
+    /// Note: All of its descendant policy tags are also deleted.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [UpdatePolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.UpdatePolicyTag].
+/// \[UpdatePolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.UpdatePolicyTag\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePolicyTagRequest {
-    /// The policy tag to update. Only the description, display_name, and
-    /// parent_policy_tag fields can be updated.
+    /// The policy tag to update. You can update only its description, display
+    /// name, and parent policy tag fields.
     #[prost(message, optional, tag = "1")]
     pub policy_tag: ::core::option::Option<PolicyTag>,
-    /// The update mask applies to the resource. Only display_name, description and
-    /// parent_policy_tag can be updated and thus can be listed in the mask. If
-    /// update_mask is not provided, all allowed fields (i.e. display_name,
-    /// description and parent) will be updated. For more information including the
-    /// `FieldMask` definition, see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
-    /// If not set, defaults to all of the fields that are allowed to update.
+    /// Specifies the fields to update.
+    ///
+    /// You can update only display name, description, and parent policy tag.
+    /// If not set, defaults to all updatable fields.
+    /// For more information, see \[FieldMask\]
+    /// (<https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>).
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for
-/// [ListPolicyTags][google.cloud.datacatalog.v1.PolicyTagManager.ListPolicyTags].
+/// \[ListPolicyTags][google.cloud.datacatalog.v1.PolicyTagManager.ListPolicyTags\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPolicyTagsRequest {
     /// Required. Resource name of the taxonomy to list the policy tags of.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of items to return. Must be a value between 1 and 1000.
+    /// The maximum number of items to return. Must be a value between 1 and 1000
+    /// inclusively.
     /// If not set, defaults to 50.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// The next_page_token value returned from a previous List request, if any. If
-    /// not set, defaults to an empty string.
+    /// The pagination token of the next results page. If not set, returns the
+    /// first page.
+    ///
+    /// The token is returned in the response to a previous list request.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ListPolicyTags][google.cloud.datacatalog.v1.PolicyTagManager.ListPolicyTags].
+/// \[ListPolicyTags][google.cloud.datacatalog.v1.PolicyTagManager.ListPolicyTags\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPolicyTagsResponse {
-    /// The policy tags that are in the requested taxonomy.
+    /// The policy tags that belong to the taxonomy.
     #[prost(message, repeated, tag = "1")]
     pub policy_tags: ::prost::alloc::vec::Vec<PolicyTag>,
-    /// Token used to retrieve the next page of results, or empty if there are no
+    /// Pagination token of the next results page. Empty if there are no
     /// more results in the list.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [GetPolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.GetPolicyTag].
+/// \[GetPolicyTag][google.cloud.datacatalog.v1.PolicyTagManager.GetPolicyTag\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPolicyTagRequest {
-    /// Required. Resource name of the requested policy tag.
+    /// Required. Resource name of the policy tag.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2323,7 +2696,7 @@ pub struct GetPolicyTagRequest {
 pub mod policy_tag_manager_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Policy Tag Manager API service allows clients to manage their policy tags and"]
+    #[doc = " Policy Tag Manager API service allows you to manage your policy tags and"]
     #[doc = " taxonomies."]
     #[doc = ""]
     #[doc = " Policy tags are used to tag BigQuery columns and apply additional access"]
@@ -2336,7 +2709,7 @@ pub mod policy_tag_manager_client {
     impl<T> PolicyTagManagerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2349,7 +2722,7 @@ pub mod policy_tag_manager_client {
             interceptor: F,
         ) -> PolicyTagManagerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2374,8 +2747,9 @@ pub mod policy_tag_manager_client {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Creates a taxonomy in a specified project. The taxonomy is initially empty,"]
-        #[doc = " i.e., does not contain policy tags."]
+        #[doc = " Creates a taxonomy in a specified project."]
+        #[doc = ""]
+        #[doc = " The taxonomy is initially empty, that is, it doesn't contain policy tags."]
         pub async fn create_taxonomy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTaxonomyRequest>,
@@ -2392,7 +2766,7 @@ pub mod policy_tag_manager_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a taxonomy. This method will also delete all policy tags in this"]
+        #[doc = " Deletes a taxonomy, including all policy tags in this"]
         #[doc = " taxonomy, their associated policies, and the policy tags references from"]
         #[doc = " BigQuery columns."]
         pub async fn delete_taxonomy(
@@ -2411,7 +2785,7 @@ pub mod policy_tag_manager_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a taxonomy. This method can update the taxonomy's display name,"]
+        #[doc = " Updates a taxonomy, including its display name,"]
         #[doc = " description, and activated policy types."]
         pub async fn update_taxonomy(
             &mut self,
@@ -2429,8 +2803,8 @@ pub mod policy_tag_manager_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists all taxonomies in a project in a particular location that the caller"]
-        #[doc = " has permission to view."]
+        #[doc = " Lists all taxonomies in a project in a particular location that you"]
+        #[doc = " have a permission to view."]
         pub async fn list_taxonomies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTaxonomiesRequest>,
@@ -2481,12 +2855,12 @@ pub mod policy_tag_manager_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a policy tag. This method also deletes:"]
+        #[doc = " Deletes a policy tag together with the following:"]
         #[doc = ""]
-        #[doc = " * all of its descendant policy tags, if any"]
-        #[doc = " * the policies associated with the policy tag and its descendants"]
-        #[doc = " * references from BigQuery table schema of the policy tag and its"]
-        #[doc = "   descendants."]
+        #[doc = " * All of its descendant policy tags, if any"]
+        #[doc = " * Policies associated with the policy tag and its descendants"]
+        #[doc = " * References from BigQuery table schema of the policy tag and its"]
+        #[doc = "   descendants"]
         pub async fn delete_policy_tag(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePolicyTagRequest>,
@@ -2503,7 +2877,7 @@ pub mod policy_tag_manager_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a policy tag. This method can update the policy tag's display"]
+        #[doc = " Updates a policy tag, including its display"]
         #[doc = " name, description, and parent policy tag."]
         pub async fn update_policy_tag(
             &mut self,
@@ -2591,7 +2965,7 @@ pub mod policy_tag_manager_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns the permissions that a caller has on a specified policy tag or"]
+        #[doc = " Returns your permissions on a specified policy tag or"]
         #[doc = " taxonomy."]
         pub async fn test_iam_permissions(
             &mut self,
@@ -2616,15 +2990,16 @@ pub mod policy_tag_manager_client {
         }
     }
 }
-/// Message representing a taxonomy, including its policy tags in hierarchy, as a
-/// nested proto. Used for taxonomy replacement, import, and export.
+/// A nested protocol buffer that represents a taxonomy and the hierarchy of its
+/// policy tags. Used for taxonomy replacement, import, and
+/// export.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SerializedTaxonomy {
     /// Required. Display name of the taxonomy. At most 200 bytes when encoded in UTF-8.
     #[prost(string, tag = "1")]
     pub display_name: ::prost::alloc::string::String,
-    /// Description of the serialized taxonomy. At most 2000 bytes when encoded in
-    /// UTF-8. If not set, defaults to an empty description.
+    /// Description of the serialized taxonomy. At most 2000 bytes when
+    /// encoded in UTF-8. If not set, defaults to an empty description.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Top level policy tags associated with the taxonomy, if any.
@@ -2634,20 +3009,21 @@ pub struct SerializedTaxonomy {
     #[prost(enumeration = "taxonomy::PolicyType", repeated, tag = "4")]
     pub activated_policy_types: ::prost::alloc::vec::Vec<i32>,
 }
-/// Message representing one policy tag, including all its descendant policy
-/// tags, as a nested proto.
+/// A nested protocol buffer that represents a policy tag and all its
+/// descendants.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SerializedPolicyTag {
     /// Resource name of the policy tag.
     ///
-    /// This field will be ignored when calling ImportTaxonomies.
+    /// This field is ignored when calling `ImportTaxonomies`.
     #[prost(string, tag = "1")]
     pub policy_tag: ::prost::alloc::string::String,
-    /// Required. Display name of the policy tag. At most 200 bytes when encoded in UTF-8.
+    /// Required. Display name of the policy tag. At most 200 bytes when encoded
+    /// in UTF-8.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Description of the serialized policy tag. The length of the description is
-    /// limited to 2000 bytes when encoded in UTF-8. If not set, defaults to an
+    /// Description of the serialized policy tag. At most
+    /// 2000 bytes when encoded in UTF-8. If not set, defaults to an
     /// empty description.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
@@ -2656,25 +3032,36 @@ pub struct SerializedPolicyTag {
     pub child_policy_tags: ::prost::alloc::vec::Vec<SerializedPolicyTag>,
 }
 /// Request message for
-/// [ImportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ImportTaxonomies].
+/// \[ReplaceTaxonomy][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ReplaceTaxonomy\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReplaceTaxonomyRequest {
+    /// Required. Resource name of the taxonomy to update.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. Taxonomy to update along with its child policy tags.
+    #[prost(message, optional, tag = "2")]
+    pub serialized_taxonomy: ::core::option::Option<SerializedTaxonomy>,
+}
+/// Request message for
+/// \[ImportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ImportTaxonomies\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportTaxonomiesRequest {
     /// Required. Resource name of project that the imported taxonomies will belong to.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Source taxonomies to be imported.
+    /// Source taxonomies to import.
     #[prost(oneof = "import_taxonomies_request::Source", tags = "2, 3")]
     pub source: ::core::option::Option<import_taxonomies_request::Source>,
 }
 /// Nested message and enum types in `ImportTaxonomiesRequest`.
 pub mod import_taxonomies_request {
-    /// Source taxonomies to be imported.
+    /// Source taxonomies to import.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
-        /// Inline source used for taxonomies import.
+        /// Inline source taxonomy to import.
         #[prost(message, tag = "2")]
         InlineSource(super::InlineSource),
-        /// Cross-regional source taxonomy to be imported.
+        /// Cross-regional source taxonomy to import.
         #[prost(message, tag = "3")]
         CrossRegionalSource(super::CrossRegionalSource),
     }
@@ -2682,7 +3069,7 @@ pub mod import_taxonomies_request {
 /// Inline source containing taxonomies to import.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InlineSource {
-    /// Required. Taxonomies to be imported.
+    /// Required. Taxonomies to import.
     #[prost(message, repeated, tag = "1")]
     pub taxonomies: ::prost::alloc::vec::Vec<SerializedTaxonomy>,
 }
@@ -2690,48 +3077,48 @@ pub struct InlineSource {
 /// region.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CrossRegionalSource {
-    /// Required. The resource name of the source taxonomy to be imported.
+    /// Required. The resource name of the source taxonomy to import.
     #[prost(string, tag = "1")]
     pub taxonomy: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [ImportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ImportTaxonomies].
+/// \[ImportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ImportTaxonomies\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportTaxonomiesResponse {
-    /// Taxonomies that were imported.
+    /// Imported taxonomies.
     #[prost(message, repeated, tag = "1")]
     pub taxonomies: ::prost::alloc::vec::Vec<Taxonomy>,
 }
 /// Request message for
-/// [ExportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ExportTaxonomies].
+/// \[ExportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ExportTaxonomies\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportTaxonomiesRequest {
     /// Required. Resource name of the project that the exported taxonomies belong to.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. Resource names of the taxonomies to be exported.
+    /// Required. Resource names of the taxonomies to export.
     #[prost(string, repeated, tag = "2")]
     pub taxonomies: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Required. Taxonomies export destination.
+    /// Required. Export destination for taxonomies.
     #[prost(oneof = "export_taxonomies_request::Destination", tags = "3")]
     pub destination: ::core::option::Option<export_taxonomies_request::Destination>,
 }
 /// Nested message and enum types in `ExportTaxonomiesRequest`.
 pub mod export_taxonomies_request {
-    /// Required. Taxonomies export destination.
+    /// Required. Export destination for taxonomies.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
-        /// Export taxonomies as serialized taxonomies, which contain all the policy
-        /// tags as nested protos.
+        /// Serialized export taxonomies that contain all the policy
+        /// tags as nested protocol buffers.
         #[prost(bool, tag = "3")]
         SerializedTaxonomies(bool),
     }
 }
 /// Response message for
-/// [ExportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ExportTaxonomies].
+/// \[ExportTaxonomies][google.cloud.datacatalog.v1.PolicyTagManagerSerialization.ExportTaxonomies\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportTaxonomiesResponse {
-    /// List of taxonomies and policy tags as nested protos.
+    /// List of taxonomies and policy tags as nested protocol buffers.
     #[prost(message, repeated, tag = "1")]
     pub taxonomies: ::prost::alloc::vec::Vec<SerializedTaxonomy>,
 }
@@ -2739,9 +3126,10 @@ pub struct ExportTaxonomiesResponse {
 pub mod policy_tag_manager_serialization_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Policy Tag Manager serialization API service allows clients to manipulate"]
-    #[doc = " their policy tags and taxonomies in serialized format, where taxonomy is a"]
-    #[doc = " hierarchical group of policy tags."]
+    #[doc = " Policy Tag Manager Serialization API service allows you to manipulate"]
+    #[doc = " your policy tags and taxonomies in a serialized format."]
+    #[doc = ""]
+    #[doc = " Taxonomy is a hierarchical group of policy tags."]
     #[derive(Debug, Clone)]
     pub struct PolicyTagManagerSerializationClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -2749,7 +3137,7 @@ pub mod policy_tag_manager_serialization_client {
     impl<T> PolicyTagManagerSerializationClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2762,7 +3150,7 @@ pub mod policy_tag_manager_serialization_client {
             interceptor: F,
         ) -> PolicyTagManagerSerializationClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2787,15 +3175,43 @@ pub mod policy_tag_manager_serialization_client {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Creates new taxonomies (including their policy tags) by importing from"]
-        #[doc = " inlined source or cross-regional source. New taxonomies will be created in"]
-        #[doc = " a given parent project."]
+        #[doc = " Replaces (updates) a taxonomy and all its policy tags."]
         #[doc = ""]
-        #[doc = " If using the cross-regional source, a new taxonomy is created by copying"]
+        #[doc = " The taxonomy and its entire hierarchy of policy tags must be"]
+        #[doc = " represented literally by `SerializedTaxonomy` and the nested"]
+        #[doc = " `SerializedPolicyTag` messages."]
+        #[doc = ""]
+        #[doc = " This operation automatically does the following:"]
+        #[doc = ""]
+        #[doc = " - Deletes the existing policy tags that are missing from the"]
+        #[doc = "   `SerializedPolicyTag`."]
+        #[doc = " - Creates policy tags that don't have resource names. They are considered"]
+        #[doc = "   new."]
+        #[doc = " - Updates policy tags with valid resources names accordingly."]
+        pub async fn replace_taxonomy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ReplaceTaxonomyRequest>,
+        ) -> Result<tonic::Response<super::Taxonomy>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.PolicyTagManagerSerialization/ReplaceTaxonomy",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates new taxonomies (including their policy tags) in a given project"]
+        #[doc = " by importing from inlined or cross-regional sources."]
+        #[doc = ""]
+        #[doc = " For a cross-regional source, new taxonomies are created by copying"]
         #[doc = " from a source in another region."]
         #[doc = ""]
-        #[doc = " If using the inlined source, this method provides a way to bulk create"]
-        #[doc = " taxonomies and policy tags using nested proto structure."]
+        #[doc = " For an inlined source, taxonomies and policy tags are created in bulk using"]
+        #[doc = " nested protocol buffer structures."]
         pub async fn import_taxonomies(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportTaxonomiesRequest>,
@@ -2812,12 +3228,12 @@ pub mod policy_tag_manager_serialization_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Exports taxonomies as the requested type and returns the taxonomies"]
-        #[doc = " including their policy tags. The requested taxonomies must belong to one"]
-        #[doc = " project."]
+        #[doc = " Exports taxonomies in the requested type and returns them,"]
+        #[doc = " including their policy tags. The requested taxonomies must belong to the"]
+        #[doc = " same project."]
         #[doc = ""]
-        #[doc = " SerializedTaxonomy protos with nested policy tags that are generated by"]
-        #[doc = " this method can be used as input for future ImportTaxonomies calls."]
+        #[doc = " This method generates `SerializedTaxonomy` protocol buffers with nested"]
+        #[doc = " policy tags that can be used as input for `ImportTaxonomies` calls."]
         pub async fn export_taxonomies(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportTaxonomiesRequest>,

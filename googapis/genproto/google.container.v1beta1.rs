@@ -24,19 +24,19 @@ pub struct LinuxNodeConfig {
 pub struct NodeKubeletConfig {
     /// Control the CPU management policy on the node.
     /// See
-    /// https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/
+    /// <https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/>
     ///
     /// The following values are allowed.
-    ///   - "none": the default, which represents the existing scheduling behavior.
-    ///   - "static": allows pods with certain resource characteristics to be
-    ///               granted increased CPU affinity and exclusivity on the node.
-    ///  The default value is 'none' if unspecified.
+    /// * "none": the default, which represents the existing scheduling behavior.
+    /// * "static": allows pods with certain resource characteristics to be granted
+    /// increased CPU affinity and exclusivity on the node.
+    /// The default value is 'none' if unspecified.
     #[prost(string, tag = "1")]
     pub cpu_manager_policy: ::prost::alloc::string::String,
     /// Enable CPU CFS quota enforcement for containers that specify CPU limits.
     ///
     /// This option is enabled by default which makes kubelet use CFS quota
-    /// (https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt) to
+    /// (<https://www.kernel.org/doc/Documentation/scheduler/sched-bwc.txt>) to
     /// enforce container CPU limits. Otherwise, CPU limits will not be enforced at
     /// all.
     ///
@@ -59,7 +59,7 @@ pub struct NodeKubeletConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeConfig {
     /// The name of a Google Compute Engine [machine
-    /// type](https://cloud.google.com/compute/docs/machine-types).
+    /// type](<https://cloud.google.com/compute/docs/machine-types>).
     ///
     /// If unspecified, the default machine type is
     /// `e2-medium`.
@@ -77,12 +77,12 @@ pub struct NodeConfig {
     /// The following scopes are recommended, but not required, and by default are
     /// not included:
     ///
-    /// * `https://www.googleapis.com/auth/compute` is required for mounting
+    /// * `<https://www.googleapis.com/auth/compute`> is required for mounting
     /// persistent storage on your nodes.
-    /// * `https://www.googleapis.com/auth/devstorage.read_only` is required for
+    /// * `<https://www.googleapis.com/auth/devstorage.read_only`> is required for
     /// communicating with **gcr.io**
     /// (the [Google Container
-    /// Registry](https://cloud.google.com/container-registry/)).
+    /// Registry](<https://cloud.google.com/container-registry/>)).
     ///
     /// If unspecified, no scopes are added, unless Cloud Logging or Cloud
     /// Monitoring are enabled, in which case their required scopes will be added.
@@ -95,7 +95,7 @@ pub struct NodeConfig {
     pub service_account: ::prost::alloc::string::String,
     /// The metadata key/value pairs assigned to instances in the cluster.
     ///
-    /// Keys must conform to the regexp `[a-zA-Z0-9-_]+` and be less than 128 bytes
+    /// Keys must conform to the regexp `\[a-zA-Z0-9-_\]+` and be less than 128 bytes
     /// in length. These are reflected as part of a URL in the metadata server.
     /// Additionally, to avoid ambiguity, keys must not conflict with any other
     /// metadata keys for the project or be one of the reserved keys:
@@ -119,9 +119,6 @@ pub struct NodeConfig {
     ///  - "install-ssh-psm1"
     ///  - "user-profile-psm1"
     ///
-    /// The following keys are reserved for Windows nodes:
-    ///  - "serial-port-logging-enable"
-    ///
     /// Values are free-form strings, and only have meaning as interpreted by
     /// the image running in the instance. The only restriction placed on them is
     /// that each value's size must be less than or equal to 32 KB.
@@ -141,7 +138,7 @@ pub struct NodeConfig {
     /// the Kubernetes version -- it's best to assume the behavior is undefined
     /// and conflicts should be avoided.
     /// For more information, including usage and the valid values, see:
-    /// https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+    /// <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/>
     #[prost(map = "string, string", tag = "6")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -149,7 +146,7 @@ pub struct NodeConfig {
     ///
     /// The limit for this value is dependent upon the maximum number of
     /// disks available on a machine per zone. See:
-    /// https://cloud.google.com/compute/docs/disks/local-ssd
+    /// <https://cloud.google.com/compute/docs/disks/local-ssd>
     /// for more information.
     #[prost(int32, tag = "7")]
     pub local_ssd_count: i32,
@@ -160,12 +157,12 @@ pub struct NodeConfig {
     #[prost(string, repeated, tag = "8")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Whether the nodes are created as preemptible VM instances. See:
-    /// https://cloud.google.com/compute/docs/instances/preemptible for more
+    /// <https://cloud.google.com/compute/docs/instances/preemptible> for more
     /// inforamtion about preemptible VM instances.
     #[prost(bool, tag = "10")]
     pub preemptible: bool,
     /// A list of hardware accelerators to be attached to each node.
-    /// See https://cloud.google.com/compute/docs/gpus for more information about
+    /// See <https://cloud.google.com/compute/docs/gpus> for more information about
     /// support for GPUs.
     #[prost(message, repeated, tag = "11")]
     pub accelerators: ::prost::alloc::vec::Vec<AcceleratorConfig>,
@@ -175,12 +172,12 @@ pub struct NodeConfig {
     /// Setting this field will assign instances of this
     /// pool to run on the specified node group. This is useful for running
     /// workloads on [sole tenant
-    /// nodes](https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes).
+    /// nodes](<https://cloud.google.com/compute/docs/nodes/sole-tenant-nodes>).
     #[prost(string, tag = "18")]
     pub node_group: ::prost::alloc::string::String,
     /// The optional reservation affinity. Setting this field will apply
     /// the specified [Zonal Compute
-    /// Reservation](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources)
+    /// Reservation](<https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>)
     /// to this node pool.
     #[prost(message, optional, tag = "19")]
     pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
@@ -196,7 +193,7 @@ pub struct NodeConfig {
     /// `minCpuPlatform: "Intel Haswell"` or
     /// `minCpuPlatform: "Intel Sandy Bridge"`. For more
     /// information, read [how to specify min CPU
-    /// platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
+    /// platform](<https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>)
     #[prost(string, tag = "13")]
     pub min_cpu_platform: ::prost::alloc::string::String,
     /// The workload metadata configuration for this node.
@@ -205,16 +202,16 @@ pub struct NodeConfig {
     /// List of kubernetes taints to be applied to each node.
     ///
     /// For more information, including usage and the valid values, see:
-    /// https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+    /// <https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/>
     #[prost(message, repeated, tag = "15")]
     pub taints: ::prost::alloc::vec::Vec<NodeTaint>,
     ///
     /// The Customer Managed Encryption Key used to encrypt the boot disk attached
     /// to each node in the node pool. This should be of the form
-    /// projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
+    /// projects/\[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME\].
     /// For more information about protecting resources with Cloud KMS Keys please
     /// see:
-    /// https://cloud.google.com/compute/docs/disks/customer-managed-encryption
+    /// <https://cloud.google.com/compute/docs/disks/customer-managed-encryption>
     #[prost(string, tag = "23")]
     pub boot_disk_kms_key: ::prost::alloc::string::String,
     /// Shielded Instance options.
@@ -230,6 +227,54 @@ pub struct NodeConfig {
     /// If unspecified, ephemeral storage is backed by the boot disk.
     #[prost(message, optional, tag = "24")]
     pub ephemeral_storage_config: ::core::option::Option<EphemeralStorageConfig>,
+    /// Enable or disable gvnic on the node pool.
+    #[prost(message, optional, tag = "29")]
+    pub gvnic: ::core::option::Option<VirtualNic>,
+}
+/// Parameters for node pool-level network config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeNetworkConfig {
+    /// Input only. Whether to create a new range for pod IPs in this node pool.
+    /// Defaults are provided for `pod_range` and `pod_ipv4_cidr_block` if they
+    /// are not specified.
+    ///
+    /// If neither `create_pod_range` or `pod_range` are specified, the
+    /// cluster-level default (`ip_allocation_policy.cluster_ipv4_cidr_block`) is
+    /// used.
+    ///
+    /// Only applicable if `ip_allocation_policy.use_ip_aliases` is true.
+    ///
+    /// This field cannot be changed after the node pool has been created.
+    #[prost(bool, tag = "4")]
+    pub create_pod_range: bool,
+    /// The ID of the secondary range for pod IPs.
+    /// If `create_pod_range` is true, this ID is used for the new range.
+    /// If `create_pod_range` is false, uses an existing secondary range with this
+    /// ID.
+    ///
+    /// Only applicable if `ip_allocation_policy.use_ip_aliases` is true.
+    ///
+    /// This field cannot be changed after the node pool has been created.
+    #[prost(string, tag = "5")]
+    pub pod_range: ::prost::alloc::string::String,
+    /// The IP address range for pod IPs in this node pool.
+    ///
+    /// Only applicable if `create_pod_range` is true.
+    ///
+    /// Set to blank to have a range chosen with the default size.
+    ///
+    /// Set to /netmask (e.g. `/14`) to have a range chosen with a specific
+    /// netmask.
+    ///
+    /// Set to a
+    /// \[CIDR\](<https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
+    /// notation (e.g. `10.96.0.0/14`) to pick a specific range to use.
+    ///
+    /// Only applicable if `ip_allocation_policy.use_ip_aliases` is true.
+    ///
+    /// This field cannot be changed after the node pool has been created.
+    #[prost(string, tag = "6")]
+    pub pod_ipv4_cidr_block: ::prost::alloc::string::String,
 }
 /// A set of Shielded Instance options.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -283,7 +328,7 @@ pub struct EphemeralStorageConfig {
     #[prost(int32, tag = "1")]
     pub local_ssd_count: i32,
 }
-/// [ReservationAffinity](https://cloud.google.com/compute/docs/instances/reserving-zonal-resources)
+/// \[ReservationAffinity\](<https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>)
 /// is the configuration of desired reservation which instances could take
 /// capacity from.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -321,7 +366,7 @@ pub mod reservation_affinity {
 /// can only be one of three types:  NoSchedule, PreferNoSchedule or NoExecute.
 ///
 /// See
-/// [here](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration)
+/// \[here\](<https://kubernetes.io/docs/concepts/configuration/taint-and-toleration>)
 /// for more information, including usage and the valid values.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodeTaint {
@@ -351,6 +396,32 @@ pub mod node_taint {
         NoExecute = 3,
     }
 }
+/// Collection of Kubernetes [node
+/// taints](<https://kubernetes.io/docs/concepts/configuration/taint-and-toleration>).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeTaints {
+    /// List of node taints.
+    #[prost(message, repeated, tag = "1")]
+    pub taints: ::prost::alloc::vec::Vec<NodeTaint>,
+}
+/// Collection of node-level [Kubernetes
+/// labels](<https://kubernetes.io/docs/concepts/overview/working-with-objects/labels>).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeLabels {
+    /// Map of node label keys and node label values.
+    #[prost(map = "string, string", tag = "1")]
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+}
+/// Collection of Compute Engine network tags that can be applied to a node's
+/// underlying VM instance. (See `tags` field in
+/// \[`NodeConfig`\](/kubernetes-engine/docs/reference/rest/v1/NodeConfig)).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkTags {
+    /// List of network tags.
+    #[prost(string, repeated, tag = "1")]
+    pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// The authentication information for accessing the master endpoint.
 /// Authentication can be done using HTTP basic auth or using client
 /// certificates.
@@ -363,7 +434,7 @@ pub struct MasterAuth {
     /// Warning: basic authentication is deprecated, and will be removed in GKE
     /// control plane versions 1.19 and newer. For a list of recommended
     /// authentication methods, see:
-    /// https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication
+    /// <https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication>
     #[deprecated]
     #[prost(string, tag = "1")]
     pub username: ::prost::alloc::string::String,
@@ -375,7 +446,7 @@ pub struct MasterAuth {
     /// Warning: basic authentication is deprecated, and will be removed in GKE
     /// control plane versions 1.19 and newer. For a list of recommended
     /// authentication methods, see:
-    /// https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication
+    /// <https://cloud.google.com/kubernetes-engine/docs/how-to/api-server-authentication>
     #[deprecated]
     #[prost(string, tag = "2")]
     pub password: ::prost::alloc::string::String,
@@ -419,7 +490,7 @@ pub struct AddonsConfig {
     /// This addon is deprecated, and will be disabled in 1.15. It is recommended
     /// to use the Cloud Console to manage and monitor your Kubernetes clusters,
     /// workloads and applications. For more information, see:
-    /// https://cloud.google.com/kubernetes-engine/docs/concepts/dashboards
+    /// <https://cloud.google.com/kubernetes-engine/docs/concepts/dashboards>
     #[deprecated]
     #[prost(message, optional, tag = "3")]
     pub kubernetes_dashboard: ::core::option::Option<KubernetesDashboard>,
@@ -450,6 +521,7 @@ pub struct AddonsConfig {
         ::core::option::Option<GcePersistentDiskCsiDriverConfig>,
     /// Configuration for the KALM addon, which manages the lifecycle of k8s
     /// applications.
+    #[deprecated]
     #[prost(message, optional, tag = "12")]
     pub kalm_config: ::core::option::Option<KalmConfig>,
 }
@@ -501,6 +573,7 @@ pub struct DnsCacheConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KalmConfig {
     /// Whether KALM is enabled for this cluster.
+    #[deprecated]
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
@@ -511,8 +584,7 @@ pub struct ConfigConnectorConfig {
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
-/// Configuration for the Compute Engine PD CSI driver. This option can only be
-/// enabled at cluster creation time.
+/// Configuration for the Compute Engine PD CSI driver.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcePersistentDiskCsiDriverConfig {
     /// Whether the Compute Engine PD CSI driver is enabled for this cluster.
@@ -568,7 +640,7 @@ pub struct IstioConfig {
 }
 /// Nested message and enum types in `IstioConfig`.
 pub mod istio_config {
-    /// Istio auth mode, https://istio.io/docs/concepts/security/mutual-tls.html
+    /// Istio auth mode, <https://istio.io/docs/concepts/security/mutual-tls.html>
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum IstioAuthMode {
@@ -641,7 +713,7 @@ pub struct LegacyAbac {
     pub enabled: bool,
 }
 /// Configuration options for the NetworkPolicy feature.
-/// https://kubernetes.io/docs/concepts/services-networking/networkpolicies/
+/// <https://kubernetes.io/docs/concepts/services-networking/networkpolicies/>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkPolicy {
     /// The selected network policy provider.
@@ -723,7 +795,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+    /// \[CIDR\](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -739,7 +811,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+    /// \[CIDR\](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -756,7 +828,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+    /// \[CIDR\](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -787,7 +859,7 @@ pub struct IpAllocationPolicy {
     /// netmask.
     ///
     /// Set to a
-    /// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+    /// \[CIDR\](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.
     /// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range
     /// to use.
@@ -868,7 +940,7 @@ pub struct Cluster {
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// The number of nodes to create in this cluster. You must ensure that your
-    /// Compute Engine [resource quota](https://cloud.google.com/compute/quotas)
+    /// Compute Engine [resource quota](<https://cloud.google.com/compute/quotas>)
     /// is sufficient for this number of instances. You must also have available
     /// firewall and routes quota.
     /// For requests, this field should only be used in lieu of a
@@ -928,14 +1000,14 @@ pub struct Cluster {
     #[prost(string, tag = "7")]
     pub monitoring_service: ::prost::alloc::string::String,
     /// The name of the Google Compute Engine
-    /// [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks)
+    /// \[network\](<https://cloud.google.com/compute/docs/networks-and-firewalls#networks>)
     /// to which the cluster is connected. If left unspecified, the `default`
     /// network will be used. On output this shows the network ID instead of the
     /// name.
     #[prost(string, tag = "8")]
     pub network: ::prost::alloc::string::String,
     /// The IP address range of the container pods in this cluster, in
-    /// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+    /// \[CIDR\](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `10.96.0.0/14`). Leave blank to have
     /// one automatically chosen or specify a `/14` block in `10.0.0.0/8`.
     #[prost(string, tag = "9")]
@@ -944,7 +1016,7 @@ pub struct Cluster {
     #[prost(message, optional, tag = "10")]
     pub addons_config: ::core::option::Option<AddonsConfig>,
     /// The name of the Google Compute Engine
-    /// [subnetwork](https://cloud.google.com/compute/docs/subnetworks) to which
+    /// \[subnetwork\](<https://cloud.google.com/compute/docs/subnetworks>) to which
     /// the cluster is connected. On output this shows the subnetwork ID instead of
     /// the name.
     #[prost(string, tag = "11")]
@@ -955,15 +1027,15 @@ pub struct Cluster {
     #[prost(message, repeated, tag = "12")]
     pub node_pools: ::prost::alloc::vec::Vec<NodePool>,
     /// The list of Google Compute Engine
-    /// [zones](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zones\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster's nodes should be located.
     ///
     /// This field provides a default value if
-    /// [NodePool.Locations](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools#NodePool.FIELDS.locations)
+    /// \[NodePool.Locations\](<https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools#NodePool.FIELDS.locations>)
     /// are not specified during node pool creation.
     ///
     /// Warning: changing cluster locations will update the
-    /// [NodePool.Locations](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools#NodePool.FIELDS.locations)
+    /// \[NodePool.Locations\](<https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters.nodePools#NodePool.FIELDS.locations>)
     /// of all node pools and will result in nodes being added and/or removed.
     #[prost(string, repeated, tag = "13")]
     pub locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -1054,6 +1126,10 @@ pub struct Cluster {
     /// policies.
     #[prost(message, optional, tag = "43")]
     pub workload_identity_config: ::core::option::Option<WorkloadIdentityConfig>,
+    /// Configuration for issuance of mTLS keys and certificates to Kubernetes
+    /// pods.
+    #[prost(message, optional, tag = "52")]
+    pub workload_certificates: ::core::option::Option<WorkloadCertificates>,
     /// Telemetry integration for the cluster.
     #[prost(message, optional, tag = "46")]
     pub cluster_telemetry: ::core::option::Option<ClusterTelemetry>,
@@ -1066,18 +1142,21 @@ pub struct Cluster {
     /// Configuration of Confidential Nodes
     #[prost(message, optional, tag = "50")]
     pub confidential_nodes: ::core::option::Option<ConfidentialNodes>,
+    /// Configuration for Identity Service component.
+    #[prost(message, optional, tag = "54")]
+    pub identity_service_config: ::core::option::Option<IdentityServiceConfig>,
     /// [Output only] Server-defined URL for the resource.
     #[prost(string, tag = "100")]
     pub self_link: ::prost::alloc::string::String,
     /// [Output only] The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field is deprecated, use location instead.
     #[deprecated]
     #[prost(string, tag = "101")]
     pub zone: ::prost::alloc::string::String,
     /// [Output only] The IP address of this cluster's master endpoint.
     /// The endpoint can be accessed from the internet at
-    /// `https://username:password@endpoint/`.
+    /// `<https://username:password@endpoint/`.>
     ///
     /// See the `masterAuth` property of this resource for username and
     /// password information.
@@ -1102,7 +1181,7 @@ pub struct Cluster {
     #[prost(string, tag = "104")]
     pub current_master_version: ::prost::alloc::string::String,
     /// [Output only] Deprecated, use
-    /// [NodePool.version](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters.nodePools)
+    /// \[NodePool.version\](<https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1beta1/projects.locations.clusters.nodePools>)
     /// instead. The current version of the node software components.
     /// If they are currently at multiple versions because they're in the process
     /// of being upgraded, this reflects the minimum version of all nodes.
@@ -1110,7 +1189,7 @@ pub struct Cluster {
     #[prost(string, tag = "105")]
     pub current_node_version: ::prost::alloc::string::String,
     /// [Output only] The time the cluster was created, in
-    /// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+    /// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "106")]
     pub create_time: ::prost::alloc::string::String,
     /// [Output only] The current status of this cluster.
@@ -1130,7 +1209,7 @@ pub struct Cluster {
     pub node_ipv4_cidr_size: i32,
     /// [Output only] The IP address range of the Kubernetes services in
     /// this cluster, in
-    /// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+    /// \[CIDR\](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `1.2.3.4/29`). Service addresses are
     /// typically put in the last `/16` from the container CIDR.
     #[prost(string, tag = "110")]
@@ -1145,13 +1224,13 @@ pub struct Cluster {
     #[prost(int32, tag = "112")]
     pub current_node_count: i32,
     /// [Output only] The time the cluster will be automatically
-    /// deleted in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+    /// deleted in \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "113")]
     pub expire_time: ::prost::alloc::string::String,
     /// [Output only] The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available)
+    /// \[zone\](<https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>)
     /// or
-    /// [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available)
+    /// \[region\](<https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>)
     /// in which the cluster resides.
     #[prost(string, tag = "114")]
     pub location: ::prost::alloc::string::String,
@@ -1160,7 +1239,7 @@ pub struct Cluster {
     #[prost(bool, tag = "115")]
     pub enable_tpu: bool,
     /// [Output only] The IP address range of the Cloud TPUs in this cluster, in
-    /// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)
+    /// \[CIDR\](<http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing>)
     /// notation (e.g. `1.2.3.4/29`).
     #[prost(string, tag = "116")]
     pub tpu_ipv4_cidr_block: ::prost::alloc::string::String,
@@ -1173,6 +1252,22 @@ pub struct Cluster {
     /// Configuration for master components.
     #[prost(message, optional, tag = "124")]
     pub master: ::core::option::Option<Master>,
+    /// Autopilot configuration for the cluster.
+    #[prost(message, optional, tag = "128")]
+    pub autopilot: ::core::option::Option<Autopilot>,
+    /// Output only. Unique id for the cluster.
+    #[prost(string, tag = "129")]
+    pub id: ::prost::alloc::string::String,
+    /// Default NodePool settings for the entire cluster. These settings are
+    /// overridden if specified on the specific NodePool object.
+    #[prost(message, optional, tag = "131")]
+    pub node_pool_defaults: ::core::option::Option<NodePoolDefaults>,
+    /// Logging configuration for the cluster.
+    #[prost(message, optional, tag = "132")]
+    pub logging_config: ::core::option::Option<LoggingConfig>,
+    /// Monitoring configuration for the cluster.
+    #[prost(message, optional, tag = "133")]
+    pub monitoring_config: ::core::option::Option<MonitoringConfig>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
@@ -1201,6 +1296,16 @@ pub mod cluster {
         Degraded = 6,
     }
 }
+/// Subset of Nodepool message that has defaults.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodePoolDefaults {
+    /// Subset of NodeConfig message that has defaults.
+    #[prost(message, optional, tag = "1")]
+    pub node_config_defaults: ::core::option::Option<NodeConfigDefaults>,
+}
+/// Subset of NodeConfig message that has defaults.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NodeConfigDefaults {}
 /// ClusterUpdate describes an update to the cluster. Exactly one update can
 /// be applied to a cluster with each request, so at most one field can be
 /// provided.
@@ -1252,7 +1357,7 @@ pub struct ClusterUpdate {
     #[prost(message, optional, tag = "9")]
     pub desired_node_pool_autoscaling: ::core::option::Option<NodePoolAutoscaling>,
     /// The desired list of Google Compute Engine
-    /// [zones](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zones\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster's nodes should be located.
     ///
     /// This list must always include the cluster's primary zone.
@@ -1311,9 +1416,15 @@ pub struct ClusterUpdate {
     /// The desired Cloud TPU configuration.
     #[prost(message, optional, tag = "38")]
     pub desired_tpu_config: ::core::option::Option<TpuConfig>,
+    /// The desired L4 Internal Load Balancer Subsetting configuration.
+    #[prost(message, optional, tag = "39")]
+    pub desired_l4ilb_subsetting_config: ::core::option::Option<IlbSubsettingConfig>,
     /// The desired datapath provider for the cluster.
     #[prost(enumeration = "DatapathProvider", tag = "50")]
     pub desired_datapath_provider: i32,
+    /// The desired state of IPv6 connectivity to Google Services.
+    #[prost(enumeration = "PrivateIPv6GoogleAccess", tag = "51")]
+    pub desired_private_ipv6_google_access: i32,
     /// The desired notification configuration.
     #[prost(message, optional, tag = "55")]
     pub desired_notification_config: ::core::option::Option<NotificationConfig>,
@@ -1336,16 +1447,36 @@ pub struct ClusterUpdate {
     /// Configuration for Workload Identity.
     #[prost(message, optional, tag = "47")]
     pub desired_workload_identity_config: ::core::option::Option<WorkloadIdentityConfig>,
+    /// Configuration for issuance of mTLS keys and certificates to Kubernetes
+    /// pods.
+    #[prost(message, optional, tag = "61")]
+    pub desired_workload_certificates: ::core::option::Option<WorkloadCertificates>,
     /// Configuration for Shielded Nodes.
     #[prost(message, optional, tag = "48")]
     pub desired_shielded_nodes: ::core::option::Option<ShieldedNodes>,
     /// Configuration for master components.
     #[prost(message, optional, tag = "52")]
     pub desired_master: ::core::option::Option<Master>,
+    /// DNSConfig contains clusterDNS config for this cluster.
+    #[prost(message, optional, tag = "53")]
+    pub desired_dns_config: ::core::option::Option<DnsConfig>,
+    /// ServiceExternalIPsConfig specifies the config for the use of Services with
+    /// ExternalIPs field.
+    #[prost(message, optional, tag = "60")]
+    pub desired_service_external_ips_config: ::core::option::Option<ServiceExternalIPsConfig>,
     /// AuthenticatorGroupsConfig specifies the config for the cluster security
     /// groups settings.
     #[prost(message, optional, tag = "63")]
     pub desired_authenticator_groups_config: ::core::option::Option<AuthenticatorGroupsConfig>,
+    /// The desired logging configuration.
+    #[prost(message, optional, tag = "64")]
+    pub desired_logging_config: ::core::option::Option<LoggingConfig>,
+    /// The desired monitoring configuration.
+    #[prost(message, optional, tag = "65")]
+    pub desired_monitoring_config: ::core::option::Option<MonitoringConfig>,
+    /// The desired Identity Service component configuration.
+    #[prost(message, optional, tag = "66")]
+    pub desired_identity_service_config: ::core::option::Option<IdentityServiceConfig>,
 }
 /// This operation resource represents operations that may have happened or are
 /// happening on the cluster. All fields are output only.
@@ -1355,7 +1486,7 @@ pub struct Operation {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// operation is taking place. This field is deprecated, use location instead.
     #[deprecated]
     #[prost(string, tag = "2")]
@@ -1381,18 +1512,18 @@ pub struct Operation {
     #[prost(string, tag = "7")]
     pub target_link: ::prost::alloc::string::String,
     /// [Output only] The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available)
+    /// \[zone\](<https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>)
     /// or
-    /// [region](https://cloud.google.com/compute/docs/regions-zones/regions-zones#available)
+    /// \[region\](<https://cloud.google.com/compute/docs/regions-zones/regions-zones#available>)
     /// in which the cluster resides.
     #[prost(string, tag = "9")]
     pub location: ::prost::alloc::string::String,
     /// [Output only] The time the operation started, in
-    /// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+    /// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "10")]
     pub start_time: ::prost::alloc::string::String,
     /// [Output only] The time the operation completed, in
-    /// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+    /// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "11")]
     pub end_time: ::prost::alloc::string::String,
     /// Output only. [Output only] Progress information for an operation.
@@ -1525,20 +1656,20 @@ pub mod operation_progress {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateClusterRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the parent field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the parent
     /// field.
     #[deprecated]
     #[prost(string, tag = "2")]
     pub zone: ::prost::alloc::string::String,
     /// Required. A [cluster
-    /// resource](https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.locations.clusters)
+    /// resource](<https://cloud.google.com/container-engine/reference/rest/v1beta1/projects.locations.clusters>)
     #[prost(message, optional, tag = "3")]
     pub cluster: ::core::option::Option<Cluster>,
     /// The parent (project and location) where the cluster will be created.
@@ -1550,13 +1681,13 @@ pub struct CreateClusterRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetClusterRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1576,13 +1707,13 @@ pub struct GetClusterRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateClusterRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1605,13 +1736,13 @@ pub struct UpdateClusterRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNodePoolRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1644,7 +1775,7 @@ pub struct UpdateNodePoolRequest {
     #[prost(string, tag = "6")]
     pub image_type: ::prost::alloc::string::String,
     /// The desired list of Google Compute Engine
-    /// [zones](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zones\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// node pool's nodes should be located. Changing the locations for a node pool
     /// will result in nodes being either created or removed from the node pool,
     /// depending on whether locations are being added or removed.
@@ -1661,24 +1792,42 @@ pub struct UpdateNodePoolRequest {
     /// Upgrade settings control disruption and speed of the upgrade.
     #[prost(message, optional, tag = "15")]
     pub upgrade_settings: ::core::option::Option<node_pool::UpgradeSettings>,
+    /// The desired network tags to be applied to all nodes in the node pool.
+    /// If this field is not present, the tags will not be changed. Otherwise,
+    /// the existing network tags will be *replaced* with the provided tags.
+    #[prost(message, optional, tag = "16")]
+    pub tags: ::core::option::Option<NetworkTags>,
+    /// The desired node taints to be applied to all nodes in the node pool.
+    /// If this field is not present, the taints will not be changed. Otherwise,
+    /// the existing node taints will be *replaced* with the provided taints.
+    #[prost(message, optional, tag = "17")]
+    pub taints: ::core::option::Option<NodeTaints>,
+    /// The desired node labels to be applied to all nodes in the node pool.
+    /// If this field is not present, the labels will not be changed. Otherwise,
+    /// the existing node labels will be *replaced* with the provided labels.
+    #[prost(message, optional, tag = "18")]
+    pub labels: ::core::option::Option<NodeLabels>,
     /// Parameters that can be configured on Linux nodes.
     #[prost(message, optional, tag = "19")]
     pub linux_node_config: ::core::option::Option<LinuxNodeConfig>,
     /// Node kubelet configs.
     #[prost(message, optional, tag = "20")]
     pub kubelet_config: ::core::option::Option<NodeKubeletConfig>,
+    /// Enable or disable gvnic on the node pool.
+    #[prost(message, optional, tag = "29")]
+    pub gvnic: ::core::option::Option<VirtualNic>,
 }
 /// SetNodePoolAutoscalingRequest sets the autoscaler settings of a node pool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNodePoolAutoscalingRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1707,13 +1856,13 @@ pub struct SetNodePoolAutoscalingRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLoggingServiceRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1746,13 +1895,13 @@ pub struct SetLoggingServiceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMonitoringServiceRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1785,13 +1934,13 @@ pub struct SetMonitoringServiceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetAddonsConfigRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1802,8 +1951,8 @@ pub struct SetAddonsConfigRequest {
     #[deprecated]
     #[prost(string, tag = "3")]
     pub cluster_id: ::prost::alloc::string::String,
-    /// Required. The desired configurations for the various addons available to run in the
-    /// cluster.
+    /// Required. The desired configurations for the various addons available to
+    /// run in the cluster.
     #[prost(message, optional, tag = "4")]
     pub addons_config: ::core::option::Option<AddonsConfig>,
     /// The name (project, location, cluster) of the cluster to set addons.
@@ -1815,13 +1964,13 @@ pub struct SetAddonsConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLocationsRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1833,7 +1982,7 @@ pub struct SetLocationsRequest {
     #[prost(string, tag = "3")]
     pub cluster_id: ::prost::alloc::string::String,
     /// Required. The desired list of Google Compute Engine
-    /// [zones](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zones\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster's nodes should be located. Changing the locations a cluster is in
     /// will result in nodes being either created or removed from the cluster,
     /// depending on whether locations are being added or removed.
@@ -1850,13 +1999,13 @@ pub struct SetLocationsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMasterRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1888,13 +2037,13 @@ pub struct UpdateMasterRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMasterAuthRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1939,13 +2088,13 @@ pub mod set_master_auth_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteClusterRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -1965,13 +2114,13 @@ pub struct DeleteClusterRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListClustersRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the parent field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides, or "-" for all zones. This field has been deprecated and
     /// replaced by the parent field.
     #[deprecated]
@@ -1999,13 +2148,13 @@ pub struct ListClustersResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOperationRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2025,13 +2174,13 @@ pub struct GetOperationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOperationsRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the parent field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) to return
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) to return
     /// operations for, or `-` for all zones. This field has been deprecated and
     /// replaced by the parent field.
     #[deprecated]
@@ -2047,13 +2196,13 @@ pub struct ListOperationsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelOperationRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// operation resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2084,13 +2233,13 @@ pub struct ListOperationsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServerConfigRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) to return
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) to return
     /// operations for. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2122,6 +2271,10 @@ pub struct ServerConfig {
     /// List of release channel configurations.
     #[prost(message, repeated, tag = "9")]
     pub channels: ::prost::alloc::vec::Vec<server_config::ReleaseChannelConfig>,
+    /// Maps of Kubernetes version and supported Windows server versions.
+    #[prost(map = "string, message", tag = "10")]
+    pub windows_version_maps:
+        ::std::collections::HashMap<::prost::alloc::string::String, WindowsVersions>,
 }
 /// Nested message and enum types in `ServerConfig`.
 pub mod server_config {
@@ -2158,17 +2311,40 @@ pub mod server_config {
         }
     }
 }
+/// Windows server versions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WindowsVersions {
+    /// List of Windows server versions.
+    #[prost(message, repeated, tag = "1")]
+    pub windows_versions: ::prost::alloc::vec::Vec<windows_versions::WindowsVersion>,
+}
+/// Nested message and enum types in `WindowsVersions`.
+pub mod windows_versions {
+    /// Windows server version.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WindowsVersion {
+        /// Windows server image type
+        #[prost(string, tag = "1")]
+        pub image_type: ::prost::alloc::string::String,
+        /// Windows server build number
+        #[prost(string, tag = "2")]
+        pub os_version: ::prost::alloc::string::String,
+        /// Mainstream support end date
+        #[prost(message, optional, tag = "3")]
+        pub support_end_date: ::core::option::Option<super::super::super::r#type::Date>,
+    }
+}
 /// CreateNodePoolRequest creates a node pool for a cluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNodePoolRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://developers.google.com/console/help/new/#projectnumber).
+    /// number](<https://developers.google.com/console/help/new/#projectnumber>).
     /// This field has been deprecated and replaced by the parent field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the parent
     /// field.
     #[deprecated]
@@ -2192,13 +2368,13 @@ pub struct CreateNodePoolRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNodePoolRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://developers.google.com/console/help/new/#projectnumber).
+    /// number](<https://developers.google.com/console/help/new/#projectnumber>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2224,13 +2400,13 @@ pub struct DeleteNodePoolRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodePoolsRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://developers.google.com/console/help/new/#projectnumber).
+    /// number](<https://developers.google.com/console/help/new/#projectnumber>).
     /// This field has been deprecated and replaced by the parent field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the parent
     /// field.
     #[deprecated]
@@ -2250,13 +2426,13 @@ pub struct ListNodePoolsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodePoolRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://developers.google.com/console/help/new/#projectnumber).
+    /// number](<https://developers.google.com/console/help/new/#projectnumber>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2284,6 +2460,29 @@ pub struct GetNodePoolRequest {
 /// of Kubernetes labels applied to them, which may be used to reference them
 /// during pod scheduling. They may also be resized up or down, to accommodate
 /// the workload.
+/// These upgrade settings control the level of parallelism and the level of
+/// disruption caused by an upgrade.
+///
+/// maxUnavailable controls the number of nodes that can be simultaneously
+/// unavailable.
+///
+/// maxSurge controls the number of additional nodes that can be added to the
+/// node pool temporarily for the time of the upgrade to increase the number of
+/// available nodes.
+///
+/// (maxUnavailable + maxSurge) determines the level of parallelism (how many
+/// nodes are being upgraded at the same time).
+///
+/// Note: upgrades inevitably introduce some disruption since workloads need to
+/// be moved from old nodes to new, upgraded ones. Even if maxUnavailable=0,
+/// this holds true. (Disruption stays within the limits of
+/// PodDisruptionBudget, if it is configured.)
+///
+/// Consider a hypothetical node pool with 5 nodes having maxSurge=2,
+/// maxUnavailable=1. This means the upgrade process upgrades 3 nodes
+/// simultaneously. It creates 2 additional (upgraded) nodes, then it brings
+/// down 3 old (not yet upgraded) nodes at the same time. This ensures that
+/// there are always at least 4 nodes available.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NodePool {
     /// The name of the node pool.
@@ -2293,23 +2492,27 @@ pub struct NodePool {
     #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<NodeConfig>,
     /// The initial node count for the pool. You must ensure that your
-    /// Compute Engine [resource quota](https://cloud.google.com/compute/quotas)
+    /// Compute Engine [resource quota](<https://cloud.google.com/compute/quotas>)
     /// is sufficient for this number of instances. You must also have available
     /// firewall and routes quota.
     #[prost(int32, tag = "3")]
     pub initial_node_count: i32,
     /// The list of Google Compute Engine
-    /// [zones](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zones\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// NodePool's nodes should be located.
     ///
     /// If this value is unspecified during node pool creation, the
-    /// [Cluster.Locations](https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster.FIELDS.locations)
+    /// \[Cluster.Locations\](<https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters#Cluster.FIELDS.locations>)
     /// value will be used, instead.
     ///
     /// Warning: changing node pool locations will result in nodes being added
     /// and/or removed.
     #[prost(string, repeated, tag = "13")]
     pub locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Networking configuration for this NodePool. If specified, it overrides the
+    /// cluster-level defaults.
+    #[prost(message, optional, tag = "14")]
+    pub network_config: ::core::option::Option<NodeNetworkConfig>,
     /// [Output only] Server-defined URL for the resource.
     #[prost(string, tag = "100")]
     pub self_link: ::prost::alloc::string::String,
@@ -2317,7 +2520,7 @@ pub struct NodePool {
     #[prost(string, tag = "101")]
     pub version: ::prost::alloc::string::String,
     /// [Output only] The resource URLs of the [managed instance
-    /// groups](https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances)
+    /// groups](<https://cloud.google.com/compute/docs/instance-groups/creating-groups-of-managed-instances>)
     /// associated with this node pool.
     #[prost(string, repeated, tag = "102")]
     pub instance_group_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -2353,29 +2556,6 @@ pub struct NodePool {
 }
 /// Nested message and enum types in `NodePool`.
 pub mod node_pool {
-    /// These upgrade settings control the level of parallelism and the level of
-    /// disruption caused by an upgrade.
-    ///
-    /// maxUnavailable controls the number of nodes that can be simultaneously
-    /// unavailable.
-    ///
-    /// maxSurge controls the number of additional nodes that can be added to the
-    /// node pool temporarily for the time of the upgrade to increase the number of
-    /// available nodes.
-    ///
-    /// (maxUnavailable + maxSurge) determines the level of parallelism (how many
-    /// nodes are being upgraded at the same time).
-    ///
-    /// Note: upgrades inevitably introduce some disruption since workloads need to
-    /// be moved from old nodes to new, upgraded ones. Even if maxUnavailable=0,
-    /// this holds true. (Disruption stays within the limits of
-    /// PodDisruptionBudget, if it is configured.)
-    ///
-    /// Consider a hypothetical node pool with 5 nodes having maxSurge=2,
-    /// maxUnavailable=1. This means the upgrade process upgrades 3 nodes
-    /// simultaneously. It creates 2 additional (upgraded) nodes, then it brings
-    /// down 3 old (not yet upgraded) nodes at the same time. This ensures that
-    /// there are always at least 4 nodes available.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UpgradeSettings {
         /// The maximum number of nodes that can be created beyond the current size
@@ -2435,7 +2615,7 @@ pub struct NodeManagement {
 pub struct AutoUpgradeOptions {
     /// [Output only] This field is set when upgrades are about to commence
     /// with the approximate start time for the upgrades, in
-    /// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.
+    /// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(string, tag = "1")]
     pub auto_upgrade_start_time: ::prost::alloc::string::String,
     /// [Output only] This field is set when upgrades are about to commence
@@ -2503,7 +2683,7 @@ pub struct RecurringTimeWindow {
     /// The window of the first recurrence.
     #[prost(message, optional, tag = "1")]
     pub window: ::core::option::Option<TimeWindow>,
-    /// An RRULE (https://tools.ietf.org/html/rfc5545#section-3.8.5.3) for how
+    /// An RRULE (<https://tools.ietf.org/html/rfc5545#section-3.8.5.3>) for how
     /// this window reccurs. They go on for the span of time between the start and
     /// end time.
     ///
@@ -2542,7 +2722,7 @@ pub struct RecurringTimeWindow {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DailyMaintenanceWindow {
     /// Time within the maintenance window to start the maintenance operations.
-    /// It must be in format "HH:MM", where HH : [00-23] and MM : [00-59] GMT.
+    /// It must be in format "HH:MM", where HH : \[00-23\] and MM : \[00-59\] GMT.
     #[prost(string, tag = "2")]
     pub start_time: ::prost::alloc::string::String,
     /// [Output only] Duration of the time window, automatically chosen to be
@@ -2555,13 +2735,13 @@ pub struct DailyMaintenanceWindow {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNodePoolManagementRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2586,18 +2766,17 @@ pub struct SetNodePoolManagementRequest {
     #[prost(string, tag = "7")]
     pub name: ::prost::alloc::string::String,
 }
-/// SetNodePoolSizeRequest sets the size a node
-/// pool.
+/// SetNodePoolSizeRequest sets the size of a node pool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNodePoolSizeRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2628,13 +2807,13 @@ pub struct SetNodePoolSizeRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackNodePoolUpgradeRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2685,7 +2864,7 @@ pub struct ClusterAutoscaling {
     pub autoprovisioning_node_pool_defaults:
         ::core::option::Option<AutoprovisioningNodePoolDefaults>,
     /// The list of Google Compute Engine
-    /// [zones](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zones\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// NodePool's nodes can be created by NAP.
     #[prost(string, repeated, tag = "5")]
     pub autoprovisioning_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -2714,12 +2893,12 @@ pub struct AutoprovisioningNodePoolDefaults {
     /// The following scopes are recommended, but not required, and by default are
     /// not included:
     ///
-    /// * `https://www.googleapis.com/auth/compute` is required for mounting
+    /// * `<https://www.googleapis.com/auth/compute`> is required for mounting
     /// persistent storage on your nodes.
-    /// * `https://www.googleapis.com/auth/devstorage.read_only` is required for
+    /// * `<https://www.googleapis.com/auth/devstorage.read_only`> is required for
     /// communicating with **gcr.io**
     /// (the [Google Container
-    /// Registry](https://cloud.google.com/container-registry/)).
+    /// Registry](<https://cloud.google.com/container-registry/>)).
     ///
     /// If unspecified, no scopes are added, unless Cloud Logging or Cloud
     /// Monitoring are enabled, in which case their required scopes will be added.
@@ -2742,7 +2921,7 @@ pub struct AutoprovisioningNodePoolDefaults {
     /// `minCpuPlatform: "Intel Haswell"` or
     /// `minCpuPlatform: "Intel Sandy Bridge"`. For more
     /// information, read [how to specify min CPU
-    /// platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)
+    /// platform](<https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform>)
     /// To unset the min cpu platform field pass "automatic"
     /// as field value.
     #[prost(string, tag = "5")]
@@ -2765,13 +2944,13 @@ pub struct AutoprovisioningNodePoolDefaults {
     ///
     /// The Customer Managed Encryption Key used to encrypt the boot disk attached
     /// to each node in the node pool. This should be of the form
-    /// projects/[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME].
+    /// projects/\[KEY_PROJECT_ID]/locations/[LOCATION]/keyRings/[RING_NAME]/cryptoKeys/[KEY_NAME\].
     /// For more information about protecting resources with Cloud KMS Keys please
     /// see:
-    /// https://cloud.google.com/compute/docs/disks/customer-managed-encryption
+    /// <https://cloud.google.com/compute/docs/disks/customer-managed-encryption>
     #[prost(string, tag = "9")]
     pub boot_disk_kms_key: ::prost::alloc::string::String,
-    /// The image type to use for node created by NodeAutoprovisioning.
+    /// The image type to use for NAP created node.
     #[prost(string, tag = "10")]
     pub image_type: ::prost::alloc::string::String,
 }
@@ -2801,7 +2980,7 @@ pub struct NodePoolAutoscaling {
     #[prost(int32, tag = "2")]
     pub min_node_count: i32,
     /// Maximum number of nodes in the NodePool. Must be >= min_node_count. There
-    /// has to enough quota to scale up the cluster.
+    /// has to be enough quota to scale up the cluster.
     #[prost(int32, tag = "3")]
     pub max_node_count: i32,
     /// Can this node pool be deleted automatically.
@@ -2814,13 +2993,13 @@ pub struct NodePoolAutoscaling {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLabelsRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://developers.google.com/console/help/new/#projectnumber).
+    /// number](<https://developers.google.com/console/help/new/#projectnumber>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2853,13 +3032,13 @@ pub struct SetLabelsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetLegacyAbacRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2883,13 +3062,13 @@ pub struct SetLegacyAbacRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartIpRotationRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://developers.google.com/console/help/new/#projectnumber).
+    /// number](<https://developers.google.com/console/help/new/#projectnumber>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2912,13 +3091,13 @@ pub struct StartIpRotationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompleteIpRotationRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://developers.google.com/console/help/new/#projectnumber).
+    /// number](<https://developers.google.com/console/help/new/#projectnumber>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -2941,9 +3120,14 @@ pub struct AcceleratorConfig {
     #[prost(int64, tag = "1")]
     pub accelerator_count: i64,
     /// The accelerator type resource name. List of supported accelerators
-    /// [here](https://cloud.google.com/compute/docs/gpus)
+    /// \[here\](<https://cloud.google.com/compute/docs/gpus>)
     #[prost(string, tag = "2")]
     pub accelerator_type: ::prost::alloc::string::String,
+    /// Size of partitions to create on the GPU. Valid values are described in the
+    /// NVIDIA [mig user
+    /// guide](<https://docs.nvidia.com/datacenter/tesla/mig-user-guide/#partitioning>).
+    #[prost(string, tag = "3")]
+    pub gpu_partition_size: ::prost::alloc::string::String,
 }
 /// WorkloadMetadataConfig defines the metadata configuration to expose to
 /// workloads on the node pool.
@@ -3007,13 +3191,13 @@ pub mod workload_metadata_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetNetworkPolicyRequest {
     /// Required. Deprecated. The Google Developers Console [project ID or project
-    /// number](https://developers.google.com/console/help/new/#projectnumber).
+    /// number](<https://developers.google.com/console/help/new/#projectnumber>).
     /// This field has been deprecated and replaced by the name field.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. Deprecated. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides. This field has been deprecated and replaced by the name
     /// field.
     #[deprecated]
@@ -3036,11 +3220,11 @@ pub struct SetNetworkPolicyRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetMaintenancePolicyRequest {
     /// Required. The Google Developers Console [project ID or project
-    /// number](https://support.google.com/cloud/answer/6158840).
+    /// number](<https://support.google.com/cloud/answer/6158840>).
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. The name of the Google Compute Engine
-    /// [zone](https://cloud.google.com/compute/docs/zones#available) in which the
+    /// \[zone\](<https://cloud.google.com/compute/docs/zones#available>) in which the
     /// cluster resides.
     #[prost(string, tag = "2")]
     pub zone: ::prost::alloc::string::String,
@@ -3145,21 +3329,23 @@ pub mod status_condition {
         SetByOperator = 4,
         /// Unable to perform an encrypt operation against the CloudKMS key used for
         /// etcd level encryption.
-        /// More codes TBA
         CloudKmsKeyError = 7,
+        /// Cluster CA is expiring soon.
+        /// More codes TBA
+        CaExpiring = 9,
     }
 }
 /// NetworkConfig reports the relative names of network & subnetwork.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NetworkConfig {
     /// Output only. The relative name of the Google Compute Engine
-    /// [network][google.container.v1beta1.NetworkConfig.network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks)
+    /// \[network][google.container.v1beta1.NetworkConfig.network\](<https://cloud.google.com/compute/docs/networks-and-firewalls#networks>)
     /// to which the cluster is connected. Example:
     /// projects/my-project/global/networks/my-network
     #[prost(string, tag = "1")]
     pub network: ::prost::alloc::string::String,
     /// Output only. The relative name of the Google Compute Engine
-    /// [subnetwork](https://cloud.google.com/compute/docs/vpc) to which the
+    /// \[subnetwork\](<https://cloud.google.com/compute/docs/vpc>) to which the
     /// cluster is connected. Example:
     /// projects/my-project/regions/us-central1/subnetworks/my-subnet
     #[prost(string, tag = "2")]
@@ -3174,10 +3360,32 @@ pub struct NetworkConfig {
     /// prevent sNAT on cluster internal traffic.
     #[prost(message, optional, tag = "7")]
     pub default_snat_status: ::core::option::Option<DefaultSnatStatus>,
+    /// Whether L4ILB Subsetting is enabled for this cluster.
+    #[prost(bool, tag = "10")]
+    pub enable_l4ilb_subsetting: bool,
     /// The desired datapath provider for this cluster. By default, uses the
     /// IPTables-based kube-proxy implementation.
     #[prost(enumeration = "DatapathProvider", tag = "11")]
     pub datapath_provider: i32,
+    /// The desired state of IPv6 connectivity to Google Services.
+    /// By default, no private IPv6 access to or from Google Services (all access
+    /// will be via IPv4)
+    #[prost(enumeration = "PrivateIPv6GoogleAccess", tag = "12")]
+    pub private_ipv6_google_access: i32,
+    /// DNSConfig contains clusterDNS config for this cluster.
+    #[prost(message, optional, tag = "13")]
+    pub dns_config: ::core::option::Option<DnsConfig>,
+    /// ServiceExternalIPsConfig specifies if services with externalIPs field are
+    /// blocked or not.
+    #[prost(message, optional, tag = "15")]
+    pub service_external_ips_config: ::core::option::Option<ServiceExternalIPsConfig>,
+}
+/// Config to block services with externalIPs field.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceExternalIPsConfig {
+    /// Whether Services with ExternalIPs field are allowed or not.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
 }
 /// ListUsableSubnetworksRequest requests the list of usable subnetworks.
 /// available to a user for creating clusters.
@@ -3188,7 +3396,7 @@ pub struct ListUsableSubnetworksRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Filtering currently only supports equality on the networkProjectId and must
-    /// be in the form: "networkProjectId=[PROJECTID]", where `networkProjectId`
+    /// be in the form: "networkProjectId=\[PROJECTID\]", where `networkProjectId`
     /// is the project which owns the listed subnetworks. This defaults to the
     /// parent project ID.
     #[prost(string, tag = "2")]
@@ -3304,6 +3512,52 @@ pub struct IntraNodeVisibilityConfig {
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
+/// ILBSubsettingConfig contains the desired config of L4 Internal LoadBalancer
+/// subsetting on this cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IlbSubsettingConfig {
+    /// Enables l4 ILB subsetting for this cluster
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
+/// DNSConfig contains the desired set of options for configuring clusterDNS.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DnsConfig {
+    /// cluster_dns indicates which in-cluster DNS provider should be used.
+    #[prost(enumeration = "dns_config::Provider", tag = "1")]
+    pub cluster_dns: i32,
+    /// cluster_dns_scope indicates the scope of access to cluster DNS records.
+    #[prost(enumeration = "dns_config::DnsScope", tag = "2")]
+    pub cluster_dns_scope: i32,
+    /// cluster_dns_domain is the suffix used for all cluster service records.
+    #[prost(string, tag = "3")]
+    pub cluster_dns_domain: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `DNSConfig`.
+pub mod dns_config {
+    /// Provider lists the various in-cluster DNS providers.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Provider {
+        /// Default value
+        Unspecified = 0,
+        /// Use GKE default DNS provider(kube-dns) for DNS resolution.
+        PlatformDefault = 1,
+        /// Use CloudDNS for DNS resolution.
+        CloudDns = 2,
+    }
+    /// DNSScope lists the various scopes of access to cluster DNS records.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum DnsScope {
+        /// Default value, will be inferred as cluster scope.
+        Unspecified = 0,
+        /// DNS records are accessible from within the cluster.
+        ClusterScope = 1,
+        /// DNS records are accessible from within the VPC.
+        VpcScope = 2,
+    }
+}
 /// Constraints applied to pods.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MaxPodsConstraint {
@@ -3325,6 +3579,21 @@ pub struct WorkloadIdentityConfig {
     /// identity provider is the third party identity provider.
     #[prost(string, tag = "3")]
     pub identity_provider: ::prost::alloc::string::String,
+}
+/// Configuration for issuance of mTLS keys and certificates to Kubernetes pods.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WorkloadCertificates {
+    /// enable_certificates controls issuance of workload mTLS certificates.
+    ///
+    /// If set, the GKE Workload Identity Certificates controller and node agent
+    /// will be deployed in the cluster, which can then be configured by creating a
+    /// WorkloadCertificateConfig Custom Resource.
+    ///
+    /// Requires Workload Identity
+    /// (\[workload_pool][google.container.v1beta1.WorkloadIdentityConfig.workload_pool\]
+    /// must be non-empty).
+    #[prost(message, optional, tag = "1")]
+    pub enable_certificates: ::core::option::Option<bool>,
 }
 /// Configuration of etcd encryption.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3391,6 +3660,13 @@ pub mod resource_usage_export_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShieldedNodes {
     /// Whether Shielded Nodes features are enabled on all nodes in this cluster.
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
+/// Configuration of gVNIC feature.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VirtualNic {
+    /// Whether gVNIC features are enabled in the node pool.
     #[prost(bool, tag = "1")]
     pub enabled: bool,
 }
@@ -3532,6 +3808,13 @@ pub struct TpuConfig {
 /// Master is the configuration for components on master.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Master {}
+/// Autopilot is the configuration for Autopilot settings on the cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Autopilot {
+    /// Enable Autopilot
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
 /// NotificationConfig is the configuration of notifications.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationConfig {
@@ -3566,25 +3849,126 @@ pub struct ConfidentialNodes {
 /// a resource is upgrading.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpgradeEvent {
-    /// Required. The resource type that is upgrading.
+    /// The resource type that is upgrading.
     #[prost(enumeration = "UpgradeResourceType", tag = "1")]
     pub resource_type: i32,
-    /// Required. The operation associated with this upgrade.
+    /// The operation associated with this upgrade.
     #[prost(string, tag = "2")]
     pub operation: ::prost::alloc::string::String,
-    /// Required. The time when the operation was started.
+    /// The time when the operation was started.
     #[prost(message, optional, tag = "3")]
     pub operation_start_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. The current version before the upgrade.
+    /// The current version before the upgrade.
     #[prost(string, tag = "4")]
     pub current_version: ::prost::alloc::string::String,
-    /// Required. The target version for the upgrade.
+    /// The target version for the upgrade.
     #[prost(string, tag = "5")]
     pub target_version: ::prost::alloc::string::String,
-    /// Optional. Optional relative path to the resource. For example in node pool upgrades,
+    /// Optional relative path to the resource. For example in node pool upgrades,
     /// the relative path of the node pool.
     #[prost(string, tag = "6")]
     pub resource: ::prost::alloc::string::String,
+}
+/// UpgradeAvailableEvent is a notification sent to customers when a new
+/// available version is released.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeAvailableEvent {
+    /// The release version available for upgrade.
+    #[prost(string, tag = "1")]
+    pub version: ::prost::alloc::string::String,
+    /// The resource type of the release version.
+    #[prost(enumeration = "UpgradeResourceType", tag = "2")]
+    pub resource_type: i32,
+    /// The release channel of the version. If empty, it means a non-channel
+    /// release.
+    #[prost(message, optional, tag = "3")]
+    pub release_channel: ::core::option::Option<ReleaseChannel>,
+    /// Optional relative path to the resource. For example, the relative path of
+    /// the node pool.
+    #[prost(string, tag = "4")]
+    pub resource: ::prost::alloc::string::String,
+    /// Windows node versions info.
+    #[prost(message, optional, tag = "5")]
+    pub windows_versions: ::core::option::Option<WindowsVersions>,
+}
+/// IdentityServiceConfig is configuration for Identity Service which allows
+/// customers to use external identity providers with the K8S API
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IdentityServiceConfig {
+    /// Whether to enable the Identity Service component
+    #[prost(bool, tag = "1")]
+    pub enabled: bool,
+}
+/// LoggingConfig is cluster logging configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoggingConfig {
+    /// Logging components configuration
+    #[prost(message, optional, tag = "1")]
+    pub component_config: ::core::option::Option<LoggingComponentConfig>,
+}
+/// LoggingComponentConfig is cluster logging component configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LoggingComponentConfig {
+    /// Select components to collect logs. An empty set would disable all logging.
+    #[prost(enumeration = "logging_component_config::Component", repeated, tag = "1")]
+    pub enable_components: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `LoggingComponentConfig`.
+pub mod logging_component_config {
+    /// GKE components exposing logs
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Component {
+        /// Default value. This shouldn't be used.
+        Unspecified = 0,
+        /// system components
+        SystemComponents = 1,
+        /// workloads
+        Workloads = 2,
+    }
+}
+/// MonitoringConfig is cluster monitoring configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MonitoringConfig {
+    /// Monitoring components configuration
+    #[prost(message, optional, tag = "1")]
+    pub component_config: ::core::option::Option<MonitoringComponentConfig>,
+}
+/// MonitoringComponentConfig is cluster monitoring component configuration.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MonitoringComponentConfig {
+    /// Select components to collect metrics. An empty set would disable all
+    /// monitoring.
+    #[prost(enumeration = "monitoring_component_config::Component", repeated, tag = "1")]
+    pub enable_components: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `MonitoringComponentConfig`.
+pub mod monitoring_component_config {
+    /// GKE components exposing metrics
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Component {
+        /// Default value. This shouldn't be used.
+        Unspecified = 0,
+        /// system components
+        SystemComponents = 1,
+        /// workloads
+        Workloads = 2,
+    }
+}
+/// PrivateIPv6GoogleAccess controls whether and how the pods can communicate
+/// with Google Services through gRPC over IPv6.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum PrivateIPv6GoogleAccess {
+    /// Default value. Same as DISABLED
+    PrivateIpv6GoogleAccessUnspecified = 0,
+    /// No private access to or from Google Services
+    PrivateIpv6GoogleAccessDisabled = 1,
+    /// Enables private IPv6 access to Google Services from GKE
+    PrivateIpv6GoogleAccessToGoogle = 2,
+    /// Enables priate IPv6 access to and from Google Services
+    PrivateIpv6GoogleAccessBidirectional = 3,
 }
 /// The datapath provider selects the implementation of the Kubernetes networking
 /// // model for service resolution and network policy enforcement.
@@ -3597,7 +3981,7 @@ pub enum DatapathProvider {
     LegacyDatapath = 1,
     /// Use the eBPF based GKE Dataplane V2 with additional features. See the [GKE
     /// Dataplane V2
-    /// documentation](https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2)
+    /// documentation](<https://cloud.google.com/kubernetes-engine/docs/how-to/dataplane-v2>)
     /// for more.
     AdvancedDatapath = 2,
 }
@@ -3625,7 +4009,7 @@ pub mod cluster_manager_client {
     impl<T> ClusterManagerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -3638,7 +4022,7 @@ pub mod cluster_manager_client {
             interceptor: F,
         ) -> ClusterManagerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -4170,7 +4554,9 @@ pub mod cluster_manager_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Sets the size for a specific node pool."]
+        #[doc = " SetNodePoolSizeRequest sets the size of a node pool. The new size will be"]
+        #[doc = " used for all replicas, including future replicas created by modifying"]
+        #[doc = " [NodePool.locations][google.container.v1beta1.NodePool.locations]."]
         pub async fn set_node_pool_size(
             &mut self,
             request: impl tonic::IntoRequest<super::SetNodePoolSizeRequest>,

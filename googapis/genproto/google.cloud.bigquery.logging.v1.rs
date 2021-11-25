@@ -14,10 +14,7 @@ pub struct AuditData {
     #[prost(oneof = "audit_data::Request", tags = "1, 16, 2, 3, 4, 5, 6, 7, 8, 20")]
     pub request: ::core::option::Option<audit_data::Request>,
     /// Response data for each BigQuery method.
-    #[prost(
-        oneof = "audit_data::Response",
-        tags = "9, 10, 11, 12, 18, 13, 14, 15, 21"
-    )]
+    #[prost(oneof = "audit_data::Response", tags = "9, 10, 11, 12, 18, 13, 14, 15, 21")]
     pub response: ::core::option::Option<audit_data::Response>,
 }
 /// Nested message and enum types in `AuditData`.
@@ -259,7 +256,7 @@ pub struct TableDataListRequest {
     pub max_results: u32,
 }
 /// Describes a BigQuery table.
-/// See the [Table](/bigquery/docs/reference/v2/tables) API resource
+/// See the \[Table\](/bigquery/docs/reference/v2/tables) API resource
 /// for more details on individual fields.
 /// Note: `Table.schema` has been deprecated in favor of `Table.schemaJson`.
 /// `Table.schema` may continue to be present in your logs during this
@@ -320,7 +317,7 @@ pub struct TableViewDefinition {
     pub query: ::prost::alloc::string::String,
 }
 /// BigQuery dataset information.
-/// See the [Dataset](/bigquery/docs/reference/v2/datasets) API resource
+/// See the \[Dataset\](/bigquery/docs/reference/v2/datasets) API resource
 /// for more details on individual fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dataset {
@@ -411,7 +408,7 @@ pub struct Job {
     pub job_statistics: ::core::option::Option<JobStatistics>,
 }
 /// Job configuration information.
-/// See the [Jobs](/bigquery/docs/reference/v2/jobs) API resource
+/// See the \[Jobs\](/bigquery/docs/reference/v2/jobs) API resource
 /// for more details on individual fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobConfiguration {

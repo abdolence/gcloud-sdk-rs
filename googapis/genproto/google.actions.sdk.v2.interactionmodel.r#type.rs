@@ -54,7 +54,7 @@ pub mod regular_expression_type {
         #[prost(message, optional, tag = "1")]
         pub display: ::core::option::Option<super::EntityDisplay>,
         /// Required. Uses RE2 regex syntax (See
-        /// https://github.com/google/re2/wiki/Syntax for more details)
+        /// <https://github.com/google/re2/wiki/Syntax> for more details)
         #[prost(string, repeated, tag = "2")]
         pub regular_expressions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }

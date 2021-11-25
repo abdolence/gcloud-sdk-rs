@@ -176,7 +176,7 @@ pub mod node {
         V2Alpha1 = 3,
     }
 }
-/// Request for [ListNodes][google.cloud.tpu.v1.Tpu.ListNodes].
+/// Request for \[ListNodes][google.cloud.tpu.v1.Tpu.ListNodes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodesRequest {
     /// Required. The parent resource name.
@@ -189,7 +189,7 @@ pub struct ListNodesRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response for [ListNodes][google.cloud.tpu.v1.Tpu.ListNodes].
+/// Response for \[ListNodes][google.cloud.tpu.v1.Tpu.ListNodes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNodesResponse {
     /// The listed nodes.
@@ -202,14 +202,14 @@ pub struct ListNodesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for [GetNode][google.cloud.tpu.v1.Tpu.GetNode].
+/// Request for \[GetNode][google.cloud.tpu.v1.Tpu.GetNode\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNodeRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [CreateNode][google.cloud.tpu.v1.Tpu.CreateNode].
+/// Request for \[CreateNode][google.cloud.tpu.v1.Tpu.CreateNode\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNodeRequest {
     /// Required. The parent resource name.
@@ -222,14 +222,14 @@ pub struct CreateNodeRequest {
     #[prost(message, optional, tag = "3")]
     pub node: ::core::option::Option<Node>,
 }
-/// Request for [DeleteNode][google.cloud.tpu.v1.Tpu.DeleteNode].
+/// Request for \[DeleteNode][google.cloud.tpu.v1.Tpu.DeleteNode\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNodeRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [ReimageNode][google.cloud.tpu.v1.Tpu.ReimageNode].
+/// Request for \[ReimageNode][google.cloud.tpu.v1.Tpu.ReimageNode\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReimageNodeRequest {
     /// The resource name.
@@ -239,14 +239,14 @@ pub struct ReimageNodeRequest {
     #[prost(string, tag = "2")]
     pub tensorflow_version: ::prost::alloc::string::String,
 }
-/// Request for [StopNode][google.cloud.tpu.v1.Tpu.StopNode].
+/// Request for \[StopNode][google.cloud.tpu.v1.Tpu.StopNode\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StopNodeRequest {
     /// The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [StartNode][google.cloud.tpu.v1.Tpu.StartNode].
+/// Request for \[StartNode][google.cloud.tpu.v1.Tpu.StartNode\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartNodeRequest {
     /// The resource name.
@@ -263,14 +263,14 @@ pub struct TensorFlowVersion {
     #[prost(string, tag = "2")]
     pub version: ::prost::alloc::string::String,
 }
-/// Request for [GetTensorFlowVersion][google.cloud.tpu.v1.Tpu.GetTensorFlowVersion].
+/// Request for \[GetTensorFlowVersion][google.cloud.tpu.v1.Tpu.GetTensorFlowVersion\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTensorFlowVersionRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions].
+/// Request for \[ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorFlowVersionsRequest {
     /// Required. The parent resource name.
@@ -289,7 +289,7 @@ pub struct ListTensorFlowVersionsRequest {
     #[prost(string, tag = "6")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for [ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions].
+/// Response for \[ListTensorFlowVersions][google.cloud.tpu.v1.Tpu.ListTensorFlowVersions\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTensorFlowVersionsResponse {
     /// The listed nodes.
@@ -312,14 +312,14 @@ pub struct AcceleratorType {
     #[prost(string, tag = "2")]
     pub r#type: ::prost::alloc::string::String,
 }
-/// Request for [GetAcceleratorType][google.cloud.tpu.v1.Tpu.GetAcceleratorType].
+/// Request for \[GetAcceleratorType][google.cloud.tpu.v1.Tpu.GetAcceleratorType\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAcceleratorTypeRequest {
     /// Required. The resource name.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes].
+/// Request for \[ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAcceleratorTypesRequest {
     /// Required. The parent resource name.
@@ -338,7 +338,7 @@ pub struct ListAcceleratorTypesRequest {
     #[prost(string, tag = "6")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for [ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes].
+/// Response for \[ListAcceleratorTypes][google.cloud.tpu.v1.Tpu.ListAcceleratorTypes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAcceleratorTypesResponse {
     /// The listed nodes.
@@ -356,7 +356,7 @@ pub struct ListAcceleratorTypesResponse {
 // be resolved separately. Please make sure to add this message back
 // if it's removed during public proto regeneration.
 
-/// Metadata describing an [Operation][google.longrunning.Operation]
+/// Metadata describing an \[Operation][google.longrunning.Operation\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
@@ -436,7 +436,7 @@ pub mod tpu_client {
     impl<T> TpuClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -446,7 +446,7 @@ pub mod tpu_client {
         }
         pub fn with_interceptor<F>(inner: T, interceptor: F) -> TpuClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

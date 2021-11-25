@@ -3,7 +3,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Folder {
     /// Full resource name of this folder. See:
-    /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
     #[prost(string, tag = "1")]
     pub resource_folder: ::prost::alloc::string::String,
     /// The user defined display name for this folder.
@@ -17,7 +17,7 @@ pub struct Folder {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityMarks {
     /// The relative resource name of the SecurityMarks. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Examples:
     /// "organizations/{organization_id}/assets/{asset_id}/securityMarks"
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
@@ -55,7 +55,7 @@ pub struct SecurityMarks {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The relative resource name of this asset. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/assets/{asset_id}".
     #[prost(string, tag = "1")]
@@ -101,7 +101,7 @@ pub mod asset {
     pub struct SecurityCenterProperties {
         /// The full resource name of the Google Cloud resource this asset
         /// represents. This field is immutable after create time. See:
-        /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+        /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
         #[prost(string, tag = "1")]
         pub resource_name: ::prost::alloc::string::String,
         /// The type of the Google Cloud resource. Examples include: APPLICATION,
@@ -111,11 +111,11 @@ pub mod asset {
         #[prost(string, tag = "2")]
         pub resource_type: ::prost::alloc::string::String,
         /// The full resource name of the immediate parent of the resource. See:
-        /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+        /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
         #[prost(string, tag = "3")]
         pub resource_parent: ::prost::alloc::string::String,
         /// The full resource name of the project the resource belongs to. See:
-        /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+        /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
         #[prost(string, tag = "4")]
         pub resource_project: ::prost::alloc::string::String,
         /// Owners of the Google Cloud resource.
@@ -143,16 +143,40 @@ pub mod asset {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IamPolicy {
         /// The JSON representation of the Policy associated with the asset.
-        /// See https://cloud.google.com/iam/reference/rest/v1/Policy for format
+        /// See <https://cloud.google.com/iam/reference/rest/v1/Policy> for format
         /// details.
         #[prost(string, tag = "1")]
         pub policy_blob: ::prost::alloc::string::String,
     }
 }
+/// Representation of third party SIEM/SOAR fields within SCC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExternalSystem {
+    /// External System Name e.g. jira, demisto, etc.
+    ///  e.g.: `organizations/1234/sources/5678/findings/123456/externalSystems/jira`
+    /// `folders/1234/sources/5678/findings/123456/externalSystems/jira`
+    /// `projects/1234/sources/5678/findings/123456/externalSystems/jira`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// References primary/secondary etc assignees in the external system.
+    #[prost(string, repeated, tag = "2")]
+    pub assignees: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Identifier that's used to track the given finding in the external system.
+    #[prost(string, tag = "3")]
+    pub external_uid: ::prost::alloc::string::String,
+    /// Most recent status of the corresponding finding's ticket/tracker in the
+    /// external system.
+    #[prost(string, tag = "4")]
+    pub status: ::prost::alloc::string::String,
+    /// The most recent time when the corresponding finding's ticket/tracker was
+    /// updated in the external system.
+    #[prost(message, optional, tag = "5")]
+    pub external_system_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// Represents what's commonly known as an Indicator of compromise (IoC) in
 /// computer forensics. This is an artifact observed on a network or in an
 /// operating system that, with high confidence, indicates a computer intrusion.
-/// Reference: https://en.wikipedia.org/wiki/Indicator_of_compromise
+/// Reference: <https://en.wikipedia.org/wiki/Indicator_of_compromise>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Indicator {
     /// List of ip addresses associated to the Finding.
@@ -161,6 +185,191 @@ pub struct Indicator {
     /// List of domains associated to the Finding.
     #[prost(string, repeated, tag = "2")]
     pub domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Refers to common vulnerability fields e.g. cve, cvss, cwe etc.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Vulnerability {
+    /// CVE stands for Common Vulnerabilities and Exposures
+    /// (<https://cve.mitre.org/about/>)
+    #[prost(message, optional, tag = "1")]
+    pub cve: ::core::option::Option<Cve>,
+}
+/// CVE stands for Common Vulnerabilities and Exposures.
+/// More information: <https://cve.mitre.org>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Cve {
+    /// The unique identifier for the vulnerability. e.g. CVE-2021-34527
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Additional information about the CVE.
+    /// e.g. <https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-34527>
+    #[prost(message, repeated, tag = "2")]
+    pub references: ::prost::alloc::vec::Vec<Reference>,
+    /// Describe Common Vulnerability Scoring System specified at
+    /// <https://www.first.org/cvss/v3.1/specification-document>
+    #[prost(message, optional, tag = "3")]
+    pub cvssv3: ::core::option::Option<Cvssv3>,
+}
+/// Additional Links
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Reference {
+    /// Source of the reference e.g. NVD
+    #[prost(string, tag = "1")]
+    pub source: ::prost::alloc::string::String,
+    /// Uri for the mentioned source e.g.
+    /// <https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-34527.>
+    #[prost(string, tag = "2")]
+    pub uri: ::prost::alloc::string::String,
+}
+/// Common Vulnerability Scoring System version 3.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Cvssv3 {
+    /// The base score is a function of the base metric scores.
+    #[prost(double, tag = "1")]
+    pub base_score: f64,
+    /// Base Metrics
+    /// Represents the intrinsic characteristics of a vulnerability that are
+    /// constant over time and across user environments.
+    /// This metric reflects the context by which vulnerability exploitation is
+    /// possible.
+    #[prost(enumeration = "cvssv3::AttackVector", tag = "5")]
+    pub attack_vector: i32,
+    /// This metric describes the conditions beyond the attacker's control that
+    /// must exist in order to exploit the vulnerability.
+    #[prost(enumeration = "cvssv3::AttackComplexity", tag = "6")]
+    pub attack_complexity: i32,
+    /// This metric describes the level of privileges an attacker must possess
+    /// before successfully exploiting the vulnerability.
+    #[prost(enumeration = "cvssv3::PrivilegesRequired", tag = "7")]
+    pub privileges_required: i32,
+    /// This metric captures the requirement for a human user, other than the
+    /// attacker, to participate in the successful compromise of the vulnerable
+    /// component.
+    #[prost(enumeration = "cvssv3::UserInteraction", tag = "8")]
+    pub user_interaction: i32,
+    /// The Scope metric captures whether a vulnerability in one vulnerable
+    /// component impacts resources in components beyond its security scope.
+    #[prost(enumeration = "cvssv3::Scope", tag = "9")]
+    pub scope: i32,
+    /// This metric measures the impact to the confidentiality of the information
+    /// resources managed by a software component due to a successfully exploited
+    /// vulnerability.
+    #[prost(enumeration = "cvssv3::Impact", tag = "10")]
+    pub confidentiality_impact: i32,
+    /// This metric measures the impact to integrity of a successfully exploited
+    /// vulnerability.
+    #[prost(enumeration = "cvssv3::Impact", tag = "11")]
+    pub integrity_impact: i32,
+    /// This metric measures the impact to the availability of the impacted
+    /// component resulting from a successfully exploited vulnerability.
+    #[prost(enumeration = "cvssv3::Impact", tag = "12")]
+    pub availability_impact: i32,
+}
+/// Nested message and enum types in `Cvssv3`.
+pub mod cvssv3 {
+    /// This metric reflects the context by which vulnerability exploitation is
+    /// possible.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AttackVector {
+        /// Invalid value.
+        Unspecified = 0,
+        /// The vulnerable component is bound to the network stack and the set of
+        /// possible attackers extends beyond the other options listed below, up to
+        /// and including the entire Internet.
+        Network = 1,
+        /// The vulnerable component is bound to the network stack, but the attack is
+        /// limited at the protocol level to a logically adjacent topology.
+        Adjacent = 2,
+        /// The vulnerable component is not bound to the network stack and the
+        /// attacker's path is via read/write/execute capabilities.
+        Local = 3,
+        /// The attack requires the attacker to physically touch or manipulate the
+        /// vulnerable component.
+        Physical = 4,
+    }
+    /// This metric describes the conditions beyond the attacker's control that
+    /// must exist in order to exploit the vulnerability.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AttackComplexity {
+        /// Invalid value.
+        Unspecified = 0,
+        /// Specialized access conditions or extenuating circumstances do not exist.
+        /// An attacker can expect repeatable success when attacking the vulnerable
+        /// component.
+        Low = 1,
+        /// A successful attack depends on conditions beyond the attacker's control.
+        /// That is, a successful attack cannot be accomplished at will, but requires
+        /// the attacker to invest in some measurable amount of effort in preparation
+        /// or execution against the vulnerable component before a successful attack
+        /// can be expected.
+        High = 2,
+    }
+    /// This metric describes the level of privileges an attacker must possess
+    /// before successfully exploiting the vulnerability.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PrivilegesRequired {
+        /// Invalid value.
+        Unspecified = 0,
+        /// The attacker is unauthorized prior to attack, and therefore does not
+        /// require any access to settings or files of the vulnerable system to
+        /// carry out an attack.
+        None = 1,
+        /// The attacker requires privileges that provide basic user capabilities
+        /// that could normally affect only settings and files owned by a user.
+        /// Alternatively, an attacker with Low privileges has the ability to access
+        /// only non-sensitive resources.
+        Low = 2,
+        /// The attacker requires privileges that provide significant (e.g.,
+        /// administrative) control over the vulnerable component allowing access to
+        /// component-wide settings and files.
+        High = 3,
+    }
+    /// This metric captures the requirement for a human user, other than the
+    /// attacker, to participate in the successful compromise of the vulnerable
+    /// component.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum UserInteraction {
+        /// Invalid value.
+        Unspecified = 0,
+        /// The vulnerable system can be exploited without interaction from any user.
+        None = 1,
+        /// Successful exploitation of this vulnerability requires a user to take
+        /// some action before the vulnerability can be exploited.
+        Required = 2,
+    }
+    /// The Scope metric captures whether a vulnerability in one vulnerable
+    /// component impacts resources in components beyond its security scope.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Scope {
+        /// Invalid value.
+        Unspecified = 0,
+        /// An exploited vulnerability can only affect resources managed by the same
+        /// security authority.
+        Unchanged = 1,
+        /// An exploited vulnerability can affect resources beyond the security scope
+        /// managed by the security authority of the vulnerable component.
+        Changed = 2,
+    }
+    /// The Impact metrics capture the effects of a successfully exploited
+    /// vulnerability on the component that suffers the worst outcome that is most
+    /// directly and predictably associated with the attack.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Impact {
+        /// Invalid value.
+        Unspecified = 0,
+        /// High impact.
+        High = 1,
+        /// Low impact.
+        Low = 2,
+        /// No impact.
+        None = 3,
+    }
 }
 /// Security Command Center finding.
 ///
@@ -172,13 +381,13 @@ pub struct Indicator {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// The relative resource name of this finding. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The relative resource name of the source the finding belongs to. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// This field is immutable after creation time.
     /// For example:
     /// "organizations/{organization_id}/sources/{source_id}"
@@ -186,7 +395,7 @@ pub struct Finding {
     pub parent: ::prost::alloc::string::String,
     /// For findings on Google Cloud resources, the full resource
     /// name of the Google Cloud resource this finding is for. See:
-    /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
     /// When the finding is for a non-Google Cloud resource, the resourceName can
     /// be a customer or partner defined string. This field is immutable after
     /// creation time.
@@ -240,6 +449,10 @@ pub struct Finding {
     /// finding.
     #[prost(string, tag = "14")]
     pub canonical_name: ::prost::alloc::string::String,
+    /// Indicates the mute state of a finding (either unspecified, muted, unmuted
+    /// or undefined).
+    #[prost(enumeration = "finding::Mute", tag = "15")]
+    pub mute: i32,
     /// The class of the finding.
     #[prost(enumeration = "finding::FindingClass", tag = "17")]
     pub finding_class: i32,
@@ -247,9 +460,27 @@ pub struct Finding {
     /// computer forensics. This is an artifact observed on a network or in an
     /// operating system that, with high confidence, indicates a computer
     /// intrusion.
-    /// Reference: https://en.wikipedia.org/wiki/Indicator_of_compromise
+    /// Reference: <https://en.wikipedia.org/wiki/Indicator_of_compromise>
     #[prost(message, optional, tag = "18")]
     pub indicator: ::core::option::Option<Indicator>,
+    /// Represents vulnerability specific fields like cve, cvss scores etc.
+    /// CVE stands for Common Vulnerabilities and Exposures
+    /// (<https://cve.mitre.org/about/>)
+    #[prost(message, optional, tag = "20")]
+    pub vulnerability: ::core::option::Option<Vulnerability>,
+    /// Output only. The most recent time this finding was muted or unmuted.
+    #[prost(message, optional, tag = "21")]
+    pub mute_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Third party SIEM/SOAR fields within SCC, contains external system
+    /// information and external system finding fields.
+    #[prost(map = "string, message", tag = "22")]
+    pub external_systems:
+        ::std::collections::HashMap<::prost::alloc::string::String, ExternalSystem>,
+    /// First known as mute_annotation. Records additional information about the
+    /// mute operation e.g. mute config that muted the finding, user who muted the
+    /// finding, etc.
+    #[prost(string, tag = "28")]
+    pub mute_initiator: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -321,6 +552,19 @@ pub mod finding {
         /// is not able to access data, execute code, or create resources.
         Low = 4,
     }
+    /// Mute state a finding can be in.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Mute {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Finding has been muted.
+        Muted = 1,
+        /// Finding has been unmuted.
+        Unmuted = 2,
+        /// Finding has never been muted/unmuted.
+        Undefined = 4,
+    }
     /// Represents what kind of Finding it is.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -339,6 +583,61 @@ pub mod finding {
         Observation = 4,
     }
 }
+/// A mute config is a Cloud SCC resource that contains the configuration
+/// to mute create/update events of findings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MuteConfig {
+    /// This field will be ignored if provided on config creation. Format
+    /// "organizations/{organization}/muteConfigs/{mute_config}"
+    /// "folders/{folder}/muteConfigs/{mute_config}"
+    /// "projects/{project}/muteConfigs/{mute_config}"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The human readable name to be displayed for the mute config.
+    #[deprecated]
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// A description of the mute config.
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    /// Required. An expression that defines the filter to apply across create/update events
+    /// of findings. While creating a filter string, be mindful of the
+    /// scope in which the mute configuration is being created. E.g., If a filter
+    /// contains project = X but is created under the project = Y scope, it might
+    /// not match any findings.
+    ///
+    /// The following field and operator combinations are supported:
+    ///
+    /// * severity: `=`, `:`
+    /// * category: `=`, `:`
+    /// * resource.name: `=`, `:`
+    /// * resource.project_name: `=`, `:`
+    /// * resource.project_display_name: `=`, `:`
+    /// * resource.folders.resource_folder: `=`, `:`
+    /// * resource.parent_name: `=`, `:`
+    /// * resource.parent_display_name: `=`, `:`
+    /// * resource.type: `=`, `:`
+    /// * finding_class: `=`, `:`
+    /// * indicator.ip_addresses: `=`, `:`
+    /// * indicator.domains: `=`, `:`
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Output only. The time at which the mute config was created.
+    /// This field is set by the server and will be ignored if provided on config
+    /// creation.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The most recent time at which the mute config was updated.
+    /// This field is set by the server and will be ignored if provided on config
+    /// creation or update.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Email address of the user who last edited the mute config.
+    /// This field is set by the server and will be ignored if provided on config
+    /// creation or update.
+    #[prost(string, tag = "7")]
+    pub most_recent_editor: ::prost::alloc::string::String,
+}
 /// Cloud Security Command Center (Cloud SCC) notification configs.
 ///
 /// A notification config is a Cloud SCC resource that contains the configuration
@@ -346,7 +645,7 @@ pub mod finding {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationConfig {
     /// The relative resource name of this notification config. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/notificationConfigs/notify_public_bucket".
     #[prost(string, tag = "1")]
@@ -355,7 +654,7 @@ pub struct NotificationConfig {
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// The Pub/Sub topic to send notifications to. Its format is
-    /// "projects/[project_id]/topics/[topic]".
+    /// "projects/\[project_id]/topics/[topic\]".
     #[prost(string, tag = "3")]
     pub pubsub_topic: ::prost::alloc::string::String,
     /// Output only. The service account that needs "pubsub.topics.publish"
@@ -408,7 +707,7 @@ pub mod notification_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Resource {
     /// The full resource name of the resource. See:
-    /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The full resource name of project that the resource belongs to.
@@ -423,11 +722,17 @@ pub struct Resource {
     /// The human readable name of resource's parent.
     #[prost(string, tag = "5")]
     pub parent_display_name: ::prost::alloc::string::String,
+    /// The full resource type of the resource.
+    #[prost(string, tag = "6")]
+    pub r#type: ::prost::alloc::string::String,
     /// Output only. Contains a Folder message for each folder in the assets ancestry.
     /// The first folder is the deepest nested folder, and the last folder is the
     /// folder directly under the Organization.
     #[prost(message, repeated, tag = "7")]
     pub folders: ::prost::alloc::vec::Vec<Folder>,
+    /// The human readable name of the resource.
+    #[prost(string, tag = "8")]
+    pub display_name: ::prost::alloc::string::String,
 }
 /// Cloud SCC's Notification
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -458,7 +763,7 @@ pub mod notification_message {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrganizationSettings {
     /// The relative resource name of the settings. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/organizationSettings".
     #[prost(string, tag = "1")]
@@ -550,7 +855,7 @@ pub mod run_asset_discovery_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Source {
     /// The relative resource name of this source. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}"
     #[prost(string, tag = "1")]
@@ -580,11 +885,55 @@ pub struct Source {
     #[prost(string, tag = "14")]
     pub canonical_name: ::prost::alloc::string::String,
 }
+/// Request message for bulk findings update.
+///
+/// Note:
+/// 1. If multiple bulk update requests match the same resource, the order in
+/// which they get executed is not defined.
+/// 2. Once a bulk operation is started, there is no way to stop it.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkMuteFindingsRequest {
+    /// Required. The parent, at which bulk action needs to be applied. Its format is
+    /// "organizations/\[organization_id\]", "folders/\[folder_id\]",
+    /// "projects/\[project_id\]".
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Expression that identifies findings that should be updated.
+    /// The expression is a list of zero or more restrictions combined
+    /// via logical operators `AND` and `OR`. Parentheses are supported, and `OR`
+    /// has higher precedence than `AND`.
+    ///
+    /// Restrictions have the form `<field> <operator> <value>` and may have a
+    /// `-` character in front of them to indicate negation. The fields map to
+    /// those defined in the corresponding resource.
+    ///
+    /// The supported operators are:
+    ///
+    /// * `=` for all value types.
+    /// * `>`, `<`, `>=`, `<=` for integer values.
+    /// * `:`, meaning substring matching, for strings.
+    ///
+    /// The supported value types are:
+    ///
+    /// * string literals in quotes.
+    /// * integer literals without quotes.
+    /// * boolean literals `true` and `false` without quotes.
+    #[prost(string, tag = "2")]
+    pub filter: ::prost::alloc::string::String,
+    /// This can be a mute configuration name or any identifier for mute/unmute
+    /// of findings based on the filter.
+    #[deprecated]
+    #[prost(string, tag = "3")]
+    pub mute_annotation: ::prost::alloc::string::String,
+}
+/// The response to a BulkMute request. Contains the LRO information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BulkMuteFindingsResponse {}
 /// Request message for creating a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFindingRequest {
     /// Required. Resource name of the new finding's parent. Its format should be
-    /// "organizations/[organization_id]/sources/[source_id]".
+    /// "organizations/\[organization_id]/sources/[source_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Unique identifier provided by the client within the parent scope.
@@ -597,11 +946,29 @@ pub struct CreateFindingRequest {
     #[prost(message, optional, tag = "3")]
     pub finding: ::core::option::Option<Finding>,
 }
+/// Request message for creating a mute config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateMuteConfigRequest {
+    /// Required. Resource name of the new mute configs's parent. Its format is
+    /// "organizations/\[organization_id\]", "folders/\[folder_id\]", or
+    /// "projects/\[project_id\]".
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The mute config being created.
+    #[prost(message, optional, tag = "2")]
+    pub mute_config: ::core::option::Option<MuteConfig>,
+    /// Required. Unique identifier provided by the client within the parent scope.
+    /// It must consist of lower case letters, numbers, and hyphen, with the first
+    /// character a letter, the last a letter or a number, and a 63 character
+    /// maximum.
+    #[prost(string, tag = "3")]
+    pub mute_config_id: ::prost::alloc::string::String,
+}
 /// Request message for creating a notification config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotificationConfigRequest {
     /// Required. Resource name of the new notification config's parent. Its format is
-    /// "organizations/[organization_id]".
+    /// "organizations/\[organization_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required.
@@ -619,7 +986,7 @@ pub struct CreateNotificationConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSourceRequest {
     /// Required. Resource name of the new source's parent. Its format should be
-    /// "organizations/[organization_id]".
+    /// "organizations/\[organization_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Source being created, only the display_name and description will be
@@ -627,11 +994,31 @@ pub struct CreateSourceRequest {
     #[prost(message, optional, tag = "2")]
     pub source: ::core::option::Option<Source>,
 }
+/// Request message for deleting a mute config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteMuteConfigRequest {
+    /// Required. Name of the mute config to delete. Its format is
+    /// organizations/{organization}/muteConfigs/{config_id},
+    /// folders/{folder}/muteConfigs/{config_id}, or
+    /// projects/{project}/muteConfigs/{config_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Request message for deleting a notification config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotificationConfigRequest {
     /// Required. Name of the notification config to delete. Its format is
-    /// "organizations/[organization_id]/notificationConfigs/[config_id]".
+    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for retrieving a mute config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetMuteConfigRequest {
+    /// Required. Name of the mute config to retrieve. Its format is
+    /// organizations/{organization}/muteConfigs/{config_id},
+    /// folders/{folder}/muteConfigs/{config_id}, or
+    /// projects/{project}/muteConfigs/{config_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -639,7 +1026,7 @@ pub struct DeleteNotificationConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationConfigRequest {
     /// Required. Name of the notification config to get. Its format is
-    /// "organizations/[organization_id]/notificationConfigs/[config_id]".
+    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -647,7 +1034,7 @@ pub struct GetNotificationConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrganizationSettingsRequest {
     /// Required. Name of the organization to get organization settings for. Its format is
-    /// "organizations/[organization_id]/organizationSettings".
+    /// "organizations/\[organization_id\]/organizationSettings".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -655,7 +1042,7 @@ pub struct GetOrganizationSettingsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
-    /// "organizations/[organization_id]/source/[source_id]".
+    /// "organizations/\[organization_id]/source/[source_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -663,8 +1050,8 @@ pub struct GetSourceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupAssetsRequest {
     /// Required. Name of the organization to groupBy. Its format is
-    /// "organizations/[organization_id], folders/[folder_id], or
-    /// projects/[project_id]".
+    /// "organizations/\[organization_id\], folders/\[folder_id\], or
+    /// projects/\[project_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
@@ -819,9 +1206,9 @@ pub struct GroupAssetsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupFindingsRequest {
     /// Required. Name of the source to groupBy. Its format is
-    /// "organizations/[organization_id]/sources/[source_id]",
-    /// folders/[folder_id]/sources/[source_id], or
-    /// projects/[project_id]/sources/[source_id]. To groupBy across all sources
+    /// "organizations/\[organization_id]/sources/[source_id\]",
+    /// folders/\[folder_id]/sources/[source_id\], or
+    /// projects/\[project_id]/sources/[source_id\]. To groupBy across all sources
     /// provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-,
     /// or projects/{project_id}/sources/-
@@ -985,11 +1372,45 @@ pub struct GroupResult {
     #[prost(int64, tag = "2")]
     pub count: i64,
 }
+/// Request message for listing  mute configs at a given scope e.g. organization,
+/// folder or project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMuteConfigsRequest {
+    /// Required. The parent, which owns the collection of mute configs. Its format is
+    /// "organizations/\[organization_id\]", "folders/\[folder_id\]",
+    /// "projects/\[project_id\]".
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of configs to return. The service may return fewer than
+    /// this value.
+    /// If unspecified, at most 10 configs will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListMuteConfigs` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListMuteConfigs` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing mute configs.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListMuteConfigsResponse {
+    /// The mute configs from the specified parent.
+    #[prost(message, repeated, tag = "1")]
+    pub mute_configs: ::prost::alloc::vec::Vec<MuteConfig>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Request message for listing notification configs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationConfigsRequest {
     /// Required. Name of the organization to list notification configs.
-    /// Its format is "organizations/[organization_id]".
+    /// Its format is "organizations/\[organization_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListNotificationConfigsResponse`; indicates
@@ -1017,8 +1438,8 @@ pub struct ListNotificationConfigsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesRequest {
     /// Required. Resource name of the parent of sources to list. Its format should be
-    /// "organizations/[organization_id], folders/[folder_id], or
-    /// projects/[project_id]".
+    /// "organizations/\[organization_id\], folders/\[folder_id\], or
+    /// projects/\[project_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListSourcesResponse`; indicates
@@ -1046,8 +1467,8 @@ pub struct ListSourcesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Name of the organization assets should belong to. Its format is
-    /// "organizations/[organization_id], folders/[folder_id], or
-    /// projects/[project_id]".
+    /// "organizations/\[organization_id\], folders/\[folder_id\], or
+    /// projects/\[project_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
@@ -1241,9 +1662,9 @@ pub mod list_assets_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. Name of the source the findings belong to. Its format is
-    /// "organizations/[organization_id]/sources/[source_id],
-    /// folders/[folder_id]/sources/[source_id], or
-    /// projects/[project_id]/sources/[source_id]". To list across all sources
+    /// "organizations/\[organization_id]/sources/[source_id\],
+    /// folders/\[folder_id]/sources/[source_id\], or
+    /// projects/\[project_id]/sources/[source_id\]". To list across all sources
     /// provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/- or
     /// projects/{projects_id}/sources/-
@@ -1309,6 +1730,7 @@ pub struct ListFindingsRequest {
     ///   * resource.project_display_name: `=`, `:`
     ///   * resource.type: `=`, `:`
     ///   * resource.folders.resource_folder: `=`, `:`
+    ///   * resource.display_name: `=`, `:`
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// Expression that defines what fields and order to use for sorting. The
@@ -1422,7 +1844,7 @@ pub mod list_findings_response {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Resource {
             /// The full resource name of the resource. See:
-            /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+            /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
             #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
             /// The full resource name of project that the resource belongs to.
@@ -1437,11 +1859,17 @@ pub mod list_findings_response {
             /// The human readable name of resource's parent.
             #[prost(string, tag = "5")]
             pub parent_display_name: ::prost::alloc::string::String,
+            /// The full resource type of the resource.
+            #[prost(string, tag = "6")]
+            pub r#type: ::prost::alloc::string::String,
             /// Contains a Folder message for each folder in the assets ancestry.
             /// The first folder is the deepest nested folder, and the last folder is
             /// the folder directly under the Organization.
             #[prost(message, repeated, tag = "7")]
             pub folders: ::prost::alloc::vec::Vec<super::super::Folder>,
+            /// The human readable name of the resource.
+            #[prost(string, tag = "8")]
+            pub display_name: ::prost::alloc::string::String,
         }
         /// The change in state of the finding.
         ///
@@ -1476,7 +1904,7 @@ pub mod list_findings_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetFindingStateRequest {
     /// Required. The relative resource name of the finding. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
     #[prost(string, tag = "1")]
@@ -1488,13 +1916,40 @@ pub struct SetFindingStateRequest {
     #[prost(message, optional, tag = "3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Request message for updating a finding's mute status.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SetMuteRequest {
+    /// Required. The relative resource name of the finding. See:
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
+    /// Example:
+    /// "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}",
+    /// "folders/{folder_id}/sources/{source_id}/finding/{finding_id}",
+    /// "projects/{project_id}/sources/{source_id}/finding/{finding_id}".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The desired state of the Mute.
+    #[prost(enumeration = "finding::Mute", tag = "2")]
+    pub mute: i32,
+}
 /// Request message for running asset discovery for an organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAssetDiscoveryRequest {
     /// Required. Name of the organization to run asset discovery for. Its format is
-    /// "organizations/[organization_id]".
+    /// "organizations/\[organization_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+}
+/// Request message for updating a ExternalSystem resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateExternalSystemRequest {
+    /// Required. The external system resource to update.
+    #[prost(message, optional, tag = "1")]
+    pub external_system: ::core::option::Option<ExternalSystem>,
+    /// The FieldMask to use when updating the external system resource.
+    ///
+    /// If empty all mutable fields will be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating or creating a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1514,6 +1969,17 @@ pub struct UpdateFindingRequest {
     /// fields and replacing source_properties.  Individual source_properties can
     /// be added/updated by using "source_properties.<property key>" in the field
     /// mask.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for updating a mute config.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateMuteConfigRequest {
+    /// Required. The mute config being updated.
+    #[prost(message, optional, tag = "1")]
+    pub mute_config: ::core::option::Option<MuteConfig>,
+    /// The list of fields to be updated.
+    /// If empty all mutable fields will be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1584,7 +2050,7 @@ pub mod security_center_client {
     impl<T> SecurityCenterClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1597,7 +2063,7 @@ pub mod security_center_client {
             interceptor: F,
         ) -> SecurityCenterClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1621,6 +2087,28 @@ pub mod security_center_client {
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
+        }
+        #[doc = " Kicks off an LRO to bulk mute findings for a parent based on a filter. The"]
+        #[doc = " parent can be either an organization, folder or project. The findings"]
+        #[doc = " matched by the filter will be muted after the LRO is done."]
+        pub async fn bulk_mute_findings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BulkMuteFindingsRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/BulkMuteFindings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates a source."]
         pub async fn create_source(
@@ -1657,6 +2145,23 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Creates a mute config."]
+        pub async fn create_mute_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateMuteConfigRequest>,
+        ) -> Result<tonic::Response<super::MuteConfig>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/CreateMuteConfig",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Creates a notification config."]
         pub async fn create_notification_config(
             &mut self,
@@ -1671,6 +2176,23 @@ pub mod security_center_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateNotificationConfig",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes an existing mute config."]
+        pub async fn delete_mute_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteMuteConfigRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/DeleteMuteConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1706,6 +2228,23 @@ pub mod security_center_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetIamPolicy",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets a mute config."]
+        pub async fn get_mute_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetMuteConfigRequest>,
+        ) -> Result<tonic::Response<super::MuteConfig>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetMuteConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1838,6 +2377,23 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Lists mute configs."]
+        pub async fn list_mute_configs(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListMuteConfigsRequest>,
+        ) -> Result<tonic::Response<super::ListMuteConfigsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListMuteConfigs",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Lists notification configs."]
         pub async fn list_notification_configs(
             &mut self,
@@ -1915,6 +2471,23 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Updates the mute state of a finding."]
+        pub async fn set_mute(
+            &mut self,
+            request: impl tonic::IntoRequest<super::SetMuteRequest>,
+        ) -> Result<tonic::Response<super::Finding>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/SetMute",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Sets the access control policy on the specified Source."]
         pub async fn set_iam_policy(
             &mut self,
@@ -1955,6 +2528,23 @@ pub mod security_center_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Updates external system. This is for a given finding."]
+        pub async fn update_external_system(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateExternalSystemRequest>,
+        ) -> Result<tonic::Response<super::ExternalSystem>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateExternalSystem",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Creates or updates a finding. The corresponding source must exist for a"]
         #[doc = " finding creation to succeed."]
         pub async fn update_finding(
@@ -1970,6 +2560,23 @@ pub mod security_center_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateFinding",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a mute config."]
+        pub async fn update_mute_config(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateMuteConfigRequest>,
+        ) -> Result<tonic::Response<super::MuteConfig>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateMuteConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

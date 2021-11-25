@@ -267,15 +267,15 @@ pub mod firewall_info {
         Unspecified = 0,
         /// Hierarchical firewall policy rule. For details, see
         /// [Hierarchical firewall policies
-        /// overview](https://cloud.google.com/vpc/docs/firewall-policies).
+        /// overview](<https://cloud.google.com/vpc/docs/firewall-policies>).
         HierarchicalFirewallPolicyRule = 1,
         /// VPC firewall rule. For details, see
         /// [VPC firewall rules
-        /// overview](https://cloud.google.com/vpc/docs/firewalls).
+        /// overview](<https://cloud.google.com/vpc/docs/firewalls>).
         VpcFirewallRule = 2,
         /// Implied VPC firewall rule. For details, see
         /// [Implied
-        /// rules](https://cloud.google.com/vpc/docs/firewalls#default_firewall_rules).
+        /// rules](<https://cloud.google.com/vpc/docs/firewalls#default_firewall_rules>).
         ImpliedVpcFirewallRule = 3,
     }
 }
@@ -452,10 +452,7 @@ pub struct LoadBalancerBackend {
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
     /// State of the health check firewall configuration.
-    #[prost(
-        enumeration = "load_balancer_backend::HealthCheckFirewallState",
-        tag = "3"
-    )]
+    #[prost(enumeration = "load_balancer_backend::HealthCheckFirewallState", tag = "3")]
     pub health_check_firewall_state: i32,
     /// A list of firewall rule URIs allowing probes from health check IP ranges.
     #[prost(string, repeated, tag = "4")]
@@ -543,7 +540,7 @@ pub struct VpnTunnelInfo {
 /// Nested message and enum types in `VpnTunnelInfo`.
 pub mod vpn_tunnel_info {
     /// Types of VPN routing policy. For details, refer to [Networks and Tunnel
-    /// routing](https://cloud.google.com/network-connectivity/docs/vpn/concepts/choosing-networks-routing/).
+    /// routing](<https://cloud.google.com/network-connectivity/docs/vpn/concepts/choosing-networks-routing/>).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum RoutingType {
@@ -754,7 +751,7 @@ pub mod drop_info {
         /// but Cloud NAT is not enabled in the subnet, unless special configurations
         /// on a VM allow this connection. For more details, see [Special
         /// configurations for VM
-        /// instances](https://cloud.google.com/vpc/docs/special-configurations).
+        /// instances](<https://cloud.google.com/vpc/docs/special-configurations>).
         NoExternalAddress = 9,
         /// Destination internal address cannot be resolved to a known target. If
         /// this is a shared VPC scenario, verify if the service project ID is
@@ -768,24 +765,24 @@ pub mod drop_info {
         /// Firewalls block the health check probes to the backends and cause
         /// the backends to be unavailable for traffic from the load balancer.
         /// For more details, see [Health check firewall
-        /// rules](https://cloud.google.com/load-balancing/docs/health-checks#firewall_rules).
+        /// rules](<https://cloud.google.com/load-balancing/docs/health-checks#firewall_rules>).
         FirewallBlockingLoadBalancerBackendHealthCheck = 13,
         /// Packet is sent from or to a Compute Engine instance that is not in a
         /// running state.
         InstanceNotRunning = 14,
         /// The type of traffic is blocked and the user cannot configure a firewall
         /// rule to enable it. See [Always blocked
-        /// traffic](https://cloud.google.com/vpc/docs/firewalls#blockedtraffic) for
+        /// traffic](<https://cloud.google.com/vpc/docs/firewalls#blockedtraffic>) for
         /// more details.
         TrafficTypeBlocked = 15,
         /// Access to Google Kubernetes Engine cluster master's endpoint is not
         /// authorized. See [Access to the cluster
-        /// endpoints](https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#access_to_the_cluster_endpoints)
+        /// endpoints](<https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters#access_to_the_cluster_endpoints>)
         /// for more details.
         GkeMasterUnauthorizedAccess = 16,
         /// Access to the Cloud SQL instance endpoint is not authorized.
         /// See [Authorizing with authorized
-        /// networks](https://cloud.google.com/sql/docs/mysql/authorize-networks) for
+        /// networks](<https://cloud.google.com/sql/docs/mysql/authorize-networks>) for
         /// more details.
         CloudSqlInstanceUnauthorizedAccess = 17,
         /// Packet was dropped inside Google Kubernetes Engine Service.
@@ -933,7 +930,7 @@ pub struct Endpoint {
     /// The IP address of the endpoint, which can be an external or internal IP.
     /// An IPv6 address is only allowed when the test's destination is a
     /// [global load balancer
-    /// VIP](https://cloud.google.com/load-balancing/docs/load-balancing-overview).
+    /// VIP](<https://cloud.google.com/load-balancing/docs/load-balancing-overview>).
     #[prost(string, tag = "1")]
     pub ip_address: ::prost::alloc::string::String,
     /// The IP protocol port of the endpoint.
@@ -944,10 +941,10 @@ pub struct Endpoint {
     #[prost(string, tag = "3")]
     pub instance: ::prost::alloc::string::String,
     /// A cluster URI for [Google Kubernetes Engine
-    /// master](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture).
+    /// master](<https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture>).
     #[prost(string, tag = "7")]
     pub gke_master_cluster: ::prost::alloc::string::String,
-    /// A [Cloud SQL](https://cloud.google.com/sql) instance URI.
+    /// A [Cloud SQL](<https://cloud.google.com/sql>) instance URI.
     #[prost(string, tag = "8")]
     pub cloud_sql_instance: ::prost::alloc::string::String,
     /// A Compute Engine network URI.
@@ -1230,7 +1227,7 @@ pub struct RerunConnectivityTestRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Metadata describing an [Operation][google.longrunning.Operation]
+/// Metadata describing an \[Operation][google.longrunning.Operation\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The time the operation was created.
@@ -1275,7 +1272,7 @@ pub mod reachability_service_client {
     impl<T> ReachabilityServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1288,7 +1285,7 @@ pub mod reachability_service_client {
             interceptor: F,
         ) -> ReachabilityServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

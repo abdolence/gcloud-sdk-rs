@@ -158,7 +158,7 @@ pub struct ResourceDescriptor {
     /// Example: `storage.googleapis.com/Bucket`
     ///
     /// The value of the resource_type_kind must follow the regular expression
-    /// /[A-Za-z][a-zA-Z0-9]+/. It should start with an upper case character and
+    /// /\[A-Za-z][a-zA-Z0-9\]+/. It should start with an upper case character and
     /// should use PascalCase (UpperCamelCase). The maximum number of
     /// characters allowed for the `resource_type_kind` is 100.
     #[prost(string, tag = "1")]
@@ -209,14 +209,14 @@ pub struct ResourceDescriptor {
     /// 'projects' for the resource name of 'projects/{project}' and the permission
     /// name of 'cloudresourcemanager.googleapis.com/projects.get'. It is the same
     /// concept of the `plural` field in k8s CRD spec
-    /// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/
+    /// <https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/>
     ///
     /// Note: The plural form is required even for singleton resources. See
-    /// https://aip.dev/156
+    /// <https://aip.dev/156>
     #[prost(string, tag = "5")]
     pub plural: ::prost::alloc::string::String,
     /// The same concept of the `singular` field in k8s CRD spec
-    /// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/
+    /// <https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/>
     /// Such as "project" for the `resourcemanager.googleapis.com/Project` type.
     #[prost(string, tag = "6")]
     pub singular: ::prost::alloc::string::String,
@@ -301,7 +301,7 @@ pub struct ResourceReference {
     pub child_type: ::prost::alloc::string::String,
 }
 /// Defines the HTTP configuration for an API service. It contains a list of
-/// [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method
+/// \[HttpRule][google.api.HttpRule\], each specifying the mapping of an RPC method
 /// to one or more HTTP REST API methods.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Http {
@@ -324,10 +324,10 @@ pub struct Http {
 /// gRPC Transcoding is a feature for mapping between a gRPC method and one or
 /// more HTTP REST endpoints. It allows developers to build a single API service
 /// that supports both gRPC APIs and REST APIs. Many systems, including [Google
-/// APIs](https://github.com/googleapis/googleapis),
-/// [Cloud Endpoints](https://cloud.google.com/endpoints), [gRPC
-/// Gateway](https://github.com/grpc-ecosystem/grpc-gateway),
-/// and [Envoy](https://github.com/envoyproxy/envoy) proxy support this feature
+/// APIs](<https://github.com/googleapis/googleapis>),
+/// [Cloud Endpoints](<https://cloud.google.com/endpoints>), [gRPC
+/// Gateway](<https://github.com/grpc-ecosystem/grpc-gateway>),
+/// and \[Envoy\](<https://github.com/envoyproxy/envoy>) proxy support this feature
 /// and use it for large scale production services.
 ///
 /// `HttpRule` defines the schema of the gRPC/REST mapping. The mapping specifies
@@ -488,15 +488,15 @@ pub struct Http {
 /// 1. Leaf request fields (recursive expansion nested messages in the request
 ///    message) are classified into three categories:
 ///    - Fields referred by the path template. They are passed via the URL path.
-///    - Fields referred by the [HttpRule.body][google.api.HttpRule.body]. They are passed via the HTTP
+///    - Fields referred by the \[HttpRule.body][google.api.HttpRule.body\]. They are passed via the HTTP
 ///      request body.
 ///    - All other fields are passed via the URL query parameters, and the
 ///      parameter name is the field path in the request message. A repeated
 ///      field can be represented as multiple query parameters under the same
 ///      name.
-///  2. If [HttpRule.body][google.api.HttpRule.body] is "*", there is no URL query parameter, all fields
+///  2. If \[HttpRule.body][google.api.HttpRule.body\] is "*", there is no URL query parameter, all fields
 ///     are passed via URL path and HTTP request body.
-///  3. If [HttpRule.body][google.api.HttpRule.body] is omitted, there is no HTTP request body, all
+///  3. If \[HttpRule.body][google.api.HttpRule.body\] is omitted, there is no HTTP request body, all
 ///     fields are passed via URL path and URL query parameters.
 ///
 /// ### Path template syntax
@@ -523,19 +523,19 @@ pub struct Http {
 ///
 /// If a variable contains exactly one path segment, such as `"{var}"` or
 /// `"{var=*}"`, when such a variable is expanded into a URL path on the client
-/// side, all characters except `[-_.~0-9a-zA-Z]` are percent-encoded. The
+/// side, all characters except `\[-_.~0-9a-zA-Z\]` are percent-encoded. The
 /// server side does the reverse decoding. Such variables show up in the
 /// [Discovery
-/// Document](https://developers.google.com/discovery/v1/reference/apis) as
+/// Document](<https://developers.google.com/discovery/v1/reference/apis>) as
 /// `{var}`.
 ///
 /// If a variable contains multiple path segments, such as `"{var=foo/*}"`
 /// or `"{var=**}"`, when such a variable is expanded into a URL path on the
-/// client side, all characters except `[-_.~/0-9a-zA-Z]` are percent-encoded.
+/// client side, all characters except `\[-_.~/0-9a-zA-Z\]` are percent-encoded.
 /// The server side does the reverse decoding, except "%2F" and "%2f" are left
 /// unchanged. Such variables show up in the
 /// [Discovery
-/// Document](https://developers.google.com/discovery/v1/reference/apis) as
+/// Document](<https://developers.google.com/discovery/v1/reference/apis>) as
 /// `{+var}`.
 ///
 /// ## Using gRPC API Service Configuration
@@ -565,10 +565,10 @@ pub struct Http {
 ///
 /// When gRPC Transcoding is used to map a gRPC to JSON REST endpoints, the
 /// proto to JSON conversion must follow the [proto3
-/// specification](https://developers.google.com/protocol-buffers/docs/proto3#json).
+/// specification](<https://developers.google.com/protocol-buffers/docs/proto3#json>).
 ///
 /// While the single segment variable follows the semantics of
-/// [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.2 Simple String
+/// [RFC 6570](<https://tools.ietf.org/html/rfc6570>) Section 3.2.2 Simple String
 /// Expansion, the multi segment variable **does not** follow RFC 6570 Section
 /// 3.2.3 Reserved Expansion. The reason is that the Reserved Expansion
 /// does not expand special characters like `?` and `#`, which would lead
@@ -592,7 +592,7 @@ pub struct Http {
 pub struct HttpRule {
     /// Selects a method to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
     #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// The name of the request field whose value is mapped to the HTTP request
@@ -672,15 +672,15 @@ pub struct CustomHttpPattern {
 ///     authentication:
 ///       providers:
 ///       - id: google_calendar_auth
-///         jwks_uri: https://www.googleapis.com/oauth2/v1/certs
-///         issuer: https://securetoken.google.com
+///         jwks_uri: <https://www.googleapis.com/oauth2/v1/certs>
+///         issuer: <https://securetoken.google.com>
 ///       rules:
 ///       - selector: "*"
 ///         requirements:
 ///           provider_id: google_calendar_auth
 ///       - selector: google.calendar.Delegate
 ///         oauth:
-///           canonical_scopes: https://www.googleapis.com/auth/calendar.read
+///           canonical_scopes: <https://www.googleapis.com/auth/calendar.read>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Authentication {
     /// A list of authentication rules that apply to individual API methods.
@@ -705,7 +705,7 @@ pub struct Authentication {
 pub struct AuthenticationRule {
     /// Selects the methods to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
     #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// The requirements for OAuth credentials.
@@ -749,7 +749,7 @@ pub mod jwt_location {
 }
 /// Configuration for an authentication provider, including support for
 /// [JSON Web Token
-/// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
+/// (JWT)](<https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthProvider {
     /// The unique identifier of the auth provider. It will be referred to by
@@ -759,39 +759,39 @@ pub struct AuthProvider {
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
     /// Identifies the principal that issued the JWT. See
-    /// https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.1
+    /// <https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.1>
     /// Usually a URL or an email address.
     ///
-    /// Example: https://securetoken.google.com
+    /// Example: <https://securetoken.google.com>
     /// Example: 1234567-compute@developer.gserviceaccount.com
     #[prost(string, tag = "2")]
     pub issuer: ::prost::alloc::string::String,
     /// URL of the provider's public key set to validate signature of the JWT. See
     /// [OpenID
-    /// Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata).
+    /// Discovery](<https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata>).
     /// Optional if the key set document:
     ///  - can be retrieved from
     ///    [OpenID
-    ///    Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html)
+    ///    Discovery](<https://openid.net/specs/openid-connect-discovery-1_0.html>)
     ///    of the issuer.
     ///  - can be inferred from the email domain of the issuer (e.g. a Google
     ///  service account).
     ///
-    /// Example: https://www.googleapis.com/oauth2/v1/certs
+    /// Example: <https://www.googleapis.com/oauth2/v1/certs>
     #[prost(string, tag = "3")]
     pub jwks_uri: ::prost::alloc::string::String,
     /// The list of JWT
-    /// [audiences](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3).
+    /// \[audiences\](<https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3>).
     /// that are allowed to access. A JWT containing any of these audiences will
     /// be accepted. When this setting is absent, JWTs with audiences:
-    ///   - "https://[service.name]/[google.protobuf.Api.name]"
-    ///   - "https://[service.name]/"
+    ///   - "<https://\[service.name]/[google.protobuf.Api.name\]">
+    ///   - "<https://\[service.name\]/">
     /// will be accepted.
     /// For example, if no audiences are in the setting, LibraryService API will
     /// accept JWTs with the following audiences:
     ///   -
-    ///   https://library-example.googleapis.com/google.example.library.v1.LibraryService
-    ///   - https://library-example.googleapis.com/
+    ///   <https://library-example.googleapis.com/google.example.library.v1.LibraryService>
+    ///   - <https://library-example.googleapis.com/>
     ///
     /// Example:
     ///
@@ -848,17 +848,17 @@ pub struct OAuthRequirements {
     ///
     /// Example:
     ///
-    ///      canonical_scopes: https://www.googleapis.com/auth/calendar,
-    ///                        https://www.googleapis.com/auth/calendar.read
+    ///      canonical_scopes: <https://www.googleapis.com/auth/calendar,>
+    ///                        <https://www.googleapis.com/auth/calendar.read>
     #[prost(string, tag = "1")]
     pub canonical_scopes: ::prost::alloc::string::String,
 }
 /// User-defined authentication requirements, including support for
 /// [JSON Web Token
-/// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).
+/// (JWT)](<https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthRequirement {
-    /// [id][google.api.AuthProvider.id] from authentication provider.
+    /// \[id][google.api.AuthProvider.id\] from authentication provider.
     ///
     /// Example:
     ///
@@ -869,13 +869,13 @@ pub struct AuthRequirement {
     /// implemented and accepted in all the runtime components.
     ///
     /// The list of JWT
-    /// [audiences](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3).
+    /// \[audiences\](<https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3>).
     /// that are allowed to access. A JWT containing any of these audiences will
     /// be accepted. When this setting is absent, only JWTs with audience
-    /// "https://[Service_name][google.api.Service.name]/[API_name][google.protobuf.Api.name]"
+    /// "<https://\[Service_name][google.api.Service.name]/[API_name][google.protobuf.Api.name\]">
     /// will be accepted. For example, if no audiences are in the setting,
     /// LibraryService API will only accept JWTs with the following audience
-    /// "https://library-example.googleapis.com/google.example.library.v1.LibraryService".
+    /// "<https://library-example.googleapis.com/google.example.library.v1.LibraryService".>
     ///
     /// Example:
     ///
@@ -898,7 +898,7 @@ pub struct Backend {
 pub struct BackendRule {
     /// Selects the methods to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
     #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// The address of the API backend.
@@ -919,7 +919,7 @@ pub struct BackendRule {
     /// - 80 for schemes without TLS
     /// - 443 for schemes with TLS
     ///
-    /// For HTTP backends, use [protocol][google.api.BackendRule.protocol]
+    /// For HTTP backends, use \[protocol][google.api.BackendRule.protocol\]
     /// to specify the protocol version.
     #[prost(string, tag = "2")]
     pub address: ::prost::alloc::string::String,
@@ -941,7 +941,7 @@ pub struct BackendRule {
     /// The supported values are "http/1.1" and "h2".
     ///
     /// The default value is inferred from the scheme in the
-    /// [address][google.api.BackendRule.address] field:
+    /// \[address][google.api.BackendRule.address\] field:
     ///
     ///    SCHEME        PROTOCOL
     ///    http://       http/1.1
@@ -956,7 +956,7 @@ pub struct BackendRule {
     /// HTTP backends. This field will be ignored for all other backends.
     ///
     /// See
-    /// https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids
+    /// <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids>
     /// for more details on the supported values.
     #[prost(string, tag = "9")]
     pub protocol: ::prost::alloc::string::String,
@@ -972,7 +972,7 @@ pub struct BackendRule {
     /// When authentication is unspecified, the resulting behavior is the same
     /// as `disable_auth` set to `true`.
     ///
-    /// Refer to https://developers.google.com/identity/protocols/OpenIDConnect for
+    /// Refer to <https://developers.google.com/identity/protocols/OpenIDConnect> for
     /// JWT ID token.
     #[prost(oneof = "backend_rule::Authentication", tags = "7, 8")]
     pub authentication: ::core::option::Option<backend_rule::Authentication>,
@@ -1001,18 +1001,18 @@ pub mod backend_rule {
         /// Given the following operation config:
         ///
         ///     Method path:        /api/company/{cid}/user/{uid}
-        ///     Backend address:    https://example.cloudfunctions.net/getUser
+        ///     Backend address:    <https://example.cloudfunctions.net/getUser>
         ///
         /// Requests to the following request paths will call the backend at the
         /// translated path:
         ///
         ///     Request path: /api/company/widgetworks/user/johndoe
         ///     Translated:
-        ///     https://example.cloudfunctions.net/getUser?cid=widgetworks&uid=johndoe
+        ///     <https://example.cloudfunctions.net/getUser?cid=widgetworks&uid=johndoe>
         ///
         ///     Request path: /api/company/widgetworks/user/johndoe?timezone=EST
         ///     Translated:
-        ///     https://example.cloudfunctions.net/getUser?timezone=EST&cid=widgetworks&uid=johndoe
+        ///     <https://example.cloudfunctions.net/getUser?timezone=EST&cid=widgetworks&uid=johndoe>
         ConstantAddress = 1,
         /// The request path will be appended to the backend address.
         ///
@@ -1021,18 +1021,18 @@ pub mod backend_rule {
         /// Given the following operation config:
         ///
         ///     Method path:        /api/company/{cid}/user/{uid}
-        ///     Backend address:    https://example.appspot.com
+        ///     Backend address:    <https://example.appspot.com>
         ///
         /// Requests to the following request paths will call the backend at the
         /// translated path:
         ///
         ///     Request path: /api/company/widgetworks/user/johndoe
         ///     Translated:
-        ///     https://example.appspot.com/api/company/widgetworks/user/johndoe
+        ///     <https://example.appspot.com/api/company/widgetworks/user/johndoe>
         ///
         ///     Request path: /api/company/widgetworks/user/johndoe?timezone=EST
         ///     Translated:
-        ///     https://example.appspot.com/api/company/widgetworks/user/johndoe?timezone=EST
+        ///     <https://example.appspot.com/api/company/widgetworks/user/johndoe?timezone=EST>
         AppendPathToAddress = 2,
     }
     /// Authentication settings used by the backend.
@@ -1047,7 +1047,7 @@ pub mod backend_rule {
     /// When authentication is unspecified, the resulting behavior is the same
     /// as `disable_auth` set to `true`.
     ///
-    /// Refer to https://developers.google.com/identity/protocols/OpenIDConnect for
+    /// Refer to <https://developers.google.com/identity/protocols/OpenIDConnect> for
     /// JWT ID token.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Authentication {
@@ -1092,7 +1092,7 @@ pub mod label_descriptor {
     }
 }
 /// The launch stage as defined by [Google Cloud Platform
-/// Launch Stages](http://cloud.google.com/terms/launch-stages).
+/// Launch Stages](<http://cloud.google.com/terms/launch-stages>).
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum LaunchStage {
@@ -1129,9 +1129,9 @@ pub enum LaunchStage {
     Ga = 4,
     /// Deprecated features are scheduled to be shut down and removed. For more
     /// information, see the “Deprecation Policy” section of our [Terms of
-    /// Service](https://cloud.google.com/terms/)
+    /// Service](<https://cloud.google.com/terms/>)
     /// and the [Google Cloud Platform Subject to the Deprecation
-    /// Policy](https://cloud.google.com/terms/deprecation) documentation.
+    /// Policy](<https://cloud.google.com/terms/deprecation>) documentation.
     Deprecated = 5,
 }
 /// Defines a metric type and its schema. Once a metric descriptor is created,
@@ -1190,7 +1190,7 @@ pub struct MetricDescriptor {
     /// or use `Kis{CPU}` and write `11.723` (which is `12005/1024`).
     ///
     /// The supported units are a subset of [The Unified Code for Units of
-    /// Measure](https://unitsofmeasure.org/ucum.html) standard:
+    /// Measure](<https://unitsofmeasure.org/ucum.html>) standard:
     ///
     /// **Basic units (UNIT)**
     ///
@@ -1258,7 +1258,7 @@ pub struct MetricDescriptor {
     /// * `NAME` is a sequence of non-blank printable ASCII characters not
     ///    containing `{` or `}`.
     /// * `1` represents a unitary [dimensionless
-    ///    unit](https://en.wikipedia.org/wiki/Dimensionless_quantity) of 1, such
+    ///    unit](<https://en.wikipedia.org/wiki/Dimensionless_quantity>) of 1, such
     ///    as in `1/s`. It is typically used when none of the basic units are
     ///    appropriate. For example, "new users per day" can be represented as
     ///    `1/d` or `{new-users}/d` (and a metric value `5` would mean "5 new
@@ -1289,8 +1289,8 @@ pub struct MetricDescriptor {
     #[prost(enumeration = "LaunchStage", tag = "12")]
     pub launch_stage: i32,
     /// Read-only. If present, then a [time
-    /// series][google.monitoring.v3.TimeSeries], which is identified partially by
-    /// a metric type and a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor], that is associated
+    /// series]\[google.monitoring.v3.TimeSeries\], which is identified partially by
+    /// a metric type and a \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\], that is associated
     /// with this metric type can only be associated with one of the monitored
     /// resource types listed here.
     #[prost(string, repeated, tag = "13")]
@@ -1301,7 +1301,7 @@ pub mod metric_descriptor {
     /// Additional annotations that can be used to guide the usage of a metric.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MetricDescriptorMetadata {
-        /// Deprecated. Must use the [MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage] instead.
+        /// Deprecated. Must use the \[MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage\] instead.
         #[deprecated]
         #[prost(enumeration = "super::LaunchStage", tag = "1")]
         pub launch_stage: i32,
@@ -1319,7 +1319,7 @@ pub mod metric_descriptor {
     }
     /// The kind of measurement. It describes how the data is reported.
     /// For information on setting the start time and end time based on
-    /// the MetricKind, see [TimeInterval][google.monitoring.v3.TimeInterval].
+    /// the MetricKind, see \[TimeInterval][google.monitoring.v3.TimeInterval\].
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum MetricKind {
@@ -1352,17 +1352,17 @@ pub mod metric_descriptor {
         /// The value is a text string.
         /// This value type can be used only if the metric kind is `GAUGE`.
         String = 4,
-        /// The value is a [`Distribution`][google.api.Distribution].
+        /// The value is a \[`Distribution`][google.api.Distribution\].
         Distribution = 5,
         /// The value is money.
         Money = 6,
     }
 }
 /// A specific metric, identified by specifying values for all of the
-/// labels of a [`MetricDescriptor`][google.api.MetricDescriptor].
+/// labels of a \[`MetricDescriptor`][google.api.MetricDescriptor\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Metric {
-    /// An existing metric type, see [google.api.MetricDescriptor][google.api.MetricDescriptor].
+    /// An existing metric type, see \[google.api.MetricDescriptor][google.api.MetricDescriptor\].
     /// For example, `custom.googleapis.com/invoice/paid/amount`.
     #[prost(string, tag = "3")]
     pub r#type: ::prost::alloc::string::String,
@@ -1420,11 +1420,11 @@ pub mod billing {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BillingDestination {
         /// The monitored resource type. The type must be defined in
-        /// [Service.monitored_resources][google.api.Service.monitored_resources] section.
+        /// \[Service.monitored_resources][google.api.Service.monitored_resources\] section.
         #[prost(string, tag = "1")]
         pub monitored_resource: ::prost::alloc::string::String,
         /// Names of the metrics to report to this billing destination.
-        /// Each name must be defined in [Service.metrics][google.api.Service.metrics] section.
+        /// Each name must be defined in \[Service.metrics][google.api.Service.metrics\] section.
         #[prost(string, repeated, tag = "2")]
         pub metrics: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -1443,9 +1443,9 @@ pub struct ConfigChange {
     /// 'key' is used. If the field has no unique identifier, the numeric index
     /// is used.
     /// Examples:
-    /// - visibility.rules[selector=="google.LibraryService.ListBooks"].restriction
-    /// - quota.metric_rules[selector=="google"].metric_costs[key=="reads"].value
-    /// - logging.producer_destinations[0]
+    /// - visibility.rules\[selector=="google.LibraryService.ListBooks"\].restriction
+    /// - quota.metric_rules\[selector=="google"].metric_costs[key=="reads"\].value
+    /// - logging.producer_destinations\[0\]
     #[prost(string, tag = "1")]
     pub element: ::prost::alloc::string::String,
     /// Value of the changed object in the old Service configuration,
@@ -1602,7 +1602,7 @@ pub struct Context {
 pub struct ContextRule {
     /// Selects the methods to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
     #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// A list of full type names of requested contexts.
@@ -1658,7 +1658,7 @@ pub struct Distribution {
     /// The sum of squared deviations from the mean of the values in the
     /// population. For values x_i this is:
     ///
-    ///     Sum[i=1..n]((x_i - mean)^2)
+    ///     Sum\[i=1..n\]((x_i - mean)^2)
     ///
     /// Knuth, "The Art of Computer Programming", Vol. 2, page 232, 3rd edition
     /// describes Welford's method for accumulating this sum in one pass.
@@ -1777,7 +1777,7 @@ pub mod distribution {
         /// There are `size(bounds) + 1` (= N) buckets. Bucket `i` has the following
         /// boundaries:
         ///
-        ///    Upper bound (0 <= i < N-1):     bounds[i]
+        ///    Upper bound (0 <= i < N-1):     bounds\[i\]
         ///    Lower bound (1 <= i < N);       bounds[i - 1]
         ///
         /// The `bounds` field must contain at least one element. If `bounds` has
@@ -1962,7 +1962,7 @@ pub struct Page {
     ///     content: &#40;== include tutorial_java.md ==&#41;
     /// </code></pre>
     /// You can reference `Java` page using Markdown reference link syntax:
-    /// `[Java][Tutorial.Java]`.
+    /// `\[Java][Tutorial.Java\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The Markdown content of the page. You can use <code>&#40;== include {path}
@@ -1998,7 +1998,7 @@ pub struct Endpoint {
     /// Unimplemented. Dot not use.
     ///
     /// DEPRECATED: This field is no longer supported. Instead of using aliases,
-    /// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each of the intended
+    /// please specify multiple \[google.api.Endpoint][google.api.Endpoint\] for each of the intended
     /// aliases.
     ///
     /// Additional names that this endpoint will be hosted on.
@@ -2007,13 +2007,13 @@ pub struct Endpoint {
     pub aliases: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The specification of an Internet routable address of API frontend that will
     /// handle requests to this [API
-    /// Endpoint](https://cloud.google.com/apis/design/glossary). It should be
+    /// Endpoint](<https://cloud.google.com/apis/design/glossary>). It should be
     /// either a valid IPv4 address or a fully-qualified domain name. For example,
     /// "8.8.8.8" or "myservice.appspot.com".
     #[prost(string, tag = "101")]
     pub target: ::prost::alloc::string::String,
     /// Allowing
-    /// [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing), aka
+    /// \[CORS\](<https://en.wikipedia.org/wiki/Cross-origin_resource_sharing>), aka
     /// cross-domain traffic, would allow the backends served from this endpoint to
     /// receive and respond to HTTP OPTIONS requests. The response will be used by
     /// the browser to determine whether the subsequent cross-origin request is
@@ -2023,7 +2023,7 @@ pub struct Endpoint {
 }
 /// Defines the supported values for `google.rpc.ErrorInfo.reason` for the
 /// `googleapis.com` error domain. This error domain is reserved for [Service
-/// Infrastructure](https://cloud.google.com/service-infrastructure/docs/overview).
+/// Infrastructure](<https://cloud.google.com/service-infrastructure/docs/overview>).
 /// For each error info of this domain, the metadata key "service" refers to the
 /// logical identifier of an API service, such as "pubsub.googleapis.com". The
 /// "consumer" refers to the entity that consumes an API Service. It typically is
@@ -2069,7 +2069,7 @@ pub enum ErrorReason {
     /// This response indicates the billing account associated has been disabled.
     BillingDisabled = 2,
     /// The request is denied because the provided [API
-    /// key](https://cloud.google.com/docs/authentication/api-keys) is invalid. It
+    /// key](<https://cloud.google.com/docs/authentication/api-keys>) is invalid. It
     /// may be in a bad format, cannot be found, or has been expired).
     ///
     /// Example of an ErrorInfo when the request is contacting
@@ -2083,7 +2083,7 @@ pub enum ErrorReason {
     ///     }
     ApiKeyInvalid = 3,
     /// The request is denied because it violates [API key API
-    /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_api_restrictions).
+    /// restrictions](<https://cloud.google.com/docs/authentication/api-keys#adding_api_restrictions>).
     ///
     /// Example of an ErrorInfo when the consumer "projects/123" fails to call the
     /// "storage.googleapis.com" service because this service is restricted in the
@@ -2098,7 +2098,7 @@ pub enum ErrorReason {
     ///     }
     ApiKeyServiceBlocked = 4,
     /// The request is denied because it violates [API key HTTP
-    /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_http_restrictions).
+    /// restrictions](<https://cloud.google.com/docs/authentication/api-keys#adding_http_restrictions>).
     ///
     /// Example of an ErrorInfo when the consumer "projects/123" fails to call
     /// "storage.googleapis.com" service because the http referrer of the request
@@ -2113,7 +2113,7 @@ pub enum ErrorReason {
     ///     }
     ApiKeyHttpReferrerBlocked = 7,
     /// The request is denied because it violates [API key IP address
-    /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions).
+    /// restrictions](<https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions>).
     ///
     /// Example of an ErrorInfo when the consumer "projects/123" fails to call
     /// "storage.googleapis.com" service because the caller IP of the request
@@ -2128,7 +2128,7 @@ pub enum ErrorReason {
     ///     }
     ApiKeyIpAddressBlocked = 8,
     /// The request is denied because it violates [API key Android application
-    /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions).
+    /// restrictions](<https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions>).
     ///
     /// Example of an ErrorInfo when the consumer "projects/123" fails to call
     /// "storage.googleapis.com" service because the request from the Android apps
@@ -2143,7 +2143,7 @@ pub enum ErrorReason {
     ///     }
     ApiKeyAndroidAppBlocked = 9,
     /// The request is denied because it violates [API key iOS application
-    /// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions).
+    /// restrictions](<https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions>).
     ///
     /// Example of an ErrorInfo when the consumer "projects/123" fails to call
     /// "storage.googleapis.com" service because the request from the iOS apps
@@ -2247,7 +2247,7 @@ pub enum ErrorReason {
     /// The request is denied because the caller does not have required permission
     /// on the user project "projects/123" or the user project is invalid. For more
     /// information, check the [userProject System
-    /// Parameters](https://cloud.google.com/apis/docs/system-parameters).
+    /// Parameters](<https://cloud.google.com/apis/docs/system-parameters>).
     ///
     /// Example of an ErrorInfo when the caller is calling Cloud Storage service
     /// with insufficient permissions on the user project:
@@ -2262,7 +2262,7 @@ pub enum ErrorReason {
     UserProjectDenied = 11,
     /// The request is denied because the consumer "projects/123" is suspended due
     /// to Terms of Service(Tos) violations. Check [Project suspension
-    /// guidelines](https://cloud.google.com/resource-manager/docs/project-suspension-guidelines)
+    /// guidelines](<https://cloud.google.com/resource-manager/docs/project-suspension-guidelines>)
     /// for more information.
     ///
     /// Example of an ErrorInfo when calling Cloud Storage service with the
@@ -2291,11 +2291,11 @@ pub enum ErrorReason {
     ///     }
     ConsumerInvalid = 14,
     /// The request is denied because it violates [VPC Service
-    /// Controls](https://cloud.google.com/vpc-service-controls/docs/overview).
+    /// Controls](<https://cloud.google.com/vpc-service-controls/docs/overview>).
     /// The 'uid' field is a random generated identifier that customer can use it
     /// to search the audit log for a request rejected by VPC Service Controls. For
     /// more information, please refer [VPC Service Controls
-    /// Troubleshooting](https://cloud.google.com/vpc-service-controls/docs/troubleshooting#unique-id)
+    /// Troubleshooting](<https://cloud.google.com/vpc-service-controls/docs/troubleshooting#unique-id>)
     ///
     /// Example of an ErrorInfo when the consumer "projects/123" fails to call
     /// Cloud Storage service because the request is prohibited by the VPC Service
@@ -2326,7 +2326,7 @@ pub enum ErrorReason {
     /// The request is denied because the provided access token doesn't have at
     /// least one of the acceptable scopes required for the API. Please check
     /// [OAuth 2.0 Scopes for Google
-    /// APIs](https://developers.google.com/identity/protocols/oauth2/scopes) for
+    /// APIs](<https://developers.google.com/identity/protocols/oauth2/scopes>) for
     /// the list of the OAuth 2.0 scopes that you might need to request to access
     /// the API.
     ///
@@ -2343,7 +2343,7 @@ pub enum ErrorReason {
     AccessTokenScopeInsufficient = 17,
     /// The request is denied because the account associated with the provided
     /// access token is in an invalid state, such as disabled or deleted.
-    /// For more information, see https://cloud.google.com/docs/authentication.
+    /// For more information, see <https://cloud.google.com/docs/authentication.>
     ///
     /// Warning: For privacy reasons, the server may not be able to disclose the
     /// email address for some accounts. The client MUST NOT depend on the
@@ -2351,7 +2351,7 @@ pub enum ErrorReason {
     ///
     /// Example of an ErrorInfo when the request is to the Cloud Storage API with
     /// an access token that is associated with a disabled or deleted [service
-    /// account](http://cloud/iam/docs/service-accounts):
+    /// account](<http://cloud/iam/docs/service-accounts>):
     ///
     ///     { "reason": "ACCOUNT_STATE_INVALID",
     ///       "domain": "googleapis.com",
@@ -2397,12 +2397,15 @@ pub enum ErrorReason {
 ///
 ///       // The raw HTTP body is bound to this field.
 ///       google.api.HttpBody http_body = 2;
+///
 ///     }
 ///
 ///     service ResourceService {
-///       rpc GetResource(GetResourceRequest) returns (google.api.HttpBody);
-///       rpc UpdateResource(google.api.HttpBody) returns
-///       (google.protobuf.Empty);
+///       rpc GetResource(GetResourceRequest)
+///         returns (google.api.HttpBody);
+///       rpc UpdateResource(google.api.HttpBody)
+///         returns (google.protobuf.Empty);
+///
 ///     }
 ///
 /// Example with streaming methods:
@@ -2412,6 +2415,7 @@ pub enum ErrorReason {
 ///         returns (stream google.api.HttpBody);
 ///       rpc UpdateCalendar(stream google.api.HttpBody)
 ///         returns (stream google.api.HttpBody);
+///
 ///     }
 ///
 /// Use of this type only changes how the request and response bodies are
@@ -2441,8 +2445,8 @@ pub struct HttpBody {
 pub struct LogDescriptor {
     /// The name of the log. It must be less than 512 characters long and can
     /// include the following characters: upper- and lower-case alphanumeric
-    /// characters [A-Za-z0-9], and punctuation characters including
-    /// slash, underscore, hyphen, period [/_-.].
+    /// characters \[A-Za-z0-9\], and punctuation characters including
+    /// slash, underscore, hyphen, period \[/_-.\].
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The set of labels that are available to describe a specific log entry.
@@ -2510,18 +2514,18 @@ pub mod logging {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LoggingDestination {
         /// The monitored resource type. The type must be defined in the
-        /// [Service.monitored_resources][google.api.Service.monitored_resources] section.
+        /// \[Service.monitored_resources][google.api.Service.monitored_resources\] section.
         #[prost(string, tag = "3")]
         pub monitored_resource: ::prost::alloc::string::String,
         /// Names of the logs to be sent to this destination. Each name must
-        /// be defined in the [Service.logs][google.api.Service.logs] section. If the log name is
+        /// be defined in the \[Service.logs][google.api.Service.logs\] section. If the log name is
         /// not a domain scoped name, it will be automatically prefixed with
         /// the service name followed by "/".
         #[prost(string, repeated, tag = "1")]
         pub logs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
-/// An object that describes the schema of a [MonitoredResource][google.api.MonitoredResource] object using a
+/// An object that describes the schema of a \[MonitoredResource][google.api.MonitoredResource\] object using a
 /// type name and a set of labels.  For example, the monitored resource
 /// descriptor for Google Compute Engine VM instances has a type of
 /// `"gce_instance"` and specifies the use of the labels `"instance_id"` and
@@ -2567,11 +2571,11 @@ pub struct MonitoredResourceDescriptor {
 /// An object representing a resource that can be used for monitoring, logging,
 /// billing, or other purposes. Examples include virtual machine instances,
 /// databases, and storage devices such as disks. The `type` field identifies a
-/// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object that describes the resource's
+/// \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\] object that describes the resource's
 /// schema. Information in the `labels` field identifies the actual resource and
 /// its attributes according to the schema. For example, a particular Compute
 /// Engine VM instance could be represented by the following object, because the
-/// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] for `"gce_instance"` has labels
+/// \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\] for `"gce_instance"` has labels
 /// `"instance_id"` and `"zone"`:
 ///
 ///     { "type": "gce_instance",
@@ -2580,7 +2584,7 @@ pub struct MonitoredResourceDescriptor {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MonitoredResource {
     /// Required. The monitored resource type. This field must match
-    /// the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For
+    /// the `type` field of a \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\] object. For
     /// example, the type of a Compute Engine VM instance is `gce_instance`.
     #[prost(string, tag = "1")]
     pub r#type: ::prost::alloc::string::String,
@@ -2591,8 +2595,8 @@ pub struct MonitoredResource {
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-/// Auxiliary metadata for a [MonitoredResource][google.api.MonitoredResource] object.
-/// [MonitoredResource][google.api.MonitoredResource] objects contain the minimum set of information to
+/// Auxiliary metadata for a \[MonitoredResource][google.api.MonitoredResource\] object.
+/// \[MonitoredResource][google.api.MonitoredResource\] objects contain the minimum set of information to
 /// uniquely identify a monitored resource instance. There is some other useful
 /// auxiliary metadata. Monitoring and Logging use an ingestion
 /// pipeline to extract metadata for cloud resources of all types, and store
@@ -2694,11 +2698,11 @@ pub mod monitoring {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MonitoringDestination {
         /// The monitored resource type. The type must be defined in
-        /// [Service.monitored_resources][google.api.Service.monitored_resources] section.
+        /// \[Service.monitored_resources][google.api.Service.monitored_resources\] section.
         #[prost(string, tag = "1")]
         pub monitored_resource: ::prost::alloc::string::String,
         /// Types of the metrics to report to this monitoring destination.
-        /// Each type must be defined in [Service.metrics][google.api.Service.metrics] section.
+        /// Each type must be defined in \[Service.metrics][google.api.Service.metrics\] section.
         #[prost(string, repeated, tag = "2")]
         pub metrics: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
@@ -2770,7 +2774,7 @@ pub struct Quota {
 pub struct MetricRule {
     /// Selects the methods to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
     #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// Metrics to update when the selected methods are called, and the associated
@@ -2844,7 +2848,7 @@ pub struct QuotaLimit {
     #[prost(string, tag = "8")]
     pub metric: ::prost::alloc::string::String,
     /// Specify the unit of the quota limit. It uses the same syntax as
-    /// [Metric.unit][]. The supported unit kinds are determined by the quota
+    /// \[Metric.unit][\]. The supported unit kinds are determined by the quota
     /// backend system.
     ///
     /// Here are some examples:
@@ -2865,6 +2869,439 @@ pub struct QuotaLimit {
     /// display name generated from the configuration.
     #[prost(string, tag = "12")]
     pub display_name: ::prost::alloc::string::String,
+}
+/// Specifies the routing information that should be sent along with the request
+/// in the form of routing header.
+/// **NOTE:** All service configuration rules follow the "last one wins" order.
+///
+/// The examples below will apply to an RPC which has the following request type:
+///
+/// Message Definition:
+///
+///     message Request {
+///       // The name of the Table
+///       // Values can be of the following formats:
+///       // - `projects/<project>/tables/<table>`
+///       // - `projects/<project>/instances/<instance>/tables/<table>`
+///       // - `region/<region>/zones/<zone>/tables/<table>`
+///       string table_name = 1;
+///
+///       // This value specifies routing for replication.
+///       // It can be in the following formats:
+///       // - `profiles/<profile_id>`
+///       // - a legacy `profile_id` that can be any string
+///       string app_profile_id = 2;
+///     }
+///
+/// Example message:
+///
+///     {
+///       table_name: projects/proj_foo/instances/instance_bar/table/table_baz,
+///       app_profile_id: profiles/prof_qux
+///     }
+///
+/// The routing header consists of one or multiple key-value pairs. Every key
+/// and value must be percent-encoded, and joined together in the format of
+/// `key1=value1&key2=value2`.
+/// In the examples below I am skipping the percent-encoding for readablity.
+///
+/// Example 1
+///
+/// Extracting a field from the request to put into the routing header
+/// unchanged, with the key equal to the field name.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // Take the `app_profile_id`.
+///       routing_parameters {
+///         field: "app_profile_id"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params: app_profile_id=profiles/prof_qux
+///
+/// Example 2
+///
+/// Extracting a field from the request to put into the routing header
+/// unchanged, with the key different from the field name.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // Take the `app_profile_id`, but name it `routing_id` in the header.
+///       routing_parameters {
+///         field: "app_profile_id"
+///         path_template: "{routing_id=**}"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params: routing_id=profiles/prof_qux
+///
+/// Example 3
+///
+/// Extracting a field from the request to put into the routing
+/// header, while matching a path template syntax on the field's value.
+///
+/// NB: it is more useful to send nothing than to send garbage for the purpose
+/// of dynamic routing, since garbage pollutes cache. Thus the matching.
+///
+/// Sub-example 3a
+///
+/// The field matches the template.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // Take the `table_name`, if it's well-formed (with project-based
+///       // syntax).
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{table_name=projects/*/instances/*/**}"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params:
+///     table_name=projects/proj_foo/instances/instance_bar/table/table_baz
+///
+/// Sub-example 3b
+///
+/// The field does not match the template.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // Take the `table_name`, if it's well-formed (with region-based
+///       // syntax).
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{table_name=regions/*/zones/*/**}"
+///       }
+///     };
+///
+/// result:
+///
+///     <no routing header will be sent>
+///
+/// Sub-example 3c
+///
+/// Multiple alternative conflictingly named path templates are
+/// specified. The one that matches is used to construct the header.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // Take the `table_name`, if it's well-formed, whether
+///       // using the region- or projects-based syntax.
+///
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{table_name=regions/*/zones/*/**}"
+///       }
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{table_name=projects/*/instances/*/**}"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params:
+///     table_name=projects/proj_foo/instances/instance_bar/table/table_baz
+///
+/// Example 4
+///
+/// Extracting a single routing header key-value pair by matching a
+/// template syntax on (a part of) a single request field.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // Take just the project id from the `table_name` field.
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{routing_id=projects/*}/**"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params: routing_id=projects/proj_foo
+///
+/// Example 5
+///
+/// Extracting a single routing header key-value pair by matching
+/// several conflictingly named path templates on (parts of) a single request
+/// field. The last template to match "wins" the conflict.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // If the `table_name` does not have instances information,
+///       // take just the project id for routing.
+///       // Otherwise take project + instance.
+///
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{routing_id=projects/*}/**"
+///       }
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{routing_id=projects/*/instances/*}/**"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params:
+///     routing_id=projects/proj_foo/instances/instance_bar
+///
+/// Example 6
+///
+/// Extracting multiple routing header key-value pairs by matching
+/// several non-conflicting path templates on (parts of) a single request field.
+///
+/// Sub-example 6a
+///
+/// Make the templates strict, so that if the `table_name` does not
+/// have an instance information, nothing is sent.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // The routing code needs two keys instead of one composite
+///       // but works only for the tables with the "project-instance" name
+///       // syntax.
+///
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{project_id=projects/*}/instances/*/**"
+///       }
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "projects/*/{instance_id=instances/*}/**"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params:
+///     project_id=projects/proj_foo&instance_id=instances/instance_bar
+///
+/// Sub-example 6b
+///
+/// Make the templates loose, so that if the `table_name` does not
+/// have an instance information, just the project id part is sent.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // The routing code wants two keys instead of one composite
+///       // but will work with just the `project_id` for tables without
+///       // an instance in the `table_name`.
+///
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{project_id=projects/*}/**"
+///       }
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "projects/*/{instance_id=instances/*}/**"
+///       }
+///     };
+///
+/// result (is the same as 6a for our example message because it has the instance
+/// information):
+///
+///     x-goog-request-params:
+///     project_id=projects/proj_foo&instance_id=instances/instance_bar
+///
+/// Example 7
+///
+/// Extracting multiple routing header key-value pairs by matching
+/// several path templates on multiple request fields.
+///
+/// NB: note that here there is no way to specify sending nothing if one of the
+/// fields does not match its template. E.g. if the `table_name` is in the wrong
+/// format, the `project_id` will not be sent, but the `routing_id` will be.
+/// The backend routing code has to be aware of that and be prepared to not
+/// receive a full complement of keys if it expects multiple.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // The routing needs both `project_id` and `routing_id`
+///       // (from the `app_profile_id` field) for routing.
+///
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{project_id=projects/*}/**"
+///       }
+///       routing_parameters {
+///         field: "app_profile_id"
+///         path_template: "{routing_id=**}"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params:
+///     project_id=projects/proj_foo&routing_id=profiles/prof_qux
+///
+/// Example 8
+///
+/// Extracting a single routing header key-value pair by matching
+/// several conflictingly named path templates on several request fields. The
+/// last template to match "wins" the conflict.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // The `routing_id` can be a project id or a region id depending on
+///       // the table name format, but only if the `app_profile_id` is not set.
+///       // If `app_profile_id` is set it should be used instead.
+///
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{routing_id=projects/*}/**"
+///       }
+///       routing_parameters {
+///          field: "table_name"
+///          path_template: "{routing_id=regions/*}/**"
+///       }
+///       routing_parameters {
+///         field: "app_profile_id"
+///         path_template: "{routing_id=**}"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params: routing_id=profiles/prof_qux
+///
+/// Example 9
+///
+/// Bringing it all together.
+///
+/// annotation:
+///
+///     option (google.api.routing) = {
+///       // For routing both `table_location` and a `routing_id` are needed.
+///       //
+///       // table_location can be either an instance id or a region+zone id.
+///       //
+///       // For `routing_id`, take the value of `app_profile_id`
+///       // - If it's in the format `profiles/<profile_id>`, send
+///       // just the `<profile_id>` part.
+///       // - If it's any other literal, send it as is.
+///       // If the `app_profile_id` is empty, and the `table_name` starts with
+///       // the project_id, send that instead.
+///
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "projects/*/{table_location=instances/*}/tables/*"
+///       }
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{table_location=regions/*/zones/*}/tables/*"
+///       }
+///       routing_parameters {
+///         field: "table_name"
+///         path_template: "{routing_id=projects/*}/**"
+///       }
+///       routing_parameters {
+///         field: "app_profile_id"
+///         path_template: "{routing_id=**}"
+///       }
+///       routing_parameters {
+///         field: "app_profile_id"
+///         path_template: "profiles/{routing_id=*}"
+///       }
+///     };
+///
+/// result:
+///
+///     x-goog-request-params:
+///     table_location=instances/instance_bar&routing_id=prof_qux
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RoutingRule {
+    /// A collection of Routing Parameter specifications.
+    /// **NOTE:** If multiple Routing Parameters describe the same key
+    /// (via the `path_template` field or via the `field` field when
+    /// `path_template` is not provided), "last one wins" rule
+    /// determines which Parameter gets used.
+    /// See the examples for more details.
+    #[prost(message, repeated, tag = "2")]
+    pub routing_parameters: ::prost::alloc::vec::Vec<RoutingParameter>,
+}
+/// A projection from an input message to the GRPC or REST header.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RoutingParameter {
+    /// A request field to extract the header key-value pair from.
+    #[prost(string, tag = "1")]
+    pub field: ::prost::alloc::string::String,
+    /// A pattern matching the key-value field. Optional.
+    /// If not specified, the whole field specified in the `field` field will be
+    /// taken as value, and its name used as key. If specified, it MUST contain
+    /// exactly one named segment (along with any number of unnamed segments) The
+    /// pattern will be matched over the field specified in the `field` field, then
+    /// if the match is successful:
+    /// - the name of the single named segment will be used as a header name,
+    /// - the match value of the segment will be used as a header value;
+    /// if the match is NOT successful, nothing will be sent.
+    ///
+    /// Example:
+    ///
+    ///               -- This is a field in the request message
+    ///              |   that the header value will be extracted from.
+    ///              |
+    ///              |                     -- This is the key name in the
+    ///              |                    |   routing header.
+    ///              V                    |
+    ///     field: "table_name"           v
+    ///     path_template: "projects/*/{table_location=instances/*}/tables/*"
+    ///                                                ^            ^
+    ///                                                |            |
+    ///       In the {} brackets is the pattern that --             |
+    ///       specifies what to extract from the                    |
+    ///       field as a value to be sent.                          |
+    ///                                                             |
+    ///      The string in the field must match the whole pattern --
+    ///      before brackets, inside brackets, after brackets.
+    ///
+    /// When looking at this specific example, we can see that:
+    /// - A key-value pair with the key `table_location`
+    ///   and the value matching `instances/*` should be added
+    ///   to the x-goog-request-params routing header.
+    /// - The value is extracted from the request message's `table_name` field
+    ///   if it matches the full pattern specified:
+    ///   `projects/*/instances/*/tables/*`.
+    ///
+    /// **NB:** If the `path_template` field is not provided, the key name is
+    /// equal to the field name, and the whole field should be sent as a value.
+    /// This makes the pattern for the field and the value functionally equivalent
+    /// to `**`, and the configuration
+    ///
+    ///     {
+    ///       field: "table_name"
+    ///     }
+    ///
+    /// is a functionally equivalent shorthand to:
+    ///
+    ///     {
+    ///       field: "table_name"
+    ///       path_template: "{table_name=**}"
+    ///     }
+    ///
+    /// See Example 1 for more details.
+    #[prost(string, tag = "2")]
+    pub path_template: ::prost::alloc::string::String,
 }
 /// Source information used to create a Service Config
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2920,7 +3357,7 @@ pub struct SystemParameterRule {
     /// Selects the methods to which this rule applies. Use '*' to indicate all
     /// methods in all APIs.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
     #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// Define parameters. Multiple names may be defined for a parameter.
@@ -2971,10 +3408,10 @@ pub struct Usage {
     /// service producer.
     ///
     /// Google Service Management currently only supports
-    /// [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) as a notification
+    /// [Google Cloud Pub/Sub](<https://cloud.google.com/pubsub>) as a notification
     /// channel. To use Google Cloud Pub/Sub as the channel, this must be the name
     /// of a Cloud Pub/Sub topic that uses the Cloud Pub/Sub topic name format
-    /// documented in https://cloud.google.com/pubsub/docs/overview.
+    /// documented in <https://cloud.google.com/pubsub/docs/overview.>
     #[prost(string, tag = "7")]
     pub producer_notification_channel: ::prost::alloc::string::String,
 }
@@ -3008,7 +3445,7 @@ pub struct UsageRule {
     /// Selects the methods to which this rule applies. Use '*' to indicate all
     /// methods in all APIs.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
     #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// If true, the selected method allows unregistered calls, e.g. calls
@@ -3038,8 +3475,8 @@ pub struct UsageRule {
 ///     authentication:
 ///       providers:
 ///       - id: google_calendar_auth
-///         jwks_uri: https://www.googleapis.com/oauth2/v1/certs
-///         issuer: https://securetoken.google.com
+///         jwks_uri: <https://www.googleapis.com/oauth2/v1/certs>
+///         issuer: <https://securetoken.google.com>
 ///       rules:
 ///       - selector: "*"
 ///         requirements:
@@ -3065,7 +3502,7 @@ pub struct Service {
     #[prost(string, tag = "33")]
     pub id: ::prost::alloc::string::String,
     /// A list of API interfaces exported by this service. Only the `name` field
-    /// of the [google.protobuf.Api][google.protobuf.Api] needs to be provided by the configuration
+    /// of the \[google.protobuf.Api][google.protobuf.Api\] needs to be provided by the configuration
     /// author, as the remaining fields will be derived from the IDL during the
     /// normalization process. It is an error to specify an API interface here
     /// which cannot be resolved against the associated IDL files.
@@ -3126,7 +3563,7 @@ pub struct Service {
     #[prost(message, repeated, tag = "24")]
     pub metrics: ::prost::alloc::vec::Vec<MetricDescriptor>,
     /// Defines the monitored resources used by this service. This is required
-    /// by the [Service.monitoring][google.api.Service.monitoring] and [Service.logging][google.api.Service.logging] configurations.
+    /// by the \[Service.monitoring][google.api.Service.monitoring\] and \[Service.logging][google.api.Service.logging\] configurations.
     #[prost(message, repeated, tag = "25")]
     pub monitored_resources: ::prost::alloc::vec::Vec<MonitoredResourceDescriptor>,
     /// Billing configuration.
@@ -3188,7 +3625,7 @@ pub struct Visibility {
 pub struct VisibilityRule {
     /// Selects methods, messages, fields, enums, etc. to which this rule applies.
     ///
-    /// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.
+    /// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.
     #[prost(string, tag = "1")]
     pub selector: ::prost::alloc::string::String,
     /// A comma-separated list of visibility labels that apply to the `selector`.

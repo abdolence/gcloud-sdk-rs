@@ -287,7 +287,7 @@ pub mod display_ad_format_setting_enum {
 
 /// Container for display upload product types. Product types that have the word
 /// "DYNAMIC" in them must be associated with a campaign that has a dynamic
-/// remarketing feed. See https://support.google.com/google-ads/answer/6053288
+/// remarketing feed. See <https://support.google.com/google-ads/answer/6053288>
 /// for more info about dynamic remarketing. Other product types are regarded
 /// as "static" and do not have this requirement.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1310,7 +1310,7 @@ pub mod promotion_extension_discount_modifier_enum {
 
 /// Container for enum describing a promotion extension occasion.
 /// For more information about the occasions please check:
-/// https://support.google.com/google-ads/answer/7367521
+/// <https://support.google.com/google-ads/answer/7367521>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromotionExtensionOccasionEnum {}
 /// Nested message and enum types in `PromotionExtensionOccasionEnum`.
@@ -2012,13 +2012,13 @@ pub mod quality_score_bucket_enum {
 // Proto file describing user identifier source
 
 /// Container for enum describing the source of the user identifier for offline
-/// Store Sales third party uploads.
+/// Store Sales, click conversion, and conversion adjustment uploads.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserIdentifierSourceEnum {}
 /// Nested message and enum types in `UserIdentifierSourceEnum`.
 pub mod user_identifier_source_enum {
-    /// The type of user identifier source for offline Store Sales third party
-    /// uploads.
+    /// The type of user identifier source for offline Store Sales, click
+    /// conversion, and conversion adjustment uploads.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum UserIdentifierSource {
@@ -2534,6 +2534,38 @@ pub mod conversion_or_adjustment_lag_bucket_enum {
         AdjustmentUnknown = 42,
     }
 }
+// Proto file describing conversion value rule primary dimension.
+
+/// Container for enum describing value rule primary dimension for stats.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionValueRulePrimaryDimensionEnum {}
+/// Nested message and enum types in `ConversionValueRulePrimaryDimensionEnum`.
+pub mod conversion_value_rule_primary_dimension_enum {
+    /// Identifies the primary dimension for conversion value rule stats.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConversionValueRulePrimaryDimension {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// For no-value-rule-applied conversions after value rule is enabled.
+        NoRuleApplied = 2,
+        /// Below are for value-rule-applied conversions:
+        /// The original stats.
+        Original = 3,
+        /// When a new or returning customer condition is satisfied.
+        NewVsReturningUser = 4,
+        /// When a query-time Geo location condition is satisfied.
+        GeoLocation = 5,
+        /// When a query-time browsing device condition is satisfied.
+        Device = 6,
+        /// When a query-time audience condition is satisfied.
+        Audience = 7,
+        /// When multiple rules are applied.
+        Multiple = 8,
+    }
+}
 /// Container for enum describing the external conversion source that is
 /// associated with a ConversionAction.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2683,7 +2715,7 @@ pub mod hotel_rate_type_enum {
         /// like having a public rate available. UI treatment will strikethrough the
         /// public rate and indicate that a discount is available to the user. For
         /// more on Qualified Rates, visit
-        /// https://developers.google.com/hotels/hotel-ads/dev-guide/qualified-rates
+        /// <https://developers.google.com/hotels/hotel-ads/dev-guide/qualified-rates>
         QualifiedRate = 4,
         /// Rates available to users that satisfy some eligibility criteria. e.g.
         /// all signed-in users, 20% of mobile users, all mobile users in Canada,
@@ -4138,6 +4170,14 @@ pub mod bidding_strategy_type_enum {
         /// that seem more likely to lead to a conversion and lowers
         /// them for clicks where they seem less likely.
         EnhancedCpc = 2,
+        /// Used for return value only. Indicates that a campaign does not have a
+        /// bidding strategy. This prevents the campaign from serving. For example,
+        /// a campaign may be attached to a manager bidding strategy and the serving
+        /// account is subsequently unlinked from the manager account. In this case
+        /// the campaign will automatically be detached from the now inaccessible
+        /// manager bidding strategy and transition to the INVALID bidding strategy
+        /// type.
+        Invalid = 17,
         /// Manual click based bidding where user pays per click.
         ManualCpc = 3,
         /// Manual impression based bidding
@@ -4297,7 +4337,7 @@ pub mod budget_period_enum {
         Daily = 2,
         /// Custom budget, added back in V5.
         /// Custom bugdet can be used with total_amount to specify lifetime budget
-        /// limit. See: https://support.google.com/google-ads/answer/6385083 for more
+        /// limit. See: <https://support.google.com/google-ads/answer/6385083> for more
         /// info.
         CustomPeriod = 5,
     }
@@ -4340,17 +4380,17 @@ pub mod budget_type_enum {
         Unknown = 1,
         /// Budget type for standard Google Ads usage.
         /// Caps daily spend at two times the specified budget amount.
-        /// Full details: https://support.google.com/google-ads/answer/6385083
+        /// Full details: <https://support.google.com/google-ads/answer/6385083>
         Standard = 2,
         /// Budget type for Hotels Ads commission program.
-        /// Full details: https://support.google.com/google-ads/answer/9243945
+        /// Full details: <https://support.google.com/google-ads/answer/9243945>
         ///
         /// This type is only supported by campaigns with
         /// AdvertisingChannelType.HOTEL, BiddingStrategyType.COMMISSION and
         /// PaymentMode.CONVERSION_VALUE.
         HotelAdsCommission = 3,
         /// Budget type with a fixed cost-per-acquisition (conversion).
-        /// Full details: https://support.google.com/google-ads/answer/7528254
+        /// Full details: <https://support.google.com/google-ads/answer/7528254>
         ///
         /// This type is only supported by campaigns with
         /// AdvertisingChannelType.DISPLAY (excluding
@@ -4358,7 +4398,7 @@ pub mod budget_type_enum {
         /// BiddingStrategyType.TARGET_CPA and PaymentMode.CONVERSIONS.
         FixedCpa = 4,
         /// Budget type for Smart Campaign.
-        /// Full details: https://support.google.com/google-ads/answer/7653509
+        /// Full details: <https://support.google.com/google-ads/answer/7653509>
         ///
         /// This type is only supported by campaigns with
         /// AdvertisingChannelType.SMART and
@@ -4776,6 +4816,14 @@ pub mod change_event_resource_type_enum {
         AdGroupFeed = 12,
         /// An AdGroupAd resource change.
         AdGroupAd = 13,
+        /// An Asset resource change.
+        Asset = 14,
+        /// A CustomerAsset resource change.
+        CustomerAsset = 15,
+        /// A CampaignAsset resource change.
+        CampaignAsset = 16,
+        /// An AdGroupAsset resource change.
+        AdGroupAsset = 17,
     }
 }
 // Proto file describing the change status operations.
@@ -4839,6 +4887,18 @@ pub mod change_status_resource_type_enum {
         CampaignFeed = 12,
         /// An AdGroupBidModifier resource change.
         AdGroupBidModifier = 13,
+        /// A SharedSet resource change.
+        SharedSet = 14,
+        /// A CampaignSharedSet resource change.
+        CampaignSharedSet = 15,
+        /// An Asset resource change.
+        Asset = 16,
+        /// A CustomerAsset resource change.
+        CustomerAsset = 17,
+        /// A CampaignAsset resource change.
+        CampaignAsset = 18,
+        /// An AdGroupAsset resource change.
+        AdGroupAsset = 19,
     }
 }
 // Proto file describing combined audience status.
@@ -4872,7 +4932,7 @@ pub struct ConversionActionCountingTypeEnum {}
 /// Nested message and enum types in `ConversionActionCountingTypeEnum`.
 pub mod conversion_action_counting_type_enum {
     /// Indicates how conversions for this action will be counted. For more
-    /// information, see https://support.google.com/google-ads/answer/3438531.
+    /// information, see <https://support.google.com/google-ads/answer/3438531.>
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ConversionActionCountingType {
@@ -5043,6 +5103,9 @@ pub mod conversion_adjustment_type_enum {
         Retraction = 2,
         /// Changes the value of a conversion.
         Restatement = 3,
+        /// Supplements an existing conversion with provided user identifiers and
+        /// user agent, which can be used by Google to enhance the conversion count.
+        Enhancement = 4,
     }
 }
 // Proto file describing conversion custom variable status.
@@ -5070,6 +5133,54 @@ pub mod conversion_custom_variable_status_enum {
         Enabled = 3,
         /// The conversion custom variable is paused and will not accrue stats
         /// until set to ENABLED again.
+        Paused = 4,
+    }
+}
+// Proto file describing conversion value rule set status.
+
+/// Container for enum describing possible statuses of a conversion value rule
+/// set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionValueRuleSetStatusEnum {}
+/// Nested message and enum types in `ConversionValueRuleSetStatusEnum`.
+pub mod conversion_value_rule_set_status_enum {
+    /// Possible statuses of a conversion value rule set.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConversionValueRuleSetStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Conversion Value Rule Set is enabled and can be applied.
+        Enabled = 2,
+        /// Conversion Value Rule Set is permanently deleted and can't be applied.
+        Removed = 3,
+        /// Conversion Value Rule Set is paused and won't be applied. It can be
+        /// enabled again.
+        Paused = 4,
+    }
+}
+// Proto file describing conversion value rule status.
+
+/// Container for enum describing possible statuses of a conversion value rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionValueRuleStatusEnum {}
+/// Nested message and enum types in `ConversionValueRuleStatusEnum`.
+pub mod conversion_value_rule_status_enum {
+    /// Possible statuses of a conversion value rule.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConversionValueRuleStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Conversion Value Rule is enabled and can be applied.
+        Enabled = 2,
+        /// Conversion Value Rule is permanently deleted and can't be applied.
+        Removed = 3,
+        /// Conversion Value Rule is paused, but can be re-enabled.
         Paused = 4,
     }
 }
@@ -5319,7 +5430,7 @@ pub mod custom_interest_type_enum {
 
 /// Values for Custom placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomPlaceholderFieldEnum {}
 /// Nested message and enum types in `CustomPlaceholderFieldEnum`.
@@ -5561,7 +5672,7 @@ pub mod dsa_page_feed_criterion_field_enum {
 
 /// Values for Education placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EducationPlaceholderFieldEnum {}
 /// Nested message and enum types in `EducationPlaceholderFieldEnum`.
@@ -6052,7 +6163,7 @@ pub mod feed_status_enum {
 
 /// Values for Flight placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlightPlaceholderFieldEnum {}
 /// Nested message and enum types in `FlightPlaceholderFieldEnum`.
@@ -6306,7 +6417,7 @@ pub mod google_voice_call_status_enum {
 
 /// Values for Hotel placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelPlaceholderFieldEnum {}
 /// Nested message and enum types in `HotelPlaceholderFieldEnum`.
@@ -6423,7 +6534,7 @@ pub mod invoice_type_enum {
 
 /// Values for Job placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobPlaceholderFieldEnum {}
 /// Nested message and enum types in `JobPlaceholderFieldEnum`.
@@ -6601,7 +6712,7 @@ pub mod linked_account_type_enum {
 
 /// Values for Local placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalPlaceholderFieldEnum {}
 /// Nested message and enum types in `LocalPlaceholderFieldEnum`.
@@ -7488,7 +7599,7 @@ pub mod reach_plan_network_enum {
 
 /// Values for Real Estate placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealEstatePlaceholderFieldEnum {}
 /// Nested message and enum types in `RealEstatePlaceholderFieldEnum`.
@@ -7845,6 +7956,59 @@ pub mod search_term_targeting_status_enum {
         None = 5,
     }
 }
+// Proto file describing seasonality event status.
+
+/// Message describing seasonality event scopes. The two types of seasonality
+/// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SeasonalityEventScopeEnum {}
+/// Nested message and enum types in `SeasonalityEventScopeEnum`.
+pub mod seasonality_event_scope_enum {
+    /// The possible scopes of a Seasonality Event.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SeasonalityEventScope {
+        /// No value has been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        ///
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The seasonality event is applied to all the customer’s traffic for
+        /// supported advertising channel types and device types. The CUSTOMER scope
+        /// cannot be used in mutates.
+        Customer = 2,
+        /// The seasonality event is applied to all specified campaigns.
+        Campaign = 4,
+        /// The seasonality event is applied to all campaigns that belong to
+        /// specified channel types.
+        Channel = 5,
+    }
+}
+// Proto file describing seasonality event status.
+
+/// Message describing seasonality event statuses. The two types of seasonality
+/// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SeasonalityEventStatusEnum {}
+/// Nested message and enum types in `SeasonalityEventStatusEnum`.
+pub mod seasonality_event_status_enum {
+    /// The possible statuses of a Seasonality Event.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SeasonalityEventStatus {
+        /// No value has been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        ///
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The seasonality event is enabled.
+        Enabled = 2,
+        /// The seasonality event is removed.
+        Removed = 4,
+    }
+}
 // Proto file describing shared set statuses.
 
 /// Container for enum describing types of shared set statuses.
@@ -8022,7 +8186,7 @@ pub mod structured_snippet_placeholder_field_enum {
         /// Data Type: STRING. The category of snippet of your products/services.
         /// Must match exactly one of the predefined structured snippets headers.
         /// For a list, visit
-        /// https://developers.google.com/adwords/api/docs/appendix/structured-snippet-headers
+        /// <https://developers.google.com/adwords/api/docs/appendix/structured-snippet-headers>
         Header = 2,
         /// Data Type: STRING_LIST. Text values that describe your products/services.
         /// All text must be family safe. Special or non-ASCII characters are not
@@ -8125,7 +8289,7 @@ pub mod time_type_enum {
 
 /// Values for Travel placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TravelPlaceholderFieldEnum {}
 /// Nested message and enum types in `TravelPlaceholderFieldEnum`.
@@ -8370,6 +8534,121 @@ pub mod user_list_type_enum {
         /// UserList of first-party CRM data provided by advertiser in the form of
         /// emails or other formats.
         CrmBased = 7,
+    }
+}
+// Proto file describing conversion value rule device type.
+
+/// Container for enum describing possible device types used in a conversion
+/// value rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleDeviceTypeEnum {}
+/// Nested message and enum types in `ValueRuleDeviceTypeEnum`.
+pub mod value_rule_device_type_enum {
+    /// Possible device types used in conversion value rule.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleDeviceType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Mobile device.
+        Mobile = 2,
+        /// Desktop device.
+        Desktop = 3,
+        /// Tablet device.
+        Tablet = 4,
+    }
+}
+// Proto file describing conversion value rule geo location match type.
+
+/// Container for enum describing possible geographic location matching types
+/// used in a conversion value rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleGeoLocationMatchTypeEnum {}
+/// Nested message and enum types in `ValueRuleGeoLocationMatchTypeEnum`.
+pub mod value_rule_geo_location_match_type_enum {
+    /// Possible geographic location matching types.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleGeoLocationMatchType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Either Area of Interest or Location of Presence can be used to match.
+        Any = 2,
+        /// Only Location of Presence can be used to match.
+        LocationOfPresence = 3,
+    }
+}
+// Proto file describing conversion value rule operation.
+
+/// Container for enum describing possible operations for value rules which are
+/// executed when rules are triggered.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleOperationEnum {}
+/// Nested message and enum types in `ValueRuleOperationEnum`.
+pub mod value_rule_operation_enum {
+    /// Possible operations of the action of a conversion value rule.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleOperation {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Add provided value to conversion value.
+        Add = 2,
+        /// Multiply conversion value by provided value.
+        Multiply = 3,
+        /// Set conversion value to provided value.
+        Set = 4,
+    }
+}
+// Proto file describing where the conversion value rule is attached.
+
+/// Container for enum describing where a value rule set is attached.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleSetAttachmentTypeEnum {}
+/// Nested message and enum types in `ValueRuleSetAttachmentTypeEnum`.
+pub mod value_rule_set_attachment_type_enum {
+    /// Possible level where a value rule set is attached.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleSetAttachmentType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Attached to the customer.
+        Customer = 2,
+        /// Attached to a campaign.
+        Campaign = 3,
+    }
+}
+// Proto file describing conversion value rule set dimension.
+
+/// Container for enum describing possible dimensions of a conversion value rule
+/// set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleSetDimensionEnum {}
+/// Nested message and enum types in `ValueRuleSetDimensionEnum`.
+pub mod value_rule_set_dimension_enum {
+    /// Possible dimensions of a conversion value rule set.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleSetDimension {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Dimension for geo location.
+        GeoLocation = 2,
+        /// Dimension for device type.
+        Device = 3,
+        /// Dimension for audience.
+        Audience = 4,
     }
 }
 // Proto file describing vanity pharma display url modes.

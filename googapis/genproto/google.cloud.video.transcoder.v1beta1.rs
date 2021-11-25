@@ -7,8 +7,8 @@ pub struct Job {
     pub name: ::prost::alloc::string::String,
     /// Input only. Specify the `input_uri` to populate empty `uri` fields in each element of
     /// `Job.config.inputs` or `JobTemplate.config.inputs` when using template.
-    /// URI of the media. It must be stored in Cloud Storage. For example,
-    /// `gs://bucket/inputs/file.mp4`.
+    /// URI of the media. Input files must be at least 5 seconds in duration and
+    /// stored in Cloud Storage (for example, `gs://bucket/inputs/file.mp4`).
     #[prost(string, tag = "2")]
     pub input_uri: ::prost::alloc::string::String,
     /// Input only. Specify the `output_uri` to populate an empty `Job.config.output.uri` or
@@ -21,6 +21,7 @@ pub struct Job {
     #[prost(int32, tag = "6")]
     pub priority: i32,
     /// Output only. The origin URI.
+    /// <aside class="note"><b>Note</b>: This feature is not yet available.</aside>
     #[prost(message, optional, tag = "7")]
     pub origin_uri: ::core::option::Option<job::OriginUri>,
     /// Output only. The current state of the job.
@@ -28,6 +29,7 @@ pub struct Job {
     pub state: i32,
     /// Output only. Estimated fractional progress, from `0` to `1` for each
     /// step.
+    /// <aside class="note"><b>Note</b>: This feature is not yet available.</aside>
     #[prost(message, optional, tag = "9")]
     pub progress: ::core::option::Option<Progress>,
     /// Output only. A description of the reason for the failure. This property is
@@ -36,6 +38,7 @@ pub struct Job {
     pub failure_reason: ::prost::alloc::string::String,
     /// Output only. List of failure details. This property may contain additional
     /// information about the failure when `failure_reason` is present.
+    /// <aside class="note"><b>Note</b>: This feature is not yet available.</aside>
     #[prost(message, repeated, tag = "11")]
     pub failure_details: ::prost::alloc::vec::Vec<FailureDetail>,
     /// Output only. The time the job was created.
@@ -47,8 +50,15 @@ pub struct Job {
     /// Output only. The time the transcoding finished.
     #[prost(message, optional, tag = "14")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Specify the `job_config` for transcoding job. When you use a `template_id`
-    /// to create a job, the `Job.config` is populated by the `JobTemplate.config`.
+    /// Job time to live value in days, which will be effective after job
+    /// completion. Job should be deleted automatically after the given TTL. Enter
+    /// a value between 1 and 90. The default is 30.
+    #[prost(int32, tag = "15")]
+    pub ttl_after_completion_days: i32,
+    /// Specify the `job_config` for the transcoding job. If you don't specify the
+    /// `job_config`, the API selects `templateId`; this template ID is set to
+    /// `preset/web-hd` by default. When you use a `template_id` to create a job,
+    /// the `Job.config` is populated by the `JobTemplate.config`.<br>
     #[prost(oneof = "job::JobConfig", tags = "4, 5")]
     pub job_config: ::core::option::Option<job::JobConfig>,
 }
@@ -57,8 +67,8 @@ pub mod job {
     /// The origin URI.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OriginUri {
-        /// HLS master manifest URI. If multiple HLS master manifests are created
-        /// only first one is listed.
+        /// HLS manifest URI per <https://tools.ietf.org/html/rfc8216#section-4.3.4.>
+        /// If multiple HLS manifests are created, only the first one is listed.
         #[prost(string, tag = "1")]
         pub hls: ::prost::alloc::string::String,
         /// Dash manifest URI. If multiple Dash manifests are created, only the first
@@ -82,8 +92,10 @@ pub mod job {
         /// `failure_details`
         Failed = 4,
     }
-    /// Specify the `job_config` for transcoding job. When you use a `template_id`
-    /// to create a job, the `Job.config` is populated by the `JobTemplate.config`.
+    /// Specify the `job_config` for the transcoding job. If you don't specify the
+    /// `job_config`, the API selects `templateId`; this template ID is set to
+    /// `preset/web-hd` by default. When you use a `template_id` to create a job,
+    /// the `Job.config` is populated by the `JobTemplate.config`.<br>
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum JobConfig {
         /// Input only. Specify the `template_id` to use for populating `Job.config`. The default
@@ -156,9 +168,9 @@ pub struct Input {
     /// mapping and edit lists.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,
-    /// URI of the media. It must be stored in Cloud Storage. Example
-    /// `gs://bucket/inputs/file.mp4`.
-    /// If empty the value will be populated from `Job.input_uri`.
+    /// URI of the media. Input files must be at least 5 seconds in duration and
+    /// stored in Cloud Storage (for example, `gs://bucket/inputs/file.mp4`).
+    /// If empty, the value will be populated from `Job.input_uri`.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
     /// Preprocessing configurations.
@@ -318,10 +330,16 @@ pub struct SpriteSheet {
     /// from 0 before the extension, such as `"sprite_sheet0000000123.jpeg"`.
     #[prost(string, tag = "2")]
     pub file_prefix: ::prost::alloc::string::String,
-    /// Required. The width of sprite in pixels. Must be an even integer.
+    /// Required. The width of sprite in pixels. Must be an even integer. To preserve the
+    /// source aspect ratio, set the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1beta1.SpriteSheet.sprite_width_pixels\] field or
+    /// the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1beta1.SpriteSheet.sprite_height_pixels\] field, but not both (the API will
+    /// automatically calculate the missing field).
     #[prost(int32, tag = "3")]
     pub sprite_width_pixels: i32,
-    /// Required. The height of sprite in pixels. Must be an even integer.
+    /// Required. The height of sprite in pixels. Must be an even integer. To preserve the
+    /// source aspect ratio, set the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1beta1.SpriteSheet.sprite_height_pixels\] field or
+    /// the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1beta1.SpriteSheet.sprite_width_pixels\] field, but not both (the API will
+    /// automatically calculate the missing field).
     #[prost(int32, tag = "4")]
     pub sprite_height_pixels: i32,
     /// The maximum number of sprites per row in a sprite sheet. The default is 0,
@@ -342,6 +360,12 @@ pub struct SpriteSheet {
     /// of the output file.
     #[prost(message, optional, tag = "8")]
     pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
+    /// The quality of the generated sprite sheet. Enter a value between 1
+    /// and 100, where 1 is the lowest quality and 100 is the highest quality.
+    /// The default is 100. A high quality value corresponds to a low image data
+    /// compression ratio.
+    #[prost(int32, tag = "11")]
+    pub quality: i32,
     /// Specify either total number of sprites or interval to create sprites.
     #[prost(oneof = "sprite_sheet::ExtractionStrategy", tags = "9, 10")]
     pub extraction_strategy: ::core::option::Option<sprite_sheet::ExtractionStrategy>,
@@ -388,8 +412,8 @@ pub mod overlay {
     /// Overlaid jpeg image.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Image {
-        /// Required. URI of the image in Cloud Storage. For example,
-        /// `gs://bucket/inputs/image.jpeg`.
+        /// Required. URI of the JPEG image in Cloud Storage. For example,
+        /// `gs://bucket/inputs/image.jpeg`. JPEG is the only supported image type.
         #[prost(string, tag = "1")]
         pub uri: ::prost::alloc::string::String,
         /// Normalized image resolution, based on output video resolution. Valid
@@ -398,8 +422,8 @@ pub mod overlay {
         /// both `x` and `y` to `0.0`.
         #[prost(message, optional, tag = "2")]
         pub resolution: ::core::option::Option<NormalizedCoordinate>,
-        /// Target image opacity. Valid values: `1` (solid, default),
-        /// `0` (transparent).
+        /// Target image opacity. Valid values are from  `1.0` (solid, default) to
+        /// `0.0` (transparent), exclusive. Set this to a value greater than `0.0`.
         #[prost(double, tag = "3")]
         pub alpha: f64,
     }
@@ -408,7 +432,9 @@ pub mod overlay {
     pub struct AnimationStatic {
         /// Normalized coordinates based on output video resolution. Valid
         /// values: `0.0`–`1.0`. `xy` is the upper-left coordinate of the overlay
-        /// object.
+        /// object. For example, use the x and y coordinates {0,0} to position the
+        /// top-left corner of the overlay animation in the top-left corner of the
+        /// output video.
         #[prost(message, optional, tag = "1")]
         pub xy: ::core::option::Option<NormalizedCoordinate>,
         /// The time to start displaying the overlay object, in seconds. Default: 0
@@ -423,7 +449,9 @@ pub mod overlay {
         pub fade_type: i32,
         /// Normalized coordinates based on output video resolution. Valid
         /// values: `0.0`–`1.0`. `xy` is the upper-left coordinate of the overlay
-        /// object.
+        /// object. For example, use the x and y coordinates {0,0} to position the
+        /// top-left corner of the overlay animation in the top-left corner of the
+        /// output video.
         #[prost(message, optional, tag = "2")]
         pub xy: ::core::option::Option<NormalizedCoordinate>,
         /// The time to start the fade animation, in seconds. Default: 0
@@ -493,6 +521,12 @@ pub struct PreprocessingConfig {
     /// Audio preprocessing configuration.
     #[prost(message, optional, tag = "4")]
     pub audio: ::core::option::Option<preprocessing_config::Audio>,
+    /// Specify the video cropping configuration.
+    #[prost(message, optional, tag = "5")]
+    pub crop: ::core::option::Option<preprocessing_config::Crop>,
+    /// Specify the video pad filter configuration.
+    #[prost(message, optional, tag = "6")]
+    pub pad: ::core::option::Option<preprocessing_config::Pad>,
 }
 /// Nested message and enum types in `PreprocessingConfig`.
 pub mod preprocessing_config {
@@ -546,12 +580,16 @@ pub mod preprocessing_config {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Audio {
         /// Specify audio loudness normalization in loudness units relative to full
-        /// scale (LUFS). Enter a value between -24 and 0, where -24 is the Advanced
-        /// Television Systems Committee (ATSC A/85), -23 is the EU R128 broadcast
-        /// standard, -19 is the prior standard for online mono audio, -18 is the
-        /// ReplayGain standard, -16 is the prior standard for stereo audio, -14 is
-        /// the new online audio standard recommended by Spotify, as well as Amazon
-        /// Echo, and 0 disables normalization. The default is 0.
+        /// scale (LUFS). Enter a value between -24 and 0 (the default), where:
+        ///
+        /// *   -24 is the Advanced Television Systems Committee (ATSC A/85) standard
+        /// *   -23 is the EU R128 broadcast standard
+        /// *   -19 is the prior standard for online mono audio
+        /// *   -18 is the ReplayGain standard
+        /// *   -16 is the prior standard for stereo audio
+        /// *   -14 is the new online audio standard recommended by Spotify, as well
+        ///     as Amazon Echo
+        /// *   0 disables normalization
         #[prost(double, tag = "1")]
         pub lufs: f64,
         /// Enable boosting high frequency components. The default is `false`.
@@ -561,30 +599,77 @@ pub mod preprocessing_config {
         #[prost(bool, tag = "3")]
         pub low_boost: bool,
     }
+    /// Video cropping configuration for the input video. The cropped input video
+    /// is scaled to match the output resolution.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Crop {
+        /// The number of pixels to crop from the top. The default is 0.
+        #[prost(int32, tag = "1")]
+        pub top_pixels: i32,
+        /// The number of pixels to crop from the bottom. The default is 0.
+        #[prost(int32, tag = "2")]
+        pub bottom_pixels: i32,
+        /// The number of pixels to crop from the left. The default is 0.
+        #[prost(int32, tag = "3")]
+        pub left_pixels: i32,
+        /// The number of pixels to crop from the right. The default is 0.
+        #[prost(int32, tag = "4")]
+        pub right_pixels: i32,
+    }
+    /// Pad filter configuration for the input video. The padded input video
+    /// is scaled after padding with black to match the output resolution.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Pad {
+        /// The number of pixels to add to the top. The default is 0.
+        #[prost(int32, tag = "1")]
+        pub top_pixels: i32,
+        /// The number of pixels to add to the bottom. The default is 0.
+        #[prost(int32, tag = "2")]
+        pub bottom_pixels: i32,
+        /// The number of pixels to add to the left. The default is 0.
+        #[prost(int32, tag = "3")]
+        pub left_pixels: i32,
+        /// The number of pixels to add to the right. The default is 0.
+        #[prost(int32, tag = "4")]
+        pub right_pixels: i32,
+    }
 }
 /// Video stream resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoStream {
-    /// Codec type. The default is `"h264"`.
+    /// Codec type. The following codecs are supported:
     ///
-    /// Supported codecs:
-    /// - 'h264'
-    /// - 'h265'
-    /// - 'vp9'
+    /// *   `h264` (default)
+    /// *   `h265`
+    /// *   `vp9`
     #[prost(string, tag = "1")]
     pub codec: ::prost::alloc::string::String,
-    /// Enforce specified codec profile. The default is `"high"`.
+    /// Enforces the specified codec profile. The following profiles are supported:
     ///
-    /// Supported codec profiles:
-    /// - 'baseline'
-    /// - 'main'
-    /// - 'high'
+    /// *   `baseline`
+    /// *   `main`
+    /// *   `high` (default)
+    ///
+    /// The available options are
+    /// <a href="<https://trac.ffmpeg.org/wiki/Encode/H.264#Profile">
+    /// class="external">FFmpeg-compatible</a>. Note that certain values for this
+    /// field may cause the transcoder to override other fields you set in the
+    /// `VideoStream` message.
     #[prost(string, tag = "2")]
     pub profile: ::prost::alloc::string::String,
-    /// Enforce specified codec tune.
+    /// Enforces the specified codec tune. The available options are
+    /// <a href="<https://trac.ffmpeg.org/wiki/Encode/H.264#Tune">
+    /// class="external">FFmpeg-compatible</a>. Note that certain values for this
+    /// field may cause the transcoder to override other fields you set in the
+    /// `VideoStream` message.
     #[prost(string, tag = "3")]
     pub tune: ::prost::alloc::string::String,
-    /// Enforce specified codec preset. The default is `"veryfast"`.
+    /// Enforces the specified codec preset. The default is `veryfast`. The
+    /// available options are
+    /// <a href="<https://trac.ffmpeg.org/wiki/Encode/H.264#Preset">
+    /// class="external">FFmpeg-compatible</a>. Note that certain values for this
+    /// field may cause the transcoder to override other fields you set in the
+    /// `VideoStream` message.
     #[prost(string, tag = "4")]
     pub preset: ::prost::alloc::string::String,
     /// The height of the video in pixels. Must be an even integer.
@@ -611,7 +696,9 @@ pub struct VideoStream {
     /// - 'yuv444p12' 12-bit HDR pixel format.
     #[prost(string, tag = "7")]
     pub pixel_format: ::prost::alloc::string::String,
-    /// Required. The video bitrate in bits per second. Must be between 1 and 1,000,000,000.
+    /// Required. The video bitrate in bits per second. The minimum value is 1,000.
+    /// The maximum value for H264/H265 is 800,000,000. The maximum value for VP9
+    /// is 480,000,000.
     #[prost(int32, tag = "8")]
     pub bitrate_bps: i32,
     /// Specify the `rate_control_mode`. The default is `"vbr"`.
@@ -660,28 +747,10 @@ pub struct VideoStream {
     /// Required. The target video frame rate in frames per second (FPS). Must be less than
     /// or equal to 120. Will default to the input frame rate if larger than the
     /// input frame rate. The API will generate an output FPS that is divisible by
-    /// the input FPS, and smaller or equal to the target FPS.
-    ///
-    /// The following table shows the computed video FPS given the target FPS (in
-    /// parenthesis) and input FPS (in the first column):
-    /// ```
-    /// |        | (30)   | (60)   | (25) | (50) |
-    /// |--------|--------|--------|------|------|
-    /// | 240    | Fail   | Fail   | Fail | Fail |
-    /// | 120    | 30     | 60     | 20   | 30   |
-    /// | 100    | 25     | 50     | 20   | 30   |
-    /// | 50     | 25     | 50     | 20   | 30   |
-    /// | 60     | 30     | 60     | 20   | 30   |
-    /// | 59.94  | 29.97  | 59.94  | 20   | 30   |
-    /// | 48     | 24     | 48     | 20   | 30   |
-    /// | 30     | 30     | 30     | 20   | 30   |
-    /// | 25     | 25     | 25     | 20   | 30   |
-    /// | 24     | 24     | 24     | 20   | 30   |
-    /// | 23.976 | 23.976 | 23.976 | 20   | 30   |
-    /// | 15     | 15     | 15     | 20   | 30   |
-    /// | 12     | 12     | 12     | 20   | 30   |
-    /// | 10     | 10     | 10     | 20   | 30   |
-    /// ```
+    /// the input FPS, and smaller or equal to the target FPS. See
+    /// [Calculate frame
+    /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
+    /// more information.
     #[prost(double, tag = "20")]
     pub frame_rate: f64,
     /// Specify the intensity of the adaptive quantizer (AQ). Must be between 0 and
@@ -703,7 +772,9 @@ pub mod video_stream {
         #[prost(int32, tag = "15")]
         GopFrameCount(i32),
         /// Select the GOP size based on the specified duration. The default is
-        /// `"3s"`.
+        /// `"3s"`. Note that `gopDuration` must be less than or equal to
+        /// \[`segmentDuration`\](#SegmentSettings), and
+        /// \[`segmentDuration`\](#SegmentSettings) must be divisible by `gopDuration`.
         #[prost(message, tag = "16")]
         GopDuration(::prost_types::Duration),
     }
@@ -808,7 +879,7 @@ pub struct TextStream {
     pub codec: ::prost::alloc::string::String,
     /// Required. The BCP-47 language code, such as `"en-US"` or `"sr-Latn"`. For more
     /// information, see
-    /// https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+    /// <https://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
     #[prost(string, tag = "2")]
     pub language_code: ::prost::alloc::string::String,
     /// The mapping for the `Job.edit_list` atoms with text `EditAtom.inputs`.
@@ -846,7 +917,10 @@ pub mod text_stream {
 /// Segment settings for `"ts"`, `"fmp4"` and `"vtt"`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SegmentSettings {
-    /// Duration of the segments in seconds. The default is `"6.0s"`.
+    /// Duration of the segments in seconds. The default is `"6.0s"`. Note that
+    /// `segmentDuration` must be greater than or equal to
+    /// \[`gopDuration`\](#videostream), and `segmentDuration` must be divisible by
+    /// \[`gopDuration`\](#videostream).
     #[prost(message, optional, tag = "1")]
     pub segment_duration: ::core::option::Option<::prost_types::Duration>,
     /// Required. Create an individual segment file. The default is `false`.
@@ -1003,7 +1077,7 @@ pub struct CreateJobTemplateRequest {
     /// of the job template's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters must match the
-    /// regular expression `[a-zA-Z][a-zA-Z0-9_-]*`.
+    /// regular expression `\[a-zA-Z][a-zA-Z0-9_-\]*`.
     #[prost(string, tag = "3")]
     pub job_template_id: ::prost::alloc::string::String,
 }
@@ -1066,7 +1140,7 @@ pub mod transcoder_service_client {
     impl<T> TranscoderServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1079,7 +1153,7 @@ pub mod transcoder_service_client {
             interceptor: F,
         ) -> TranscoderServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

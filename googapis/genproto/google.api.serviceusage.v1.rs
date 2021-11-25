@@ -57,7 +57,7 @@ pub struct ServiceConfig {
     #[prost(message, repeated, tag = "18")]
     pub endpoints: ::prost::alloc::vec::Vec<super::super::Endpoint>,
     /// Defines the monitored resources used by this service. This is required
-    /// by the [Service.monitoring][google.api.Service.monitoring] and [Service.logging][google.api.Service.logging] configurations.
+    /// by the \[Service.monitoring][google.api.Service.monitoring\] and \[Service.logging][google.api.Service.logging\] configurations.
     #[prost(message, repeated, tag = "25")]
     pub monitored_resources: ::prost::alloc::vec::Vec<super::super::MonitoredResourceDescriptor>,
     /// Monitoring configuration.
@@ -133,10 +133,7 @@ pub struct DisableServiceRequest {
     #[prost(bool, tag = "2")]
     pub disable_dependent_services: bool,
     /// Defines the behavior for checking service usage when disabling a service.
-    #[prost(
-        enumeration = "disable_service_request::CheckIfServiceHasUsage",
-        tag = "3"
-    )]
+    #[prost(enumeration = "disable_service_request::CheckIfServiceHasUsage", tag = "3")]
     pub check_if_service_has_usage: i32,
 }
 /// Nested message and enum types in `DisableServiceRequest`.
@@ -187,7 +184,7 @@ pub struct ListServicesRequest {
     pub parent: ::prost::alloc::string::String,
     /// Requested size of the next page of data.
     /// Requested page size cannot exceed 200.
-    ///  If not set, the default page size is 50.
+    /// If not set, the default page size is 50.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Token identifying which result to start with, which is returned by a
@@ -303,7 +300,7 @@ pub mod service_usage_client {
     impl<T> ServiceUsageClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -316,7 +313,7 @@ pub mod service_usage_client {
             interceptor: F,
         ) -> ServiceUsageClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

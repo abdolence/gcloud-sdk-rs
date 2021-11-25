@@ -26,7 +26,7 @@ pub mod audit_data {
 /// A service account is an account for an application or a virtual machine (VM)
 /// instance, not a person. You can use a service account to call Google APIs. To
 /// learn more, read the [overview of service
-/// accounts](https://cloud.google.com/iam/help/service-accounts/overview).
+/// accounts](<https://cloud.google.com/iam/help/service-accounts/overview>).
 ///
 /// When you create a service account, you specify the project ID that owns the
 /// service account, as well as a name that must be unique within the project.
@@ -98,10 +98,10 @@ pub struct CreateServiceAccountRequest {
     /// Required. The account id that is used to generate the service account
     /// email address and a stable unique id. It is unique within a project,
     /// must be 6-30 characters long, and match the regular expression
-    /// `[a-z]([-a-z0-9]*[a-z0-9])` to comply with RFC1035.
+    /// `\[a-z]([-a-z0-9]*[a-z0-9\])` to comply with RFC1035.
     #[prost(string, tag = "2")]
     pub account_id: ::prost::alloc::string::String,
-    /// The [ServiceAccount][google.iam.admin.v1.ServiceAccount] resource to
+    /// The \[ServiceAccount][google.iam.admin.v1.ServiceAccount\] resource to
     /// create. Currently, only the following values are user assignable:
     /// `display_name` and `description`.
     #[prost(message, optional, tag = "3")]
@@ -116,14 +116,14 @@ pub struct ListServiceAccountsRequest {
     pub name: ::prost::alloc::string::String,
     /// Optional limit on the number of service accounts to include in the
     /// response. Further accounts can subsequently be obtained by including the
-    /// [ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token]
+    /// \[ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\]
     /// in a subsequent request.
     ///
     /// The default is 20, and the maximum is 100.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional pagination token returned in an earlier
-    /// [ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token].
+    /// \[ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
@@ -134,7 +134,7 @@ pub struct ListServiceAccountsResponse {
     #[prost(message, repeated, tag = "1")]
     pub accounts: ::prost::alloc::vec::Vec<ServiceAccount>,
     /// To retrieve the next page of results, set
-    /// [ListServiceAccountsRequest.page_token][google.iam.admin.v1.ListServiceAccountsRequest.page_token]
+    /// \[ListServiceAccountsRequest.page_token][google.iam.admin.v1.ListServiceAccountsRequest.page_token\]
     /// to this value.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -162,7 +162,7 @@ pub struct DeleteServiceAccountRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [PatchServiceAccount][google.iam.admin.v1.PatchServiceAccount].
+/// \[PatchServiceAccount][google.iam.admin.v1.PatchServiceAccount\].
 ///
 /// You can patch only the `display_name` and `description` fields. You must use
 /// the `update_mask` field to specify which of these fields you want to patch.
@@ -228,11 +228,7 @@ pub struct ListServiceAccountKeysRequest {
     /// Filters the types of keys the user wants to include in the list
     /// response. Duplicate key types are not allowed. If no key type
     /// is provided, all keys are returned.
-    #[prost(
-        enumeration = "list_service_account_keys_request::KeyType",
-        repeated,
-        tag = "2"
-    )]
+    #[prost(enumeration = "list_service_account_keys_request::KeyType", repeated, tag = "2")]
     pub key_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `ListServiceAccountKeysRequest`.
@@ -393,13 +389,13 @@ pub struct DeleteServiceAccountKeyRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Deprecated. [Migrate to Service Account Credentials
-/// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+/// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
 /// The service account sign blob request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignBlobRequest {
     /// Required. Deprecated. [Migrate to Service Account Credentials
-    /// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
     /// The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -410,7 +406,7 @@ pub struct SignBlobRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Deprecated. [Migrate to Service Account Credentials
-    /// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
     /// The bytes to sign.
     #[deprecated]
@@ -418,20 +414,20 @@ pub struct SignBlobRequest {
     pub bytes_to_sign: ::prost::alloc::vec::Vec<u8>,
 }
 /// Deprecated. [Migrate to Service Account Credentials
-/// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+/// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
 /// The service account sign blob response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignBlobResponse {
     /// Deprecated. [Migrate to Service Account Credentials
-    /// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
     /// The id of the key used to sign the blob.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub key_id: ::prost::alloc::string::String,
     /// Deprecated. [Migrate to Service Account Credentials
-    /// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
     /// The signed blob.
     #[deprecated]
@@ -439,13 +435,13 @@ pub struct SignBlobResponse {
     pub signature: ::prost::alloc::vec::Vec<u8>,
 }
 /// Deprecated. [Migrate to Service Account Credentials
-/// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+/// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
 /// The service account sign JWT request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignJwtRequest {
     /// Required. Deprecated. [Migrate to Service Account Credentials
-    /// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
     /// The resource name of the service account in the following format:
     /// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
@@ -456,7 +452,7 @@ pub struct SignJwtRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Deprecated. [Migrate to Service Account Credentials
-    /// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
     /// The JWT payload to sign. Must be a serialized JSON object that contains a
     /// JWT Claims Set. For example: `{"sub": "user@example.com", "iat": 313435}`
@@ -473,20 +469,20 @@ pub struct SignJwtRequest {
     pub payload: ::prost::alloc::string::String,
 }
 /// Deprecated. [Migrate to Service Account Credentials
-/// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+/// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
 ///
 /// The service account sign JWT response.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SignJwtResponse {
     /// Deprecated. [Migrate to Service Account Credentials
-    /// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
     /// The id of the key used to sign the JWT.
     #[deprecated]
     #[prost(string, tag = "1")]
     pub key_id: ::prost::alloc::string::String,
     /// Deprecated. [Migrate to Service Account Credentials
-    /// API](https://cloud.google.com/iam/help/credentials/migrate-api).
+    /// API](<https://cloud.google.com/iam/help/credentials/migrate-api>).
     ///
     /// The signed JWT.
     #[deprecated]
@@ -589,28 +585,28 @@ pub struct QueryGrantableRolesResponse {
 pub struct ListRolesRequest {
     /// The `parent` parameter's value depends on the target resource for the
     /// request, namely
-    /// [`roles`](/iam/reference/rest/v1/roles),
-    /// [`projects`](/iam/reference/rest/v1/projects.roles), or
-    /// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each
+    /// \[`roles`\](/iam/reference/rest/v1/roles),
+    /// \[`projects`\](/iam/reference/rest/v1/projects.roles), or
+    /// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each
     /// resource type's `parent` value format is described below:
     ///
-    /// * [`roles.list()`](/iam/reference/rest/v1/roles/list): An empty string.
+    /// * \[`roles.list()`\](/iam/reference/rest/v1/roles/list): An empty string.
     ///   This method doesn't require a resource; it simply returns all
     ///   [predefined roles](/iam/docs/understanding-roles#predefined_roles) in
     ///   Cloud IAM. Example request URL:
-    ///   `https://iam.googleapis.com/v1/roles`
+    ///   `<https://iam.googleapis.com/v1/roles`>
     ///
-    /// * [`projects.roles.list()`](/iam/reference/rest/v1/projects.roles/list):
+    /// * \[`projects.roles.list()`\](/iam/reference/rest/v1/projects.roles/list):
     ///   `projects/{PROJECT_ID}`. This method lists all project-level
     ///   [custom roles](/iam/docs/understanding-custom-roles).
     ///   Example request URL:
-    ///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`>
     ///
-    /// * [`organizations.roles.list()`](/iam/reference/rest/v1/organizations.roles/list):
+    /// * \[`organizations.roles.list()`\](/iam/reference/rest/v1/organizations.roles/list):
     ///   `organizations/{ORGANIZATION_ID}`. This method lists all
     ///   organization-level [custom roles](/iam/docs/understanding-custom-roles).
     ///   Example request URL:
-    ///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`>
     ///
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
@@ -650,28 +646,28 @@ pub struct ListRolesResponse {
 pub struct GetRoleRequest {
     /// The `name` parameter's value depends on the target resource for the
     /// request, namely
-    /// [`roles`](/iam/reference/rest/v1/roles),
-    /// [`projects`](/iam/reference/rest/v1/projects.roles), or
-    /// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each
+    /// \[`roles`\](/iam/reference/rest/v1/roles),
+    /// \[`projects`\](/iam/reference/rest/v1/projects.roles), or
+    /// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each
     /// resource type's `name` value format is described below:
     ///
-    /// * [`roles.get()`](/iam/reference/rest/v1/roles/get): `roles/{ROLE_NAME}`.
+    /// * \[`roles.get()`\](/iam/reference/rest/v1/roles/get): `roles/{ROLE_NAME}`.
     ///   This method returns results from all
     ///   [predefined roles](/iam/docs/understanding-roles#predefined_roles) in
     ///   Cloud IAM. Example request URL:
-    ///   `https://iam.googleapis.com/v1/roles/{ROLE_NAME}`
+    ///   `<https://iam.googleapis.com/v1/roles/{ROLE_NAME}`>
     ///
-    /// * [`projects.roles.get()`](/iam/reference/rest/v1/projects.roles/get):
+    /// * \[`projects.roles.get()`\](/iam/reference/rest/v1/projects.roles/get):
     ///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method returns only
     ///   [custom roles](/iam/docs/understanding-custom-roles) that have been
     ///   created at the project level. Example request URL:
-    ///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    /// * [`organizations.roles.get()`](/iam/reference/rest/v1/organizations.roles/get):
+    /// * \[`organizations.roles.get()`\](/iam/reference/rest/v1/organizations.roles/get):
     ///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
     ///   returns only [custom roles](/iam/docs/understanding-custom-roles) that
     ///   have been created at the organization level. Example request URL:
-    ///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
@@ -683,21 +679,21 @@ pub struct GetRoleRequest {
 pub struct CreateRoleRequest {
     /// The `parent` parameter's value depends on the target resource for the
     /// request, namely
-    /// [`projects`](/iam/reference/rest/v1/projects.roles) or
-    /// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each
+    /// \[`projects`\](/iam/reference/rest/v1/projects.roles) or
+    /// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each
     /// resource type's `parent` value format is described below:
     ///
-    /// * [`projects.roles.create()`](/iam/reference/rest/v1/projects.roles/create):
+    /// * \[`projects.roles.create()`\](/iam/reference/rest/v1/projects.roles/create):
     ///   `projects/{PROJECT_ID}`. This method creates project-level
     ///   [custom roles](/iam/docs/understanding-custom-roles).
     ///   Example request URL:
-    ///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`>
     ///
-    /// * [`organizations.roles.create()`](/iam/reference/rest/v1/organizations.roles/create):
+    /// * \[`organizations.roles.create()`\](/iam/reference/rest/v1/organizations.roles/create):
     ///   `organizations/{ORGANIZATION_ID}`. This method creates organization-level
     ///   [custom roles](/iam/docs/understanding-custom-roles). Example request
     ///   URL:
-    ///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`>
     ///
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
@@ -719,21 +715,21 @@ pub struct CreateRoleRequest {
 pub struct UpdateRoleRequest {
     /// The `name` parameter's value depends on the target resource for the
     /// request, namely
-    /// [`projects`](/iam/reference/rest/v1/projects.roles) or
-    /// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each
+    /// \[`projects`\](/iam/reference/rest/v1/projects.roles) or
+    /// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each
     /// resource type's `name` value format is described below:
     ///
-    /// * [`projects.roles.patch()`](/iam/reference/rest/v1/projects.roles/patch):
+    /// * \[`projects.roles.patch()`\](/iam/reference/rest/v1/projects.roles/patch):
     ///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method updates only
     ///   [custom roles](/iam/docs/understanding-custom-roles) that have been
     ///   created at the project level. Example request URL:
-    ///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    /// * [`organizations.roles.patch()`](/iam/reference/rest/v1/organizations.roles/patch):
+    /// * \[`organizations.roles.patch()`\](/iam/reference/rest/v1/organizations.roles/patch):
     ///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
     ///   updates only [custom roles](/iam/docs/understanding-custom-roles) that
     ///   have been created at the organization level. Example request URL:
-    ///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
@@ -751,21 +747,21 @@ pub struct UpdateRoleRequest {
 pub struct DeleteRoleRequest {
     /// The `name` parameter's value depends on the target resource for the
     /// request, namely
-    /// [`projects`](/iam/reference/rest/v1/projects.roles) or
-    /// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each
+    /// \[`projects`\](/iam/reference/rest/v1/projects.roles) or
+    /// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each
     /// resource type's `name` value format is described below:
     ///
-    /// * [`projects.roles.delete()`](/iam/reference/rest/v1/projects.roles/delete):
+    /// * \[`projects.roles.delete()`\](/iam/reference/rest/v1/projects.roles/delete):
     ///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method deletes only
     ///   [custom roles](/iam/docs/understanding-custom-roles) that have been
     ///   created at the project level. Example request URL:
-    ///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    /// * [`organizations.roles.delete()`](/iam/reference/rest/v1/organizations.roles/delete):
+    /// * \[`organizations.roles.delete()`\](/iam/reference/rest/v1/organizations.roles/delete):
     ///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
     ///   deletes only [custom roles](/iam/docs/understanding-custom-roles) that
     ///   have been created at the organization level. Example request URL:
-    ///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
@@ -780,21 +776,21 @@ pub struct DeleteRoleRequest {
 pub struct UndeleteRoleRequest {
     /// The `name` parameter's value depends on the target resource for the
     /// request, namely
-    /// [`projects`](/iam/reference/rest/v1/projects.roles) or
-    /// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each
+    /// \[`projects`\](/iam/reference/rest/v1/projects.roles) or
+    /// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each
     /// resource type's `name` value format is described below:
     ///
-    /// * [`projects.roles.undelete()`](/iam/reference/rest/v1/projects.roles/undelete):
+    /// * \[`projects.roles.undelete()`\](/iam/reference/rest/v1/projects.roles/undelete):
     ///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method undeletes
     ///   only [custom roles](/iam/docs/understanding-custom-roles) that have been
     ///   created at the project level. Example request URL:
-    ///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`
+    ///   `<https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
-    /// * [`organizations.roles.undelete()`](/iam/reference/rest/v1/organizations.roles/undelete):
+    /// * \[`organizations.roles.undelete()`\](/iam/reference/rest/v1/organizations.roles/undelete):
     ///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method
     ///   undeletes only [custom roles](/iam/docs/understanding-custom-roles) that
     ///   have been created at the organization level. Example request URL:
-    ///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`
+    ///   `<https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`>
     ///
     /// Note: Wildcard (*) values are invalid; you must specify a complete project
     /// ID or organization ID.
@@ -946,7 +942,7 @@ pub mod lint_policy_request {
     /// Required. The Cloud IAM object to be linted.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LintObject {
-        /// [google.iam.v1.Binding.condition] [google.iam.v1.Binding.condition] object to be linted.
+        /// \[google.iam.v1.Binding.condition\] \[google.iam.v1.Binding.condition\] object to be linted.
         #[prost(message, tag = "5")]
         Condition(super::super::super::super::r#type::Expr),
     }
@@ -1055,7 +1051,7 @@ pub enum ServiceAccountPrivateKeyType {
     TypeUnspecified = 0,
     /// PKCS12 format.
     /// The password for the PKCS12 file is `notasecret`.
-    /// For more information, see https://tools.ietf.org/html/rfc7292.
+    /// For more information, see <https://tools.ietf.org/html/rfc7292.>
     TypePkcs12File = 1,
     /// Google Credentials File format.
     TypeGoogleCredentialsFile = 2,
@@ -1122,7 +1118,7 @@ pub mod iam_client {
     impl<T> IamClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1132,7 +1128,7 @@ pub mod iam_client {
         }
         pub fn with_interceptor<F>(inner: T, interceptor: F) -> IamClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

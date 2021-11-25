@@ -107,19 +107,19 @@ pub struct Instance {
     /// must have the service account user permission to use the instance.
     ///
     /// If not specified, the [Compute Engine default service
-    /// account](https://cloud.google.com/compute/docs/access/service-accounts#default_service_account)
+    /// account](<https://cloud.google.com/compute/docs/access/service-accounts#default_service_account>)
     /// is used.
     #[prost(string, tag = "7")]
     pub service_account: ::prost::alloc::string::String,
     /// Required. The [Compute Engine machine
-    /// type](https://cloud.google.com/compute/docs/machine-types) of this
+    /// type](<https://cloud.google.com/compute/docs/machine-types>) of this
     /// instance.
     #[prost(string, tag = "8")]
     pub machine_type: ::prost::alloc::string::String,
     /// The hardware accelerator used on this instance. If you use
     /// accelerators, make sure that your configuration has
     /// [enough vCPUs and memory to support the `machine_type` you
-    /// have selected](https://cloud.google.com/compute/docs/gpus/#gpus-list).
+    /// have selected](<https://cloud.google.com/compute/docs/gpus/#gpus-list>).
     #[prost(message, optional, tag = "9")]
     pub accelerator_config: ::core::option::Option<instance::AcceleratorConfig>,
     /// Output only. The state of this instance.
@@ -167,7 +167,7 @@ pub struct Instance {
     /// `projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}`
     ///
     /// Learn more about [using your own encryption keys](
-    /// https://cloud.google.com/kms/docs/quickstart).
+    /// <https://cloud.google.com/kms/docs/quickstart>).
     #[prost(string, tag = "16")]
     pub kms_key: ::prost::alloc::string::String,
     /// If true, no public IP will be assigned to this instance.
@@ -329,8 +329,8 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -420,7 +420,7 @@ pub struct SetInstanceAcceleratorRequest {
     pub r#type: i32,
     /// Required. Count of cores of this accelerator. Note that not all
     /// combinations of `type` and `core_count` are valid. Check [GPUs on Compute
-    /// Engine](https://cloud.google.com/compute/docs/gpus/#gpus-list) to find a
+    /// Engine](<https://cloud.google.com/compute/docs/gpus/#gpus-list>) to find a
     /// valid combination. TPUs are not supported.
     #[prost(int64, tag = "3")]
     pub core_count: i64,
@@ -433,7 +433,7 @@ pub struct SetInstanceMachineTypeRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The [Compute Engine machine
-    /// type](https://cloud.google.com/compute/docs/machine-types).
+    /// type](<https://cloud.google.com/compute/docs/machine-types>).
     #[prost(string, tag = "2")]
     pub machine_type: ::prost::alloc::string::String,
 }
@@ -490,7 +490,7 @@ pub struct ReportInstanceInfoRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The VM hardware token for authenticating the VM.
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     #[prost(string, tag = "2")]
     pub vm_id: ::prost::alloc::string::String,
     /// The metadata reported to Notebooks API. This will be merged to the instance
@@ -537,7 +537,7 @@ pub struct UpgradeInstanceInternalRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The VM hardware token for authenticating the VM.
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     #[prost(string, tag = "2")]
     pub vm_id: ::prost::alloc::string::String,
 }
@@ -613,7 +613,7 @@ pub mod notebook_service_client {
     impl<T> NotebookServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -626,7 +626,7 @@ pub mod notebook_service_client {
             interceptor: F,
         ) -> NotebookServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

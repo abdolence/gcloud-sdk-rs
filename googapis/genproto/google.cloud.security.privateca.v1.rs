@@ -1,12 +1,12 @@
-/// A [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] represents an individual Certificate Authority.
-/// A [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] can be used to create [Certificates][google.cloud.security.privateca.v1.Certificate].
+/// A \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] represents an individual Certificate Authority.
+/// A \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] can be used to create \[Certificates][google.cloud.security.privateca.v1.Certificate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateAuthority {
-    /// Output only. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the
+    /// Output only. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the
     /// format `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Immutable. The [Type][google.cloud.security.privateca.v1.CertificateAuthority.Type] of this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+    /// Required. Immutable. The \[Type][google.cloud.security.privateca.v1.CertificateAuthority.Type\] of this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\].
     #[prost(enumeration = "certificate_authority::Type", tag = "2")]
     pub r#type: i32,
     /// Required. Immutable. The config used to create a self-signed X.509 certificate or CSR.
@@ -17,35 +17,35 @@ pub struct CertificateAuthority {
     /// certificate.
     #[prost(message, optional, tag = "4")]
     pub lifetime: ::core::option::Option<::prost_types::Duration>,
-    /// Required. Immutable. Used when issuing certificates for this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]. If this
-    /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] is a self-signed CertificateAuthority, this key
+    /// Required. Immutable. Used when issuing certificates for this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]. If this
+    /// \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] is a self-signed CertificateAuthority, this key
     /// is also used to sign the self-signed CA certificate. Otherwise, it
     /// is used to sign a CSR.
     #[prost(message, optional, tag = "5")]
     pub key_spec: ::core::option::Option<certificate_authority::KeyVersionSpec>,
-    /// Optional. If this is a subordinate [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority], this field will be set
+    /// Optional. If this is a subordinate \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\], this field will be set
     /// with the subordinate configuration, which describes its issuers. This may
-    /// be updated, but this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] must continue to validate.
+    /// be updated, but this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] must continue to validate.
     #[prost(message, optional, tag = "6")]
     pub subordinate_config: ::core::option::Option<SubordinateConfig>,
-    /// Output only. The [CaPool.Tier][google.cloud.security.privateca.v1.CaPool.Tier] of the [CaPool][google.cloud.security.privateca.v1.CaPool] that includes this
-    /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+    /// Output only. The \[CaPool.Tier][google.cloud.security.privateca.v1.CaPool.Tier\] of the \[CaPool][google.cloud.security.privateca.v1.CaPool\] that includes this
+    /// \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\].
     #[prost(enumeration = "ca_pool::Tier", tag = "7")]
     pub tier: i32,
-    /// Output only. The [State][google.cloud.security.privateca.v1.CertificateAuthority.State] for this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+    /// Output only. The \[State][google.cloud.security.privateca.v1.CertificateAuthority.State\] for this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\].
     #[prost(enumeration = "certificate_authority::State", tag = "8")]
     pub state: i32,
-    /// Output only. This [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s certificate chain, including the current
-    /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s certificate. Ordered such that the root issuer
+    /// Output only. This \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]'s certificate chain, including the current
+    /// \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]'s certificate. Ordered such that the root issuer
     /// is the final element (consistent with RFC 5246). For a self-signed CA, this
-    /// will only list the current [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s certificate.
+    /// will only list the current \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]'s certificate.
     #[prost(string, repeated, tag = "9")]
     pub pem_ca_certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Output only. A structured description of this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s CA certificate
+    /// Output only. A structured description of this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]'s CA certificate
     /// and its issuers. Ordered as self-to-root.
     #[prost(message, repeated, tag = "10")]
     pub ca_certificate_descriptions: ::prost::alloc::vec::Vec<CertificateDescription>,
-    /// Immutable. The name of a Cloud Storage bucket where this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] will
+    /// Immutable. The name of a Cloud Storage bucket where this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] will
     /// publish content, such as the CA certificate and CRLs. This must be a bucket
     /// name, without any prefixes (such as `gs://`) or suffixes (such as
     /// `.googleapis.com`). For example, to use a bucket named `my-bucket`, you
@@ -57,18 +57,18 @@ pub struct CertificateAuthority {
     /// and CRLs.
     #[prost(message, optional, tag = "12")]
     pub access_urls: ::core::option::Option<certificate_authority::AccessUrls>,
-    /// Output only. The time at which this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] was created.
+    /// Output only. The time at which this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] was created.
     #[prost(message, optional, tag = "13")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time at which this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] was last updated.
+    /// Output only. The time at which this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] was last updated.
     #[prost(message, optional, tag = "14")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time at which this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] was soft deleted, if
-    /// it is in the [DELETED][google.cloud.security.privateca.v1.CertificateAuthority.State.DELETED] state.
+    /// Output only. The time at which this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] was soft deleted, if
+    /// it is in the \[DELETED][google.cloud.security.privateca.v1.CertificateAuthority.State.DELETED\] state.
     #[prost(message, optional, tag = "15")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time at which this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] will be permanently purged,
-    /// if it is in the [DELETED][google.cloud.security.privateca.v1.CertificateAuthority.State.DELETED] state.
+    /// Output only. The time at which this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] will be permanently purged,
+    /// if it is in the \[DELETED][google.cloud.security.privateca.v1.CertificateAuthority.State.DELETED\] state.
     #[prost(message, optional, tag = "16")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Labels with user-defined metadata.
@@ -78,19 +78,19 @@ pub struct CertificateAuthority {
 }
 /// Nested message and enum types in `CertificateAuthority`.
 pub mod certificate_authority {
-    /// URLs where a [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] will publish content.
+    /// URLs where a \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] will publish content.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AccessUrls {
-        /// The URL where this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s CA certificate is
+        /// The URL where this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]'s CA certificate is
         /// published. This will only be set for CAs that have been activated.
         #[prost(string, tag = "1")]
         pub ca_certificate_access_url: ::prost::alloc::string::String,
-        /// The URLs where this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s CRLs are published. This
+        /// The URLs where this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]'s CRLs are published. This
         /// will only be set for CAs that have been activated.
         #[prost(string, repeated, tag = "2")]
         pub crl_access_urls: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    /// A Cloud KMS key configuration that a [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] will use.
+    /// A Cloud KMS key configuration that a \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] will use.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeyVersionSpec {
         #[prost(oneof = "key_version_spec::KeyVersion", tags = "1, 2")]
@@ -109,12 +109,12 @@ pub mod certificate_authority {
             CloudKmsKeyVersion(::prost::alloc::string::String),
             /// The algorithm to use for creating a managed Cloud KMS key for a for a
             /// simplified experience. All managed keys will be have their
-            /// [ProtectionLevel][google.cloud.kms.v1.ProtectionLevel] as `HSM`.
+            /// \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] as `HSM`.
             #[prost(enumeration = "super::SignHashAlgorithm", tag = "2")]
             Algorithm(i32),
         }
     }
-    /// The type of a [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority], indicating its issuing chain.
+    /// The type of a \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\], indicating its issuing chain.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Type {
@@ -122,49 +122,49 @@ pub mod certificate_authority {
         Unspecified = 0,
         /// Self-signed CA.
         SelfSigned = 1,
-        /// Subordinate CA. Could be issued by a Private CA [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
+        /// Subordinate CA. Could be issued by a Private CA \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]
         /// or an unmanaged CA.
         Subordinate = 2,
     }
-    /// The state of a [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority], indicating if it can be used.
+    /// The state of a \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\], indicating if it can be used.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
         /// Not specified.
         Unspecified = 0,
         /// Certificates can be issued from this CA. CRLs will be generated for this
-        /// CA. The CA will be part of the [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust anchor, and will be
-        /// used to issue certificates from the [CaPool][google.cloud.security.privateca.v1.CaPool].
+        /// CA. The CA will be part of the \[CaPool][google.cloud.security.privateca.v1.CaPool\]'s trust anchor, and will be
+        /// used to issue certificates from the \[CaPool][google.cloud.security.privateca.v1.CaPool\].
         Enabled = 1,
         /// Certificates cannot be issued from this CA. CRLs will still be generated.
-        /// The CA will be part of the [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust anchor, but will not be
-        /// used to issue certificates from the [CaPool][google.cloud.security.privateca.v1.CaPool].
+        /// The CA will be part of the \[CaPool][google.cloud.security.privateca.v1.CaPool\]'s trust anchor, but will not be
+        /// used to issue certificates from the \[CaPool][google.cloud.security.privateca.v1.CaPool\].
         Disabled = 2,
         /// Certificates can be issued from this CA. CRLs will be generated for this
-        /// CA. The CA will be part of the [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust anchor, but will not
-        /// be used to issue certificates from the [CaPool][google.cloud.security.privateca.v1.CaPool].
+        /// CA. The CA will be part of the \[CaPool][google.cloud.security.privateca.v1.CaPool\]'s trust anchor, but will not
+        /// be used to issue certificates from the \[CaPool][google.cloud.security.privateca.v1.CaPool\].
         Staged = 3,
         /// Certificates cannot be issued from this CA. CRLs will not be generated.
-        /// The CA will not be part of the [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust anchor, and will not be
-        /// used to issue certificates from the [CaPool][google.cloud.security.privateca.v1.CaPool].
+        /// The CA will not be part of the \[CaPool][google.cloud.security.privateca.v1.CaPool\]'s trust anchor, and will not be
+        /// used to issue certificates from the \[CaPool][google.cloud.security.privateca.v1.CaPool\].
         AwaitingUserActivation = 4,
         /// Certificates cannot be issued from this CA. CRLs will not be generated.
         /// The CA may still be recovered by calling
-        /// [CertificateAuthorityService.UndeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UndeleteCertificateAuthority] before
-        /// [expire_time][google.cloud.security.privateca.v1.CertificateAuthority.expire_time].
-        /// The CA will not be part of the [CaPool][google.cloud.security.privateca.v1.CaPool]'s trust anchor, and will not be
-        /// used to issue certificates from the [CaPool][google.cloud.security.privateca.v1.CaPool].
+        /// \[CertificateAuthorityService.UndeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UndeleteCertificateAuthority\] before
+        /// \[expire_time][google.cloud.security.privateca.v1.CertificateAuthority.expire_time\].
+        /// The CA will not be part of the \[CaPool][google.cloud.security.privateca.v1.CaPool\]'s trust anchor, and will not be
+        /// used to issue certificates from the \[CaPool][google.cloud.security.privateca.v1.CaPool\].
         Deleted = 5,
     }
     /// The algorithm of a Cloud KMS CryptoKeyVersion of a
-    /// [CryptoKey][google.cloud.kms.v1.CryptoKey] with the
-    /// [CryptoKeyPurpose][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose] value
+    /// \[CryptoKey][google.cloud.kms.v1.CryptoKey\] with the
+    /// \[CryptoKeyPurpose][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose\] value
     /// `ASYMMETRIC_SIGN`. These values correspond to the
-    /// [CryptoKeyVersionAlgorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm]
+    /// \[CryptoKeyVersionAlgorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\]
     /// values. For RSA signing algorithms, the PSS algorithms should be preferred,
     /// use PKCS1 algorithms if required for compatibility. For further
     /// recommandations, see
-    /// https://cloud.google.com/kms/docs/algorithms#algorithm_recommendations.
+    /// <https://cloud.google.com/kms/docs/algorithms#algorithm_recommendations.>
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum SignHashAlgorithm {
@@ -188,27 +188,27 @@ pub mod certificate_authority {
         EcP384Sha384 = 5,
     }
 }
-/// A [CaPool][google.cloud.security.privateca.v1.CaPool] represents a group of
-/// [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority] that form a trust anchor. A
-/// [CaPool][google.cloud.security.privateca.v1.CaPool] can be used to manage issuance policies for one or more
-/// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] resources and to rotate CA certificates in and out
+/// A \[CaPool][google.cloud.security.privateca.v1.CaPool\] represents a group of
+/// \[CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority\] that form a trust anchor. A
+/// \[CaPool][google.cloud.security.privateca.v1.CaPool\] can be used to manage issuance policies for one or more
+/// \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] resources and to rotate CA certificates in and out
 /// of the trust anchor.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CaPool {
-    /// Output only. The resource name for this [CaPool][google.cloud.security.privateca.v1.CaPool] in the
+    /// Output only. The resource name for this \[CaPool][google.cloud.security.privateca.v1.CaPool\] in the
     /// format `projects/*/locations/*/caPools/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Immutable. The [Tier][google.cloud.security.privateca.v1.CaPool.Tier] of this [CaPool][google.cloud.security.privateca.v1.CaPool].
+    /// Required. Immutable. The \[Tier][google.cloud.security.privateca.v1.CaPool.Tier\] of this \[CaPool][google.cloud.security.privateca.v1.CaPool\].
     #[prost(enumeration = "ca_pool::Tier", tag = "2")]
     pub tier: i32,
-    /// Optional. The [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy] to control how [Certificates][google.cloud.security.privateca.v1.Certificate]
-    /// will be issued from this [CaPool][google.cloud.security.privateca.v1.CaPool].
+    /// Optional. The \[IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy\] to control how \[Certificates][google.cloud.security.privateca.v1.Certificate\]
+    /// will be issued from this \[CaPool][google.cloud.security.privateca.v1.CaPool\].
     #[prost(message, optional, tag = "3")]
     pub issuance_policy: ::core::option::Option<ca_pool::IssuancePolicy>,
-    /// Optional. The [PublishingOptions][google.cloud.security.privateca.v1.CaPool.PublishingOptions] to follow when issuing
-    /// [Certificates][google.cloud.security.privateca.v1.Certificate] from any [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in this
-    /// [CaPool][google.cloud.security.privateca.v1.CaPool].
+    /// Optional. The \[PublishingOptions][google.cloud.security.privateca.v1.CaPool.PublishingOptions\] to follow when issuing
+    /// \[Certificates][google.cloud.security.privateca.v1.Certificate\] from any \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in this
+    /// \[CaPool][google.cloud.security.privateca.v1.CaPool\].
     #[prost(message, optional, tag = "4")]
     pub publishing_options: ::core::option::Option<ca_pool::PublishingOptions>,
     /// Optional. Labels with user-defined metadata.
@@ -218,22 +218,22 @@ pub struct CaPool {
 }
 /// Nested message and enum types in `CaPool`.
 pub mod ca_pool {
-    /// Options relating to the publication of each [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s CA
+    /// Options relating to the publication of each \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]'s CA
     /// certificate and CRLs and their inclusion as extensions in issued
-    /// [Certificates][google.cloud.security.privateca.v1.Certificate]. The options set here apply to certificates
-    /// issued by any [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the [CaPool][google.cloud.security.privateca.v1.CaPool].
+    /// \[Certificates][google.cloud.security.privateca.v1.Certificate\]. The options set here apply to certificates
+    /// issued by any \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the \[CaPool][google.cloud.security.privateca.v1.CaPool\].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PublishingOptions {
-        /// Optional. When true, publishes each [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s CA certificate and
+        /// Optional. When true, publishes each \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]'s CA certificate and
         /// includes its URL in the "Authority Information Access" X.509 extension
-        /// in all issued [Certificates][google.cloud.security.privateca.v1.Certificate]. If this is false, the CA
+        /// in all issued \[Certificates][google.cloud.security.privateca.v1.Certificate\]. If this is false, the CA
         /// certificate will not be published and the corresponding X.509 extension
         /// will not be written in issued certificates.
         #[prost(bool, tag = "1")]
         pub publish_ca_cert: bool,
-        /// Optional. When true, publishes each [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]'s CRL and includes its
+        /// Optional. When true, publishes each \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]'s CRL and includes its
         /// URL in the "CRL Distribution Points" X.509 extension in all issued
-        /// [Certificates][google.cloud.security.privateca.v1.Certificate]. If this is false, CRLs will not be published
+        /// \[Certificates][google.cloud.security.privateca.v1.Certificate\]. If this is false, CRLs will not be published
         /// and the corresponding X.509 extension will not be written in issued
         /// certificates.
         /// CRLs will expire 7 days from their creation. However, we will rebuild
@@ -241,57 +241,57 @@ pub mod ca_pool {
         #[prost(bool, tag = "2")]
         pub publish_crl: bool,
     }
-    /// Defines controls over all certificate issuance within a [CaPool][google.cloud.security.privateca.v1.CaPool].
+    /// Defines controls over all certificate issuance within a \[CaPool][google.cloud.security.privateca.v1.CaPool\].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IssuancePolicy {
-        /// Optional. If any [AllowedKeyType][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType] is specified, then the certificate request's
+        /// Optional. If any \[AllowedKeyType][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType\] is specified, then the certificate request's
         /// public key must match one of the key types listed here. Otherwise,
         /// any key may be used.
         #[prost(message, repeated, tag = "1")]
         pub allowed_key_types: ::prost::alloc::vec::Vec<issuance_policy::AllowedKeyType>,
-        /// Optional. The maximum lifetime allowed for issued [Certificates][google.cloud.security.privateca.v1.Certificate]. Note
-        /// that if the issuing [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] expires before a
-        /// [Certificate][google.cloud.security.privateca.v1.Certificate]'s requested maximum_lifetime, the effective lifetime will
+        /// Optional. The maximum lifetime allowed for issued \[Certificates][google.cloud.security.privateca.v1.Certificate\]. Note
+        /// that if the issuing \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] expires before a
+        /// \[Certificate][google.cloud.security.privateca.v1.Certificate\]'s requested maximum_lifetime, the effective lifetime will
         /// be explicitly truncated to match it.
         #[prost(message, optional, tag = "2")]
         pub maximum_lifetime: ::core::option::Option<::prost_types::Duration>,
-        /// Optional. If specified, then only methods allowed in the [IssuanceModes][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes] may be
-        /// used to issue [Certificates][google.cloud.security.privateca.v1.Certificate].
+        /// Optional. If specified, then only methods allowed in the \[IssuanceModes][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes\] may be
+        /// used to issue \[Certificates][google.cloud.security.privateca.v1.Certificate\].
         #[prost(message, optional, tag = "3")]
         pub allowed_issuance_modes: ::core::option::Option<issuance_policy::IssuanceModes>,
         /// Optional. A set of X.509 values that will be applied to all certificates issued
-        /// through this [CaPool][google.cloud.security.privateca.v1.CaPool]. If a certificate request includes conflicting
+        /// through this \[CaPool][google.cloud.security.privateca.v1.CaPool\]. If a certificate request includes conflicting
         /// values for the same properties, they will be overwritten by the values
-        /// defined here. If a certificate request uses a [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
+        /// defined here. If a certificate request uses a \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\]
         /// that defines conflicting
-        /// [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values] for the same
+        /// \[predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values\] for the same
         /// properties, the certificate issuance request will fail.
         #[prost(message, optional, tag = "4")]
         pub baseline_values: ::core::option::Option<super::X509Parameters>,
         /// Optional. Describes constraints on identities that may appear in
-        /// [Certificates][google.cloud.security.privateca.v1.Certificate] issued through this [CaPool][google.cloud.security.privateca.v1.CaPool].
-        /// If this is omitted, then this [CaPool][google.cloud.security.privateca.v1.CaPool] will not add restrictions on a
+        /// \[Certificates][google.cloud.security.privateca.v1.Certificate\] issued through this \[CaPool][google.cloud.security.privateca.v1.CaPool\].
+        /// If this is omitted, then this \[CaPool][google.cloud.security.privateca.v1.CaPool\] will not add restrictions on a
         /// certificate's identity.
         #[prost(message, optional, tag = "5")]
         pub identity_constraints: ::core::option::Option<super::CertificateIdentityConstraints>,
         /// Optional. Describes the set of X.509 extensions that may appear in a
-        /// [Certificate][google.cloud.security.privateca.v1.Certificate] issued through this [CaPool][google.cloud.security.privateca.v1.CaPool]. If a certificate request
-        /// sets extensions that don't appear in the [passthrough_extensions][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.passthrough_extensions],
+        /// \[Certificate][google.cloud.security.privateca.v1.Certificate\] issued through this \[CaPool][google.cloud.security.privateca.v1.CaPool\]. If a certificate request
+        /// sets extensions that don't appear in the \[passthrough_extensions][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.passthrough_extensions\],
         /// those extensions will be dropped. If a certificate request uses a
-        /// [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] with
-        /// [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values] that don't
+        /// \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] with
+        /// \[predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values\] that don't
         /// appear here, the certificate issuance request will fail. If this is
-        /// omitted, then this [CaPool][google.cloud.security.privateca.v1.CaPool] will not add restrictions on a
+        /// omitted, then this \[CaPool][google.cloud.security.privateca.v1.CaPool\] will not add restrictions on a
         /// certificate's X.509 extensions. These constraints do not apply to X.509
-        /// extensions set in this [CaPool][google.cloud.security.privateca.v1.CaPool]'s [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values].
+        /// extensions set in this \[CaPool][google.cloud.security.privateca.v1.CaPool\]'s \[baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values\].
         #[prost(message, optional, tag = "6")]
         pub passthrough_extensions: ::core::option::Option<super::CertificateExtensionConstraints>,
     }
     /// Nested message and enum types in `IssuancePolicy`.
     pub mod issuance_policy {
-        /// Describes a "type" of key that may be used in a [Certificate][google.cloud.security.privateca.v1.Certificate] issued
-        /// from a [CaPool][google.cloud.security.privateca.v1.CaPool].
-        /// Note that a single [AllowedKeyType][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType] may refer to either a
+        /// Describes a "type" of key that may be used in a \[Certificate][google.cloud.security.privateca.v1.Certificate\] issued
+        /// from a \[CaPool][google.cloud.security.privateca.v1.CaPool\].
+        /// Note that a single \[AllowedKeyType][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.AllowedKeyType\] may refer to either a
         /// fully-qualified key algorithm, such as RSA 4096, or a family of key
         /// algorithms, such as any RSA key.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -301,8 +301,8 @@ pub mod ca_pool {
         }
         /// Nested message and enum types in `AllowedKeyType`.
         pub mod allowed_key_type {
-            /// Describes an RSA key that may be used in a [Certificate][google.cloud.security.privateca.v1.Certificate] issued from
-            /// a [CaPool][google.cloud.security.privateca.v1.CaPool].
+            /// Describes an RSA key that may be used in a \[Certificate][google.cloud.security.privateca.v1.Certificate\] issued from
+            /// a \[CaPool][google.cloud.security.privateca.v1.CaPool\].
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct RsaKeyType {
                 /// Optional. The minimum allowed RSA modulus size, in bits. If this is not set,
@@ -316,8 +316,8 @@ pub mod ca_pool {
                 #[prost(int64, tag = "2")]
                 pub max_modulus_size: i64,
             }
-            /// Describes an Elliptic Curve key that may be used in a [Certificate][google.cloud.security.privateca.v1.Certificate]
-            /// issued from a [CaPool][google.cloud.security.privateca.v1.CaPool].
+            /// Describes an Elliptic Curve key that may be used in a \[Certificate][google.cloud.security.privateca.v1.Certificate\]
+            /// issued from a \[CaPool][google.cloud.security.privateca.v1.CaPool\].
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct EcKeyType {
                 /// Optional. A signature algorithm that must be used. If this is omitted, any
@@ -328,7 +328,7 @@ pub mod ca_pool {
             /// Nested message and enum types in `EcKeyType`.
             pub mod ec_key_type {
                 /// Describes an elliptic curve-based signature algorithm that may be
-                /// used in a [Certificate][google.cloud.security.privateca.v1.Certificate] issued from a [CaPool][google.cloud.security.privateca.v1.CaPool].
+                /// used in a \[Certificate][google.cloud.security.privateca.v1.Certificate\] issued from a \[CaPool][google.cloud.security.privateca.v1.CaPool\].
                 #[derive(
                     Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
                 )]
@@ -357,22 +357,22 @@ pub mod ca_pool {
                 EllipticCurve(EcKeyType),
             }
         }
-        /// [IssuanceModes][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes] specifies the allowed ways in which
-        /// [Certificates][google.cloud.security.privateca.v1.Certificate] may be requested from this
-        /// [CaPool][google.cloud.security.privateca.v1.CaPool].
+        /// \[IssuanceModes][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.IssuanceModes\] specifies the allowed ways in which
+        /// \[Certificates][google.cloud.security.privateca.v1.Certificate\] may be requested from this
+        /// \[CaPool][google.cloud.security.privateca.v1.CaPool\].
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct IssuanceModes {
-            /// Optional. When true, allows callers to create [Certificates][google.cloud.security.privateca.v1.Certificate] by
+            /// Optional. When true, allows callers to create \[Certificates][google.cloud.security.privateca.v1.Certificate\] by
             /// specifying a CSR.
             #[prost(bool, tag = "1")]
             pub allow_csr_based_issuance: bool,
-            /// Optional. When true, allows callers to create [Certificates][google.cloud.security.privateca.v1.Certificate] by
-            /// specifying a [CertificateConfig][google.cloud.security.privateca.v1.CertificateConfig].
+            /// Optional. When true, allows callers to create \[Certificates][google.cloud.security.privateca.v1.Certificate\] by
+            /// specifying a \[CertificateConfig][google.cloud.security.privateca.v1.CertificateConfig\].
             #[prost(bool, tag = "2")]
             pub allow_config_based_issuance: bool,
         }
     }
-    /// The tier of a [CaPool][google.cloud.security.privateca.v1.CaPool], indicating its supported functionality and/or
+    /// The tier of a \[CaPool][google.cloud.security.privateca.v1.CaPool\], indicating its supported functionality and/or
     /// billing SKU.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -385,12 +385,12 @@ pub mod ca_pool {
         Devops = 2,
     }
 }
-/// A [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList] corresponds to a signed X.509 certificate
+/// A \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\] corresponds to a signed X.509 certificate
 /// Revocation List (CRL). A CRL contains the serial numbers of certificates that
 /// should no longer be trusted.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateRevocationList {
-    /// Output only. The resource name for this [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList] in
+    /// Output only. The resource name for this \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\] in
     /// the format
     /// `projects/*/locations/*/caPools/*certificateAuthorities/*/
     ///    certificateRevocationLists/*`.
@@ -409,16 +409,16 @@ pub struct CertificateRevocationList {
     /// Output only. The location where 'pem_crl' can be accessed.
     #[prost(string, tag = "5")]
     pub access_url: ::prost::alloc::string::String,
-    /// Output only. The [State][google.cloud.security.privateca.v1.CertificateRevocationList.State] for this [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList].
+    /// Output only. The \[State][google.cloud.security.privateca.v1.CertificateRevocationList.State\] for this \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\].
     #[prost(enumeration = "certificate_revocation_list::State", tag = "6")]
     pub state: i32,
-    /// Output only. The time at which this [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList] was created.
+    /// Output only. The time at which this \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\] was created.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time at which this [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList] was updated.
+    /// Output only. The time at which this \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\] was updated.
     #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The revision ID of this [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList]. A new revision is
+    /// Output only. The revision ID of this \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\]. A new revision is
     /// committed whenever a new CRL is published. The format is an 8-character
     /// hexadecimal string.
     #[prost(string, tag = "9")]
@@ -430,41 +430,41 @@ pub struct CertificateRevocationList {
 }
 /// Nested message and enum types in `CertificateRevocationList`.
 pub mod certificate_revocation_list {
-    /// Describes a revoked [Certificate][google.cloud.security.privateca.v1.Certificate].
+    /// Describes a revoked \[Certificate][google.cloud.security.privateca.v1.Certificate\].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RevokedCertificate {
-        /// The resource name for the [Certificate][google.cloud.security.privateca.v1.Certificate] in the format
+        /// The resource name for the \[Certificate][google.cloud.security.privateca.v1.Certificate\] in the format
         /// `projects/*/locations/*/caPools/*/certificates/*`.
         #[prost(string, tag = "1")]
         pub certificate: ::prost::alloc::string::String,
-        /// The serial number of the [Certificate][google.cloud.security.privateca.v1.Certificate].
+        /// The serial number of the \[Certificate][google.cloud.security.privateca.v1.Certificate\].
         #[prost(string, tag = "2")]
         pub hex_serial_number: ::prost::alloc::string::String,
-        /// The reason the [Certificate][google.cloud.security.privateca.v1.Certificate] was revoked.
+        /// The reason the \[Certificate][google.cloud.security.privateca.v1.Certificate\] was revoked.
         #[prost(enumeration = "super::RevocationReason", tag = "3")]
         pub revocation_reason: i32,
     }
-    /// The state of a [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList], indicating if it is current.
+    /// The state of a \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\], indicating if it is current.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum State {
         /// Not specified.
         Unspecified = 0,
-        /// The [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList] is up to date.
+        /// The \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\] is up to date.
         Active = 1,
-        /// The [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList] is no longer current.
+        /// The \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\] is no longer current.
         Superseded = 2,
     }
 }
-/// A [Certificate][google.cloud.security.privateca.v1.Certificate] corresponds to a signed X.509 certificate issued by a
-/// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority].
+/// A \[Certificate][google.cloud.security.privateca.v1.Certificate\] corresponds to a signed X.509 certificate issued by a
+/// \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Certificate {
-    /// Output only. The resource name for this [Certificate][google.cloud.security.privateca.v1.Certificate] in the format
+    /// Output only. The resource name for this \[Certificate][google.cloud.security.privateca.v1.Certificate\] in the format
     /// `projects/*/locations/*/caPools/*/certificates/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. The resource name of the issuing [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the format
+    /// Output only. The resource name of the issuing \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the format
     /// `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "4")]
     pub issuer_certificate_authority: ::prost::alloc::string::String,
@@ -474,20 +474,20 @@ pub struct Certificate {
     /// past the life of any certificate authority in the issuing chain.
     #[prost(message, optional, tag = "5")]
     pub lifetime: ::core::option::Option<::prost_types::Duration>,
-    /// Immutable. The resource name for a [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] used to issue this
+    /// Immutable. The resource name for a \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] used to issue this
     /// certificate, in the format
     /// `projects/*/locations/*/certificateTemplates/*`.
     /// If this is specified, the caller must have the necessary permission to
     /// use this template. If this is omitted, no template will be used.
-    /// This template must be in the same location as the [Certificate][google.cloud.security.privateca.v1.Certificate].
+    /// This template must be in the same location as the \[Certificate][google.cloud.security.privateca.v1.Certificate\].
     #[prost(string, tag = "6")]
     pub certificate_template: ::prost::alloc::string::String,
-    /// Immutable. Specifies how the [Certificate][google.cloud.security.privateca.v1.Certificate]'s identity fields are to be decided.
+    /// Immutable. Specifies how the \[Certificate][google.cloud.security.privateca.v1.Certificate\]'s identity fields are to be decided.
     /// If this is omitted, the `DEFAULT` subject mode will be used.
     #[prost(enumeration = "SubjectRequestMode", tag = "7")]
     pub subject_mode: i32,
-    /// Output only. Details regarding the revocation of this [Certificate][google.cloud.security.privateca.v1.Certificate]. This
-    /// [Certificate][google.cloud.security.privateca.v1.Certificate] is considered revoked if and only if this field is present.
+    /// Output only. Details regarding the revocation of this \[Certificate][google.cloud.security.privateca.v1.Certificate\]. This
+    /// \[Certificate][google.cloud.security.privateca.v1.Certificate\] is considered revoked if and only if this field is present.
     #[prost(message, optional, tag = "8")]
     pub revocation_details: ::core::option::Option<certificate::RevocationDetails>,
     /// Output only. The pem-encoded, signed X.509 certificate.
@@ -500,10 +500,10 @@ pub struct Certificate {
     /// in issuer-to-root order according to RFC 5246.
     #[prost(string, repeated, tag = "11")]
     pub pem_certificate_chain: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Output only. The time at which this [Certificate][google.cloud.security.privateca.v1.Certificate] was created.
+    /// Output only. The time at which this \[Certificate][google.cloud.security.privateca.v1.Certificate\] was created.
     #[prost(message, optional, tag = "12")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time at which this [Certificate][google.cloud.security.privateca.v1.Certificate] was updated.
+    /// Output only. The time at which this \[Certificate][google.cloud.security.privateca.v1.Certificate\] was updated.
     #[prost(message, optional, tag = "13")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Labels with user-defined metadata.
@@ -516,13 +516,13 @@ pub struct Certificate {
 }
 /// Nested message and enum types in `Certificate`.
 pub mod certificate {
-    /// Describes fields that are relavent to the revocation of a [Certificate][google.cloud.security.privateca.v1.Certificate].
+    /// Describes fields that are relavent to the revocation of a \[Certificate][google.cloud.security.privateca.v1.Certificate\].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RevocationDetails {
-        /// Indicates why a [Certificate][google.cloud.security.privateca.v1.Certificate] was revoked.
+        /// Indicates why a \[Certificate][google.cloud.security.privateca.v1.Certificate\] was revoked.
         #[prost(enumeration = "super::RevocationReason", tag = "1")]
         pub revocation_state: i32,
-        /// The time at which this [Certificate][google.cloud.security.privateca.v1.Certificate] was revoked.
+        /// The time at which this \[Certificate][google.cloud.security.privateca.v1.Certificate\] was revoked.
         #[prost(message, optional, tag = "2")]
         pub revocation_time: ::core::option::Option<::prost_types::Timestamp>,
     }
@@ -538,47 +538,47 @@ pub mod certificate {
         Config(super::CertificateConfig),
     }
 }
-/// A [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] refers to a managed template for certificate
+/// A \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] refers to a managed template for certificate
 /// issuance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateTemplate {
-    /// Output only. The resource name for this [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] in the format
+    /// Output only. The resource name for this \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] in the format
     /// `projects/*/locations/*/certificateTemplates/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. A set of X.509 values that will be applied to all issued certificates that
     /// use this template. If the certificate request includes conflicting values
     /// for the same properties, they will be overwritten by the values defined
-    /// here. If the issuing [CaPool][google.cloud.security.privateca.v1.CaPool]'s [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy]
+    /// here. If the issuing \[CaPool][google.cloud.security.privateca.v1.CaPool\]'s \[IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy\]
     /// defines conflicting
-    /// [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values] for the same
+    /// \[baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values\] for the same
     /// properties, the certificate issuance request will fail.
     #[prost(message, optional, tag = "2")]
     pub predefined_values: ::core::option::Option<X509Parameters>,
     /// Optional. Describes constraints on identities that may be appear in
-    /// [Certificates][google.cloud.security.privateca.v1.Certificate] issued using this template. If this is omitted,
+    /// \[Certificates][google.cloud.security.privateca.v1.Certificate\] issued using this template. If this is omitted,
     /// then this template will not add restrictions on a certificate's identity.
     #[prost(message, optional, tag = "3")]
     pub identity_constraints: ::core::option::Option<CertificateIdentityConstraints>,
     /// Optional. Describes the set of X.509 extensions that may appear in a
-    /// [Certificate][google.cloud.security.privateca.v1.Certificate] issued using this [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]. If a certificate
+    /// \[Certificate][google.cloud.security.privateca.v1.Certificate\] issued using this \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\]. If a certificate
     /// request sets extensions that don't appear in the
-    /// [passthrough_extensions][google.cloud.security.privateca.v1.CertificateTemplate.passthrough_extensions], those extensions will be dropped. If the
-    /// issuing [CaPool][google.cloud.security.privateca.v1.CaPool]'s [IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy] defines
-    /// [baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values] that don't appear
+    /// \[passthrough_extensions][google.cloud.security.privateca.v1.CertificateTemplate.passthrough_extensions\], those extensions will be dropped. If the
+    /// issuing \[CaPool][google.cloud.security.privateca.v1.CaPool\]'s \[IssuancePolicy][google.cloud.security.privateca.v1.CaPool.IssuancePolicy\] defines
+    /// \[baseline_values][google.cloud.security.privateca.v1.CaPool.IssuancePolicy.baseline_values\] that don't appear
     /// here, the certificate issuance request will fail. If this is omitted, then
     /// this template will not add restrictions on a certificate's X.509
     /// extensions. These constraints do not apply to X.509 extensions set in this
-    /// [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]'s [predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values].
+    /// \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\]'s \[predefined_values][google.cloud.security.privateca.v1.CertificateTemplate.predefined_values\].
     #[prost(message, optional, tag = "4")]
     pub passthrough_extensions: ::core::option::Option<CertificateExtensionConstraints>,
     /// Optional. A human-readable description of scenarios this template is intended for.
     #[prost(string, tag = "5")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The time at which this [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] was created.
+    /// Output only. The time at which this \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] was created.
     #[prost(message, optional, tag = "6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The time at which this [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] was updated.
+    /// Output only. The time at which this \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] was updated.
     #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Labels with user-defined metadata.
@@ -586,7 +586,7 @@ pub struct CertificateTemplate {
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-/// An [X509Parameters][google.cloud.security.privateca.v1.X509Parameters] is used to describe certain fields of an
+/// An \[X509Parameters][google.cloud.security.privateca.v1.X509Parameters\] is used to describe certain fields of an
 /// X.509 certificate, such as the key usage fields, fields specific to CA
 /// certificates, certificate policy extensions and custom extensions.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -594,12 +594,12 @@ pub struct X509Parameters {
     /// Optional. Indicates the intended use for keys that correspond to a certificate.
     #[prost(message, optional, tag = "1")]
     pub key_usage: ::core::option::Option<KeyUsage>,
-    /// Optional. Describes options in this [X509Parameters][google.cloud.security.privateca.v1.X509Parameters] that are relevant in a CA
+    /// Optional. Describes options in this \[X509Parameters][google.cloud.security.privateca.v1.X509Parameters\] that are relevant in a CA
     /// certificate.
     #[prost(message, optional, tag = "2")]
     pub ca_options: ::core::option::Option<x509_parameters::CaOptions>,
     /// Optional. Describes the X.509 certificate policy object identifiers, per
-    /// https://tools.ietf.org/html/rfc5280#section-4.2.1.4.
+    /// <https://tools.ietf.org/html/rfc5280#section-4.2.1.4.>
     #[prost(message, repeated, tag = "3")]
     pub policy_ids: ::prost::alloc::vec::Vec<ObjectId>,
     /// Optional. Describes Online Certificate Status Protocol (OCSP) endpoint addresses
@@ -631,7 +631,7 @@ pub mod x509_parameters {
     }
 }
 /// Describes a subordinate CA's issuers. This is either a resource name to a
-/// known issuing [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority], or a PEM issuer certificate chain.
+/// known issuing \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\], or a PEM issuer certificate chain.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SubordinateConfig {
     #[prost(oneof = "subordinate_config::SubordinateConfig", tags = "1, 2")]
@@ -649,20 +649,20 @@ pub mod subordinate_config {
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SubordinateConfig {
-        /// Required. This can refer to a [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the same project that
-        /// was used to create a subordinate [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]. This field
+        /// Required. This can refer to a \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the same project that
+        /// was used to create a subordinate \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]. This field
         /// is used for information and usability purposes only. The resource name
         /// is in the format
         /// `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
         #[prost(string, tag = "1")]
         CertificateAuthority(::prost::alloc::string::String),
         /// Required. Contains the PEM certificate chain for the issuers of this
-        /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority], but not pem certificate for this CA itself.
+        /// \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\], but not pem certificate for this CA itself.
         #[prost(message, tag = "2")]
         PemIssuerChain(SubordinateConfigChain),
     }
 }
-/// A [PublicKey][google.cloud.security.privateca.v1.PublicKey] describes a public key.
+/// A \[PublicKey][google.cloud.security.privateca.v1.PublicKey\] describes a public key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublicKey {
     /// Required. A public key. The padding and encoding
@@ -683,22 +683,22 @@ pub mod public_key {
         /// Default unspecified value.
         Unspecified = 0,
         /// The key is PEM-encoded as defined in [RFC
-        /// 7468](https://tools.ietf.org/html/rfc7468). It can be any of the
+        /// 7468](<https://tools.ietf.org/html/rfc7468>). It can be any of the
         /// following: a PEM-encoded PKCS#1/RFC 3447 RSAPublicKey
         /// structure, an RFC 5280
-        /// [SubjectPublicKeyInfo](https://tools.ietf.org/html/rfc5280#section-4.1)
+        /// \[SubjectPublicKeyInfo\](<https://tools.ietf.org/html/rfc5280#section-4.1>)
         /// or a PEM-encoded X.509 certificate signing request (CSR). If a
-        /// [SubjectPublicKeyInfo](https://tools.ietf.org/html/rfc5280#section-4.1)
+        /// \[SubjectPublicKeyInfo\](<https://tools.ietf.org/html/rfc5280#section-4.1>)
         /// is specified, it can contain a A PEM-encoded PKCS#1/RFC 3447 RSAPublicKey
         /// or a NIST P-256/secp256r1/prime256v1 or P-384 key. If a CSR is specified,
         /// it will used solely for the purpose of extracting the public key. When
         /// generated by the service, it will always be an RFC 5280
-        /// [SubjectPublicKeyInfo](https://tools.ietf.org/html/rfc5280#section-4.1)
+        /// \[SubjectPublicKeyInfo\](<https://tools.ietf.org/html/rfc5280#section-4.1>)
         /// structure containing an algorithm identifier and a key.
         Pem = 1,
     }
 }
-/// A [CertificateConfig][google.cloud.security.privateca.v1.CertificateConfig] describes an X.509 certificate or CSR that is to be
+/// A \[CertificateConfig][google.cloud.security.privateca.v1.CertificateConfig\] describes an X.509 certificate or CSR that is to be
 /// created, as an alternative to using ASN.1.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateConfig {
@@ -711,8 +711,8 @@ pub struct CertificateConfig {
     #[prost(message, optional, tag = "2")]
     pub x509_config: ::core::option::Option<X509Parameters>,
     /// Optional. The public key that corresponds to this config. This is, for example, used
-    /// when issuing [Certificates][google.cloud.security.privateca.v1.Certificate], but not when creating a
-    /// self-signed [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] or [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] CSR.
+    /// when issuing \[Certificates][google.cloud.security.privateca.v1.Certificate\], but not when creating a
+    /// self-signed \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] or \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] CSR.
     #[prost(message, optional, tag = "3")]
     pub public_key: ::core::option::Option<PublicKey>,
 }
@@ -731,7 +731,7 @@ pub mod certificate_config {
         pub subject_alt_name: ::core::option::Option<super::SubjectAltNames>,
     }
 }
-/// A [CertificateDescription][google.cloud.security.privateca.v1.CertificateDescription] describes an X.509 certificate or CSR that has
+/// A \[CertificateDescription][google.cloud.security.privateca.v1.CertificateDescription\] describes an X.509 certificate or CSR that has
 /// been issued, as an alternative to using ASN.1 / X.509.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateDescription {
@@ -746,16 +746,16 @@ pub struct CertificateDescription {
     #[prost(message, optional, tag = "3")]
     pub public_key: ::core::option::Option<PublicKey>,
     /// Provides a means of identifiying certificates that contain a particular
-    /// public key, per https://tools.ietf.org/html/rfc5280#section-4.2.1.2.
+    /// public key, per <https://tools.ietf.org/html/rfc5280#section-4.2.1.2.>
     #[prost(message, optional, tag = "4")]
     pub subject_key_id: ::core::option::Option<certificate_description::KeyId>,
     /// Identifies the subject_key_id of the parent certificate, per
-    /// https://tools.ietf.org/html/rfc5280#section-4.2.1.1
+    /// <https://tools.ietf.org/html/rfc5280#section-4.2.1.1>
     #[prost(message, optional, tag = "5")]
     pub authority_key_id: ::core::option::Option<certificate_description::KeyId>,
     /// Describes a list of locations to obtain CRL information, i.e.
     /// the DistributionPoint.fullName described by
-    /// https://tools.ietf.org/html/rfc5280#section-4.2.1.13
+    /// <https://tools.ietf.org/html/rfc5280#section-4.2.1.13>
     #[prost(string, repeated, tag = "6")]
     pub crl_distribution_points: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Describes lists of issuer CA certificate URLs that appear in the
@@ -812,7 +812,7 @@ pub mod certificate_description {
         pub sha256_hash: ::prost::alloc::string::String,
     }
 }
-/// An [ObjectId][google.cloud.security.privateca.v1.ObjectId] specifies an object identifier (OID). These provide context
+/// An \[ObjectId][google.cloud.security.privateca.v1.ObjectId\] specifies an object identifier (OID). These provide context
 /// and describe types in ASN.1 messages.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ObjectId {
@@ -821,7 +821,7 @@ pub struct ObjectId {
     #[prost(int32, repeated, packed = "false", tag = "1")]
     pub object_id_path: ::prost::alloc::vec::Vec<i32>,
 }
-/// An [X509Extension][google.cloud.security.privateca.v1.X509Extension] specifies an X.509 extension, which may be used in
+/// An \[X509Extension][google.cloud.security.privateca.v1.X509Extension\] specifies an X.509 extension, which may be used in
 /// different parts of X.509 objects like certificates, CSRs, and CRLs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct X509Extension {
@@ -837,7 +837,7 @@ pub struct X509Extension {
     #[prost(bytes = "vec", tag = "3")]
     pub value: ::prost::alloc::vec::Vec<u8>,
 }
-/// A [KeyUsage][google.cloud.security.privateca.v1.KeyUsage] describes key usage values that may appear in an X.509
+/// A \[KeyUsage][google.cloud.security.privateca.v1.KeyUsage\] describes key usage values that may appear in an X.509
 /// certificate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyUsage {
@@ -848,14 +848,14 @@ pub struct KeyUsage {
     #[prost(message, optional, tag = "2")]
     pub extended_key_usage: ::core::option::Option<key_usage::ExtendedKeyUsageOptions>,
     /// Used to describe extended key usages that are not listed in the
-    /// [KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions] message.
+    /// \[KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions\] message.
     #[prost(message, repeated, tag = "3")]
     pub unknown_extended_key_usages: ::prost::alloc::vec::Vec<ObjectId>,
 }
 /// Nested message and enum types in `KeyUsage`.
 pub mod key_usage {
-    /// [KeyUsage.KeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.KeyUsageOptions] corresponds to the key usage values
-    /// described in https://tools.ietf.org/html/rfc5280#section-4.2.1.3.
+    /// \[KeyUsage.KeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.KeyUsageOptions\] corresponds to the key usage values
+    /// described in <https://tools.ietf.org/html/rfc5280#section-4.2.1.3.>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KeyUsageOptions {
         /// The key may be used for digital signatures.
@@ -887,7 +887,7 @@ pub mod key_usage {
         #[prost(bool, tag = "9")]
         pub decipher_only: bool,
     }
-    /// [KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions] has fields that correspond to
+    /// \[KeyUsage.ExtendedKeyUsageOptions][google.cloud.security.privateca.v1.KeyUsage.ExtendedKeyUsageOptions\] has fields that correspond to
     /// certain common OIDs that could be specified as an extended key usage value.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExtendedKeyUsageOptions {
@@ -917,7 +917,7 @@ pub mod key_usage {
         pub ocsp_signing: bool,
     }
 }
-/// [Subject][google.cloud.security.privateca.v1.Subject] describes parts of a distinguished name that, in turn,
+/// \[Subject][google.cloud.security.privateca.v1.Subject\] describes parts of a distinguished name that, in turn,
 /// describes the subject of the certificate.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Subject {
@@ -946,7 +946,7 @@ pub struct Subject {
     #[prost(string, tag = "8")]
     pub postal_code: ::prost::alloc::string::String,
 }
-/// [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] corresponds to a more modern way of listing what
+/// \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\] corresponds to a more modern way of listing what
 /// the asserted identity is in a certificate (i.e., compared to the "common
 /// name" in the distinguished name).
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -967,24 +967,24 @@ pub struct SubjectAltNames {
     #[prost(message, repeated, tag = "5")]
     pub custom_sans: ::prost::alloc::vec::Vec<X509Extension>,
 }
-/// Describes constraints on a [Certificate][google.cloud.security.privateca.v1.Certificate]'s [Subject][google.cloud.security.privateca.v1.Subject] and
-/// [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames].
+/// Describes constraints on a \[Certificate][google.cloud.security.privateca.v1.Certificate\]'s \[Subject][google.cloud.security.privateca.v1.Subject\] and
+/// \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateIdentityConstraints {
     /// Optional. A CEL expression that may be used to validate the resolved X.509 Subject
     /// and/or Subject Alternative Name before a certificate is signed.
     /// To see the full allowed syntax and some examples, see
-    /// https://cloud.google.com/certificate-authority-service/docs/using-cel
+    /// <https://cloud.google.com/certificate-authority-service/docs/using-cel>
     #[prost(message, optional, tag = "1")]
     pub cel_expression: ::core::option::Option<super::super::super::super::r#type::Expr>,
-    /// Required. If this is true, the [Subject][google.cloud.security.privateca.v1.Subject] field may be copied from a certificate
-    /// request into the signed certificate. Otherwise, the requested [Subject][google.cloud.security.privateca.v1.Subject]
+    /// Required. If this is true, the \[Subject][google.cloud.security.privateca.v1.Subject\] field may be copied from a certificate
+    /// request into the signed certificate. Otherwise, the requested \[Subject][google.cloud.security.privateca.v1.Subject\]
     /// will be discarded.
     #[prost(bool, optional, tag = "2")]
     pub allow_subject_passthrough: ::core::option::Option<bool>,
-    /// Required. If this is true, the [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] extension may be copied from a
+    /// Required. If this is true, the \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\] extension may be copied from a
     /// certificate request into the signed certificate. Otherwise, the requested
-    /// [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] will be discarded.
+    /// \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\] will be discarded.
     #[prost(bool, optional, tag = "3")]
     pub allow_subject_alt_names_passthrough: ::core::option::Option<bool>,
 }
@@ -993,7 +993,7 @@ pub struct CertificateIdentityConstraints {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CertificateExtensionConstraints {
     /// Optional. A set of named X.509 extensions. Will be combined with
-    /// [additional_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.additional_extensions] to determine the full set of X.509 extensions.
+    /// \[additional_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.additional_extensions\] to determine the full set of X.509 extensions.
     #[prost(
         enumeration = "certificate_extension_constraints::KnownCertificateExtension",
         repeated,
@@ -1001,49 +1001,49 @@ pub struct CertificateExtensionConstraints {
         tag = "1"
     )]
     pub known_extensions: ::prost::alloc::vec::Vec<i32>,
-    /// Optional. A set of [ObjectIds][google.cloud.security.privateca.v1.ObjectId] identifying custom X.509 extensions.
-    /// Will be combined with [known_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.known_extensions] to determine the full set of
+    /// Optional. A set of \[ObjectIds][google.cloud.security.privateca.v1.ObjectId\] identifying custom X.509 extensions.
+    /// Will be combined with \[known_extensions][google.cloud.security.privateca.v1.CertificateExtensionConstraints.known_extensions\] to determine the full set of
     /// X.509 extensions.
     #[prost(message, repeated, tag = "2")]
     pub additional_extensions: ::prost::alloc::vec::Vec<ObjectId>,
 }
 /// Nested message and enum types in `CertificateExtensionConstraints`.
 pub mod certificate_extension_constraints {
-    /// Describes well-known X.509 extensions that can appear in a [Certificate][google.cloud.security.privateca.v1.Certificate],
-    /// not including the [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] extension.
+    /// Describes well-known X.509 extensions that can appear in a \[Certificate][google.cloud.security.privateca.v1.Certificate\],
+    /// not including the \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\] extension.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum KnownCertificateExtension {
         /// Not specified.
         Unspecified = 0,
         /// Refers to a certificate's Key Usage extension, as described in [RFC 5280
-        /// section 4.2.1.3](https://tools.ietf.org/html/rfc5280#section-4.2.1.3).
-        /// This corresponds to the [KeyUsage.base_key_usage][google.cloud.security.privateca.v1.KeyUsage.base_key_usage] field.
+        /// section 4.2.1.3](<https://tools.ietf.org/html/rfc5280#section-4.2.1.3>).
+        /// This corresponds to the \[KeyUsage.base_key_usage][google.cloud.security.privateca.v1.KeyUsage.base_key_usage\] field.
         BaseKeyUsage = 1,
         /// Refers to a certificate's Extended Key Usage extension, as described in
         /// [RFC 5280
-        /// section 4.2.1.12](https://tools.ietf.org/html/rfc5280#section-4.2.1.12).
-        /// This corresponds to the [KeyUsage.extended_key_usage][google.cloud.security.privateca.v1.KeyUsage.extended_key_usage] message.
+        /// section 4.2.1.12](<https://tools.ietf.org/html/rfc5280#section-4.2.1.12>).
+        /// This corresponds to the \[KeyUsage.extended_key_usage][google.cloud.security.privateca.v1.KeyUsage.extended_key_usage\] message.
         ExtendedKeyUsage = 2,
         /// Refers to a certificate's Basic Constraints extension, as described in
         /// [RFC 5280
-        /// section 4.2.1.9](https://tools.ietf.org/html/rfc5280#section-4.2.1.9).
-        /// This corresponds to the [X509Parameters.ca_options][google.cloud.security.privateca.v1.X509Parameters.ca_options] field.
+        /// section 4.2.1.9](<https://tools.ietf.org/html/rfc5280#section-4.2.1.9>).
+        /// This corresponds to the \[X509Parameters.ca_options][google.cloud.security.privateca.v1.X509Parameters.ca_options\] field.
         CaOptions = 3,
         /// Refers to a certificate's Policy object identifiers, as described in
         /// [RFC 5280
-        /// section 4.2.1.4](https://tools.ietf.org/html/rfc5280#section-4.2.1.4).
-        /// This corresponds to the [X509Parameters.policy_ids][google.cloud.security.privateca.v1.X509Parameters.policy_ids] field.
+        /// section 4.2.1.4](<https://tools.ietf.org/html/rfc5280#section-4.2.1.4>).
+        /// This corresponds to the \[X509Parameters.policy_ids][google.cloud.security.privateca.v1.X509Parameters.policy_ids\] field.
         PolicyIds = 4,
         /// Refers to OCSP servers in a certificate's Authority Information Access
         /// extension, as described in
         /// [RFC 5280
-        /// section 4.2.2.1](https://tools.ietf.org/html/rfc5280#section-4.2.2.1),
-        /// This corresponds to the [X509Parameters.aia_ocsp_servers][google.cloud.security.privateca.v1.X509Parameters.aia_ocsp_servers] field.
+        /// section 4.2.2.1](<https://tools.ietf.org/html/rfc5280#section-4.2.2.1>),
+        /// This corresponds to the \[X509Parameters.aia_ocsp_servers][google.cloud.security.privateca.v1.X509Parameters.aia_ocsp_servers\] field.
         AiaOcspServers = 5,
     }
 }
-/// A [RevocationReason][google.cloud.security.privateca.v1.RevocationReason] indicates whether a [Certificate][google.cloud.security.privateca.v1.Certificate] has been revoked,
+/// A \[RevocationReason][google.cloud.security.privateca.v1.RevocationReason\] indicates whether a \[Certificate][google.cloud.security.privateca.v1.Certificate\] has been revoked,
 /// and the reason for revocation. These correspond to standard revocation
 /// reasons from RFC 5280. Note that the enum labels and values in this
 /// definition are not the same ASN.1 values defined in RFC 5280. These values
@@ -1051,65 +1051,65 @@ pub mod certificate_extension_constraints {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RevocationReason {
-    /// Default unspecified value. This value does indicate that a [Certificate][google.cloud.security.privateca.v1.Certificate]
+    /// Default unspecified value. This value does indicate that a \[Certificate][google.cloud.security.privateca.v1.Certificate\]
     /// has been revoked, but that a reason has not been recorded.
     Unspecified = 0,
-    /// Key material for this [Certificate][google.cloud.security.privateca.v1.Certificate] may have leaked.
+    /// Key material for this \[Certificate][google.cloud.security.privateca.v1.Certificate\] may have leaked.
     KeyCompromise = 1,
     /// The key material for a certificate authority in the issuing path may have
     /// leaked.
     CertificateAuthorityCompromise = 2,
-    /// The subject or other attributes in this [Certificate][google.cloud.security.privateca.v1.Certificate] have changed.
+    /// The subject or other attributes in this \[Certificate][google.cloud.security.privateca.v1.Certificate\] have changed.
     AffiliationChanged = 3,
-    /// This [Certificate][google.cloud.security.privateca.v1.Certificate] has been superseded.
+    /// This \[Certificate][google.cloud.security.privateca.v1.Certificate\] has been superseded.
     Superseded = 4,
-    /// This [Certificate][google.cloud.security.privateca.v1.Certificate] or entities in the issuing path have ceased to
+    /// This \[Certificate][google.cloud.security.privateca.v1.Certificate\] or entities in the issuing path have ceased to
     /// operate.
     CessationOfOperation = 5,
-    /// This [Certificate][google.cloud.security.privateca.v1.Certificate] should not be considered valid, it is expected that it
+    /// This \[Certificate][google.cloud.security.privateca.v1.Certificate\] should not be considered valid, it is expected that it
     /// may become valid in the future.
     CertificateHold = 6,
-    /// This [Certificate][google.cloud.security.privateca.v1.Certificate] no longer has permission to assert the listed
+    /// This \[Certificate][google.cloud.security.privateca.v1.Certificate\] no longer has permission to assert the listed
     /// attributes.
     PrivilegeWithdrawn = 7,
-    /// The authority which determines appropriate attributes for a [Certificate][google.cloud.security.privateca.v1.Certificate]
+    /// The authority which determines appropriate attributes for a \[Certificate][google.cloud.security.privateca.v1.Certificate\]
     /// may have been compromised.
     AttributeAuthorityCompromise = 8,
 }
-/// Describes the way in which a [Certificate][google.cloud.security.privateca.v1.Certificate]'s [Subject][google.cloud.security.privateca.v1.Subject] and/or
-/// [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] will be resolved.
+/// Describes the way in which a \[Certificate][google.cloud.security.privateca.v1.Certificate\]'s \[Subject][google.cloud.security.privateca.v1.Subject\] and/or
+/// \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\] will be resolved.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum SubjectRequestMode {
     /// Not specified.
     Unspecified = 0,
     /// The default mode used in most cases. Indicates that the certificate's
-    /// [Subject][google.cloud.security.privateca.v1.Subject] and/or [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] are specified in the certificate
+    /// \[Subject][google.cloud.security.privateca.v1.Subject\] and/or \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\] are specified in the certificate
     /// request. This mode requires the caller to have the
     /// `privateca.certificates.create` permission.
     Default = 1,
     /// A mode reserved for special cases. Indicates that the certificate should
-    /// have one or more SPIFFE [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] set by the service based
+    /// have one or more SPIFFE \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\] set by the service based
     /// on the caller's identity. This mode will ignore any explicitly specified
-    /// [Subject][google.cloud.security.privateca.v1.Subject] and/or [SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames] in the certificate request.
+    /// \[Subject][google.cloud.security.privateca.v1.Subject\] and/or \[SubjectAltNames][google.cloud.security.privateca.v1.SubjectAltNames\] in the certificate request.
     /// This mode requires the caller to have the
     /// `privateca.certificates.createForSelf` permission.
     ReflectedSpiffe = 2,
 }
-/// Request message for [CertificateAuthorityService.CreateCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificate].
+/// Request message for \[CertificateAuthorityService.CreateCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCertificateRequest {
-    /// Required. The resource name of the [CaPool][google.cloud.security.privateca.v1.CaPool] associated with the [Certificate][google.cloud.security.privateca.v1.Certificate],
+    /// Required. The resource name of the \[CaPool][google.cloud.security.privateca.v1.CaPool\] associated with the \[Certificate][google.cloud.security.privateca.v1.Certificate\],
     /// in the format `projects/*/locations/*/caPools/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. It must be unique within a location and match the regular
-    /// expression `[a-zA-Z0-9_-]{1,63}`. This field is required when using a
-    /// [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the Enterprise [CertificateAuthority.Tier][],
+    /// expression `\[a-zA-Z0-9_-\]{1,63}`. This field is required when using a
+    /// \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the Enterprise \[CertificateAuthority.Tier][\],
     /// but is optional and its value is ignored otherwise.
     #[prost(string, tag = "2")]
     pub certificate_id: ::prost::alloc::string::String,
-    /// Required. A [Certificate][google.cloud.security.privateca.v1.Certificate] with initial field values.
+    /// Required. A \[Certificate][google.cloud.security.privateca.v1.Certificate\] with initial field values.
     #[prost(message, optional, tag = "3")]
     pub certificate: ::core::option::Option<Certificate>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
@@ -1127,72 +1127,72 @@ pub struct CreateCertificateRequest {
     /// not supported (00000000-0000-0000-0000-000000000000).
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
-    /// Optional. If this is true, no [Certificate][google.cloud.security.privateca.v1.Certificate] resource will be persisted regardless
-    /// of the [CaPool][google.cloud.security.privateca.v1.CaPool]'s [tier][google.cloud.security.privateca.v1.CaPool.tier], and the returned [Certificate][google.cloud.security.privateca.v1.Certificate]
-    /// will not contain the [pem_certificate][google.cloud.security.privateca.v1.Certificate.pem_certificate] field.
+    /// Optional. If this is true, no \[Certificate][google.cloud.security.privateca.v1.Certificate\] resource will be persisted regardless
+    /// of the \[CaPool][google.cloud.security.privateca.v1.CaPool\]'s \[tier][google.cloud.security.privateca.v1.CaPool.tier\], and the returned \[Certificate][google.cloud.security.privateca.v1.Certificate\]
+    /// will not contain the \[pem_certificate][google.cloud.security.privateca.v1.Certificate.pem_certificate\] field.
     #[prost(bool, tag = "5")]
     pub validate_only: bool,
-    /// Optional. The resource ID of the [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] that should issue the
+    /// Optional. The resource ID of the \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] that should issue the
     /// certificate.  This optional field will ignore the load-balancing scheme of
     /// the Pool and directly issue the certificate from the CA with the specified
-    /// ID, contained in the same [CaPool][google.cloud.security.privateca.v1.CaPool] referenced by `parent`. Per-CA quota
-    /// rules apply. If left empty, a [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] will be chosen from
-    /// the [CaPool][google.cloud.security.privateca.v1.CaPool] by the service. For example, to issue a [Certificate][google.cloud.security.privateca.v1.Certificate] from
+    /// ID, contained in the same \[CaPool][google.cloud.security.privateca.v1.CaPool\] referenced by `parent`. Per-CA quota
+    /// rules apply. If left empty, a \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] will be chosen from
+    /// the \[CaPool][google.cloud.security.privateca.v1.CaPool\] by the service. For example, to issue a \[Certificate][google.cloud.security.privateca.v1.Certificate\] from
     /// a Certificate Authority with resource name
     /// "projects/my-project/locations/us-central1/caPools/my-pool/certificateAuthorities/my-ca",
-    /// you can set the [parent][google.cloud.security.privateca.v1.CreateCertificateRequest.parent] to
+    /// you can set the \[parent][google.cloud.security.privateca.v1.CreateCertificateRequest.parent\] to
     /// "projects/my-project/locations/us-central1/caPools/my-pool" and the
-    /// [issuing_certificate_authority_id][google.cloud.security.privateca.v1.CreateCertificateRequest.issuing_certificate_authority_id] to "my-ca".
+    /// \[issuing_certificate_authority_id][google.cloud.security.privateca.v1.CreateCertificateRequest.issuing_certificate_authority_id\] to "my-ca".
     #[prost(string, tag = "6")]
     pub issuing_certificate_authority_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.GetCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificate].
+/// \[CertificateAuthorityService.GetCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateRequest {
-    /// Required. The [name][google.cloud.security.privateca.v1.Certificate.name] of the [Certificate][google.cloud.security.privateca.v1.Certificate] to get.
+    /// Required. The \[name][google.cloud.security.privateca.v1.Certificate.name\] of the \[Certificate][google.cloud.security.privateca.v1.Certificate\] to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificates].
+/// Request message for \[CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificates\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificatesRequest {
     /// Required. The resource name of the location associated with the
-    /// [Certificates][google.cloud.security.privateca.v1.Certificate], in the format
+    /// \[Certificates][google.cloud.security.privateca.v1.Certificate\], in the format
     /// `projects/*/locations/*/caPools/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Limit on the number of
-    /// [Certificates][google.cloud.security.privateca.v1.Certificate] to include in the
-    /// response. Further [Certificates][google.cloud.security.privateca.v1.Certificate] can subsequently be obtained
+    /// \[Certificates][google.cloud.security.privateca.v1.Certificate\] to include in the
+    /// response. Further \[Certificates][google.cloud.security.privateca.v1.Certificate\] can subsequently be obtained
     /// by including the
-    /// [ListCertificatesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificatesResponse.next_page_token] in a subsequent
+    /// \[ListCertificatesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificatesResponse.next_page_token\] in a subsequent
     /// request. If unspecified, the server will pick an appropriate default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Pagination token, returned earlier via
-    /// [ListCertificatesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificatesResponse.next_page_token].
+    /// \[ListCertificatesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificatesResponse.next_page_token\].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response. For details
     /// on supported filters and syntax, see [Certificates Filtering
-    /// documentation](https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#filtering_support).
+    /// documentation](<https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#filtering_support>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specify how the results should be sorted. For details on supported fields
     /// and syntax, see [Certificates Sorting
-    /// documentation](https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#sorting_support).
+    /// documentation](<https://cloud.google.com/certificate-authority-service/docs/sorting-filtering-certificates#sorting_support>).
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for [CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificates].
+/// Response message for \[CertificateAuthorityService.ListCertificates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificates\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificatesResponse {
-    /// The list of [Certificates][google.cloud.security.privateca.v1.Certificate].
+    /// The list of \[Certificates][google.cloud.security.privateca.v1.Certificate\].
     #[prost(message, repeated, tag = "1")]
     pub certificates: ::prost::alloc::vec::Vec<Certificate>,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificatesRequest.next_page_token][] to retrieve the
+    /// \[ListCertificatesRequest.next_page_token][\] to retrieve the
     /// next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1201,15 +1201,15 @@ pub struct ListCertificatesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// [CertificateAuthorityService.RevokeCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.RevokeCertificate].
+/// \[CertificateAuthorityService.RevokeCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.RevokeCertificate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevokeCertificateRequest {
-    /// Required. The resource name for this [Certificate][google.cloud.security.privateca.v1.Certificate] in the
+    /// Required. The resource name for this \[Certificate][google.cloud.security.privateca.v1.Certificate\] in the
     /// format
     /// `projects/*/locations/*/caPools/*/certificates/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The [RevocationReason][google.cloud.security.privateca.v1.RevocationReason] for revoking this certificate.
+    /// Required. The \[RevocationReason][google.cloud.security.privateca.v1.RevocationReason\] for revoking this certificate.
     #[prost(enumeration = "RevocationReason", tag = "2")]
     pub reason: i32,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
@@ -1228,10 +1228,10 @@ pub struct RevokeCertificateRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [CertificateAuthorityService.UpdateCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificate].
+/// Request message for \[CertificateAuthorityService.UpdateCertificate][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateRequest {
-    /// Required. [Certificate][google.cloud.security.privateca.v1.Certificate] with updated values.
+    /// Required. \[Certificate][google.cloud.security.privateca.v1.Certificate\] with updated values.
     #[prost(message, optional, tag = "1")]
     pub certificate: ::core::option::Option<Certificate>,
     /// Required. A list of fields to be updated in this request.
@@ -1254,15 +1254,15 @@ pub struct UpdateCertificateRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.ActivateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.ActivateCertificateAuthority].
+/// \[CertificateAuthorityService.ActivateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.ActivateCertificateAuthority\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActivateCertificateAuthorityRequest {
-    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the
+    /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the
     /// format `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The signed CA certificate issued from
-    /// [FetchCertificateAuthorityCsrResponse.pem_csr][google.cloud.security.privateca.v1.FetchCertificateAuthorityCsrResponse.pem_csr].
+    /// \[FetchCertificateAuthorityCsrResponse.pem_csr][google.cloud.security.privateca.v1.FetchCertificateAuthorityCsrResponse.pem_csr\].
     #[prost(string, tag = "2")]
     pub pem_ca_certificate: ::prost::alloc::string::String,
     /// Required. Must include information about the issuer of 'pem_ca_certificate', and any
@@ -1286,19 +1286,19 @@ pub struct ActivateCertificateAuthorityRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.CreateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificateAuthority].
+/// \[CertificateAuthorityService.CreateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificateAuthority\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCertificateAuthorityRequest {
-    /// Required. The resource name of the [CaPool][google.cloud.security.privateca.v1.CaPool] associated with the
-    /// [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority], in the format
+    /// Required. The resource name of the \[CaPool][google.cloud.security.privateca.v1.CaPool\] associated with the
+    /// \[CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority\], in the format
     /// `projects/*/locations/*/caPools/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a location and match the regular
-    /// expression `[a-zA-Z0-9_-]{1,63}`
+    /// expression `\[a-zA-Z0-9_-\]{1,63}`
     #[prost(string, tag = "2")]
     pub certificate_authority_id: ::prost::alloc::string::String,
-    /// Required. A [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] with initial field values.
+    /// Required. A \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] with initial field values.
     #[prost(message, optional, tag = "3")]
     pub certificate_authority: ::core::option::Option<CertificateAuthority>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
@@ -1318,10 +1318,10 @@ pub struct CreateCertificateAuthorityRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.DisableCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.DisableCertificateAuthority].
+/// \[CertificateAuthorityService.DisableCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.DisableCertificateAuthority\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DisableCertificateAuthorityRequest {
-    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the
+    /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the
     /// format `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1342,10 +1342,10 @@ pub struct DisableCertificateAuthorityRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.EnableCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.EnableCertificateAuthority].
+/// \[CertificateAuthorityService.EnableCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.EnableCertificateAuthority\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnableCertificateAuthorityRequest {
-    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the
+    /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the
     /// format `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1366,49 +1366,49 @@ pub struct EnableCertificateAuthorityRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCertificateAuthorityCsr].
+/// \[CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCertificateAuthorityCsr\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchCertificateAuthorityCsrRequest {
-    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the
+    /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the
     /// format `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCertificateAuthorityCsr].
+/// \[CertificateAuthorityService.FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCertificateAuthorityCsr\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchCertificateAuthorityCsrResponse {
     /// Output only. The PEM-encoded signed certificate signing request (CSR).
     #[prost(string, tag = "1")]
     pub pem_csr: ::prost::alloc::string::String,
 }
-/// Request message for [CertificateAuthorityService.GetCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateAuthority].
+/// Request message for \[CertificateAuthorityService.GetCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateAuthority\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateAuthorityRequest {
-    /// Required. The [name][google.cloud.security.privateca.v1.CertificateAuthority.name] of the [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] to
+    /// Required. The \[name][google.cloud.security.privateca.v1.CertificateAuthority.name\] of the \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] to
     /// get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateAuthorities].
+/// \[CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateAuthorities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateAuthoritiesRequest {
-    /// Required. The resource name of the [CaPool][google.cloud.security.privateca.v1.CaPool] associated with the
-    /// [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority], in the format
+    /// Required. The resource name of the \[CaPool][google.cloud.security.privateca.v1.CaPool\] associated with the
+    /// \[CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority\], in the format
     /// `projects/*/locations/*/caPools/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Limit on the number of [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority] to
+    /// Optional. Limit on the number of \[CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority\] to
     /// include in the response.
-    /// Further [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority] can subsequently be
+    /// Further \[CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority\] can subsequently be
     /// obtained by including the
-    /// [ListCertificateAuthoritiesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateAuthoritiesResponse.next_page_token] in a subsequent
+    /// \[ListCertificateAuthoritiesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateAuthoritiesResponse.next_page_token\] in a subsequent
     /// request. If unspecified, the server will pick an appropriate default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Pagination token, returned earlier via
-    /// [ListCertificateAuthoritiesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateAuthoritiesResponse.next_page_token].
+    /// \[ListCertificateAuthoritiesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateAuthoritiesResponse.next_page_token\].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response.
@@ -1419,14 +1419,14 @@ pub struct ListCertificateAuthoritiesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateAuthorities].
+/// \[CertificateAuthorityService.ListCertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateAuthorities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateAuthoritiesResponse {
-    /// The list of [CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority].
+    /// The list of \[CertificateAuthorities][google.cloud.security.privateca.v1.CertificateAuthority\].
     #[prost(message, repeated, tag = "1")]
     pub certificate_authorities: ::prost::alloc::vec::Vec<CertificateAuthority>,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateAuthoritiesRequest.next_page_token][] to retrieve the next
+    /// \[ListCertificateAuthoritiesRequest.next_page_token][\] to retrieve the next
     /// page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1435,10 +1435,10 @@ pub struct ListCertificateAuthoritiesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// [CertificateAuthorityService.UndeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UndeleteCertificateAuthority].
+/// \[CertificateAuthorityService.UndeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UndeleteCertificateAuthority\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeleteCertificateAuthorityRequest {
-    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the
+    /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the
     /// format `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1459,10 +1459,10 @@ pub struct UndeleteCertificateAuthorityRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.DeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCertificateAuthority].
+/// \[CertificateAuthorityService.DeleteCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCertificateAuthority\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCertificateAuthorityRequest {
-    /// Required. The resource name for this [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] in the
+    /// Required. The resource name for this \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the
     /// format `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1487,10 +1487,10 @@ pub struct DeleteCertificateAuthorityRequest {
     pub ignore_active_certificates: bool,
 }
 /// Request message for
-/// [CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateAuthority].
+/// \[CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateAuthority\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateAuthorityRequest {
-    /// Required. [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority] with updated values.
+    /// Required. \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] with updated values.
     #[prost(message, optional, tag = "1")]
     pub certificate_authority: ::core::option::Option<CertificateAuthority>,
     /// Required. A list of fields to be updated in this request.
@@ -1513,18 +1513,18 @@ pub struct UpdateCertificateAuthorityRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.CreateCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCaPool].
+/// \[CertificateAuthorityService.CreateCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCaPool\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCaPoolRequest {
     /// Required. The resource name of the location associated with the
-    /// [CaPool][google.cloud.security.privateca.v1.CaPool], in the format `projects/*/locations/*`.
+    /// \[CaPool][google.cloud.security.privateca.v1.CaPool\], in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a location and match the regular
-    /// expression `[a-zA-Z0-9_-]{1,63}`
+    /// expression `\[a-zA-Z0-9_-\]{1,63}`
     #[prost(string, tag = "2")]
     pub ca_pool_id: ::prost::alloc::string::String,
-    /// Required. A [CaPool][google.cloud.security.privateca.v1.CaPool] with initial field values.
+    /// Required. A \[CaPool][google.cloud.security.privateca.v1.CaPool\] with initial field values.
     #[prost(message, optional, tag = "3")]
     pub ca_pool: ::core::option::Option<CaPool>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
@@ -1544,10 +1544,10 @@ pub struct CreateCaPoolRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.UpdateCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCaPool].
+/// \[CertificateAuthorityService.UpdateCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCaPool\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCaPoolRequest {
-    /// Required. [CaPool][google.cloud.security.privateca.v1.CaPool] with updated values.
+    /// Required. \[CaPool][google.cloud.security.privateca.v1.CaPool\] with updated values.
     #[prost(message, optional, tag = "1")]
     pub ca_pool: ::core::option::Option<CaPool>,
     /// Required. A list of fields to be updated in this request.
@@ -1570,10 +1570,10 @@ pub struct UpdateCaPoolRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.DeleteCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCaPool].
+/// \[CertificateAuthorityService.DeleteCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCaPool\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCaPoolRequest {
-    /// Required. The resource name for this [CaPool][google.cloud.security.privateca.v1.CaPool] in the
+    /// Required. The resource name for this \[CaPool][google.cloud.security.privateca.v1.CaPool\] in the
     /// format `projects/*/locations/*/caPools/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1594,10 +1594,10 @@ pub struct DeleteCaPoolRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.FetchCaCerts][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCaCerts].
+/// \[CertificateAuthorityService.FetchCaCerts][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCaCerts\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchCaCertsRequest {
-    /// Required. The resource name for the [CaPool][google.cloud.security.privateca.v1.CaPool] in the
+    /// Required. The resource name for the \[CaPool][google.cloud.security.privateca.v1.CaPool\] in the
     /// format `projects/*/locations/*/caPools/*`.
     #[prost(string, tag = "1")]
     pub ca_pool: ::prost::alloc::string::String,
@@ -1618,12 +1618,12 @@ pub struct FetchCaCertsRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [CertificateAuthorityService.FetchCaCerts][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCaCerts].
+/// \[CertificateAuthorityService.FetchCaCerts][google.cloud.security.privateca.v1.CertificateAuthorityService.FetchCaCerts\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchCaCertsResponse {
     /// The PEM encoded CA certificate chains of all
-    /// [ACTIVE][CertificateAuthority.State.ACTIVE] [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
-    /// resources in this [CaPool][google.cloud.security.privateca.v1.CaPool].
+    /// \[ACTIVE][CertificateAuthority.State.ACTIVE\] \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]
+    /// resources in this \[CaPool][google.cloud.security.privateca.v1.CaPool\].
     #[prost(message, repeated, tag = "1")]
     pub ca_certs: ::prost::alloc::vec::Vec<fetch_ca_certs_response::CertChain>,
 }
@@ -1636,32 +1636,32 @@ pub mod fetch_ca_certs_response {
         pub certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
-/// Request message for [CertificateAuthorityService.GetCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCaPool].
+/// Request message for \[CertificateAuthorityService.GetCaPool][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCaPool\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCaPoolRequest {
-    /// Required. The [name][google.cloud.security.privateca.v1.CaPool.name] of the [CaPool][google.cloud.security.privateca.v1.CaPool] to get.
+    /// Required. The \[name][google.cloud.security.privateca.v1.CaPool.name\] of the \[CaPool][google.cloud.security.privateca.v1.CaPool\] to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.ListCaPools][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCaPools].
+/// \[CertificateAuthorityService.ListCaPools][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCaPools\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCaPoolsRequest {
     /// Required. The resource name of the location associated with the
-    /// [CaPools][google.cloud.security.privateca.v1.CaPool], in the format
+    /// \[CaPools][google.cloud.security.privateca.v1.CaPool\], in the format
     /// `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Limit on the number of [CaPools][google.cloud.security.privateca.v1.CaPool] to
+    /// Optional. Limit on the number of \[CaPools][google.cloud.security.privateca.v1.CaPool\] to
     /// include in the response.
-    /// Further [CaPools][google.cloud.security.privateca.v1.CaPool] can subsequently be
+    /// Further \[CaPools][google.cloud.security.privateca.v1.CaPool\] can subsequently be
     /// obtained by including the
-    /// [ListCaPoolsResponse.next_page_token][google.cloud.security.privateca.v1.ListCaPoolsResponse.next_page_token] in a subsequent
+    /// \[ListCaPoolsResponse.next_page_token][google.cloud.security.privateca.v1.ListCaPoolsResponse.next_page_token\] in a subsequent
     /// request. If unspecified, the server will pick an appropriate default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Pagination token, returned earlier via
-    /// [ListCaPoolsResponse.next_page_token][google.cloud.security.privateca.v1.ListCaPoolsResponse.next_page_token].
+    /// \[ListCaPoolsResponse.next_page_token][google.cloud.security.privateca.v1.ListCaPoolsResponse.next_page_token\].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response.
@@ -1672,14 +1672,14 @@ pub struct ListCaPoolsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [CertificateAuthorityService.ListCaPools][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCaPools].
+/// \[CertificateAuthorityService.ListCaPools][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCaPools\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCaPoolsResponse {
-    /// The list of [CaPools][google.cloud.security.privateca.v1.CaPool].
+    /// The list of \[CaPools][google.cloud.security.privateca.v1.CaPool\].
     #[prost(message, repeated, tag = "1")]
     pub ca_pools: ::prost::alloc::vec::Vec<CaPool>,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateAuthoritiesRequest.next_page_token][] to retrieve the next
+    /// \[ListCertificateAuthoritiesRequest.next_page_token][\] to retrieve the next
     /// page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1688,33 +1688,33 @@ pub struct ListCaPoolsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// [CertificateAuthorityService.GetCertificateRevocationList][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateRevocationList].
+/// \[CertificateAuthorityService.GetCertificateRevocationList][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateRevocationList\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateRevocationListRequest {
-    /// Required. The [name][google.cloud.security.privateca.v1.CertificateRevocationList.name] of the
-    /// [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList] to get.
+    /// Required. The \[name][google.cloud.security.privateca.v1.CertificateRevocationList.name\] of the
+    /// \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\] to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateRevocationLists].
+/// \[CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateRevocationLists\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateRevocationListsRequest {
     /// Required. The resource name of the location associated with the
-    /// [CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList], in the format
+    /// \[CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList\], in the format
     /// `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Limit on the number of
-    /// [CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList] to include in the
-    /// response. Further [CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList]
+    /// \[CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList\] to include in the
+    /// response. Further \[CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList\]
     /// can subsequently be obtained by including the
-    /// [ListCertificateRevocationListsResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateRevocationListsResponse.next_page_token] in a subsequent
+    /// \[ListCertificateRevocationListsResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateRevocationListsResponse.next_page_token\] in a subsequent
     /// request. If unspecified, the server will pick an appropriate default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Pagination token, returned earlier via
-    /// [ListCertificateRevocationListsResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateRevocationListsResponse.next_page_token].
+    /// \[ListCertificateRevocationListsResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateRevocationListsResponse.next_page_token\].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response.
@@ -1725,14 +1725,14 @@ pub struct ListCertificateRevocationListsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateRevocationLists].
+/// \[CertificateAuthorityService.ListCertificateRevocationLists][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateRevocationLists\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateRevocationListsResponse {
-    /// The list of [CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList].
+    /// The list of \[CertificateRevocationLists][google.cloud.security.privateca.v1.CertificateRevocationList\].
     #[prost(message, repeated, tag = "1")]
     pub certificate_revocation_lists: ::prost::alloc::vec::Vec<CertificateRevocationList>,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateRevocationListsRequest.next_page_token][] to retrieve the
+    /// \[ListCertificateRevocationListsRequest.next_page_token][\] to retrieve the
     /// next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1741,10 +1741,10 @@ pub struct ListCertificateRevocationListsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// [CertificateAuthorityService.UpdateCertificateRevocationList][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateRevocationList].
+/// \[CertificateAuthorityService.UpdateCertificateRevocationList][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateRevocationList\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateRevocationListRequest {
-    /// Required. [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList] with updated values.
+    /// Required. \[CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList\] with updated values.
     #[prost(message, optional, tag = "1")]
     pub certificate_revocation_list: ::core::option::Option<CertificateRevocationList>,
     /// Required. A list of fields to be updated in this request.
@@ -1767,19 +1767,19 @@ pub struct UpdateCertificateRevocationListRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.CreateCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificateTemplate].
+/// \[CertificateAuthorityService.CreateCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.CreateCertificateTemplate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCertificateTemplateRequest {
     /// Required. The resource name of the location associated with the
-    /// [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate], in the format
+    /// \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\], in the format
     /// `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. It must be unique within a location and match the regular
-    /// expression `[a-zA-Z0-9_-]{1,63}`
+    /// expression `\[a-zA-Z0-9_-\]{1,63}`
     #[prost(string, tag = "2")]
     pub certificate_template_id: ::prost::alloc::string::String,
-    /// Required. A [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] with initial field values.
+    /// Required. A \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] with initial field values.
     #[prost(message, optional, tag = "3")]
     pub certificate_template: ::core::option::Option<CertificateTemplate>,
     /// Optional. An ID to identify requests. Specify a unique request ID so that if you must
@@ -1799,10 +1799,10 @@ pub struct CreateCertificateTemplateRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.DeleteCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCertificateTemplate].
+/// \[CertificateAuthorityService.DeleteCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.DeleteCertificateTemplate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCertificateTemplateRequest {
-    /// Required. The resource name for this [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] in the format
+    /// Required. The resource name for this \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] in the format
     /// `projects/*/locations/*/certificateTemplates/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1823,33 +1823,33 @@ pub struct DeleteCertificateTemplateRequest {
     pub request_id: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.GetCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateTemplate].
+/// \[CertificateAuthorityService.GetCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.GetCertificateTemplate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCertificateTemplateRequest {
-    /// Required. The [name][google.cloud.security.privateca.v1.CertificateTemplate.name] of the [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] to
+    /// Required. The \[name][google.cloud.security.privateca.v1.CertificateTemplate.name\] of the \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] to
     /// get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [CertificateAuthorityService.ListCertificateTemplates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateTemplates].
+/// \[CertificateAuthorityService.ListCertificateTemplates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateTemplates\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateTemplatesRequest {
     /// Required. The resource name of the location associated with the
-    /// [CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate], in the format
+    /// \[CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate\], in the format
     /// `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Limit on the number of
-    /// [CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate] to include in the response.
-    /// Further [CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate] can subsequently be
+    /// \[CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate\] to include in the response.
+    /// Further \[CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate\] can subsequently be
     /// obtained by including the
-    /// [ListCertificateTemplatesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateTemplatesResponse.next_page_token] in a subsequent
+    /// \[ListCertificateTemplatesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateTemplatesResponse.next_page_token\] in a subsequent
     /// request. If unspecified, the server will pick an appropriate default.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// Optional. Pagination token, returned earlier via
-    /// [ListCertificateTemplatesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateTemplatesResponse.next_page_token].
+    /// \[ListCertificateTemplatesResponse.next_page_token][google.cloud.security.privateca.v1.ListCertificateTemplatesResponse.next_page_token\].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Only include resources that match the filter in the response.
@@ -1860,14 +1860,14 @@ pub struct ListCertificateTemplatesRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [CertificateAuthorityService.ListCertificateTemplates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateTemplates].
+/// \[CertificateAuthorityService.ListCertificateTemplates][google.cloud.security.privateca.v1.CertificateAuthorityService.ListCertificateTemplates\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCertificateTemplatesResponse {
-    /// The list of [CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate].
+    /// The list of \[CertificateTemplates][google.cloud.security.privateca.v1.CertificateTemplate\].
     #[prost(message, repeated, tag = "1")]
     pub certificate_templates: ::prost::alloc::vec::Vec<CertificateTemplate>,
     /// A token to retrieve next page of results. Pass this value in
-    /// [ListCertificateTemplatesRequest.next_page_token][] to retrieve
+    /// \[ListCertificateTemplatesRequest.next_page_token][\] to retrieve
     /// the next page of results.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1876,10 +1876,10 @@ pub struct ListCertificateTemplatesResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for
-/// [CertificateAuthorityService.UpdateCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateTemplate].
+/// \[CertificateAuthorityService.UpdateCertificateTemplate][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateTemplate\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCertificateTemplateRequest {
-    /// Required. [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate] with updated values.
+    /// Required. \[CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate\] with updated values.
     #[prost(message, optional, tag = "1")]
     pub certificate_template: ::core::option::Option<CertificateTemplate>,
     /// Required. A list of fields to be updated in this request.
@@ -1921,7 +1921,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1942,7 +1942,7 @@ pub mod certificate_authority_service_client {
     impl<T> CertificateAuthorityServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1955,7 +1955,7 @@ pub mod certificate_authority_service_client {
             interceptor: F,
         ) -> CertificateAuthorityServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

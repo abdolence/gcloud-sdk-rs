@@ -3,7 +3,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Folder {
     /// Full resource name of this folder. See:
-    /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
     #[prost(string, tag = "1")]
     pub resource_folder: ::prost::alloc::string::String,
     /// The user defined display name for this folder.
@@ -17,7 +17,7 @@ pub struct Folder {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecurityMarks {
     /// The relative resource name of the SecurityMarks. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Examples:
     /// "organizations/{organization_id}/assets/{asset_id}/securityMarks"
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
@@ -55,7 +55,7 @@ pub struct SecurityMarks {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
     /// The relative resource name of this asset. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/assets/{asset_id}".
     #[prost(string, tag = "1")]
@@ -101,7 +101,7 @@ pub mod asset {
     pub struct SecurityCenterProperties {
         /// The full resource name of the Google Cloud resource this asset
         /// represents. This field is immutable after create time. See:
-        /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+        /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
         #[prost(string, tag = "1")]
         pub resource_name: ::prost::alloc::string::String,
         /// The type of the Google Cloud resource. Examples include: APPLICATION,
@@ -111,11 +111,11 @@ pub mod asset {
         #[prost(string, tag = "2")]
         pub resource_type: ::prost::alloc::string::String,
         /// The full resource name of the immediate parent of the resource. See:
-        /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+        /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
         #[prost(string, tag = "3")]
         pub resource_parent: ::prost::alloc::string::String,
         /// The full resource name of the project the resource belongs to. See:
-        /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+        /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
         #[prost(string, tag = "4")]
         pub resource_project: ::prost::alloc::string::String,
         /// Owners of the Google Cloud resource.
@@ -143,7 +143,7 @@ pub mod asset {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IamPolicy {
         /// The JSON representation of the Policy associated with the asset.
-        /// See https://cloud.google.com/iam/docs/reference/rest/v1/Policy for
+        /// See <https://cloud.google.com/iam/docs/reference/rest/v1/Policy> for
         /// format details.
         #[prost(string, tag = "1")]
         pub policy_blob: ::prost::alloc::string::String,
@@ -158,13 +158,13 @@ pub mod asset {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Finding {
     /// The relative resource name of this finding. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The relative resource name of the source the finding belongs to. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// This field is immutable after creation time.
     /// For example:
     /// "organizations/{organization_id}/sources/{source_id}"
@@ -172,7 +172,7 @@ pub struct Finding {
     pub parent: ::prost::alloc::string::String,
     /// For findings on Google Cloud resources, the full resource
     /// name of the Google Cloud resource this finding is for. See:
-    /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
     /// When the finding is for a non-Google Cloud resource, the resourceName can
     /// be a customer or partner defined string. This field is immutable after
     /// creation time.
@@ -266,7 +266,7 @@ pub mod finding {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationConfig {
     /// The relative resource name of this notification config. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/notificationConfigs/notify_public_bucket".
     #[prost(string, tag = "1")]
@@ -278,7 +278,7 @@ pub struct NotificationConfig {
     #[prost(enumeration = "notification_config::EventType", tag = "3")]
     pub event_type: i32,
     /// The Pub/Sub topic to send notifications to. Its format is
-    /// "projects/[project_id]/topics/[topic]".
+    /// "projects/\[project_id]/topics/[topic\]".
     #[prost(string, tag = "4")]
     pub pubsub_topic: ::prost::alloc::string::String,
     /// Output only. The service account that needs "pubsub.topics.publish"
@@ -340,7 +340,7 @@ pub mod notification_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Resource {
     /// The full resource name of the resource. See:
-    /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The full resource name of project that the resource belongs to.
@@ -390,7 +390,7 @@ pub mod notification_message {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OrganizationSettings {
     /// The relative resource name of the settings. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/organizationSettings".
     #[prost(string, tag = "1")]
@@ -481,7 +481,7 @@ pub mod run_asset_discovery_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Source {
     /// The relative resource name of this source. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}"
     #[prost(string, tag = "1")]
@@ -515,7 +515,7 @@ pub struct Source {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFindingRequest {
     /// Required. Resource name of the new finding's parent. Its format should be
-    /// "organizations/[organization_id]/sources/[source_id]".
+    /// "organizations/\[organization_id]/sources/[source_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Unique identifier provided by the client within the parent scope.
@@ -530,7 +530,7 @@ pub struct CreateFindingRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNotificationConfigRequest {
     /// Required. Resource name of the new notification config's parent. Its format is
-    /// "organizations/[organization_id]".
+    /// "organizations/\[organization_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Unique identifier provided by the client within the parent scope.
@@ -547,7 +547,7 @@ pub struct CreateNotificationConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSourceRequest {
     /// Required. Resource name of the new source's parent. Its format should be
-    /// "organizations/[organization_id]".
+    /// "organizations/\[organization_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Source being created, only the display_name and description will be
@@ -559,7 +559,7 @@ pub struct CreateSourceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNotificationConfigRequest {
     /// Required. Name of the notification config to delete. Its format is
-    /// "organizations/[organization_id]/notificationConfigs/[config_id]".
+    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -567,7 +567,7 @@ pub struct DeleteNotificationConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNotificationConfigRequest {
     /// Required. Name of the notification config to get. Its format is
-    /// "organizations/[organization_id]/notificationConfigs/[config_id]".
+    /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -575,7 +575,7 @@ pub struct GetNotificationConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOrganizationSettingsRequest {
     /// Required. Name of the organization to get organization settings for. Its format is
-    /// "organizations/[organization_id]/organizationSettings".
+    /// "organizations/\[organization_id\]/organizationSettings".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -583,7 +583,7 @@ pub struct GetOrganizationSettingsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
-    /// "organizations/[organization_id]/source/[source_id]".
+    /// "organizations/\[organization_id]/source/[source_id\]".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -591,8 +591,8 @@ pub struct GetSourceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupAssetsRequest {
     /// Required. Name of the organization to groupBy. Its format is
-    /// "organizations/[organization_id], folders/[folder_id], or
-    /// projects/[project_id]".
+    /// "organizations/\[organization_id\], folders/\[folder_id\], or
+    /// projects/\[project_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
@@ -747,9 +747,9 @@ pub struct GroupAssetsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupFindingsRequest {
     /// Required. Name of the source to groupBy. Its format is
-    /// "organizations/[organization_id]/sources/[source_id]",
-    /// folders/[folder_id]/sources/[source_id], or
-    /// projects/[project_id]/sources/[source_id]. To groupBy across all sources
+    /// "organizations/\[organization_id]/sources/[source_id\]",
+    /// folders/\[folder_id]/sources/[source_id\], or
+    /// projects/\[project_id]/sources/[source_id\]. To groupBy across all sources
     /// provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-,
     /// or projects/{project_id}/sources/-
@@ -908,7 +908,7 @@ pub struct GroupResult {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationConfigsRequest {
     /// Required. Name of the organization to list notification configs.
-    /// Its format is "organizations/[organization_id]".
+    /// Its format is "organizations/\[organization_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListNotificationConfigsResponse`; indicates
@@ -936,8 +936,8 @@ pub struct ListNotificationConfigsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesRequest {
     /// Required. Resource name of the parent of sources to list. Its format should be
-    /// "organizations/[organization_id], folders/[folder_id], or
-    /// projects/[project_id]".
+    /// "organizations/\[organization_id\], folders/\[folder_id\], or
+    /// projects/\[project_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListSourcesResponse`; indicates
@@ -965,8 +965,8 @@ pub struct ListSourcesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Name of the organization assets should belong to. Its format is
-    /// "organizations/[organization_id], folders/[folder_id], or
-    /// projects/[project_id]".
+    /// "organizations/\[organization_id\], folders/\[folder_id\], or
+    /// projects/\[project_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
@@ -1160,9 +1160,9 @@ pub mod list_assets_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. Name of the source the findings belong to. Its format is
-    /// "organizations/[organization_id]/sources/[source_id],
-    /// folders/[folder_id]/sources/[source_id], or
-    /// projects/[project_id]/sources/[source_id]". To list across all sources
+    /// "organizations/\[organization_id]/sources/[source_id\],
+    /// folders/\[folder_id]/sources/[source_id\], or
+    /// projects/\[project_id]/sources/[source_id\]". To list across all sources
     /// provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/- or
     /// projects/{projects_id}/sources/-
@@ -1331,7 +1331,7 @@ pub mod list_findings_response {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Resource {
             /// The full resource name of the resource. See:
-            /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+            /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
             #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
             /// The full resource name of project that the resource belongs to.
@@ -1385,7 +1385,7 @@ pub mod list_findings_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SetFindingStateRequest {
     /// Required. The relative resource name of the finding. See:
-    /// https://cloud.google.com/apis/design/resource_names#relative_resource_name
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
     #[prost(string, tag = "1")]
@@ -1401,7 +1401,7 @@ pub struct SetFindingStateRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAssetDiscoveryRequest {
     /// Required. Name of the organization to run asset discovery for. Its format is
-    /// "organizations/[organization_id]".
+    /// "organizations/\[organization_id\]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
 }
@@ -1446,7 +1446,7 @@ pub struct UpdateOrganizationSettingsRequest {
     pub organization_settings: ::core::option::Option<OrganizationSettings>,
     /// The FieldMask to use when updating the settings resource.
     ///
-    ///  If empty all mutable fields will be updated.
+    /// If empty all mutable fields will be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1493,7 +1493,7 @@ pub mod security_center_client {
     impl<T> SecurityCenterClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1506,7 +1506,7 @@ pub mod security_center_client {
             interceptor: F,
         ) -> SecurityCenterClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

@@ -5,18 +5,18 @@
 pub struct LogEntry {
     /// Required. The resource name of the log to which this log entry belongs:
     ///
-    ///     "projects/[PROJECT_ID]/logs/[LOG_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
-    ///     "folders/[FOLDER_ID]/logs/[LOG_ID]"
+    ///     "projects/\[PROJECT_ID]/logs/[LOG_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/logs/[LOG_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/logs/[LOG_ID\]"
+    ///     "folders/\[FOLDER_ID]/logs/[LOG_ID\]"
     ///
     /// A project number may be used in place of PROJECT_ID. The project number is
     /// translated to its corresponding PROJECT_ID internally and the `log_name`
     /// field will contain PROJECT_ID in queries and exports.
     ///
-    /// `[LOG_ID]` must be URL-encoded within `log_name`. Example:
+    /// `\[LOG_ID\]` must be URL-encoded within `log_name`. Example:
     /// `"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"`.
-    /// `[LOG_ID]` must be less than 512 characters long and can only include the
+    /// `\[LOG_ID\]` must be less than 512 characters long and can only include the
     /// following characters: upper and lower case alphanumeric characters,
     /// forward-slash, underscore, hyphen, and period.
     ///
@@ -42,7 +42,7 @@ pub struct LogEntry {
     ///
     /// Incoming log entries must have timestamps that don't exceed the
     /// [logs retention
-    /// period](https://cloud.google.com/logging/quotas#logs_retention_periods) in
+    /// period](<https://cloud.google.com/logging/quotas#logs_retention_periods>) in
     /// the past, and that don't exceed 24 hours in the future. Log entries outside
     /// those time boundaries aren't ingested by Logging.
     #[prost(message, optional, tag = "9")]
@@ -256,23 +256,23 @@ pub struct LogSink {
     pub name: ::prost::alloc::string::String,
     /// Required. The export destination:
     ///
-    ///     "storage.googleapis.com/[GCS_BUCKET]"
-    ///     "bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET]"
-    ///     "pubsub.googleapis.com/projects/[PROJECT_ID]/topics/[TOPIC_ID]"
+    ///     "storage.googleapis.com/\[GCS_BUCKET\]"
+    ///     "bigquery.googleapis.com/projects/\[PROJECT_ID]/datasets/[DATASET\]"
+    ///     "pubsub.googleapis.com/projects/\[PROJECT_ID]/topics/[TOPIC_ID\]"
     ///
     /// The sink's `writer_identity`, set when the sink is created, must
     /// have permission to write to the destination or else the log
     /// entries are not exported. For more information, see
     /// [Exporting Logs with
-    /// Sinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
+    /// Sinks](<https://cloud.google.com/logging/docs/api/tasks/exporting-logs>).
     #[prost(string, tag = "3")]
     pub destination: ::prost::alloc::string::String,
     /// Optional. An [advanced logs
-    /// filter](https://cloud.google.com/logging/docs/view/advanced-queries). The
+    /// filter](<https://cloud.google.com/logging/docs/view/advanced-queries>). The
     /// only exported log entries are those that are in the resource owning the
     /// sink and that match the filter. For example:
     ///
-    ///     logName="projects/[PROJECT_ID]/logs/[LOG_ID]" AND severity>=ERROR
+    ///     logName="projects/\[PROJECT_ID]/logs/[LOG_ID\]" AND severity>=ERROR
     #[prost(string, tag = "5")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. A description of this sink.
@@ -294,14 +294,14 @@ pub struct LogSink {
     pub output_version_format: i32,
     /// Output only. An IAM identity&mdash;a service account or group&mdash;under which Logging
     /// writes the exported log entries to the sink's destination. This field is
-    /// set by [sinks.create][google.logging.v2.ConfigServiceV2.CreateSink] and
-    /// [sinks.update][google.logging.v2.ConfigServiceV2.UpdateSink] based on the
+    /// set by \[sinks.create][google.logging.v2.ConfigServiceV2.CreateSink\] and
+    /// \[sinks.update][google.logging.v2.ConfigServiceV2.UpdateSink\] based on the
     /// value of `unique_writer_identity` in those methods.
     ///
     /// Until you grant this identity write-access to the destination, log entry
     /// exports from this sink will fail. For more information,
     /// see [Granting Access for a
-    /// Resource](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource).
+    /// Resource](<https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource>).
     /// Consult the destination service's documentation to determine the
     /// appropriate IAM roles to assign to the identity.
     #[prost(string, tag = "8")]
@@ -360,11 +360,11 @@ pub mod log_sink {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigQueryOptions {
     /// Optional. Whether to use [BigQuery's partition
-    /// tables](https://cloud.google.com/bigquery/docs/partitioned-tables). By
+    /// tables](<https://cloud.google.com/bigquery/docs/partitioned-tables>). By
     /// default, Logging creates dated tables based on the log entries' timestamps,
     /// e.g. syslog_20170523. With partitioned tables the date suffix is no longer
     /// present and [special query
-    /// syntax](https://cloud.google.com/bigquery/docs/querying-partitioned-tables)
+    /// syntax](<https://cloud.google.com/bigquery/docs/querying-partitioned-tables>)
     /// has to be used instead. In both cases, tables are sharded based on UTC
     /// timezone.
     #[prost(bool, tag = "1")]
@@ -383,13 +383,13 @@ pub struct BigQueryOptions {
 pub struct ListBucketsRequest {
     /// Required. The parent resource whose buckets are to be listed:
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]"
-    ///     "folders/[FOLDER_ID]/locations/[LOCATION_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID\]"
+    ///     "folders/\[FOLDER_ID]/locations/[LOCATION_ID\]"
     ///
     /// Note: The locations portion of the resource must be specified, but
-    /// supplying the character `-` in place of [LOCATION_ID] will return all
+    /// supplying the character `-` in place of \[LOCATION_ID\] will return all
     /// buckets.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -422,7 +422,7 @@ pub struct ListBucketsResponse {
 pub struct CreateBucketRequest {
     /// Required. The resource in which to create the bucket:
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID\]"
     ///
     /// Example: `"projects/my-logging-project/locations/global"`
     #[prost(string, tag = "1")]
@@ -443,10 +443,10 @@ pub struct CreateBucketRequest {
 pub struct UpdateBucketRequest {
     /// Required. The full resource name of the bucket to update.
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
     ///
     /// Example:
     /// `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`. Also
@@ -462,7 +462,7 @@ pub struct UpdateBucketRequest {
     /// mask. `name` and output only fields cannot be updated.
     ///
     /// For a detailed `FieldMask` definition, see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask>
     ///
     /// Example: `updateMask=retention_days`.
     #[prost(message, optional, tag = "4")]
@@ -473,10 +473,10 @@ pub struct UpdateBucketRequest {
 pub struct GetBucketRequest {
     /// Required. The resource name of the bucket:
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
     ///
     /// Example:
     /// `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`.
@@ -488,10 +488,10 @@ pub struct GetBucketRequest {
 pub struct DeleteBucketRequest {
     /// Required. The full resource name of the bucket to delete.
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
     ///
     /// Example:
     /// `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`.
@@ -503,10 +503,10 @@ pub struct DeleteBucketRequest {
 pub struct UndeleteBucketRequest {
     /// Required. The full resource name of the bucket to undelete.
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-    ///     "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
+    ///     "folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
     ///
     /// Example:
     /// `"projects/my-project-id/locations/my-location/buckets/my-bucket-id"`.
@@ -518,7 +518,7 @@ pub struct UndeleteBucketRequest {
 pub struct ListViewsRequest {
     /// Required. The bucket whose views are to be listed:
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. If present, then retrieve the next batch of results from the
@@ -550,7 +550,7 @@ pub struct ListViewsResponse {
 pub struct CreateViewRequest {
     /// Required. The bucket in which to create the view
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]"
     ///
     /// Example:
     /// `"projects/my-logging-project/locations/my-location/buckets/my-bucket"`
@@ -568,7 +568,7 @@ pub struct CreateViewRequest {
 pub struct UpdateViewRequest {
     /// Required. The full resource name of the view to update
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]"
     ///
     /// Example:
     ///   `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
@@ -582,7 +582,7 @@ pub struct UpdateViewRequest {
     /// in the update mask. `name` and output only fields cannot be updated.
     ///
     /// For a detailed `FieldMask` definition, see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask>
     ///
     /// Example: `updateMask=filter`.
     #[prost(message, optional, tag = "4")]
@@ -593,7 +593,7 @@ pub struct UpdateViewRequest {
 pub struct GetViewRequest {
     /// Required. The resource name of the policy:
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]"
     ///
     /// Example:
     /// `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
@@ -605,7 +605,7 @@ pub struct GetViewRequest {
 pub struct DeleteViewRequest {
     /// Required. The full resource name of the view to delete:
     ///
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]"
     ///
     /// Example:
     ///    `"projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id"`.
@@ -617,10 +617,10 @@ pub struct DeleteViewRequest {
 pub struct ListSinksRequest {
     /// Required. The parent resource whose sinks are to be listed:
     ///
-    ///     "projects/[PROJECT_ID]"
-    ///     "organizations/[ORGANIZATION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]"
-    ///     "folders/[FOLDER_ID]"
+    ///     "projects/\[PROJECT_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]"
+    ///     "folders/\[FOLDER_ID\]"
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. If present, then retrieve the next batch of results from the
@@ -652,10 +652,10 @@ pub struct ListSinksResponse {
 pub struct GetSinkRequest {
     /// Required. The resource name of the sink:
     ///
-    ///     "projects/[PROJECT_ID]/sinks/[SINK_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
-    ///     "folders/[FOLDER_ID]/sinks/[SINK_ID]"
+    ///     "projects/\[PROJECT_ID]/sinks/[SINK_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/sinks/[SINK_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/sinks/[SINK_ID\]"
+    ///     "folders/\[FOLDER_ID]/sinks/[SINK_ID\]"
     ///
     /// Example: `"projects/my-project-id/sinks/my-sink-id"`.
     #[prost(string, tag = "1")]
@@ -666,10 +666,10 @@ pub struct GetSinkRequest {
 pub struct CreateSinkRequest {
     /// Required. The resource in which to create the sink:
     ///
-    ///     "projects/[PROJECT_ID]"
-    ///     "organizations/[ORGANIZATION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]"
-    ///     "folders/[FOLDER_ID]"
+    ///     "projects/\[PROJECT_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]"
+    ///     "folders/\[FOLDER_ID\]"
     ///
     /// Examples: `"projects/my-logging-project"`, `"organizations/123456789"`.
     #[prost(string, tag = "1")]
@@ -688,7 +688,7 @@ pub struct CreateSinkRequest {
     /// If this field is set to true, or if the sink is owned by a non-project
     /// resource such as an organization, then the value of `writer_identity` will
     /// be a unique service account used only for exports from the new sink. For
-    /// more information, see `writer_identity` in [LogSink][google.logging.v2.LogSink].
+    /// more information, see `writer_identity` in \[LogSink][google.logging.v2.LogSink\].
     #[prost(bool, tag = "3")]
     pub unique_writer_identity: bool,
 }
@@ -698,10 +698,10 @@ pub struct UpdateSinkRequest {
     /// Required. The full resource name of the sink to update, including the parent
     /// resource and the sink identifier:
     ///
-    ///     "projects/[PROJECT_ID]/sinks/[SINK_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
-    ///     "folders/[FOLDER_ID]/sinks/[SINK_ID]"
+    ///     "projects/\[PROJECT_ID]/sinks/[SINK_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/sinks/[SINK_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/sinks/[SINK_ID\]"
+    ///     "folders/\[FOLDER_ID]/sinks/[SINK_ID\]"
     ///
     /// Example: `"projects/my-project-id/sinks/my-sink-id"`.
     #[prost(string, tag = "1")]
@@ -710,7 +710,7 @@ pub struct UpdateSinkRequest {
     /// of `sink_name`.
     #[prost(message, optional, tag = "2")]
     pub sink: ::core::option::Option<LogSink>,
-    /// Optional. See [sinks.create][google.logging.v2.ConfigServiceV2.CreateSink]
+    /// Optional. See \[sinks.create][google.logging.v2.ConfigServiceV2.CreateSink\]
     /// for a description of this field. When updating a sink, the effect of this
     /// field on the value of `writer_identity` in the updated sink depends on both
     /// the old and new values of this field:
@@ -734,7 +734,7 @@ pub struct UpdateSinkRequest {
     /// empty updateMask will be an error.
     ///
     /// For a detailed `FieldMask` definition, see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask>
     ///
     /// Example: `updateMask=filter`.
     #[prost(message, optional, tag = "4")]
@@ -746,10 +746,10 @@ pub struct DeleteSinkRequest {
     /// Required. The full resource name of the sink to delete, including the parent
     /// resource and the sink identifier:
     ///
-    ///     "projects/[PROJECT_ID]/sinks/[SINK_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]"
-    ///     "folders/[FOLDER_ID]/sinks/[SINK_ID]"
+    ///     "projects/\[PROJECT_ID]/sinks/[SINK_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/sinks/[SINK_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/sinks/[SINK_ID\]"
+    ///     "folders/\[FOLDER_ID]/sinks/[SINK_ID\]"
     ///
     /// Example: `"projects/my-project-id/sinks/my-sink-id"`.
     #[prost(string, tag = "1")]
@@ -773,9 +773,9 @@ pub struct LogExclusion {
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Required. An [advanced logs
-    /// filter](https://cloud.google.com/logging/docs/view/advanced-queries) that
+    /// filter](<https://cloud.google.com/logging/docs/view/advanced-queries>) that
     /// matches the log entries to be excluded. By using the [sample
-    /// function](https://cloud.google.com/logging/docs/view/advanced-queries#sample),
+    /// function](<https://cloud.google.com/logging/docs/view/advanced-queries#sample>),
     /// you can exclude less than 100% of the matching log entries.
     /// For example, the following query matches 99% of low-severity log
     /// entries from Google Cloud Storage buckets:
@@ -785,7 +785,7 @@ pub struct LogExclusion {
     pub filter: ::prost::alloc::string::String,
     /// Optional. If set to True, then this exclusion is disabled and it does not
     /// exclude any log entries. You can [update an
-    /// exclusion][google.logging.v2.ConfigServiceV2.UpdateExclusion] to change the
+    /// exclusion]\[google.logging.v2.ConfigServiceV2.UpdateExclusion\] to change the
     /// value of this field.
     #[prost(bool, tag = "4")]
     pub disabled: bool,
@@ -805,10 +805,10 @@ pub struct LogExclusion {
 pub struct ListExclusionsRequest {
     /// Required. The parent resource whose exclusions are to be listed.
     ///
-    ///     "projects/[PROJECT_ID]"
-    ///     "organizations/[ORGANIZATION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]"
-    ///     "folders/[FOLDER_ID]"
+    ///     "projects/\[PROJECT_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]"
+    ///     "folders/\[FOLDER_ID\]"
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. If present, then retrieve the next batch of results from the
@@ -840,10 +840,10 @@ pub struct ListExclusionsResponse {
 pub struct GetExclusionRequest {
     /// Required. The resource name of an existing exclusion:
     ///
-    ///     "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
-    ///     "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
+    ///     "projects/\[PROJECT_ID]/exclusions/[EXCLUSION_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID\]"
+    ///     "folders/\[FOLDER_ID]/exclusions/[EXCLUSION_ID\]"
     ///
     /// Example: `"projects/my-project-id/exclusions/my-exclusion-id"`.
     #[prost(string, tag = "1")]
@@ -854,10 +854,10 @@ pub struct GetExclusionRequest {
 pub struct CreateExclusionRequest {
     /// Required. The parent resource in which to create the exclusion:
     ///
-    ///     "projects/[PROJECT_ID]"
-    ///     "organizations/[ORGANIZATION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]"
-    ///     "folders/[FOLDER_ID]"
+    ///     "projects/\[PROJECT_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]"
+    ///     "folders/\[FOLDER_ID\]"
     ///
     /// Examples: `"projects/my-logging-project"`, `"organizations/123456789"`.
     #[prost(string, tag = "1")]
@@ -872,10 +872,10 @@ pub struct CreateExclusionRequest {
 pub struct UpdateExclusionRequest {
     /// Required. The resource name of the exclusion to update:
     ///
-    ///     "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
-    ///     "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
+    ///     "projects/\[PROJECT_ID]/exclusions/[EXCLUSION_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID\]"
+    ///     "folders/\[FOLDER_ID]/exclusions/[EXCLUSION_ID\]"
     ///
     /// Example: `"projects/my-project-id/exclusions/my-exclusion-id"`.
     #[prost(string, tag = "1")]
@@ -886,7 +886,7 @@ pub struct UpdateExclusionRequest {
     pub exclusion: ::core::option::Option<LogExclusion>,
     /// Required. A non-empty list of fields to change in the existing exclusion. New values
     /// for the fields are taken from the corresponding fields in the
-    /// [LogExclusion][google.logging.v2.LogExclusion] included in this request. Fields not mentioned in
+    /// \[LogExclusion][google.logging.v2.LogExclusion\] included in this request. Fields not mentioned in
     /// `update_mask` are not changed and are ignored in the request.
     ///
     /// For example, to change the filter and description of an exclusion,
@@ -899,29 +899,29 @@ pub struct UpdateExclusionRequest {
 pub struct DeleteExclusionRequest {
     /// Required. The resource name of an existing exclusion to delete:
     ///
-    ///     "projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]"
-    ///     "folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]"
+    ///     "projects/\[PROJECT_ID]/exclusions/[EXCLUSION_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID\]"
+    ///     "folders/\[FOLDER_ID]/exclusions/[EXCLUSION_ID\]"
     ///
     /// Example: `"projects/my-project-id/exclusions/my-exclusion-id"`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The parameters to
-/// [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].
+/// \[GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings\].
 ///
 /// See [Enabling CMEK for Logs
-/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for
+/// Router](<https://cloud.google.com/logging/docs/routing/managed-encryption>) for
 /// more information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCmekSettingsRequest {
     /// Required. The resource for which to retrieve CMEK settings.
     ///
-    ///     "projects/[PROJECT_ID]/cmekSettings"
-    ///     "organizations/[ORGANIZATION_ID]/cmekSettings"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
-    ///     "folders/[FOLDER_ID]/cmekSettings"
+    ///     "projects/\[PROJECT_ID\]/cmekSettings"
+    ///     "organizations/\[ORGANIZATION_ID\]/cmekSettings"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]/cmekSettings"
+    ///     "folders/\[FOLDER_ID\]/cmekSettings"
     ///
     /// Example: `"organizations/12345/cmekSettings"`.
     ///
@@ -932,19 +932,19 @@ pub struct GetCmekSettingsRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The parameters to
-/// [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].
+/// \[UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings\].
 ///
 /// See [Enabling CMEK for Logs
-/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for
+/// Router](<https://cloud.google.com/logging/docs/routing/managed-encryption>) for
 /// more information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCmekSettingsRequest {
     /// Required. The resource name for the CMEK settings to update.
     ///
-    ///     "projects/[PROJECT_ID]/cmekSettings"
-    ///     "organizations/[ORGANIZATION_ID]/cmekSettings"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings"
-    ///     "folders/[FOLDER_ID]/cmekSettings"
+    ///     "projects/\[PROJECT_ID\]/cmekSettings"
+    ///     "organizations/\[ORGANIZATION_ID\]/cmekSettings"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]/cmekSettings"
+    ///     "folders/\[FOLDER_ID\]/cmekSettings"
     ///
     /// Example: `"organizations/12345/cmekSettings"`.
     ///
@@ -956,7 +956,7 @@ pub struct UpdateCmekSettingsRequest {
     /// Required. The CMEK settings to update.
     ///
     /// See [Enabling CMEK for Logs
-    /// Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+    /// Router](<https://cloud.google.com/logging/docs/routing/managed-encryption>)
     /// for more information.
     #[prost(message, optional, tag = "2")]
     pub cmek_settings: ::core::option::Option<CmekSettings>,
@@ -964,7 +964,7 @@ pub struct UpdateCmekSettingsRequest {
     /// be updated. A field will be overwritten if and only if it is in the update
     /// mask. Output only fields cannot be updated.
     ///
-    /// See [FieldMask][google.protobuf.FieldMask] for more information.
+    /// See \[FieldMask][google.protobuf.FieldMask\] for more information.
     ///
     /// Example: `"updateMask=kmsKeyName"`
     #[prost(message, optional, tag = "3")]
@@ -978,7 +978,7 @@ pub struct UpdateCmekSettingsRequest {
 /// GCP organization.
 ///
 /// See [Enabling CMEK for Logs
-/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for
+/// Router](<https://cloud.google.com/logging/docs/routing/managed-encryption>) for
 /// more information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CmekSettings {
@@ -988,7 +988,7 @@ pub struct CmekSettings {
     /// The resource name for the configured Cloud KMS key.
     ///
     /// KMS key name format:
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY\]"
     ///
     /// For example:
     ///     `"projects/my-project-id/locations/my-region/keyRings/key-ring-name/cryptoKeys/key-name"`
@@ -1008,7 +1008,7 @@ pub struct CmekSettings {
     /// To disable CMEK for the Logs Router, set this field to an empty string.
     ///
     /// See [Enabling CMEK for Logs
-    /// Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+    /// Router](<https://cloud.google.com/logging/docs/routing/managed-encryption>)
     /// for more information.
     #[prost(string, tag = "2")]
     pub kms_key_name: ::prost::alloc::string::String,
@@ -1018,11 +1018,11 @@ pub struct CmekSettings {
     /// Before enabling CMEK for Logs Router, you must first assign the role
     /// `roles/cloudkms.cryptoKeyEncrypterDecrypter` to the service account that
     /// the Logs Router will use to access your Cloud KMS key. Use
-    /// [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings] to
+    /// \[GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings\] to
     /// obtain the service account ID.
     ///
     /// See [Enabling CMEK for Logs
-    /// Router](https://cloud.google.com/logging/docs/routing/managed-encryption)
+    /// Router](<https://cloud.google.com/logging/docs/routing/managed-encryption>)
     /// for more information.
     #[prost(string, tag = "3")]
     pub service_account_id: ::prost::alloc::string::String,
@@ -1051,7 +1051,7 @@ pub mod config_service_v2_client {
     impl<T> ConfigServiceV2Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1064,7 +1064,7 @@ pub mod config_service_v2_client {
             interceptor: F,
         ) -> ConfigServiceV2Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1533,16 +1533,16 @@ pub mod config_service_v2_client {
 pub struct DeleteLogRequest {
     /// Required. The resource name of the log to delete:
     ///
-    ///     "projects/[PROJECT_ID]/logs/[LOG_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
-    ///     "folders/[FOLDER_ID]/logs/[LOG_ID]"
+    ///     "projects/\[PROJECT_ID]/logs/[LOG_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/logs/[LOG_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/logs/[LOG_ID\]"
+    ///     "folders/\[FOLDER_ID]/logs/[LOG_ID\]"
     ///
-    /// `[LOG_ID]` must be URL-encoded. For example,
+    /// `\[LOG_ID\]` must be URL-encoded. For example,
     /// `"projects/my-project-id/logs/syslog"`,
     /// `"organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"`.
     /// For more information about log names, see
-    /// [LogEntry][google.logging.v2.LogEntry].
+    /// \[LogEntry][google.logging.v2.LogEntry\].
     #[prost(string, tag = "1")]
     pub log_name: ::prost::alloc::string::String,
 }
@@ -1552,12 +1552,12 @@ pub struct WriteLogEntriesRequest {
     /// Optional. A default log resource name that is assigned to all log entries
     /// in `entries` that do not specify a value for `log_name`:
     ///
-    ///     "projects/[PROJECT_ID]/logs/[LOG_ID]"
-    ///     "organizations/[ORGANIZATION_ID]/logs/[LOG_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]"
-    ///     "folders/[FOLDER_ID]/logs/[LOG_ID]"
+    ///     "projects/\[PROJECT_ID]/logs/[LOG_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID]/logs/[LOG_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/logs/[LOG_ID\]"
+    ///     "folders/\[FOLDER_ID]/logs/[LOG_ID\]"
     ///
-    /// `[LOG_ID]` must be URL-encoded. For example:
+    /// `\[LOG_ID\]` must be URL-encoded. For example:
     ///
     ///     "projects/my-project-id/logs/syslog"
     ///     "organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity"
@@ -1575,13 +1575,13 @@ pub struct WriteLogEntriesRequest {
     ///       "labels": {
     ///         "zone": "us-central1-a", "instance_id": "00000000000000000000" }}
     ///
-    /// See [LogEntry][google.logging.v2.LogEntry].
+    /// See \[LogEntry][google.logging.v2.LogEntry\].
     #[prost(message, optional, tag = "2")]
     pub resource: ::core::option::Option<super::super::api::MonitoredResource>,
     /// Optional. Default labels that are added to the `labels` field of all log
     /// entries in `entries`. If a log entry already has a label with the same key
     /// as a label in this parameter, then the log entry's label is not changed.
-    /// See [LogEntry][google.logging.v2.LogEntry].
+    /// See \[LogEntry][google.logging.v2.LogEntry\].
     #[prost(map = "string, string", tag = "3")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -1590,7 +1590,7 @@ pub struct WriteLogEntriesRequest {
     /// `log_name`, `resource`, and `labels` fields are copied into those log
     /// entries in this list that do not include values for their corresponding
     /// fields. For more information, see the
-    /// [LogEntry][google.logging.v2.LogEntry] type.
+    /// \[LogEntry][google.logging.v2.LogEntry\] type.
     ///
     /// If the `timestamp` or `insert_id` fields are missing in log entries, then
     /// this method supplies the current time or a unique identifier, respectively.
@@ -1599,14 +1599,14 @@ pub struct WriteLogEntriesRequest {
     /// the entries later in the list. See the `entries.list` method.
     ///
     /// Log entries with timestamps that are more than the
-    /// [logs retention period](https://cloud.google.com/logging/quota-policy) in
+    /// [logs retention period](<https://cloud.google.com/logging/quota-policy>) in
     /// the past or more than 24 hours in the future will not be available when
     /// calling `entries.list`. However, those log entries can still be [exported
     /// with
-    /// LogSinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).
+    /// LogSinks](<https://cloud.google.com/logging/docs/api/tasks/exporting-logs>).
     ///
     /// To improve throughput and to avoid exceeding the
-    /// [quota limit](https://cloud.google.com/logging/quota-policy) for calls to
+    /// [quota limit](<https://cloud.google.com/logging/quota-policy>) for calls to
     /// `entries.write`, you should try to include several log entries in this
     /// list, rather than calling this method for each individual log entry.
     #[prost(message, repeated, tag = "4")]
@@ -1645,22 +1645,22 @@ pub struct ListLogEntriesRequest {
     /// Required. Names of one or more parent resources from which to
     /// retrieve log entries:
     ///
-    ///     "projects/[PROJECT_ID]"
-    ///     "organizations/[ORGANIZATION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]"
-    ///     "folders/[FOLDER_ID]"
+    ///     "projects/\[PROJECT_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]"
+    ///     "folders/\[FOLDER_ID\]"
     ///
     /// May alternatively be one or more views
-    ///   projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-    ///   organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-    ///   billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-    ///   folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+    ///   projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]
+    ///   organization/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]
+    ///   billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]
+    ///   folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]
     ///
     /// Projects listed in the `project_ids` field are added to this list.
     #[prost(string, repeated, tag = "8")]
     pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A filter that chooses which log entries to return.  See [Advanced
-    /// Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries).
+    /// Logs Queries](<https://cloud.google.com/logging/docs/view/advanced-queries>).
     /// Only log entries that match the filter are returned.  An empty filter
     /// matches all log entries in the resources listed in `resource_names`.
     /// Referencing a parent resource that is not listed in `resource_names` will
@@ -1743,10 +1743,10 @@ pub struct ListMonitoredResourceDescriptorsResponse {
 pub struct ListLogsRequest {
     /// Required. The resource name that owns the logs:
     ///
-    ///     "projects/[PROJECT_ID]"
-    ///     "organizations/[ORGANIZATION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]"
-    ///     "folders/[FOLDER_ID]"
+    ///     "projects/\[PROJECT_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]"
+    ///     "folders/\[FOLDER_ID\]"
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of results to return from this request.
@@ -1761,16 +1761,16 @@ pub struct ListLogsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The resource name that owns the logs:
-    ///   projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-    ///   organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-    ///   billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
-    ///   folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]
+    ///   projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]
+    ///   organization/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]
+    ///   billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]
+    ///   folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]
     ///
     /// To support legacy queries, it could also be:
-    ///     "projects/[PROJECT_ID]"
-    ///     "organizations/[ORGANIZATION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]"
-    ///     "folders/[FOLDER_ID]"
+    ///     "projects/\[PROJECT_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]"
+    ///     "folders/\[FOLDER_ID\]"
     #[prost(string, repeated, tag = "8")]
     pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -1793,20 +1793,20 @@ pub struct ListLogsResponse {
 pub struct TailLogEntriesRequest {
     /// Required. Name of a parent resource from which to retrieve log entries:
     ///
-    ///     "projects/[PROJECT_ID]"
-    ///     "organizations/[ORGANIZATION_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]"
-    ///     "folders/[FOLDER_ID]"
+    ///     "projects/\[PROJECT_ID\]"
+    ///     "organizations/\[ORGANIZATION_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID\]"
+    ///     "folders/\[FOLDER_ID\]"
     ///
     /// May alternatively be one or more views:
-    ///     "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
-    ///     "organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
-    ///     "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
-    ///     "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]"
+    ///     "projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]"
+    ///     "organization/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]"
+    ///     "billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]"
+    ///     "folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]"
     #[prost(string, repeated, tag = "1")]
     pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A filter that chooses which log entries to return.  See [Advanced
-    /// Logs Filters](https://cloud.google.com/logging/docs/view/advanced_filters).
+    /// Logs Filters](<https://cloud.google.com/logging/docs/view/advanced_filters>).
     /// Only log entries that match the filter are returned.  An empty filter
     /// matches all log entries in the resources listed in `resource_names`.
     /// Referencing a parent resource that is not in `resource_names` will cause
@@ -1862,7 +1862,7 @@ pub mod tail_log_entries_response {
             /// Indicates suppression occurred due to relevant entries being
             /// received in excess of rate limits. For quotas and limits, see
             /// [Logging API quotas and
-            /// limits](https://cloud.google.com/logging/quotas#api-limits).
+            /// limits](<https://cloud.google.com/logging/quotas#api-limits>).
             RateLimit = 1,
             /// Indicates suppression occurred due to the client not consuming
             /// responses quickly enough.
@@ -1882,7 +1882,7 @@ pub mod logging_service_v2_client {
     impl<T> LoggingServiceV2Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1895,7 +1895,7 @@ pub mod logging_service_v2_client {
             interceptor: F,
         ) -> LoggingServiceV2Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2038,9 +2038,7 @@ pub mod logging_service_v2_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.logging.v2.LoggingServiceV2/TailLogEntries",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }
@@ -2062,8 +2060,8 @@ pub struct LogMetric {
     /// name pieces, and it cannot be the first character of the name.
     ///
     /// The metric identifier in this field must not be
-    /// [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).
-    /// However, when the metric identifier appears as the `[METRIC_ID]` part of a
+    /// \[URL-encoded\](<https://en.wikipedia.org/wiki/Percent-encoding>).
+    /// However, when the metric identifier appears as the `\[METRIC_ID\]` part of a
     /// `metric_name` API parameter, then the metric identifier must be
     /// URL-encoded. Example: `"projects/my-project/metrics/nginx%2Frequests"`.
     #[prost(string, tag = "1")]
@@ -2073,7 +2071,7 @@ pub struct LogMetric {
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Required. An [advanced logs
-    /// filter](https://cloud.google.com/logging/docs/view/advanced_filters) which
+    /// filter](<https://cloud.google.com/logging/docs/view/advanced_filters>) which
     /// is used to match log entries. Example:
     ///
     ///     "resource.type=gae_app AND severity>=ERROR"
@@ -2111,7 +2109,7 @@ pub struct LogMetric {
     ///   1. field: The name of the log entry field from which the value is to be
     ///      extracted.
     ///   2. regex: A regular expression using the Google RE2 syntax
-    ///      (https://github.com/google/re2/wiki/Syntax) with a single capture
+    ///      (<https://github.com/google/re2/wiki/Syntax>) with a single capture
     ///      group to extract data from the specified log entry field. The value
     ///      of the field is converted to a string before applying the regex.
     ///      It is an error to specify a regex that does not include exactly one
@@ -2180,7 +2178,7 @@ pub mod log_metric {
 pub struct ListLogMetricsRequest {
     /// Required. The name of the project containing the metrics:
     ///
-    ///     "projects/[PROJECT_ID]"
+    ///     "projects/\[PROJECT_ID\]"
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. If present, then retrieve the next batch of results from the
@@ -2212,7 +2210,7 @@ pub struct ListLogMetricsResponse {
 pub struct GetLogMetricRequest {
     /// Required. The resource name of the desired metric:
     ///
-    ///     "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+    ///     "projects/\[PROJECT_ID]/metrics/[METRIC_ID\]"
     #[prost(string, tag = "1")]
     pub metric_name: ::prost::alloc::string::String,
 }
@@ -2221,7 +2219,7 @@ pub struct GetLogMetricRequest {
 pub struct CreateLogMetricRequest {
     /// Required. The resource name of the project in which to create the metric:
     ///
-    ///     "projects/[PROJECT_ID]"
+    ///     "projects/\[PROJECT_ID\]"
     ///
     /// The new metric must be provided in the request.
     #[prost(string, tag = "1")]
@@ -2236,11 +2234,11 @@ pub struct CreateLogMetricRequest {
 pub struct UpdateLogMetricRequest {
     /// Required. The resource name of the metric to update:
     ///
-    ///     "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+    ///     "projects/\[PROJECT_ID]/metrics/[METRIC_ID\]"
     ///
     /// The updated metric must be provided in the request and it's
-    /// `name` field must be the same as `[METRIC_ID]` If the metric
-    /// does not exist in `[PROJECT_ID]`, then a new metric is created.
+    /// `name` field must be the same as `\[METRIC_ID\]` If the metric
+    /// does not exist in `\[PROJECT_ID\]`, then a new metric is created.
     #[prost(string, tag = "1")]
     pub metric_name: ::prost::alloc::string::String,
     /// Required. The updated metric.
@@ -2252,7 +2250,7 @@ pub struct UpdateLogMetricRequest {
 pub struct DeleteLogMetricRequest {
     /// Required. The resource name of the metric to delete:
     ///
-    ///     "projects/[PROJECT_ID]/metrics/[METRIC_ID]"
+    ///     "projects/\[PROJECT_ID]/metrics/[METRIC_ID\]"
     #[prost(string, tag = "1")]
     pub metric_name: ::prost::alloc::string::String,
 }
@@ -2268,7 +2266,7 @@ pub mod metrics_service_v2_client {
     impl<T> MetricsServiceV2Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2281,7 +2279,7 @@ pub mod metrics_service_v2_client {
             interceptor: F,
         ) -> MetricsServiceV2Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

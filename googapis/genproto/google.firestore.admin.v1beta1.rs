@@ -2,7 +2,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexField {
     /// The path of the field. Must match the field path specification described
-    /// by [google.firestore.v1beta1.Document.fields][fields].
+    /// by \[google.firestore.v1beta1.Document.fields][fields\].
     /// Special field path `__name__` may be used by itself or at the end of a
     /// path. `__type__` may be used only at the end of path.
     #[prost(string, tag = "1")]
@@ -77,7 +77,7 @@ pub mod index {
     }
 }
 /// Metadata for index operations. This metadata populates
-/// the metadata field of [google.longrunning.Operation][google.longrunning.Operation].
+/// the metadata field of \[google.longrunning.Operation][google.longrunning.Operation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexOperationMetadata {
     /// The time that work began on the operation.
@@ -94,9 +94,9 @@ pub struct IndexOperationMetadata {
     /// The type of index operation.
     #[prost(enumeration = "index_operation_metadata::OperationType", tag = "4")]
     pub operation_type: i32,
-    /// True if the [google.longrunning.Operation] was cancelled. If the
+    /// True if the \[google.longrunning.Operation\] was cancelled. If the
     /// cancellation is in progress, cancelled will be true but
-    /// [google.longrunning.Operation.done][google.longrunning.Operation.done] will be false.
+    /// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] will be false.
     #[prost(bool, tag = "5")]
     pub cancelled: bool,
     /// Progress of the existing operation, measured in number of documents.
@@ -127,7 +127,7 @@ pub struct Progress {
     #[prost(int64, tag = "2")]
     pub work_estimated: i64,
 }
-/// The request for [FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta1.FirestoreAdmin.CreateIndex].
+/// The request for \[FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta1.FirestoreAdmin.CreateIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
     /// The name of the database this index will apply to. For example:
@@ -139,7 +139,7 @@ pub struct CreateIndexRequest {
     #[prost(message, optional, tag = "2")]
     pub index: ::core::option::Option<Index>,
 }
-/// The request for [FirestoreAdmin.GetIndex][google.firestore.admin.v1beta1.FirestoreAdmin.GetIndex].
+/// The request for \[FirestoreAdmin.GetIndex][google.firestore.admin.v1beta1.FirestoreAdmin.GetIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
     /// The name of the index. For example:
@@ -147,7 +147,7 @@ pub struct GetIndexRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes].
+/// The request for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
     /// The database name. For example:
@@ -163,7 +163,7 @@ pub struct ListIndexesRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.DeleteIndex][google.firestore.admin.v1beta1.FirestoreAdmin.DeleteIndex].
+/// The request for \[FirestoreAdmin.DeleteIndex][google.firestore.admin.v1beta1.FirestoreAdmin.DeleteIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
     /// The index name. For example:
@@ -171,7 +171,7 @@ pub struct DeleteIndexRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The response for [FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes].
+/// The response for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta1.FirestoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// The indexes.
@@ -181,7 +181,7 @@ pub struct ListIndexesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ExportDocuments].
+/// The request for \[FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ExportDocuments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsRequest {
     /// Database to export. Should be of the form:
@@ -192,17 +192,17 @@ pub struct ExportDocumentsRequest {
     #[prost(string, repeated, tag = "3")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The output URI. Currently only supports Google Cloud Storage URIs of the
-    /// form: `gs://BUCKET_NAME[/NAMESPACE_PATH]`, where `BUCKET_NAME` is the name
+    /// form: `gs://BUCKET_NAME\[/NAMESPACE_PATH\]`, where `BUCKET_NAME` is the name
     /// of the Google Cloud Storage bucket and `NAMESPACE_PATH` is an optional
     /// Google Cloud Storage namespace path. When
     /// choosing a name, be sure to consider Google Cloud Storage naming
-    /// guidelines: https://cloud.google.com/storage/docs/naming.
+    /// guidelines: <https://cloud.google.com/storage/docs/naming.>
     /// If the URI is a bucket (without a namespace path), a prefix will be
     /// generated based on the start time.
     #[prost(string, tag = "4")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ImportDocuments].
+/// The request for \[FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta1.FirestoreAdmin.ImportDocuments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsRequest {
     /// Database to import into. Should be of the form:
@@ -217,11 +217,11 @@ pub struct ImportDocumentsRequest {
     /// This must match the output_uri_prefix of an ExportDocumentsResponse from
     /// an export that has completed successfully.
     /// See:
-    /// [google.firestore.admin.v1beta1.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1beta1.ExportDocumentsResponse.output_uri_prefix].
+    /// \[google.firestore.admin.v1beta1.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1beta1.ExportDocumentsResponse.output_uri_prefix\].
     #[prost(string, tag = "4")]
     pub input_uri_prefix: ::prost::alloc::string::String,
 }
-/// Returned in the [google.longrunning.Operation][google.longrunning.Operation] response field.
+/// Returned in the \[google.longrunning.Operation][google.longrunning.Operation\] response field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsResponse {
     /// Location of the output files. This can be used to begin an import
@@ -359,7 +359,7 @@ pub mod firestore_admin_client {
     impl<T> FirestoreAdminClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -372,7 +372,7 @@ pub mod firestore_admin_client {
             interceptor: F,
         ) -> FirestoreAdminClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -533,6 +533,6 @@ pub mod firestore_admin_client {
         }
     }
 }
-/// The metadata message for [google.cloud.location.Location.metadata][google.cloud.location.Location.metadata].
+/// The metadata message for \[google.cloud.location.Location.metadata][google.cloud.location.Location.metadata\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationMetadata {}

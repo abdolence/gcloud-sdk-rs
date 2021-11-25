@@ -3,9 +3,9 @@
 pub struct InfoType {
     /// Name of the information type. Either a name of your choosing when
     /// creating a CustomInfoType, or one of the names listed
-    /// at https://cloud.google.com/dlp/docs/infotypes-reference when specifying
+    /// at <https://cloud.google.com/dlp/docs/infotypes-reference> when specifying
     /// a built-in type.  When sending Cloud DLP results to Data Catalog, infoType
-    /// names should conform to the pattern `[A-Za-z0-9$-_]{1,64}`.
+    /// names should conform to the pattern `\[A-Za-z0-9$-_\]{1,64}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -59,7 +59,7 @@ pub mod custom_info_type {
     ///
     /// Dictionary words are case-insensitive and all characters other than letters
     /// and digits in the unicode [Basic Multilingual
-    /// Plane](https://en.wikipedia.org/wiki/Plane_%28Unicode%29#Basic_Multilingual_Plane)
+    /// Plane](<https://en.wikipedia.org/wiki/Plane_%28Unicode%29#Basic_Multilingual_Plane>)
     /// will be replaced with whitespace when scanning for matches, so the
     /// dictionary phrase "Sam Johnson" will match all three phrases "sam johnson",
     /// "Sam, Johnson", and "Sam (Johnson)". Additionally, the characters
@@ -72,7 +72,7 @@ pub mod custom_info_type {
     /// Dictionary words containing a large number of characters that are not
     /// letters or digits may result in unexpected findings because such characters
     /// are treated as whitespace. The
-    /// [limits](https://cloud.google.com/dlp/limits) page contains details about
+    /// \[limits\](<https://cloud.google.com/dlp/limits>) page contains details about
     /// the size limits of dictionaries. For dictionaries that do not fit within
     /// these constraints, consider using `LargeCustomDictionaryConfig` in the
     /// `StoredInfoType` API.
@@ -88,7 +88,7 @@ pub mod custom_info_type {
         pub struct WordList {
             /// Words or phrases defining the dictionary. The dictionary must contain
             /// at least one phrase and every phrase must contain at least 2 characters
-            /// that are letters or digits. [required]
+            /// that are letters or digits. \[required\]
             #[prost(string, repeated, tag = "1")]
             pub words: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
@@ -107,7 +107,7 @@ pub mod custom_info_type {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Regex {
         /// Pattern defining the regular expression. Its syntax
-        /// (https://github.com/google/re2/wiki/Syntax) can be found under the
+        /// (<https://github.com/google/re2/wiki/Syntax>) can be found under the
         /// google/re2 repository on GitHub.
         #[prost(string, tag = "1")]
         pub pattern: ::prost::alloc::string::String,
@@ -118,7 +118,7 @@ pub mod custom_info_type {
     }
     /// Message for detecting output from deidentification transformations
     /// such as
-    /// [`CryptoReplaceFfxFpeConfig`](https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig).
+    /// \[`CryptoReplaceFfxFpeConfig`\](<https://cloud.google.com/dlp/docs/reference/rest/v2/organizations.deidentifyTemplates#cryptoreplaceffxfpeconfig>).
     /// These types of transformations are
     /// those that perform pseudonymization, thereby producing a "surrogate" as
     /// output. This should be used in conjunction with a field on the
@@ -280,8 +280,8 @@ pub struct DatastoreOptions {
 /// match the regular expression.
 ///
 /// For example, given the input `{bucket_name: "mybucket", include_regex:
-/// ["directory1/.*"], exclude_regex:
-/// ["directory1/excluded.*"]}`:
+/// \["directory1/.*"\], exclude_regex:
+/// \["directory1/excluded.*"\]}`:
 ///
 /// * `gs://mybucket/directory1/myfile` will be included
 /// * `gs://mybucket/directory1/directory2/myfile` will be included (`.*` matches
@@ -292,13 +292,13 @@ pub struct DatastoreOptions {
 /// matches an item in `exclude_regex`)
 ///
 /// If `include_regex` is left empty, it will match all files by default
-/// (this is equivalent to setting `include_regex: [".*"]`).
+/// (this is equivalent to setting `include_regex: \[".*"\]`).
 ///
 /// Some other common use cases:
 ///
-/// * `{bucket_name: "mybucket", exclude_regex: [".*\.pdf"]}` will include all
+/// * `{bucket_name: "mybucket", exclude_regex: \[".*\.pdf"\]}` will include all
 /// files in `mybucket` except for .pdf files
-/// * `{bucket_name: "mybucket", include_regex: ["directory/[^/]+"]}` will
+/// * `{bucket_name: "mybucket", include_regex: \["directory/[^/]+"\]}` will
 /// include all files directly under `gs://mybucket/directory/`, without matching
 /// across `/`
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -313,7 +313,7 @@ pub struct CloudStorageRegexFileSet {
     /// (this is equivalent to including `.*` in the list).
     ///
     /// Regular expressions use RE2
-    /// [syntax](https://github.com/google/re2/wiki/Syntax); a guide can be found
+    /// \[syntax\](<https://github.com/google/re2/wiki/Syntax>); a guide can be found
     /// under the google/re2 repository on GitHub.
     #[prost(string, repeated, tag = "2")]
     pub include_regex: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -322,7 +322,7 @@ pub struct CloudStorageRegexFileSet {
     /// excluded from the scan.
     ///
     /// Regular expressions use RE2
-    /// [syntax](https://github.com/google/re2/wiki/Syntax); a guide can be found
+    /// \[syntax\](<https://github.com/google/re2/wiki/Syntax>); a guide can be found
     /// under the google/re2 repository on GitHub.
     #[prost(string, repeated, tag = "3")]
     pub exclude_regex: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -410,7 +410,7 @@ pub struct CloudStorageFileSet {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudStoragePath {
     /// A url representing a file or path (no wildcards) in Cloud Storage.
-    /// Example: gs://[BUCKET_NAME]/dictionary.txt
+    /// Example: gs://\[BUCKET_NAME\]/dictionary.txt
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
 }
@@ -526,7 +526,7 @@ pub mod storage_config {
         /// Hybrid inspection options.
         /// Early access feature is in a pre-release state and might change or have
         /// limited support. For more information, see
-        /// https://cloud.google.com/products#product-launch-stages.
+        /// <https://cloud.google.com/products#product-launch-stages.>
         #[prost(message, tag = "9")]
         HybridOptions(super::HybridOptions),
     }
@@ -544,7 +544,7 @@ pub struct HybridOptions {
     /// these will be rejected.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
-    /// to the following regular expression: `[a-z]([-a-z0-9]*[a-z0-9])?`.
+    /// to the following regular expression: `\[a-z]([-a-z0-9]*[a-z0-9\])?`.
     ///
     /// No more than 10 keys can be required.
     #[prost(string, repeated, tag = "2")]
@@ -552,10 +552,10 @@ pub struct HybridOptions {
     /// To organize findings, these labels will be added to each finding.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
-    /// to the following regular expression: `[a-z]([-a-z0-9]*[a-z0-9])?`.
+    /// to the following regular expression: `\[a-z]([-a-z0-9]*[a-z0-9\])?`.
     ///
     /// Label values must be between 0 and 63 characters long and must conform
-    /// to the regular expression `([a-z]([-a-z0-9]*[a-z0-9])?)?`.
+    /// to the regular expression `(\[a-z]([-a-z0-9]*[a-z0-9\])?)?`.
     ///
     /// No more than 10 labels can be associated with a given finding.
     ///
@@ -859,7 +859,7 @@ pub struct InspectionRuleSet {
 pub struct InspectConfig {
     /// Restricts what info_types to look for. The values must correspond to
     /// InfoType values returned by ListInfoTypes or listed at
-    /// https://cloud.google.com/dlp/docs/infotypes-reference.
+    /// <https://cloud.google.com/dlp/docs/infotypes-reference.>
     ///
     /// When no InfoTypes or CustomInfoTypes are specified in a request, the
     /// system may automatically choose what detectors to run. By default this may
@@ -872,7 +872,7 @@ pub struct InspectConfig {
     pub info_types: ::prost::alloc::vec::Vec<InfoType>,
     /// Only returns findings equal or above this threshold. The default is
     /// POSSIBLE.
-    /// See https://cloud.google.com/dlp/docs/likelihood to learn more.
+    /// See <https://cloud.google.com/dlp/docs/likelihood> to learn more.
     #[prost(enumeration = "Likelihood", tag = "2")]
     pub min_likelihood: i32,
     /// Configuration to control the number of findings returned.
@@ -886,7 +886,7 @@ pub struct InspectConfig {
     #[prost(bool, tag = "5")]
     pub exclude_info_types: bool,
     /// CustomInfoTypes provided by the user. See
-    /// https://cloud.google.com/dlp/docs/creating-custom-infotypes to learn more.
+    /// <https://cloud.google.com/dlp/docs/creating-custom-infotypes> to learn more.
     #[prost(message, repeated, tag = "6")]
     pub custom_info_types: ::prost::alloc::vec::Vec<CustomInfoType>,
     /// List of options defining data content to scan.
@@ -995,7 +995,7 @@ pub mod content_item {
         #[prost(string, tag = "3")]
         Value(::prost::alloc::string::String),
         /// Structured content for inspection. See
-        /// https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table to
+        /// <https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table> to
         /// learn more.
         #[prost(message, tag = "4")]
         Table(super::Table),
@@ -1005,7 +1005,7 @@ pub mod content_item {
     }
 }
 /// Structured content to inspect. Up to 50,000 `Value`s per request allowed.
-/// See https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table to
+/// See <https://cloud.google.com/dlp/docs/inspecting-text#inspecting_a_table> to
 /// learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
@@ -1083,10 +1083,10 @@ pub struct Finding {
     /// The labels associated with this `Finding`.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
-    /// to the following regular expression: `[a-z]([-a-z0-9]*[a-z0-9])?`.
+    /// to the following regular expression: `\[a-z]([-a-z0-9]*[a-z0-9\])?`.
     ///
     /// Label values must be between 0 and 63 characters long and must conform
-    /// to the regular expression `([a-z]([-a-z0-9]*[a-z0-9])?)?`.
+    /// to the regular expression `(\[a-z]([-a-z0-9]*[a-z0-9\])?)?`.
     ///
     /// No more than 10 labels can be associated with a given finding.
     ///
@@ -1321,7 +1321,7 @@ pub struct RedactImageRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -1419,7 +1419,7 @@ pub struct DeidentifyContentRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -1481,7 +1481,7 @@ pub struct ReidentifyContentRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -1550,7 +1550,7 @@ pub struct InspectContentRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -1635,7 +1635,7 @@ pub mod output_storage_config {
         /// Store findings in an existing table or a new table in an existing
         /// dataset. If table_id is not set a new one will be generated
         /// for you with the following format:
-        /// dlp_googleapis_yyyy_mm_dd_[dlp_job_id]. Pacific timezone will be used for
+        /// dlp_googleapis_yyyy_mm_dd_\[dlp_job_id\]. Pacific timezone will be used for
         /// generating the date details.
         ///
         /// For Inspect, each column in an existing output table must have the same
@@ -1699,7 +1699,7 @@ pub mod inspect_data_source_details {
         /// Statistics related to the processing of hybrid inspect.
         /// Early access feature is in a pre-release state and might change or have
         /// limited support. For more information, see
-        /// https://cloud.google.com/products#product-launch-stages.
+        /// <https://cloud.google.com/products#product-launch-stages.>
         #[prost(message, optional, tag = "7")]
         pub hybrid_stats: ::core::option::Option<super::HybridInspectStatistics>,
     }
@@ -1770,7 +1770,7 @@ pub struct ListInfoTypesResponse {
     pub info_types: ::prost::alloc::vec::Vec<InfoTypeDescription>,
 }
 /// Configuration for a risk analysis job. See
-/// https://cloud.google.com/dlp/docs/concepts-risk-analysis to learn more.
+/// <https://cloud.google.com/dlp/docs/concepts-risk-analysis> to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RiskAnalysisJobConfig {
     /// Privacy metric to compute.
@@ -1792,7 +1792,7 @@ pub struct QuasiId {
     pub field: ::core::option::Option<FieldId>,
     /// Semantic tag that identifies what a column contains, to determine which
     /// statistical model to use to estimate the reidentifiability of each
-    /// value. [required]
+    /// value. \[required\]
     #[prost(oneof = "quasi_id::Tag", tags = "2, 3, 4")]
     pub tag: ::core::option::Option<quasi_id::Tag>,
 }
@@ -1800,7 +1800,7 @@ pub struct QuasiId {
 pub mod quasi_id {
     /// Semantic tag that identifies what a column contains, to determine which
     /// statistical model to use to estimate the reidentifiability of each
-    /// value. [required]
+    /// value. \[required\]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Tag {
         /// A column can be tagged with a InfoType to use the relevant public
@@ -1954,7 +1954,7 @@ pub mod privacy_metric {
             pub field: ::core::option::Option<super::super::FieldId>,
             /// Semantic tag that identifies what a column contains, to determine which
             /// statistical model to use to estimate the reidentifiability of each
-            /// value. [required]
+            /// value. \[required\]
             #[prost(oneof = "tagged_field::Tag", tags = "2, 3, 4")]
             pub tag: ::core::option::Option<tagged_field::Tag>,
         }
@@ -1962,7 +1962,7 @@ pub mod privacy_metric {
         pub mod tagged_field {
             /// Semantic tag that identifies what a column contains, to determine which
             /// statistical model to use to estimate the reidentifiability of each
-            /// value. [required]
+            /// value. \[required\]
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum Tag {
                 /// A column can be tagged with a InfoType to use the relevant public
@@ -2076,10 +2076,7 @@ pub struct AnalyzeDataSourceRiskDetails {
     pub requested_options:
         ::core::option::Option<analyze_data_source_risk_details::RequestedRiskAnalysisOptions>,
     /// Values associated with this metric.
-    #[prost(
-        oneof = "analyze_data_source_risk_details::Result",
-        tags = "3, 4, 5, 6, 7, 9"
-    )]
+    #[prost(oneof = "analyze_data_source_risk_details::Result", tags = "3, 4, 5, 6, 7, 9")]
     pub result: ::core::option::Option<analyze_data_source_risk_details::Result>,
 }
 /// Nested message and enum types in `AnalyzeDataSourceRiskDetails`.
@@ -2423,10 +2420,7 @@ pub mod value {
         #[prost(message, tag = "7")]
         DateValue(super::super::super::super::r#type::Date),
         /// day of week
-        #[prost(
-            enumeration = "super::super::super::super::r#type::DayOfWeek",
-            tag = "8"
-        )]
+        #[prost(enumeration = "super::super::super::super::r#type::DayOfWeek", tag = "8")]
         DayOfWeekValue(i32),
     }
 }
@@ -2601,17 +2595,17 @@ pub mod time_part_config {
     pub enum TimePart {
         /// Unused
         Unspecified = 0,
-        /// [0-9999]
+        /// \[0-9999\]
         Year = 1,
-        /// [1-12]
+        /// \[1-12\]
         Month = 2,
-        /// [1-31]
+        /// \[1-31\]
         DayOfMonth = 3,
-        /// [1-7]
+        /// \[1-7\]
         DayOfWeek = 4,
-        /// [1-53]
+        /// \[1-53\]
         WeekOfYear = 5,
-        /// [0-23]
+        /// \[0-23\]
         HourOfDay = 6,
     }
 }
@@ -2621,7 +2615,7 @@ pub mod time_part_config {
 /// Outputs a base64 encoded representation of the hashed output
 /// (for example, L7k0BHmF1ha5U3NfGykjro4xWi1MPVQPjhMAZbSV9mM=).
 /// Currently, only string and integer values can be hashed.
-/// See https://cloud.google.com/dlp/docs/pseudonymization to learn more.
+/// See <https://cloud.google.com/dlp/docs/pseudonymization> to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoHashConfig {
     /// The key used by the hash function.
@@ -2630,7 +2624,7 @@ pub struct CryptoHashConfig {
 }
 /// Pseudonymization method that generates deterministic encryption for the given
 /// input. Outputs a base64 encoded representation of the encrypted output.
-/// Uses AES-SIV based on the RFC https://tools.ietf.org/html/rfc5297.
+/// Uses AES-SIV based on the RFC <https://tools.ietf.org/html/rfc5297.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CryptoDeterministicConfig {
     /// The key used by the encryption function.
@@ -2727,7 +2721,7 @@ pub mod chars_to_ignore {
         AlphaUpperCase = 2,
         /// a-z
         AlphaLowerCase = 3,
-        /// US Punctuation, one of !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+        /// US Punctuation, one of !"#$%&'()*+,-./:;<=>?@\[\\]^_`{|}~
         Punctuation = 4,
         /// Whitespace character, one of [ \t\n\x0B\f\r]
         Whitespace = 5,
@@ -2790,7 +2784,7 @@ pub struct CharacterMaskConfig {
 /// being transformed, we will first attempt converting the type of the data to
 /// be transformed to match the type of the bound before comparing.
 ///
-/// See https://cloud.google.com/dlp/docs/concepts-bucketing to learn more.
+/// See <https://cloud.google.com/dlp/docs/concepts-bucketing> to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FixedSizeBucketingConfig {
     /// Required. Lower bound value of buckets. All values less than `lower_bound` are
@@ -2818,7 +2812,7 @@ pub struct FixedSizeBucketingConfig {
 /// If the bound `Value` type differs from the type of data being transformed, we
 /// will first attempt converting the type of the data to be transformed to match
 /// the type of the bound before comparing.
-/// See https://cloud.google.com/dlp/docs/concepts-bucketing to learn more.
+/// See <https://cloud.google.com/dlp/docs/concepts-bucketing> to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BucketingConfig {
     /// Set of buckets. Ranges must be non-overlapping.
@@ -2849,7 +2843,7 @@ pub mod bucketing_config {
 /// encoded as ASCII. For a given crypto key and context, the same identifier
 /// will be replaced with the same surrogate. Identifiers must be at least two
 /// characters long. In the case that the identifier is the empty string, it will
-/// be skipped. See https://cloud.google.com/dlp/docs/pseudonymization to learn
+/// be skipped. See <https://cloud.google.com/dlp/docs/pseudonymization> to learn
 /// more.
 ///
 /// Note: We recommend using  CryptoDeterministicConfig for all use cases which
@@ -2894,7 +2888,7 @@ pub struct CryptoReplaceFfxFpeConfig {
     ///
     /// This annotation identifies the surrogate when inspecting content using the
     /// custom infoType
-    /// [`SurrogateType`](https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype).
+    /// \[`SurrogateType`\](<https://cloud.google.com/dlp/docs/reference/rest/v2/InspectConfig#surrogatetype>).
     /// This facilitates reversal of the surrogate when it occurs in free text.
     ///
     /// In order for inspection to work properly, the name of this infoType must
@@ -2923,13 +2917,13 @@ pub mod crypto_replace_ffx_fpe_config {
     pub enum FfxCommonNativeAlphabet {
         /// Unused.
         Unspecified = 0,
-        /// `[0-9]` (radix of 10)
+        /// `\[0-9\]` (radix of 10)
         Numeric = 1,
-        /// `[0-9A-F]` (radix of 16)
+        /// `\[0-9A-F\]` (radix of 16)
         Hexadecimal = 2,
-        /// `[0-9A-Z]` (radix of 36)
+        /// `\[0-9A-Z\]` (radix of 36)
         UpperCaseAlphaNumeric = 3,
-        /// `[0-9A-Za-z]` (radix of 62)
+        /// `\[0-9A-Za-z\]` (radix of 62)
         AlphaNumeric = 4,
     }
     /// Choose an alphabet which the data being transformed will be made up of.
@@ -2947,7 +2941,7 @@ pub mod crypto_replace_ffx_fpe_config {
         /// The order of characters does not matter.
         /// The full list of allowed characters is:
         /// <code>0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
-        /// ~`!@#$%^&*()_-+={[}]|\:;"'<,>.?/</code>
+        /// ~`!@#$%^&*()_-+={\[}\]|\:;"'<,>.?/</code>
         #[prost(string, tag = "5")]
         CustomAlphabet(::prost::alloc::string::String),
         /// The native way to select the alphabet. Must be in the range [2, 95].
@@ -3018,7 +3012,7 @@ pub struct KmsWrappedCryptoKey {
     pub crypto_key_name: ::prost::alloc::string::String,
 }
 /// Shifts dates by random number of days, with option to be consistent for the
-/// same context. See https://cloud.google.com/dlp/docs/concepts-date-shifting
+/// same context. See <https://cloud.google.com/dlp/docs/concepts-date-shifting>
 /// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DateShiftConfig {
@@ -3100,13 +3094,13 @@ pub struct FieldTransformation {
     /// - Redact a field if the date of birth field is greater than 85.
     #[prost(message, optional, tag = "3")]
     pub condition: ::core::option::Option<RecordCondition>,
-    /// Transformation to apply. [required]
+    /// Transformation to apply. \[required\]
     #[prost(oneof = "field_transformation::Transformation", tags = "4, 5")]
     pub transformation: ::core::option::Option<field_transformation::Transformation>,
 }
 /// Nested message and enum types in `FieldTransformation`.
 pub mod field_transformation {
-    /// Transformation to apply. [required]
+    /// Transformation to apply. \[required\]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Transformation {
         /// Apply the transformation to the entire field.
@@ -3316,7 +3310,7 @@ pub mod schedule {
 pub struct Manual {}
 /// The inspectTemplate contains a configuration (set of types of sensitive data
 /// to be detected) to be used anywhere you otherwise would normally specify
-/// InspectConfig. See https://cloud.google.com/dlp/docs/concepts-templates
+/// InspectConfig. See <https://cloud.google.com/dlp/docs/concepts-templates>
 /// to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InspectTemplate {
@@ -3344,7 +3338,7 @@ pub struct InspectTemplate {
     pub inspect_config: ::core::option::Option<InspectConfig>,
 }
 /// DeidentifyTemplates contains instructions on how to de-identify content.
-/// See https://cloud.google.com/dlp/docs/concepts-templates to learn more.
+/// See <https://cloud.google.com/dlp/docs/concepts-templates> to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeidentifyTemplate {
     /// Output only. The template name.
@@ -3382,7 +3376,7 @@ pub struct Error {
     pub timestamps: ::prost::alloc::vec::Vec<::prost_types::Timestamp>,
 }
 /// Contains a configuration to make dlp api calls on a repeating basis.
-/// See https://cloud.google.com/dlp/docs/concepts-job-triggers to learn more.
+/// See <https://cloud.google.com/dlp/docs/concepts-job-triggers> to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobTrigger {
     /// Unique resource name for the triggeredJob, assigned by the service when the
@@ -3441,7 +3435,7 @@ pub mod job_trigger {
             /// For use with hybrid jobs. Jobs must be manually created and finished.
             /// Early access feature is in a pre-release state and might change or have
             /// limited support. For more information, see
-            /// https://cloud.google.com/products#product-launch-stages.
+            /// <https://cloud.google.com/products#product-launch-stages.>
             #[prost(message, tag = "2")]
             Manual(super::super::Manual),
         }
@@ -3471,7 +3465,7 @@ pub mod job_trigger {
     }
 }
 /// A task to execute on the completion of a job.
-/// See https://cloud.google.com/dlp/docs/concepts-actions to learn more.
+/// See <https://cloud.google.com/dlp/docs/concepts-actions> to learn more.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Action {
     #[prost(oneof = "action::Action", tags = "1, 2, 3, 5, 8, 9")]
@@ -3492,7 +3486,7 @@ pub mod action {
     /// Publish a message into given Pub/Sub topic when DlpJob has completed. The
     /// message contains a single field, `DlpJobName`, which is equal to the
     /// finished job's
-    /// [`DlpJob.name`](https://cloud.google.com/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob).
+    /// \[`DlpJob.name`\](<https://cloud.google.com/dlp/docs/reference/rest/v2/projects.dlpJobs#DlpJob>).
     /// Compatible with: Inspect, Risk
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PublishToPubSub {
@@ -3510,7 +3504,7 @@ pub mod action {
     /// Center.
     /// The action will publish count of finding instances and their info types.
     /// The summary of findings will be persisted in CSCC and are governed by CSCC
-    /// service-specific policy, see https://cloud.google.com/terms/service-terms
+    /// service-specific policy, see <https://cloud.google.com/terms/service-terms>
     /// Only a single instance of this action can be specified.
     /// Compatible with: Inspect
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3521,7 +3515,7 @@ pub mod action {
     /// be deleted. InfoType naming patterns are strictly enforced when using this
     /// feature. Note that the findings will be persisted in Cloud Data Catalog
     /// storage and are governed by Data Catalog service-specific policy, see
-    /// https://cloud.google.com/terms/service-terms
+    /// <https://cloud.google.com/terms/service-terms>
     /// Only a single instance of this action can be specified and only allowed if
     /// all resources being scanned are BigQuery tables.
     /// Compatible with: Inspect
@@ -3567,7 +3561,7 @@ pub struct CreateInspectTemplateRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -3590,7 +3584,7 @@ pub struct CreateInspectTemplateRequest {
     pub inspect_template: ::core::option::Option<InspectTemplate>,
     /// The template id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
+    /// expression: `\[a-zA-Z\d-_\]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub template_id: ::prost::alloc::string::String,
@@ -3629,7 +3623,7 @@ pub struct ListInspectTemplatesRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -3701,7 +3695,7 @@ pub struct CreateJobTriggerRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -3720,7 +3714,7 @@ pub struct CreateJobTriggerRequest {
     pub job_trigger: ::core::option::Option<JobTrigger>,
     /// The trigger id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
+    /// expression: `\[a-zA-Z\d-_\]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub trigger_id: ::prost::alloc::string::String,
@@ -3767,7 +3761,7 @@ pub struct CreateDlpJobRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -3783,7 +3777,7 @@ pub struct CreateDlpJobRequest {
     pub parent: ::prost::alloc::string::String,
     /// The job id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
+    /// expression: `\[a-zA-Z\d-_\]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "4")]
     pub job_id: ::prost::alloc::string::String,
@@ -3814,7 +3808,7 @@ pub struct ListJobTriggersRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -3986,7 +3980,7 @@ pub mod dlp_job {
         InspectDetails(super::InspectDataSourceDetails),
     }
 }
-/// The request message for [DlpJobs.GetDlpJob][].
+/// The request message for \[DlpJobs.GetDlpJob][\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDlpJobRequest {
     /// Required. The name of the DlpJob resource.
@@ -4000,7 +3994,7 @@ pub struct ListDlpJobsRequest {
     ///
     /// The format of this value varies depending on whether you have [specified a
     /// processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -4110,7 +4104,7 @@ pub struct CreateDeidentifyTemplateRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -4133,7 +4127,7 @@ pub struct CreateDeidentifyTemplateRequest {
     pub deidentify_template: ::core::option::Option<DeidentifyTemplate>,
     /// The template id can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
+    /// expression: `\[a-zA-Z\d-_\]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub template_id: ::prost::alloc::string::String,
@@ -4172,7 +4166,7 @@ pub struct ListDeidentifyTemplatesRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -4240,7 +4234,7 @@ pub struct DeleteDeidentifyTemplateRequest {
 }
 /// Configuration for a custom dictionary created from a data source of any size
 /// up to the maximum size defined in the
-/// [limits](https://cloud.google.com/dlp/limits) page. The artifacts of
+/// \[limits\](<https://cloud.google.com/dlp/limits>) page. The artifacts of
 /// dictionary creation are stored in the specified Google Cloud Storage
 /// location. Consider using `CustomInfoType.Dictionary` for smaller dictionaries
 /// that satisfy the size requirements.
@@ -4276,7 +4270,7 @@ pub struct LargeCustomDictionaryStats {
 }
 /// Configuration for stored infoTypes. All fields and subfield are provided
 /// by the user. For more information, see
-/// https://cloud.google.com/dlp/docs/creating-custom-infotypes.
+/// <https://cloud.google.com/dlp/docs/creating-custom-infotypes.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoredInfoTypeConfig {
     /// Display name of the StoredInfoType (max 256 characters).
@@ -4378,7 +4372,7 @@ pub struct CreateStoredInfoTypeRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -4401,7 +4395,7 @@ pub struct CreateStoredInfoTypeRequest {
     pub config: ::core::option::Option<StoredInfoTypeConfig>,
     /// The storedInfoType ID can contain uppercase and lowercase letters,
     /// numbers, and hyphens; that is, it must match the regular
-    /// expression: `[a-zA-Z\d-_]+`. The maximum length is 100
+    /// expression: `\[a-zA-Z\d-_\]+`. The maximum length is 100
     /// characters. Can be empty to allow the system to generate one.
     #[prost(string, tag = "3")]
     pub stored_info_type_id: ::prost::alloc::string::String,
@@ -4442,7 +4436,7 @@ pub struct ListStoredInfoTypesRequest {
     ///
     /// The format of this value varies depending on the scope of the request
     /// (project or organization) and whether you have [specified a processing
-    /// location](https://cloud.google.com/dlp/docs/specifying-location):
+    /// location](<https://cloud.google.com/dlp/docs/specifying-location>):
     ///
     /// + Projects scope, location specified:<br/>
     ///   `projects/`<var>PROJECT_ID</var>`/locations/`<var>LOCATION_ID</var>
@@ -4571,10 +4565,10 @@ pub struct HybridFindingDetails {
     /// inspection.
     ///
     /// Label keys must be between 1 and 63 characters long and must conform
-    /// to the following regular expression: `[a-z]([-a-z0-9]*[a-z0-9])?`.
+    /// to the following regular expression: `\[a-z]([-a-z0-9]*[a-z0-9\])?`.
     ///
     /// Label values must be between 0 and 63 characters long and must conform
-    /// to the regular expression `([a-z]([-a-z0-9]*[a-z0-9])?)?`.
+    /// to the regular expression `(\[a-z]([-a-z0-9]*[a-z0-9\])?)?`.
     ///
     /// No more than 10 labels can be associated with a given finding.
     ///
@@ -4716,7 +4710,7 @@ pub mod dlp_service_client {
     impl<T> DlpServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -4729,7 +4723,7 @@ pub mod dlp_service_client {
             interceptor: F,
         ) -> DlpServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

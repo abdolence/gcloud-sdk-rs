@@ -142,7 +142,7 @@ pub mod classification_evaluation_metrics {
         /// for each example.
         #[prost(float, tag = "9")]
         pub false_positive_rate_at1: f32,
-        /// Output only. The harmonic mean of [recall_at1][google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1] and [precision_at1][google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1].
+        /// Output only. The harmonic mean of \[recall_at1][google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1\] and \[precision_at1][google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1\].
         #[prost(float, tag = "7")]
         pub f1_score_at1: f32,
         /// Output only. The number of model created labels that match a ground truth
@@ -168,24 +168,24 @@ pub mod classification_evaluation_metrics {
         /// Output only. IDs of the annotation specs used in the confusion matrix.
         /// For Tables CLASSIFICATION
         ///
-        /// [prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]
-        /// only list of [annotation_spec_display_name-s][] is populated.
+        /// \[prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type\]
+        /// only list of \[annotation_spec_display_name-s][\] is populated.
         #[prost(string, repeated, tag = "1")]
         pub annotation_spec_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Output only. Display name of the annotation specs used in the confusion
         /// matrix, as they were at the moment of the evaluation. For Tables
         /// CLASSIFICATION
         ///
-        /// [prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type],
+        /// \[prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type\],
         /// distinct values of the target column at the moment of the model
         /// evaluation are populated here.
         #[prost(string, repeated, tag = "3")]
         pub display_name: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Output only. Rows in the confusion matrix. The number of rows is equal to
         /// the size of `annotation_spec_id`.
-        /// `row[i].example_count[j]` is the number of examples that have ground
-        /// truth of the `annotation_spec_id[i]` and are predicted as
-        /// `annotation_spec_id[j]` by the model being evaluated.
+        /// `row\[i].example_count[j\]` is the number of examples that have ground
+        /// truth of the `annotation_spec_id\[i\]` and are predicted as
+        /// `annotation_spec_id\[j\]` by the model being evaluated.
         #[prost(message, repeated, tag = "2")]
         pub row: ::prost::alloc::vec::Vec<confusion_matrix::Row>,
     }
@@ -197,7 +197,7 @@ pub mod classification_evaluation_metrics {
             /// Output only. Value of the specific cell in the confusion matrix.
             /// The number of values each row has (i.e. the length of the row) is equal
             /// to the length of the `annotation_spec_id` field or, if that one is not
-            /// populated, length of the [display_name][google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.display_name] field.
+            /// populated, length of the \[display_name][google.cloud.automl.v1beta1.ClassificationEvaluationMetrics.ConfusionMatrix.display_name\] field.
             #[prost(int32, repeated, tag = "1")]
             pub example_count: ::prost::alloc::vec::Vec<i32>,
         }
@@ -441,7 +441,7 @@ pub mod float64_stats {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StringStats {
     /// The statistics of the top 20 unigrams, ordered by
-    /// [count][google.cloud.automl.v1beta1.StringStats.UnigramStats.count].
+    /// \[count][google.cloud.automl.v1beta1.StringStats.UnigramStats.count\].
     #[prost(message, repeated, tag = "1")]
     pub top_unigram_stats: ::prost::alloc::vec::Vec<string_stats::UnigramStats>,
 }
@@ -502,7 +502,7 @@ pub struct StructStats {
 pub struct CategoryStats {
     /// The statistics of the top 20 CATEGORY values, ordered by
     ///
-    /// [count][google.cloud.automl.v1beta1.CategoryStats.SingleCategoryStats.count].
+    /// \[count][google.cloud.automl.v1beta1.CategoryStats.SingleCategoryStats.count\].
     #[prost(message, repeated, tag = "1")]
     pub top_category_stats: ::prost::alloc::vec::Vec<category_stats::SingleCategoryStats>,
 }
@@ -532,7 +532,7 @@ pub struct CorrelationStats {
 /// (e.g. a table).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataType {
-    /// Required. The [TypeCode][google.cloud.automl.v1beta1.TypeCode] for this type.
+    /// Required. The \[TypeCode][google.cloud.automl.v1beta1.TypeCode\] for this type.
     #[prost(enumeration = "TypeCode", tag = "1")]
     pub type_code: i32,
     /// If true, this DataType can also be `NULL`. In .CSV files `NULL` value is
@@ -548,15 +548,15 @@ pub mod data_type {
     /// Details of DataType-s that need additional specification.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
-        /// If [type_code][google.cloud.automl.v1beta1.DataType.type_code] == [ARRAY][google.cloud.automl.v1beta1.TypeCode.ARRAY],
+        /// If \[type_code][google.cloud.automl.v1beta1.DataType.type_code\] == \[ARRAY][google.cloud.automl.v1beta1.TypeCode.ARRAY\],
         /// then `list_element_type` is the type of the elements.
         #[prost(message, tag = "2")]
         ListElementType(::prost::alloc::boxed::Box<super::DataType>),
-        /// If [type_code][google.cloud.automl.v1beta1.DataType.type_code] == [STRUCT][google.cloud.automl.v1beta1.TypeCode.STRUCT], then `struct_type`
+        /// If \[type_code][google.cloud.automl.v1beta1.DataType.type_code\] == \[STRUCT][google.cloud.automl.v1beta1.TypeCode.STRUCT\], then `struct_type`
         /// provides type information for the struct's fields.
         #[prost(message, tag = "3")]
         StructType(super::StructType),
-        /// If [type_code][google.cloud.automl.v1beta1.DataType.type_code] == [TIMESTAMP][google.cloud.automl.v1beta1.TypeCode.TIMESTAMP]
+        /// If \[type_code][google.cloud.automl.v1beta1.DataType.type_code\] == \[TIMESTAMP][google.cloud.automl.v1beta1.TypeCode.TIMESTAMP\]
         /// then `time_format` provides the format in which that time field is
         /// expressed. The time_format must either be one of:
         /// * `UNIX_SECONDS`
@@ -571,7 +571,7 @@ pub mod data_type {
         TimeFormat(::prost::alloc::string::String),
     }
 }
-/// `StructType` defines the DataType-s of a [STRUCT][google.cloud.automl.v1beta1.TypeCode.STRUCT] type.
+/// `StructType` defines the DataType-s of a \[STRUCT][google.cloud.automl.v1beta1.TypeCode.STRUCT\] type.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StructType {
     /// Unordered map of struct field names to their data types.
@@ -581,7 +581,7 @@ pub struct StructType {
     pub fields: ::std::collections::HashMap<::prost::alloc::string::String, DataType>,
 }
 /// `TypeCode` is used as a part of
-/// [DataType][google.cloud.automl.v1beta1.DataType].
+/// \[DataType][google.cloud.automl.v1beta1.DataType\].
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum TypeCode {
@@ -591,7 +591,7 @@ pub enum TypeCode {
     /// `"-Infinity"`.
     Float64 = 3,
     /// Must be between 0AD and 9999AD. Encoded as `string` according to
-    /// [time_format][google.cloud.automl.v1beta1.DataType.time_format], or, if
+    /// \[time_format][google.cloud.automl.v1beta1.DataType.time_format\], or, if
     /// that format is not set, then in RFC 3339 `date-time` format, where
     /// `time-offset` = `"Z"` (e.g. 1985-04-12T23:20:50.52Z).
     Timestamp = 4,
@@ -599,10 +599,10 @@ pub enum TypeCode {
     String = 6,
     /// Encoded as `list`, where the list elements are represented according to
     ///
-    /// [list_element_type][google.cloud.automl.v1beta1.DataType.list_element_type].
+    /// \[list_element_type][google.cloud.automl.v1beta1.DataType.list_element_type\].
     Array = 8,
     /// Encoded as `struct`, where field values are represented according to
-    /// [struct_type][google.cloud.automl.v1beta1.DataType.struct_type].
+    /// \[struct_type][google.cloud.automl.v1beta1.DataType.struct_type\].
     Struct = 9,
     /// Values of this type are not further understood by AutoML,
     /// e.g. AutoML is unable to tell the order of values (as it could with
@@ -666,7 +666,7 @@ pub mod column_spec {
 ///
 /// The format of input depends on dataset_metadata the Dataset into which
 /// the import is happening has. As input source the
-/// [gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source]
+/// \[gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source\]
 /// is expected, unless specified otherwise. Additionally any input .CSV file
 /// by itself must be 100MB or smaller, unless specified otherwise.
 /// If an "example" file (that is, image, video etc.) with identical content
@@ -745,7 +745,7 @@ pub mod column_spec {
 ///           where ML_USE VALIDATE value should not be used. The GCS_FILE_PATH
 ///           should lead to another .csv file which describes examples that have
 ///           given ML_USE, using one of the following row format:
-///           GCS_FILE_PATH,LABEL,[INSTANCE_ID],TIMESTAMP,BOUNDING_BOX
+///           GCS_FILE_PATH,LABEL,\[INSTANCE_ID\],TIMESTAMP,BOUNDING_BOX
 ///           or
 ///           GCS_FILE_PATH,,,,,,,,,,
 ///           Here GCS_FILE_PATH leads to a video of up to 50GB in size and up
@@ -760,7 +760,7 @@ pub mod column_spec {
 ///           to be exhaustively labeled and no more than 500 BOUNDING_BOX-es per
 ///           frame are allowed. If a whole video is unknown, then it should be
 ///           mentioned just once with ",,,,,,,,,," in place of LABEL,
-///           [INSTANCE_ID],TIMESTAMP,BOUNDING_BOX.
+///           \[INSTANCE_ID\],TIMESTAMP,BOUNDING_BOX.
 ///         Sample top level CSV file:
 ///           TRAIN,gs://folder/train_videos.csv
 ///           TEST,gs://folder/test_videos.csv
@@ -933,12 +933,12 @@ pub mod column_spec {
 ///
 ///   *  For Tables:
 ///         Either
-///         [gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source] or
+///         \[gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source\] or
 ///
-/// [bigquery_source][google.cloud.automl.v1beta1.InputConfig.bigquery_source]
+/// \[bigquery_source][google.cloud.automl.v1beta1.InputConfig.bigquery_source\]
 ///         can be used. All inputs is concatenated into a single
 ///
-/// [primary_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary_table_name]
+/// \[primary_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary_table_name\]
 ///         For gcs_source:
 ///           CSV file(s), where the first row of the first file is the header,
 ///           containing unique column names. If the first row of a subsequent
@@ -950,9 +950,9 @@ pub mod column_spec {
 ///           First three sample rows of a CSV file:
 ///           "Id","First Name","Last Name","Dob","Addresses"
 ///
-/// "1","John","Doe","1968-01-22","[{"status":"current","address":"123_First_Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456_Main_Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}]"
+/// "1","John","Doe","1968-01-22","\[{"status":"current","address":"123_First_Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456_Main_Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}\]"
 ///
-/// "2","Jane","Doe","1980-10-16","[{"status":"current","address":"789_Any_Avenue","city":"Albany","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321_Main_Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}]}
+/// "2","Jane","Doe","1980-10-16","\[{"status":"current","address":"789_Any_Avenue","city":"Albany","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321_Main_Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}\]}
 ///         For bigquery_source:
 ///           An URI of a BigQuery table. The user data size of the BigQuery
 ///           table must be 100GB or smaller.
@@ -1057,7 +1057,7 @@ pub mod input_config {
 ///
 /// The format of input depends on the ML problem of the model used for
 /// prediction. As input source the
-/// [gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source]
+/// \[gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source\]
 /// is expected, unless specified otherwise.
 ///
 /// The formats are represented in EBNF with commas being literal and with
@@ -1194,9 +1194,9 @@ pub mod input_config {
 ///
 ///  *  For Tables:
 ///         Either
-///         [gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source] or
+///         \[gcs_source][google.cloud.automl.v1beta1.InputConfig.gcs_source\] or
 ///
-/// [bigquery_source][google.cloud.automl.v1beta1.InputConfig.bigquery_source].
+/// \[bigquery_source][google.cloud.automl.v1beta1.InputConfig.bigquery_source\].
 ///         GCS case:
 ///           CSV file(s), each by itself 10GB or smaller and total size must be
 ///           100GB or smaller, where first file must have a header containing
@@ -1205,42 +1205,42 @@ pub mod input_config {
 ///           contain values for the corresponding columns.
 ///           The column names must contain the model's
 ///
-/// [input_feature_column_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]
+/// \[input_feature_column_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs\]
 ///
-/// [display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+/// \[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name\]
 ///           (order doesn't matter). The columns corresponding to the model's
 ///           input feature column specs must contain values compatible with the
 ///           column spec's data types. Prediction on all the rows, i.e. the CSV
 ///           lines, will be attempted. For FORECASTING
 ///
-/// [prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+/// \[prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type\]:
 ///           all columns having
 ///
-/// [TIME_SERIES_AVAILABLE_PAST_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType]
+/// \[TIME_SERIES_AVAILABLE_PAST_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType\]
 ///           type will be ignored.
 ///           First three sample rows of a CSV file:
 ///             "First Name","Last Name","Dob","Addresses"
 ///
-/// "John","Doe","1968-01-22","[{"status":"current","address":"123_First_Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456_Main_Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}]"
+/// "John","Doe","1968-01-22","\[{"status":"current","address":"123_First_Avenue","city":"Seattle","state":"WA","zip":"11111","numberOfYears":"1"},{"status":"previous","address":"456_Main_Street","city":"Portland","state":"OR","zip":"22222","numberOfYears":"5"}\]"
 ///
-/// "Jane","Doe","1980-10-16","[{"status":"current","address":"789_Any_Avenue","city":"Albany","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321_Main_Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}]}
+/// "Jane","Doe","1980-10-16","\[{"status":"current","address":"789_Any_Avenue","city":"Albany","state":"NY","zip":"33333","numberOfYears":"2"},{"status":"previous","address":"321_Main_Street","city":"Hoboken","state":"NJ","zip":"44444","numberOfYears":"3"}\]}
 ///         BigQuery case:
 ///           An URI of a BigQuery table. The user data size of the BigQuery
 ///           table must be 100GB or smaller.
 ///           The column names must contain the model's
 ///
-/// [input_feature_column_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]
+/// \[input_feature_column_specs'][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs\]
 ///
-/// [display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+/// \[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name\]
 ///           (order doesn't matter). The columns corresponding to the model's
 ///           input feature column specs must contain values compatible with the
 ///           column spec's data types. Prediction on all the rows of the table
 ///           will be attempted. For FORECASTING
 ///
-/// [prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+/// \[prediction_type][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type\]:
 ///           all columns having
 ///
-/// [TIME_SERIES_AVAILABLE_PAST_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType]
+/// \[TIME_SERIES_AVAILABLE_PAST_ONLY][google.cloud.automl.v1beta1.ColumnSpec.ForecastingMetadata.ColumnType\]
 ///           type will be ignored.
 ///
 ///  Definitions:
@@ -1284,7 +1284,7 @@ pub mod batch_predict_input_config {
         BigquerySource(super::BigQuerySource),
     }
 }
-/// Input configuration of a [Document][google.cloud.automl.v1beta1.Document].
+/// Input configuration of a \[Document][google.cloud.automl.v1beta1.Document\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DocumentInputConfig {
     /// The Google Cloud Storage location of the document file. Only a single path
@@ -1307,14 +1307,14 @@ pub struct DocumentInputConfig {
 ///         BigQuery.
 ///         GCS case:
 ///
-/// [gcs_destination][google.cloud.automl.v1beta1.OutputConfig.gcs_destination]
+/// \[gcs_destination][google.cloud.automl.v1beta1.OutputConfig.gcs_destination\]
 ///           must be set. Exported are CSV file(s) `tables_1.csv`,
 ///           `tables_2.csv`,...,`tables_N.csv` with each having as header line
 ///           the table's column names, and all other lines contain values for
 ///           the header columns.
 ///         BigQuery case:
 ///
-/// [bigquery_destination][google.cloud.automl.v1beta1.OutputConfig.bigquery_destination]
+/// \[bigquery_destination][google.cloud.automl.v1beta1.OutputConfig.bigquery_destination\]
 ///           pointing to a BigQuery project must be set. In the given project a
 ///           new dataset will be created with name
 ///
@@ -1353,7 +1353,7 @@ pub mod output_config {
 ///
 /// As destination the
 ///
-/// [gcs_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.gcs_destination]
+/// \[gcs_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.gcs_destination\]
 /// must be set unless specified otherwise for a domain. If gcs_destination is
 /// set then in the given directory a new directory is created. Its name
 /// will be
@@ -1379,7 +1379,7 @@ pub mod output_config {
 ///         that wraps the same "ID" : "<id_value>" but here followed by
 ///         exactly one
 ///
-/// [`google.rpc.Status`](https:
+/// \[`google.rpc.Status`\](https:
 /// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
 ///         containing only `code` and `message`fields.
 ///
@@ -1401,7 +1401,7 @@ pub mod output_config {
 ///         that wraps the same "ID" : "<id_value>" but here followed by
 ///         exactly one
 ///
-/// [`google.rpc.Status`](https:
+/// \[`google.rpc.Status`\](https:
 /// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
 ///         containing only `code` and `message`fields.
 ///  *  For Video Classification:
@@ -1429,7 +1429,7 @@ pub mod output_config {
 ///         video_classification field set, and will be sorted by
 ///         video_classification.type field (note that the returned types are
 ///         governed by `classifaction_types` parameter in
-///         [PredictService.BatchPredictRequest.params][]).
+///         \[PredictService.BatchPredictRequest.params][\]).
 ///
 ///  *  For Video Object Tracking:
 ///         In the created directory a video_object_tracking.csv file will be
@@ -1476,7 +1476,7 @@ pub mod output_config {
 ///         proto that wraps input text snippet or input text file followed by
 ///         exactly one
 ///
-/// [`google.rpc.Status`](https:
+/// \[`google.rpc.Status`\](https:
 /// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
 ///         containing only `code` and `message`.
 ///
@@ -1500,7 +1500,7 @@ pub mod output_config {
 ///         proto that wraps input text snippet or input text file followed by
 ///         exactly one
 ///
-/// [`google.rpc.Status`](https:
+/// \[`google.rpc.Status`\](https:
 /// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
 ///         containing only `code` and `message`.
 ///
@@ -1536,17 +1536,17 @@ pub mod output_config {
 ///         or the document proto (in case of document) but here followed by
 ///         exactly one
 ///
-/// [`google.rpc.Status`](https:
+/// \[`google.rpc.Status`\](https:
 /// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
 ///         containing only `code` and `message`.
 ///
 ///  *  For Tables:
 ///         Output depends on whether
 ///
-/// [gcs_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.gcs_destination]
+/// \[gcs_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.gcs_destination\]
 ///         or
 ///
-/// [bigquery_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.bigquery_destination]
+/// \[bigquery_destination][google.cloud.automl.v1beta1.BatchPredictOutputConfig.bigquery_destination\]
 ///         is set (either is allowed).
 ///         GCS case:
 ///           In the created directory files `tables_1.csv`, `tables_2.csv`,...,
@@ -1554,32 +1554,32 @@ pub mod output_config {
 ///           the total number of the successfully predicted rows.
 ///           For all CLASSIFICATION
 ///
-/// [prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+/// \[prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type\]:
 ///             Each .csv file will contain a header, listing all columns'
 ///
-/// [display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+/// \[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name\]
 ///             given on input followed by M target column names in the format of
 ///
-/// "<[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]
+/// "<\[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec\]
 ///
-/// [display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]>_<target
+/// \[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name\]>_<target
 ///             value>_score" where M is the number of distinct target values,
 ///             i.e. number of distinct values in the target column of the table
 ///             used to train the model. Subsequent lines will contain the
 ///             respective values of successfully predicted rows, with the last,
 ///             i.e. the target, columns having the corresponding prediction
-///             [scores][google.cloud.automl.v1beta1.TablesAnnotation.score].
+///             \[scores][google.cloud.automl.v1beta1.TablesAnnotation.score\].
 ///           For REGRESSION and FORECASTING
 ///
-/// [prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]:
+/// \[prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type\]:
 ///             Each .csv file will contain a header, listing all columns'
-///             [display_name-s][google.cloud.automl.v1beta1.display_name] given
+///             \[display_name-s][google.cloud.automl.v1beta1.display_name\] given
 ///             on input followed by the predicted target column with name in the
 ///             format of
 ///
-/// "predicted_<[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]
+/// "predicted_<\[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec\]
 ///
-/// [display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]>"
+/// \[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name\]>"
 ///             Subsequent lines will contain the respective values of
 ///             successfully predicted rows, with the last, i.e. the target,
 ///             column having the predicted target value.
@@ -1589,13 +1589,13 @@ pub mod output_config {
 ///             will have analogous format as `tables_*.csv`, but always with a
 ///             single target column having
 ///
-/// [`google.rpc.Status`](https:
+/// \[`google.rpc.Status`\](https:
 /// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
 ///             represented as a JSON string, and containing only `code` and
 ///             `message`.
 ///         BigQuery case:
 ///
-/// [bigquery_destination][google.cloud.automl.v1beta1.OutputConfig.bigquery_destination]
+/// \[bigquery_destination][google.cloud.automl.v1beta1.OutputConfig.bigquery_destination\]
 ///           pointing to a BigQuery project must be set. In the given project a
 ///           new dataset will be created with name
 ///           `prediction_<model-display-name>_<timestamp-of-prediction-call>`
@@ -1606,29 +1606,29 @@ pub mod output_config {
 ///           two tables will be created, `predictions`, and `errors`.
 ///           The `predictions` table's column names will be the input columns'
 ///
-/// [display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name]
+/// \[display_name-s][google.cloud.automl.v1beta1.ColumnSpec.display_name\]
 ///           followed by the target column with name in the format of
 ///
-/// "predicted_<[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]
+/// "predicted_<\[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec\]
 ///
-/// [display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]>"
+/// \[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name\]>"
 ///           The input feature columns will contain the respective values of
 ///           successfully predicted rows, with the target column having an
 ///           ARRAY of
 ///
-/// [AnnotationPayloads][google.cloud.automl.v1beta1.AnnotationPayload],
+/// \[AnnotationPayloads][google.cloud.automl.v1beta1.AnnotationPayload\],
 ///           represented as STRUCT-s, containing
-///           [TablesAnnotation][google.cloud.automl.v1beta1.TablesAnnotation].
+///           \[TablesAnnotation][google.cloud.automl.v1beta1.TablesAnnotation\].
 ///           The `errors` table contains rows for which the prediction has
 ///           failed, it has analogous input columns while the target column name
 ///           is in the format of
 ///
-/// "errors_<[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]
+/// "errors_<\[target_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec\]
 ///
-/// [display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name]>",
+/// \[display_name][google.cloud.automl.v1beta1.ColumnSpec.display_name\]>",
 ///           and as a value has
 ///
-/// [`google.rpc.Status`](https:
+/// \[`google.rpc.Status`\](https:
 /// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)
 ///           represented as a STRUCT, and containing only `code` and `message`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1696,10 +1696,10 @@ pub struct ModelExportOutputConfig {
     /// Formats description:
     ///
     /// * tflite - Used for Android mobile devices.
-    /// * edgetpu_tflite - Used for [Edge TPU](https://cloud.google.com/edge-tpu/)
+    /// * edgetpu_tflite - Used for [Edge TPU](<https://cloud.google.com/edge-tpu/>)
     ///                    devices.
     /// * tf_saved_model - A tensorflow model in SavedModel format.
-    /// * tf_js - A [TensorFlow.js](https://www.tensorflow.org/js) model that can
+    /// * tf_js - A \[TensorFlow.js\](<https://www.tensorflow.org/js>) model that can
     ///           be used in the browser and in Node.js using JavaScript.
     /// * docker - Used for Docker containers. Use the params field to customize
     ///            the container. The container is verified to work correctly on
@@ -1757,7 +1757,7 @@ pub mod model_export_output_config {
 ///
 ///  *  For Tables:
 ///
-/// [bigquery_destination][google.cloud.automl.v1beta1.OutputConfig.bigquery_destination]
+/// \[bigquery_destination][google.cloud.automl.v1beta1.OutputConfig.bigquery_destination\]
 ///       pointing to a BigQuery project must be set. In the given project a
 ///       new dataset will be created with name
 ///
@@ -1768,24 +1768,21 @@ pub mod model_export_output_config {
 ///       format. In the dataset an `evaluated_examples` table will be
 ///       created. It will have all the same columns as the
 ///
-/// [primary_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary_table_spec_id]
+/// \[primary_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary_table_spec_id\]
 ///       of the
-///       [dataset][google.cloud.automl.v1beta1.Model.dataset_id] from which
+///       \[dataset][google.cloud.automl.v1beta1.Model.dataset_id\] from which
 ///       the model was created, as they were at the moment of model's
 ///       evaluation (this includes the target column with its ground
 ///       truth), followed by a column called "predicted_<target_column>". That
 ///       last column will contain the model's prediction result for each
 ///       respective row, given as ARRAY of
-///       [AnnotationPayloads][google.cloud.automl.v1beta1.AnnotationPayload],
+///       \[AnnotationPayloads][google.cloud.automl.v1beta1.AnnotationPayload\],
 ///       represented as STRUCT-s, containing
-///       [TablesAnnotation][google.cloud.automl.v1beta1.TablesAnnotation].
+///       \[TablesAnnotation][google.cloud.automl.v1beta1.TablesAnnotation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEvaluatedExamplesOutputConfig {
     /// Required. The destination of the output.
-    #[prost(
-        oneof = "export_evaluated_examples_output_config::Destination",
-        tags = "2"
-    )]
+    #[prost(oneof = "export_evaluated_examples_output_config::Destination", tags = "2")]
     pub destination: ::core::option::Option<export_evaluated_examples_output_config::Destination>,
 }
 /// Nested message and enum types in `ExportEvaluatedExamplesOutputConfig`.
@@ -1847,8 +1844,8 @@ pub struct GcrDestination {
     /// //cloud.google.com/container-registry/do
     /// // cs/pushing-and-pulling#pushing_an_image_to_a_registry
     /// Accepted forms:
-    /// * [HOSTNAME]/[PROJECT-ID]/[IMAGE]
-    /// * [HOSTNAME]/[PROJECT-ID]/[IMAGE]:[TAG]
+    /// * \[HOSTNAME]/[PROJECT-ID]/[IMAGE\]
+    /// * \[HOSTNAME]/[PROJECT-ID]/[IMAGE]:[TAG\]
     ///
     /// The requesting user must have permission to push images the project.
     #[prost(string, tag = "1")]
@@ -1878,18 +1875,18 @@ pub struct Image {
     #[prost(string, tag = "4")]
     pub thumbnail_uri: ::prost::alloc::string::String,
     /// Input only. The data representing the image.
-    /// For Predict calls [image_bytes][google.cloud.automl.v1beta1.Image.image_bytes] must be set, as other options are not
+    /// For Predict calls \[image_bytes][google.cloud.automl.v1beta1.Image.image_bytes\] must be set, as other options are not
     /// currently supported by prediction API. You can read the contents of an
-    /// uploaded image by using the [content_uri][google.cloud.automl.v1beta1.Image.content_uri] field.
+    /// uploaded image by using the \[content_uri][google.cloud.automl.v1beta1.Image.content_uri\] field.
     #[prost(oneof = "image::Data", tags = "1, 6")]
     pub data: ::core::option::Option<image::Data>,
 }
 /// Nested message and enum types in `Image`.
 pub mod image {
     /// Input only. The data representing the image.
-    /// For Predict calls [image_bytes][google.cloud.automl.v1beta1.Image.image_bytes] must be set, as other options are not
+    /// For Predict calls \[image_bytes][google.cloud.automl.v1beta1.Image.image_bytes\] must be set, as other options are not
     /// currently supported by prediction API. You can read the contents of an
-    /// uploaded image by using the [content_uri][google.cloud.automl.v1beta1.Image.content_uri] field.
+    /// uploaded image by using the \[content_uri][google.cloud.automl.v1beta1.Image.content_uri\] field.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Data {
         /// Image content represented as a stream of bytes.
@@ -1909,9 +1906,9 @@ pub struct TextSnippet {
     /// characters long.
     #[prost(string, tag = "1")]
     pub content: ::prost::alloc::string::String,
-    /// Optional. The format of [content][google.cloud.automl.v1beta1.TextSnippet.content]. Currently the only two allowed
+    /// Optional. The format of \[content][google.cloud.automl.v1beta1.TextSnippet.content\]. Currently the only two allowed
     /// values are "text/html" and "text/plain". If left blank, the format is
-    /// automatically determined from the type of the uploaded [content][google.cloud.automl.v1beta1.TextSnippet.content].
+    /// automatically determined from the type of the uploaded \[content][google.cloud.automl.v1beta1.TextSnippet.content\].
     #[prost(string, tag = "2")]
     pub mime_type: ::prost::alloc::string::String,
     /// Output only. HTTP URI where you can download the content.
@@ -1957,7 +1954,7 @@ pub struct Document {
     #[prost(message, optional, tag = "2")]
     pub document_text: ::core::option::Option<TextSnippet>,
     /// Describes the layout of the document.
-    /// Sorted by [page_number][].
+    /// Sorted by \[page_number][\].
     #[prost(message, repeated, tag = "3")]
     pub layout: ::prost::alloc::vec::Vec<document::Layout>,
     /// The dimensions of the page in the document.
@@ -1969,29 +1966,29 @@ pub struct Document {
 }
 /// Nested message and enum types in `Document`.
 pub mod document {
-    /// Describes the layout information of a [text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment] in the document.
+    /// Describes the layout information of a \[text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment\] in the document.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Layout {
         /// Text Segment that represents a segment in
-        /// [document_text][google.cloud.automl.v1beta1.Document.document_text].
+        /// \[document_text][google.cloud.automl.v1beta1.Document.document_text\].
         #[prost(message, optional, tag = "1")]
         pub text_segment: ::core::option::Option<super::TextSegment>,
-        /// Page number of the [text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment] in the original document, starts
+        /// Page number of the \[text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment\] in the original document, starts
         /// from 1.
         #[prost(int32, tag = "2")]
         pub page_number: i32,
-        /// The position of the [text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment] in the page.
+        /// The position of the \[text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment\] in the page.
         /// Contains exactly 4
         ///
-        /// [normalized_vertices][google.cloud.automl.v1beta1.BoundingPoly.normalized_vertices]
+        /// \[normalized_vertices][google.cloud.automl.v1beta1.BoundingPoly.normalized_vertices\]
         /// and they are connected by edges in the order provided, which will
         /// represent a rectangle parallel to the frame. The
-        /// [NormalizedVertex-s][google.cloud.automl.v1beta1.NormalizedVertex] are
+        /// \[NormalizedVertex-s][google.cloud.automl.v1beta1.NormalizedVertex\] are
         /// relative to the page.
         /// Coordinates are based on top-left as point (0,0).
         #[prost(message, optional, tag = "3")]
         pub bounding_poly: ::core::option::Option<super::BoundingPoly>,
-        /// The type of the [text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment] in document.
+        /// The type of the \[text_segment][google.cloud.automl.v1beta1.Document.Layout.text_segment\] in document.
         #[prost(enumeration = "layout::TextSegmentType", tag = "4")]
         pub text_segment_type: i32,
     }
@@ -2043,7 +2040,7 @@ pub struct Row {
     /// If set must contain, but possibly in a different order, all input
     /// feature
     ///
-    /// [column_spec_ids][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]
+    /// \[column_spec_ids][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs\]
     /// of the Model this row is being passed to.
     /// Note: The below `values` field must match order of this field, if this
     /// field is set.
@@ -2053,7 +2050,7 @@ pub struct Row {
     /// column_spec_ids, or, if not set, then in the same order as input
     /// feature
     ///
-    /// [column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]
+    /// \[column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs\]
     /// of the Model this row is being passed to.
     #[prost(message, repeated, tag = "3")]
     pub values: ::prost::alloc::vec::Vec<::prost_types::Value>,
@@ -2164,10 +2161,10 @@ pub struct TablesDatasetMetadata {
     pub ml_use_column_spec_id: ::prost::alloc::string::String,
     /// Output only. Correlations between
     ///
-    /// [TablesDatasetMetadata.target_column_spec_id][google.cloud.automl.v1beta1.TablesDatasetMetadata.target_column_spec_id],
+    /// \[TablesDatasetMetadata.target_column_spec_id][google.cloud.automl.v1beta1.TablesDatasetMetadata.target_column_spec_id\],
     /// and other columns of the
     ///
-    /// [TablesDatasetMetadataprimary_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary_table_spec_id].
+    /// \[TablesDatasetMetadataprimary_table][google.cloud.automl.v1beta1.TablesDatasetMetadata.primary_table_spec_id\].
     /// Only set if the target column is set. Mapping from other column spec id to
     /// its CorrelationStats with the target column.
     /// This field may be stale, see the stats_update_time field for
@@ -2202,13 +2199,13 @@ pub struct TablesModelMetadata {
     /// the model is trained and which are used as the input for predictions.
     /// The
     ///
-    /// [target_column][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]
+    /// \[target_column][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec\]
     /// as well as, according to dataset's state upon model creation,
     ///
-    /// [weight_column][google.cloud.automl.v1beta1.TablesDatasetMetadata.weight_column_spec_id],
+    /// \[weight_column][google.cloud.automl.v1beta1.TablesDatasetMetadata.weight_column_spec_id\],
     /// and
     ///
-    /// [ml_use_column][google.cloud.automl.v1beta1.TablesDatasetMetadata.ml_use_column_spec_id]
+    /// \[ml_use_column][google.cloud.automl.v1beta1.TablesDatasetMetadata.ml_use_column_spec_id\]
     /// must never be included here.
     ///
     /// Only 3 fields are used:
@@ -2313,20 +2310,20 @@ pub struct TablesAnnotation {
     /// value means greater confidence in the returned value.
     /// For
     ///
-    /// [target_column_spec][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]
+    /// \[target_column_spec][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec\]
     /// of FLOAT64 data type the score is not populated.
     #[prost(float, tag = "1")]
     pub score: f32,
     /// Output only. Only populated when
     ///
-    /// [target_column_spec][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec]
+    /// \[target_column_spec][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec\]
     /// has FLOAT64 data type. An interval in which the exactly correct target
     /// value has 95% chance to be in.
     #[prost(message, optional, tag = "4")]
     pub prediction_interval: ::core::option::Option<DoubleRange>,
     /// The predicted value of the row's
     ///
-    /// [target_column][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec].
+    /// \[target_column][google.cloud.automl.v1beta1.TablesModelMetadata.target_column_spec\].
     /// The value depends on the column's DataType:
     ///
     /// * CATEGORY - the predicted (with the above confidence `score`) CATEGORY
@@ -2337,14 +2334,14 @@ pub struct TablesAnnotation {
     pub value: ::core::option::Option<::prost_types::Value>,
     /// Output only. Auxiliary information for each of the model's
     ///
-    /// [input_feature_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs]
+    /// \[input_feature_column_specs][google.cloud.automl.v1beta1.TablesModelMetadata.input_feature_column_specs\]
     /// with respect to this particular prediction.
     /// If no other fields than
     ///
-    /// [column_spec_name][google.cloud.automl.v1beta1.TablesModelColumnInfo.column_spec_name]
+    /// \[column_spec_name][google.cloud.automl.v1beta1.TablesModelColumnInfo.column_spec_name\]
     /// and
     ///
-    /// [column_display_name][google.cloud.automl.v1beta1.TablesModelColumnInfo.column_display_name]
+    /// \[column_display_name][google.cloud.automl.v1beta1.TablesModelColumnInfo.column_display_name\]
     /// would be populated, then this whole field is not.
     #[prost(message, repeated, tag = "3")]
     pub tables_model_column_info: ::prost::alloc::vec::Vec<TablesModelColumnInfo>,
@@ -2378,9 +2375,9 @@ pub struct TablesModelColumnInfo {
     ///
     /// When given back by Predict (populated iff
     /// [feature_importance
-    /// param][google.cloud.automl.v1beta1.PredictRequest.params] is set) or Batch
+    /// param]\[google.cloud.automl.v1beta1.PredictRequest.params\] is set) or Batch
     /// Predict (populated iff
-    /// [feature_importance][google.cloud.automl.v1beta1.PredictRequest.params]
+    /// \[feature_importance][google.cloud.automl.v1beta1.PredictRequest.params\]
     /// param is set):
     /// Measurement of how impactful for the prediction returned for the given row
     /// the value in this column was. Specifically, the feature importance
@@ -2451,7 +2448,7 @@ pub mod text_extraction_evaluation_metrics {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextSentimentAnnotation {
     /// Output only. The sentiment with the semantic, as given to the
-    /// [AutoMl.ImportData][google.cloud.automl.v1beta1.AutoMl.ImportData] when populating the dataset from which the model used
+    /// \[AutoMl.ImportData][google.cloud.automl.v1beta1.AutoMl.ImportData\] when populating the dataset from which the model used
     /// for the prediction had been trained.
     /// The sentiment values are between 0 and
     /// Dataset.text_sentiment_dataset_metadata.sentiment_max (inclusive),
@@ -2559,7 +2556,7 @@ pub struct AnnotationPayload {
     #[prost(string, tag = "1")]
     pub annotation_spec_id: ::prost::alloc::string::String,
     /// Output only. The value of
-    /// [display_name][google.cloud.automl.v1beta1.AnnotationSpec.display_name]
+    /// \[display_name][google.cloud.automl.v1beta1.AnnotationSpec.display_name\]
     /// when the model was trained. Because this field returns a value at model
     /// training time, for different models trained using the same dataset, the
     /// returned value could be different as model owner could update the
@@ -2614,7 +2611,7 @@ pub struct AnnotationSpec {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The name of the annotation spec to show in the interface. The name can be
-    /// up to 32 characters long and must match the regexp `[a-zA-Z0-9_]+`.
+    /// up to 32 characters long and must match the regexp `\[a-zA-Z0-9_\]+`.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. The number of examples in the parent dataset
@@ -2660,31 +2657,31 @@ pub struct ImageClassificationModelMetadata {
     ///               This is the default value.
     /// *   `mobile-low-latency-1` - A model that, in addition to providing
     ///               prediction via AutoML API, can also be exported (see
-    ///               [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel]) and used on a mobile or edge device
+    ///               \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\]) and used on a mobile or edge device
     ///               with TensorFlow afterwards. Expected to have low latency, but
     ///               may have lower prediction quality than other models.
     /// *   `mobile-versatile-1` - A model that, in addition to providing
     ///               prediction via AutoML API, can also be exported (see
-    ///               [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel]) and used on a mobile or edge device
+    ///               \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\]) and used on a mobile or edge device
     ///               with TensorFlow afterwards.
     /// *   `mobile-high-accuracy-1` - A model that, in addition to providing
     ///               prediction via AutoML API, can also be exported (see
-    ///               [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel]) and used on a mobile or edge device
+    ///               \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\]) and used on a mobile or edge device
     ///               with TensorFlow afterwards.  Expected to have a higher
     ///               latency, but should also have a higher prediction quality
     ///               than other models.
     /// *   `mobile-core-ml-low-latency-1` - A model that, in addition to providing
     ///               prediction via AutoML API, can also be exported (see
-    ///               [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel]) and used on a mobile device with Core
+    ///               \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\]) and used on a mobile device with Core
     ///               ML afterwards. Expected to have low latency, but may have
     ///               lower prediction quality than other models.
     /// *   `mobile-core-ml-versatile-1` - A model that, in addition to providing
     ///               prediction via AutoML API, can also be exported (see
-    ///               [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel]) and used on a mobile device with Core
+    ///               \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\]) and used on a mobile device with Core
     ///               ML afterwards.
     /// *   `mobile-core-ml-high-accuracy-1` - A model that, in addition to
     ///               providing prediction via AutoML API, can also be exported
-    ///               (see [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel]) and used on a mobile device with
+    ///               (see \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\]) and used on a mobile device with
     ///               Core ML afterwards.  Expected to have a higher latency, but
     ///               should also have a higher prediction quality than other
     ///               models.
@@ -2713,16 +2710,16 @@ pub struct ImageObjectDetectionModelMetadata {
     ///               have lower prediction quality than other models.
     /// *   `mobile-low-latency-1` - A model that, in addition to providing
     ///               prediction via AutoML API, can also be exported (see
-    ///               [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel]) and used on a mobile or edge device
+    ///               \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\]) and used on a mobile or edge device
     ///               with TensorFlow afterwards. Expected to have low latency, but
     ///               may have lower prediction quality than other models.
     /// *   `mobile-versatile-1` - A model that, in addition to providing
     ///               prediction via AutoML API, can also be exported (see
-    ///               [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel]) and used on a mobile or edge device
+    ///               \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\]) and used on a mobile or edge device
     ///               with TensorFlow afterwards.
     /// *   `mobile-high-accuracy-1` - A model that, in addition to providing
     ///               prediction via AutoML API, can also be exported (see
-    ///               [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel]) and used on a mobile or edge device
+    ///               \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\]) and used on a mobile or edge device
     ///               with TensorFlow afterwards.  Expected to have a higher
     ///               latency, but should also have a higher prediction quality
     ///               than other models.
@@ -2771,7 +2768,7 @@ pub struct ImageClassificationModelDeploymentMetadata {
     /// abstraction of a machine resource, which can handle online prediction QPS
     /// as given in the model's
     ///
-    /// [node_qps][google.cloud.automl.v1beta1.ImageClassificationModelMetadata.node_qps].
+    /// \[node_qps][google.cloud.automl.v1beta1.ImageClassificationModelMetadata.node_qps\].
     /// Must be between 1 and 100, inclusive on both ends.
     #[prost(int64, tag = "1")]
     pub node_count: i64,
@@ -2783,7 +2780,7 @@ pub struct ImageObjectDetectionModelDeploymentMetadata {
     /// abstraction of a machine resource, which can handle online prediction QPS
     /// as given in the model's
     ///
-    /// [qps_per_node][google.cloud.automl.v1beta1.ImageObjectDetectionModelMetadata.qps_per_node].
+    /// \[qps_per_node][google.cloud.automl.v1beta1.ImageObjectDetectionModelMetadata.qps_per_node\].
     /// Must be between 1 and 100, inclusive on both ends.
     #[prost(int64, tag = "1")]
     pub node_count: i64,
@@ -2875,10 +2872,7 @@ pub struct Dataset {
     pub etag: ::prost::alloc::string::String,
     /// Required.
     /// The dataset metadata that is specific to the problem type.
-    #[prost(
-        oneof = "dataset::DatasetMetadata",
-        tags = "23, 24, 25, 26, 31, 29, 28, 30, 33"
-    )]
+    #[prost(oneof = "dataset::DatasetMetadata", tags = "23, 24, 25, 26, 31, 29, 28, 30, 33")]
     pub dataset_metadata: ::core::option::Option<dataset::DatasetMetadata>,
 }
 /// Nested message and enum types in `Dataset`.
@@ -2946,10 +2940,7 @@ pub struct Model {
     /// Required.
     /// The model metadata that is specific to the problem type.
     /// Must match the metadata type of the dataset used to train the model.
-    #[prost(
-        oneof = "model::ModelMetadata",
-        tags = "15, 13, 14, 20, 23, 21, 19, 24, 22"
-    )]
+    #[prost(oneof = "model::ModelMetadata", tags = "15, 13, 14, 20, 23, 21, 19, 24, 22")]
     pub model_metadata: ::core::option::Option<model::ModelMetadata>,
 }
 /// Nested message and enum types in `Model`.
@@ -3013,21 +3004,21 @@ pub struct ModelEvaluation {
     /// For Tables annotation specs in the dataset do not exist and this ID is
     /// always not set, but for CLASSIFICATION
     ///
-    /// [prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]
+    /// \[prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type\]
     /// the
-    /// [display_name][google.cloud.automl.v1beta1.ModelEvaluation.display_name]
+    /// \[display_name][google.cloud.automl.v1beta1.ModelEvaluation.display_name\]
     /// field is used.
     #[prost(string, tag = "2")]
     pub annotation_spec_id: ::prost::alloc::string::String,
     /// Output only. The value of
-    /// [display_name][google.cloud.automl.v1beta1.AnnotationSpec.display_name] at
+    /// \[display_name][google.cloud.automl.v1beta1.AnnotationSpec.display_name\] at
     /// the moment when the model was trained. Because this field returns a value
     /// at model training time, for different models trained from the same dataset,
     /// the values may differ, since display names could had been changed between
     /// the two model's trainings.
     /// For Tables CLASSIFICATION
     ///
-    /// [prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type]
+    /// \[prediction_type-s][google.cloud.automl.v1beta1.TablesModelMetadata.prediction_type\]
     /// distinct values of the target column at the moment of the model evaluation
     /// are populated here.
     /// The display_name is empty for the overall model evaluation.
@@ -3044,7 +3035,7 @@ pub struct ModelEvaluation {
     /// Otherwise, this is the count of examples that according to the ground
     /// truth were annotated by the
     ///
-    /// [annotation_spec_id][google.cloud.automl.v1beta1.ModelEvaluation.annotation_spec_id].
+    /// \[annotation_spec_id][google.cloud.automl.v1beta1.ModelEvaluation.annotation_spec_id\].
     #[prost(int32, tag = "6")]
     pub evaluated_example_count: i32,
     /// Output only. Problem type specific evaluation metrics.
@@ -3105,10 +3096,7 @@ pub struct OperationMetadata {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Ouptut only. Details of specific operation. Even if this field is empty,
     /// the presence allows to distinguish different types of operations.
-    #[prost(
-        oneof = "operation_metadata::Details",
-        tags = "8, 24, 25, 10, 15, 16, 21, 22, 26"
-    )]
+    #[prost(oneof = "operation_metadata::Details", tags = "8, 24, 25, 10, 15, 16, 21, 22, 26")]
     pub details: ::core::option::Option<operation_metadata::Details>,
 }
 /// Nested message and enum types in `OperationMetadata`.
@@ -3172,7 +3160,7 @@ pub struct ExportDataOperationMetadata {
 pub mod export_data_operation_metadata {
     /// Further describes this export data's output.
     /// Supplements
-    /// [OutputConfig][google.cloud.automl.v1beta1.OutputConfig].
+    /// \[OutputConfig][google.cloud.automl.v1beta1.OutputConfig\].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportDataOutputInfo {
         /// The output location to which the exported data is written.
@@ -3212,7 +3200,7 @@ pub mod batch_predict_operation_metadata {
     /// Further describes this batch predict's output.
     /// Supplements
     ///
-    /// [BatchPredictOutputConfig][google.cloud.automl.v1beta1.BatchPredictOutputConfig].
+    /// \[BatchPredictOutputConfig][google.cloud.automl.v1beta1.BatchPredictOutputConfig\].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BatchPredictOutputInfo {
         /// The output location into which prediction output is written.
@@ -3248,7 +3236,7 @@ pub mod export_model_operation_metadata {
     /// Further describes the output of model export.
     /// Supplements
     ///
-    /// [ModelExportOutputConfig][google.cloud.automl.v1beta1.ModelExportOutputConfig].
+    /// \[ModelExportOutputConfig][google.cloud.automl.v1beta1.ModelExportOutputConfig\].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportModelOutputInfo {
         /// The full path of the Google Cloud Storage directory created, into which
@@ -3272,7 +3260,7 @@ pub mod export_evaluated_examples_operation_metadata {
     /// Further describes the output of the evaluated examples export.
     /// Supplements
     ///
-    /// [ExportEvaluatedExamplesOutputConfig][google.cloud.automl.v1beta1.ExportEvaluatedExamplesOutputConfig].
+    /// \[ExportEvaluatedExamplesOutputConfig][google.cloud.automl.v1beta1.ExportEvaluatedExamplesOutputConfig\].
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ExportEvaluatedExamplesOutputInfo {
         /// The path of the BigQuery dataset created, in bq://projectId.bqDatasetId
@@ -3281,7 +3269,7 @@ pub mod export_evaluated_examples_operation_metadata {
         pub bigquery_output_dataset: ::prost::alloc::string::String,
     }
 }
-/// Request message for [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].
+/// Request message for \[PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictRequest {
     /// Required. Name of the model requested to serve the prediction.
@@ -3315,7 +3303,7 @@ pub struct PredictRequest {
     pub params:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-/// Response message for [PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict].
+/// Response message for \[PredictionService.Predict][google.cloud.automl.v1beta1.PredictionService.Predict\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictResponse {
     /// Prediction result.
@@ -3326,7 +3314,7 @@ pub struct PredictResponse {
     /// Empty if AutoML does not preprocess the input example.
     /// * For Text Extraction:
     ///   If the input is a .pdf file, the OCR'ed text will be provided in
-    ///   [document_text][google.cloud.automl.v1beta1.Document.document_text].
+    ///   \[document_text][google.cloud.automl.v1beta1.Document.document_text\].
     #[prost(message, optional, tag = "3")]
     pub preprocessed_input: ::core::option::Option<ExamplePayload>,
     /// Additional domain-specific prediction response metadata.
@@ -3348,7 +3336,7 @@ pub struct PredictResponse {
     pub metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
-/// Request message for [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
+/// Request message for \[PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictRequest {
     /// Required. Name of the model requested to serve the batch prediction.
@@ -3436,8 +3424,8 @@ pub struct BatchPredictRequest {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Result of the Batch Predict. This message is returned in
-/// [response][google.longrunning.Operation.response] of the operation returned
-/// by the [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
+/// \[response][google.longrunning.Operation.response\] of the operation returned
+/// by the \[PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchPredictResult {
     /// Additional domain-specific prediction response metadata.
@@ -3468,7 +3456,7 @@ pub mod prediction_service_client {
     impl<T> PredictionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -3481,7 +3469,7 @@ pub mod prediction_service_client {
             interceptor: F,
         ) -> PredictionServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -3621,7 +3609,7 @@ pub struct TableSpec {
     #[prost(string, tag = "6")]
     pub etag: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.CreateDataset][google.cloud.automl.v1beta1.AutoMl.CreateDataset].
+/// Request message for \[AutoMl.CreateDataset][google.cloud.automl.v1beta1.AutoMl.CreateDataset\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateDatasetRequest {
     /// Required. The resource name of the project to create the dataset for.
@@ -3631,14 +3619,14 @@ pub struct CreateDatasetRequest {
     #[prost(message, optional, tag = "2")]
     pub dataset: ::core::option::Option<Dataset>,
 }
-/// Request message for [AutoMl.GetDataset][google.cloud.automl.v1beta1.AutoMl.GetDataset].
+/// Request message for \[AutoMl.GetDataset][google.cloud.automl.v1beta1.AutoMl.GetDataset\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetDatasetRequest {
     /// Required. The resource name of the dataset to retrieve.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets].
+/// Request message for \[AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsRequest {
     /// Required. The resource name of the project from which to list datasets.
@@ -3647,10 +3635,11 @@ pub struct ListDatasetsRequest {
     /// An expression for filtering the results of the request.
     ///
     ///   * `dataset_metadata` - for existence of the case (e.g.
-    ///             image_classification_dataset_metadata:*). Some examples of using the filter are:
+    ///             `image_classification_dataset_metadata:*`). Some examples of
+    ///             using the filter are:
     ///
     ///   * `translation_dataset_metadata:*` --> The dataset has
-    ///                                          translation_dataset_metadata.
+    ///                                          `translation_dataset_metadata`.
     #[prost(string, tag = "3")]
     pub filter: ::prost::alloc::string::String,
     /// Requested page size. Server may return fewer results than requested.
@@ -3659,23 +3648,23 @@ pub struct ListDatasetsRequest {
     pub page_size: i32,
     /// A token identifying a page of results for the server to return
     /// Typically obtained via
-    /// [ListDatasetsResponse.next_page_token][google.cloud.automl.v1beta1.ListDatasetsResponse.next_page_token] of the previous
-    /// [AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets] call.
+    /// \[ListDatasetsResponse.next_page_token][google.cloud.automl.v1beta1.ListDatasetsResponse.next_page_token\] of the previous
+    /// \[AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets\] call.
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for [AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets].
+/// Response message for \[AutoMl.ListDatasets][google.cloud.automl.v1beta1.AutoMl.ListDatasets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatasetsResponse {
     /// The datasets read.
     #[prost(message, repeated, tag = "1")]
     pub datasets: ::prost::alloc::vec::Vec<Dataset>,
     /// A token to retrieve next page of results.
-    /// Pass to [ListDatasetsRequest.page_token][google.cloud.automl.v1beta1.ListDatasetsRequest.page_token] to obtain that page.
+    /// Pass to \[ListDatasetsRequest.page_token][google.cloud.automl.v1beta1.ListDatasetsRequest.page_token\] to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.UpdateDataset][google.cloud.automl.v1beta1.AutoMl.UpdateDataset]
+/// Request message for \[AutoMl.UpdateDataset][google.cloud.automl.v1beta1.AutoMl.UpdateDataset\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDatasetRequest {
     /// Required. The dataset which replaces the resource on the server.
@@ -3685,14 +3674,14 @@ pub struct UpdateDatasetRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for [AutoMl.DeleteDataset][google.cloud.automl.v1beta1.AutoMl.DeleteDataset].
+/// Request message for \[AutoMl.DeleteDataset][google.cloud.automl.v1beta1.AutoMl.DeleteDataset\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteDatasetRequest {
     /// Required. The resource name of the dataset to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.ImportData][google.cloud.automl.v1beta1.AutoMl.ImportData].
+/// Request message for \[AutoMl.ImportData][google.cloud.automl.v1beta1.AutoMl.ImportData\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDataRequest {
     /// Required. Dataset name. Dataset must already exist. All imported
@@ -3704,7 +3693,7 @@ pub struct ImportDataRequest {
     #[prost(message, optional, tag = "3")]
     pub input_config: ::core::option::Option<InputConfig>,
 }
-/// Request message for [AutoMl.ExportData][google.cloud.automl.v1beta1.AutoMl.ExportData].
+/// Request message for \[AutoMl.ExportData][google.cloud.automl.v1beta1.AutoMl.ExportData\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDataRequest {
     /// Required. The resource name of the dataset.
@@ -3714,14 +3703,14 @@ pub struct ExportDataRequest {
     #[prost(message, optional, tag = "3")]
     pub output_config: ::core::option::Option<OutputConfig>,
 }
-/// Request message for [AutoMl.GetAnnotationSpec][google.cloud.automl.v1beta1.AutoMl.GetAnnotationSpec].
+/// Request message for \[AutoMl.GetAnnotationSpec][google.cloud.automl.v1beta1.AutoMl.GetAnnotationSpec\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAnnotationSpecRequest {
     /// Required. The resource name of the annotation spec to retrieve.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.GetTableSpec][google.cloud.automl.v1beta1.AutoMl.GetTableSpec].
+/// Request message for \[AutoMl.GetTableSpec][google.cloud.automl.v1beta1.AutoMl.GetTableSpec\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTableSpecRequest {
     /// Required. The resource name of the table spec to retrieve.
@@ -3731,7 +3720,7 @@ pub struct GetTableSpecRequest {
     #[prost(message, optional, tag = "2")]
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for [AutoMl.ListTableSpecs][google.cloud.automl.v1beta1.AutoMl.ListTableSpecs].
+/// Request message for \[AutoMl.ListTableSpecs][google.cloud.automl.v1beta1.AutoMl.ListTableSpecs\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTableSpecsRequest {
     /// Required. The resource name of the dataset to list table specs from.
@@ -3749,23 +3738,23 @@ pub struct ListTableSpecsRequest {
     pub page_size: i32,
     /// A token identifying a page of results for the server to return.
     /// Typically obtained from the
-    /// [ListTableSpecsResponse.next_page_token][google.cloud.automl.v1beta1.ListTableSpecsResponse.next_page_token] field of the previous
-    /// [AutoMl.ListTableSpecs][google.cloud.automl.v1beta1.AutoMl.ListTableSpecs] call.
+    /// \[ListTableSpecsResponse.next_page_token][google.cloud.automl.v1beta1.ListTableSpecsResponse.next_page_token\] field of the previous
+    /// \[AutoMl.ListTableSpecs][google.cloud.automl.v1beta1.AutoMl.ListTableSpecs\] call.
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for [AutoMl.ListTableSpecs][google.cloud.automl.v1beta1.AutoMl.ListTableSpecs].
+/// Response message for \[AutoMl.ListTableSpecs][google.cloud.automl.v1beta1.AutoMl.ListTableSpecs\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTableSpecsResponse {
     /// The table specs read.
     #[prost(message, repeated, tag = "1")]
     pub table_specs: ::prost::alloc::vec::Vec<TableSpec>,
     /// A token to retrieve next page of results.
-    /// Pass to [ListTableSpecsRequest.page_token][google.cloud.automl.v1beta1.ListTableSpecsRequest.page_token] to obtain that page.
+    /// Pass to \[ListTableSpecsRequest.page_token][google.cloud.automl.v1beta1.ListTableSpecsRequest.page_token\] to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.UpdateTableSpec][google.cloud.automl.v1beta1.AutoMl.UpdateTableSpec]
+/// Request message for \[AutoMl.UpdateTableSpec][google.cloud.automl.v1beta1.AutoMl.UpdateTableSpec\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTableSpecRequest {
     /// Required. The table spec which replaces the resource on the server.
@@ -3775,7 +3764,7 @@ pub struct UpdateTableSpecRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for [AutoMl.GetColumnSpec][google.cloud.automl.v1beta1.AutoMl.GetColumnSpec].
+/// Request message for \[AutoMl.GetColumnSpec][google.cloud.automl.v1beta1.AutoMl.GetColumnSpec\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetColumnSpecRequest {
     /// Required. The resource name of the column spec to retrieve.
@@ -3785,7 +3774,7 @@ pub struct GetColumnSpecRequest {
     #[prost(message, optional, tag = "2")]
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for [AutoMl.ListColumnSpecs][google.cloud.automl.v1beta1.AutoMl.ListColumnSpecs].
+/// Request message for \[AutoMl.ListColumnSpecs][google.cloud.automl.v1beta1.AutoMl.ListColumnSpecs\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListColumnSpecsRequest {
     /// Required. The resource name of the table spec to list column specs from.
@@ -3803,23 +3792,23 @@ pub struct ListColumnSpecsRequest {
     pub page_size: i32,
     /// A token identifying a page of results for the server to return.
     /// Typically obtained from the
-    /// [ListColumnSpecsResponse.next_page_token][google.cloud.automl.v1beta1.ListColumnSpecsResponse.next_page_token] field of the previous
-    /// [AutoMl.ListColumnSpecs][google.cloud.automl.v1beta1.AutoMl.ListColumnSpecs] call.
+    /// \[ListColumnSpecsResponse.next_page_token][google.cloud.automl.v1beta1.ListColumnSpecsResponse.next_page_token\] field of the previous
+    /// \[AutoMl.ListColumnSpecs][google.cloud.automl.v1beta1.AutoMl.ListColumnSpecs\] call.
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for [AutoMl.ListColumnSpecs][google.cloud.automl.v1beta1.AutoMl.ListColumnSpecs].
+/// Response message for \[AutoMl.ListColumnSpecs][google.cloud.automl.v1beta1.AutoMl.ListColumnSpecs\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListColumnSpecsResponse {
     /// The column specs read.
     #[prost(message, repeated, tag = "1")]
     pub column_specs: ::prost::alloc::vec::Vec<ColumnSpec>,
     /// A token to retrieve next page of results.
-    /// Pass to [ListColumnSpecsRequest.page_token][google.cloud.automl.v1beta1.ListColumnSpecsRequest.page_token] to obtain that page.
+    /// Pass to \[ListColumnSpecsRequest.page_token][google.cloud.automl.v1beta1.ListColumnSpecsRequest.page_token\] to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.UpdateColumnSpec][google.cloud.automl.v1beta1.AutoMl.UpdateColumnSpec]
+/// Request message for \[AutoMl.UpdateColumnSpec][google.cloud.automl.v1beta1.AutoMl.UpdateColumnSpec\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateColumnSpecRequest {
     /// Required. The column spec which replaces the resource on the server.
@@ -3829,7 +3818,7 @@ pub struct UpdateColumnSpecRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Request message for [AutoMl.CreateModel][google.cloud.automl.v1beta1.AutoMl.CreateModel].
+/// Request message for \[AutoMl.CreateModel][google.cloud.automl.v1beta1.AutoMl.CreateModel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateModelRequest {
     /// Required. Resource name of the parent project where the model is being created.
@@ -3839,14 +3828,14 @@ pub struct CreateModelRequest {
     #[prost(message, optional, tag = "4")]
     pub model: ::core::option::Option<Model>,
 }
-/// Request message for [AutoMl.GetModel][google.cloud.automl.v1beta1.AutoMl.GetModel].
+/// Request message for \[AutoMl.GetModel][google.cloud.automl.v1beta1.AutoMl.GetModel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelRequest {
     /// Required. Resource name of the model.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels].
+/// Request message for \[AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsRequest {
     /// Required. Resource name of the project, from which to list the models.
@@ -3855,11 +3844,11 @@ pub struct ListModelsRequest {
     /// An expression for filtering the results of the request.
     ///
     ///   * `model_metadata` - for existence of the case (e.g.
-    ///             video_classification_model_metadata:*).
+    ///             `video_classification_model_metadata:*`).
     ///   * `dataset_id` - for = or !=. Some examples of using the filter are:
     ///
     ///   * `image_classification_model_metadata:*` --> The model has
-    ///                                        image_classification_model_metadata.
+    ///                                      `image_classification_model_metadata`.
     ///   * `dataset_id=5` --> The model was created from a dataset with ID 5.
     #[prost(string, tag = "3")]
     pub filter: ::prost::alloc::string::String,
@@ -3868,30 +3857,30 @@ pub struct ListModelsRequest {
     pub page_size: i32,
     /// A token identifying a page of results for the server to return
     /// Typically obtained via
-    /// [ListModelsResponse.next_page_token][google.cloud.automl.v1beta1.ListModelsResponse.next_page_token] of the previous
-    /// [AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels] call.
+    /// \[ListModelsResponse.next_page_token][google.cloud.automl.v1beta1.ListModelsResponse.next_page_token\] of the previous
+    /// \[AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels\] call.
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for [AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels].
+/// Response message for \[AutoMl.ListModels][google.cloud.automl.v1beta1.AutoMl.ListModels\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelsResponse {
     /// List of models in the requested page.
     #[prost(message, repeated, tag = "1")]
     pub model: ::prost::alloc::vec::Vec<Model>,
     /// A token to retrieve next page of results.
-    /// Pass to [ListModelsRequest.page_token][google.cloud.automl.v1beta1.ListModelsRequest.page_token] to obtain that page.
+    /// Pass to \[ListModelsRequest.page_token][google.cloud.automl.v1beta1.ListModelsRequest.page_token\] to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.DeleteModel][google.cloud.automl.v1beta1.AutoMl.DeleteModel].
+/// Request message for \[AutoMl.DeleteModel][google.cloud.automl.v1beta1.AutoMl.DeleteModel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteModelRequest {
     /// Required. Resource name of the model being deleted.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.DeployModel][google.cloud.automl.v1beta1.AutoMl.DeployModel].
+/// Request message for \[AutoMl.DeployModel][google.cloud.automl.v1beta1.AutoMl.DeployModel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeployModelRequest {
     /// Required. Resource name of the model to deploy.
@@ -3919,14 +3908,14 @@ pub mod deploy_model_request {
         ),
     }
 }
-/// Request message for [AutoMl.UndeployModel][google.cloud.automl.v1beta1.AutoMl.UndeployModel].
+/// Request message for \[AutoMl.UndeployModel][google.cloud.automl.v1beta1.AutoMl.UndeployModel\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UndeployModelRequest {
     /// Required. Resource name of the model to undeploy.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel].
+/// Request message for \[AutoMl.ExportModel][google.cloud.automl.v1beta1.AutoMl.ExportModel\].
 /// Models need to be enabled for exporting, otherwise an error code will be
 /// returned.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3938,7 +3927,7 @@ pub struct ExportModelRequest {
     #[prost(message, optional, tag = "3")]
     pub output_config: ::core::option::Option<ModelExportOutputConfig>,
 }
-/// Request message for [AutoMl.ExportEvaluatedExamples][google.cloud.automl.v1beta1.AutoMl.ExportEvaluatedExamples].
+/// Request message for \[AutoMl.ExportEvaluatedExamples][google.cloud.automl.v1beta1.AutoMl.ExportEvaluatedExamples\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEvaluatedExamplesRequest {
     /// Required. The resource name of the model whose evaluated examples are to
@@ -3949,14 +3938,14 @@ pub struct ExportEvaluatedExamplesRequest {
     #[prost(message, optional, tag = "3")]
     pub output_config: ::core::option::Option<ExportEvaluatedExamplesOutputConfig>,
 }
-/// Request message for [AutoMl.GetModelEvaluation][google.cloud.automl.v1beta1.AutoMl.GetModelEvaluation].
+/// Request message for \[AutoMl.GetModelEvaluation][google.cloud.automl.v1beta1.AutoMl.GetModelEvaluation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetModelEvaluationRequest {
     /// Required. Resource name for the model evaluation.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations].
+/// Request message for \[AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationsRequest {
     /// Required. Resource name of the model to list the model evaluations for.
@@ -3982,20 +3971,20 @@ pub struct ListModelEvaluationsRequest {
     pub page_size: i32,
     /// A token identifying a page of results for the server to return.
     /// Typically obtained via
-    /// [ListModelEvaluationsResponse.next_page_token][google.cloud.automl.v1beta1.ListModelEvaluationsResponse.next_page_token] of the previous
-    /// [AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations] call.
+    /// \[ListModelEvaluationsResponse.next_page_token][google.cloud.automl.v1beta1.ListModelEvaluationsResponse.next_page_token\] of the previous
+    /// \[AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations\] call.
     #[prost(string, tag = "6")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// Response message for [AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations].
+/// Response message for \[AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListModelEvaluationsResponse {
     /// List of model evaluations in the requested page.
     #[prost(message, repeated, tag = "1")]
     pub model_evaluation: ::prost::alloc::vec::Vec<ModelEvaluation>,
     /// A token to retrieve next page of results.
-    /// Pass to the [ListModelEvaluationsRequest.page_token][google.cloud.automl.v1beta1.ListModelEvaluationsRequest.page_token] field of a new
-    /// [AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations] request to obtain that page.
+    /// Pass to the \[ListModelEvaluationsRequest.page_token][google.cloud.automl.v1beta1.ListModelEvaluationsRequest.page_token\] field of a new
+    /// \[AutoMl.ListModelEvaluations][google.cloud.automl.v1beta1.AutoMl.ListModelEvaluations\] request to obtain that page.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -4024,7 +4013,7 @@ pub mod auto_ml_client {
     impl<T> AutoMlClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -4037,7 +4026,7 @@ pub mod auto_ml_client {
             interceptor: F,
         ) -> AutoMlClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

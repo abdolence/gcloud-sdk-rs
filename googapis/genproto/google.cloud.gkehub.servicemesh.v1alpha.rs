@@ -43,7 +43,7 @@ pub mod analysis_message_base {
         /// type. (This corresponds to the `name` field in open-source Istio.)
         #[prost(string, tag = "1")]
         pub display_name: ::prost::alloc::string::String,
-        /// A 7 character code matching `^IST[0-9]{4}$` or `^ASM[0-9]{4}$`, intended
+        /// A 7 character code matching `^IST\[0-9\]{4}$` or `^ASM\[0-9\]{4}$`, intended
         /// to uniquely identify the message type. (e.g. "IST0001" is mapped to the
         /// "InternalError" message type.)
         #[prost(string, tag = "2")]

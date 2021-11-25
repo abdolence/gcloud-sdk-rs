@@ -23,7 +23,7 @@ pub struct Alert {
     /// This is output only after alert is created.
     /// For a list of available alert types see
     /// [Google Workspace Alert
-    /// types](https://developers.google.com/admin-sdk/alertcenter/reference/alert-types).
+    /// types](<https://developers.google.com/admin-sdk/alertcenter/reference/alert-types>).
     #[prost(string, tag = "6")]
     pub r#type: ::prost::alloc::string::String,
     /// Required. A unique identifier for the system that reported the alert.
@@ -40,11 +40,11 @@ pub struct Alert {
     #[prost(string, tag = "7")]
     pub source: ::prost::alloc::string::String,
     /// Optional. The data associated with this alert, for example
-    /// [google.apps.alertcenter.type.DeviceCompromised] [google.apps.alertcenter.type.DeviceCompromised].
+    /// \[google.apps.alertcenter.type.DeviceCompromised\] \[google.apps.alertcenter.type.DeviceCompromised\].
     #[prost(message, optional, tag = "8")]
     pub data: ::core::option::Option<::prost_types::Any>,
     /// Output only. An optional
-    /// [Security Investigation Tool](https://support.google.com/a/answer/7575955)
+    /// [Security Investigation Tool](<https://support.google.com/a/answer/7575955>)
     /// query for this alert.
     #[prost(string, tag = "9")]
     pub security_investigation_tool_link: ::prost::alloc::string::String,
@@ -150,7 +150,7 @@ pub struct Settings {
 pub mod settings {
     /// Settings for callback notifications.
     /// For more details see [Google Workspace Alert
-    /// Notification](https://developers.google.com/admin-sdk/alertcenter/guides/notifications).
+    /// Notification](<https://developers.google.com/admin-sdk/alertcenter/guides/notifications>).
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Notification {
         /// Exactly one destination to be specified.
@@ -166,8 +166,8 @@ pub mod settings {
         ///  `projects.topics.publish` permission.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CloudPubsubTopic {
-            /// The `name` field of a Cloud Pubsub [Topic]
-            /// (https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics#Topic).
+            /// The `name` field of a Cloud Pubsub \[Topic\]
+            /// (<https://cloud.google.com/pubsub/docs/reference/rest/v1/projects.topics#Topic>).
             #[prost(string, tag = "1")]
             pub topic_name: ::prost::alloc::string::String,
             /// Optional. The format of the payload that would be sent.
@@ -258,14 +258,14 @@ pub struct ListAlertsRequest {
     /// Optional. A token identifying a page of results the server should return.
     /// If empty, a new iteration is started. To continue an iteration, pass in
     /// the value from the previous ListAlertsResponse's
-    /// [next_page_token][google.apps.alertcenter.v1beta1.ListAlertsResponse.next_page_token] field.
+    /// \[next_page_token][google.apps.alertcenter.v1beta1.ListAlertsResponse.next_page_token\] field.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. A query string for filtering alert results.
     /// For more details, see [Query
-    /// filters](https://developers.google.com/admin-sdk/alertcenter/guides/query-filters) and [Supported
+    /// filters](<https://developers.google.com/admin-sdk/alertcenter/guides/query-filters>) and [Supported
     /// query filter
-    /// fields](https://developers.google.com/admin-sdk/alertcenter/reference/filter-fields#alerts.list).
+    /// fields](<https://developers.google.com/admin-sdk/alertcenter/reference/filter-fields#alerts.list>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The sort order of the list results.
@@ -285,7 +285,7 @@ pub struct ListAlertsResponse {
     pub alerts: ::prost::alloc::vec::Vec<Alert>,
     /// The token for the next page. If not empty, indicates that there may be more
     /// alerts that match the listing request; this value can be used in a
-    /// subsequent [ListAlertsRequest][google.apps.alertcenter.v1beta1.ListAlertsRequest] to get alerts continuing from last result
+    /// subsequent \[ListAlertsRequest][google.apps.alertcenter.v1beta1.ListAlertsRequest\] to get alerts continuing from last result
     /// of the current list call.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -355,9 +355,9 @@ pub struct ListAlertFeedbackRequest {
     pub alert_id: ::prost::alloc::string::String,
     /// Optional. A query string for filtering alert feedback results.
     /// For more details, see [Query
-    /// filters](https://developers.google.com/admin-sdk/alertcenter/guides/query-filters) and [Supported
+    /// filters](<https://developers.google.com/admin-sdk/alertcenter/guides/query-filters>) and [Supported
     /// query filter
-    /// fields](https://developers.google.com/admin-sdk/alertcenter/reference/filter-fields#alerts.feedback.list).
+    /// fields](<https://developers.google.com/admin-sdk/alertcenter/reference/filter-fields#alerts.feedback.list>).
     #[prost(string, tag = "3")]
     pub filter: ::prost::alloc::string::String,
 }
@@ -427,7 +427,7 @@ pub mod alert_center_service_client {
     impl<T> AlertCenterServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -440,7 +440,7 @@ pub mod alert_center_service_client {
             interceptor: F,
         ) -> AlertCenterServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

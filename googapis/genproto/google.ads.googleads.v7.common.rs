@@ -691,7 +691,7 @@ pub struct VideoResponsiveAdInfo {
 /// customers' search terms, responsive search ads may improve your campaign's
 /// performance.
 ///
-/// More information at https://support.google.com/google-ads/answer/7684791
+/// More information at <https://support.google.com/google-ads/answer/7684791>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResponsiveSearchAdInfo {
     /// List of text assets for headlines. When the ad serves the headlines will
@@ -981,10 +981,10 @@ pub mod display_upload_ad_info {
     pub enum MediaAsset {
         /// A media bundle asset to be used in the ad. For information about the
         /// media bundle for HTML5_UPLOAD_AD see
-        /// https://support.google.com/google-ads/answer/1722096
+        /// <https://support.google.com/google-ads/answer/1722096>
         /// Media bundles that are part of dynamic product types use a special format
         /// that needs to be created through the Google Web Designer. See
-        /// https://support.google.com/webdesigner/answer/7543898 for more
+        /// <https://support.google.com/webdesigner/answer/7543898> for more
         /// information.
         #[prost(message, tag = "2")]
         MediaBundle(super::AdMediaBundleAsset),
@@ -1009,10 +1009,7 @@ pub struct KeywordInfo {
     #[prost(string, optional, tag = "3")]
     pub text: ::core::option::Option<::prost::alloc::string::String>,
     /// The match type of the keyword.
-    #[prost(
-        enumeration = "super::enums::keyword_match_type_enum::KeywordMatchType",
-        tag = "2"
-    )]
+    #[prost(enumeration = "super::enums::keyword_match_type_enum::KeywordMatchType", tag = "2")]
     pub match_type: i32,
 }
 /// A placement criterion. This can be used to modify bids for sites when
@@ -1021,7 +1018,7 @@ pub struct KeywordInfo {
 pub struct PlacementInfo {
     /// URL of the placement.
     ///
-    /// For example, "http://www.domain.com".
+    /// For example, "<http://www.domain.com".>
     #[prost(string, optional, tag = "2")]
     pub url: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -1042,10 +1039,10 @@ pub struct MobileApplicationInfo {
     /// corresponding platform.
     /// For iOS, this native identifier is the 9 digit string that appears at the
     /// end of an App Store URL (e.g., "476943146" for "Flood-It! 2" whose App
-    /// Store link is "http://itunes.apple.com/us/app/flood-it!-2/id476943146").
+    /// Store link is "<http://itunes.apple.com/us/app/flood-it!-2/id476943146">).
     /// For Android, this native identifier is the application's package name
     /// (e.g., "com.labpixies.colordrips" for "Color Drips" given Google Play link
-    /// "https://play.google.com/store/apps/details?id=com.labpixies.colordrips").
+    /// "<https://play.google.com/store/apps/details?id=com.labpixies.colordrips">).
     /// A well formed app id for Google Ads API would thus be "1-476943146" for iOS
     /// and "2-com.labpixies.colordrips" for Android.
     /// This field is required and must be set in CREATE operations.
@@ -1083,10 +1080,7 @@ pub struct PreferredContentInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupInfo {
     /// Type of the listing group.
-    #[prost(
-        enumeration = "super::enums::listing_group_type_enum::ListingGroupType",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::listing_group_type_enum::ListingGroupType", tag = "1")]
     pub r#type: i32,
     /// Dimension value with which this listing group is refining its parent.
     /// Undefined for the root group.
@@ -1204,7 +1198,7 @@ pub struct ProductBiddingCategoryInfo {
     /// ID of the product bidding category.
     ///
     /// This ID is equivalent to the google_product_category ID as described in
-    /// this article: https://support.google.com/merchants/answer/6324436
+    /// this article: <https://support.google.com/merchants/answer/6324436>
     #[prost(int64, optional, tag = "4")]
     pub id: ::core::option::Option<i64>,
     /// Two-letter upper-case country code of the product bidding category. It must
@@ -1229,10 +1223,7 @@ pub struct ProductBrandInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductChannelInfo {
     /// Value of the locality.
-    #[prost(
-        enumeration = "super::enums::product_channel_enum::ProductChannel",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::product_channel_enum::ProductChannel", tag = "1")]
     pub channel: i32,
 }
 /// Availability of a product offer.
@@ -1249,10 +1240,7 @@ pub struct ProductChannelExclusivityInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductConditionInfo {
     /// Value of the condition.
-    #[prost(
-        enumeration = "super::enums::product_condition_enum::ProductCondition",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::product_condition_enum::ProductCondition", tag = "1")]
     pub condition: i32,
 }
 /// Custom attribute of a product offer.
@@ -1282,10 +1270,7 @@ pub struct ProductTypeInfo {
     #[prost(string, optional, tag = "3")]
     pub value: ::core::option::Option<::prost::alloc::string::String>,
     /// Level of the type.
-    #[prost(
-        enumeration = "super::enums::product_type_level_enum::ProductTypeLevel",
-        tag = "2"
-    )]
+    #[prost(enumeration = "super::enums::product_type_level_enum::ProductTypeLevel", tag = "2")]
     pub level: i32,
 }
 /// Unknown listing dimension.
@@ -1342,10 +1327,7 @@ pub struct HotelCheckInDayInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InteractionTypeInfo {
     /// The interaction type.
-    #[prost(
-        enumeration = "super::enums::interaction_type_enum::InteractionType",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::interaction_type_enum::InteractionType", tag = "1")]
     pub r#type: i32,
 }
 /// Represents an AdSchedule criterion.
@@ -1360,20 +1342,14 @@ pub struct AdScheduleInfo {
     ///
     /// This field is required for CREATE operations and is prohibited on UPDATE
     /// operations.
-    #[prost(
-        enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour", tag = "1")]
     pub start_minute: i32,
     /// Minutes after the end hour at which this schedule ends. The schedule is
     /// exclusive of the end minute.
     ///
     /// This field is required for CREATE operations and is prohibited on UPDATE
     /// operations.
-    #[prost(
-        enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour",
-        tag = "2"
-    )]
+    #[prost(enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour", tag = "2")]
     pub end_minute: i32,
     /// Starting hour in 24 hour time.
     /// This field must be between 0 and 23, inclusive.
@@ -1400,10 +1376,7 @@ pub struct AdScheduleInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgeRangeInfo {
     /// Type of the age range.
-    #[prost(
-        enumeration = "super::enums::age_range_type_enum::AgeRangeType",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::age_range_type_enum::AgeRangeType", tag = "1")]
     pub r#type: i32,
 }
 /// A gender criterion.
@@ -1417,10 +1390,7 @@ pub struct GenderInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IncomeRangeInfo {
     /// Type of the income range.
-    #[prost(
-        enumeration = "super::enums::income_range_type_enum::IncomeRangeType",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::income_range_type_enum::IncomeRangeType", tag = "1")]
     pub r#type: i32,
 }
 /// A parental status criterion.
@@ -1555,10 +1525,7 @@ pub struct IpBlockInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentLabelInfo {
     /// Content label type, required for CREATE operations.
-    #[prost(
-        enumeration = "super::enums::content_label_type_enum::ContentLabelType",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::content_label_type_enum::ContentLabelType", tag = "1")]
     pub r#type: i32,
 }
 /// Represents a Carrier Criterion.
@@ -2031,7 +1998,7 @@ pub struct CalloutAsset {
 pub struct StructuredSnippetAsset {
     /// Required. The header of the snippet.
     /// This string should be one of the predefined values at
-    /// https://developers.google.com/google-ads/api/reference/data/structured-snippet-headers
+    /// <https://developers.google.com/google-ads/api/reference/data/structured-snippet-headers>
     #[prost(string, tag = "1")]
     pub header: ::prost::alloc::string::String,
     /// Required. The values in the snippet.
@@ -2194,7 +2161,7 @@ pub struct TargetSpend {
     /// or the natural throttling spend amount.
     /// If not specified, the budget is used as the spend target.
     /// This field is deprecated and should no longer be used. See
-    /// https://ads-developers.googleblog.com/2020/05/reminder-about-sunset-creation-of.html
+    /// <https://ads-developers.googleblog.com/2020/05/reminder-about-sunset-creation-of.html>
     /// for details.
     #[deprecated]
     #[prost(int64, optional, tag = "3")]
@@ -2351,17 +2318,14 @@ pub struct YearMonth {
     #[prost(int64, tag = "1")]
     pub year: i64,
     /// The month of the year. (e.g. FEBRUARY).
-    #[prost(
-        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
-        tag = "2"
-    )]
+    #[prost(enumeration = "super::enums::month_of_year_enum::MonthOfYear", tag = "2")]
     pub month: i32,
 }
 // Proto file describing ExplorerAutoOptimizerSetting
 
 /// Settings for the Display Campaign Optimizer, initially named "Explorer".
 /// Learn more about
-/// [automatic targeting](https://support.google.com/google-ads/answer/190596).
+/// [automatic targeting](<https://support.google.com/google-ads/answer/190596>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExplorerAutoOptimizerSetting {
     /// Indicates whether the optimizer is turned on.
@@ -2811,10 +2775,7 @@ pub struct FrequencyCapEntry {
 pub struct FrequencyCapKey {
     /// The level on which the cap is to be applied (e.g. ad group ad, ad group).
     /// The cap is applied to all the entities of this level.
-    #[prost(
-        enumeration = "super::enums::frequency_cap_level_enum::FrequencyCapLevel",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::frequency_cap_level_enum::FrequencyCapLevel", tag = "1")]
     pub level: i32,
     /// The type of event that the cap applies to (e.g. impression).
     #[prost(
@@ -2836,7 +2797,7 @@ pub struct FrequencyCapKey {
 
 /// Historical metrics specific to the targeting options selected.
 /// Targeting options include geographies, network, etc.
-/// Refer to https://support.google.com/google-ads/answer/3022575 for more
+/// Refer to <https://support.google.com/google-ads/answer/3022575> for more
 /// details.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeywordPlanHistoricalMetrics {
@@ -2885,10 +2846,7 @@ pub struct MonthlySearchVolume {
     #[prost(int64, optional, tag = "4")]
     pub year: ::core::option::Option<i64>,
     /// The month of the search volume.
-    #[prost(
-        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
-        tag = "2"
-    )]
+    #[prost(enumeration = "super::enums::month_of_year_enum::MonthOfYear", tag = "2")]
     pub month: i32,
     /// Approximate number of searches for the month.
     /// A null value indicates the search volume is unavailable for
@@ -2973,11 +2931,11 @@ pub struct MatchingFunction {
     /// 1. IDENTITY(true) or IDENTITY(false). All or no feed items served.
     /// 2. EQUALS(CONTEXT.DEVICE,"Mobile")
     /// 3. IN(FEED_ITEM_ID,{1000001,1000002,1000003})
-    /// 4. CONTAINS_ANY(FeedAttribute[12345678,0],{"Mars cruise","Venus cruise"})
+    /// 4. CONTAINS_ANY(FeedAttribute\[12345678,0\],{"Mars cruise","Venus cruise"})
     /// 5. AND(IN(FEED_ITEM_ID,{10001,10002}),EQUALS(CONTEXT.DEVICE,"Mobile"))
     ///
     /// For more details, visit
-    /// https://developers.google.com/adwords/api/docs/guides/feed-matching-functions
+    /// <https://developers.google.com/adwords/api/docs/guides/feed-matching-functions>
     ///
     /// Note that because multiple strings may represent the same underlying
     /// function (whitespace and single versus double quotation marks, for
@@ -3127,7 +3085,7 @@ pub struct Metrics {
     /// The value of all conversions. When this column is selected with date, the
     /// values in date column means the conversion date. Details for the
     /// by_conversion_date columns are available at
-    /// https://support.google.com/google-ads/answer/9549009.
+    /// <https://support.google.com/google-ads/answer/9549009.>
     #[prost(double, tag = "240")]
     pub all_conversions_value_by_conversion_date: f64,
     /// The total number of conversions. This includes all conversions regardless
@@ -3138,7 +3096,7 @@ pub struct Metrics {
     /// of the value of include_in_conversions_metric. When this column is selected
     /// with date, the values in date column means the conversion date. Details for
     /// the by_conversion_date columns are available at
-    /// https://support.google.com/google-ads/answer/9549009.
+    /// <https://support.google.com/google-ads/answer/9549009.>
     #[prost(double, tag = "241")]
     pub all_conversions_by_conversion_date: f64,
     /// The value of all conversions divided by the total cost of ad interactions
@@ -3227,18 +3185,18 @@ pub struct Metrics {
     pub clicks: ::core::option::Option<i64>,
     /// The number of times your ad or your site's listing in the unpaid
     /// results was clicked. See the help page at
-    /// https://support.google.com/google-ads/answer/3097241 for details.
+    /// <https://support.google.com/google-ads/answer/3097241> for details.
     #[prost(int64, optional, tag = "156")]
     pub combined_clicks: ::core::option::Option<i64>,
     /// The number of times your ad or your site's listing in the unpaid
     /// results was clicked (combined_clicks) divided by combined_queries. See the
-    /// help page at https://support.google.com/google-ads/answer/3097241 for
+    /// help page at <https://support.google.com/google-ads/answer/3097241> for
     /// details.
     #[prost(double, optional, tag = "157")]
     pub combined_clicks_per_query: ::core::option::Option<f64>,
     /// The number of searches that returned pages from your site in the unpaid
     /// results or showed one of your text ads. See the help page at
-    /// https://support.google.com/google-ads/answer/3097241 for details.
+    /// <https://support.google.com/google-ads/answer/3097241> for details.
     #[prost(int64, optional, tag = "158")]
     pub combined_queries: ::core::option::Option<i64>,
     /// The estimated percent of times that your ad was eligible to show
@@ -3290,7 +3248,7 @@ pub struct Metrics {
     /// conversions. When this column is selected with date, the values in date
     /// column means the conversion date. Details for the by_conversion_date
     /// columns are available at
-    /// https://support.google.com/google-ads/answer/9549009.
+    /// <https://support.google.com/google-ads/answer/9549009.>
     #[prost(double, tag = "242")]
     pub conversions_value_by_conversion_date: f64,
     /// The value of conversions divided by the cost of ad interactions. This only
@@ -3318,7 +3276,7 @@ pub struct Metrics {
     /// conversions. When this column is selected with date, the values in date
     /// column means the conversion date. Details for the by_conversion_date
     /// columns are available at
-    /// https://support.google.com/google-ads/answer/9549009.
+    /// <https://support.google.com/google-ads/answer/9549009.>
     #[prost(double, tag = "243")]
     pub conversions_by_conversion_date: f64,
     /// The sum of your cost-per-click (CPC) and cost-per-thousand impressions
@@ -3489,29 +3447,29 @@ pub struct Metrics {
     pub mobile_friendly_clicks_percentage: ::core::option::Option<f64>,
     /// The number of times someone clicked your site's listing in the unpaid
     /// results for a particular query. See the help page at
-    /// https://support.google.com/google-ads/answer/3097241 for details.
+    /// <https://support.google.com/google-ads/answer/3097241> for details.
     #[prost(int64, optional, tag = "230")]
     pub organic_clicks: ::core::option::Option<i64>,
     /// The number of times someone clicked your site's listing in the unpaid
     /// results (organic_clicks) divided by the total number of searches that
     /// returned pages from your site (organic_queries). See the help page at
-    /// https://support.google.com/google-ads/answer/3097241 for details.
+    /// <https://support.google.com/google-ads/answer/3097241> for details.
     #[prost(double, optional, tag = "231")]
     pub organic_clicks_per_query: ::core::option::Option<f64>,
     /// The number of listings for your site in the unpaid search results. See the
-    /// help page at https://support.google.com/google-ads/answer/3097241 for
+    /// help page at <https://support.google.com/google-ads/answer/3097241> for
     /// details.
     #[prost(int64, optional, tag = "232")]
     pub organic_impressions: ::core::option::Option<i64>,
     /// The number of times a page from your site was listed in the unpaid search
     /// results (organic_impressions) divided by the number of searches returning
     /// your site's listing in the unpaid results (organic_queries). See the help
-    /// page at https://support.google.com/google-ads/answer/3097241 for details.
+    /// page at <https://support.google.com/google-ads/answer/3097241> for details.
     #[prost(double, optional, tag = "233")]
     pub organic_impressions_per_query: ::core::option::Option<f64>,
     /// The total number of searches that returned your site's listing in the
     /// unpaid results. See the help page at
-    /// https://support.google.com/google-ads/answer/3097241 for details.
+    /// <https://support.google.com/google-ads/answer/3097241> for details.
     #[prost(int64, optional, tag = "234")]
     pub organic_queries: ::core::option::Option<i64>,
     /// Percentage of first-time sessions (from people who had never visited your
@@ -3535,7 +3493,7 @@ pub struct Metrics {
     pub relative_ctr: ::core::option::Option<f64>,
     /// The percentage of the customer's Shopping or Search ad impressions that are
     /// shown in the most prominent Shopping position. See
-    /// https://support.google.com/google-ads/answer/7501826
+    /// <https://support.google.com/google-ads/answer/7501826>
     /// for details. Any value below 0.1 is reported as 0.0999.
     #[prost(double, optional, tag = "136")]
     pub search_absolute_top_impression_share: ::core::option::Option<f64>,
@@ -3620,7 +3578,7 @@ pub struct Metrics {
     /// The value of all conversions divided by the number of all conversions. When
     /// this column is selected with date, the values in date column means the
     /// conversion date. Details for the by_conversion_date columns are available
-    /// at https://support.google.com/google-ads/answer/9549009.
+    /// at <https://support.google.com/google-ads/answer/9549009.>
     #[prost(double, optional, tag = "244")]
     pub value_per_all_conversions_by_conversion_date: ::core::option::Option<f64>,
     /// The value of conversions divided by the number of conversions. This only
@@ -3635,7 +3593,7 @@ pub struct Metrics {
     /// will optimize for these conversions. When this column is selected with
     /// date, the values in date column means the conversion date. Details for the
     /// by_conversion_date columns are available at
-    /// https://support.google.com/google-ads/answer/9549009.
+    /// <https://support.google.com/google-ads/answer/9549009.>
     #[prost(double, optional, tag = "245")]
     pub value_per_conversions_by_conversion_date: ::core::option::Option<f64>,
     /// The value of current model attributed conversions divided by the number of
@@ -3744,7 +3702,7 @@ pub mod user_identifier {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransactionAttribute {
     /// Timestamp when transaction occurred. Required.
-    /// The format is "YYYY-MM-DD HH:MM:SS[+/-HH:MM]", where [+/-HH:MM] is an
+    /// The format is "YYYY-MM-DD HH:MM:SS\[+/-HH:MM\]", where \[+/-HH:MM\] is an
     /// optional timezone offset from UTC. If the offset is absent, the API will
     /// use the account's timezone as default.
     /// Examples: "2018-03-05 09:15:00" or "2018-02-01 14:34:30+03:00"
@@ -3777,7 +3735,7 @@ pub struct TransactionAttribute {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoreAttribute {
     /// Store code from
-    /// https://support.google.com/business/answer/3370250#storecode
+    /// <https://support.google.com/business/answer/3370250#storecode>
     #[prost(string, optional, tag = "2")]
     pub store_code: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -3901,10 +3859,7 @@ pub struct Segments {
     )]
     pub ad_destination_type: i32,
     /// Ad network type.
-    #[prost(
-        enumeration = "super::enums::ad_network_type_enum::AdNetworkType",
-        tag = "3"
-    )]
+    #[prost(enumeration = "super::enums::ad_network_type_enum::AdNetworkType", tag = "3")]
     pub ad_network_type: i32,
     /// Budget campaign association status.
     #[prost(message, optional, tag = "134")]
@@ -4038,16 +3993,10 @@ pub struct Segments {
     #[prost(string, optional, tag = "86")]
     pub hotel_rate_rule_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Hotel rate type.
-    #[prost(
-        enumeration = "super::enums::hotel_rate_type_enum::HotelRateType",
-        tag = "74"
-    )]
+    #[prost(enumeration = "super::enums::hotel_rate_type_enum::HotelRateType", tag = "74")]
     pub hotel_rate_type: i32,
     /// Hotel price bucket.
-    #[prost(
-        enumeration = "super::enums::hotel_price_bucket_enum::HotelPriceBucket",
-        tag = "78"
-    )]
+    #[prost(enumeration = "super::enums::hotel_price_bucket_enum::HotelPriceBucket", tag = "78")]
     pub hotel_price_bucket: i32,
     /// Hotel state.
     #[prost(string, optional, tag = "87")]
@@ -4068,19 +4017,13 @@ pub struct Segments {
     #[prost(string, optional, tag = "90")]
     pub month: ::core::option::Option<::prost::alloc::string::String>,
     /// Month of the year, e.g., January.
-    #[prost(
-        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
-        tag = "18"
-    )]
+    #[prost(enumeration = "super::enums::month_of_year_enum::MonthOfYear", tag = "18")]
     pub month_of_year: i32,
     /// Partner hotel ID.
     #[prost(string, optional, tag = "91")]
     pub partner_hotel_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Placeholder type. This is only used with feed item metrics.
-    #[prost(
-        enumeration = "super::enums::placeholder_type_enum::PlaceholderType",
-        tag = "20"
-    )]
+    #[prost(enumeration = "super::enums::placeholder_type_enum::PlaceholderType", tag = "20")]
     pub placeholder_type: i32,
     /// Aggregator ID of the product.
     #[prost(int64, optional, tag = "132")]
@@ -4104,10 +4047,7 @@ pub struct Segments {
     #[prost(string, optional, tag = "97")]
     pub product_brand: ::core::option::Option<::prost::alloc::string::String>,
     /// Channel of the product.
-    #[prost(
-        enumeration = "super::enums::product_channel_enum::ProductChannel",
-        tag = "30"
-    )]
+    #[prost(enumeration = "super::enums::product_channel_enum::ProductChannel", tag = "30")]
     pub product_channel: i32,
     /// Channel exclusivity of the product.
     #[prost(
@@ -4116,10 +4056,7 @@ pub struct Segments {
     )]
     pub product_channel_exclusivity: i32,
     /// Condition of the product.
-    #[prost(
-        enumeration = "super::enums::product_condition_enum::ProductCondition",
-        tag = "32"
-    )]
+    #[prost(enumeration = "super::enums::product_condition_enum::ProductCondition", tag = "32")]
     pub product_condition: i32,
     /// Resource name of the geo target constant for the country of sale of the
     /// product.
@@ -4370,10 +4307,7 @@ pub struct CpcBidSimulationPoint {
     /// cpc_bid_micros is set.
     /// When SimulationModificationMethod = SCALING,
     /// cpc_bid_scaling_modifier is set.
-    #[prost(
-        oneof = "cpc_bid_simulation_point::CpcSimulationKeyValue",
-        tags = "15, 16"
-    )]
+    #[prost(oneof = "cpc_bid_simulation_point::CpcSimulationKeyValue", tags = "15, 16")]
     pub cpc_simulation_key_value:
         ::core::option::Option<cpc_bid_simulation_point::CpcSimulationKeyValue>,
 }
@@ -4447,10 +4381,7 @@ pub struct TargetCpaSimulationPoint {
     /// target_cpa_micros is set.
     /// When SimulationModificationMethod = SCALING,
     /// target_cpa_scaling_modifier is set.
-    #[prost(
-        oneof = "target_cpa_simulation_point::TargetCpaSimulationKeyValue",
-        tags = "17, 18"
-    )]
+    #[prost(oneof = "target_cpa_simulation_point::TargetCpaSimulationKeyValue", tags = "17, 18")]
     pub target_cpa_simulation_key_value:
         ::core::option::Option<target_cpa_simulation_point::TargetCpaSimulationKeyValue>,
 }
@@ -4508,7 +4439,7 @@ pub struct TargetRoasSimulationPoint {
 pub struct PercentCpcBidSimulationPoint {
     /// The simulated percent CPC upon which projected metrics are based. Percent
     /// CPC expressed as fraction of the advertised price for some good or service.
-    /// The value stored here is 1,000,000 * [fraction].
+    /// The value stored here is 1,000,000 * \[fraction\].
     #[prost(int64, optional, tag = "1")]
     pub percent_cpc_bid_micros: ::core::option::Option<i64>,
     /// Projected number of biddable conversions.
@@ -4608,10 +4539,7 @@ pub struct TargetImpressionShareSimulationPoint {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagSnippet {
     /// The type of the generated tag snippets for tracking conversions.
-    #[prost(
-        enumeration = "super::enums::tracking_code_type_enum::TrackingCodeType",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::tracking_code_type_enum::TrackingCodeType", tag = "1")]
     pub r#type: i32,
     /// The format of the web page where the tracking tag and snippet will be
     /// installed, e.g. HTML.
@@ -4633,7 +4561,7 @@ pub struct TagSnippet {
 
 /// Settings for the targeting-related features, at the campaign and ad group
 /// levels. For more details about the targeting setting, visit
-/// https://support.google.com/google-ads/answer/7365594
+/// <https://support.google.com/google-ads/answer/7365594>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetingSetting {
     /// The per-targeting-dimension setting to restrict the reach of your campaign
@@ -4651,10 +4579,7 @@ pub struct TargetingSetting {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetRestriction {
     /// The targeting dimension that these settings apply to.
-    #[prost(
-        enumeration = "super::enums::targeting_dimension_enum::TargetingDimension",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::targeting_dimension_enum::TargetingDimension", tag = "1")]
     pub targeting_dimension: i32,
     /// Indicates whether to restrict your ads to show only for the criteria you
     /// have selected for this targeting_dimension, or to target all values for
@@ -4696,7 +4621,7 @@ pub mod target_restriction_operation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextLabel {
     /// Background color of the label in RGB format. This string must match the
-    /// regular expression '^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$'.
+    /// regular expression '^\#(\[a-fA-F0-9]{6}|[a-fA-F0-9\]{3})$'.
     /// Note: The background color may not be visible for manager accounts.
     #[prost(string, optional, tag = "3")]
     pub background_color: ::core::option::Option<::prost::alloc::string::String>,
@@ -4740,10 +4665,10 @@ pub struct CrmBasedUserListInfo {
     /// was collected to the Google Ads API.
     /// For iOS, the ID string is the 9 digit string that appears at the end of an
     /// App Store URL (e.g., "476943146" for "Flood-It! 2" whose App Store link is
-    /// http://itunes.apple.com/us/app/flood-it!-2/id476943146).
+    /// <http://itunes.apple.com/us/app/flood-it!-2/id476943146>).
     /// For Android, the ID string is the application's package name
     /// (e.g., "com.labpixies.colordrips" for "Color Drips" given Google Play link
-    /// https://play.google.com/store/apps/details?id=com.labpixies.colordrips).
+    /// <https://play.google.com/store/apps/details?id=com.labpixies.colordrips>).
     /// Required when creating CrmBasedUserList for uploading mobile advertising
     /// IDs.
     #[prost(string, optional, tag = "4")]
@@ -4776,10 +4701,7 @@ pub struct UserListRuleInfo {
     ///
     /// Currently AND of ORs (conjunctive normal form) is only supported for
     /// ExpressionRuleUserList.
-    #[prost(
-        enumeration = "super::enums::user_list_rule_type_enum::UserListRuleType",
-        tag = "1"
-    )]
+    #[prost(enumeration = "super::enums::user_list_rule_type_enum::UserListRuleType", tag = "1")]
     pub rule_type: i32,
     /// List of rule item groups that defines this rule.
     /// Rule item groups are grouped together based on rule_type.
@@ -4957,10 +4879,7 @@ pub struct RuleBasedUserListInfo {
     )]
     pub prepopulation_status: i32,
     /// Subtypes of rule based user lists.
-    #[prost(
-        oneof = "rule_based_user_list_info::RuleBasedUserList",
-        tags = "2, 3, 4"
-    )]
+    #[prost(oneof = "rule_based_user_list_info::RuleBasedUserList", tags = "2, 3, 4")]
     pub rule_based_user_list: ::core::option::Option<rule_based_user_list_info::RuleBasedUserList>,
 }
 /// Nested message and enum types in `RuleBasedUserListInfo`.

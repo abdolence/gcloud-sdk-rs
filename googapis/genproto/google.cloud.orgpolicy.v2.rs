@@ -7,7 +7,7 @@
 /// the organization's resource hierarchy. Policies are inherited down the
 /// resource hierarchy from higher levels, but can also be overridden. For
 /// details about the inheritance rules please read about
-/// [`policies`][google.cloud.OrgPolicy.v2.Policy].
+/// \[`policies`][google.cloud.OrgPolicy.v2.Policy\].
 ///
 /// `Constraints` have a default behavior determined by the `constraint_default`
 /// field, which is the enforcement behavior that is used in the absence of a
@@ -256,8 +256,8 @@ pub mod policy_spec {
         }
     }
 }
-/// The request sent to the [ListConstraints]
-/// [google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints] method.
+/// The request sent to the \[ListConstraints\]
+/// \[google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConstraintsRequest {
     /// Required. The Cloud resource that parents the constraint. Must be in one of the
@@ -278,8 +278,8 @@ pub struct ListConstraintsRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response returned from the [ListConstraints]
-/// [google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints] method.
+/// The response returned from the \[ListConstraints\]
+/// \[google.cloud.orgpolicy.v2.OrgPolicy.ListConstraints\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListConstraintsResponse {
     /// The collection of constraints that are available on the targeted resource.
@@ -289,8 +289,8 @@ pub struct ListConstraintsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request sent to the [ListPolicies]
-/// [google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies] method.
+/// The request sent to the \[ListPolicies\]
+/// \[google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPoliciesRequest {
     /// Required. The target Cloud resource that parents the set of constraints and policies
@@ -312,8 +312,8 @@ pub struct ListPoliciesRequest {
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response returned from the [ListPolicies]
-/// [google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies] method. It will be empty
+/// The response returned from the \[ListPolicies\]
+/// \[google.cloud.orgpolicy.v2.OrgPolicy.ListPolicies\] method. It will be empty
 /// if no `Policies` are set on the resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPoliciesResponse {
@@ -326,24 +326,24 @@ pub struct ListPoliciesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request sent to the [GetPolicy]
-/// [google.cloud.orgpolicy.v2.OrgPolicy.GetPolicy] method.
+/// The request sent to the \[GetPolicy\]
+/// \[google.cloud.orgpolicy.v2.OrgPolicy.GetPolicy\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPolicyRequest {
     /// Required. Resource name of the policy. See `Policy` for naming requirements.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request sent to the [GetEffectivePolicy]
-/// [google.cloud.orgpolicy.v2.OrgPolicy.GetEffectivePolicy] method.
+/// The request sent to the \[GetEffectivePolicy\]
+/// \[google.cloud.orgpolicy.v2.OrgPolicy.GetEffectivePolicy\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEffectivePolicyRequest {
     /// Required. The effective policy to compute. See `Policy` for naming rules.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request sent to the [CreatePolicyRequest]
-/// [google.cloud.orgpolicy.v2.OrgPolicy.CreatePolicy] method.
+/// The request sent to the \[CreatePolicyRequest\]
+/// \[google.cloud.orgpolicy.v2.OrgPolicy.CreatePolicy\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePolicyRequest {
     /// Required. The Cloud resource that will parent the new Policy. Must be in one of the
@@ -358,16 +358,16 @@ pub struct CreatePolicyRequest {
     #[prost(message, optional, tag = "3")]
     pub policy: ::core::option::Option<Policy>,
 }
-/// The request sent to the [UpdatePolicyRequest]
-/// [google.cloud.orgpolicy.v2.OrgPolicy.UpdatePolicy] method.
+/// The request sent to the \[UpdatePolicyRequest\]
+/// \[google.cloud.orgpolicy.v2.OrgPolicy.UpdatePolicy\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdatePolicyRequest {
     /// Required. `Policy` to update.
     #[prost(message, optional, tag = "1")]
     pub policy: ::core::option::Option<Policy>,
 }
-/// The request sent to the [DeletePolicy]
-/// [google.cloud.orgpolicy.v2.OrgPolicy.DeletePolicy] method.
+/// The request sent to the \[DeletePolicy\]
+/// \[google.cloud.orgpolicy.v2.OrgPolicy.DeletePolicy\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePolicyRequest {
     /// Required. Name of the policy to delete.
@@ -406,7 +406,7 @@ pub mod org_policy_client {
     impl<T> OrgPolicyClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -419,7 +419,7 @@ pub mod org_policy_client {
             interceptor: F,
         ) -> OrgPolicyClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

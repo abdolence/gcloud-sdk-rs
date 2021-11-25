@@ -59,7 +59,7 @@ pub struct Progress {
     pub work_estimated: i64,
 }
 /// The request for
-/// [google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities].
+/// \[google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesRequest {
     /// Project ID against which to make the request.
@@ -76,16 +76,16 @@ pub struct ExportEntitiesRequest {
     ///
     /// The full resource URL of the external storage location. Currently, only
     /// Google Cloud Storage is supported. So output_url_prefix should be of the
-    /// form: `gs://BUCKET_NAME[/NAMESPACE_PATH]`, where `BUCKET_NAME` is the
+    /// form: `gs://BUCKET_NAME\[/NAMESPACE_PATH\]`, where `BUCKET_NAME` is the
     /// name of the Cloud Storage bucket and `NAMESPACE_PATH` is an optional Cloud
     /// Storage namespace path (this is not a Cloud Datastore namespace). For more
     /// information about Cloud Storage namespace paths, see
     /// [Object name
-    /// considerations](https://cloud.google.com/storage/docs/naming#object-considerations).
+    /// considerations](<https://cloud.google.com/storage/docs/naming#object-considerations>).
     ///
     /// The resulting files will be nested deeper than the specified URL prefix.
     /// The final output URL will be provided in the
-    /// [google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url]
+    /// \[google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url\]
     /// field. That value should be used for subsequent ImportEntities operations.
     ///
     /// By nesting the data files deeper, the same Cloud Storage bucket can be used
@@ -94,7 +94,7 @@ pub struct ExportEntitiesRequest {
     pub output_url_prefix: ::prost::alloc::string::String,
 }
 /// The request for
-/// [google.datastore.admin.v1beta1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ImportEntities].
+/// \[google.datastore.admin.v1beta1.DatastoreAdmin.ImportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ImportEntities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportEntitiesRequest {
     /// Project ID against which to make the request.
@@ -106,17 +106,17 @@ pub struct ImportEntitiesRequest {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The full resource URL of the external storage location. Currently, only
     /// Google Cloud Storage is supported. So input_url should be of the form:
-    /// `gs://BUCKET_NAME[/NAMESPACE_PATH]/OVERALL_EXPORT_METADATA_FILE`, where
+    /// `gs://BUCKET_NAME\[/NAMESPACE_PATH\]/OVERALL_EXPORT_METADATA_FILE`, where
     /// `BUCKET_NAME` is the name of the Cloud Storage bucket, `NAMESPACE_PATH` is
     /// an optional Cloud Storage namespace path (this is not a Cloud Datastore
     /// namespace), and `OVERALL_EXPORT_METADATA_FILE` is the metadata file written
     /// by the ExportEntities operation. For more information about Cloud Storage
     /// namespace paths, see
     /// [Object name
-    /// considerations](https://cloud.google.com/storage/docs/naming#object-considerations).
+    /// considerations](<https://cloud.google.com/storage/docs/naming#object-considerations>).
     ///
     /// For more information, see
-    /// [google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url].
+    /// \[google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url\].
     #[prost(string, tag = "3")]
     pub input_url: ::prost::alloc::string::String,
     /// Optionally specify which kinds/namespaces are to be imported. If provided,
@@ -127,12 +127,12 @@ pub struct ImportEntitiesRequest {
     pub entity_filter: ::core::option::Option<EntityFilter>,
 }
 /// The response for
-/// [google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities].
+/// \[google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities][google.datastore.admin.v1beta1.DatastoreAdmin.ExportEntities\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEntitiesResponse {
     /// Location of the output metadata file. This can be used to begin an import
     /// into Cloud Datastore (this project or another project). See
-    /// [google.datastore.admin.v1beta1.ImportEntitiesRequest.input_url][google.datastore.admin.v1beta1.ImportEntitiesRequest.input_url].
+    /// \[google.datastore.admin.v1beta1.ImportEntitiesRequest.input_url][google.datastore.admin.v1beta1.ImportEntitiesRequest.input_url\].
     /// Only present if the operation completed successfully.
     #[prost(string, tag = "1")]
     pub output_url: ::prost::alloc::string::String,
@@ -154,9 +154,9 @@ pub struct ExportEntitiesMetadata {
     pub entity_filter: ::core::option::Option<EntityFilter>,
     /// Location for the export metadata and data files. This will be the same
     /// value as the
-    /// [google.datastore.admin.v1beta1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1beta1.ExportEntitiesRequest.output_url_prefix]
+    /// \[google.datastore.admin.v1beta1.ExportEntitiesRequest.output_url_prefix][google.datastore.admin.v1beta1.ExportEntitiesRequest.output_url_prefix\]
     /// field. The final output location is provided in
-    /// [google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url].
+    /// \[google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url\].
     #[prost(string, tag = "5")]
     pub output_url_prefix: ::prost::alloc::string::String,
 }
@@ -177,7 +177,7 @@ pub struct ImportEntitiesMetadata {
     pub entity_filter: ::core::option::Option<EntityFilter>,
     /// The location of the import metadata file. This will be the same value as
     /// the
-    /// [google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url]
+    /// \[google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url][google.datastore.admin.v1beta1.ExportEntitiesResponse.output_url\]
     /// field.
     #[prost(string, tag = "5")]
     pub input_url: ::prost::alloc::string::String,
@@ -194,13 +194,13 @@ pub struct ImportEntitiesMetadata {
 ///   kinds=['Foo', 'Bar'], namespace_ids=[]
 ///
 /// Kinds Foo and Bar only in the default namespace:
-///   kinds=['Foo', 'Bar'], namespace_ids=['']
+///   kinds=['Foo', 'Bar'], namespace_ids=\[''\]
 ///
 /// Kinds Foo and Bar in both the default and Baz namespaces:
 ///   kinds=['Foo', 'Bar'], namespace_ids=['', 'Baz']
 ///
 /// The entire Baz namespace:
-///   kinds=[], namespace_ids=['Baz']
+///   kinds=[], namespace_ids=\['Baz'\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityFilter {
     /// If empty, then this represents all kinds.
@@ -289,7 +289,7 @@ pub mod datastore_admin_client {
     impl<T> DatastoreAdminClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -302,7 +302,7 @@ pub mod datastore_admin_client {
             interceptor: F,
         ) -> DatastoreAdminClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

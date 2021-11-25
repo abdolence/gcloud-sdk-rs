@@ -273,10 +273,7 @@ pub struct WebKeySettings {
     /// Settings for the frequency and difficulty at which this key triggers
     /// captcha challenges. This should only be specified for IntegrationTypes
     /// CHECKBOX_CHALLENGE and INVISIBLE_CHALLENGE.
-    #[prost(
-        enumeration = "web_key_settings::ChallengeSecurityPreference",
-        tag = "5"
-    )]
+    #[prost(enumeration = "web_key_settings::ChallengeSecurityPreference", tag = "5")]
     pub challenge_security_preference: i32,
 }
 /// Nested message and enum types in `WebKeySettings`.
@@ -342,7 +339,7 @@ pub mod recaptcha_enterprise_service_v1_beta1_client {
     impl<T> RecaptchaEnterpriseServiceV1Beta1Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -355,7 +352,7 @@ pub mod recaptcha_enterprise_service_v1_beta1_client {
             interceptor: F,
         ) -> RecaptchaEnterpriseServiceV1Beta1Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

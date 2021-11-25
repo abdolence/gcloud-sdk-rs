@@ -18,7 +18,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -102,7 +102,7 @@ pub struct Spoke {
     #[prost(enumeration = "State", tag = "15")]
     pub state: i32,
 }
-/// Request for [HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs] method.
+/// Request for \[HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsRequest {
     /// Required. The parent resource's name.
@@ -121,7 +121,7 @@ pub struct ListHubsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response for [HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs] method.
+/// Response for \[HubService.ListHubs][google.cloud.networkconnectivity.v1alpha1.HubService.ListHubs\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHubsResponse {
     /// Hubs to be returned.
@@ -135,14 +135,14 @@ pub struct ListHubsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request for [HubService.GetHub][google.cloud.networkconnectivity.v1alpha1.HubService.GetHub] method.
+/// Request for \[HubService.GetHub][google.cloud.networkconnectivity.v1alpha1.HubService.GetHub\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetHubRequest {
     /// Required. Name of the Hub resource to get.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for [HubService.CreateHub][google.cloud.networkconnectivity.v1alpha1.HubService.CreateHub] method.
+/// Request for \[HubService.CreateHub][google.cloud.networkconnectivity.v1alpha1.HubService.CreateHub\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHubRequest {
     /// Required. The parent resource's name of the Hub.
@@ -170,7 +170,7 @@ pub struct CreateHubRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request for [HubService.UpdateHub][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateHub] method.
+/// Request for \[HubService.UpdateHub][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateHub\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHubRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -199,7 +199,7 @@ pub struct UpdateHubRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// The request for [HubService.DeleteHub][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteHub].
+/// The request for \[HubService.DeleteHub][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteHub\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteHubRequest {
     /// Required. The name of the Hub to delete.
@@ -221,7 +221,7 @@ pub struct DeleteHubRequest {
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// The request for [HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes].
+/// The request for \[HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesRequest {
     /// Required. The parent's resource name.
@@ -240,7 +240,7 @@ pub struct ListSpokesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// The response for [HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes].
+/// The response for \[HubService.ListSpokes][google.cloud.networkconnectivity.v1alpha1.HubService.ListSpokes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSpokesResponse {
     /// Spokes to be returned.
@@ -254,14 +254,14 @@ pub struct ListSpokesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// The request for [HubService.GetSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.GetSpoke].
+/// The request for \[HubService.GetSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.GetSpoke\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSpokeRequest {
     /// Required. The name of Spoke resource.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [HubService.CreateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.CreateSpoke].
+/// The request for \[HubService.CreateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.CreateSpoke\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateSpokeRequest {
     /// Required. The parent's resource name of the Spoke.
@@ -289,7 +289,7 @@ pub struct CreateSpokeRequest {
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request for [HubService.UpdateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateSpoke] method.
+/// Request for \[HubService.UpdateSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.UpdateSpoke\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSpokeRequest {
     /// Optional. Field mask is used to specify the fields to be overwritten in the
@@ -318,7 +318,7 @@ pub struct UpdateSpokeRequest {
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// The request for [HubService.DeleteSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteSpoke].
+/// The request for \[HubService.DeleteSpoke][google.cloud.networkconnectivity.v1alpha1.HubService.DeleteSpoke\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteSpokeRequest {
     /// Required. The name of the Spoke to delete.
@@ -383,7 +383,7 @@ pub mod hub_service_client {
     impl<T> HubServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -396,7 +396,7 @@ pub mod hub_service_client {
             interceptor: F,
         ) -> HubServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

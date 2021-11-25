@@ -1,5 +1,5 @@
 /// A running instance of a
-/// [Workflow](/workflows/docs/reference/rest/v1/projects.locations.workflows).
+/// \[Workflow\](/workflows/docs/reference/rest/v1/projects.locations.workflows).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Execution {
     /// Output only. The resource name of the execution.
@@ -18,6 +18,10 @@ pub struct Execution {
     pub state: i32,
     /// Input parameters of the execution represented as a JSON string.
     /// The size limit is 32KB.
+    ///
+    /// *Note*: If you are using the REST API directly to run your workflow, you
+    /// must escape any JSON string value of `argument`. Example:
+    /// `'{"argument":"{\"firstName\":\"FIRST\",\"lastName\":\"LAST\"}"}'`
     #[prost(string, tag = "5")]
     pub argument: ::prost::alloc::string::String,
     /// Output only. Output of the execution represented as a JSON string. The
@@ -32,20 +36,65 @@ pub struct Execution {
     /// Output only. Revision of the workflow this execution is using.
     #[prost(string, tag = "8")]
     pub workflow_revision_id: ::prost::alloc::string::String,
+    /// The call logging level associated to this execution.
+    #[prost(enumeration = "execution::CallLogLevel", tag = "9")]
+    pub call_log_level: i32,
 }
 /// Nested message and enum types in `Execution`.
 pub mod execution {
+    /// A single stack element (frame) where an error occurred.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StackTraceElement {
+        /// The step the error occurred at.
+        #[prost(string, tag = "1")]
+        pub step: ::prost::alloc::string::String,
+        /// The routine where the error occurred.
+        #[prost(string, tag = "2")]
+        pub routine: ::prost::alloc::string::String,
+        /// The source position information of the stack trace element.
+        #[prost(message, optional, tag = "3")]
+        pub position: ::core::option::Option<stack_trace_element::Position>,
+    }
+    /// Nested message and enum types in `StackTraceElement`.
+    pub mod stack_trace_element {
+        /// Position contains source position information about the stack trace
+        /// element such as line number, column number and length of the code block
+        /// in bytes.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Position {
+            /// The source code line number the current instruction was generated from.
+            #[prost(int64, tag = "1")]
+            pub line: i64,
+            /// The source code column position (of the line) the current instruction
+            /// was generated from.
+            #[prost(int64, tag = "2")]
+            pub column: i64,
+            /// The number of bytes of source code making up this stack trace element.
+            #[prost(int64, tag = "3")]
+            pub length: i64,
+        }
+    }
+    /// A collection of stack elements (frames) where an error occurred.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StackTrace {
+        /// An array of stack elements.
+        #[prost(message, repeated, tag = "1")]
+        pub elements: ::prost::alloc::vec::Vec<StackTraceElement>,
+    }
     /// Error describes why the execution was abnormally terminated.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Error {
-        /// Error payload returned by the execution, represented as a JSON string.
+        /// Error message and data returned represented as a JSON string.
         #[prost(string, tag = "1")]
         pub payload: ::prost::alloc::string::String,
-        /// Human readable error context, helpful for debugging purposes.
+        /// Human-readable stack trace string.
         #[prost(string, tag = "2")]
         pub context: ::prost::alloc::string::String,
+        /// Stack trace with detailed information of where error was generated.
+        #[prost(message, optional, tag = "3")]
+        pub stack_trace: ::core::option::Option<StackTrace>,
     }
-    /// Describes the current state of the execution. More states may be added
+    /// Describes the current state of the execution. More states might be added
     /// in the future.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -61,9 +110,22 @@ pub mod execution {
         /// The execution was stopped intentionally.
         Cancelled = 4,
     }
+    /// Describes the level of platform logging to apply to calls and call
+    /// responses during workflow executions.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum CallLogLevel {
+        /// No call logging specified.
+        Unspecified = 0,
+        /// Log all call steps within workflows, all call returns, and all exceptions
+        /// raised.
+        LogAllCalls = 1,
+        /// Log only exceptions that are raised from call steps within workflows.
+        LogErrorsOnly = 2,
+    }
 }
 /// Request for the
-/// [ListExecutions][]
+/// \[ListExecutions][\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsRequest {
@@ -91,7 +153,7 @@ pub struct ListExecutionsRequest {
     pub view: i32,
 }
 /// Response for the
-/// [ListExecutions][google.cloud.workflows.executions.v1.Executions.ListExecutions]
+/// \[ListExecutions][google.cloud.workflows.executions.v1.Executions.ListExecutions\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListExecutionsResponse {
@@ -104,7 +166,7 @@ pub struct ListExecutionsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [CreateExecution][google.cloud.workflows.executions.v1.Executions.CreateExecution]
+/// \[CreateExecution][google.cloud.workflows.executions.v1.Executions.CreateExecution\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExecutionRequest {
@@ -118,7 +180,7 @@ pub struct CreateExecutionRequest {
     pub execution: ::core::option::Option<Execution>,
 }
 /// Request for the
-/// [GetExecution][google.cloud.workflows.executions.v1.Executions.GetExecution]
+/// \[GetExecution][google.cloud.workflows.executions.v1.Executions.GetExecution\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetExecutionRequest {
@@ -133,7 +195,7 @@ pub struct GetExecutionRequest {
     pub view: i32,
 }
 /// Request for the
-/// [CancelExecution][google.cloud.workflows.executions.v1.Executions.CancelExecution]
+/// \[CancelExecution][google.cloud.workflows.executions.v1.Executions.CancelExecution\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelExecutionRequest {
@@ -169,7 +231,7 @@ pub mod executions_client {
     impl<T> ExecutionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -182,7 +244,7 @@ pub mod executions_client {
             interceptor: F,
         ) -> ExecutionsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

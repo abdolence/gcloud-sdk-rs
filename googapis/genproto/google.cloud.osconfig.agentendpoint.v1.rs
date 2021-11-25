@@ -52,10 +52,7 @@ pub mod inventory {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SoftwarePackage {
         /// Information about the different types of software packages.
-        #[prost(
-            oneof = "software_package::Details",
-            tags = "1, 2, 3, 4, 5, 6, 7, 8, 9"
-        )]
+        #[prost(oneof = "software_package::Details", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9")]
         pub details: ::core::option::Option<software_package::Details>,
     }
     /// Nested message and enum types in `SoftwarePackage`.
@@ -65,37 +62,37 @@ pub mod inventory {
         pub enum Details {
             /// Yum package info.
             /// For details about the yum package manager, see
-            /// https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.
+            /// <https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.>
             #[prost(message, tag = "1")]
             YumPackage(super::VersionedPackage),
             /// Details of an APT package.
             /// For details about the apt package manager, see
-            /// https://wiki.debian.org/Apt.
+            /// <https://wiki.debian.org/Apt.>
             #[prost(message, tag = "2")]
             AptPackage(super::VersionedPackage),
             /// Details of a Zypper package.
             /// For details about the Zypper package manager, see
-            /// https://en.opensuse.org/SDB:Zypper_manual.
+            /// <https://en.opensuse.org/SDB:Zypper_manual.>
             #[prost(message, tag = "3")]
             ZypperPackage(super::VersionedPackage),
             /// Details of a Googet package.
             ///  For details about the googet package manager, see
-            ///  https://github.com/google/googet.
+            ///  <https://github.com/google/googet.>
             #[prost(message, tag = "4")]
             GoogetPackage(super::VersionedPackage),
             /// Details of a Zypper patch.
             /// For details about the Zypper package manager, see
-            /// https://en.opensuse.org/SDB:Zypper_manual.
+            /// <https://en.opensuse.org/SDB:Zypper_manual.>
             #[prost(message, tag = "5")]
             ZypperPatch(super::ZypperPatch),
             /// Details of a Windows Update package.
-            /// See https://docs.microsoft.com/en-us/windows/win32/api/_wua/ for
+            /// See <https://docs.microsoft.com/en-us/windows/win32/api/_wua/> for
             /// information about Windows Update.
             #[prost(message, tag = "6")]
             WuaPackage(super::WindowsUpdatePackage),
             /// Details of a Windows Quick Fix engineering package.
             /// See
-            /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+            /// <https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering>
             /// for info in Windows Quick Fix Engineering.
             #[prost(message, tag = "7")]
             QfePackage(super::WindowsQuickFixEngineeringPackage),
@@ -124,7 +121,7 @@ pub mod inventory {
     /// Information related to a Quick Fix Engineering package.
     /// Fields are taken from Windows QuickFixEngineering Interface and match
     /// the source names:
-    /// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering
+    /// <https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WindowsQuickFixEngineeringPackage {
         /// A short textual description of the QFE update.
@@ -158,7 +155,7 @@ pub mod inventory {
     }
     /// Details related to a Windows Update package.
     /// Field data and names are taken from Windows Update API IUpdate Interface:
-    /// https://docs.microsoft.com/en-us/windows/win32/api/_wua/
+    /// <https://docs.microsoft.com/en-us/windows/win32/api/_wua/>
     /// Descriptive fields like title, and description are localized based on
     /// the locale of the VM being updated.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -209,7 +206,7 @@ pub mod inventory {
     }
     /// Details about Windows Application - based on Windows Registry.
     /// All fields in this message are taken from:
-    /// https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key
+    /// <https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WindowsApplication {
         /// DisplayName field from Windows Registry.
@@ -420,10 +417,7 @@ pub mod os_policy {
             #[prost(enumeration = "package_resource::DesiredState", tag = "1")]
             pub desired_state: i32,
             /// A system package.
-            #[prost(
-                oneof = "package_resource::SystemPackage",
-                tags = "2, 3, 4, 5, 6, 7, 8"
-            )]
+            #[prost(oneof = "package_resource::SystemPackage", tags = "2, 3, 4, 5, 6, 7, 8")]
             pub system_package: ::core::option::Option<package_resource::SystemPackage>,
         }
         /// Nested message and enum types in `PackageResource`.
@@ -442,8 +436,8 @@ pub mod os_policy {
                 pub pull_deps: bool,
             }
             /// A package managed by APT.
-            /// install: `apt-get update && apt-get -y install [name]`
-            /// remove: `apt-get -y remove [name]`
+            /// install: `apt-get update && apt-get -y install \[name\]`
+            /// remove: `apt-get -y remove \[name\]`
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Apt {
                 /// Required. Package name.
@@ -715,7 +709,7 @@ pub mod os_policy {
                     /// source will be executed directly, which will likely only
                     /// succeed for executables and scripts with shebang lines.
                     /// [Wikipedia
-                    /// shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)).
+                    /// shebang](<https://en.wikipedia.org/wiki/Shebang_(Unix>)).
                     None = 1,
                     /// Indicates that the script will be run with /bin/sh on Linux and
                     /// cmd.exe on windows.
@@ -937,7 +931,7 @@ pub struct YumSettings {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GooSettings {}
 /// Zypper patching is performed by running `zypper patch`.
-/// See also https://en.opensuse.org/SDB:Zypper_manual.
+/// See also <https://en.opensuse.org/SDB:Zypper_manual.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZypperSettings {
     /// Adds the `--with-optional` flag to `zypper patch`.
@@ -968,11 +962,7 @@ pub struct ZypperSettings {
 pub struct WindowsUpdateSettings {
     /// Only apply updates of these windows update classifications. If empty, all
     /// updates will be applied.
-    #[prost(
-        enumeration = "windows_update_settings::Classification",
-        repeated,
-        tag = "1"
-    )]
+    #[prost(enumeration = "windows_update_settings::Classification", repeated, tag = "1")]
     pub classifications: ::prost::alloc::vec::Vec<i32>,
     /// List of KBs to exclude from update.
     #[prost(string, repeated, tag = "2")]
@@ -986,47 +976,47 @@ pub struct WindowsUpdateSettings {
 /// Nested message and enum types in `WindowsUpdateSettings`.
 pub mod windows_update_settings {
     /// Microsoft Windows update classifications as defined in
-    /// [1]
-    /// https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro
+    /// \[1\]
+    /// <https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro>
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Classification {
         /// Invalid. If classifications are included, they must be specified.
         Unspecified = 0,
         /// "A widely released fix for a specific problem that addresses a critical,
-        /// non-security-related bug." [1]
+        /// non-security-related bug." \[1\]
         Critical = 1,
         /// "A widely released fix for a product-specific, security-related
         /// vulnerability. Security vulnerabilities are rated by their severity. The
         /// severity rating is indicated in the Microsoft security bulletin as
-        /// critical, important, moderate, or low." [1]
+        /// critical, important, moderate, or low." \[1\]
         Security = 2,
         /// "A widely released and frequent software update that contains additions
         /// to a product’s definition database. Definition databases are often used
         /// to detect objects that have specific attributes, such as malicious code,
-        /// phishing websites, or junk mail." [1]
+        /// phishing websites, or junk mail." \[1\]
         Definition = 3,
-        /// "Software that controls the input and output of a device." [1]
+        /// "Software that controls the input and output of a device." \[1\]
         Driver = 4,
         /// "New product functionality that is first distributed outside the context
         /// of a product release and that is typically included in the next full
-        /// product release." [1]
+        /// product release." \[1\]
         FeaturePack = 5,
         /// "A tested, cumulative set of all hotfixes, security updates, critical
         /// updates, and updates. Additionally, service packs may contain additional
         /// fixes for problems that are found internally since the release of the
         /// product. Service packs my also contain a limited number of
-        /// customer-requested design changes or features." [1]
+        /// customer-requested design changes or features." \[1\]
         ServicePack = 6,
-        /// "A utility or feature that helps complete a task or set of tasks." [1]
+        /// "A utility or feature that helps complete a task or set of tasks." \[1\]
         Tool = 7,
         /// "A tested, cumulative set of hotfixes, security updates, critical
         /// updates, and updates that are packaged together for easy deployment. A
         /// rollup generally targets a specific area, such as security, or a
-        /// component of a product, such as Internet Information Services (IIS)." [1]
+        /// component of a product, such as Internet Information Services (IIS)." \[1\]
         UpdateRollup = 8,
         /// "A widely released fix for a specific problem. An update addresses a
-        /// noncritical, non-security-related bug." [1]
+        /// noncritical, non-security-related bug." \[1\]
         Update = 9,
     }
 }
@@ -1051,14 +1041,14 @@ pub struct ExecStep {
 /// Common configurations for an ExecStep.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecStepConfig {
-    /// Defaults to [0]. A list of possible return values that the
+    /// Defaults to \[0\]. A list of possible return values that the
     /// execution can return to indicate a success.
     #[prost(int32, repeated, tag = "3")]
     pub allowed_success_codes: ::prost::alloc::vec::Vec<i32>,
     /// The script interpreter to use to run the script. If no interpreter is
     /// specified the script will be executed directly, which will likely
     /// only succeed for scripts with shebang lines.
-    /// [Wikipedia shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)).
+    /// [Wikipedia shebang](<https://en.wikipedia.org/wiki/Shebang_(Unix>)).
     #[prost(enumeration = "exec_step_config::Interpreter", tag = "4")]
     pub interpreter: i32,
     /// Location of the executable.
@@ -1390,7 +1380,7 @@ pub enum TaskType {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceiveTaskNotificationRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1406,7 +1396,7 @@ pub struct ReceiveTaskNotificationResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartNextTaskRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1423,7 +1413,7 @@ pub struct StartNextTaskResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportTaskProgressRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1470,7 +1460,7 @@ pub struct ReportTaskProgressResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportTaskCompleteRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1516,7 +1506,7 @@ pub struct ReportTaskCompleteResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterAgentRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1552,7 +1542,7 @@ pub struct RegisterAgentResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportInventoryRequest {
     /// Required. This is the Compute Engine instance identity token described in
-    /// https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
@@ -1586,7 +1576,7 @@ pub mod agent_endpoint_service_client {
     impl<T> AgentEndpointServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1599,7 +1589,7 @@ pub mod agent_endpoint_service_client {
             interceptor: F,
         ) -> AgentEndpointServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1640,9 +1630,7 @@ pub mod agent_endpoint_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.osconfig.agentendpoint.v1.AgentEndpointService/ReceiveTaskNotification") ;
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Signals the start of a task execution and returns the task info."]
         pub async fn start_next_task(

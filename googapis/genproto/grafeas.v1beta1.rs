@@ -50,7 +50,7 @@ pub struct Signature {
     ///
     /// OpenPGP V4 public key fingerprint:
     ///   * "openpgp4fpr:74FAF3B861BDA0870C7B6DEF607E48D2A663AEEA"
-    /// See https://www.iana.org/assignments/uri-schemes/prov/openpgp4fpr for more
+    /// See <https://www.iana.org/assignments/uri-schemes/prov/openpgp4fpr> for more
     /// details on this scheme.
     ///
     /// RFC6920 digest-named SubjectPublicKeyInfo (digest of the DER
@@ -85,14 +85,14 @@ pub enum NoteKind {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Occurrence {
     /// Output only. The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Immutable. The resource for which the occurrence applies.
     #[prost(message, optional, tag = "2")]
     pub resource: ::core::option::Option<Resource>,
     /// Required. Immutable. The analysis note associated with this occurrence, in
-    /// the form of `projects/[PROVIDER_ID]/notes/[NOTE_ID]`. This field can be
+    /// the form of `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`. This field can be
     /// used as a filter in list requests.
     #[prost(string, tag = "3")]
     pub note_name: ::prost::alloc::string::String,
@@ -152,7 +152,7 @@ pub struct Resource {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The unique URI of the resource. For example,
-    /// `https://gcr.io/project/image@sha256:foo` for a Docker image.
+    /// `<https://gcr.io/project/image@sha256:foo`> for a Docker image.
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
     /// The hash of the resource content. For example, the Docker digest.
@@ -163,7 +163,7 @@ pub struct Resource {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Note {
     /// Output only. The name of the note in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// A one sentence description of this note.
@@ -229,7 +229,7 @@ pub mod note {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOccurrenceRequest {
     /// The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -237,7 +237,7 @@ pub struct GetOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListOccurrencesRequest {
     /// The name of the project to list occurrences for in the form of
-    /// `projects/[PROJECT_ID]`.
+    /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression.
@@ -266,14 +266,14 @@ pub struct ListOccurrencesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteOccurrenceRequest {
     /// The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new occurrence.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOccurrenceRequest {
-    /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
+    /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the occurrence is to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -285,7 +285,7 @@ pub struct CreateOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOccurrenceRequest {
     /// The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The updated occurrence.
@@ -299,7 +299,7 @@ pub struct UpdateOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNoteRequest {
     /// The name of the note in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -307,7 +307,7 @@ pub struct GetNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetOccurrenceNoteRequest {
     /// The name of the occurrence in the form of
-    /// `projects/[PROJECT_ID]/occurrences/[OCCURRENCE_ID]`.
+    /// `projects/\[PROJECT_ID]/occurrences/[OCCURRENCE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -315,7 +315,7 @@ pub struct GetOccurrenceNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotesRequest {
     /// The name of the project to list notes for in the form of
-    /// `projects/[PROJECT_ID]`.
+    /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression.
@@ -344,14 +344,14 @@ pub struct ListNotesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNoteRequest {
     /// The name of the note in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to create a new note.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNoteRequest {
-    /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
+    /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the note is to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -366,7 +366,7 @@ pub struct CreateNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNoteRequest {
     /// The name of the note in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The updated note.
@@ -380,7 +380,7 @@ pub struct UpdateNoteRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNoteOccurrencesRequest {
     /// The name of the note to list occurrences for in the form of
-    /// `projects/[PROVIDER_ID]/notes/[NOTE_ID]`.
+    /// `projects/\[PROVIDER_ID]/notes/[NOTE_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The filter expression.
@@ -406,7 +406,7 @@ pub struct ListNoteOccurrencesResponse {
 /// Request to create notes in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateNotesRequest {
-    /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
+    /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the notes are to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -424,7 +424,7 @@ pub struct BatchCreateNotesResponse {
 /// Request to create occurrences in batch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateOccurrencesRequest {
-    /// The name of the project in the form of `projects/[PROJECT_ID]`, under which
+    /// The name of the project in the form of `projects/\[PROJECT_ID\]`, under which
     /// the occurrences are to be created.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
@@ -443,7 +443,7 @@ pub struct BatchCreateOccurrencesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVulnerabilityOccurrencesSummaryRequest {
     /// The name of the project to get a vulnerability summary for in the form of
-    /// `projects/[PROJECT_ID]`.
+    /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter expression.
@@ -503,7 +503,7 @@ pub mod grafeas_v1_beta1_client {
     impl<T> GrafeasV1Beta1Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -516,7 +516,7 @@ pub mod grafeas_v1_beta1_client {
             interceptor: F,
         ) -> GrafeasV1Beta1Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

@@ -200,6 +200,9 @@ pub struct MetadataManagementActivity {
     /// Output only. The latest metadata exports of the metastore service.
     #[prost(message, repeated, tag = "1")]
     pub metadata_exports: ::prost::alloc::vec::Vec<MetadataExport>,
+    /// Output only. The latest restores of the metastore service.
+    #[prost(message, repeated, tag = "2")]
+    pub restores: ::prost::alloc::vec::Vec<Restore>,
 }
 /// A metastore resource that imports metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -212,12 +215,15 @@ pub struct MetadataImport {
     /// The description of the metadata import.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The time when the metadata import was created.
+    /// Output only. The time when the metadata import was started.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the metadata import was last updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the metadata import finished.
+    #[prost(message, optional, tag = "7")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of the metadata import.
     #[prost(enumeration = "metadata_import::State", tag = "5")]
     pub state: i32,
@@ -325,7 +331,109 @@ pub mod metadata_export {
         DestinationGcsUri(::prost::alloc::string::String),
     }
 }
-/// Request message for [DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices].
+/// The details of a backup resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Backup {
+    /// Immutable. The relative resource name of the backup, in the following form:
+    ///
+    /// `projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Output only. The time when the backup was started.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the backup finished creating.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The current state of the backup.
+    #[prost(enumeration = "backup::State", tag = "4")]
+    pub state: i32,
+    /// Output only. The revision of the service at the time of backup.
+    #[prost(message, optional, tag = "5")]
+    pub service_revision: ::core::option::Option<Service>,
+    /// The description of the backup.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. Services that are restoring from the backup.
+    #[prost(string, repeated, tag = "7")]
+    pub restoring_services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `Backup`.
+pub mod backup {
+    /// The current state of the backup.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The state of the backup is unknown.
+        Unspecified = 0,
+        /// The backup is being created.
+        Creating = 1,
+        /// The backup is being deleted.
+        Deleting = 2,
+        /// The backup is active and ready to use.
+        Active = 3,
+        /// The backup failed.
+        Failed = 4,
+        /// The backup is being restored.
+        Restoring = 5,
+    }
+}
+/// The details of a metadata restore operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Restore {
+    /// Output only. The time when the restore started.
+    #[prost(message, optional, tag = "1")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the restore ended.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The current state of the restore.
+    #[prost(enumeration = "restore::State", tag = "3")]
+    pub state: i32,
+    /// Output only. The relative resource name of the metastore service backup to restore
+    /// from, in the following form:
+    ///
+    /// `projects/{project_id}/locations/{location_id}/services/{service_id}/backups/{backup_id}`.
+    #[prost(string, tag = "4")]
+    pub backup: ::prost::alloc::string::String,
+    /// Output only. The type of restore.
+    #[prost(enumeration = "restore::RestoreType", tag = "5")]
+    pub r#type: i32,
+    /// Output only. The restore details containing the revision of the service to be restored
+    /// to, in format of JSON.
+    #[prost(string, tag = "6")]
+    pub details: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Restore`.
+pub mod restore {
+    /// The current state of the restore.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The state of the metadata restore is unknown.
+        Unspecified = 0,
+        /// The metadata restore is running.
+        Running = 1,
+        /// The metadata restore completed successfully.
+        Succeeded = 2,
+        /// The metadata restore failed.
+        Failed = 3,
+        /// The metadata restore is cancelled.
+        Cancelled = 4,
+    }
+    /// The type of restore. If unspecified, defaults to `METADATA_ONLY`.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RestoreType {
+        /// The restore type is unknown.
+        Unspecified = 0,
+        /// The service's metadata and configuration are restored.
+        Full = 1,
+        /// Only the service's metadata is restored.
+        MetadataOnly = 2,
+    }
+}
+/// Request message for \[DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. The relative resource name of the location of metastore services to
@@ -339,13 +447,13 @@ pub struct ListServicesRequest {
     /// returned. The maximum value is 1000; values above 1000 are changed to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous [DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices]
+    /// Optional. A page token, received from a previous \[DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices\]
     /// call. Provide this token to retrieve the subsequent page.
     ///
     /// To retrieve the first page, supply an empty page token.
     ///
     /// When paginating, other parameters provided to
-    /// [DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices] must match the call that provided the
+    /// \[DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices\] must match the call that provided the
     /// page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -353,12 +461,12 @@ pub struct ListServicesRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specify the ordering of results as described in [Sorting
-    /// Order](https://cloud.google.com/apis/design/design_patterns#sorting_order).
+    /// Order](<https://cloud.google.com/apis/design/design_patterns#sorting_order>).
     /// If not specified, the results will be sorted in the default order.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for [DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices].
+/// Response message for \[DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The services in the specified location.
@@ -372,7 +480,7 @@ pub struct ListServicesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for [DataprocMetastore.GetService][google.cloud.metastore.v1.DataprocMetastore.GetService].
+/// Request message for \[DataprocMetastore.GetService][google.cloud.metastore.v1.DataprocMetastore.GetService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The relative resource name of the metastore service to retrieve, in the
@@ -382,7 +490,7 @@ pub struct GetServiceRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.CreateService][google.cloud.metastore.v1.DataprocMetastore.CreateService].
+/// Request message for \[DataprocMetastore.CreateService][google.cloud.metastore.v1.DataprocMetastore.CreateService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. The relative resource name of the location in which to create a metastore
@@ -414,12 +522,12 @@ pub struct CreateServiceRequest {
     /// the creation of duplicate commitments.
     ///
     /// The request ID must be a valid
-    /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.UpdateService][google.cloud.metastore.v1.DataprocMetastore.UpdateService].
+/// Request message for \[DataprocMetastore.UpdateService][google.cloud.metastore.v1.DataprocMetastore.UpdateService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. A field mask used to specify the fields to be overwritten in the
@@ -445,12 +553,12 @@ pub struct UpdateServiceRequest {
     /// the creation of duplicate commitments.
     ///
     /// The request ID must be a valid
-    /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.DeleteService][google.cloud.metastore.v1.DataprocMetastore.DeleteService].
+/// Request message for \[DataprocMetastore.DeleteService][google.cloud.metastore.v1.DataprocMetastore.DeleteService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The relative resource name of the metastore service to delete, in the
@@ -469,12 +577,12 @@ pub struct DeleteServiceRequest {
     /// the creation of duplicate commitments.
     ///
     /// The request ID must be a valid
-    /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1.DataprocMetastore.ListMetadataImports].
+/// Request message for \[DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1.DataprocMetastore.ListMetadataImports\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataImportsRequest {
     /// Required. The relative resource name of the service whose metadata imports to
@@ -488,13 +596,13 @@ pub struct ListMetadataImportsRequest {
     /// returned. The maximum value is 1000; values above 1000 are changed to 1000.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
-    /// Optional. A page token, received from a previous [DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices]
+    /// Optional. A page token, received from a previous \[DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices\]
     /// call. Provide this token to retrieve the subsequent page.
     ///
     /// To retrieve the first page, supply an empty page token.
     ///
     /// When paginating, other parameters provided to
-    /// [DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices] must match the call that provided the
+    /// \[DataprocMetastore.ListServices][google.cloud.metastore.v1.DataprocMetastore.ListServices\] must match the call that provided the
     /// page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -502,12 +610,12 @@ pub struct ListMetadataImportsRequest {
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specify the ordering of results as described in [Sorting
-    /// Order](https://cloud.google.com/apis/design/design_patterns#sorting_order).
+    /// Order](<https://cloud.google.com/apis/design/design_patterns#sorting_order>).
     /// If not specified, the results will be sorted in the default order.
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// Response message for [DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1.DataprocMetastore.ListMetadataImports].
+/// Response message for \[DataprocMetastore.ListMetadataImports][google.cloud.metastore.v1.DataprocMetastore.ListMetadataImports\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataImportsResponse {
     /// The imports in the specified service.
@@ -521,7 +629,7 @@ pub struct ListMetadataImportsResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Request message for [DataprocMetastore.GetMetadataImport][google.cloud.metastore.v1.DataprocMetastore.GetMetadataImport].
+/// Request message for \[DataprocMetastore.GetMetadataImport][google.cloud.metastore.v1.DataprocMetastore.GetMetadataImport\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetMetadataImportRequest {
     /// Required. The relative resource name of the metadata import to retrieve, in the
@@ -531,7 +639,7 @@ pub struct GetMetadataImportRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.CreateMetadataImport][google.cloud.metastore.v1.DataprocMetastore.CreateMetadataImport].
+/// Request message for \[DataprocMetastore.CreateMetadataImport][google.cloud.metastore.v1.DataprocMetastore.CreateMetadataImport\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMetadataImportRequest {
     /// Required. The relative resource name of the service in which to create a metastore
@@ -563,12 +671,12 @@ pub struct CreateMetadataImportRequest {
     /// the creation of duplicate commitments.
     ///
     /// The request ID must be a valid
-    /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "4")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.UpdateMetadataImport][google.cloud.metastore.v1.DataprocMetastore.UpdateMetadataImport].
+/// Request message for \[DataprocMetastore.UpdateMetadataImport][google.cloud.metastore.v1.DataprocMetastore.UpdateMetadataImport\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMetadataImportRequest {
     /// Required. A field mask used to specify the fields to be overwritten in the
@@ -594,12 +702,129 @@ pub struct UpdateMetadataImportRequest {
     /// the creation of duplicate commitments.
     ///
     /// The request ID must be a valid
-    /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format)
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>)
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
 }
-/// Request message for [DataprocMetastore.ExportMetadata][google.cloud.metastore.v1.DataprocMetastore.ExportMetadata].
+/// Request message for \[DataprocMetastore.ListBackups][google.cloud.metastore.v1.DataprocMetastore.ListBackups\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupsRequest {
+    /// Required. The relative resource name of the service whose backups to
+    /// list, in the following form:
+    ///
+    /// `projects/{project_number}/locations/{location_id}/services/{service_id}/backups`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The maximum number of backups to return. The response may contain less
+    /// than the maximum number. If unspecified, no more than 500 backups are
+    /// returned. The maximum value is 1000; values above 1000 are changed to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous \[DataprocMetastore.ListBackups][google.cloud.metastore.v1.DataprocMetastore.ListBackups\]
+    /// call. Provide this token to retrieve the subsequent page.
+    ///
+    /// To retrieve the first page, supply an empty page token.
+    ///
+    /// When paginating, other parameters provided to
+    /// \[DataprocMetastore.ListBackups][google.cloud.metastore.v1.DataprocMetastore.ListBackups\] must match the call that provided the
+    /// page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. The filter to apply to list results.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
+    /// Optional. Specify the ordering of results as described in [Sorting
+    /// Order](<https://cloud.google.com/apis/design/design_patterns#sorting_order>).
+    /// If not specified, the results will be sorted in the default order.
+    #[prost(string, tag = "5")]
+    pub order_by: ::prost::alloc::string::String,
+}
+/// Response message for \[DataprocMetastore.ListBackups][google.cloud.metastore.v1.DataprocMetastore.ListBackups\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBackupsResponse {
+    /// The backups of the specified service.
+    #[prost(message, repeated, tag = "1")]
+    pub backups: ::prost::alloc::vec::Vec<Backup>,
+    /// A token that can be sent as `page_token` to retrieve the next page. If this
+    /// field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Locations that could not be reached.
+    #[prost(string, repeated, tag = "3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Request message for \[DataprocMetastore.GetBackup][google.cloud.metastore.v1.DataprocMetastore.GetBackup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBackupRequest {
+    /// Required. The relative resource name of the backup to retrieve, in the
+    /// following form:
+    ///
+    /// `projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for \[DataprocMetastore.CreateBackup][google.cloud.metastore.v1.DataprocMetastore.CreateBackup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateBackupRequest {
+    /// Required. The relative resource name of the service in which to create a backup
+    /// of the following form:
+    ///
+    /// `projects/{project_number}/locations/{location_id}/services/{service_id}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The ID of the backup, which is used as the final component of the
+    /// backup's name.
+    ///
+    /// This value must be between 1 and 64 characters long, begin with a letter,
+    /// end with a letter or number, and consist of alpha-numeric ASCII characters
+    /// or hyphens.
+    #[prost(string, tag = "2")]
+    pub backup_id: ::prost::alloc::string::String,
+    /// Required. The backup to create. The `name` field is ignored. The ID of the created
+    /// backup must be provided in the request's `backup_id` field.
+    #[prost(message, optional, tag = "3")]
+    pub backup: ::core::option::Option<Backup>,
+    /// Optional. A request ID. Specify a unique request ID to allow the server to ignore the
+    /// request if it has completed. The server will ignore subsequent requests
+    /// that provide a duplicate request ID for at least 60 minutes after the first
+    /// request.
+    ///
+    /// For example, if an initial request times out, followed by another request
+    /// with the same request ID, the server ignores the second request to prevent
+    /// the creation of duplicate commitments.
+    ///
+    /// The request ID must be a valid
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>)
+    /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for \[DataprocMetastore.DeleteBackup][google.cloud.metastore.v1.DataprocMetastore.DeleteBackup\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBackupRequest {
+    /// Required. The relative resource name of the backup to delete, in the
+    /// following form:
+    ///
+    /// `projects/{project_number}/locations/{location_id}/services/{service_id}/backups/{backup_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Optional. A request ID. Specify a unique request ID to allow the server to ignore the
+    /// request if it has completed. The server will ignore subsequent requests
+    /// that provide a duplicate request ID for at least 60 minutes after the first
+    /// request.
+    ///
+    /// For example, if an initial request times out, followed by another request
+    /// with the same request ID, the server ignores the second request to prevent
+    /// the creation of duplicate commitments.
+    ///
+    /// The request ID must be a valid
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>)
+    /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Request message for \[DataprocMetastore.ExportMetadata][google.cloud.metastore.v1.DataprocMetastore.ExportMetadata\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataRequest {
     /// Required. The relative resource name of the metastore service to run export, in the
@@ -618,7 +843,7 @@ pub struct ExportMetadataRequest {
     /// the creation of duplicate commitments.
     ///
     /// The request ID must be a valid
-    /// [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier#Format).
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>).
     /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
     #[prost(string, tag = "3")]
     pub request_id: ::prost::alloc::string::String,
@@ -641,6 +866,39 @@ pub mod export_metadata_request {
         DestinationGcsFolder(::prost::alloc::string::String),
     }
 }
+/// Request message for \[DataprocMetastore.Restore][\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestoreServiceRequest {
+    /// Required. The relative resource name of the metastore service to run restore, in the
+    /// following form:
+    ///
+    /// `projects/{project_id}/locations/{location_id}/services/{service_id}`.
+    #[prost(string, tag = "1")]
+    pub service: ::prost::alloc::string::String,
+    /// Required. The relative resource name of the metastore service backup to restore
+    /// from, in the following form:
+    ///
+    /// `projects/{project_id}/locations/{location_id}/services/{service_id}/backups/{backup_id}`.
+    #[prost(string, tag = "2")]
+    pub backup: ::prost::alloc::string::String,
+    /// Optional. The type of restore. If unspecified, defaults to `METADATA_ONLY`.
+    #[prost(enumeration = "restore::RestoreType", tag = "3")]
+    pub restore_type: i32,
+    /// Optional. A request ID. Specify a unique request ID to allow the server to ignore the
+    /// request if it has completed. The server will ignore subsequent requests
+    /// that provide a duplicate request ID for at least 60 minutes after the first
+    /// request.
+    ///
+    /// For example, if an initial request times out, followed by another request
+    /// with the same request ID, the server ignores the second request to prevent
+    /// the creation of duplicate commitments.
+    ///
+    /// The request ID must be a valid
+    /// \[UUID\](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Format>).
+    /// A zero UUID (00000000-0000-0000-0000-000000000000) is not supported.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
+}
 /// Represents the metadata of a long-running operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
@@ -661,7 +919,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the caller has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -706,6 +964,8 @@ pub mod database_dump_spec {
         Unspecified = 0,
         /// Database dump is a MySQL dump file.
         Mysql = 1,
+        /// Database dump contains Avro files.
+        Avro = 2,
     }
 }
 #[doc = r" Generated client implementations."]
@@ -713,8 +973,8 @@ pub mod dataproc_metastore_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Configures and manages metastore services."]
-    #[doc = " Metastore services are fully managed, highly available, auto-scaled,"]
-    #[doc = " auto-healing, OSS-native deployments of technical metadata management"]
+    #[doc = " Metastore services are fully managed, highly available, autoscaled,"]
+    #[doc = " autohealing, OSS-native deployments of technical metadata management"]
     #[doc = " software. Each metastore service exposes a network endpoint through which"]
     #[doc = " metadata queries are served. Metadata queries can originate from a variety"]
     #[doc = " of sources, including Apache Hive, Apache Presto, and Apache Spark."]
@@ -736,7 +996,7 @@ pub mod dataproc_metastore_client {
     impl<T> DataprocMetastoreClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -749,7 +1009,7 @@ pub mod dataproc_metastore_client {
             interceptor: F,
         ) -> DataprocMetastoreClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -960,6 +1220,100 @@ pub mod dataproc_metastore_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.metastore.v1.DataprocMetastore/ExportMetadata",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Restores a service from a backup."]
+        pub async fn restore_service(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RestoreServiceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.metastore.v1.DataprocMetastore/RestoreService",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists backups in a service."]
+        pub async fn list_backups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBackupsRequest>,
+        ) -> Result<tonic::Response<super::ListBackupsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.metastore.v1.DataprocMetastore/ListBackups",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets details of a single backup."]
+        pub async fn get_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBackupRequest>,
+        ) -> Result<tonic::Response<super::Backup>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.metastore.v1.DataprocMetastore/GetBackup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a new backup in a given project and location."]
+        pub async fn create_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateBackupRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.metastore.v1.DataprocMetastore/CreateBackup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes a single backup."]
+        pub async fn delete_backup(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBackupRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.metastore.v1.DataprocMetastore/DeleteBackup",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

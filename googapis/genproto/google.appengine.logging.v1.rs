@@ -5,10 +5,7 @@ pub struct LogLine {
     #[prost(message, optional, tag = "1")]
     pub time: ::core::option::Option<::prost_types::Timestamp>,
     /// Severity of this log entry.
-    #[prost(
-        enumeration = "super::super::super::logging::r#type::LogSeverity",
-        tag = "2"
-    )]
+    #[prost(enumeration = "super::super::super::logging::r#type::LogSeverity", tag = "2")]
     pub severity: i32,
     /// App-provided log message.
     #[prost(string, tag = "3")]
@@ -41,7 +38,7 @@ pub struct SourceLocation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceReference {
     /// Optional. A URI string identifying the repository.
-    /// Example: "https://github.com/GoogleCloudPlatform/kubernetes.git"
+    /// Example: "<https://github.com/GoogleCloudPlatform/kubernetes.git">
     #[prost(string, tag = "1")]
     pub repository: ::prost::alloc::string::String,
     /// The canonical and persistent identifier of the deployed revision.
@@ -86,7 +83,7 @@ pub struct RequestLog {
     #[prost(string, tag = "10")]
     pub method: ::prost::alloc::string::String,
     /// Contains the path and query portion of the URL that was requested. For
-    /// example, if the URL was "http://example.com/app?name=val", the resource
+    /// example, if the URL was "<http://example.com/app?name=val",> the resource
     /// would be "/app?name=val".  The fragment identifier, which is identified by
     /// the `#` character, is not included.
     #[prost(string, tag = "11")]

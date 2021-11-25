@@ -60,17 +60,20 @@ pub struct Property {
     /// NOTE: Changing the time zone only affects data going forward, and is not
     /// applied retroactively.
     ///
-    /// Format: https://www.iana.org/time-zones
+    /// Format: <https://www.iana.org/time-zones>
     /// Example: "America/Los_Angeles"
     #[prost(string, tag = "7")]
     pub time_zone: ::prost::alloc::string::String,
     /// The currency type used in reports involving monetary values.
     ///
     ///
-    /// Format: https://en.wikipedia.org/wiki/ISO_4217
+    /// Format: <https://en.wikipedia.org/wiki/ISO_4217>
     /// Examples: "USD", "EUR", "JPY"
     #[prost(string, tag = "8")]
     pub currency_code: ::prost::alloc::string::String,
+    /// Output only. The Google Analytics service level that applies to this property.
+    #[prost(enumeration = "ServiceLevel", tag = "10")]
+    pub service_level: i32,
     /// Output only. If set, the time at which this property was trashed. If not set, then this
     /// property is not currently in the trash can.
     #[prost(message, optional, tag = "11")]
@@ -160,7 +163,7 @@ pub struct WebDataStream {
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Immutable. Domain name of the web app being measured, or empty.
-    /// Example: "http://www.google.com", "https://www.google.com"
+    /// Example: "<http://www.google.com",> "<https://www.google.com">
     #[prost(string, tag = "6")]
     pub default_uri: ::prost::alloc::string::String,
     /// Required. Human-readable display name for the Data Stream.
@@ -294,10 +297,6 @@ pub struct FirebaseLink {
     /// Output only. Time when this FirebaseLink was originally created.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Maximum user access to the GA4 property allowed to admins of
-    /// the linked Firebase project.
-    #[prost(enumeration = "MaximumUserAccess", tag = "4")]
-    pub maximum_user_access: i32,
 }
 /// Read-only resource with the tag for sending data from a website to a
 /// WebDataStream.
@@ -332,16 +331,16 @@ pub struct GoogleAdsLink {
     /// If this field is not set on create/update, it will be defaulted to true.
     #[prost(message, optional, tag = "5")]
     pub ads_personalization_enabled: ::core::option::Option<bool>,
-    /// Output only. Email address of the user that created the link.
-    /// An empty string will be returned if the email address can't be retrieved.
-    #[prost(string, tag = "6")]
-    pub email_address: ::prost::alloc::string::String,
     /// Output only. Time when this link was originally created.
     #[prost(message, optional, tag = "7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when this link was last updated.
     #[prost(message, optional, tag = "8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Email address of the user that created the link.
+    /// An empty string will be returned if the email address can't be retrieved.
+    #[prost(string, tag = "9")]
+    pub creator_email_address: ::prost::alloc::string::String,
 }
 /// A resource message representing data sharing settings of a Google Analytics
 /// account.
@@ -479,7 +478,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 3, 4, 5, 6, 7, 8, 11, 12, 13, 14"
+            tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -511,6 +510,16 @@ pub mod change_history_change {
             /// A snapshot of a GoogleSignalsSettings resource in change history.
             #[prost(message, tag = "8")]
             GoogleSignalsSettings(super::super::GoogleSignalsSettings),
+            /// A snapshot of a DisplayVideo360AdvertiserLink resource in change
+            /// history.
+            #[prost(message, tag = "9")]
+            DisplayVideo360AdvertiserLink(super::super::DisplayVideo360AdvertiserLink),
+            /// A snapshot of a DisplayVideo360AdvertiserLinkProposal resource in
+            /// change history.
+            #[prost(message, tag = "10")]
+            DisplayVideo360AdvertiserLinkProposal(
+                super::super::DisplayVideo360AdvertiserLinkProposal,
+            ),
             /// A snapshot of a ConversionEvent resource in change history.
             #[prost(message, tag = "11")]
             ConversionEvent(super::super::ConversionEvent),
@@ -523,8 +532,104 @@ pub mod change_history_change {
             /// A snapshot of a CustomMetric resource in change history.
             #[prost(message, tag = "14")]
             CustomMetric(super::super::CustomMetric),
+            /// A snapshot of a data retention settings resource in change history.
+            #[prost(message, tag = "15")]
+            DataRetentionSettings(super::super::DataRetentionSettings),
         }
     }
+}
+/// A link between a GA4 property and a Display & Video 360 advertiser.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisplayVideo360AdvertiserLink {
+    /// Output only. The resource name for this DisplayVideo360AdvertiserLink resource.
+    /// Format: properties/{propertyId}/displayVideo360AdvertiserLinks/{linkId}
+    ///
+    /// Note: linkId is not the Display & Video 360 Advertiser ID
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. The Display & Video 360 Advertiser's advertiser ID.
+    #[prost(string, tag = "2")]
+    pub advertiser_id: ::prost::alloc::string::String,
+    /// Output only. The display name of the Display & Video 360 Advertiser.
+    #[prost(string, tag = "3")]
+    pub advertiser_display_name: ::prost::alloc::string::String,
+    /// Enables personalized advertising features with this integration.
+    /// If this field is not set on create/update, it will be defaulted to true.
+    #[prost(message, optional, tag = "4")]
+    pub ads_personalization_enabled: ::core::option::Option<bool>,
+    /// Immutable. Enables the import of campaign data from Display & Video 360 into the GA4
+    /// property. After link creation, this can only be updated from the Display &
+    /// Video 360 product.
+    /// If this field is not set on create, it will be defaulted to true.
+    #[prost(message, optional, tag = "5")]
+    pub campaign_data_sharing_enabled: ::core::option::Option<bool>,
+    /// Immutable. Enables the import of cost data from Display & Video 360 into the GA4
+    /// property. This can only be enabled if campaign_data_import_enabled is
+    /// enabled. After link creation, this can only be updated from the Display &
+    /// Video 360 product.
+    /// If this field is not set on create, it will be defaulted to true.
+    #[prost(message, optional, tag = "6")]
+    pub cost_data_sharing_enabled: ::core::option::Option<bool>,
+}
+/// A proposal for a link between an GA4 property and a Display & Video 360
+/// advertiser.
+///
+/// A proposal is converted to a DisplayVideo360AdvertiserLink once approved.
+/// Google Analytics admins approve inbound proposals while Display & Video 360
+/// admins approve outbound proposals.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DisplayVideo360AdvertiserLinkProposal {
+    /// Output only. The resource name for this DisplayVideo360AdvertiserLinkProposal resource.
+    /// Format:
+    /// properties/{propertyId}/displayVideo360AdvertiserLinkProposals/{proposalId}
+    ///
+    /// Note: proposalId is not the Display & Video 360 Advertiser ID
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Immutable. The Display & Video 360 Advertiser's advertiser ID.
+    #[prost(string, tag = "2")]
+    pub advertiser_id: ::prost::alloc::string::String,
+    /// Output only. The status information for this link proposal.
+    #[prost(message, optional, tag = "3")]
+    pub link_proposal_status_details: ::core::option::Option<LinkProposalStatusDetails>,
+    /// Output only. The display name of the Display & Video Advertiser.
+    /// Only populated for proposals that originated from Display & Video 360.
+    #[prost(string, tag = "4")]
+    pub advertiser_display_name: ::prost::alloc::string::String,
+    /// Input only. On a proposal being sent to Display & Video 360, this field must be set to
+    /// the email address of an admin on the target advertiser. This is used to
+    /// verify that the Google Analytics admin is aware of at least one admin on
+    /// the Display & Video 360 Advertiser. This does not restrict approval of the
+    /// proposal to a single user. Any admin on the Display & Video 360 Advertiser
+    /// may approve the proposal.
+    #[prost(string, tag = "5")]
+    pub validation_email: ::prost::alloc::string::String,
+    /// Immutable. Enables personalized advertising features with this integration.
+    /// If this field is not set on create, it will be defaulted to true.
+    #[prost(message, optional, tag = "6")]
+    pub ads_personalization_enabled: ::core::option::Option<bool>,
+    /// Immutable. Enables the import of campaign data from Display & Video 360.
+    /// If this field is not set on create, it will be defaulted to true.
+    #[prost(message, optional, tag = "7")]
+    pub campaign_data_sharing_enabled: ::core::option::Option<bool>,
+    /// Immutable. Enables the import of cost data from Display & Video 360.
+    /// This can only be enabled if campaign_data_import_enabled is enabled.
+    /// If this field is not set on create, it will be defaulted to true.
+    #[prost(message, optional, tag = "8")]
+    pub cost_data_sharing_enabled: ::core::option::Option<bool>,
+}
+/// Status information for a link proposal.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LinkProposalStatusDetails {
+    /// Output only. The source of this proposal.
+    #[prost(enumeration = "LinkProposalInitiatingProduct", tag = "1")]
+    pub link_proposal_initiating_product: i32,
+    /// Output only. The email address of the user that proposed this linkage.
+    #[prost(string, tag = "2")]
+    pub requestor_email: ::prost::alloc::string::String,
+    /// Output only. The state of this proposal.
+    #[prost(enumeration = "LinkProposalState", tag = "3")]
+    pub link_proposal_state: i32,
 }
 /// A conversion event in a Google Analytics property.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -542,7 +647,15 @@ pub struct ConversionEvent {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. If set, this event can currently be deleted via DeleteConversionEvent.
     #[prost(bool, tag = "4")]
-    pub is_deletable: bool,
+    pub deletable: bool,
+    /// Output only. If set to true, this conversion event refers to a custom event.  If set to
+    /// false, this conversion event refers to a default event in GA. Default
+    /// events typically have special meaning in GA. Default events are usually
+    /// created for you by the GA system, but in some cases can be created by
+    /// property admins. Custom events count towards the maximum number of
+    /// custom conversion events that may be created per property.
+    #[prost(bool, tag = "5")]
+    pub custom: bool,
 }
 /// Settings values for Google Signals.  This is a singleton resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -638,7 +751,7 @@ pub struct CustomMetric {
     /// Max length of 150 characters.
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
-    /// Required. Immutable. The type for the custom metric's value.
+    /// Required. The type for the custom metric's value.
     #[prost(enumeration = "custom_metric::MeasurementUnit", tag = "5")]
     pub measurement_unit: i32,
     /// Required. Immutable. The scope of this custom metric.
@@ -687,23 +800,43 @@ pub mod custom_metric {
         Event = 1,
     }
 }
-/// Maximum access settings that Firebase user receive on the linked Analytics
-/// property.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum MaximumUserAccess {
-    /// Unspecified maximum user access.
-    Unspecified = 0,
-    /// Firebase users have no access to the Analytics property.
-    NoAccess = 1,
-    /// Firebase users have Read & Analyze access to the Analytics property.
-    ReadAndAnalyze = 2,
-    /// Firebase users have edit access to the Analytics property, but may not
-    /// manage the Firebase link.
-    EditorWithoutLinkManagement = 3,
-    /// Firebase users have edit access to the Analytics property and may manage
-    /// the Firebase link.
-    EditorIncludingLinkManagement = 4,
+/// Settings values for data retention. This is a singleton resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataRetentionSettings {
+    /// Output only. Resource name for this DataRetentionSetting resource.
+    /// Format: properties/{property}/dataRetentionSettings
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The length of time that event-level data is retained.
+    #[prost(enumeration = "data_retention_settings::RetentionDuration", tag = "2")]
+    pub event_data_retention: i32,
+    /// If true, reset the retention period for the user identifier with every
+    /// event from that user.
+    #[prost(bool, tag = "3")]
+    pub reset_user_data_on_new_activity: bool,
+}
+/// Nested message and enum types in `DataRetentionSettings`.
+pub mod data_retention_settings {
+    /// Valid values for the data retention duration.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RetentionDuration {
+        /// Data retention time duration is not specified.
+        Unspecified = 0,
+        /// The data retention time duration is 2 months.
+        TwoMonths = 1,
+        /// The data retention time duration is 14 months.
+        FourteenMonths = 3,
+        /// The data retention time duration is 26 months.
+        /// Available to 360 properties only.
+        TwentySixMonths = 4,
+        /// The data retention time duration is 38 months.
+        /// Available to 360 properties only.
+        ThirtyEightMonths = 5,
+        /// The data retention time duration is 50 months.
+        /// Available to 360 properties only.
+        FiftyMonths = 6,
+    }
 }
 /// The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -764,6 +897,17 @@ pub enum IndustryCategory {
     /// Shopping
     Shopping = 26,
 }
+/// Various levels of service for Google Analytics.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ServiceLevel {
+    /// Service level not specified or invalid.
+    Unspecified = 0,
+    /// The standard version of Google Analytics.
+    GoogleAnalyticsStandard = 1,
+    /// The paid, premium version of Google Analytics.
+    GoogleAnalytics360 = 2,
+}
 /// Different kinds of actors that can make changes to Google Analytics
 /// resources.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -821,6 +965,8 @@ pub enum ChangeHistoryResourceType {
     CustomDimension = 11,
     /// CustomMetric resource
     CustomMetric = 12,
+    /// DataRetentionSettings resource
+    DataRetentionSettings = 13,
 }
 /// Status of the Google Signals settings (i.e., whether this feature has been
 /// enabled for the property).
@@ -848,6 +994,45 @@ pub enum GoogleSignalsConsent {
     Consented = 2,
     /// Terms of service have not been accepted
     NotConsented = 1,
+}
+/// An indication of which product the user initiated a link proposal from.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum LinkProposalInitiatingProduct {
+    /// Unspecified product.
+    Unspecified = 0,
+    /// This proposal was created by a user from Google Analytics.
+    GoogleAnalytics = 1,
+    /// This proposal was created by a user from a linked product (not Google
+    /// Analytics).
+    LinkedProduct = 2,
+}
+/// The state of a link proposal resource.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum LinkProposalState {
+    /// Unspecified state
+    Unspecified = 0,
+    /// This proposal is awaiting review from a Google Analytics user. This
+    /// proposal will automatically expire after some time.
+    AwaitingReviewFromGoogleAnalytics = 1,
+    /// This proposal is awaiting review from a user of a linked product. This
+    /// proposal will automatically expire after some time.
+    AwaitingReviewFromLinkedProduct = 2,
+    /// This proposal has been withdrawn by an admin on the initiating product.
+    /// This proposal will be automatically deleted after some time.
+    Withdrawn = 3,
+    /// This proposal has been declined by an admin on the receiving product. This
+    /// proposal will be automatically deleted after some time.
+    Declined = 4,
+    /// This proposal expired due to lack of response from an admin on the
+    /// receiving product. This proposal will be automatically deleted after some
+    /// time.
+    Expired = 5,
+    /// This proposal has become obsolete because a link was directly created to
+    /// the same external product resource that this proposal specifies. This
+    /// proposal will be automatically deleted after some time.
+    Obsolete = 6,
 }
 /// Request message for GetAccount RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1436,18 +1621,6 @@ pub struct CreateFirebaseLinkRequest {
     #[prost(message, optional, tag = "2")]
     pub firebase_link: ::core::option::Option<FirebaseLink>,
 }
-/// Request message for UpdateFirebaseLink RPC
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateFirebaseLinkRequest {
-    /// Required. The Firebase link to update.
-    #[prost(message, optional, tag = "1")]
-    pub firebase_link: ::core::option::Option<FirebaseLink>,
-    /// Required. The list of fields to be updated. Field names must be in snake case
-    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    /// the entire entity, use one path with the string "*" to match all fields.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
 /// Request message for DeleteFirebaseLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteFirebaseLinkRequest {
@@ -1606,12 +1779,7 @@ pub struct SearchChangeHistoryEventsRequest {
     pub property: ::prost::alloc::string::String,
     /// Optional. If set, only return changes if they are for a resource that matches at
     /// least one of these types.
-    #[prost(
-        enumeration = "ChangeHistoryResourceType",
-        repeated,
-        packed = "false",
-        tag = "3"
-    )]
+    #[prost(enumeration = "ChangeHistoryResourceType", repeated, packed = "false", tag = "3")]
     pub resource_type: ::prost::alloc::vec::Vec<i32>,
     /// Optional. If set, only return changes that match one or more of these types of
     /// actions.
@@ -1808,6 +1976,159 @@ pub struct ListConversionEventsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for GetDisplayVideo360AdvertiserLink RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDisplayVideo360AdvertiserLinkRequest {
+    /// Required. The name of the DisplayVideo360AdvertiserLink to get.
+    /// Example format: properties/1234/displayVideo360AdvertiserLink/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListDisplayVideo360AdvertiserLinks RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDisplayVideo360AdvertiserLinksRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListDisplayVideo360AdvertiserLinks`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListDisplayVideo360AdvertiserLinks` must match the call that provided the
+    /// page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListDisplayVideo360AdvertiserLinks RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDisplayVideo360AdvertiserLinksResponse {
+    /// List of DisplayVideo360AdvertiserLinks.
+    #[prost(message, repeated, tag = "1")]
+    pub display_video_360_advertiser_links: ::prost::alloc::vec::Vec<DisplayVideo360AdvertiserLink>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateDisplayVideo360AdvertiserLink RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDisplayVideo360AdvertiserLinkRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The DisplayVideo360AdvertiserLink to create.
+    #[prost(message, optional, tag = "2")]
+    pub display_video_360_advertiser_link: ::core::option::Option<DisplayVideo360AdvertiserLink>,
+}
+/// Request message for DeleteDisplayVideo360AdvertiserLink RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDisplayVideo360AdvertiserLinkRequest {
+    /// Required. The name of the DisplayVideo360AdvertiserLink to delete.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinks/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdateDisplayVideo360AdvertiserLink RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDisplayVideo360AdvertiserLinkRequest {
+    /// The DisplayVideo360AdvertiserLink to update
+    #[prost(message, optional, tag = "1")]
+    pub display_video_360_advertiser_link: ::core::option::Option<DisplayVideo360AdvertiserLink>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for GetDisplayVideo360AdvertiserLinkProposal RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDisplayVideo360AdvertiserLinkProposalRequest {
+    /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to get.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ListDisplayVideo360AdvertiserLinkProposals RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDisplayVideo360AdvertiserLinkProposalsRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous
+    /// `ListDisplayVideo360AdvertiserLinkProposals` call. Provide this to retrieve
+    /// the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListDisplayVideo360AdvertiserLinkProposals` must match the call that
+    /// provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListDisplayVideo360AdvertiserLinkProposals RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDisplayVideo360AdvertiserLinkProposalsResponse {
+    /// List of DisplayVideo360AdvertiserLinkProposals.
+    #[prost(message, repeated, tag = "1")]
+    pub display_video_360_advertiser_link_proposals:
+        ::prost::alloc::vec::Vec<DisplayVideo360AdvertiserLinkProposal>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for CreateDisplayVideo360AdvertiserLinkProposal RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDisplayVideo360AdvertiserLinkProposalRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The DisplayVideo360AdvertiserLinkProposal to create.
+    #[prost(message, optional, tag = "2")]
+    pub display_video_360_advertiser_link_proposal:
+        ::core::option::Option<DisplayVideo360AdvertiserLinkProposal>,
+}
+/// Request message for DeleteDisplayVideo360AdvertiserLinkProposal RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDisplayVideo360AdvertiserLinkProposalRequest {
+    /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to delete.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApproveDisplayVideo360AdvertiserLinkProposalRequest {
+    /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to approve.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for ApproveDisplayVideo360AdvertiserLinkProposal RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApproveDisplayVideo360AdvertiserLinkProposalResponse {
+    /// The DisplayVideo360AdvertiserLink created as a result of approving the
+    /// proposal.
+    #[prost(message, optional, tag = "1")]
+    pub display_video_360_advertiser_link: ::core::option::Option<DisplayVideo360AdvertiserLink>,
+}
+/// Request message for CancelDisplayVideo360AdvertiserLinkProposal RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CancelDisplayVideo360AdvertiserLinkProposalRequest {
+    /// Required. The name of the DisplayVideo360AdvertiserLinkProposal to cancel.
+    /// Example format: properties/1234/displayVideo360AdvertiserLinkProposals/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Request message for CreateCustomDimension RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomDimensionRequest {
@@ -1944,6 +2265,29 @@ pub struct GetCustomMetricRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// Request message for GetDataRetentionSettings RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDataRetentionSettingsRequest {
+    /// Required. The name of the settings to lookup.
+    /// Format:
+    /// properties/{property}/dataRetentionSettings
+    /// Example: "properties/1000/dataRetentionSettings"
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdateDataRetentionSettings RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDataRetentionSettingsRequest {
+    /// Required. The settings to update.
+    /// The `name` field is used to identify the settings to be updated.
+    #[prost(message, optional, tag = "1")]
+    pub data_retention_settings: ::core::option::Option<DataRetentionSettings>,
+    /// Required. The list of fields to be updated. Field names must be in snake case
+    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    /// the entire entity, use one path with the string "*" to match all fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 #[doc = r" Generated client implementations."]
 pub mod analytics_admin_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -1956,7 +2300,7 @@ pub mod analytics_admin_service_client {
     impl<T> AnalyticsAdminServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1969,7 +2313,7 @@ pub mod analytics_admin_service_client {
             interceptor: F,
         ) -> AnalyticsAdminServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -2679,23 +3023,6 @@ pub mod analytics_admin_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a FirebaseLink on a property"]
-        pub async fn update_firebase_link(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateFirebaseLinkRequest>,
-        ) -> Result<tonic::Response<super::FirebaseLink>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateFirebaseLink",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
         #[doc = " Deletes a FirebaseLink on a property"]
         pub async fn delete_firebase_link(
             &mut self,
@@ -3035,6 +3362,192 @@ pub mod analytics_admin_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Look up a single DisplayVideo360AdvertiserLink"]
+        pub async fn get_display_video360_advertiser_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDisplayVideo360AdvertiserLinkRequest>,
+        ) -> Result<tonic::Response<super::DisplayVideo360AdvertiserLink>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDisplayVideo360AdvertiserLink") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists all DisplayVideo360AdvertiserLinks on a property."]
+        pub async fn list_display_video360_advertiser_links(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDisplayVideo360AdvertiserLinksRequest>,
+        ) -> Result<tonic::Response<super::ListDisplayVideo360AdvertiserLinksResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/ListDisplayVideo360AdvertiserLinks") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a DisplayVideo360AdvertiserLink."]
+        #[doc = " This can only be utilized by users who have proper authorization both on"]
+        #[doc = " the Google Analytics property and on the Display & Video 360 advertiser."]
+        #[doc = " Users who do not have access to the Display & Video 360 advertiser should"]
+        #[doc = " instead seek to create a DisplayVideo360LinkProposal."]
+        pub async fn create_display_video360_advertiser_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDisplayVideo360AdvertiserLinkRequest>,
+        ) -> Result<tonic::Response<super::DisplayVideo360AdvertiserLink>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateDisplayVideo360AdvertiserLink") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes a DisplayVideo360AdvertiserLink on a property."]
+        pub async fn delete_display_video360_advertiser_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDisplayVideo360AdvertiserLinkRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteDisplayVideo360AdvertiserLink") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a DisplayVideo360AdvertiserLink on a property."]
+        pub async fn update_display_video360_advertiser_link(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDisplayVideo360AdvertiserLinkRequest>,
+        ) -> Result<tonic::Response<super::DisplayVideo360AdvertiserLink>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateDisplayVideo360AdvertiserLink") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lookup for a single DisplayVideo360AdvertiserLinkProposal."]
+        pub async fn get_display_video360_advertiser_link_proposal(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDisplayVideo360AdvertiserLinkProposalRequest>,
+        ) -> Result<tonic::Response<super::DisplayVideo360AdvertiserLinkProposal>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDisplayVideo360AdvertiserLinkProposal") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists DisplayVideo360AdvertiserLinkProposals on a property."]
+        pub async fn list_display_video360_advertiser_link_proposals(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDisplayVideo360AdvertiserLinkProposalsRequest>,
+        ) -> Result<
+            tonic::Response<super::ListDisplayVideo360AdvertiserLinkProposalsResponse>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/ListDisplayVideo360AdvertiserLinkProposals") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a DisplayVideo360AdvertiserLinkProposal."]
+        pub async fn create_display_video360_advertiser_link_proposal(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDisplayVideo360AdvertiserLinkProposalRequest>,
+        ) -> Result<tonic::Response<super::DisplayVideo360AdvertiserLinkProposal>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateDisplayVideo360AdvertiserLinkProposal") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes a DisplayVideo360AdvertiserLinkProposal on a property."]
+        #[doc = " This can only be used on cancelled proposals."]
+        pub async fn delete_display_video360_advertiser_link_proposal(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDisplayVideo360AdvertiserLinkProposalRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteDisplayVideo360AdvertiserLinkProposal") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Approves a DisplayVideo360AdvertiserLinkProposal."]
+        #[doc = " The DisplayVideo360AdvertiserLinkProposal will be deleted and a new"]
+        #[doc = " DisplayVideo360AdvertiserLink will be created."]
+        pub async fn approve_display_video360_advertiser_link_proposal(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ApproveDisplayVideo360AdvertiserLinkProposalRequest>,
+        ) -> Result<
+            tonic::Response<super::ApproveDisplayVideo360AdvertiserLinkProposalResponse>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/ApproveDisplayVideo360AdvertiserLinkProposal") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Cancels a DisplayVideo360AdvertiserLinkProposal."]
+        #[doc = " Cancelling can mean either:"]
+        #[doc = " - Declining a proposal initiated from Display & Video 360"]
+        #[doc = " - Withdrawing a proposal initiated from Google Analytics"]
+        #[doc = " After being cancelled, a proposal will eventually be deleted automatically."]
+        pub async fn cancel_display_video360_advertiser_link_proposal(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelDisplayVideo360AdvertiserLinkProposalRequest>,
+        ) -> Result<tonic::Response<super::DisplayVideo360AdvertiserLinkProposal>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/CancelDisplayVideo360AdvertiserLinkProposal") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Creates a CustomDimension."]
         pub async fn create_custom_dimension(
             &mut self,
@@ -3202,6 +3715,40 @@ pub mod analytics_admin_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetCustomMetric",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Returns the singleton data retention settings for this property."]
+        pub async fn get_data_retention_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDataRetentionSettingsRequest>,
+        ) -> Result<tonic::Response<super::DataRetentionSettings>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDataRetentionSettings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates the singleton data retention settings for this property."]
+        pub async fn update_data_retention_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDataRetentionSettingsRequest>,
+        ) -> Result<tonic::Response<super::DataRetentionSettings>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateDataRetentionSettings",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

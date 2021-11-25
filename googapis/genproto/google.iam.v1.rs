@@ -39,7 +39,7 @@ pub struct GetPolicyOptions {
 ///         },
 ///         {
 ///           "role": "roles/resourcemanager.organizationViewer",
-///           "members": ["user:eve@example.com"],
+///           "members": \["user:eve@example.com"\],
 ///           "condition": {
 ///             "title": "expirable access",
 ///             "description": "Does not grant access after Sep 2020",
@@ -68,7 +68,7 @@ pub struct GetPolicyOptions {
 ///         expression: request.time < timestamp('2020-10-01T00:00:00.000Z')
 ///
 /// For a description of IAM and its features, see the
-/// [IAM developer's guide](https://cloud.google.com/iam/docs).
+/// [IAM developer's guide](<https://cloud.google.com/iam/docs>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
     /// Specifies the format of the policy.
@@ -268,7 +268,7 @@ pub struct TestIamPermissionsRequest {
     /// The set of permissions to check for the `resource`. Permissions with
     /// wildcards (such as '*' or 'storage.*') are not allowed. For more
     /// information see
-    /// [IAM Overview](https://cloud.google.com/iam/docs/overview#permissions).
+    /// [IAM Overview](<https://cloud.google.com/iam/docs/overview#permissions>).
     #[prost(string, repeated, tag = "2")]
     pub permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -316,7 +316,7 @@ pub mod iam_policy_client {
     impl<T> IamPolicyClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -329,7 +329,7 @@ pub mod iam_policy_client {
             interceptor: F,
         ) -> IamPolicyClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

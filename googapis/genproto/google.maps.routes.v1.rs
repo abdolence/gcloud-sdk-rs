@@ -11,11 +11,11 @@ pub mod polyline {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PolylineType {
         /// The string encoding of the polyline using the [polyline encoding
-        /// algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)
+        /// algorithm](<https://developers.google.com/maps/documentation/utilities/polylinealgorithm>)
         #[prost(string, tag = "1")]
         EncodedPolyline(::prost::alloc::string::String),
         /// Specifies a polyline using the [GeoJSON LineString
-        /// format](https://tools.ietf.org/html/rfc7946#section-3.1.4)
+        /// format](<https://tools.ietf.org/html/rfc7946#section-3.1.4>)
         #[prost(message, tag = "2")]
         GeoJsonLinestring(::prost_types::Struct),
     }
@@ -43,10 +43,10 @@ pub enum PolylineEncoding {
     /// No polyline type preference specified. Defaults to `ENCODED_POLYLINE`.
     Unspecified = 0,
     /// Specifies a polyline encoded using the [polyline encoding
-    /// algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).
+    /// algorithm](<https://developers.google.com/maps/documentation/utilities/polylinealgorithm>).
     EncodedPolyline = 1,
     /// Specifies a polyline using the [GeoJSON LineString
-    /// format](https://tools.ietf.org/html/rfc7946#section-3.1.4)
+    /// format](<https://tools.ietf.org/html/rfc7946#section-3.1.4>)
     GeoJsonLinestring = 2,
 }
 /// List of toll passes around the world that we support.
@@ -56,41 +56,48 @@ pub enum TollPass {
     /// Not used. If this value is used, then the request fails.
     Unspecified = 0,
     /// Australia-wide toll pass.
-    /// See additional details at https://www.linkt.com.au/.
+    /// See additional details at <https://www.linkt.com.au/.>
     AuLinkt = 2,
-    /// Argentina toll pass. See additional details at https://telepase.com.ar
+    /// Argentina toll pass. See additional details at <https://telepase.com.ar>
     ArTelepase = 3,
-    /// Brazil toll pass. See additional details at https://conectcar.com.
+    /// Brazil toll pass. See additional details at <https://conectcar.com.>
     BrConectcar = 7,
-    /// Brazil toll pass. See additional details at https://movemais.com.
+    /// Brazil toll pass. See additional details at <https://movemais.com.>
     BrMoveMais = 8,
-    /// Brazil toll pass. See additional details at https://www.semparar.com.br.
+    /// Brazil toll pass. See additional details at <https://www.semparar.com.br.>
     BrSemParar = 9,
-    /// Brazil toll pass. See additional details at https://taggy.com.br.
+    /// Brazil toll pass. See additional details at <https://taggy.com.br.>
     BrTaggy = 10,
     /// Brazil toll pass. See additional details at
-    /// https://veloe.com.br/site/onde-usar.
+    /// <https://veloe.com.br/site/onde-usar.>
     BrVeloe = 11,
+    /// Indonesia.
+    /// E-card provided by multiple banks used to pay for tolls. All e-cards
+    /// via banks are charged the same so only one enum value is needed. E.g.
+    /// Bank Mandiri <https://www.bankmandiri.co.id/e-money>
+    /// BCA <https://www.bca.co.id/flazz>
+    /// BNI <https://www.bni.co.id/id-id/ebanking/tapcash>
+    IdEToll = 16,
     /// Mexico toll pass.
     MxTagIave = 12,
     /// Mexico toll pass company. One of many operating in Mexico City. See
-    /// additional details at https://www.televia.com.mx.
+    /// additional details at <https://www.televia.com.mx.>
     MxTagTelevia = 13,
     /// Mexico toll pass. See additional details at
-    /// https://www.viapass.com.mx/viapass/web_home.aspx.
+    /// <https://www.viapass.com.mx/viapass/web_home.aspx.>
     MxViapass = 14,
     /// State pass of California, United States. Passes vary between Standard,
     /// Flex, and Clean Air. Flex and Clean Air have settings for carpool. See
-    /// additional details at https://www.bayareafastrak.org/en/home/index.shtml.
+    /// additional details at <https://www.bayareafastrak.org/en/home/index.shtml.>
     UsCaFastrak = 4,
     /// State pass of Illinois, United States. See additional details at
-    /// https://www.illinoistollway.com/about-ipass.
+    /// <https://www.illinoistollway.com/about-ipass.>
     UsIlIpass = 5,
     /// State pass of Massachusetts, United States. See additional details at
-    /// https://www.mass.gov/ezdrivema.
+    /// <https://www.mass.gov/ezdrivema.>
     UsMaEzpassma = 6,
     /// State pass of New York, United States. See additional details at
-    /// https://www.e-zpassny.com.
+    /// <https://www.e-zpassny.com.>
     UsNyEzpassny = 15,
     /// State pass of the Washington state, United States.
     UsWaGoodToGo = 1,
@@ -216,8 +223,8 @@ pub struct ComputeRoutesRequest {
     pub route_modifiers: ::core::option::Option<RouteModifiers>,
     /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn". For more
     /// information, see
-    /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. See
-    /// [Language Support](https://developers.google.com/maps/faq#languagesupport)
+    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.> See
+    /// [Language Support](<https://developers.google.com/maps/faq#languagesupport>)
     /// for the list of supported languages. When you don't provide this value, the
     /// display language is inferred from the location of the route request.
     #[prost(string, tag = "10")]
@@ -254,11 +261,13 @@ pub struct RouteModifiers {
     /// Applies only to the `WALK` travel mode.
     #[prost(bool, tag = "4")]
     pub avoid_indoor: bool,
-    /// Optional. Specifies the vehicle information.
+    /// Specifies the vehicle information.
     #[prost(message, optional, tag = "5")]
     pub vehicle_info: ::core::option::Option<VehicleInfo>,
     /// Encapsulates information about toll passes.
-    /// TollPass is unset means no available pass.
+    /// If toll passes are provided, the API tries to return the pass price. If
+    /// toll passes are not provided, the API treats the toll pass as unknown and
+    /// tries to return the cash price.
     /// Applies only to the DRIVE and TWO_WHEELER travel modes.
     #[prost(enumeration = "TollPass", repeated, tag = "6")]
     pub toll_passes: ::prost::alloc::vec::Vec<i32>,
@@ -337,11 +346,9 @@ pub struct ComputeCustomRoutesRequest {
     pub destination: ::core::option::Option<Waypoint>,
     /// Optional. A set of waypoints along the route (excluding terminal points), for either
     /// stopping at or passing by. Up to 25 intermediate waypoints are supported.
-    /// Intermediates are not supported in ComputeCustomRoutes Alpha.
     #[prost(message, repeated, tag = "3")]
     pub intermediates: ::prost::alloc::vec::Vec<Waypoint>,
-    /// Optional. Specifies the mode of transportation. Only DRIVE is supported in
-    /// ComputeCustomRoutes Alpha.
+    /// Optional. Specifies the mode of transportation. Only DRIVE is supported now.
     #[prost(enumeration = "RouteTravelMode", tag = "4")]
     pub travel_mode: i32,
     /// Optional. Specifies how to compute the route. The server attempts to use the selected
@@ -372,8 +379,8 @@ pub struct ComputeCustomRoutesRequest {
     pub route_objective: ::core::option::Option<RouteObjective>,
     /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn". For more
     /// information, see
-    /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. See
-    /// [Language Support](https://developers.google.com/maps/faq#languagesupport)
+    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.> See
+    /// [Language Support](<https://developers.google.com/maps/faq#languagesupport>)
     /// for the list of supported languages. When you don't provide this value, the
     /// display language is inferred from the location of the route request.
     #[prost(string, tag = "9")]
@@ -814,8 +821,7 @@ pub mod compute_custom_routes_response {
     /// the customer, it will fallback to another routing mode. In this case
     /// fallback_routing_mode and routing_mode_fallback_reason are used to
     /// communicate the fallback routing mode used, as well as the reason for
-    /// fallback. Fallback of routing_preference is not supported in
-    /// ComputeCustomRoutes Alpha.
+    /// fallback.
     ///
     /// 2. If it cannot compute a 'best' route for the route objective specified by
     /// the customer, it might fallback to another objective.
@@ -994,7 +1000,7 @@ pub mod routes_preferred_client {
     impl<T> RoutesPreferredClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1007,7 +1013,7 @@ pub mod routes_preferred_client {
             interceptor: F,
         ) -> RoutesPreferredClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1135,9 +1141,57 @@ pub mod routes_preferred_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.routes.v1.RoutesPreferred/ComputeRouteMatrix",
             );
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
+        }
+        #[doc = " Given a set of terminal and intermediate waypoints, and a route objective,"]
+        #[doc = " computes the best route for the route objective. Also returns fastest route"]
+        #[doc = " and shortest route as reference routes."]
+        #[doc = ""]
+        #[doc = " **NOTE:** This method requires that you specify a response field mask in"]
+        #[doc = " the input. You can provide the response field mask by using the URL"]
+        #[doc = " parameter `$fields` or `fields`, or by using the HTTP/gRPC header"]
+        #[doc = " `X-Goog-FieldMask` (see the [available URL parameters and"]
+        #[doc = " headers](https://cloud.google.com/apis/docs/system-parameters). The value"]
+        #[doc = " is a comma separated list of field paths. See this detailed documentation"]
+        #[doc = " about [how to construct the field"]
+        #[doc = " paths](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/field_mask.proto)."]
+        #[doc = ""]
+        #[doc = " For example, in this method:"]
+        #[doc = ""]
+        #[doc = " * Field mask of all available fields (for manual inspection):"]
+        #[doc = "   `X-Goog-FieldMask: *`"]
+        #[doc = " * Field mask of route distances, durations, token and toll info:"]
+        #[doc = "   `X-Goog-FieldMask:"]
+        #[doc = "   routes.route.distanceMeters,routes.route.duration,routes.token,routes.route.travelAdvisory.tollInfo`"]
+        #[doc = ""]
+        #[doc = " Google discourages the use of the wildcard (`*`) response field mask, or"]
+        #[doc = " specifying the field mask at the top level (`routes`), because:"]
+        #[doc = ""]
+        #[doc = " * Selecting only the fields that you need helps our server save computation"]
+        #[doc = " cycles, allowing us to return the result to you with a lower latency."]
+        #[doc = " * Selecting only the fields that you need in your production job ensures"]
+        #[doc = " stable latency performance. We might add more response fields in the"]
+        #[doc = " future, and those new fields might require extra computation time. If you"]
+        #[doc = " select all fields, or if you select all fields at the top level, then you"]
+        #[doc = " might experience performance degradation because any new field we add will"]
+        #[doc = " be automatically included in the response."]
+        #[doc = " * Selecting only the fields that you need results in a smaller response"]
+        #[doc = " size, and thus higher network throughput."]
+        pub async fn compute_custom_routes(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ComputeCustomRoutesRequest>,
+        ) -> Result<tonic::Response<super::ComputeCustomRoutesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.maps.routes.v1.RoutesPreferred/ComputeCustomRoutes",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }

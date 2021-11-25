@@ -75,7 +75,7 @@ pub struct Action {
     /// If the specified image is not public, the service account specified for
     /// the Virtual Machine must have access to pull the images from GCR, or
     /// appropriate credentials must be specified in the
-    /// [google.cloud.lifesciences.v2beta.Action.credentials][google.cloud.lifesciences.v2beta.Action.credentials] field.
+    /// \[google.cloud.lifesciences.v2beta.Action.credentials][google.cloud.lifesciences.v2beta.Action.credentials\] field.
     #[prost(string, tag = "2")]
     pub image_uri: ::prost::alloc::string::String,
     /// If specified, overrides the `CMD` specified in the container. If the
@@ -88,7 +88,7 @@ pub struct Action {
     #[prost(string, tag = "4")]
     pub entrypoint: ::prost::alloc::string::String,
     /// The environment to pass into the container. This environment is merged
-    /// with values specified in the [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]
+    /// with values specified in the \[google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline\]
     /// message, overwriting any duplicate values.
     ///
     /// In addition to the values passed here, a few other values are
@@ -259,7 +259,7 @@ pub struct VirtualMachine {
     /// type (such as "custom-1-4096", where "1" indicates the number of vCPUs and
     /// "4096" indicates the memory in MB). See
     /// [Creating an instance with a custom machine
-    /// type](https://cloud.google.com/compute/docs/instances/creating-instance-with-custom-machine-type#create)
+    /// type](<https://cloud.google.com/compute/docs/instances/creating-instance-with-custom-machine-type#create>)
     /// for more specifications on creating a custom machine type.
     #[prost(string, tag = "1")]
     pub machine_type: ::prost::alloc::string::String,
@@ -268,7 +268,7 @@ pub struct VirtualMachine {
     pub preemptible: bool,
     /// Optional set of labels to apply to the VM and any attached disk resources.
     /// These labels must adhere to the [name and value
-    /// restrictions](https://cloud.google.com/compute/docs/labeling-resources) on
+    /// restrictions](<https://cloud.google.com/compute/docs/labeling-resources>) on
     /// VM labels imposed by Compute Engine.
     ///
     /// Labels keys with the prefix 'google-' are reserved for use by Google.
@@ -306,7 +306,7 @@ pub struct VirtualMachine {
     /// loads where the CPU platform has a significant impact.
     ///
     /// For more information about the effect of this parameter, see
-    /// https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.
+    /// <https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.>
     #[prost(string, tag = "9")]
     pub cpu_platform: ::prost::alloc::string::String,
     /// The host operating system image to use.
@@ -394,7 +394,7 @@ pub struct Network {
     /// without a public IP address, additional configuration is required to
     /// allow the VM to access Google services.
     ///
-    /// See https://cloud.google.com/vpc/docs/configure-private-google-access
+    /// See <https://cloud.google.com/vpc/docs/configure-private-google-access>
     /// for more information.
     #[prost(bool, tag = "2")]
     pub use_private_address: bool,
@@ -412,11 +412,11 @@ pub struct Network {
 }
 /// Carries information about a disk that can be attached to a VM.
 ///
-/// See https://cloud.google.com/compute/docs/disks/performance for more
+/// See <https://cloud.google.com/compute/docs/disks/performance> for more
 /// information about disk type, size, and performance considerations.
 ///
-/// Specify either [`Volume`][google.cloud.lifesciences.v2beta.Volume] or
-/// [`Disk`][google.cloud.lifesciences.v2beta.Disk], but not both.
+/// Specify either \[`Volume`][google.cloud.lifesciences.v2beta.Volume\] or
+/// \[`Disk`][google.cloud.lifesciences.v2beta.Disk\], but not both.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Disk {
     /// A user-supplied name for the disk. Used when mounting the disk into
@@ -442,12 +442,12 @@ pub struct Disk {
 }
 /// Carries information about storage that can be attached to a VM.
 ///
-/// Specify either [`Volume`][google.cloud.lifesciences.v2beta.Volume] or
-/// [`Disk`][google.cloud.lifesciences.v2beta.Disk], but not both.
+/// Specify either \[`Volume`][google.cloud.lifesciences.v2beta.Volume\] or
+/// \[`Disk`][google.cloud.lifesciences.v2beta.Disk\], but not both.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Volume {
     /// A user-supplied name for the volume. Used when mounting the volume into
-    /// [`Actions`][google.cloud.lifesciences.v2beta.Action]. The name must contain
+    /// \[`Actions`][google.cloud.lifesciences.v2beta.Action\]. The name must contain
     /// only upper and lowercase alphanumeric characters and hyphens and cannot
     /// start with a hyphen.
     #[prost(string, tag = "1")]
@@ -472,7 +472,7 @@ pub mod volume {
 }
 /// Configuration for a persistent disk to be attached to the VM.
 ///
-/// See https://cloud.google.com/compute/docs/disks/performance for more
+/// See <https://cloud.google.com/compute/docs/disks/performance> for more
 /// information about disk type, size, and performance considerations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PersistentDisk {
@@ -556,10 +556,7 @@ pub struct Event {
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Machine-readable details about the event.
-    #[prost(
-        oneof = "event::Details",
-        tags = "17, 18, 19, 20, 21, 22, 23, 24, 25, 26"
-    )]
+    #[prost(oneof = "event::Details", tags = "17, 18, 19, 20, 21, 22, 23, 24, 25, 26")]
     pub details: ::core::option::Option<event::Details>,
 }
 /// Nested message and enum types in `Event`.
@@ -567,34 +564,34 @@ pub mod event {
     /// Machine-readable details about the event.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
-        /// See [google.cloud.lifesciences.v2beta.DelayedEvent][google.cloud.lifesciences.v2beta.DelayedEvent].
+        /// See \[google.cloud.lifesciences.v2beta.DelayedEvent][google.cloud.lifesciences.v2beta.DelayedEvent\].
         #[prost(message, tag = "17")]
         Delayed(super::DelayedEvent),
-        /// See [google.cloud.lifesciences.v2beta.WorkerAssignedEvent][google.cloud.lifesciences.v2beta.WorkerAssignedEvent].
+        /// See \[google.cloud.lifesciences.v2beta.WorkerAssignedEvent][google.cloud.lifesciences.v2beta.WorkerAssignedEvent\].
         #[prost(message, tag = "18")]
         WorkerAssigned(super::WorkerAssignedEvent),
-        /// See [google.cloud.lifesciences.v2beta.WorkerReleasedEvent][google.cloud.lifesciences.v2beta.WorkerReleasedEvent].
+        /// See \[google.cloud.lifesciences.v2beta.WorkerReleasedEvent][google.cloud.lifesciences.v2beta.WorkerReleasedEvent\].
         #[prost(message, tag = "19")]
         WorkerReleased(super::WorkerReleasedEvent),
-        /// See [google.cloud.lifesciences.v2beta.PullStartedEvent][google.cloud.lifesciences.v2beta.PullStartedEvent].
+        /// See \[google.cloud.lifesciences.v2beta.PullStartedEvent][google.cloud.lifesciences.v2beta.PullStartedEvent\].
         #[prost(message, tag = "20")]
         PullStarted(super::PullStartedEvent),
-        /// See [google.cloud.lifesciences.v2beta.PullStoppedEvent][google.cloud.lifesciences.v2beta.PullStoppedEvent].
+        /// See \[google.cloud.lifesciences.v2beta.PullStoppedEvent][google.cloud.lifesciences.v2beta.PullStoppedEvent\].
         #[prost(message, tag = "21")]
         PullStopped(super::PullStoppedEvent),
-        /// See [google.cloud.lifesciences.v2beta.ContainerStartedEvent][google.cloud.lifesciences.v2beta.ContainerStartedEvent].
+        /// See \[google.cloud.lifesciences.v2beta.ContainerStartedEvent][google.cloud.lifesciences.v2beta.ContainerStartedEvent\].
         #[prost(message, tag = "22")]
         ContainerStarted(super::ContainerStartedEvent),
-        /// See [google.cloud.lifesciences.v2beta.ContainerStoppedEvent][google.cloud.lifesciences.v2beta.ContainerStoppedEvent].
+        /// See \[google.cloud.lifesciences.v2beta.ContainerStoppedEvent][google.cloud.lifesciences.v2beta.ContainerStoppedEvent\].
         #[prost(message, tag = "23")]
         ContainerStopped(super::ContainerStoppedEvent),
-        /// See [google.cloud.lifesciences.v2beta.ContainerKilledEvent][google.cloud.lifesciences.v2beta.ContainerKilledEvent].
+        /// See \[google.cloud.lifesciences.v2beta.ContainerKilledEvent][google.cloud.lifesciences.v2beta.ContainerKilledEvent\].
         #[prost(message, tag = "24")]
         ContainerKilled(super::ContainerKilledEvent),
-        /// See [google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent][google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent].
+        /// See \[google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent][google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent\].
         #[prost(message, tag = "25")]
         UnexpectedExitStatus(super::UnexpectedExitStatusEvent),
-        /// See [google.cloud.lifesciences.v2beta.FailedEvent][google.cloud.lifesciences.v2beta.FailedEvent].
+        /// See \[google.cloud.lifesciences.v2beta.FailedEvent][google.cloud.lifesciences.v2beta.FailedEvent\].
         #[prost(message, tag = "26")]
         Failed(super::FailedEvent),
     }
@@ -738,7 +735,7 @@ pub mod workflows_service_v2_beta_client {
     impl<T> WorkflowsServiceV2BetaClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -751,7 +748,7 @@ pub mod workflows_service_v2_beta_client {
             interceptor: F,
         ) -> WorkflowsServiceV2BetaClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

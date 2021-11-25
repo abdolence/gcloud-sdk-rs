@@ -1,7 +1,7 @@
 /// An object that represents a latitude/longitude pair. This is expressed as a
 /// pair of doubles to represent degrees latitude and degrees longitude. Unless
 /// specified otherwise, this must conform to the
-/// <a href="http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf">WGS84
+/// <a href="<http://www.unoosa.org/pdf/icg/2012/template/WGS_84.pdf">WGS84>
 /// standard</a>. Values must be within normalized ranges.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LatLng {
@@ -23,7 +23,7 @@ pub struct LatLng {
 /// * A year and month value, with a zero day, such as a credit card expiration
 /// date
 ///
-/// Related types are [google.type.TimeOfDay][google.type.TimeOfDay] and
+/// Related types are \[google.type.TimeOfDay][google.type.TimeOfDay\] and
 /// `google.protobuf.Timestamp`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Date {
@@ -122,7 +122,7 @@ pub mod date_time {
     }
 }
 /// Represents a time zone from the
-/// [IANA Time Zone Database](https://www.iana.org/time-zones).
+/// [IANA Time Zone Database](<https://www.iana.org/time-zones>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeZone {
     /// IANA Time Zone Database time zone, e.g. "America/New_York".
@@ -134,7 +134,7 @@ pub struct TimeZone {
 }
 /// Represents a textual expression in the Common Expression Language (CEL)
 /// syntax. CEL is a C-like expression language. The syntax and semantics of CEL
-/// are documented at https://github.com/google/cel-spec.
+/// are documented at <https://github.com/google/cel-spec.>
 ///
 /// Example (Comparison):
 ///
@@ -317,7 +317,7 @@ pub struct Money {
 ///       var rgbNumber = new Number((red << 16) | (green << 8) | blue);
 ///       var hexString = rgbNumber.toString(16);
 ///       var missingZeros = 6 - hexString.length;
-///       var resultBuilder = ['#'];
+///       var resultBuilder = \['#'\];
 ///       for (var i = 0; i < missingZeros; i++) {
 ///          resultBuilder.push('0');
 ///       }
@@ -362,12 +362,12 @@ pub struct Color {
 ///
 /// Advice on address input / editing:
 ///  - Use an i18n-ready address widget such as
-///    https://github.com/google/libaddressinput)
+///    <https://github.com/google/libaddressinput>)
 /// - Users should not be presented with UI elements for input or editing of
 ///   fields outside countries where that field is used.
 ///
 /// For more guidance on how to use this schema, please see:
-/// https://support.google.com/business/answer/6397478
+/// <https://support.google.com/business/answer/6397478>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PostalAddress {
     /// The schema revision of the `PostalAddress`. This must be set to 0, which is
@@ -378,8 +378,8 @@ pub struct PostalAddress {
     pub revision: i32,
     /// Required. CLDR region code of the country/region of the address. This
     /// is never inferred and it is up to the user to ensure the value is
-    /// correct. See http://cldr.unicode.org/ and
-    /// http://www.unicode.org/cldr/charts/30/supplemental/territory_information.html
+    /// correct. See <http://cldr.unicode.org/> and
+    /// <http://www.unicode.org/cldr/charts/30/supplemental/territory_information.html>
     /// for details. Example: "CH" for Switzerland.
     #[prost(string, tag = "2")]
     pub region_code: ::prost::alloc::string::String,
@@ -485,7 +485,7 @@ pub enum DayOfWeek {
 }
 /// Represents a time of day. The date and time zone are either not significant
 /// or are specified elsewhere. An API may choose to allow leap seconds. Related
-/// types are [google.type.Date][google.type.Date] and
+/// types are \[google.type.Date][google.type.Date\] and
 /// `google.protobuf.Timestamp`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeOfDay {
@@ -515,11 +515,11 @@ pub enum CalendarPeriod {
     /// A day.
     Day = 1,
     /// A week. Weeks begin on Monday, following
-    /// [ISO 8601](https://en.wikipedia.org/wiki/ISO_week_date).
+    /// [ISO 8601](<https://en.wikipedia.org/wiki/ISO_week_date>).
     Week = 2,
     /// A fortnight. The first calendar fortnight of the year begins at the start
     /// of week 1 according to
-    /// [ISO 8601](https://en.wikipedia.org/wiki/ISO_week_date).
+    /// [ISO 8601](<https://en.wikipedia.org/wiki/ISO_week_date>).
     Fortnight = 3,
     /// A month.
     Month = 4,
@@ -532,12 +532,12 @@ pub enum CalendarPeriod {
     Year = 7,
 }
 /// A representation of a decimal value, such as 2.5. Clients may convert values
-/// into language-native decimal formats, such as Java's [BigDecimal][] or
-/// Python's [decimal.Decimal][].
+/// into language-native decimal formats, such as Java's \[BigDecimal][\] or
+/// Python's \[decimal.Decimal][\].
 ///
-/// [BigDecimal]:
-/// https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/math/BigDecimal.html
-/// [decimal.Decimal]: https://docs.python.org/3/library/decimal.html
+/// \[BigDecimal\]:
+/// <https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/math/BigDecimal.html>
+/// \[decimal.Decimal\]: <https://docs.python.org/3/library/decimal.html>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Decimal {
     /// The decimal value, as a string.
@@ -576,14 +576,14 @@ pub struct Decimal {
     /// The ENBF grammar is:
     ///
     ///     DecimalString =
-    ///       [Sign] Significand [Exponent];
+    ///       \[Sign\] Significand \[Exponent\];
     ///
     ///     Sign = '+' | '-';
     ///
     ///     Significand =
-    ///       Digits ['.'] [Digits] | [Digits] '.' Digits;
+    ///       Digits \['.'\] \[Digits\] | \[Digits\] '.' Digits;
     ///
-    ///     Exponent = ('e' | 'E') [Sign] Digits;
+    ///     Exponent = ('e' | 'E') \[Sign\] Digits;
     ///
     ///     Digits = { '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' };
     ///
@@ -644,7 +644,7 @@ pub struct LocalizedText {
     /// The text's BCP-47 language code, such as "en-US" or "sr-Latn".
     ///
     /// For more information, see
-    /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
     #[prost(string, tag = "2")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -704,7 +704,7 @@ pub enum Month {
 ///    }
 ///
 ///  Reference(s):
-///   - https://github.com/google/libphonenumber
+///   - <https://github.com/google/libphonenumber>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhoneNumber {
     /// The phone number's extension. The extension is not standardized in ITU
@@ -741,7 +741,7 @@ pub mod phone_number {
         /// short code can be made, such as "US" and "BB".
         ///
         /// Reference(s):
-        ///  - http://www.unicode.org/reports/tr35/#unicode_region_subtag
+        ///  - <http://www.unicode.org/reports/tr35/#unicode_region_subtag>
         #[prost(string, tag = "1")]
         pub region_code: ::prost::alloc::string::String,
         /// Required. The short code digits, without a leading plus ('+') or country
@@ -766,28 +766,28 @@ pub mod phone_number {
         /// National-only numbers are not allowed.
         ///
         /// References:
-        ///  - https://www.itu.int/rec/T-REC-E.164-201011-I
-        ///  - https://en.wikipedia.org/wiki/E.164.
-        ///  - https://en.wikipedia.org/wiki/List_of_country_calling_codes
+        ///  - <https://www.itu.int/rec/T-REC-E.164-201011-I>
+        ///  - <https://en.wikipedia.org/wiki/E.164.>
+        ///  - <https://en.wikipedia.org/wiki/List_of_country_calling_codes>
         #[prost(string, tag = "1")]
         E164Number(::prost::alloc::string::String),
         /// A short code.
         ///
         /// Reference(s):
-        ///  - https://en.wikipedia.org/wiki/Short_code
+        ///  - <https://en.wikipedia.org/wiki/Short_code>
         #[prost(message, tag = "2")]
         ShortCode(ShortCode),
     }
 }
 /// A quaternion is defined as the quotient of two directed lines in a
 /// three-dimensional space or equivalently as the quotient of two Euclidean
-/// vectors (https://en.wikipedia.org/wiki/Quaternion).
+/// vectors (<https://en.wikipedia.org/wiki/Quaternion>).
 ///
 /// Quaternions are often used in calculations involving three-dimensional
-/// rotations (https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation),
+/// rotations (<https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation>),
 /// as they provide greater mathematical robustness by avoiding the gimbal lock
 /// problems that can be encountered when using Euler angles
-/// (https://en.wikipedia.org/wiki/Gimbal_lock).
+/// (<https://en.wikipedia.org/wiki/Gimbal_lock>).
 ///
 /// Quaternions are generally represented in this form:
 ///
@@ -827,7 +827,7 @@ pub mod phone_number {
 /// quaternion maintains the same direction, but has a norm of 1, i.e. it moves
 /// on the unit sphere. This is generally necessary for rotation and orientation
 /// quaternions, to avoid rounding errors:
-/// https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions
+/// <https://en.wikipedia.org/wiki/Rotation_formalisms_in_three_dimensions>
 ///
 /// Note that `(x, y, z, w)` and `(-x, -y, -z, -w)` represent the same rotation,
 /// but normalization would be even more useful, e.g. for comparison purposes, if

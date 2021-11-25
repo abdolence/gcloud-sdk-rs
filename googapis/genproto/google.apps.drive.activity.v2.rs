@@ -71,7 +71,7 @@ pub mod user {
     pub struct KnownUser {
         /// The identifier for this user that can be used with the People API to get
         /// more information. The format is `people/ACCOUNT_ID`. See
-        /// https://developers.google.com/people/.
+        /// <https://developers.google.com/people/.>
         #[prost(string, tag = "1")]
         pub person_name: ::prost::alloc::string::String,
         /// True if this is the user making the request.
@@ -190,17 +190,17 @@ pub mod target_reference {
 pub struct FileComment {
     /// The comment in the discussion thread. This identifier is an opaque string
     /// compatible with the Drive API; see
-    /// https://developers.google.com/drive/v3/reference/comments/get
+    /// <https://developers.google.com/drive/v3/reference/comments/get>
     #[prost(string, tag = "1")]
     pub legacy_comment_id: ::prost::alloc::string::String,
     /// The discussion thread to which the comment was added. This identifier is an
     /// opaque string compatible with the Drive API and references the first
     /// comment in a discussion; see
-    /// https://developers.google.com/drive/v3/reference/comments/get
+    /// <https://developers.google.com/drive/v3/reference/comments/get>
     #[prost(string, tag = "2")]
     pub legacy_discussion_id: ::prost::alloc::string::String,
     /// The link to the discussion thread containing this comment, for example,
-    /// `https://docs.google.com/DOCUMENT_ID/edit?disco=THREAD_ID`.
+    /// `<https://docs.google.com/DOCUMENT_ID/edit?disco=THREAD_ID`.>
     #[prost(string, tag = "3")]
     pub link_to_discussion: ::prost::alloc::string::String,
     /// The Drive item containing this comment.
@@ -225,7 +225,7 @@ pub struct DriveItem {
     #[prost(message, optional, tag = "4")]
     pub folder: ::core::option::Option<drive_item::Folder>,
     /// The MIME type of the Drive item.  See
-    /// https://developers.google.com/drive/v3/web/mime-types.
+    /// <https://developers.google.com/drive/v3/web/mime-types.>
     #[prost(string, tag = "6")]
     pub mime_type: ::prost::alloc::string::String,
     /// Information about the owner of this Drive item.
@@ -452,10 +452,7 @@ pub mod action {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionDetail {
     /// Data describing the type and additional information of an action.
-    #[prost(
-        oneof = "action_detail::ActionDetail",
-        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13"
-    )]
+    #[prost(oneof = "action_detail::ActionDetail", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13")]
     pub action_detail: ::core::option::Option<action_detail::ActionDetail>,
 }
 /// Nested message and enum types in `ActionDetail`.
@@ -615,7 +612,7 @@ pub struct PermissionChange {
 pub struct Permission {
     /// Indicates the
     /// [Google Drive permissions
-    /// role](https://developers.google.com/drive/web/manage-sharing#roles). The
+    /// role](<https://developers.google.com/drive/web/manage-sharing#roles>). The
     /// role determines a user's ability to read, write, and comment on items.
     #[prost(enumeration = "permission::Role", tag = "1")]
     pub role: i32,
@@ -633,7 +630,7 @@ pub mod permission {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Anyone {}
     /// The [Google Drive permissions
-    /// roles](https://developers.google.com/drive/web/manage-sharing#roles).
+    /// roles](<https://developers.google.com/drive/web/manage-sharing#roles>).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Role {
@@ -655,7 +652,7 @@ pub mod permission {
         Viewer = 6,
         /// A role granting the ability to view content only after it has been
         /// published to the web. This role is sometimes also known as "published
-        /// reader". See https://support.google.com/sites/answer/6372880 for more
+        /// reader". See <https://support.google.com/sites/answer/6372880> for more
         /// information.
         PublishedViewer = 7,
     }
@@ -1062,7 +1059,7 @@ pub mod drive_activity_service_client {
     impl<T> DriveActivityServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1075,7 +1072,7 @@ pub mod drive_activity_service_client {
             interceptor: F,
         ) -> DriveActivityServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

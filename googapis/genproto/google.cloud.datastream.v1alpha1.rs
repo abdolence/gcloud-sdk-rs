@@ -69,10 +69,7 @@ pub struct ForwardSshTunnelConnectivity {
     /// Port for the SSH tunnel, default value is 22.
     #[prost(int32, tag = "3")]
     pub port: i32,
-    #[prost(
-        oneof = "forward_ssh_tunnel_connectivity::AuthenticationMethod",
-        tags = "100, 101"
-    )]
+    #[prost(oneof = "forward_ssh_tunnel_connectivity::AuthenticationMethod", tags = "100, 101")]
     pub authentication_method:
         ::core::option::Option<forward_ssh_tunnel_connectivity::AuthenticationMethod>,
 }
@@ -226,10 +223,7 @@ pub struct ConnectionProfile {
     #[prost(oneof = "connection_profile::Profile", tags = "100, 101, 102")]
     pub profile: ::core::option::Option<connection_profile::Profile>,
     /// Connectivity options used to establish a connection to the profile.
-    #[prost(
-        oneof = "connection_profile::Connectivity",
-        tags = "200, 201, 202, 203"
-    )]
+    #[prost(oneof = "connection_profile::Connectivity", tags = "200, 201, 202, 203")]
     pub connectivity: ::core::option::Option<connection_profile::Connectivity>,
 }
 /// Nested message and enum types in `ConnectionProfile`.
@@ -341,7 +335,7 @@ pub struct MysqlColumn {
     #[prost(string, tag = "1")]
     pub column_name: ::prost::alloc::string::String,
     /// The MySQL data type. Full data types list can be found here:
-    /// https://dev.mysql.com/doc/refman/8.0/en/data-types.html
+    /// <https://dev.mysql.com/doc/refman/8.0/en/data-types.html>
     #[prost(string, tag = "2")]
     pub data_type: ::prost::alloc::string::String,
     /// Column length.
@@ -722,18 +716,12 @@ pub struct DiscoverConnectionProfileRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The connection profile on which to run discover.
-    #[prost(
-        oneof = "discover_connection_profile_request::Target",
-        tags = "200, 201"
-    )]
+    #[prost(oneof = "discover_connection_profile_request::Target", tags = "200, 201")]
     pub target: ::core::option::Option<discover_connection_profile_request::Target>,
     #[prost(oneof = "discover_connection_profile_request::Depth", tags = "3, 4")]
     pub depth: ::core::option::Option<discover_connection_profile_request::Depth>,
     /// The data object to enrich with child data objects and metadata.
-    #[prost(
-        oneof = "discover_connection_profile_request::DataObject",
-        tags = "100, 101"
-    )]
+    #[prost(oneof = "discover_connection_profile_request::DataObject", tags = "100, 101")]
     pub data_object: ::core::option::Option<discover_connection_profile_request::DataObject>,
 }
 /// Nested message and enum types in `DiscoverConnectionProfileRequest`.
@@ -772,10 +760,7 @@ pub mod discover_connection_profile_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoverConnectionProfileResponse {
     /// The data object that has been enriched by the discover API call.
-    #[prost(
-        oneof = "discover_connection_profile_response::DataObject",
-        tags = "100, 101"
-    )]
+    #[prost(oneof = "discover_connection_profile_response::DataObject", tags = "100, 101")]
     pub data_object: ::core::option::Option<discover_connection_profile_response::DataObject>,
 }
 /// Nested message and enum types in `DiscoverConnectionProfileResponse`.
@@ -1103,7 +1088,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1321,7 +1306,7 @@ pub mod datastream_client {
     impl<T> DatastreamClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1334,7 +1319,7 @@ pub mod datastream_client {
             interceptor: F,
         ) -> DatastreamClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

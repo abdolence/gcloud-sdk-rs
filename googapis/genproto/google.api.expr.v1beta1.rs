@@ -11,8 +11,8 @@ pub struct SourceInfo {
     /// Monotonically increasing list of character offsets where newlines appear.
     ///
     /// The line number of a given position is the index `i` where for a given
-    /// `id` the `line_offsets[i] < id_positions[id] < line_offsets[i+1]`. The
-    /// column may be derivd from `id_positions[id] - line_offsets[i]`.
+    /// `id` the `line_offsets\[i\] < id_positions\[id\] < line_offsets\[i+1\]`. The
+    /// column may be derivd from `id_positions\[id\] - line_offsets\[i\]`.
     #[prost(int32, repeated, tag = "3")]
     pub line_offsets: ::prost::alloc::vec::Vec<i32>,
     /// A map from the parse node id (e.g. `Expr.id`) to the character offset
@@ -58,13 +58,13 @@ pub struct ParsedExpr {
 /// operators with the exception of the '.' operator are modelled as function
 /// calls. This makes it easy to represent new operators into the existing AST.
 ///
-/// All references within expressions must resolve to a [Decl][google.api.expr.v1beta1.Decl] provided at
+/// All references within expressions must resolve to a \[Decl][google.api.expr.v1beta1.Decl\] provided at
 /// type-check for an expression to be valid. A reference may either be a bare
 /// identifier `name` or a qualified identifier `google.api.name`. References
 /// may either refer to a value or a function declaration.
 ///
 /// For example, the expression `google.api.name.startsWith('expr')` references
-/// the declaration `google.api.name` within a [Expr.Select][google.api.expr.v1beta1.Expr.Select] expression, and
+/// the declaration `google.api.name` within a \[Expr.Select][google.api.expr.v1beta1.Expr.Select\] expression, and
 /// the function declaration `startsWith`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Expr {
@@ -85,7 +85,7 @@ pub mod expr {
         /// Required. Holds a single, unqualified identifier, possibly preceded by a
         /// '.'.
         ///
-        /// Qualified names are represented by the [Expr.Select][google.api.expr.v1beta1.Expr.Select] expression.
+        /// Qualified names are represented by the \[Expr.Select][google.api.expr.v1beta1.Expr.Select\] expression.
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
     }
@@ -272,7 +272,7 @@ pub mod expr {
 /// primitives.
 ///
 /// Lists and structs are not included as constants as these aggregate types may
-/// contain [Expr][google.api.expr.v1beta1.Expr] elements which require evaluation and are thus not constant.
+/// contain \[Expr][google.api.expr.v1beta1.Expr\] elements which require evaluation and are thus not constant.
 ///
 /// Examples of literals include: `"hello"`, `b'bytes'`, `1u`, `4.2`, `-2`,
 /// `true`, `null`.
@@ -550,11 +550,11 @@ pub mod expr_value {
         /// unknowns *might* be included included when evaluation could result in
         /// different unknowns. For example:
         ///
-        ///     (<unknown[1]> || true) && <unknown[2]> -> <unknown[2]>
-        ///     <unknown[1]> || <unknown[2]> -> <unknown[1,2]>
-        ///     <unknown[1]>.foo -> <unknown[1]>
-        ///     foo(<unknown[1]>) -> <unknown[1]>
-        ///     <unknown[1]> + <unknown[2]> -> <unknown[1]> or <unknown[2[>
+        ///     (<unknown\[1\]> || true) && <unknown\[2\]> -> <unknown\[2\]>
+        ///     <unknown\[1\]> || <unknown\[2\]> -> <unknown\[1,2\]>
+        ///     <unknown\[1\]>.foo -> <unknown\[1\]>
+        ///     foo(<unknown\[1\]>) -> <unknown\[1\]>
+        ///     <unknown\[1\]> + <unknown\[2\]> -> <unknown\[1\]> or <unknown[2[>
         ///
         /// Unknown takes precidence over Error in cases where a `Value` can short
         /// circuit the result:

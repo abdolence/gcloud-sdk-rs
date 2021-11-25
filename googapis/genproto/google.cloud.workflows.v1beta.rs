@@ -83,7 +83,7 @@ pub mod workflow {
     }
 }
 /// Request for the
-/// [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
+/// \[ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowsRequest {
@@ -115,7 +115,7 @@ pub struct ListWorkflowsRequest {
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response for the
-/// [ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows]
+/// \[ListWorkflows][google.cloud.workflows.v1beta.Workflows.ListWorkflows\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowsResponse {
@@ -131,7 +131,7 @@ pub struct ListWorkflowsResponse {
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for the
-/// [GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow] method.
+/// \[GetWorkflow][google.cloud.workflows.v1beta.Workflows.GetWorkflow\] method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkflowRequest {
     /// Required. Name of the workflow which information should be retrieved.
@@ -140,7 +140,7 @@ pub struct GetWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow]
+/// \[CreateWorkflow][google.cloud.workflows.v1beta.Workflows.CreateWorkflow\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkflowRequest {
@@ -163,7 +163,7 @@ pub struct CreateWorkflowRequest {
     pub workflow_id: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow]
+/// \[DeleteWorkflow][google.cloud.workflows.v1beta.Workflows.DeleteWorkflow\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkflowRequest {
@@ -173,7 +173,7 @@ pub struct DeleteWorkflowRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the
-/// [UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow]
+/// \[UpdateWorkflow][google.cloud.workflows.v1beta.Workflows.UpdateWorkflow\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkflowRequest {
@@ -218,7 +218,7 @@ pub mod workflows_client {
     impl<T> WorkflowsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -231,7 +231,7 @@ pub mod workflows_client {
             interceptor: F,
         ) -> WorkflowsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

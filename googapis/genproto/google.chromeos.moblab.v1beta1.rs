@@ -141,11 +141,39 @@ pub struct ListBuildTargetsResponse {
     /// The list of build targets.
     #[prost(message, repeated, tag = "1")]
     pub build_targets: ::prost::alloc::vec::Vec<BuildTarget>,
-    /// Token to retrieve the next page of builds. If this field is omitted, there
-    /// are no subsequent pages.
+    /// Token to retrieve the next page of build targets. If this field is omitted,
+    /// there are no subsequent pages.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Total number of build targets.
+    #[prost(int32, tag = "3")]
+    pub total_size: i32,
+}
+/// Request message for listing models.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListModelsRequest {
+    /// Required. The full resource name of build target.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Optional. The number of models to return in a page.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A page token, received from a previous `ListModels` call. Provide
+    /// this to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing models.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListModelsResponse {
+    /// The list of models.
+    #[prost(message, repeated, tag = "1")]
+    pub models: ::prost::alloc::vec::Vec<Model>,
+    /// Token to retrieve the next page of models. If this field is omitted, there
+    /// are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+    /// Total number of models.
     #[prost(int32, tag = "3")]
     pub total_size: i32,
 }
@@ -271,7 +299,7 @@ pub mod build_service_client {
     impl<T> BuildServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -284,7 +312,7 @@ pub mod build_service_client {
             interceptor: F,
         ) -> BuildServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -323,6 +351,23 @@ pub mod build_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.chromeos.moblab.v1beta1.BuildService/ListBuildTargets",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists all models for the given build target."]
+        pub async fn list_models(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListModelsRequest>,
+        ) -> Result<tonic::Response<super::ListModelsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.chromeos.moblab.v1beta1.BuildService/ListModels",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

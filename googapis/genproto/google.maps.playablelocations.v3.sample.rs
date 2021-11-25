@@ -15,7 +15,7 @@ pub struct PlayableLocation {
     /// playable location.
     ///
     /// By default, the set of playable locations returned from
-    /// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations]
+    /// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
     /// use center-point coordinates.
     #[prost(message, optional, tag = "5")]
     pub center_point: ::core::option::Option<super::super::super::super::r#type::LatLng>,
@@ -34,10 +34,10 @@ pub mod playable_location {
     /// Each location has one of the following identifiers:
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum LocationId {
-        /// A [place ID] (https://developers.google.com/places/place-id)
+        /// A [place ID] (<https://developers.google.com/places/place-id>)
         #[prost(string, tag = "2")]
         PlaceId(::prost::alloc::string::String),
-        /// A [plus code] (http://openlocationcode.com)
+        /// A [plus code] (<http://openlocationcode.com>)
         #[prost(string, tag = "3")]
         PlusCode(::prost::alloc::string::String),
     }
@@ -63,7 +63,7 @@ pub struct SpacingOptions {
     ///   * Rank: A: 2, B: 1, C: 3.
     ///   * Distance: A--200m--B--200m--C
     ///
-    /// If spacing=250, it will pick the highest ranked location [B], not [A, C].
+    /// If spacing=250, it will pick the highest ranked location \[B\], not [A, C].
     ///
     ///
     /// Note:
@@ -128,7 +128,7 @@ pub struct Filter {
     #[prost(message, optional, tag = "2")]
     pub spacing: ::core::option::Option<SpacingOptions>,
     /// Restricts the set of playable locations to just the
-    /// [types](/maps/tt/games/types) that you want.
+    /// \[types\](/maps/tt/games/types) that you want.
     #[prost(string, repeated, tag = "3")]
     pub included_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -178,10 +178,10 @@ pub struct AreaFilter {
     ///
     /// The S2 geometry library is available in a number of languages:
     ///
-    ///   * [C++](https://github.com/google/s2geometry)
-    ///   * [Java](https://github.com/google/s2-geometry-library-java)
-    ///   * [Go](https://github.com/golang/geo)
-    ///   * [Python](https://github.com/google/s2geometry/tree/master/src/python)
+    ///   * \[C++\](<https://github.com/google/s2geometry>)
+    ///   * \[Java\](<https://github.com/google/s2-geometry-library-java>)
+    ///   * \[Go\](<https://github.com/golang/geo>)
+    ///   * \[Python\](<https://github.com/google/s2geometry/tree/master/src/python>)
     #[prost(fixed64, tag = "1")]
     pub s2_cell_id: u64,
 }

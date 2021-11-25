@@ -3,7 +3,7 @@
 pub struct AlertChart {
     /// Required. The resource name of the alert policy. The format is:
     ///
-    ///     projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]
+    ///     projects/\[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID\]
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -32,12 +32,12 @@ pub struct AlertChart {
 /// representative data can be more easily graphed and comprehended, and the
 /// individual time series data is still available for later drilldown. For more
 /// details, see [Filtering and
-/// aggregation](https://cloud.google.com/monitoring/api/v3/aggregation).
+/// aggregation](<https://cloud.google.com/monitoring/api/v3/aggregation>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Aggregation {
     /// The `alignment_period` specifies a time interval, in seconds, that is used
     /// to divide the data in all the
-    /// [time series][google.monitoring.v3.TimeSeries] into consistent blocks of
+    /// [time series]\[google.monitoring.v3.TimeSeries\] into consistent blocks of
     /// time. This will be done before the per-series aligner can be applied to
     /// the data.
     ///
@@ -122,11 +122,11 @@ pub mod aggregation {
         /// `value_type` of the input.
         AlignNone = 0,
         /// Align and convert to
-        /// [DELTA][google.api.MetricDescriptor.MetricKind.DELTA].
+        /// \[DELTA][google.api.MetricDescriptor.MetricKind.DELTA\].
         /// The output is `delta = y1 - y0`.
         ///
         /// This alignment is valid for
-        /// [CUMULATIVE][google.api.MetricDescriptor.MetricKind.CUMULATIVE] and
+        /// \[CUMULATIVE][google.api.MetricDescriptor.MetricKind.CUMULATIVE\] and
         /// `DELTA` metrics. If the selected alignment period results in periods
         /// with no data, then the aligned value for such a period is created by
         /// interpolation. The `value_type`  of the aligned result is the same as
@@ -199,28 +199,28 @@ pub mod aggregation {
         /// value is in the range [0.0, 1.0] and has `value_type` `DOUBLE`.
         AlignFractionTrue = 17,
         /// Align the time series by using [percentile
-        /// aggregation](https://en.wikipedia.org/wiki/Percentile). The resulting
+        /// aggregation](<https://en.wikipedia.org/wiki/Percentile>). The resulting
         /// data point in each alignment period is the 99th percentile of all data
         /// points in the period. This aligner is valid for `GAUGE` and `DELTA`
         /// metrics with distribution values. The output is a `GAUGE` metric with
         /// `value_type` `DOUBLE`.
         AlignPercentile99 = 18,
         /// Align the time series by using [percentile
-        /// aggregation](https://en.wikipedia.org/wiki/Percentile). The resulting
+        /// aggregation](<https://en.wikipedia.org/wiki/Percentile>). The resulting
         /// data point in each alignment period is the 95th percentile of all data
         /// points in the period. This aligner is valid for `GAUGE` and `DELTA`
         /// metrics with distribution values. The output is a `GAUGE` metric with
         /// `value_type` `DOUBLE`.
         AlignPercentile95 = 19,
         /// Align the time series by using [percentile
-        /// aggregation](https://en.wikipedia.org/wiki/Percentile). The resulting
+        /// aggregation](<https://en.wikipedia.org/wiki/Percentile>). The resulting
         /// data point in each alignment period is the 50th percentile of all data
         /// points in the period. This aligner is valid for `GAUGE` and `DELTA`
         /// metrics with distribution values. The output is a `GAUGE` metric with
         /// `value_type` `DOUBLE`.
         AlignPercentile50 = 20,
         /// Align the time series by using [percentile
-        /// aggregation](https://en.wikipedia.org/wiki/Percentile). The resulting
+        /// aggregation](<https://en.wikipedia.org/wiki/Percentile>). The resulting
         /// data point in each alignment period is the 5th percentile of all data
         /// points in the period. This aligner is valid for `GAUGE` and `DELTA`
         /// metrics with distribution values. The output is a `GAUGE` metric with
@@ -256,10 +256,10 @@ pub mod aggregation {
         ReduceNone = 0,
         /// Reduce by computing the mean value across time series for each
         /// alignment period. This reducer is valid for
-        /// [DELTA][google.api.MetricDescriptor.MetricKind.DELTA] and
-        /// [GAUGE][google.api.MetricDescriptor.MetricKind.GAUGE] metrics with
+        /// \[DELTA][google.api.MetricDescriptor.MetricKind.DELTA\] and
+        /// \[GAUGE][google.api.MetricDescriptor.MetricKind.GAUGE\] metrics with
         /// numeric or distribution values. The `value_type` of the output is
-        /// [DOUBLE][google.api.MetricDescriptor.ValueType.DOUBLE].
+        /// \[DOUBLE][google.api.MetricDescriptor.ValueType.DOUBLE\].
         ReduceMean = 1,
         /// Reduce by computing the minimum value across time series for each
         /// alignment period. This reducer is valid for `DELTA` and `GAUGE` metrics
@@ -303,25 +303,25 @@ pub mod aggregation {
         /// `DOUBLE`.
         ReduceFractionTrue = 8,
         /// Reduce by computing the [99th
-        /// percentile](https://en.wikipedia.org/wiki/Percentile) of data points
+        /// percentile](<https://en.wikipedia.org/wiki/Percentile>) of data points
         /// across time series for each alignment period. This reducer is valid for
         /// `GAUGE` and `DELTA` metrics of numeric and distribution type. The value
         /// of the output is `DOUBLE`.
         ReducePercentile99 = 9,
         /// Reduce by computing the [95th
-        /// percentile](https://en.wikipedia.org/wiki/Percentile) of data points
+        /// percentile](<https://en.wikipedia.org/wiki/Percentile>) of data points
         /// across time series for each alignment period. This reducer is valid for
         /// `GAUGE` and `DELTA` metrics of numeric and distribution type. The value
         /// of the output is `DOUBLE`.
         ReducePercentile95 = 10,
         /// Reduce by computing the [50th
-        /// percentile](https://en.wikipedia.org/wiki/Percentile) of data points
+        /// percentile](<https://en.wikipedia.org/wiki/Percentile>) of data points
         /// across time series for each alignment period. This reducer is valid for
         /// `GAUGE` and `DELTA` metrics of numeric and distribution type. The value
         /// of the output is `DOUBLE`.
         ReducePercentile50 = 11,
         /// Reduce by computing the [5th
-        /// percentile](https://en.wikipedia.org/wiki/Percentile) of data points
+        /// percentile](<https://en.wikipedia.org/wiki/Percentile>) of data points
         /// across time series for each alignment period. This reducer is valid for
         /// `GAUGE` and `DELTA` metrics of numeric and distribution type. The value
         /// of the output is `DOUBLE`.
@@ -417,7 +417,7 @@ pub struct TimeSeriesQuery {
     /// The unit of data contained in fetched time series. If non-empty, this
     /// unit will override any unit that accompanies fetched data. The format is
     /// the same as the
-    /// [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)
+    /// \[`unit`\](<https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors>)
     /// field in `MetricDescriptor`.
     #[prost(string, tag = "5")]
     pub unit_override: ::prost::alloc::string::String,
@@ -443,11 +443,11 @@ pub mod time_series_query {
 }
 /// A filter that defines a subset of time series data that is displayed in a
 /// widget. Time series data is fetched using the
-/// [`ListTimeSeries`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list)
+/// \[`ListTimeSeries`\](<https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>)
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TimeSeriesFilter {
-    /// Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)
+    /// Required. The [monitoring filter](<https://cloud.google.com/monitoring/api/v3/filters>)
     /// that identifies the metric types, resources, and projects to query.
     #[prost(string, tag = "1")]
     pub filter: ::prost::alloc::string::String,
@@ -503,7 +503,7 @@ pub mod time_series_filter_ratio {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RatioPart {
         /// Required. The [monitoring
-        /// filter](https://cloud.google.com/monitoring/api/v3/filters) that
+        /// filter](<https://cloud.google.com/monitoring/api/v3/filters>) that
         /// identifies the metric types, resources, and projects to query.
         #[prost(string, tag = "1")]
         pub filter: ::prost::alloc::string::String,
@@ -1022,9 +1022,9 @@ pub mod dashboard {
 pub struct CreateDashboardRequest {
     /// Required. The project on which to execute the request. The format is:
     ///
-    ///     projects/[PROJECT_ID_OR_NUMBER]
+    ///     projects/\[PROJECT_ID_OR_NUMBER\]
     ///
-    /// The `[PROJECT_ID_OR_NUMBER]` must match the dashboard resource name.
+    /// The `\[PROJECT_ID_OR_NUMBER\]` must match the dashboard resource name.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The initial dashboard specification.
@@ -1040,7 +1040,7 @@ pub struct CreateDashboardRequest {
 pub struct ListDashboardsRequest {
     /// Required. The scope of the dashboards to list. The format is:
     ///
-    ///     projects/[PROJECT_ID_OR_NUMBER]
+    ///     projects/\[PROJECT_ID_OR_NUMBER\]
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// A positive number that is the maximum number of results to return.
@@ -1070,8 +1070,8 @@ pub struct ListDashboardsResponse {
 pub struct GetDashboardRequest {
     /// Required. The resource name of the Dashboard. The format is one of:
     ///
-    ///  -  `dashboards/[DASHBOARD_ID]` (for system dashboards)
-    ///  -  `projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]`
+    ///  -  `dashboards/\[DASHBOARD_ID\]` (for system dashboards)
+    ///  -  `projects/\[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID\]`
     ///       (for custom dashboards).
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1081,7 +1081,7 @@ pub struct GetDashboardRequest {
 pub struct DeleteDashboardRequest {
     /// Required. The resource name of the Dashboard. The format is:
     ///
-    ///     projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]
+    ///     projects/\[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID\]
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1109,7 +1109,7 @@ pub mod dashboards_service_client {
     impl<T> DashboardsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1122,7 +1122,7 @@ pub mod dashboards_service_client {
             interceptor: F,
         ) -> DashboardsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

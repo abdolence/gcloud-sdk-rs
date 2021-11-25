@@ -88,7 +88,7 @@ pub struct Device {
     /// interpreted or indexed by Cloud IoT Core. It can be used to add contextual
     /// information for the device.
     ///
-    /// Keys must conform to the regular expression [a-zA-Z][a-zA-Z0-9-_.+~%]+ and
+    /// Keys must conform to the regular expression \[a-zA-Z][a-zA-Z0-9-_.+~%\]+ and
     /// be less than 128 bytes in length.
     ///
     /// Values are free-form strings. Each value must be less than or equal to 32
@@ -269,7 +269,7 @@ pub struct PublicKeyCertificate {
 /// A server-stored device credential used for authentication.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceCredential {
-    /// [Optional] The time at which this credential becomes invalid. This
+    /// \[Optional\] The time at which this credential becomes invalid. This
     /// credential will be ignored for new client authentication requests after
     /// this timestamp; however, it will not be automatically deleted.
     #[prost(message, optional, tag = "6")]
@@ -430,7 +430,7 @@ pub enum PublicKeyCertificateFormat {
     /// The format has not been specified. This is an invalid default value and
     /// must not be used.
     UnspecifiedPublicKeyCertificateFormat = 0,
-    /// An X.509v3 certificate ([RFC5280](https://www.ietf.org/rfc/rfc5280.txt)),
+    /// An X.509v3 certificate (\[RFC5280\](<https://www.ietf.org/rfc/rfc5280.txt>)),
     /// encoded in base64, and wrapped by `-----BEGIN CERTIFICATE-----` and
     /// `-----END CERTIFICATE-----`.
     X509CertificatePem = 1,
@@ -444,21 +444,21 @@ pub enum PublicKeyFormat {
     UnspecifiedPublicKeyFormat = 0,
     /// An RSA public key encoded in base64, and wrapped by
     /// `-----BEGIN PUBLIC KEY-----` and `-----END PUBLIC KEY-----`. This can be
-    /// used to verify `RS256` signatures in JWT tokens ([RFC7518](
-    /// https://www.ietf.org/rfc/rfc7518.txt)).
+    /// used to verify `RS256` signatures in JWT tokens (\[RFC7518\](
+    /// <https://www.ietf.org/rfc/rfc7518.txt>)).
     RsaPem = 3,
-    /// As RSA_PEM, but wrapped in an X.509v3 certificate ([RFC5280](
-    /// https://www.ietf.org/rfc/rfc5280.txt)), encoded in base64, and wrapped by
+    /// As RSA_PEM, but wrapped in an X.509v3 certificate (\[RFC5280\](
+    /// <https://www.ietf.org/rfc/rfc5280.txt>)), encoded in base64, and wrapped by
     /// `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.
     RsaX509Pem = 1,
     /// Public key for the ECDSA algorithm using P-256 and SHA-256, encoded in
     /// base64, and wrapped by `-----BEGIN PUBLIC KEY-----` and `-----END
     /// PUBLIC KEY-----`. This can be used to verify JWT tokens with the `ES256`
-    /// algorithm ([RFC7518](https://www.ietf.org/rfc/rfc7518.txt)). This curve is
-    /// defined in [OpenSSL](https://www.openssl.org/) as the `prime256v1` curve.
+    /// algorithm (\[RFC7518\](<https://www.ietf.org/rfc/rfc7518.txt>)). This curve is
+    /// defined in \[OpenSSL\](<https://www.openssl.org/>) as the `prime256v1` curve.
     Es256Pem = 2,
-    /// As ES256_PEM, but wrapped in an X.509v3 certificate ([RFC5280](
-    /// https://www.ietf.org/rfc/rfc5280.txt)), encoded in base64, and wrapped by
+    /// As ES256_PEM, but wrapped in an X.509v3 certificate (\[RFC5280\](
+    /// <https://www.ietf.org/rfc/rfc5280.txt>)), encoded in base64, and wrapped by
     /// `-----BEGIN CERTIFICATE-----` and `-----END CERTIFICATE-----`.
     Es256X509Pem = 4,
 }
@@ -808,7 +808,7 @@ pub mod device_manager_client {
     impl<T> DeviceManagerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -821,7 +821,7 @@ pub mod device_manager_client {
             interceptor: F,
         ) -> DeviceManagerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

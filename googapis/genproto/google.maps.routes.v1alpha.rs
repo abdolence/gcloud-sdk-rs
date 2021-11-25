@@ -10,7 +10,7 @@ pub mod routes_alpha_client {
     impl<T> RoutesAlphaClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -23,7 +23,7 @@ pub mod routes_alpha_client {
             interceptor: F,
         ) -> RoutesAlphaClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -151,9 +151,7 @@ pub mod routes_alpha_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.routes.v1alpha.RoutesAlpha/ComputeRouteMatrix",
             );
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Given a set of terminal and intermediate waypoints, and a route objective,"]
         #[doc = " computes the best route for the route objective. Also returns fastest route"]

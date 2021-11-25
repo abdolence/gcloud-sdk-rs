@@ -131,7 +131,7 @@ pub mod sql_acl_entry {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Expiration {
         /// The time when this access control entry expires in
-        /// [RFC 3339](https://tools.ietf.org/html/rfc3339) format, for example:
+        /// [RFC 3339](<https://tools.ietf.org/html/rfc3339>) format, for example:
         /// `2012-11-15T16:19:00.094Z`.
         #[prost(message, tag = "10")]
         ExpireTime(::prost_types::Timestamp),
@@ -157,7 +157,7 @@ pub struct SqlIpConfig {
     pub require_ssl: ::core::option::Option<bool>,
     /// The list of external networks that are allowed to connect to the instance
     /// using the IP. See
-    /// https://en.wikipedia.org/wiki/CIDR_notation#CIDR_notation, also known as
+    /// <https://en.wikipedia.org/wiki/CIDR_notation#CIDR_notation,> also known as
     /// 'slash' notation (e.g. `192.168.100.0/24`).
     #[prost(message, repeated, tag = "4")]
     pub authorized_networks: ::prost::alloc::vec::Vec<SqlAclEntry>,
@@ -181,7 +181,7 @@ pub struct CloudSqlSettings {
     /// `db-custom-1-3840` (PostgreSQL instances).
     /// For more information, see
     /// [Cloud SQL Instance
-    /// Settings](https://cloud.google.com/sql/docs/mysql/instance-settings).
+    /// Settings](<https://cloud.google.com/sql/docs/mysql/instance-settings>).
     #[prost(string, tag = "3")]
     pub tier: ::prost::alloc::string::String,
     /// The maximum size to which storage capacity can be automatically increased.
@@ -299,7 +299,7 @@ pub struct StaticIpConnectivity {}
 /// The details needed to configure a reverse SSH tunnel between the source and
 /// destination databases. These details will be used when calling the
 /// generateSshScript method (see
-/// https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs/generateSshScript)
+/// <https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs/generateSshScript>)
 /// to produce the script that will help set up the reverse SSH tunnel, and to
 /// set up the VPC peering between the Cloud SQL private network and the VPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -377,7 +377,7 @@ pub struct MigrationJob {
     #[prost(enumeration = "migration_job::Type", tag = "8")]
     pub r#type: i32,
     /// The path to the dump file in Google Cloud Storage,
-    /// in the format: (gs://[BUCKET_NAME]/[OBJECT_NAME]).
+    /// in the format: (gs://\[BUCKET_NAME]/[OBJECT_NAME\]).
     #[prost(string, tag = "9")]
     pub dump_path: ::prost::alloc::string::String,
     /// Required. The resource name (URI) of the source connection profile.
@@ -420,7 +420,7 @@ pub mod migration_job {
         Draft = 2,
         /// The migration job is being created.
         Creating = 3,
-        /// The migration job is created, not started and is fully editable.
+        /// The migration job is created and not started.
         NotStarted = 4,
         /// The migration job is running.
         Running = 5,
@@ -526,10 +526,7 @@ pub struct ConnectionProfile {
     #[prost(enumeration = "DatabaseProvider", tag = "8")]
     pub provider: i32,
     /// The connection profile definition.
-    #[prost(
-        oneof = "connection_profile::ConnectionProfile",
-        tags = "100, 101, 102"
-    )]
+    #[prost(oneof = "connection_profile::ConnectionProfile", tags = "100, 101, 102")]
     pub connection_profile: ::core::option::Option<connection_profile::ConnectionProfile>,
 }
 /// Nested message and enum types in `ConnectionProfile`.
@@ -722,7 +719,7 @@ pub struct CreateMigrationJobRequest {
     #[prost(string, tag = "2")]
     pub migration_job_id: ::prost::alloc::string::String,
     /// Required. Represents a [migration
-    /// job](https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs)
+    /// job](<https://cloud.google.com/database-migration/docs/reference/rest/v1/projects.locations.migrationJobs>)
     /// object.
     #[prost(message, optional, tag = "3")]
     pub migration_job: ::core::option::Option<MigrationJob>,
@@ -1012,7 +1009,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -1032,7 +1029,7 @@ pub mod data_migration_service_client {
     impl<T> DataMigrationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1045,7 +1042,7 @@ pub mod data_migration_service_client {
             interceptor: F,
         ) -> DataMigrationServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

@@ -13,7 +13,7 @@ pub struct Api {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Resource labels to represent user-provided metadata.
     /// Refer to cloud documentation on labels for more details.
-    /// https://cloud.google.com/compute/docs/labeling-resources
+    /// <https://cloud.google.com/compute/docs/labeling-resources>
     #[prost(map = "string, string", tag = "4")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -21,7 +21,7 @@ pub struct Api {
     #[prost(string, tag = "5")]
     pub display_name: ::prost::alloc::string::String,
     /// Optional. Immutable. The name of a Google Managed Service (
-    /// https://cloud.google.com/service-infrastructure/docs/glossary#managed). If
+    /// <https://cloud.google.com/service-infrastructure/docs/glossary#managed>). If
     /// not specified, a new Service will automatically be created in the same
     /// project as this API.
     #[prost(string, tag = "7")]
@@ -66,7 +66,7 @@ pub struct ApiConfig {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Resource labels to represent user-provided metadata.
     /// Refer to cloud documentation on labels for more details.
-    /// https://cloud.google.com/compute/docs/labeling-resources
+    /// <https://cloud.google.com/compute/docs/labeling-resources>
     #[prost(map = "string, string", tag = "4")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -83,7 +83,7 @@ pub struct ApiConfig {
     #[prost(string, tag = "14")]
     pub gateway_service_account: ::prost::alloc::string::String,
     /// Output only. The ID of the associated Service Config (
-    /// https://cloud.google.com/service-infrastructure/docs/glossary#config).
+    /// <https://cloud.google.com/service-infrastructure/docs/glossary#config>).
     #[prost(string, tag = "12")]
     pub service_config_id: ::prost::alloc::string::String,
     /// Output only. State of the API Config.
@@ -99,7 +99,7 @@ pub struct ApiConfig {
     pub grpc_services: ::prost::alloc::vec::Vec<api_config::GrpcServiceDefinition>,
     /// Optional. Service Configuration files. At least one must be included when using gRPC
     /// service definitions. See
-    /// https://cloud.google.com/endpoints/docs/grpc/grpc-service-config#service_configuration_overview
+    /// <https://cloud.google.com/endpoints/docs/grpc/grpc-service-config#service_configuration_overview>
     /// for the expected file contents.
     ///
     /// If multiple files are specified, the files are merged with the following
@@ -189,7 +189,7 @@ pub struct Gateway {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Resource labels to represent user-provided metadata.
     /// Refer to cloud documentation on labels for more details.
-    /// https://cloud.google.com/compute/docs/labeling-resources
+    /// <https://cloud.google.com/compute/docs/labeling-resources>
     #[prost(map = "string, string", tag = "4")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -499,7 +499,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -535,7 +535,7 @@ pub mod api_gateway_service_client {
     impl<T> ApiGatewayServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -548,7 +548,7 @@ pub mod api_gateway_service_client {
             interceptor: F,
         ) -> ApiGatewayServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

@@ -25,14 +25,14 @@ pub enum StorageType {
     /// Magnetic drive (HDD) storage should be used.
     Hdd = 2,
 }
-/// A collection of Bigtable [Tables][google.bigtable.admin.v2.Table] and
+/// A collection of Bigtable \[Tables][google.bigtable.admin.v2.Table\] and
 /// the resources that serve them.
 /// All tables in an instance are served from all
-/// [Clusters][google.bigtable.admin.v2.Cluster] in the instance.
+/// \[Clusters][google.bigtable.admin.v2.Cluster\] in the instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Instance {
     /// The unique name of the instance. Values are of the form
-    /// `projects/{project}/instances/[a-z][a-z0-9\\-]+[a-z0-9]`.
+    /// `projects/{project}/instances/\[a-z][a-z0-9\\-]+[a-z0-9\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The descriptive name for this instance as it appears in UIs.
@@ -53,14 +53,19 @@ pub struct Instance {
     /// metrics.
     ///
     /// * Label keys must be between 1 and 63 characters long and must conform to
-    ///   the regular expression: `[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-]{0,62}`.
+    ///   the regular expression: `\[\p{Ll}\p{Lo}][\p{Ll}\p{Lo}\p{N}_-\]{0,62}`.
     /// * Label values must be between 0 and 63 characters long and must conform to
-    ///   the regular expression: `[\p{Ll}\p{Lo}\p{N}_-]{0,63}`.
+    ///   the regular expression: `\[\p{Ll}\p{Lo}\p{N}_-\]{0,63}`.
     /// * No more than 64 labels can be associated with a given resource.
     /// * Keys and values must both be under 128 bytes.
     #[prost(map = "string, string", tag = "5")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Output only. A server-assigned timestamp representing when this Instance was created.
+    /// For instances created before this field was added (August 2021), this value
+    /// is `seconds: 0, nanos: 1`.
+    #[prost(message, optional, tag = "7")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
@@ -98,13 +103,32 @@ pub mod instance {
         Development = 2,
     }
 }
+/// The Autoscaling targets for a Cluster. These determine the recommended nodes.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoscalingTargets {
+    /// The cpu utilization that the Autoscaler should be trying to achieve.
+    /// This number is on a scale from 0 (no utilization) to
+    /// 100 (total utilization).
+    #[prost(int32, tag = "2")]
+    pub cpu_utilization_percent: i32,
+}
+/// Limits for the number of nodes a Cluster can autoscale up/down to.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AutoscalingLimits {
+    /// Required. Minimum number of nodes to scale down to.
+    #[prost(int32, tag = "1")]
+    pub min_serve_nodes: i32,
+    /// Required. Maximum number of nodes to scale up to.
+    #[prost(int32, tag = "2")]
+    pub max_serve_nodes: i32,
+}
 /// A resizable group of nodes in a particular cloud location, capable
-/// of serving all [Tables][google.bigtable.admin.v2.Table] in the parent
-/// [Instance][google.bigtable.admin.v2.Instance].
+/// of serving all \[Tables][google.bigtable.admin.v2.Table\] in the parent
+/// \[Instance][google.bigtable.admin.v2.Instance\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cluster {
     /// The unique name of the cluster. Values are of the form
-    /// `projects/{project}/instances/{instance}/clusters/[a-z][-a-z0-9]*`.
+    /// `projects/{project}/instances/{instance}/clusters/\[a-z][-a-z0-9\]*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// (`CreationOnly`)
@@ -117,8 +141,8 @@ pub struct Cluster {
     /// The current state of the cluster.
     #[prost(enumeration = "cluster::State", tag = "3")]
     pub state: i32,
-    /// Required. The number of nodes allocated to this cluster. More nodes enable
-    /// higher throughput and more consistent performance.
+    /// The number of nodes allocated to this cluster. More nodes enable higher
+    /// throughput and more consistent performance.
     #[prost(int32, tag = "4")]
     pub serve_nodes: i32,
     /// (`CreationOnly`)
@@ -129,9 +153,28 @@ pub struct Cluster {
     /// Immutable. The encryption configuration for CMEK-protected clusters.
     #[prost(message, optional, tag = "6")]
     pub encryption_config: ::core::option::Option<cluster::EncryptionConfig>,
+    #[prost(oneof = "cluster::Config", tags = "7")]
+    pub config: ::core::option::Option<cluster::Config>,
 }
 /// Nested message and enum types in `Cluster`.
 pub mod cluster {
+    /// Autoscaling config for a cluster.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ClusterAutoscalingConfig {
+        /// Required. Autoscaling limits for this cluster.
+        #[prost(message, optional, tag = "1")]
+        pub autoscaling_limits: ::core::option::Option<super::AutoscalingLimits>,
+        /// Required. Autoscaling targets for this cluster.
+        #[prost(message, optional, tag = "2")]
+        pub autoscaling_targets: ::core::option::Option<super::AutoscalingTargets>,
+    }
+    /// Configuration for a cluster.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ClusterConfig {
+        /// Autoscaling configuration for this cluster.
+        #[prost(message, optional, tag = "1")]
+        pub cluster_autoscaling_config: ::core::option::Option<ClusterAutoscalingConfig>,
+    }
     /// Cloud Key Management Service (Cloud KMS) settings for a CMEK-protected
     /// cluster.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -169,6 +212,12 @@ pub mod cluster {
         /// exist, but no operations can be performed on the cluster.
         Disabled = 4,
     }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Config {
+        /// Configuration for this cluster.
+        #[prost(message, tag = "7")]
+        ClusterConfig(ClusterConfig),
+    }
 }
 /// A configuration object describing how Cloud Bigtable should treat traffic
 /// from a particular end user application.
@@ -176,7 +225,7 @@ pub mod cluster {
 pub struct AppProfile {
     /// (`OutputOnly`)
     /// The unique name of the app profile. Values are of the form
-    /// `projects/{project}/instances/{instance}/appProfiles/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
+    /// `projects/{project}/instances/{instance}/appProfiles/\[_a-zA-Z0-9][-_.a-zA-Z0-9\]*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Strongly validated etag for optimistic concurrency control. Preserve the
@@ -184,8 +233,8 @@ pub struct AppProfile {
     /// fail the request if there has been a modification in the mean time. The
     /// `update_mask` of the request need not include `etag` for this protection
     /// to apply.
-    /// See [Wikipedia](https://en.wikipedia.org/wiki/HTTP_ETag) and
-    /// [RFC 7232](https://tools.ietf.org/html/rfc7232#section-2.3) for more
+    /// See \[Wikipedia\](<https://en.wikipedia.org/wiki/HTTP_ETag>) and
+    /// [RFC 7232](<https://tools.ietf.org/html/rfc7232#section-2.3>) for more
     /// details.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
@@ -205,7 +254,12 @@ pub mod app_profile {
     /// equidistant. Choosing this option sacrifices read-your-writes consistency
     /// to improve availability.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct MultiClusterRoutingUseAny {}
+    pub struct MultiClusterRoutingUseAny {
+        /// The set of clusters to route to. The order is ignored; clusters will be
+        /// tried in order of distance. If left empty, all clusters are eligible.
+        #[prost(string, repeated, tag = "1")]
+        pub cluster_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
     /// Unconditionally routes all read/write requests to a specific cluster.
     /// This option preserves read-your-writes consistency but does not improve
     /// availability.
@@ -428,6 +482,30 @@ pub struct UpdateClusterMetadata {
     #[prost(message, optional, tag = "3")]
     pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// The metadata for the Operation returned by PartialUpdateCluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartialUpdateClusterMetadata {
+    /// The time at which the original request was received.
+    #[prost(message, optional, tag = "1")]
+    pub request_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time at which the operation failed or was completed successfully.
+    #[prost(message, optional, tag = "2")]
+    pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The original request for PartialUpdateCluster.
+    #[prost(message, optional, tag = "3")]
+    pub original_request: ::core::option::Option<PartialUpdateClusterRequest>,
+}
+/// Request message for BigtableInstanceAdmin.PartialUpdateCluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartialUpdateClusterRequest {
+    /// Required. The Cluster which contains the partial updates to be applied, subject to
+    /// the update_mask.
+    #[prost(message, optional, tag = "1")]
+    pub cluster: ::core::option::Option<Cluster>,
+    /// Required. The subset of Cluster fields which should be replaced.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// Request message for BigtableInstanceAdmin.CreateAppProfile.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateAppProfileRequest {
@@ -542,7 +620,7 @@ pub mod bigtable_instance_admin_client {
     impl<T> BigtableInstanceAdminClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -555,7 +633,7 @@ pub mod bigtable_instance_admin_client {
             interceptor: F,
         ) -> BigtableInstanceAdminClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -581,6 +659,12 @@ pub mod bigtable_instance_admin_client {
             self
         }
         #[doc = " Create an instance within a project."]
+        #[doc = ""]
+        #[doc = " Note that exactly one of Cluster.serve_nodes and"]
+        #[doc = " Cluster.cluster_config.cluster_autoscaling_config can be set. If"]
+        #[doc = " serve_nodes is set to non-zero, then the cluster is manually scaled. If"]
+        #[doc = " cluster_config.cluster_autoscaling_config is non-empty, then autoscaling is"]
+        #[doc = " enabled."]
         pub async fn create_instance(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateInstanceRequest>,
@@ -692,6 +776,12 @@ pub mod bigtable_instance_admin_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Creates a cluster within an instance."]
+        #[doc = ""]
+        #[doc = " Note that exactly one of Cluster.serve_nodes and"]
+        #[doc = " Cluster.cluster_config.cluster_autoscaling_config can be set. If"]
+        #[doc = " serve_nodes is set to non-zero, then the cluster is manually scaled. If"]
+        #[doc = " cluster_config.cluster_autoscaling_config is non-empty, then autoscaling is"]
+        #[doc = " enabled."]
         pub async fn create_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateClusterRequest>,
@@ -746,6 +836,10 @@ pub mod bigtable_instance_admin_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Updates a cluster within an instance."]
+        #[doc = ""]
+        #[doc = " Note that UpdateCluster does not support updating"]
+        #[doc = " cluster_config.cluster_autoscaling_config. In order to update it, you"]
+        #[doc = " must use PartialUpdateCluster."]
         pub async fn update_cluster(
             &mut self,
             request: impl tonic::IntoRequest<super::Cluster>,
@@ -762,6 +856,37 @@ pub mod bigtable_instance_admin_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.admin.v2.BigtableInstanceAdmin/UpdateCluster",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Partially updates a cluster within a project. This method is the preferred"]
+        #[doc = " way to update a Cluster."]
+        #[doc = ""]
+        #[doc = " To enable and update autoscaling, set"]
+        #[doc = " cluster_config.cluster_autoscaling_config. When autoscaling is enabled,"]
+        #[doc = " serve_nodes is treated as an OUTPUT_ONLY field, meaning that updates to it"]
+        #[doc = " are ignored. Note that an update cannot simultaneously set serve_nodes to"]
+        #[doc = " non-zero and cluster_config.cluster_autoscaling_config to non-empty, and"]
+        #[doc = " also specify both in the update_mask."]
+        #[doc = ""]
+        #[doc = " To disable autoscaling, clear cluster_config.cluster_autoscaling_config,"]
+        #[doc = " and explicitly set a serve_node count via the update_mask."]
+        pub async fn partial_update_cluster(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PartialUpdateClusterRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -958,7 +1083,7 @@ pub mod restore_info {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Table {
     /// The unique name of the table. Values are of the form
-    /// `projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`.
+    /// `projects/{project}/instances/{instance}/tables/\[_a-zA-Z0-9][-_.a-zA-Z0-9\]*`.
     /// Views: `NAME_ONLY`, `SCHEMA_VIEW`, `REPLICATION_VIEW`, `FULL`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -1218,7 +1343,7 @@ pub struct Backup {
     /// Output only. A globally unique identifier for the backup which cannot be
     /// changed. Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/
-    ///    backups/[_a-zA-Z0-9][-_.a-zA-Z0-9]*`
+    ///    backups/\[_a-zA-Z0-9][-_.a-zA-Z0-9\]*`
     /// The final segment of the name must be between 1 and 50 characters
     /// in length.
     ///
@@ -1241,7 +1366,7 @@ pub struct Backup {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. `start_time` is the time that the backup was started
     /// (i.e. approximately the time the
-    /// [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup]
+    /// \[CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup\]
     /// request is received).  The row data in this backup will be no older than
     /// this timestamp.
     #[prost(message, optional, tag = "4")]
@@ -1303,7 +1428,7 @@ pub enum RestoreSourceType {
     Backup = 1,
 }
 /// The request for
-/// [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
+/// \[RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreTableRequest {
     /// Required. The name of the instance in which to create the restored
@@ -1333,7 +1458,7 @@ pub mod restore_table_request {
     }
 }
 /// Metadata type for the long-running operation returned by
-/// [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable].
+/// \[RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestoreTableMetadata {
     /// Name of the table being created and restored to.
@@ -1345,27 +1470,27 @@ pub struct RestoreTableMetadata {
     /// If exists, the name of the long-running operation that will be used to
     /// track the post-restore optimization process to optimize the performance of
     /// the restored table. The metadata type of the long-running operation is
-    /// [OptimizeRestoreTableMetadata][]. The response type is
-    /// [Empty][google.protobuf.Empty]. This long-running operation may be
+    /// \[OptimizeRestoreTableMetadata][\]. The response type is
+    /// \[Empty][google.protobuf.Empty\]. This long-running operation may be
     /// automatically created by the system if applicable after the
     /// RestoreTable long-running operation completes successfully. This operation
     /// may not be created if the table is already optimized or the restore was
     /// not successful.
     #[prost(string, tag = "4")]
     pub optimize_table_operation_name: ::prost::alloc::string::String,
-    /// The progress of the [RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable]
+    /// The progress of the \[RestoreTable][google.bigtable.admin.v2.BigtableTableAdmin.RestoreTable\]
     /// operation.
     #[prost(message, optional, tag = "5")]
     pub progress: ::core::option::Option<OperationProgress>,
     /// Information about the source used to restore the table, as specified by
-    /// `source` in [RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest].
+    /// `source` in \[RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest\].
     #[prost(oneof = "restore_table_metadata::SourceInfo", tags = "3")]
     pub source_info: ::core::option::Option<restore_table_metadata::SourceInfo>,
 }
 /// Nested message and enum types in `RestoreTableMetadata`.
 pub mod restore_table_metadata {
     /// Information about the source used to restore the table, as specified by
-    /// `source` in [RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest].
+    /// `source` in \[RestoreTableRequest][google.bigtable.admin.v2.RestoreTableRequest\].
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceInfo {
         #[prost(message, tag = "3")]
@@ -1386,7 +1511,7 @@ pub struct OptimizeRestoredTableMetadata {
     pub progress: ::core::option::Option<OperationProgress>,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.CreateTable][google.bigtable.admin.v2.BigtableTableAdmin.CreateTable]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.CreateTable][google.bigtable.admin.v2.BigtableTableAdmin.CreateTable\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTableRequest {
     /// Required. The unique name of the instance in which to create the table.
@@ -1431,7 +1556,7 @@ pub mod create_table_request {
     }
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.CreateTableFromSnapshot\]
 ///
 /// Note: This is a private alpha release of Cloud Bigtable snapshots. This
 /// feature is not currently available to most Cloud Bigtable customers. This
@@ -1455,7 +1580,7 @@ pub struct CreateTableFromSnapshotRequest {
     pub source_snapshot: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange][google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange][google.bigtable.admin.v2.BigtableTableAdmin.DropRowRange\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DropRowRangeRequest {
     /// Required. The unique name of the table on which to drop a range of rows.
@@ -1482,7 +1607,7 @@ pub mod drop_row_range_request {
     }
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesRequest {
     /// Required. The unique name of the instance for which tables should be listed.
@@ -1509,7 +1634,7 @@ pub struct ListTablesRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.ListTables][google.bigtable.admin.v2.BigtableTableAdmin.ListTables\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTablesResponse {
     /// The tables present in the requested instance.
@@ -1522,7 +1647,7 @@ pub struct ListTablesResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.GetTable][google.bigtable.admin.v2.BigtableTableAdmin.GetTable]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.GetTable][google.bigtable.admin.v2.BigtableTableAdmin.GetTable\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTableRequest {
     /// Required. The unique name of the requested table.
@@ -1536,7 +1661,7 @@ pub struct GetTableRequest {
     pub view: i32,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteTableRequest {
     /// Required. The unique name of the table to be deleted.
@@ -1546,7 +1671,7 @@ pub struct DeleteTableRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies][google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies][google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModifyColumnFamiliesRequest {
     /// Required. The unique name of the table whose families should be modified.
@@ -1594,7 +1719,7 @@ pub mod modify_column_families_request {
     }
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConsistencyTokenRequest {
     /// Required. The unique name of the Table for which to create a consistency token.
@@ -1604,7 +1729,7 @@ pub struct GenerateConsistencyTokenRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken][google.bigtable.admin.v2.BigtableTableAdmin.GenerateConsistencyToken\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GenerateConsistencyTokenResponse {
     /// The generated consistency token.
@@ -1612,7 +1737,7 @@ pub struct GenerateConsistencyTokenResponse {
     pub consistency_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckConsistencyRequest {
     /// Required. The unique name of the Table for which to check replication consistency.
@@ -1625,7 +1750,7 @@ pub struct CheckConsistencyRequest {
     pub consistency_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency][google.bigtable.admin.v2.BigtableTableAdmin.CheckConsistency\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CheckConsistencyResponse {
     /// True only if the token is consistent. A token is consistent if replication
@@ -1634,7 +1759,7 @@ pub struct CheckConsistencyResponse {
     pub consistent: bool,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable][google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable][google.bigtable.admin.v2.BigtableTableAdmin.SnapshotTable\]
 ///
 /// Note: This is a private alpha release of Cloud Bigtable snapshots. This
 /// feature is not currently available to most Cloud Bigtable customers. This
@@ -1653,7 +1778,7 @@ pub struct SnapshotTableRequest {
     #[prost(string, tag = "2")]
     pub cluster: ::prost::alloc::string::String,
     /// Required. The ID by which the new snapshot should be referred to within the parent
-    /// cluster, e.g., `mysnapshot` of the form: `[_a-zA-Z0-9][-_.a-zA-Z0-9]*`
+    /// cluster, e.g., `mysnapshot` of the form: `\[_a-zA-Z0-9][-_.a-zA-Z0-9\]*`
     /// rather than
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/snapshots/mysnapshot`.
     #[prost(string, tag = "3")]
@@ -1669,7 +1794,7 @@ pub struct SnapshotTableRequest {
     pub description: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.GetSnapshot\]
 ///
 /// Note: This is a private alpha release of Cloud Bigtable snapshots. This
 /// feature is not currently available to most Cloud Bigtable customers. This
@@ -1684,7 +1809,7 @@ pub struct GetSnapshotRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots\]
 ///
 /// Note: This is a private alpha release of Cloud Bigtable snapshots. This
 /// feature is not currently available to most Cloud Bigtable customers. This
@@ -1708,7 +1833,7 @@ pub struct ListSnapshotsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots][google.bigtable.admin.v2.BigtableTableAdmin.ListSnapshots\]
 ///
 /// Note: This is a private alpha release of Cloud Bigtable snapshots. This
 /// feature is not currently available to most Cloud Bigtable customers. This
@@ -1726,7 +1851,7 @@ pub struct ListSnapshotsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for
-/// [google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot]
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot][google.bigtable.admin.v2.BigtableTableAdmin.DeleteSnapshot\]
 ///
 /// Note: This is a private alpha release of Cloud Bigtable snapshots. This
 /// feature is not currently available to most Cloud Bigtable customers. This
@@ -1777,7 +1902,7 @@ pub struct CreateTableFromSnapshotMetadata {
     #[prost(message, optional, tag = "3")]
     pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// The request for [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup].
+/// The request for \[CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupRequest {
     /// Required. This must be one of the clusters in the instance in which this
@@ -1790,7 +1915,7 @@ pub struct CreateBackupRequest {
     /// the full backup name, of the form:
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/backups/{backup_id}`.
     /// This string must be between 1 and 50 characters in length and match the
-    /// regex [_a-zA-Z0-9][-_.a-zA-Z0-9]*.
+    /// regex \[_a-zA-Z0-9][-_.a-zA-Z0-9\]*.
     #[prost(string, tag = "2")]
     pub backup_id: ::prost::alloc::string::String,
     /// Required. The backup to create.
@@ -1798,7 +1923,7 @@ pub struct CreateBackupRequest {
     pub backup: ::core::option::Option<Backup>,
 }
 /// Metadata type for the operation returned by
-/// [CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup].
+/// \[CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBackupMetadata {
     /// The name of the backup being created.
@@ -1814,7 +1939,7 @@ pub struct CreateBackupMetadata {
     #[prost(message, optional, tag = "4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// The request for [UpdateBackup][google.bigtable.admin.v2.BigtableTableAdmin.UpdateBackup].
+/// The request for \[UpdateBackup][google.bigtable.admin.v2.BigtableTableAdmin.UpdateBackup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBackupRequest {
     /// Required. The backup to update. `backup.name`, and the fields to be updated
@@ -1831,7 +1956,7 @@ pub struct UpdateBackupRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request for [GetBackup][google.bigtable.admin.v2.BigtableTableAdmin.GetBackup].
+/// The request for \[GetBackup][google.bigtable.admin.v2.BigtableTableAdmin.GetBackup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBackupRequest {
     /// Required. Name of the backup.
@@ -1840,7 +1965,7 @@ pub struct GetBackupRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [DeleteBackup][google.bigtable.admin.v2.BigtableTableAdmin.DeleteBackup].
+/// The request for \[DeleteBackup][google.bigtable.admin.v2.BigtableTableAdmin.DeleteBackup\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBackupRequest {
     /// Required. Name of the backup to delete.
@@ -1849,7 +1974,7 @@ pub struct DeleteBackupRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
+/// The request for \[ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsRequest {
     /// Required. The cluster to list backups from.  Values are of the
@@ -1893,8 +2018,8 @@ pub struct ListBackupsRequest {
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// An expression for specifying the sort order of the results of the request.
-    /// The string value should specify one or more fields in [Backup][google.bigtable.admin.v2.Backup]. The full
-    /// syntax is described at https://aip.dev/132#ordering.
+    /// The string value should specify one or more fields in \[Backup][google.bigtable.admin.v2.Backup\]. The full
+    /// syntax is described at <https://aip.dev/132#ordering.>
     ///
     /// Fields supported are:
     ///    * name
@@ -1919,20 +2044,20 @@ pub struct ListBackupsRequest {
     #[prost(int32, tag = "4")]
     pub page_size: i32,
     /// If non-empty, `page_token` should contain a
-    /// [next_page_token][google.bigtable.admin.v2.ListBackupsResponse.next_page_token] from a
-    /// previous [ListBackupsResponse][google.bigtable.admin.v2.ListBackupsResponse] to the same `parent` and with the same
+    /// \[next_page_token][google.bigtable.admin.v2.ListBackupsResponse.next_page_token\] from a
+    /// previous \[ListBackupsResponse][google.bigtable.admin.v2.ListBackupsResponse\] to the same `parent` and with the same
     /// `filter`.
     #[prost(string, tag = "5")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups].
+/// The response for \[ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBackupsResponse {
     /// The list of matching backups.
     #[prost(message, repeated, tag = "1")]
     pub backups: ::prost::alloc::vec::Vec<Backup>,
     /// `next_page_token` can be sent in a subsequent
-    /// [ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups] call to fetch more
+    /// \[ListBackups][google.bigtable.admin.v2.BigtableTableAdmin.ListBackups\] call to fetch more
     /// of the matching backups.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
@@ -1953,7 +2078,7 @@ pub mod bigtable_table_admin_client {
     impl<T> BigtableTableAdminClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1966,7 +2091,7 @@ pub mod bigtable_table_admin_client {
             interceptor: F,
         ) -> BigtableTableAdminClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

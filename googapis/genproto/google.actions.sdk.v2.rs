@@ -5,7 +5,7 @@
 /// a client ID identifying your App to Google ("Client ID issued by Google to
 /// your Actions" on Console UI). This field is read-only and can be checked by
 /// navigating to the Console UI's Account Linking page.
-/// See: https://developers.google.com/assistant/identity/google-sign-in
+/// See: <https://developers.google.com/assistant/identity/google-sign-in>
 ///
 /// Note: For all account linking setting types (except for Google Sign In), you
 /// must provide a username and password for a test account in
@@ -22,7 +22,7 @@ pub struct AccountLinking {
     #[prost(bool, tag = "1")]
     pub enable_account_creation: bool,
     /// Required. The linking type to use.
-    /// See https://developers.google.com/assistant/identity for further details on
+    /// See <https://developers.google.com/assistant/identity> for further details on
     /// the linking types.
     #[prost(enumeration = "account_linking::LinkingType", tag = "2")]
     pub linking_type: i32,
@@ -405,7 +405,7 @@ pub struct Settings {
     /// `disabled_regions` is set. If both `enabled_regions` and `disabled_regions`
     /// are not specified, users can invoke your Actions in all regions. Each
     /// region is represented using the Canonical Name of Adwords geotargets. See
-    /// https://developers.google.com/adwords/api/docs/appendix/geotargeting
+    /// <https://developers.google.com/adwords/api/docs/appendix/geotargeting>
     /// Examples include:
     /// - "Germany"
     /// - "Ghana"
@@ -420,7 +420,7 @@ pub struct Settings {
     /// Represents the regions where your Actions are blocked, based on the user's
     /// location of presence. Cannot be set if `enabled_regions` is set.
     /// Each region is represented using the Canonical Name of Adwords geotargets.
-    /// See https://developers.google.com/adwords/api/docs/appendix/geotargeting
+    /// See <https://developers.google.com/adwords/api/docs/appendix/geotargeting>
     /// Examples include:
     /// - "Germany"
     /// - "Ghana"
@@ -478,7 +478,7 @@ pub struct Settings {
     /// Android apps selected to acccess Google Play purchases for transactions.
     /// This is a selection from the Android apps connected to the actions project
     /// to verify brand ownership and enable additional features. See
-    /// https://developers.google.com/assistant/console/brand-verification for more
+    /// <https://developers.google.com/assistant/console/brand-verification> for more
     /// information.
     #[prost(string, repeated, tag = "20")]
     pub selected_android_apps: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -569,9 +569,9 @@ pub mod webhook {
         /// The HTTPS base URL for your fulfillment endpoint (HTTP is not supported).
         /// Handler names are appended to the base URL path after a colon
         /// (following the style guide in
-        /// https://cloud.google.com/apis/design/custom_methods).
-        /// For example a base URL of 'https://gactions.service.com/api' would
-        /// receive requests with URL 'https://gactions.service.com/api:{method}'.
+        /// <https://cloud.google.com/apis/design/custom_methods>).
+        /// For example a base URL of '<https://gactions.service.com/api'> would
+        /// receive requests with URL '<https://gactions.service.com/api:{method}'.>
         #[prost(string, tag = "1")]
         pub base_url: ::prost::alloc::string::String,
         /// Map of HTTP parameters to be included in the POST request.
@@ -623,10 +623,7 @@ pub struct ConfigFile {
     #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
     /// Each type of config file should have a corresponding field in the oneof.
-    #[prost(
-        oneof = "config_file::File",
-        tags = "2, 3, 4, 6, 7, 8, 15, 9, 10, 11, 13, 12"
-    )]
+    #[prost(oneof = "config_file::File", tags = "2, 3, 4, 6, 7, 8, 15, 9, 10, 11, 13, 12")]
     pub file: ::core::option::Option<config_file::File>,
 }
 /// Nested message and enum types in `ConfigFile`.
@@ -721,7 +718,7 @@ pub struct DataFile {
     pub file_path: ::prost::alloc::string::String,
     /// Required. The content type of this asset. Example: `text/html`. The content
     /// type must comply with the specification
-    /// (http://www.w3.org/Protocols/rfc1341/4_Content-Type.html).
+    /// (<http://www.w3.org/Protocols/rfc1341/4_Content-Type.html>).
     /// Cloud functions must be in zip format and the content type should
     /// be `application/zip;zip_type=cloud_function`. The zip_type parameter
     /// indicates that the zip is for a cloud function.
@@ -798,7 +795,7 @@ pub mod validation_result {
         /// Language code of the lozalized resource.
         /// Empty if the error is for non-localized resource.
         /// See the list of supported languages in
-        /// https://developers.google.com/assistant/console/languages-locales
+        /// <https://developers.google.com/assistant/console/languages-locales>
         #[prost(string, tag = "1")]
         pub language_code: ::prost::alloc::string::String,
     }
@@ -1173,7 +1170,7 @@ pub mod actions_sdk_client {
     impl<T> ActionsSdkClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1186,7 +1183,7 @@ pub mod actions_sdk_client {
             interceptor: F,
         ) -> ActionsSdkClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1226,9 +1223,7 @@ pub mod actions_sdk_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/WriteDraft",
             );
-            self.inner
-                .client_streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
         }
         #[doc = " Updates the user's project preview based on the model."]
         pub async fn write_preview(
@@ -1245,9 +1240,7 @@ pub mod actions_sdk_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/WritePreview",
             );
-            self.inner
-                .client_streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
         }
         #[doc = " Creates a project version based on the model and triggers deployment to the"]
         #[doc = " specified release channel, if specified."]
@@ -1265,9 +1258,7 @@ pub mod actions_sdk_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/CreateVersion",
             );
-            self.inner
-                .client_streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
         }
         #[doc = " Reads the entire content of the project draft."]
         pub async fn read_draft(
@@ -1284,9 +1275,7 @@ pub mod actions_sdk_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.actions.sdk.v2.ActionsSdk/ReadDraft");
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Reads the entire content of a project version."]
         pub async fn read_version(
@@ -1306,9 +1295,7 @@ pub mod actions_sdk_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/ReadVersion",
             );
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Encrypts the OAuth client secret used in account linking flows."]
         #[doc = " This can be used to encrypt the client secret for the first time (e.g."]
@@ -1405,7 +1392,7 @@ pub mod actions_sdk_client {
 /// Contains information about execution event which happened during processing
 /// Actions Builder conversation request. For an overview of the stages involved
 /// in a conversation request, see
-/// https://developers.google.com/assistant/conversational/actions.
+/// <https://developers.google.com/assistant/conversational/actions.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutionEvent {
     /// Timestamp when the event happened.
@@ -1489,23 +1476,23 @@ pub struct ExecutionState {
     #[prost(string, tag = "1")]
     pub current_scene_id: ::prost::alloc::string::String,
     /// State of the session storage:
-    /// https://developers.google.com/assistant/conversational/storage-session
+    /// <https://developers.google.com/assistant/conversational/storage-session>
     #[prost(message, optional, tag = "2")]
     pub session_storage: ::core::option::Option<::prost_types::Struct>,
     /// State of the slots filling, if applicable:
-    /// https://developers.google.com/assistant/conversational/scenes#slot_filling
+    /// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
     #[prost(message, optional, tag = "5")]
     pub slots: ::core::option::Option<Slots>,
     /// Prompt queue:
-    /// https://developers.google.com/assistant/conversational/prompts
+    /// <https://developers.google.com/assistant/conversational/prompts>
     #[prost(message, repeated, tag = "7")]
     pub prompt_queue: ::prost::alloc::vec::Vec<conversation::Prompt>,
     /// State of the user storage:
-    /// https://developers.google.com/assistant/conversational/storage-user
+    /// <https://developers.google.com/assistant/conversational/storage-user>
     #[prost(message, optional, tag = "6")]
     pub user_storage: ::core::option::Option<::prost_types::Struct>,
     /// State of the home storage:
-    /// https://developers.google.com/assistant/conversational/storage-home
+    /// <https://developers.google.com/assistant/conversational/storage-home>
     #[prost(message, optional, tag = "8")]
     pub household_storage: ::core::option::Option<::prost_types::Struct>,
 }
@@ -1530,7 +1517,7 @@ pub struct UserConversationInput {
     pub original_query: ::prost::alloc::string::String,
 }
 /// Information about triggered intent match (global or within a scene):
-/// https://developers.google.com/assistant/conversational/intents
+/// <https://developers.google.com/assistant/conversational/intents>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentMatch {
     /// Intent id which triggered this interaction.
@@ -1550,7 +1537,7 @@ pub struct IntentMatch {
     pub next_scene_id: ::prost::alloc::string::String,
 }
 /// Results of conditions evaluation:
-/// https://developers.google.com/assistant/conversational/scenes#conditions
+/// <https://developers.google.com/assistant/conversational/scenes#conditions>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConditionsEvaluated {
     /// List of conditions which were evaluated to 'false'.
@@ -1574,7 +1561,7 @@ pub struct Condition {
     pub next_scene_id: ::prost::alloc::string::String,
 }
 /// Information about execution of onSceneEnter stage:
-/// https://developers.google.com/assistant/conversational/scenes#on_enter
+/// <https://developers.google.com/assistant/conversational/scenes#on_enter>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OnSceneEnter {
     /// Handler name specified in onSceneEnter event.
@@ -1582,7 +1569,7 @@ pub struct OnSceneEnter {
     pub handler: ::prost::alloc::string::String,
 }
 /// Event triggered by destination scene returned from webhook:
-/// https://developers.google.com/assistant/conversational/webhooks#transition_scenes
+/// <https://developers.google.com/assistant/conversational/webhooks#transition_scenes>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebhookInitiatedTransition {
     /// ID of the scene the transition is leading to.
@@ -1590,7 +1577,7 @@ pub struct WebhookInitiatedTransition {
     pub next_scene_id: ::prost::alloc::string::String,
 }
 /// Information about a request dispatched to the Action webhook:
-/// https://developers.google.com/assistant/conversational/webhooks#payloads
+/// <https://developers.google.com/assistant/conversational/webhooks#payloads>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebhookRequest {
     /// Payload of the webhook request.
@@ -1598,7 +1585,7 @@ pub struct WebhookRequest {
     pub request_json: ::prost::alloc::string::String,
 }
 /// Information about a response received from the Action webhook:
-/// https://developers.google.com/assistant/conversational/webhooks#payloads
+/// <https://developers.google.com/assistant/conversational/webhooks#payloads>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebhookResponse {
     /// Payload of the webhook response.
@@ -1606,7 +1593,7 @@ pub struct WebhookResponse {
     pub response_json: ::prost::alloc::string::String,
 }
 /// Information about matched slot(s):
-/// https://developers.google.com/assistant/conversational/scenes#slot_filling
+/// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlotMatch {
     /// Parameters extracted by NLU from user input.
@@ -1617,7 +1604,7 @@ pub struct SlotMatch {
     >,
 }
 /// Information about currently requested slot:
-/// https://developers.google.com/assistant/conversational/scenes#slot_filling
+/// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlotRequested {
     /// Name of the requested slot.
@@ -1628,15 +1615,15 @@ pub struct SlotRequested {
     pub prompt: ::core::option::Option<conversation::Prompt>,
 }
 /// Event which happens after webhook validation was finished for slot(s):
-/// https://developers.google.com/assistant/conversational/scenes#slot_filling
+/// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SlotValidated {}
 /// Event which happens when form is fully filled:
-/// https://developers.google.com/assistant/conversational/scenes#slot_filling
+/// <https://developers.google.com/assistant/conversational/scenes#slot_filling>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FormFilled {}
 /// Event which happens when system needs user input:
-/// https://developers.google.com/assistant/conversational/scenes#input
+/// <https://developers.google.com/assistant/conversational/scenes#input>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WaitingForUserInput {}
 /// Event which informs that conversation with agent was ended.
@@ -1700,14 +1687,14 @@ pub struct DeviceProperties {
     #[prost(message, optional, tag = "2")]
     pub location: ::core::option::Option<Location>,
     /// Locale as set on the device.
-    /// The format should follow BCP 47: https://tools.ietf.org/html/bcp47
+    /// The format should follow BCP 47: <https://tools.ietf.org/html/bcp47>
     /// Examples: en, en-US, es-419 (more examples at
-    /// https://tools.ietf.org/html/bcp47#appendix-A).
+    /// <https://tools.ietf.org/html/bcp47#appendix-A>).
     #[prost(string, tag = "3")]
     pub locale: ::prost::alloc::string::String,
     /// Time zone as set on the device.
     /// The format should follow the IANA Time Zone Database, e.g.
-    /// "America/New_York": https://www.iana.org/time-zones
+    /// "America/New_York": <https://www.iana.org/time-zones>
     #[prost(string, tag = "4")]
     pub time_zone: ::prost::alloc::string::String,
 }
@@ -1736,27 +1723,27 @@ pub mod device_properties {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
     /// Geo coordinates.
-    /// Requires the [DEVICE_PRECISE_LOCATION]
-    /// [google.actions.v2.Permission.DEVICE_PRECISE_LOCATION] permission.
+    /// Requires the \[DEVICE_PRECISE_LOCATION\]
+    /// \[google.actions.v2.Permission.DEVICE_PRECISE_LOCATION\] permission.
     #[prost(message, optional, tag = "1")]
     pub coordinates: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// Display address, e.g., "1600 Amphitheatre Pkwy, Mountain View, CA 94043".
-    /// Requires the [DEVICE_PRECISE_LOCATION]
-    /// [google.actions.v2.Permission.DEVICE_PRECISE_LOCATION] permission.
+    /// Requires the \[DEVICE_PRECISE_LOCATION\]
+    /// \[google.actions.v2.Permission.DEVICE_PRECISE_LOCATION\] permission.
     #[prost(string, tag = "2")]
     pub formatted_address: ::prost::alloc::string::String,
     /// Zip code.
-    /// Requires the [DEVICE_PRECISE_LOCATION]
-    /// [google.actions.v2.Permission.DEVICE_PRECISE_LOCATION] or
-    /// [DEVICE_COARSE_LOCATION]
-    /// [google.actions.v2.Permission.DEVICE_COARSE_LOCATION] permission.
+    /// Requires the \[DEVICE_PRECISE_LOCATION\]
+    /// \[google.actions.v2.Permission.DEVICE_PRECISE_LOCATION\] or
+    /// \[DEVICE_COARSE_LOCATION\]
+    /// \[google.actions.v2.Permission.DEVICE_COARSE_LOCATION\] permission.
     #[prost(string, tag = "3")]
     pub zip_code: ::prost::alloc::string::String,
     /// City.
-    /// Requires the [DEVICE_PRECISE_LOCATION]
-    /// [google.actions.v2.Permission.DEVICE_PRECISE_LOCATION] or
-    /// [DEVICE_COARSE_LOCATION]
-    /// [google.actions.v2.Permission.DEVICE_COARSE_LOCATION] permission.
+    /// Requires the \[DEVICE_PRECISE_LOCATION\]
+    /// \[google.actions.v2.Permission.DEVICE_PRECISE_LOCATION\] or
+    /// \[DEVICE_COARSE_LOCATION\]
+    /// \[google.actions.v2.Permission.DEVICE_COARSE_LOCATION\] permission.
     #[prost(string, tag = "4")]
     pub city: ::prost::alloc::string::String,
 }
@@ -1789,7 +1776,7 @@ pub struct Output {
     pub canvas: ::core::option::Option<conversation::Canvas>,
     /// State of the prompt at the end of the conversation round.
     /// More information about the prompt:
-    /// https://developers.google.com/assistant/conversational/prompts
+    /// <https://developers.google.com/assistant/conversational/prompts>
     #[prost(message, optional, tag = "4")]
     pub actions_builder_prompt: ::core::option::Option<conversation::Prompt>,
 }
@@ -1813,9 +1800,9 @@ pub struct MatchIntentsRequest {
     #[prost(string, tag = "2")]
     pub query: ::prost::alloc::string::String,
     /// Required. Locale to use to evaluate the query, such as "en".
-    /// The format should follow BCP 47: https://tools.ietf.org/html/bcp47
+    /// The format should follow BCP 47: <https://tools.ietf.org/html/bcp47>
     /// See the list of supported languages in
-    /// https://developers.google.com/assistant/console/languages-locales
+    /// <https://developers.google.com/assistant/console/languages-locales>
     #[prost(string, tag = "3")]
     pub locale: ::prost::alloc::string::String,
 }
@@ -1846,7 +1833,7 @@ pub mod actions_testing_client {
     impl<T> ActionsTestingClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1859,7 +1846,7 @@ pub mod actions_testing_client {
             interceptor: F,
         ) -> ActionsTestingClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

@@ -15,7 +15,7 @@ pub mod entity_set {
         /// Required. The ID of the entity.
         /// For a list of built-in-intent parameters and their supported entities,
         /// see
-        /// https://developers.google.com/assistant/conversational/build/built-in-intents
+        /// <https://developers.google.com/assistant/conversational/build/built-in-intents>
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
     }
@@ -100,7 +100,7 @@ pub mod intent {
     pub struct IntentParameter {
         /// Required. Unique name of the intent parameter. Can be used in conditions and
         /// responses to reference intent parameters extracted by NLU with
-        /// $intent.params.[name].resolved
+        /// $intent.params.\[name\].resolved
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
         /// The type of the intent parameter.

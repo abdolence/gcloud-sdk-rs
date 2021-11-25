@@ -33,7 +33,7 @@ pub struct Conversation {
     /// Output only. The conversation transcript.
     #[prost(message, optional, tag = "8")]
     pub transcript: ::core::option::Option<conversation::Transcript>,
-    /// Immutable. The conversation medium.
+    /// Immutable. The conversation medium, if unspecified will default to PHONE_CALL.
     #[prost(enumeration = "conversation::Medium", tag = "9")]
     pub medium: i32,
     /// Output only. The duration of the conversation.
@@ -89,6 +89,9 @@ pub mod conversation {
         /// A segment of a full transcript.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TranscriptSegment {
+            /// The time that the message occurred, if provided.
+            #[prost(message, optional, tag = "6")]
+            pub message_time: ::core::option::Option<::prost_types::Timestamp>,
             /// The text of this segment.
             #[prost(string, tag = "1")]
             pub text: ::prost::alloc::string::String,
@@ -100,7 +103,7 @@ pub mod conversation {
             #[prost(message, repeated, tag = "3")]
             pub words: ::prost::alloc::vec::Vec<transcript_segment::WordInfo>,
             /// The language code of this segment as a
-            /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
+            /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
             /// Example: "en-US".
             #[prost(string, tag = "4")]
             pub language_code: ::prost::alloc::string::String,
@@ -113,6 +116,13 @@ pub mod conversation {
             /// The participant of this segment.
             #[prost(message, optional, tag = "9")]
             pub segment_participant: ::core::option::Option<super::super::ConversationParticipant>,
+            /// CCAI metadata relating to the current transcript segment.
+            #[prost(message, optional, tag = "10")]
+            pub dialogflow_segment_metadata:
+                ::core::option::Option<transcript_segment::DialogflowSegmentMetadata>,
+            /// The sentiment for this transcript segment.
+            #[prost(message, optional, tag = "11")]
+            pub sentiment: ::core::option::Option<super::super::SentimentData>,
         }
         /// Nested message and enum types in `TranscriptSegment`.
         pub mod transcript_segment {
@@ -135,13 +145,21 @@ pub mod conversation {
                 #[prost(float, tag = "4")]
                 pub confidence: f32,
             }
+            /// Metadata from Dialogflow relating to the current transcript segment.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct DialogflowSegmentMetadata {
+                /// Whether the transcript segment was covered under the configured smart
+                /// reply allowlist in Agent Assist.
+                #[prost(bool, tag = "1")]
+                pub smart_reply_allowlist_covered: bool,
+            }
         }
     }
     /// Possible media for the conversation.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Medium {
-        /// Default value.
+        /// Default value, if unspecified will default to PHONE_CALL.
         Unspecified = 0,
         /// The format for conversations that took place over the phone.
         PhoneCall = 1,
@@ -306,9 +324,13 @@ pub struct IssueAssignment {
     #[prost(string, tag = "1")]
     pub issue: ::prost::alloc::string::String,
     /// Score indicating the likelihood of the issue assignment.
-    /// currently bounded on [0,1].
+    /// currently bounded on \[0,1\].
     #[prost(double, tag = "2")]
     pub score: f64,
+    /// Immutable. Display name of the assigned issue. This field is set at time of analyis
+    /// and immutable since then.
+    #[prost(string, tag = "3")]
+    pub display_name: ::prost::alloc::string::String,
 }
 /// A piece of metadata that applies to a window of a call.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -589,12 +611,32 @@ pub struct IssueModel {
     /// Output only. State of the model.
     #[prost(enumeration = "issue_model::State", tag = "5")]
     pub state: i32,
+    /// Configs for the input data that used to create the issue model.
+    #[prost(message, optional, tag = "6")]
+    pub input_data_config: ::core::option::Option<issue_model::InputDataConfig>,
     /// Output only. Immutable. The issue model's label statistics on its training data.
     #[prost(message, optional, tag = "7")]
     pub training_stats: ::core::option::Option<IssueModelLabelStats>,
 }
 /// Nested message and enum types in `IssueModel`.
 pub mod issue_model {
+    /// Configs for the input data used to create the issue model.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InputDataConfig {
+        /// Medium of conversations used in training data. This field is being
+        /// deprecated. To specify the medium to be used in training a new issue
+        /// model, set the `medium` field on `filter`.
+        #[deprecated]
+        #[prost(enumeration = "super::conversation::Medium", tag = "1")]
+        pub medium: i32,
+        /// Output only. Number of conversations used in training. Output only.
+        #[prost(int64, tag = "2")]
+        pub training_conversations_count: i64,
+        /// A filter to reduce the conversations used for training the model to a
+        /// specific subset.
+        #[prost(string, tag = "3")]
+        pub filter: ::prost::alloc::string::String,
+    }
     /// State of the model.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -662,6 +704,9 @@ pub mod issue_model_label_stats {
         /// Number of conversations attached to the issue at this point in time.
         #[prost(int64, tag = "2")]
         pub labeled_conversations_count: i64,
+        /// Display name of the issue.
+        #[prost(string, tag = "3")]
+        pub display_name: ::prost::alloc::string::String,
     }
 }
 /// The phrase matcher resource.
@@ -706,6 +751,9 @@ pub struct PhraseMatcher {
     /// utterances in the transcript.
     #[prost(enumeration = "conversation_participant::Role", tag = "10")]
     pub role_match: i32,
+    /// Output only. The most recent time at which the phrase matcher was updated.
+    #[prost(message, optional, tag = "11")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `PhraseMatcher`.
 pub mod phrase_matcher {
@@ -726,10 +774,7 @@ pub mod phrase_matcher {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseMatchRuleGroup {
     /// Required. The type of this phrase match rule group.
-    #[prost(
-        enumeration = "phrase_match_rule_group::PhraseMatchRuleGroupType",
-        tag = "1"
-    )]
+    #[prost(enumeration = "phrase_match_rule_group::PhraseMatchRuleGroupType", tag = "1")]
     pub r#type: i32,
     /// A list of phase match rules that are included in this group.
     #[prost(message, repeated, tag = "2")]
@@ -824,6 +869,8 @@ pub struct Settings {
     /// * "create-analysis": Notify each time an analysis is created.
     /// * "create-conversation": Notify each time a conversation is created.
     /// * "export-insights-data": Notify each time an export is complete.
+    /// * "update-conversation": Notify each time a conversation is updated via
+    /// UpdateConversation.
     ///
     /// Values are Pub/Sub topics. The format of each Pub/Sub topic is:
     /// projects/{project}/topics/{topic}
@@ -1041,13 +1088,20 @@ pub struct DialogflowInteractionData {
 /// The call participant speaking for a given utterance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversationParticipant {
+    /// Deprecated. Use `dialogflow_participant_name` instead.
     /// The name of the Dialogflow participant. Format:
     /// projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
+    #[deprecated]
     #[prost(string, tag = "1")]
     pub dialogflow_participant: ::prost::alloc::string::String,
+    /// Obfuscated user ID from Dialogflow.
+    #[prost(string, tag = "3")]
+    pub obfuscated_external_user_id: ::prost::alloc::string::String,
     /// The role of the participant.
     #[prost(enumeration = "conversation_participant::Role", tag = "2")]
     pub role: i32,
+    #[prost(oneof = "conversation_participant::Participant", tags = "5, 6")]
+    pub participant: ::core::option::Option<conversation_participant::Participant>,
 }
 /// Nested message and enum types in `ConversationParticipant`.
 pub mod conversation_participant {
@@ -1065,6 +1119,16 @@ pub mod conversation_participant {
         EndUser = 3,
         /// Participant is either a human or automated agent.
         AnyAgent = 4,
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Participant {
+        /// The name of the participant provided by Dialogflow. Format:
+        /// projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}
+        #[prost(string, tag = "5")]
+        DialogflowParticipantName(::prost::alloc::string::String),
+        /// A user-specified ID representing the participant.
+        #[prost(string, tag = "6")]
+        UserId(::prost::alloc::string::String),
     }
 }
 /// The request for calculating conversation statistics.
@@ -1102,10 +1166,18 @@ pub struct CalculateStatsResponse {
         ::std::collections::HashMap<::prost::alloc::string::String, i32>,
     /// A map associating each issue resource name with its respective number of
     /// matches in the set of conversations. Key has the format:
-    /// `projects/<Project ID>/locations/<Location ID>/issueModels/<Issue Model
-    /// ID>/issues/<Issue ID>`
+    /// `projects/<Project-ID>/locations/<Location-ID>/issueModels/<Issue-Model-ID>/issues/<Issue-ID>`
+    /// Deprecated, use `issue_matches_stats` field instead.
     #[prost(map = "string, int32", tag = "6")]
     pub issue_matches: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
+    /// A map associating each issue resource name with its respective number of
+    /// matches in the set of conversations. Key has the format:
+    /// `projects/<Project-ID>/locations/<Location-ID>/issueModels/<Issue-Model-ID>/issues/<Issue-ID>`
+    #[prost(map = "string, message", tag = "8")]
+    pub issue_matches_stats: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        issue_model_label_stats::IssueStats,
+    >,
     /// A time series representing the count of conversations created over time
     /// that match that requested filter criteria.
     #[prost(message, optional, tag = "7")]
@@ -1166,8 +1238,8 @@ pub struct CreateConversationRequest {
     /// component of the conversation's resource name. If no ID is specified, a
     /// server-generated ID will be used.
     ///
-    /// This value should be 4-32 characters and must match the regular
-    /// expression /^[a-z0-9-]{4,32}$/. Valid characters are /[a-z][0-9]-/
+    /// This value should be 4-64 characters and must match the regular
+    /// expression `^\[a-z0-9-\]{4,64}$`. Valid characters are `\[a-z][0-9\]-`
     #[prost(string, tag = "3")]
     pub conversation_id: ::prost::alloc::string::String,
 }
@@ -1177,10 +1249,10 @@ pub struct ListConversationsRequest {
     /// Required. The parent resource of the conversation.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The maximum number of conversations to return in the response. If this
-    /// value is zero, the service will select a default size. A call might return
-    /// fewer objects than requested. A non-empty `next_page_token` in the response
-    /// indicates that more data is available.
+    /// The maximum number of conversations to return in the response. A valid page
+    /// size ranges from 0 to 1,000 inclusive. If the page size is zero or
+    /// unspecified, a default page size of 100 will be chosen. Note that a call
+    /// might return fewer results than the requested page size.
     #[prost(int32, tag = "2")]
     pub page_size: i32,
     /// The value returned by the last `ListConversationsResponse`. This value
@@ -1202,8 +1274,9 @@ pub struct ListConversationsResponse {
     /// The conversations that match the request.
     #[prost(message, repeated, tag = "1")]
     pub conversations: ::prost::alloc::vec::Vec<Conversation>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
+    /// A token which can be sent as `page_token` to retrieve the next page. If
+    /// this field is set, it means there is another page available. If it is not
+    /// set, it means no other pages are available.
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
@@ -1364,6 +1437,39 @@ pub struct ExportInsightsDataMetadata {
 /// Response for an export insights operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportInsightsDataResponse {}
+/// The request to create an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIssueModelRequest {
+    /// Required. The parent resource of the issue model.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The issue model to create.
+    #[prost(message, optional, tag = "2")]
+    pub issue_model: ::core::option::Option<IssueModel>,
+}
+/// Metadata for creating an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateIssueModelMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The original request for creation.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<CreateIssueModelRequest>,
+}
+/// The request to update an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIssueModelRequest {
+    /// Required. The new values for the issue model.
+    #[prost(message, optional, tag = "1")]
+    pub issue_model: ::core::option::Option<IssueModel>,
+    /// The list of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// Request to list issue models.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIssueModelsRequest {
@@ -1385,6 +1491,72 @@ pub struct GetIssueModelRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// The request to delete an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIssueModelRequest {
+    /// Required. The name of the issue model to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata for deleting an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteIssueModelMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The original request for deletion.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<DeleteIssueModelRequest>,
+}
+/// The request to deploy an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployIssueModelRequest {
+    /// Required. The issue model to deploy.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The response to deploy an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployIssueModelResponse {}
+/// Metadata for deploying an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeployIssueModelMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The original request for deployment.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<DeployIssueModelRequest>,
+}
+/// The request to undeploy an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeployIssueModelRequest {
+    /// Required. The issue model to undeploy.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The response to undeploy an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeployIssueModelResponse {}
+/// Metadata for undeploying an issue model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeployIssueModelMetadata {
+    /// Output only. The time the operation was created.
+    #[prost(message, optional, tag = "1")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the operation finished running.
+    #[prost(message, optional, tag = "2")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The original request for undeployment.
+    #[prost(message, optional, tag = "3")]
+    pub request: ::core::option::Option<UndeployIssueModelRequest>,
+}
 /// The request to get an issue.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIssueRequest {
@@ -1405,6 +1577,16 @@ pub struct ListIssuesResponse {
     /// The issues that match the request.
     #[prost(message, repeated, tag = "1")]
     pub issues: ::prost::alloc::vec::Vec<Issue>,
+}
+/// The request to update an issue.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateIssueRequest {
+    /// Required. The new values for the issue.
+    #[prost(message, optional, tag = "1")]
+    pub issue: ::core::option::Option<Issue>,
+    /// The list of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request to get statistics of an issue model.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1481,6 +1663,16 @@ pub struct DeletePhraseMatcherRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// The request to update a phrase matcher.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePhraseMatcherRequest {
+    /// Required. The new values for the phrase matcher.
+    #[prost(message, optional, tag = "1")]
+    pub phrase_matcher: ::core::option::Option<PhraseMatcher>,
+    /// The list of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// The request to get project-level settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetSettingsRequest {
@@ -1491,7 +1683,7 @@ pub struct GetSettingsRequest {
 /// The request to update project-level settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSettingsRequest {
-    /// Required. The new values for the conversation.
+    /// Required. The new settings values.
     #[prost(message, optional, tag = "1")]
     pub settings: ::core::option::Option<Settings>,
     /// Required. The list of fields to be updated.
@@ -1522,7 +1714,7 @@ pub mod contact_center_insights_client {
     impl<T> ContactCenterInsightsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1535,7 +1727,7 @@ pub mod contact_center_insights_client {
             interceptor: F,
         ) -> ContactCenterInsightsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1737,6 +1929,43 @@ pub mod contact_center_insights_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Creates an issue model."]
+        pub async fn create_issue_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateIssueModelRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateIssueModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates an issue model."]
+        pub async fn update_issue_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateIssueModelRequest>,
+        ) -> Result<tonic::Response<super::IssueModel>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateIssueModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Gets an issue model."]
         pub async fn get_issue_model(
             &mut self,
@@ -1771,6 +2000,68 @@ pub mod contact_center_insights_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Deletes an issue model."]
+        pub async fn delete_issue_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteIssueModelRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteIssueModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deploys an issue model. Returns an error if a model is already deployed."]
+        #[doc = " An issue model can only be used in analysis after it has been deployed."]
+        pub async fn deploy_issue_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeployIssueModelRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeployIssueModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Undeploys an issue model."]
+        #[doc = " An issue model can not be used in analysis after it has been undeployed."]
+        pub async fn undeploy_issue_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UndeployIssueModelRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UndeployIssueModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Gets an issue."]
         pub async fn get_issue(
             &mut self,
@@ -1802,6 +2093,23 @@ pub mod contact_center_insights_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListIssues",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates an issue."]
+        pub async fn update_issue(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateIssueRequest>,
+        ) -> Result<tonic::Response<super::Issue>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateIssue",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1886,6 +2194,23 @@ pub mod contact_center_insights_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeletePhraseMatcher",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a phrase matcher."]
+        pub async fn update_phrase_matcher(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePhraseMatcherRequest>,
+        ) -> Result<tonic::Response<super::PhraseMatcher>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdatePhraseMatcher",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

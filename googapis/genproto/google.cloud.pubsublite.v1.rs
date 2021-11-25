@@ -94,7 +94,7 @@ pub mod topic {
         /// Once a topic has been created the number of partitions can be increased
         /// but not decreased. Message ordering is not guaranteed across a topic
         /// resize. For more information see
-        /// https://cloud.google.com/pubsub/lite/docs/topics#scaling_capacity
+        /// <https://cloud.google.com/pubsub/lite/docs/topics#scaling_capacity>
         #[prost(int64, tag = "1")]
         pub count: i64,
         /// The throughput dimension of this topic.
@@ -125,7 +125,7 @@ pub mod topic {
             /// `scale` times the standard partition throughput (4 MiB/s). This is also
             /// reflected in the cost of this topic; a topic with `scale` of 2 and
             /// count of 10 is charged for 20 partitions. This value must be in the
-            /// range [1,4].
+            /// range \[1,4\].
             #[prost(int32, tag = "2")]
             Scale(i32),
             /// The capacity configuration.
@@ -188,7 +188,7 @@ pub mod subscription {
     pub mod delivery_config {
         /// When this subscription should send messages to subscribers relative to
         /// messages persistence in storage. For details, see [Creating Lite
-        /// subscriptions](https://cloud.google.com/pubsub/lite/docs/subscriptions#creating_lite_subscriptions).
+        /// subscriptions](<https://cloud.google.com/pubsub/lite/docs/subscriptions#creating_lite_subscriptions>).
         #[derive(
             Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
         )]
@@ -612,7 +612,7 @@ pub mod admin_service_client {
     impl<T> AdminServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -625,7 +625,7 @@ pub mod admin_service_client {
             interceptor: F,
         ) -> AdminServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1144,7 +1144,7 @@ pub mod cursor_service_client {
     impl<T> CursorServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1157,7 +1157,7 @@ pub mod cursor_service_client {
             interceptor: F,
         ) -> CursorServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1200,9 +1200,7 @@ pub mod cursor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.CursorService/StreamingCommitCursor",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
         #[doc = " Updates the committed cursor."]
         pub async fn commit_cursor(
@@ -1325,7 +1323,7 @@ pub mod publisher_service_client {
     impl<T> PublisherServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1338,7 +1336,7 @@ pub mod publisher_service_client {
             interceptor: F,
         ) -> PublisherServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1385,9 +1383,7 @@ pub mod publisher_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.PublisherService/Publish",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }
@@ -1600,7 +1596,7 @@ pub mod subscriber_service_client {
     impl<T> SubscriberServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1613,7 +1609,7 @@ pub mod subscriber_service_client {
             interceptor: F,
         ) -> SubscriberServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1654,9 +1650,7 @@ pub mod subscriber_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.SubscriberService/Subscribe",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }
@@ -1673,7 +1667,7 @@ pub mod partition_assignment_service_client {
     impl<T> PartitionAssignmentServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1686,7 +1680,7 @@ pub mod partition_assignment_service_client {
             interceptor: F,
         ) -> PartitionAssignmentServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1735,9 +1729,7 @@ pub mod partition_assignment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.PartitionAssignmentService/AssignPartitions",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }
@@ -1833,7 +1825,7 @@ pub mod topic_stats_service_client {
     impl<T> TopicStatsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1846,7 +1838,7 @@ pub mod topic_stats_service_client {
             interceptor: F,
         ) -> TopicStatsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

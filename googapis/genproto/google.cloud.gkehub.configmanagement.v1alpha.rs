@@ -262,7 +262,7 @@ pub struct SyncState {
     pub sync_token: ::prost::alloc::string::String,
     /// Deprecated: use last_sync_time instead.
     /// Timestamp of when ACM last successfully synced the repo
-    /// The time format is specified in https://golang.org/pkg/time/#Time.String
+    /// The time format is specified in <https://golang.org/pkg/time/#Time.String>
     #[deprecated]
     #[prost(string, tag = "4")]
     pub last_sync: ::prost::alloc::string::String,

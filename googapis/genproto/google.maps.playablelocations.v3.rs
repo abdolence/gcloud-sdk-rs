@@ -20,7 +20,7 @@ pub struct PlayerReport {
     /// Language code (in BCP-47 format) indicating the language of the freeform
     /// description provided in `reason_details`. Examples are "en", "en-US" or
     /// "ja-Latn". For more information, see
-    /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.
+    /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
     #[prost(string, tag = "4")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -88,7 +88,7 @@ pub mod impression {
 /// Life of a query:
 ///
 /// - When a game starts in a new location, your game server issues a
-/// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations]
+/// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
 /// request. The request specifies the S2 cell, and contains one or more
 /// "criteria" for filtering:
 ///
@@ -120,7 +120,7 @@ pub struct SamplePlayableLocationsRequest {
 }
 ///
 /// Response for the
-/// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations]
+/// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
 /// method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SamplePlayableLocationsResponse {
@@ -133,7 +133,7 @@ pub struct SamplePlayableLocationsResponse {
     /// You can use this value to determine how long to cache the set of playable
     /// locations. After this length of time, your back-end game server should
     /// issue a new
-    /// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations]
+    /// \[SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations\]
     /// request to get a fresh set of playable locations (because for example, they
     /// might have been removed, a park might have closed for the day, a
     /// business might have closed permanently).
@@ -162,7 +162,7 @@ pub struct LogPlayerReportsRequest {
     pub client_info: ::core::option::Option<super::super::unity::ClientInfo>,
 }
 /// A response for the
-/// [LogPlayerReports][google.maps.playablelocations.v3.PlayableLocations.LogPlayerReports]
+/// \[LogPlayerReports][google.maps.playablelocations.v3.PlayableLocations.LogPlayerReports\]
 /// method.
 ///
 /// This method returns no data upon success.
@@ -190,7 +190,7 @@ pub struct LogImpressionsRequest {
     pub client_info: ::core::option::Option<super::super::unity::ClientInfo>,
 }
 /// A response for the
-/// [LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions]
+/// \[LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions\]
 /// method. This method returns no data upon success.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogImpressionsResponse {}
@@ -206,7 +206,7 @@ pub mod playable_locations_client {
     impl<T> PlayableLocationsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -219,7 +219,7 @@ pub mod playable_locations_client {
             interceptor: F,
         ) -> PlayableLocationsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

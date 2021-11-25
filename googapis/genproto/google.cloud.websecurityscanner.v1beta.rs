@@ -99,7 +99,7 @@ pub struct Finding {
     pub name: ::prost::alloc::string::String,
     /// The type of the Finding.
     /// Detailed and up-to-date information on findings can be found here:
-    /// https://cloud.google.com/security-scanner/docs/scan-result-details
+    /// <https://cloud.google.com/security-scanner/docs/scan-result-details>
     #[prost(string, tag = "2")]
     pub finding_type: ::prost::alloc::string::String,
     /// The http method of the request that triggered the vulnerability, in
@@ -478,7 +478,7 @@ pub struct ScanConfig {
     #[prost(enumeration = "scan_config::UserAgent", tag = "6")]
     pub user_agent: i32,
     /// The blacklist URL patterns as described in
-    /// https://cloud.google.com/security-scanner/docs/excluded-urls
+    /// <https://cloud.google.com/security-scanner/docs/excluded-urls>
     #[prost(string, repeated, tag = "7")]
     pub blacklist_patterns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The schedule of the ScanConfig.
@@ -667,7 +667,7 @@ pub struct UpdateScanConfigRequest {
     pub scan_config: ::core::option::Option<ScanConfig>,
     /// Required. The update mask applies to the resource. For the `FieldMask` definition,
     /// see
-    /// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -842,7 +842,7 @@ pub mod web_security_scanner_client {
     impl<T> WebSecurityScannerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -855,7 +855,7 @@ pub mod web_security_scanner_client {
             interceptor: F,
         ) -> WebSecurityScannerClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

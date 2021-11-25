@@ -4,7 +4,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScanConfig {
     /// Output only. The name of the scan configuration in the form of
-    /// `projects/[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID]`.
+    /// `projects/\[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. A human-readable description of what the scan configuration
@@ -25,7 +25,7 @@ pub struct ScanConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetScanConfigRequest {
     /// Required. The name of the scan configuration in the form of
-    /// `projects/[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID]`.
+    /// `projects/\[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -33,7 +33,7 @@ pub struct GetScanConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListScanConfigsRequest {
     /// Required. The name of the project to list scan configurations for in the form of
-    /// `projects/[PROJECT_ID]`.
+    /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The filter expression.
@@ -62,7 +62,7 @@ pub struct ListScanConfigsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateScanConfigRequest {
     /// Required. The name of the scan configuration in the form of
-    /// `projects/[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID]`.
+    /// `projects/\[PROJECT_ID]/scanConfigs/[SCAN_CONFIG_ID\]`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The updated scan configuration.
@@ -93,7 +93,7 @@ pub mod container_analysis_v1_beta1_client {
     impl<T> ContainerAnalysisV1Beta1Client<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -106,7 +106,7 @@ pub mod container_analysis_v1_beta1_client {
             interceptor: F,
         ) -> ContainerAnalysisV1Beta1Client<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

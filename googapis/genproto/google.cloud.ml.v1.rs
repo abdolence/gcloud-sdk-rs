@@ -401,14 +401,14 @@ pub mod prediction_input {
         /// Use this field if you want to use the default version for the specified
         /// model. The string must use the following format:
         ///
-        /// `"projects/<var>[YOUR_PROJECT]</var>/models/<var>[YOUR_MODEL]</var>"`
+        /// `"projects/<var>\[YOUR_PROJECT]</var>/models/<var>[YOUR_MODEL\]</var>"`
         #[prost(string, tag = "1")]
         ModelName(::prost::alloc::string::String),
         /// Use this field if you want to specify a version of the model to use. The
         /// string is formatted the same way as `model_version`, with the addition
         /// of the version information:
         ///
-        /// `"projects/<var>[YOUR_PROJECT]</var>/models/<var>YOUR_MODEL/versions/<var>[YOUR_VERSION]</var>"`
+        /// `"projects/<var>\[YOUR_PROJECT]</var>/models/<var>YOUR_MODEL/versions/<var>[YOUR_VERSION\]</var>"`
         #[prost(string, tag = "2")]
         VersionName(::prost::alloc::string::String),
         /// Use this field if you want to specify a Google Cloud Storage path for
@@ -586,7 +586,7 @@ pub mod job_service_client {
     impl<T> JobServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -599,7 +599,7 @@ pub mod job_service_client {
             interceptor: F,
         ) -> JobServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -709,7 +709,7 @@ pub struct Model {
     /// handle prediction requests that do not specify a version.
     ///
     /// You can change the default version by calling
-    /// [projects.methods.versions.setDefault](/ml/reference/rest/v1/projects.models.versions/setDefault).
+    /// \[projects.methods.versions.setDefault\](/ml/reference/rest/v1/projects.models.versions/setDefault).
     #[prost(message, optional, tag = "3")]
     pub default_version: ::core::option::Option<Version>,
     /// Optional. The list of regions where the model is going to be deployed.
@@ -727,7 +727,7 @@ pub struct Model {
 /// Each version is a trained model deployed in the cloud, ready to handle
 /// prediction requests. A model can have multiple versions. You can get
 /// information about all of the versions of a given model by calling
-/// [projects.models.versions.list](/ml/reference/rest/v1/projects.models.versions/list).
+/// \[projects.models.versions.list\](/ml/reference/rest/v1/projects.models.versions/list).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Version {
     /// Required.The name specified for the version when it was created.
@@ -742,7 +742,7 @@ pub struct Version {
     /// requests that do not specify a version.
     ///
     /// You can change the default version by calling
-    /// [projects.methods.versions.setDefault](/ml/reference/rest/v1/projects.models.versions/setDefault).
+    /// \[projects.methods.versions.setDefault\](/ml/reference/rest/v1/projects.models.versions/setDefault).
     #[prost(bool, tag = "3")]
     pub is_default: bool,
     /// Required. The Google Cloud Storage location of the trained model used to
@@ -751,7 +751,7 @@ pub struct Version {
     /// more informaiton.
     ///
     /// When passing Version to
-    /// [projects.models.versions.create](/ml/reference/rest/v1/projects.models.versions/create)
+    /// \[projects.models.versions.create\](/ml/reference/rest/v1/projects.models.versions/create)
     /// the model service uses the specified location as the source of the model.
     /// Once deployed, the model version is hosted by the prediction service, so
     /// this location is useful only as a historical record.
@@ -908,7 +908,7 @@ pub struct GetVersionRequest {
 pub struct DeleteVersionRequest {
     /// Required. The name of the version. You can get the names of all the
     /// versions of a model by calling
-    /// [projects.models.versions.list](/ml/reference/rest/v1/projects.models.versions/list).
+    /// \[projects.models.versions.list\](/ml/reference/rest/v1/projects.models.versions/list).
     ///
     /// Authorization: requires `Editor` role on the parent project.
     #[prost(string, tag = "1")]
@@ -919,7 +919,7 @@ pub struct DeleteVersionRequest {
 pub struct SetDefaultVersionRequest {
     /// Required. The name of the version to make the default for the model. You
     /// can get the names of all the versions of a model by calling
-    /// [projects.models.versions.list](/ml/reference/rest/v1/projects.models.versions/list).
+    /// \[projects.models.versions.list\](/ml/reference/rest/v1/projects.models.versions/list).
     ///
     /// Authorization: requires `Editor` role on the parent project.
     #[prost(string, tag = "1")]
@@ -962,7 +962,7 @@ pub mod model_service_client {
     impl<T> ModelServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -975,7 +975,7 @@ pub mod model_service_client {
             interceptor: F,
         ) -> ModelServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1280,8 +1280,8 @@ pub mod operation_metadata {
 /// <pre>
 /// {
 ///   "instances": [
-///     ["the","quick","brown"],
-///     ["la","bruja","le"],
+///     \["the","quick","brown"\],
+///     \["la","bruja","le"\],
 ///     ...
 ///   ]
 /// }
@@ -1459,7 +1459,7 @@ pub mod online_prediction_service_client {
     impl<T> OnlinePredictionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1472,7 +1472,7 @@ pub mod online_prediction_service_client {
             interceptor: F,
         ) -> OnlinePredictionServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1550,7 +1550,7 @@ pub mod project_management_service_client {
     impl<T> ProjectManagementServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1563,7 +1563,7 @@ pub mod project_management_service_client {
             interceptor: F,
         ) -> ProjectManagementServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

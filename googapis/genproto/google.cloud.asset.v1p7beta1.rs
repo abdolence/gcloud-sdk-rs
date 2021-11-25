@@ -2,11 +2,11 @@
 
 /// An asset in Google Cloud. An asset can be any resource in the Google Cloud
 /// [resource
-/// hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
+/// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
 /// a resource outside the Google Cloud resource hierarchy (such as Google
 /// Kubernetes Engine clusters and objects), or a policy (e.g. Cloud IAM policy).
 /// See [Supported asset
-/// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
+/// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
 /// for more information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Asset {
@@ -18,14 +18,14 @@ pub struct Asset {
     /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`
     ///
     /// See [Resource
-    /// names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more information.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The type of the asset. Example: `compute.googleapis.com/Disk`
     ///
     /// See [Supported asset
-    /// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
+    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
     /// for more information.
     #[prost(string, tag = "2")]
     pub asset_type: ::prost::alloc::string::String,
@@ -39,12 +39,12 @@ pub struct Asset {
     /// effectively policy is the union of both the policy set on this resource
     /// and each policy set on all of the resource's ancestry resource levels in
     /// the hierarchy. See
-    /// [this topic](https://cloud.google.com/iam/docs/policies#inheritance) for
+    /// [this topic](<https://cloud.google.com/iam/docs/policies#inheritance>) for
     /// more information.
     #[prost(message, optional, tag = "4")]
     pub iam_policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     /// A representation of an [organization
-    /// policy](https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy).
+    /// policy](<https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy>).
     /// There can be more than one organization policy with different constraints
     /// set on a given resource.
     #[prost(message, repeated, tag = "6")]
@@ -54,7 +54,7 @@ pub struct Asset {
     #[prost(message, optional, tag = "13")]
     pub related_assets: ::core::option::Option<RelatedAssets>,
     /// The ancestry path of an asset in Google Cloud [resource
-    /// hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
+    /// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
     /// represented as a list of relative resource names. An ancestry path starts
     /// with the closest ancestor in the hierarchy and ends at root. If the asset
     /// is a project, folder, or organization, the ancestry path starts from the
@@ -64,26 +64,26 @@ pub struct Asset {
     #[prost(string, repeated, tag = "10")]
     pub ancestors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A representation of an [access
-    /// policy](https://cloud.google.com/access-context-manager/docs/overview#access-policies).
+    /// policy](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
     #[prost(oneof = "asset::AccessContextPolicy", tags = "7, 8, 9")]
     pub access_context_policy: ::core::option::Option<asset::AccessContextPolicy>,
 }
 /// Nested message and enum types in `Asset`.
 pub mod asset {
     /// A representation of an [access
-    /// policy](https://cloud.google.com/access-context-manager/docs/overview#access-policies).
+    /// policy](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum AccessContextPolicy {
         /// Please also refer to the [access policy user
-        /// guide](https://cloud.google.com/access-context-manager/docs/overview#access-policies).
+        /// guide](<https://cloud.google.com/access-context-manager/docs/overview#access-policies>).
         #[prost(message, tag = "7")]
         AccessPolicy(super::super::super::super::identity::accesscontextmanager::v1::AccessPolicy),
         /// Please also refer to the [access level user
-        /// guide](https://cloud.google.com/access-context-manager/docs/overview#access-levels).
+        /// guide](<https://cloud.google.com/access-context-manager/docs/overview#access-levels>).
         #[prost(message, tag = "8")]
         AccessLevel(super::super::super::super::identity::accesscontextmanager::v1::AccessLevel),
         /// Please also refer to the [service perimeter user
-        /// guide](https://cloud.google.com/vpc-service-controls/docs/overview).
+        /// guide](<https://cloud.google.com/vpc-service-controls/docs/overview>).
         #[prost(message, tag = "9")]
         ServicePerimeter(
             super::super::super::super::identity::accesscontextmanager::v1::ServicePerimeter,
@@ -98,7 +98,7 @@ pub struct Resource {
     pub version: ::prost::alloc::string::String,
     /// The URL of the discovery document containing the resource's JSON schema.
     /// Example:
-    /// `https://www.googleapis.com/discovery/v1/apis/compute/v1/rest`
+    /// `<https://www.googleapis.com/discovery/v1/apis/compute/v1/rest`>
     ///
     /// This value is unspecified for resources that do not have an API based on a
     /// discovery document, such as Cloud Bigtable.
@@ -113,19 +113,19 @@ pub struct Resource {
     pub discovery_name: ::prost::alloc::string::String,
     /// The REST URL for accessing the resource. An HTTP `GET` request using this
     /// URL returns the resource itself. Example:
-    /// `https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`
+    /// `<https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`>
     ///
     /// This value is unspecified for resources without a REST API.
     #[prost(string, tag = "4")]
     pub resource_url: ::prost::alloc::string::String,
     /// The full name of the immediate parent of this resource. See
     /// [Resource
-    /// Names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more information.
     ///
     /// For Google Cloud assets, this value is the parent resource defined in the
     /// [Cloud IAM policy
-    /// hierarchy](https://cloud.google.com/iam/docs/overview#policy_hierarchy).
+    /// hierarchy](<https://cloud.google.com/iam/docs/overview#policy_hierarchy>).
     /// Example:
     /// `//cloudresourcemanager.googleapis.com/projects/my_project_123`
     ///
@@ -137,7 +137,7 @@ pub struct Resource {
     #[prost(message, optional, tag = "6")]
     pub data: ::core::option::Option<::prost_types::Struct>,
     /// The location of the resource in Google Cloud, such as its zone and region.
-    /// For more information, see https://cloud.google.com/about/locations/.
+    /// For more information, see <https://cloud.google.com/about/locations/.>
     #[prost(string, tag = "8")]
     pub location: ::prost::alloc::string::String,
 }
@@ -171,11 +171,11 @@ pub struct RelationshipAttributes {
 }
 /// An asset identify in Google Cloud which contains its name, type and
 /// ancestors. An asset can be any resource in the Google Cloud [resource
-/// hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
+/// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
 /// a resource outside the Google Cloud resource hierarchy (such as Google
 /// Kubernetes Engine clusters and objects), or a policy (e.g. Cloud IAM policy).
 /// See [Supported asset
-/// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
+/// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
 /// for more information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelatedAsset {
@@ -183,19 +183,19 @@ pub struct RelatedAsset {
     /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`
     ///
     /// See [Resource
-    /// names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more information.
     #[prost(string, tag = "1")]
     pub asset: ::prost::alloc::string::String,
     /// The type of the asset. Example: `compute.googleapis.com/Disk`
     ///
     /// See [Supported asset
-    /// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)
+    /// types](<https://cloud.google.com/asset-inventory/docs/supported-asset-types>)
     /// for more information.
     #[prost(string, tag = "2")]
     pub asset_type: ::prost::alloc::string::String,
     /// The ancestors of an asset in Google Cloud [resource
-    /// hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),
+    /// hierarchy](<https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy>),
     /// represented as a list of relative resource names. An ancestry path starts
     /// with the closest ancestor in the hierarchy and ends at root.
     ///
@@ -229,13 +229,13 @@ pub struct ExportAssetsRequest {
     /// * ".*Instance" snapshots resources whose asset type ends with "Instance".
     /// * ".*Instance.*" snapshots resources whose asset type contains "Instance".
     ///
-    /// See [RE2](https://github.com/google/re2/wiki/Syntax) for all supported
+    /// See \[RE2\](<https://github.com/google/re2/wiki/Syntax>) for all supported
     /// regular expression syntax. If the regular expression does not match any
     /// supported asset type, an INVALID_ARGUMENT error will be returned.
     ///
     /// If specified, only matching assets will be returned, otherwise, it will
     /// snapshot all asset types. See [Introduction to Cloud Asset
-    /// Inventory](https://cloud.google.com/asset-inventory/docs/overview)
+    /// Inventory](<https://cloud.google.com/asset-inventory/docs/overview>)
     /// for all supported asset types.
     #[prost(string, repeated, tag = "3")]
     pub asset_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -249,21 +249,21 @@ pub struct ExportAssetsRequest {
     pub output_config: ::core::option::Option<OutputConfig>,
     /// A list of relationship types to export, for example:
     /// `INSTANCE_TO_INSTANCEGROUP`. This field should only be specified if
-    /// content_type=RELATIONSHIP. If specified, it will snapshot [asset_types]'
+    /// content_type=RELATIONSHIP. If specified, it will snapshot \[asset_types\]'
     /// specified relationships, or give errors if any relationship_types'
-    /// supported types are not in [asset_types]. If not specified, it will
-    /// snapshot all [asset_types]' supported relationships. An unspecified
-    /// [asset_types] field means all supported asset_types. See [Introduction to
+    /// supported types are not in \[asset_types\]. If not specified, it will
+    /// snapshot all \[asset_types\]' supported relationships. An unspecified
+    /// \[asset_types\] field means all supported asset_types. See [Introduction to
     /// Cloud Asset
-    /// Inventory](https://cloud.google.com/asset-inventory/docs/overview) for all
+    /// Inventory](<https://cloud.google.com/asset-inventory/docs/overview>) for all
     /// supported asset types and relationship types.
     #[prost(string, repeated, tag = "6")]
     pub relationship_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The export asset response. This message is returned by the
-/// [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]
+/// \[google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation\]
 /// method in the returned
-/// [google.longrunning.Operation.response][google.longrunning.Operation.response]
+/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]
 /// field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportAssetsResponse {
@@ -275,7 +275,7 @@ pub struct ExportAssetsResponse {
     pub output_config: ::core::option::Option<OutputConfig>,
     /// Output result indicating where the assets were exported to. For example, a
     /// set of actual Google Cloud Storage object uris where the assets are
-    /// exported to. The uris can be different from what [output_config] has
+    /// exported to. The uris can be different from what \[output_config\] has
     /// specified, as the service will split the output object into multiple ones
     /// once it exceeds a single Google Cloud Storage object limit.
     #[prost(message, optional, tag = "3")]
@@ -342,7 +342,7 @@ pub mod gcs_destination {
         /// The uri of the Cloud Storage object. It's the same uri that is used by
         /// gsutil. Example: "gs://bucket_name/object_name". See [Viewing and
         /// Editing Object
-        /// Metadata](https://cloud.google.com/storage/docs/viewing-editing-metadata)
+        /// Metadata](<https://cloud.google.com/storage/docs/viewing-editing-metadata>)
         /// for more information.
         #[prost(string, tag = "1")]
         Uri(::prost::alloc::string::String),
@@ -379,44 +379,44 @@ pub struct BigQueryDestination {
     /// call returns an INVALID_ARGUMEMT error.
     #[prost(bool, tag = "3")]
     pub force: bool,
-    /// [partition_spec] determines whether to export to partitioned table(s) and
+    /// \[partition_spec\] determines whether to export to partitioned table(s) and
     /// how to partition the data.
     ///
-    /// If [partition_spec] is unset or [partition_spec.partition_key] is unset or
+    /// If \[partition_spec\] is unset or \[partition_spec.partition_key\] is unset or
     /// `PARTITION_KEY_UNSPECIFIED`, the snapshot results will be exported to
-    /// non-partitioned table(s). [force] will decide whether to overwrite existing
+    /// non-partitioned table(s). \[force\] will decide whether to overwrite existing
     /// table(s).
     ///
-    /// If [partition_spec] is specified. First, the snapshot results will be
+    /// If \[partition_spec\] is specified. First, the snapshot results will be
     /// written to partitioned table(s) with two additional timestamp columns,
     /// readTime and requestTime, one of which will be the partition key. Secondly,
     /// in the case when any destination table already exists, it will first try to
     /// update existing table's schema as necessary by appending additional
-    /// columns. Then, if [force] is `TRUE`, the corresponding partition will be
+    /// columns. Then, if \[force\] is `TRUE`, the corresponding partition will be
     /// overwritten by the snapshot results (data in different partitions will
-    /// remain intact); if [force] is unset or `FALSE`, it will append the data. An
+    /// remain intact); if \[force\] is unset or `FALSE`, it will append the data. An
     /// error will be returned if the schema update or data appension fails.
     #[prost(message, optional, tag = "4")]
     pub partition_spec: ::core::option::Option<PartitionSpec>,
     /// If this flag is `TRUE`, the snapshot results will be written to one or
     /// multiple tables, each of which contains results of one asset type. The
-    /// [force] and [partition_spec] fields will apply to each of them.
+    /// \[force\] and \[partition_spec\] fields will apply to each of them.
     ///
-    /// Field [table] will be concatenated with "_" and the asset type names (see
-    /// https://cloud.google.com/asset-inventory/docs/supported-asset-types for
+    /// Field \[table\] will be concatenated with "_" and the asset type names (see
+    /// <https://cloud.google.com/asset-inventory/docs/supported-asset-types> for
     /// supported asset types) to construct per-asset-type table names, in which
     /// all non-alphanumeric characters like "." and "/" will be substituted by
-    /// "_". Example: if field [table] is "mytable" and snapshot results
+    /// "_". Example: if field \[table\] is "mytable" and snapshot results
     /// contain "storage.googleapis.com/Bucket" assets, the corresponding table
     /// name will be "mytable_storage_googleapis_com_Bucket". If any of these
     /// tables does not exist, a new table with the concatenated name will be
     /// created.
     ///
-    /// When [content_type] in the ExportAssetsRequest is `RESOURCE`, the schema of
+    /// When \[content_type\] in the ExportAssetsRequest is `RESOURCE`, the schema of
     /// each table will include RECORD-type columns mapped to the nested fields in
     /// the Asset.resource.data field of that asset type (up to the 15 nested level
     /// BigQuery supports
-    /// (https://cloud.google.com/bigquery/docs/nested-repeated#limitations)). The
+    /// (<https://cloud.google.com/bigquery/docs/nested-repeated#limitations>)). The
     /// fields in >15 nested levels will be stored in JSON format string as a child
     /// column of its parent RECORD column.
     ///
@@ -441,7 +441,7 @@ pub mod partition_spec {
     /// assets to BigQuery partitioned table(s). Note that, if the partition key is
     /// a timestamp column, the actual partition is based on its date value
     /// (expressed in UTC. see details in
-    /// https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables).
+    /// <https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables>).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum PartitionKey {
@@ -449,7 +449,7 @@ pub mod partition_spec {
         Unspecified = 0,
         /// The time when the snapshot is taken. If specified as partition key, the
         /// result table(s) is partitoned by the additional timestamp column,
-        /// readTime. If [read_time] in ExportAssetsRequest is specified, the
+        /// readTime. If \[read_time\] in ExportAssetsRequest is specified, the
         /// readTime column's value will be the same as it. Otherwise, its value will
         /// be the current time that is used to take the snapshot.
         ReadTime = 1,
@@ -489,7 +489,7 @@ pub mod asset_service_client {
     impl<T> AssetServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -502,7 +502,7 @@ pub mod asset_service_client {
             interceptor: F,
         ) -> AssetServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

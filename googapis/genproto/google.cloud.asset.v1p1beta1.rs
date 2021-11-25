@@ -4,7 +4,7 @@ pub struct StandardResourceMetadata {
     /// The full resource name. For example:
     /// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`.
     /// See [Resource
-    /// Names](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// Names](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// for more information.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
@@ -33,14 +33,14 @@ pub struct StandardResourceMetadata {
     #[prost(string, tag = "11")]
     pub location: ::prost::alloc::string::String,
     /// Labels associated with this resource. See [Labelling and grouping GCP
-    /// resources](https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources)
+    /// resources](<https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>)
     /// for more information.
     #[prost(map = "string, string", tag = "12")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Network tags associated with this resource. Like labels, network tags are a
     /// type of annotations used to group GCP resources. See [Labelling GCP
-    /// resources](lhttps://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources)
+    /// resources](l<https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>)
     /// for more information.
     #[prost(string, repeated, tag = "13")]
     pub network_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -49,7 +49,7 @@ pub struct StandardResourceMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IamPolicySearchResult {
     /// The [full resource
-    /// name](https://cloud.google.com/apis/design/resource_names#full_resource_name)
+    /// name](<https://cloud.google.com/apis/design/resource_names#full_resource_name>)
     /// of the resource associated with this IAM policy.
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
@@ -197,7 +197,7 @@ pub mod asset_service_client {
     impl<T> AssetServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -210,7 +210,7 @@ pub mod asset_service_client {
             interceptor: F,
         ) -> AssetServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

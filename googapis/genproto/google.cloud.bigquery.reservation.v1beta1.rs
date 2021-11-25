@@ -107,7 +107,7 @@ pub mod capacity_commitment {
     }
 }
 /// The request for
-/// [ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateReservation].
+/// \[ReservationService.CreateReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateReservationRequest {
     /// Required. Project, location. E.g.,
@@ -123,7 +123,7 @@ pub struct CreateReservationRequest {
     pub reservation: ::core::option::Option<Reservation>,
 }
 /// The request for
-/// [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListReservations].
+/// \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListReservations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsRequest {
     /// Required. The parent resource name containing project and location, e.g.:
@@ -140,12 +140,12 @@ pub struct ListReservationsRequest {
     /// filter="reservation.slot_capacity > 200"
     /// filter="reservation.name = \"*dev/*\""
     /// Advanced filtering syntax can be
-    /// [here](https://cloud.google.com/logging/docs/view/advanced-filters).
+    /// \[here\](<https://cloud.google.com/logging/docs/view/advanced-filters>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// The response for
-/// [ReservationService.ListReservations][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListReservations].
+/// \[ReservationService.ListReservations][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListReservations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsResponse {
     /// List of reservations visible to the user.
@@ -157,7 +157,7 @@ pub struct ListReservationsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.GetReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.GetReservation].
+/// \[ReservationService.GetReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.GetReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
@@ -166,7 +166,7 @@ pub struct GetReservationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteReservation].
+/// \[ReservationService.DeleteReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
@@ -175,7 +175,7 @@ pub struct DeleteReservationRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.UpdateReservation].
+/// \[ReservationService.UpdateReservation][google.cloud.bigquery.reservation.v1beta1.ReservationService.UpdateReservation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReservationRequest {
     /// Content of the reservation to update.
@@ -186,7 +186,7 @@ pub struct UpdateReservationRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for
-/// [ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateCapacityCommitment].
+/// \[ReservationService.CreateCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCapacityCommitmentRequest {
     /// Required. Resource name of the parent reservation. E.g.,
@@ -202,7 +202,7 @@ pub struct CreateCapacityCommitmentRequest {
     pub enforce_single_admin_project_per_org: bool,
 }
 /// The request for
-/// [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListCapacityCommitments].
+/// \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListCapacityCommitments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsRequest {
     /// Required. Resource name of the parent reservation. E.g.,
@@ -217,7 +217,7 @@ pub struct ListCapacityCommitmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// [ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListCapacityCommitments].
+/// \[ReservationService.ListCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListCapacityCommitments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsResponse {
     /// List of capacity commitments visible to the user.
@@ -229,7 +229,7 @@ pub struct ListCapacityCommitmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.GetCapacityCommitment].
+/// \[ReservationService.GetCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.GetCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to retrieve. E.g.,
@@ -238,7 +238,7 @@ pub struct GetCapacityCommitmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteCapacityCommitment].
+/// \[ReservationService.DeleteCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to delete. E.g.,
@@ -247,7 +247,7 @@ pub struct DeleteCapacityCommitmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.UpdateCapacityCommitment].
+/// \[ReservationService.UpdateCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.UpdateCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCapacityCommitmentRequest {
     /// Content of the capacity commitment to update.
@@ -258,7 +258,7 @@ pub struct UpdateCapacityCommitmentRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for
-/// [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.SplitCapacityCommitment].
+/// \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.SplitCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentRequest {
     /// Required. The resource name e.g.,:
@@ -270,7 +270,7 @@ pub struct SplitCapacityCommitmentRequest {
     pub slot_count: i64,
 }
 /// The response for
-/// [ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.SplitCapacityCommitment].
+/// \[ReservationService.SplitCapacityCommitment][google.cloud.bigquery.reservation.v1beta1.ReservationService.SplitCapacityCommitment\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentResponse {
     /// First capacity commitment, result of a split.
@@ -281,7 +281,7 @@ pub struct SplitCapacityCommitmentResponse {
     pub second: ::core::option::Option<CapacityCommitment>,
 }
 /// The request for
-/// [ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.MergeCapacityCommitments].
+/// \[ReservationService.MergeCapacityCommitments][google.cloud.bigquery.reservation.v1beta1.ReservationService.MergeCapacityCommitments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MergeCapacityCommitmentsRequest {
     /// Parent resource that identifies admin project and location e.g.,
@@ -343,7 +343,7 @@ pub mod assignment {
     }
 }
 /// The request for
-/// [ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateAssignment].
+/// \[ReservationService.CreateAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.CreateAssignment\].
 /// Note: "bigquery.reservationAssignments.create" permission is required on the
 /// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -357,7 +357,7 @@ pub struct CreateAssignmentRequest {
     pub assignment: ::core::option::Option<Assignment>,
 }
 /// The request for
-/// [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListAssignments].
+/// \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsRequest {
     /// Required. The parent resource name e.g.:
@@ -377,7 +377,7 @@ pub struct ListAssignmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// [ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListAssignments].
+/// \[ReservationService.ListAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.ListAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsResponse {
     /// List of assignments visible to the user.
@@ -389,7 +389,7 @@ pub struct ListAssignmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteAssignment].
+/// \[ReservationService.DeleteAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.DeleteAssignment\].
 /// Note: "bigquery.reservationAssignments.delete" permission is required on the
 /// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -400,7 +400,7 @@ pub struct DeleteAssignmentRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.SearchAssignments].
+/// \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.SearchAssignments\].
 /// Note: "bigquery.reservationAssignments.search" permission is required on the
 /// related assignee.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -427,7 +427,7 @@ pub struct SearchAssignmentsRequest {
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
-/// [ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.SearchAssignments].
+/// \[ReservationService.SearchAssignments][google.cloud.bigquery.reservation.v1beta1.ReservationService.SearchAssignments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssignmentsResponse {
     /// List of assignments visible to the user.
@@ -439,7 +439,7 @@ pub struct SearchAssignmentsResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
-/// [ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.MoveAssignment].
+/// \[ReservationService.MoveAssignment][google.cloud.bigquery.reservation.v1beta1.ReservationService.MoveAssignment\].
 ///
 /// **Note**: "bigquery.reservationAssignments.create" permission is required on
 /// the destination_id.
@@ -518,7 +518,7 @@ pub mod reservation_service_client {
     impl<T> ReservationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -531,7 +531,7 @@ pub mod reservation_service_client {
             interceptor: F,
         ) -> ReservationServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

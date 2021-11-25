@@ -1,4 +1,4 @@
-/// The request message for [Locations.ListLocations][google.cloud.location.Locations.ListLocations].
+/// The request message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLocationsRequest {
     /// The resource that owns the locations collection, if applicable.
@@ -14,7 +14,7 @@ pub struct ListLocationsRequest {
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response message for [Locations.ListLocations][google.cloud.location.Locations.ListLocations].
+/// The response message for \[Locations.ListLocations][google.cloud.location.Locations.ListLocations\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListLocationsResponse {
     /// A list of locations that matches the specified filter in the request.
@@ -24,7 +24,7 @@ pub struct ListLocationsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [Locations.GetLocation][google.cloud.location.Locations.GetLocation].
+/// The request message for \[Locations.GetLocation][google.cloud.location.Locations.GetLocation\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetLocationRequest {
     /// Resource name for the location.
@@ -70,7 +70,7 @@ pub mod locations_client {
     impl<T> LocationsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -83,7 +83,7 @@ pub mod locations_client {
             interceptor: F,
         ) -> LocationsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

@@ -272,7 +272,7 @@ pub struct Apk {
 }
 /// An Android App Bundle file format, containing a BundleConfig.pb file,
 /// a base module directory, zero or more dynamic feature module directories.
-/// <p>See https://developer.android.com/guide/app-bundle/build for guidance on
+/// <p>See <https://developer.android.com/guide/app-bundle/build> for guidance on
 /// building App Bundles.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppBundle {
@@ -315,7 +315,7 @@ pub mod device_file {
 pub struct ObbFile {
     /// Required. OBB file name which must conform to the format as specified by
     /// Android
-    /// e.g. [main|patch].0300110.com.example.android.obb
+    /// e.g. \[main|patch\].0300110.com.example.android.obb
     /// which will be installed into
     ///   \<shared-storage\>/Android/obb/\<package-name\>/
     /// on the device.
@@ -345,7 +345,7 @@ pub struct RegularFile {
     /// storage path prefix for that device and copy the file there.
     ///
     /// <p> It is strongly advised to use the <a href=
-    /// "http://developer.android.com/reference/android/os/Environment.html">
+    /// "<http://developer.android.com/reference/android/os/Environment.html">>
     /// Environment API</a> in app and test code to access files on the device in a
     /// portable way.
     #[prost(string, tag = "2")]
@@ -464,7 +464,7 @@ pub struct IosTestLoop {
 /// a test runner class, such as com.google.GoogleTestRunner, which can vary
 /// on the specific instrumentation framework chosen.
 ///
-/// See <http://developer.android.com/tools/testing/testing_android.html> for
+/// See <<http://developer.android.com/tools/testing/testing_android.html>> for
 /// more information on types of Android tests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AndroidInstrumentationTest {
@@ -502,7 +502,7 @@ pub struct AndroidInstrumentationTest {
     ///  - Logs are scoped per test
     ///
     /// See
-    /// <https://developer.android.com/training/testing/junit-runner.html#using-android-test-orchestrator>
+    /// <<https://developer.android.com/training/testing/junit-runner.html#using-android-test-orchestrator>>
     /// for more information about Android Test Orchestrator.
     ///
     /// If not set, the test will be run without the orchestrator.
@@ -593,7 +593,7 @@ pub struct RoboDirective {
     ///    in xml: @string/foo
     /// Only the "foo" part is needed.
     /// Reference doc:
-    /// https://developer.android.com/guide/topics/resources/accessing-resources.html
+    /// <https://developer.android.com/guide/topics/resources/accessing-resources.html>
     #[prost(string, tag = "1")]
     pub resource_name: ::prost::alloc::string::String,
     /// The text that Robo is directed to set. If left empty, the directive will be
@@ -1089,7 +1089,7 @@ pub enum InvalidMatrixDetails {
     NoPackageName = 5,
     /// The APK application ID (aka package name) is invalid.
     /// See also
-    /// https://developer.android.com/studio/build/application-id
+    /// <https://developer.android.com/studio/build/application-id>
     InvalidPackageName = 31,
     /// The test package and app package are the same.
     TestSameAsApp = 6,
@@ -1164,7 +1164,7 @@ pub enum InvalidMatrixDetails {
     MalformedAppBundle = 36,
     /// APK contains no code.
     /// See also
-    /// https://developer.android.com/guide/topics/manifest/application-element.html#code
+    /// <https://developer.android.com/guide/topics/manifest/application-element.html#code>
     NoCodeApk = 23,
     /// Either the provided input APK path was malformed,
     /// the APK file does not exist, or the user does not have permission to
@@ -1284,7 +1284,7 @@ pub mod test_execution_service_client {
     impl<T> TestExecutionServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1297,7 +1297,7 @@ pub mod test_execution_service_client {
             interceptor: F,
         ) -> TestExecutionServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1405,7 +1405,7 @@ pub struct ApkDetail {
     pub apk_manifest: ::core::option::Option<ApkManifest>,
 }
 /// An Android app manifest. See
-/// http://developer.android.com/guide/topics/manifest/manifest-intro.html
+/// <http://developer.android.com/guide/topics/manifest/manifest-intro.html>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApkManifest {
     /// Full Java-style package name for this application, e.g.
@@ -1431,7 +1431,7 @@ pub struct ApkManifest {
     pub uses_permission: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// The <intent-filter> section of an <activity> tag.
-/// https://developer.android.com/guide/topics/manifest/intent-filter-element.html
+/// <https://developer.android.com/guide/topics/manifest/intent-filter-element.html>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IntentFilter {
     /// The android:name value of the <action> tag.
@@ -1471,7 +1471,7 @@ pub mod application_detail_service_client {
     impl<T> ApplicationDetailServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -1484,7 +1484,7 @@ pub mod application_detail_service_client {
             interceptor: F,
         ) -> ApplicationDetailServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -1545,10 +1545,7 @@ pub struct DeviceIpBlock {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTestEnvironmentCatalogRequest {
     /// Required. The type of environment that should be listed.
-    #[prost(
-        enumeration = "get_test_environment_catalog_request::EnvironmentType",
-        tag = "1"
-    )]
+    #[prost(enumeration = "get_test_environment_catalog_request::EnvironmentType", tag = "1")]
     pub environment_type: i32,
     /// For authorization, the cloud project requesting the TestEnvironmentCatalog.
     #[prost(string, tag = "2")]
@@ -1578,10 +1575,7 @@ pub mod get_test_environment_catalog_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TestEnvironmentCatalog {
     /// Output only.
-    #[prost(
-        oneof = "test_environment_catalog::EnvironmentCatalog",
-        tags = "1, 3, 4, 5, 6"
-    )]
+    #[prost(oneof = "test_environment_catalog::EnvironmentCatalog", tags = "1, 3, 4, 5, 6")]
     pub environment_catalog: ::core::option::Option<test_environment_catalog::EnvironmentCatalog>,
 }
 /// Nested message and enum types in `TestEnvironmentCatalog`.
@@ -1696,7 +1690,7 @@ pub struct AndroidModel {
     #[prost(string, repeated, tag = "8")]
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// URL of a thumbnail image (photo) of the device.
-    /// e.g. https://lh3.googleusercontent.com/90WcauuJiCYABEl8U0lcZeuS5STUbf2yW...
+    /// e.g. <https://lh3.googleusercontent.com/90WcauuJiCYABEl8U0lcZeuS5STUbf2yW...>
     #[prost(string, tag = "19")]
     pub thumbnail_url: ::prost::alloc::string::String,
 }
@@ -1788,7 +1782,7 @@ pub struct IosModel {
     pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Device capabilities.
     /// Copied from
-    /// https://developer.apple.com/library/archive/documentation/DeviceInformation/Reference/iOSDeviceCompatibility/DeviceCompatibilityMatrix/DeviceCompatibilityMatrix.html
+    /// <https://developer.apple.com/library/archive/documentation/DeviceInformation/Reference/iOSDeviceCompatibility/DeviceCompatibilityMatrix/DeviceCompatibilityMatrix.html>
     #[prost(string, repeated, tag = "5")]
     pub device_capabilities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Screen size in the horizontal (X) dimension measured in pixels.
@@ -1916,12 +1910,12 @@ pub struct TrafficRule {
 pub struct ProvidedSoftwareCatalog {
     /// A string representing the current version of Android Test Orchestrator
     /// that is used in the environment. The package is available at
-    /// https://maven.google.com/web/index.html#com.android.support.test:orchestrator.
+    /// <https://maven.google.com/web/index.html#com.android.support.test:orchestrator.>
     #[prost(string, tag = "1")]
     pub orchestrator_version: ::prost::alloc::string::String,
     /// A string representing the current version of AndroidX Test Orchestrator
     /// that is used in the environment. The package is available at
-    /// https://maven.google.com/web/index.html#androidx.test:orchestrator.
+    /// <https://maven.google.com/web/index.html#androidx.test:orchestrator.>
     #[prost(string, tag = "2")]
     pub androidx_orchestrator_version: ::prost::alloc::string::String,
 }
@@ -1996,7 +1990,7 @@ pub mod test_environment_discovery_service_client {
     impl<T> TestEnvironmentDiscoveryServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -2009,7 +2003,7 @@ pub mod test_environment_discovery_service_client {
             interceptor: F,
         ) -> TestEnvironmentDiscoveryServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

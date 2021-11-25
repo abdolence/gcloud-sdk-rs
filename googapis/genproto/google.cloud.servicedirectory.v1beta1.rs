@@ -1,5 +1,5 @@
 /// An individual endpoint that provides a
-/// [service][google.cloud.servicedirectory.v1beta1.Service]. The service must
+/// \[service][google.cloud.servicedirectory.v1beta1.Service\]. The service must
 /// already exist to create an endpoint.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Endpoint {
@@ -12,8 +12,8 @@ pub struct Endpoint {
     /// *   `8.8.8`
     /// *   `8.8.8.8:53`
     /// *   `test:bad:address`
-    /// *   `[::1]`
-    /// *   `[::1]:8080`
+    /// *   `\[::1\]`
+    /// *   `\[::1\]:8080`
     ///
     /// Limited to 45 characters.
     #[prost(string, tag = "2")]
@@ -32,7 +32,7 @@ pub struct Endpoint {
     /// *   Valid metadata keys have two segments: an optional prefix and name,
     ///     separated by a slash (/). The name segment is required and must be 63
     ///     characters or less, beginning and ending with an alphanumeric character
-    ///     ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and
+    ///     (\[a-z0-9A-Z\]) with dashes (-), underscores (_), dots (.), and
     ///     alphanumerics between. The prefix is optional. If specified, the prefix
     ///     must be a DNS subdomain: a series of DNS labels separated by dots (.),
     ///     not longer than 253 characters in total, followed by a slash (/).
@@ -66,7 +66,7 @@ pub struct Endpoint {
 }
 /// An individual service. A service contains a name and optional metadata.
 /// A service must exist before
-/// [endpoints][google.cloud.servicedirectory.v1beta1.Endpoint] can be
+/// \[endpoints][google.cloud.servicedirectory.v1beta1.Endpoint\] can be
 /// added to it.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Service {
@@ -85,7 +85,7 @@ pub struct Service {
     /// *   Valid metadata keys have two segments: an optional prefix and name,
     ///     separated by a slash (/). The name segment is required and must be 63
     ///     characters or less, beginning and ending with an alphanumeric character
-    ///     ([a-z0-9A-Z]) with dashes (-), underscores (_), dots (.), and
+    ///     (\[a-z0-9A-Z\]) with dashes (-), underscores (_), dots (.), and
     ///     alphanumerics between. The prefix is optional. If specified, the prefix
     ///     must be a DNS subdomain: a series of DNS labels separated by dots (.),
     ///     not longer than 253 characters in total, followed by a slash (/).
@@ -102,8 +102,8 @@ pub struct Service {
     pub metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. Endpoints associated with this service. Returned on
-    /// [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService]. Control plane clients should use
-    /// [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
+    /// \[LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService\]. Control plane clients should use
+    /// \[RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints\].
     #[prost(message, repeated, tag = "3")]
     pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
     /// Output only. The timestamp when the service was created.
@@ -115,7 +115,7 @@ pub struct Service {
     #[prost(message, optional, tag = "7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// The request message for [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
+/// The request message for \[LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService\].
 /// Looks up a service by its name, returns the service and its endpoints.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveServiceRequest {
@@ -159,11 +159,11 @@ pub struct ResolveServiceRequest {
     ///     match any endpoint, it returns no results
     ///
     /// For more information about filtering, see
-    /// [API Filtering](https://aip.dev/160).
+    /// [API Filtering](<https://aip.dev/160>).
     #[prost(string, tag = "3")]
     pub endpoint_filter: ::prost::alloc::string::String,
 }
-/// The response message for [LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService].
+/// The response message for \[LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveServiceResponse {
     #[prost(message, optional, tag = "1")]
@@ -181,7 +181,7 @@ pub mod lookup_service_client {
     impl<T> LookupServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -194,7 +194,7 @@ pub mod lookup_service_client {
             interceptor: F,
         ) -> LookupServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -240,7 +240,7 @@ pub mod lookup_service_client {
         }
     }
 }
-/// A container for [services][google.cloud.servicedirectory.v1beta1.Service].
+/// A container for \[services][google.cloud.servicedirectory.v1beta1.Service\].
 /// Namespaces allow administrators to group services together and define
 /// permissions for a collection of services.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -262,7 +262,7 @@ pub struct Namespace {
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-/// The request message for [RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateNamespace].
+/// The request message for \[RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateNamespace\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateNamespaceRequest {
     /// Required. The resource name of the project and location the namespace
@@ -270,9 +270,9 @@ pub struct CreateNamespaceRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
-    /// <a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank">RFC1035</a>.
+    /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
     /// Specifically, the name must be 1-63 characters long and match the regular
-    /// expression `[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?` which means the first
+    /// expression `\[a-z](?:[-a-z0-9]{0,61}[a-z0-9\])?` which means the first
     /// character must be a lowercase letter, and all following characters must
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
@@ -282,7 +282,7 @@ pub struct CreateNamespaceRequest {
     #[prost(message, optional, tag = "3")]
     pub namespace: ::core::option::Option<Namespace>,
 }
-/// The request message for [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
+/// The request message for \[RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNamespacesRequest {
     /// Required. The resource name of the project and location whose namespaces you'd like
@@ -321,7 +321,7 @@ pub struct ListNamespacesRequest {
     ///     match any namespaces, it returns no results
     ///
     /// For more information about filtering, see
-    /// [API Filtering](https://aip.dev/160).
+    /// [API Filtering](<https://aip.dev/160>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list results by.
@@ -337,7 +337,7 @@ pub struct ListNamespacesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// The response message for [RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces].
+/// The response message for \[RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNamespacesResponse {
     /// The list of namespaces.
@@ -348,14 +348,14 @@ pub struct ListNamespacesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [RegistrationService.GetNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.GetNamespace].
+/// The request message for \[RegistrationService.GetNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.GetNamespace\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNamespaceRequest {
     /// Required. The name of the namespace to retrieve.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [RegistrationService.UpdateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateNamespace].
+/// The request message for \[RegistrationService.UpdateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateNamespace\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNamespaceRequest {
     /// Required. The updated namespace.
@@ -365,23 +365,23 @@ pub struct UpdateNamespaceRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [RegistrationService.DeleteNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteNamespace].
+/// The request message for \[RegistrationService.DeleteNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteNamespace\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNamespaceRequest {
     /// Required. The name of the namespace to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [RegistrationService.CreateService][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateService].
+/// The request message for \[RegistrationService.CreateService][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. The resource name of the namespace this service will belong to.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
-    /// <a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank">RFC1035</a>.
+    /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
     /// Specifically, the name must be 1-63 characters long and match the regular
-    /// expression `[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?` which means the first
+    /// expression `\[a-z](?:[-a-z0-9]{0,61}[a-z0-9\])?` which means the first
     /// character must be a lowercase letter, and all following characters must
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
@@ -391,7 +391,7 @@ pub struct CreateServiceRequest {
     #[prost(message, optional, tag = "3")]
     pub service: ::core::option::Option<Service>,
 }
-/// The request message for [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
+/// The request message for \[RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesRequest {
     /// Required. The resource name of the namespace whose services you'd
@@ -434,7 +434,7 @@ pub struct ListServicesRequest {
     ///     match any services, it returns no results
     ///
     /// For more information about filtering, see
-    /// [API Filtering](https://aip.dev/160).
+    /// [API Filtering](<https://aip.dev/160>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list results by.
@@ -450,7 +450,7 @@ pub struct ListServicesRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// The response message for [RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices].
+/// The response message for \[RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The list of services.
@@ -461,7 +461,7 @@ pub struct ListServicesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [RegistrationService.GetService][google.cloud.servicedirectory.v1beta1.RegistrationService.GetService].
+/// The request message for \[RegistrationService.GetService][google.cloud.servicedirectory.v1beta1.RegistrationService.GetService\].
 /// This should not be used for looking up a service. Insead, use the `resolve`
 /// method as it contains all endpoints and associated metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -470,7 +470,7 @@ pub struct GetServiceRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [RegistrationService.UpdateService][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateService].
+/// The request message for \[RegistrationService.UpdateService][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. The updated service.
@@ -480,23 +480,23 @@ pub struct UpdateServiceRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [RegistrationService.DeleteService][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteService].
+/// The request message for \[RegistrationService.DeleteService][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The name of the service to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [RegistrationService.CreateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateEndpoint].
+/// The request message for \[RegistrationService.CreateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateEndpoint\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointRequest {
     /// Required. The resource name of the service that this endpoint provides.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
-    /// <a href="https://www.ietf.org/rfc/rfc1035.txt" target="_blank">RFC1035</a>.
+    /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
     /// Specifically, the name must be 1-63 characters long and match the regular
-    /// expression `[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?` which means the first
+    /// expression `\[a-z](?:[-a-z0-9]{0,61}[a-z0-9\])?` which means the first
     /// character must be a lowercase letter, and all following characters must
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
@@ -506,7 +506,7 @@ pub struct CreateEndpointRequest {
     #[prost(message, optional, tag = "3")]
     pub endpoint: ::core::option::Option<Endpoint>,
 }
-/// The request message for [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
+/// The request message for \[RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsRequest {
     /// Required. The resource name of the service whose endpoints you'd like to
@@ -552,7 +552,7 @@ pub struct ListEndpointsRequest {
     ///     match any endpoints, it returns no results
     ///
     /// For more information about filtering, see
-    /// [API Filtering](https://aip.dev/160).
+    /// [API Filtering](<https://aip.dev/160>).
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list results by.
@@ -568,7 +568,7 @@ pub struct ListEndpointsRequest {
     #[prost(string, tag = "5")]
     pub order_by: ::prost::alloc::string::String,
 }
-/// The response message for [RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints].
+/// The response message for \[RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsResponse {
     /// The list of endpoints.
@@ -579,7 +579,7 @@ pub struct ListEndpointsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request message for [RegistrationService.GetEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.GetEndpoint].
+/// The request message for \[RegistrationService.GetEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.GetEndpoint\].
 /// This should not be used to lookup endpoints at runtime. Instead, use
 /// the `resolve` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -588,7 +588,7 @@ pub struct GetEndpointRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request message for [RegistrationService.UpdateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateEndpoint].
+/// The request message for \[RegistrationService.UpdateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateEndpoint\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEndpointRequest {
     /// Required. The updated endpoint.
@@ -598,7 +598,7 @@ pub struct UpdateEndpointRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request message for [RegistrationService.DeleteEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteEndpoint].
+/// The request message for \[RegistrationService.DeleteEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteEndpoint\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEndpointRequest {
     /// Required. The name of the endpoint to delete.
@@ -631,7 +631,7 @@ pub mod registration_service_client {
     impl<T> RegistrationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -644,7 +644,7 @@ pub mod registration_service_client {
             interceptor: F,
         ) -> RegistrationServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

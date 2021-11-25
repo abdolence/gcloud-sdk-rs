@@ -287,7 +287,7 @@ pub mod display_ad_format_setting_enum {
 
 /// Container for display upload product types. Product types that have the word
 /// "DYNAMIC" in them must be associated with a campaign that has a dynamic
-/// remarketing feed. See https://support.google.com/google-ads/answer/6053288
+/// remarketing feed. See <https://support.google.com/google-ads/answer/6053288>
 /// for more info about dynamic remarketing. Other product types are regarded
 /// as "static" and do not have this requirement.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1310,7 +1310,7 @@ pub mod promotion_extension_discount_modifier_enum {
 
 /// Container for enum describing a promotion extension occasion.
 /// For more information about the occasions please check:
-/// https://support.google.com/google-ads/answer/7367521
+/// <https://support.google.com/google-ads/answer/7367521>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromotionExtensionOccasionEnum {}
 /// Nested message and enum types in `PromotionExtensionOccasionEnum`.
@@ -2683,7 +2683,7 @@ pub mod hotel_rate_type_enum {
         /// like having a public rate available. UI treatment will strikethrough the
         /// public rate and indicate that a discount is available to the user. For
         /// more on Qualified Rates, visit
-        /// https://developers.google.com/hotels/hotel-ads/dev-guide/qualified-rates
+        /// <https://developers.google.com/hotels/hotel-ads/dev-guide/qualified-rates>
         QualifiedRate = 4,
         /// Rates available to users that satisfy some eligibility criteria. e.g.
         /// all signed-in users, 20% of mobile users, all mobile users in Canada,
@@ -4226,7 +4226,7 @@ pub mod budget_period_enum {
         Daily = 2,
         /// Custom budget, added back in V5.
         /// Custom bugdet can be used with total_amount to specify lifetime budget
-        /// limit. See: https://support.google.com/google-ads/answer/6385083 for more
+        /// limit. See: <https://support.google.com/google-ads/answer/6385083> for more
         /// info.
         CustomPeriod = 5,
     }
@@ -4269,17 +4269,17 @@ pub mod budget_type_enum {
         Unknown = 1,
         /// Budget type for standard Google Ads usage.
         /// Caps daily spend at two times the specified budget amount.
-        /// Full details: https://support.google.com/google-ads/answer/6385083
+        /// Full details: <https://support.google.com/google-ads/answer/6385083>
         Standard = 2,
         /// Budget type for Hotels Ads commission program.
-        /// Full details: https://support.google.com/google-ads/answer/9243945
+        /// Full details: <https://support.google.com/google-ads/answer/9243945>
         ///
         /// This type is only supported by campaigns with
         /// AdvertisingChannelType.HOTEL, BiddingStrategyType.COMMISSION and
         /// PaymentMode.CONVERSION_VALUE.
         HotelAdsCommission = 3,
         /// Budget type with a fixed cost-per-acquisition (conversion).
-        /// Full details: https://support.google.com/google-ads/answer/7528254
+        /// Full details: <https://support.google.com/google-ads/answer/7528254>
         ///
         /// This type is only supported by campaigns with
         /// AdvertisingChannelType.DISPLAY (excluding
@@ -4794,7 +4794,7 @@ pub struct ConversionActionCountingTypeEnum {}
 /// Nested message and enum types in `ConversionActionCountingTypeEnum`.
 pub mod conversion_action_counting_type_enum {
     /// Indicates how conversions for this action will be counted. For more
-    /// information, see https://support.google.com/google-ads/answer/3438531.
+    /// information, see <https://support.google.com/google-ads/answer/3438531.>
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ConversionActionCountingType {
@@ -5239,7 +5239,7 @@ pub mod custom_interest_type_enum {
 
 /// Values for Custom placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomPlaceholderFieldEnum {}
 /// Nested message and enum types in `CustomPlaceholderFieldEnum`.
@@ -5481,7 +5481,7 @@ pub mod dsa_page_feed_criterion_field_enum {
 
 /// Values for Education placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EducationPlaceholderFieldEnum {}
 /// Nested message and enum types in `EducationPlaceholderFieldEnum`.
@@ -5972,7 +5972,7 @@ pub mod feed_status_enum {
 
 /// Values for Flight placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlightPlaceholderFieldEnum {}
 /// Nested message and enum types in `FlightPlaceholderFieldEnum`.
@@ -6226,7 +6226,7 @@ pub mod google_voice_call_status_enum {
 
 /// Values for Hotel placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelPlaceholderFieldEnum {}
 /// Nested message and enum types in `HotelPlaceholderFieldEnum`.
@@ -6343,7 +6343,7 @@ pub mod invoice_type_enum {
 
 /// Values for Job placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobPlaceholderFieldEnum {}
 /// Nested message and enum types in `JobPlaceholderFieldEnum`.
@@ -6521,7 +6521,7 @@ pub mod linked_account_type_enum {
 
 /// Values for Local placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocalPlaceholderFieldEnum {}
 /// Nested message and enum types in `LocalPlaceholderFieldEnum`.
@@ -7408,7 +7408,7 @@ pub mod reach_plan_network_enum {
 
 /// Values for Real Estate placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RealEstatePlaceholderFieldEnum {}
 /// Nested message and enum types in `RealEstatePlaceholderFieldEnum`.
@@ -8009,7 +8009,7 @@ pub mod structured_snippet_placeholder_field_enum {
         /// Data Type: STRING. The category of snippet of your products/services.
         /// Must match exactly one of the predefined structured snippets headers.
         /// For a list, visit
-        /// https://developers.google.com/adwords/api/docs/appendix/structured-snippet-headers
+        /// <https://developers.google.com/adwords/api/docs/appendix/structured-snippet-headers>
         Header = 2,
         /// Data Type: STRING_LIST. Text values that describe your products/services.
         /// All text must be family safe. Special or non-ASCII characters are not
@@ -8112,7 +8112,7 @@ pub mod time_type_enum {
 
 /// Values for Travel placeholder fields.
 /// For more information about dynamic remarketing feeds, see
-/// https://support.google.com/google-ads/answer/6053288.
+/// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TravelPlaceholderFieldEnum {}
 /// Nested message and enum types in `TravelPlaceholderFieldEnum`.

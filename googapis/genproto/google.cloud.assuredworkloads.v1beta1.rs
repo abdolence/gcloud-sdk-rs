@@ -113,7 +113,7 @@ pub struct Workload {
     /// Output only. Immutable. The Workload creation timestamp.
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. Input only. The billing account used for the resources which are
+    /// Input only. The billing account used for the resources which are
     /// direct children of workload. This billing account is initially associated
     /// with the resources created as part of Workload creation.
     /// After the initial creation of these resources, the customer can change
@@ -132,12 +132,11 @@ pub struct Workload {
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Input only. The parent resource for the resources managed by this Assured Workload. May
-    /// be either an organization or a folder. Must be the same or a child of the
+    /// be either empty or a folder resource which is a child of the
     /// Workload parent. If not specified all resources are created under the
-    /// Workload parent.
-    /// Formats:
+    /// parent organization.
+    /// Format:
     /// folders/{folder_id}
-    /// organizations/{organization_id}
     #[prost(string, tag = "13")]
     pub provisioned_resources_parent: ::prost::alloc::string::String,
     /// Input only. Settings used to create a CMEK crypto key. When set a project with a KMS
@@ -150,7 +149,7 @@ pub struct Workload {
     /// workload resources if possible. This field is optional.
     #[prost(message, repeated, tag = "15")]
     pub resource_settings: ::prost::alloc::vec::Vec<workload::ResourceSettings>,
-    /// Settings specific to the selected [compliance_regime]
+    /// Settings specific to the selected \[compliance_regime\]
     #[prost(oneof = "workload::ComplianceRegimeSettings", tags = "7, 8, 11, 12")]
     pub compliance_regime_settings: ::core::option::Option<workload::ComplianceRegimeSettings>,
 }
@@ -177,10 +176,15 @@ pub mod workload {
         pub enum ResourceType {
             /// Unknown resource type.
             Unspecified = 0,
-            /// Consumer project.
+            /// Deprecated. Existing workloads will continue to support this, but new
+            /// CreateWorkloadRequests should not specify this as an input value.
             ConsumerProject = 1,
+            /// Consumer Folder.
+            ConsumerFolder = 4,
             /// Consumer project containing encryption keys.
             EncryptionKeysProject = 2,
+            /// Keyring resource that hosts encryption keys.
+            Keyring = 3,
         }
     }
     /// Settings specific to the Key Management Service.
@@ -190,7 +194,7 @@ pub mod workload {
         /// new version of the crypto key and mark it as the primary.
         #[prost(message, optional, tag = "1")]
         pub next_rotation_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Required. Input only. Immutable. [next_rotation_time] will be advanced by this period when the Key
+        /// Required. Input only. Immutable. \[next_rotation_time\] will be advanced by this period when the Key
         /// Management Service automatically rotates a key. Must be at least 24 hours
         /// and at most 876,000 hours.
         #[prost(message, optional, tag = "2")]
@@ -237,6 +241,11 @@ pub mod workload {
         /// ENCRYPTION_KEYS_PROJECT)
         #[prost(enumeration = "resource_info::ResourceType", tag = "2")]
         pub resource_type: i32,
+        /// User-assigned resource display name.
+        /// If not empty it will be used to create a resource with the specified
+        /// name.
+        #[prost(string, tag = "3")]
+        pub display_name: ::prost::alloc::string::String,
     }
     /// Supported Compliance Regimes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -258,8 +267,12 @@ pub mod workload {
         Hipaa = 6,
         /// Health Information Trust Alliance controls
         Hitrust = 7,
+        /// Assured Workloads For EU Regions and Support controls
+        EuRegionsAndSupport = 8,
+        /// Assured Workloads For Canada Regions and Support controls
+        CaRegionsAndSupport = 9,
     }
-    /// Settings specific to the selected [compliance_regime]
+    /// Settings specific to the selected \[compliance_regime\]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ComplianceRegimeSettings {
         /// Required. Input only. Immutable. Settings specific to resources needed for IL4.
@@ -292,6 +305,10 @@ pub struct CreateWorkloadOperationMetadata {
     /// the workload.
     #[prost(enumeration = "workload::ComplianceRegime", tag = "4")]
     pub compliance_regime: i32,
+    /// Optional. Resource properties in the input that are used for creating/customizing
+    /// workload resources.
+    #[prost(message, repeated, tag = "5")]
+    pub resource_settings: ::prost::alloc::vec::Vec<workload::ResourceSettings>,
 }
 #[doc = r" Generated client implementations."]
 pub mod assured_workloads_service_client {
@@ -305,7 +322,7 @@ pub mod assured_workloads_service_client {
     impl<T> AssuredWorkloadsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -318,7 +335,7 @@ pub mod assured_workloads_service_client {
             interceptor: F,
         ) -> AssuredWorkloadsServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

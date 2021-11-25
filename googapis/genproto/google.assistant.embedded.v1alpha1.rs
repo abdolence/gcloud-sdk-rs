@@ -14,7 +14,7 @@ pub struct ConverseConfig {
 /// Specifies how to process the `audio_in` data that will be provided in
 /// subsequent requests. For recommended settings, see the Google Assistant SDK
 /// [best
-/// practices](https://developers.google.com/assistant/sdk/develop/grpc/best-practices/audio).
+/// practices](<https://developers.google.com/assistant/sdk/develop/grpc/best-practices/audio>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioInConfig {
     /// *Required* Encoding of audio data sent in all `audio_in` messages.
@@ -35,12 +35,12 @@ pub mod audio_in_config {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Encoding {
-        /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].
+        /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].
         Unspecified = 0,
         /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
         /// This encoding includes no header, only the raw audio bytes.
         Linear16 = 1,
-        /// [`FLAC`](https://xiph.org/flac/documentation.html) (Free Lossless Audio
+        /// \[`FLAC`\](<https://xiph.org/flac/documentation.html>) (Free Lossless Audio
         /// Codec) is the recommended encoding because it is
         /// lossless--therefore recognition is not compromised--and
         /// requires only about half the bandwidth of `LINEAR16`. This encoding
@@ -74,7 +74,7 @@ pub mod audio_out_config {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Encoding {
-        /// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].
+        /// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].
         Unspecified = 0,
         /// Uncompressed 16-bit signed little-endian samples (Linear PCM).
         Linear16 = 1,
@@ -218,7 +218,7 @@ pub mod converse_response {
     /// Exactly one of these fields will be populated in each `ConverseResponse`.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConverseResponse {
-        /// *Output-only* If set, returns a [google.rpc.Status][google.rpc.Status]
+        /// *Output-only* If set, returns a \[google.rpc.Status][google.rpc.Status\]
         /// message that specifies the error for the operation. If an error occurs
         /// during processing, this message will be set and there will be no further
         /// messages sent.
@@ -247,7 +247,7 @@ pub mod embedded_assistant_client {
     impl<T> EmbeddedAssistantClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -260,7 +260,7 @@ pub mod embedded_assistant_client {
             interceptor: F,
         ) -> EmbeddedAssistantClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -341,9 +341,7 @@ pub mod embedded_assistant_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.assistant.embedded.v1alpha1.EmbeddedAssistant/Converse",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }

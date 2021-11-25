@@ -32,7 +32,7 @@ pub mod workload_identity_pool {
         Active = 1,
         /// The pool is soft-deleted. Soft-deleted pools are permanently deleted
         /// after approximately 30 days. You can restore a soft-deleted pool using
-        /// [UndeleteWorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPools.UndeleteWorkloadIdentityPool].
+        /// \[UndeleteWorkloadIdentityPool][google.iam.v1beta.WorkloadIdentityPools.UndeleteWorkloadIdentityPool\].
         ///
         /// You cannot reuse the ID of a soft-deleted pool until it is permanently
         /// deleted.
@@ -84,7 +84,7 @@ pub struct WorkloadIdentityPoolProvider {
     /// `attribute.{custom_attribute}`, where `{custom_attribute}` is the name of
     /// the custom attribute to be mapped. You can define a maximum of 50 custom
     /// attributes. The maximum length of a mapped attribute key is
-    /// 100 characters, and the key may only contain the characters [a-z0-9_].
+    /// 100 characters, and the key may only contain the characters \[a-z0-9_\].
     ///
     /// You can reference these attributes in IAM policies to define fine-grained
     /// access for a workload to Google Cloud resources. For example:
@@ -99,7 +99,7 @@ pub struct WorkloadIdentityPoolProvider {
     /// `principalSet://iam.googleapis.com/projects/{project}/locations/{location}/workloadIdentityPools/{pool}/attribute.{custom_attribute}/{value}`
     ///
     /// Each value must be a [Common Expression Language]
-    /// (https://opensource.google/projects/cel) function that maps an
+    /// (<https://opensource.google/projects/cel>) function that maps an
     /// identity provider credential to the normalized attribute specified by the
     /// corresponding map key.
     ///
@@ -144,7 +144,7 @@ pub struct WorkloadIdentityPoolProvider {
     #[prost(map = "string, string", tag = "6")]
     pub attribute_mapping:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// [A Common Expression Language](https://opensource.google/projects/cel)
+    /// [A Common Expression Language](<https://opensource.google/projects/cel>)
     /// expression, in plain text, to restrict what otherwise valid authentication
     /// credentials issued by the provider should not be accepted.
     ///
@@ -173,10 +173,7 @@ pub struct WorkloadIdentityPoolProvider {
     #[prost(string, tag = "7")]
     pub attribute_condition: ::prost::alloc::string::String,
     /// Identity provider configuration types.
-    #[prost(
-        oneof = "workload_identity_pool_provider::ProviderConfig",
-        tags = "8, 9"
-    )]
+    #[prost(oneof = "workload_identity_pool_provider::ProviderConfig", tags = "8, 9")]
     pub provider_config: ::core::option::Option<workload_identity_pool_provider::ProviderConfig>,
 }
 /// Nested message and enum types in `WorkloadIdentityPoolProvider`.
@@ -205,7 +202,7 @@ pub mod workload_identity_pool_provider {
         ///
         /// ```
         /// //iam.googleapis.com/projects/<project-number>/locations/<location>/workloadIdentityPools/<pool-id>/providers/<provider-id>
-        /// https://iam.googleapis.com/projects/<project-number>/locations/<location>/workloadIdentityPools/<pool-id>/providers/<provider-id>
+        /// <https://iam.googleapis.com/projects/<project-number>/locations/<location>/workloadIdentityPools/<pool-id>/providers/<provider-id>>
         /// ```
         #[prost(string, repeated, tag = "2")]
         pub allowed_audiences: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -222,7 +219,7 @@ pub mod workload_identity_pool_provider {
         /// The provider is soft-deleted. Soft-deleted providers are permanently
         /// deleted after approximately 30 days. You can restore a soft-deleted
         /// provider using
-        /// [UndeleteWorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityPools.UndeleteWorkloadIdentityPoolProvider].
+        /// \[UndeleteWorkloadIdentityPoolProvider][google.iam.v1beta.WorkloadIdentityPools.UndeleteWorkloadIdentityPoolProvider\].
         ///
         /// You cannot reuse the ID of a soft-deleted provider until it is
         /// permanently deleted.
@@ -288,7 +285,7 @@ pub struct CreateWorkloadIdentityPoolRequest {
     pub workload_identity_pool: ::core::option::Option<WorkloadIdentityPool>,
     /// Required. The ID to use for the pool, which becomes the
     /// final component of the resource name. This value should be 4-32 characters,
-    /// and may contain the characters [a-z0-9-]. The prefix `gcp-` is
+    /// and may contain the characters \[a-z0-9-\]. The prefix `gcp-` is
     /// reserved for use by Google, and may not be specified.
     #[prost(string, tag = "3")]
     pub workload_identity_pool_id: ::prost::alloc::string::String,
@@ -366,7 +363,7 @@ pub struct CreateWorkloadIdentityPoolProviderRequest {
     pub workload_identity_pool_provider: ::core::option::Option<WorkloadIdentityPoolProvider>,
     /// Required. The ID for the provider, which becomes the
     /// final component of the resource name. This value must be 4-32 characters,
-    /// and may contain the characters [a-z0-9-]. The prefix `gcp-` is
+    /// and may contain the characters \[a-z0-9-\]. The prefix `gcp-` is
     /// reserved for use by Google, and may not be specified.
     #[prost(string, tag = "3")]
     pub workload_identity_pool_provider_id: ::prost::alloc::string::String,
@@ -413,7 +410,7 @@ pub mod workload_identity_pools_client {
     impl<T> WorkloadIdentityPoolsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -426,7 +423,7 @@ pub mod workload_identity_pools_client {
             interceptor: F,
         ) -> WorkloadIdentityPoolsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

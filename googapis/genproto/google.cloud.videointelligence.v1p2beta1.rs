@@ -2,11 +2,11 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateVideoRequest {
     /// Input video location. Currently, only
-    /// [Google Cloud Storage](https://cloud.google.com/storage/) URIs are
+    /// [Google Cloud Storage](<https://cloud.google.com/storage/>) URIs are
     /// supported, which must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For more information, see
-    /// [Request URIs](https://cloud.google.com/storage/docs/request-endpoints).
+    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For more information, see
+    /// [Request URIs](<https://cloud.google.com/storage/docs/request-endpoints>).
     /// A video URI may include wildcards in `object-id`, and thus identify
     /// multiple videos. Supported wildcards: '*' to match 0 or more characters;
     /// '?' to match 1 character. If unset, the input video should be embedded
@@ -25,11 +25,11 @@ pub struct AnnotateVideoRequest {
     #[prost(message, optional, tag = "3")]
     pub video_context: ::core::option::Option<VideoContext>,
     /// Optional. Location where the output (in JSON format) should be stored.
-    /// Currently, only [Google Cloud Storage](https://cloud.google.com/storage/)
+    /// Currently, only [Google Cloud Storage](<https://cloud.google.com/storage/>)
     /// URIs are supported, which must be specified in the following format:
     /// `gs://bucket-id/object-id` (other URI formats return
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For more information, see
-    /// [Request URIs](https://cloud.google.com/storage/docs/request-endpoints).
+    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For more information, see
+    /// [Request URIs](<https://cloud.google.com/storage/docs/request-endpoints>).
     #[prost(string, tag = "4")]
     pub output_uri: ::prost::alloc::string::String,
     /// Optional. Cloud region where annotation should take place. Supported cloud
@@ -145,7 +145,7 @@ pub struct LabelFrame {
 pub struct Entity {
     /// Opaque entity ID. Some IDs may be available in
     /// [Google Knowledge Graph Search
-    /// API](https://developers.google.com/knowledge-graph/).
+    /// API](<https://developers.google.com/knowledge-graph/>).
     #[prost(string, tag = "1")]
     pub entity_id: ::prost::alloc::string::String,
     /// Textual description, e.g. `Fixed-gear bicycle`.
@@ -216,7 +216,7 @@ pub struct NormalizedBoundingBox {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationResults {
     /// Video file location in
-    /// [Google Cloud Storage](https://cloud.google.com/storage/).
+    /// [Google Cloud Storage](<https://cloud.google.com/storage/>).
     #[prost(string, tag = "1")]
     pub input_uri: ::prost::alloc::string::String,
     /// Label annotations on video level or user specified segment level.
@@ -263,7 +263,7 @@ pub struct AnnotateVideoResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoAnnotationProgress {
     /// Video file location in
-    /// [Google Cloud Storage](https://cloud.google.com/storage/).
+    /// [Google Cloud Storage](<https://cloud.google.com/storage/>).
     #[prost(string, tag = "1")]
     pub input_uri: ::prost::alloc::string::String,
     /// Approximate percentage processed thus far. Guaranteed to be
@@ -445,7 +445,7 @@ pub mod video_intelligence_service_client {
     impl<T> VideoIntelligenceServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -458,7 +458,7 @@ pub mod video_intelligence_service_client {
             interceptor: F,
         ) -> VideoIntelligenceServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

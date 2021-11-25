@@ -51,7 +51,7 @@ pub struct ListShelvesRequest {
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
     /// Typically, this is the value of
-    /// [ListShelvesResponse.next_page_token][google.example.library.v1.ListShelvesResponse.next_page_token]
+    /// \[ListShelvesResponse.next_page_token][google.example.library.v1.ListShelvesResponse.next_page_token\]
     /// returned from the previous call to `ListShelves` method.
     #[prost(string, tag = "2")]
     pub page_token: ::prost::alloc::string::String,
@@ -64,7 +64,7 @@ pub struct ListShelvesResponse {
     pub shelves: ::prost::alloc::vec::Vec<Shelf>,
     /// A token to retrieve next page of results.
     /// Pass this value in the
-    /// [ListShelvesRequest.page_token][google.example.library.v1.ListShelvesRequest.page_token]
+    /// \[ListShelvesRequest.page_token][google.example.library.v1.ListShelvesRequest.page_token\]
     /// field in the subsequent call to `ListShelves` method to retrieve the next
     /// page of results.
     #[prost(string, tag = "2")]
@@ -117,7 +117,7 @@ pub struct ListBooksRequest {
     pub page_size: i32,
     /// A token identifying a page of results the server should return.
     /// Typically, this is the value of
-    /// [ListBooksResponse.next_page_token][google.example.library.v1.ListBooksResponse.next_page_token].
+    /// \[ListBooksResponse.next_page_token][google.example.library.v1.ListBooksResponse.next_page_token\].
     /// returned from the previous call to `ListBooks` method.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
@@ -130,7 +130,7 @@ pub struct ListBooksResponse {
     pub books: ::prost::alloc::vec::Vec<Book>,
     /// A token to retrieve next page of results.
     /// Pass this value in the
-    /// [ListBooksRequest.page_token][google.example.library.v1.ListBooksRequest.page_token]
+    /// \[ListBooksRequest.page_token][google.example.library.v1.ListBooksRequest.page_token\]
     /// field in the subsequent call to `ListBooks` method to retrieve the next
     /// page of results.
     #[prost(string, tag = "2")]
@@ -168,7 +168,7 @@ pub struct MoveBookRequest {
 pub mod library_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " This API represents a simple digital library.  It lets you manage Shelf"]
+    #[doc = " This API represents a simple digital library. It lets you manage Shelf"]
     #[doc = " resources and Book resources in the library. It defines the following"]
     #[doc = " resource model:"]
     #[doc = ""]
@@ -184,7 +184,7 @@ pub mod library_service_client {
     impl<T> LibraryServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -197,7 +197,7 @@ pub mod library_service_client {
             interceptor: F,
         ) -> LibraryServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

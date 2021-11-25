@@ -20,6 +20,26 @@ pub struct LongRunningRecognizeRequest {
     /// Required. The audio data to be recognized.
     #[prost(message, optional, tag = "2")]
     pub audio: ::core::option::Option<RecognitionAudio>,
+    /// Optional. Specifies an optional destination for the recognition results.
+    #[prost(message, optional, tag = "4")]
+    pub output_config: ::core::option::Option<TranscriptOutputConfig>,
+}
+/// Specifies an optional destination for the recognition results.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TranscriptOutputConfig {
+    #[prost(oneof = "transcript_output_config::OutputType", tags = "1")]
+    pub output_type: ::core::option::Option<transcript_output_config::OutputType>,
+}
+/// Nested message and enum types in `TranscriptOutputConfig`.
+pub mod transcript_output_config {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OutputType {
+        /// Specifies a Cloud Storage URI for the recognition results. Must be
+        /// specified in the format: `gs://bucket_name/object_name`, and the bucket
+        /// must already exist.
+        #[prost(string, tag = "1")]
+        GcsUri(::prost::alloc::string::String),
+    }
 }
 /// The top-level message sent by the client for the `StreamingRecognize` method.
 /// Multiple `StreamingRecognizeRequest` messages are sent. The first message
@@ -49,7 +69,7 @@ pub mod streaming_recognize_request {
         /// `audio_content` data. The audio bytes must be encoded as specified in
         /// `RecognitionConfig`. Note: as with all bytes fields, proto buffers use a
         /// pure binary representation (not base64). See
-        /// [content limits](https://cloud.google.com/speech-to-text/quotas#content).
+        /// [content limits](<https://cloud.google.com/speech-to-text/quotas#content>).
         #[prost(bytes, tag = "2")]
         AudioContent(::prost::alloc::vec::Vec<u8>),
     }
@@ -73,6 +93,16 @@ pub struct StreamingRecognitionConfig {
     /// `END_OF_SINGLE_UTTERANCE` event and cease recognition. It will return no
     /// more than one `StreamingRecognitionResult` with the `is_final` flag set to
     /// `true`.
+    ///
+    /// The `single_utterance` field can only be used with specified models,
+    /// otherwise an error is thrown. The `model` field in \[`RecognitionConfig`][\]
+    /// must be set to:
+    ///
+    /// * `command_and_search`
+    /// * `phone_call` AND additional field `useEnhanced`=`true`
+    /// * The `model` field is left undefined. In this case the API auto-selects
+    ///   a model based on any other parameters that you set in
+    ///   `RecognitionConfig`.
     #[prost(bool, tag = "2")]
     pub single_utterance: bool,
     /// If `true`, interim results (tentative hypotheses) may be
@@ -88,7 +118,7 @@ pub struct StreamingRecognitionConfig {
 pub struct RecognitionConfig {
     /// Encoding of audio data sent in all `RecognitionAudio` messages.
     /// This field is optional for `FLAC` and `WAV` audio files and required
-    /// for all other audio formats. For details, see [AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding].
+    /// for all other audio formats. For details, see \[AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding\].
     #[prost(enumeration = "recognition_config::AudioEncoding", tag = "1")]
     pub encoding: i32,
     /// Sample rate in Hertz of the audio data sent in all
@@ -97,7 +127,7 @@ pub struct RecognitionConfig {
     /// source to 16000 Hz. If that's not possible, use the native sample rate of
     /// the audio source (instead of re-sampling).
     /// This field is optional for FLAC and WAV audio files, but is
-    /// required for all other audio formats. For details, see [AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding].
+    /// required for all other audio formats. For details, see \[AudioEncoding][google.cloud.speech.v1.RecognitionConfig.AudioEncoding\].
     #[prost(int32, tag = "2")]
     pub sample_rate_hertz: i32,
     /// The number of channels in the input audio data.
@@ -120,10 +150,10 @@ pub struct RecognitionConfig {
     #[prost(bool, tag = "12")]
     pub enable_separate_recognition_per_channel: bool,
     /// Required. The language of the supplied audio as a
-    /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
+    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
     /// Example: "en-US".
     /// See [Language
-    /// Support](https://cloud.google.com/speech-to-text/docs/languages) for a list
+    /// Support](<https://cloud.google.com/speech-to-text/docs/languages>) for a list
     /// of the currently supported language codes.
     #[prost(string, tag = "3")]
     pub language_code: ::prost::alloc::string::String,
@@ -141,11 +171,11 @@ pub struct RecognitionConfig {
     /// won't be filtered out.
     #[prost(bool, tag = "5")]
     pub profanity_filter: bool,
-    /// Array of [SpeechContext][google.cloud.speech.v1.SpeechContext].
+    /// Array of \[SpeechContext][google.cloud.speech.v1.SpeechContext\].
     /// A means to provide context to assist the speech recognition. For more
     /// information, see
     /// [speech
-    /// adaptation](https://cloud.google.com/speech-to-text/docs/context-strength).
+    /// adaptation](<https://cloud.google.com/speech-to-text/docs/adaptation>).
     #[prost(message, repeated, tag = "6")]
     pub speech_contexts: ::prost::alloc::vec::Vec<SpeechContext>,
     /// If `true`, the top result includes a list of words and
@@ -158,9 +188,6 @@ pub struct RecognitionConfig {
     /// This feature is only available in select languages. Setting this for
     /// requests in other languages has no effect at all.
     /// The default 'false' value does not add punctuation to result hypotheses.
-    /// Note: This is currently offered as an experimental service, complimentary
-    /// to all users. In the future this may be exclusively available as a
-    /// premium feature.
     #[prost(bool, tag = "11")]
     pub enable_automatic_punctuation: bool,
     /// Config to enable speaker diarization and set additional
@@ -196,7 +223,7 @@ pub struct RecognitionConfig {
     ///   </tr>
     ///   <tr>
     ///     <td><code>video</code></td>
-    ///     <td>Best for audio that originated from from video or includes multiple
+    ///     <td>Best for audio that originated from video or includes multiple
     ///         speakers. Ideally the audio is recorded at a 16khz or greater
     ///         sampling rate. This is a premium model that costs more than the
     ///         standard rate.</td>
@@ -233,7 +260,7 @@ pub mod recognition_config {
     /// a lossless encoding (`FLAC` or `LINEAR16`). The accuracy of the speech
     /// recognition can be reduced if lossy codecs are used to capture or transmit
     /// audio, particularly if background noise is present. Lossy codecs include
-    /// `MULAW`, `AMR`, `AMR_WB`, `OGG_OPUS`, `SPEEX_WITH_HEADER_BYTE`, and `MP3`.
+    /// `MULAW`, `AMR`, `AMR_WB`, `OGG_OPUS`, `SPEEX_WITH_HEADER_BYTE`, `MP3`.
     ///
     /// The `FLAC` and `WAV` audio file formats include a header that describes the
     /// included audio content. You can request recognition for `WAV` files that
@@ -244,7 +271,7 @@ pub mod recognition_config {
     /// an `AudioEncoding` when you send  send `FLAC` or `WAV` audio, the
     /// encoding configuration must match the encoding described in the audio
     /// header; otherwise the request returns an
-    /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error code.
+    /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\] error code.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AudioEncoding {
@@ -266,16 +293,16 @@ pub mod recognition_config {
         /// Adaptive Multi-Rate Wideband codec. `sample_rate_hertz` must be 16000.
         AmrWb = 5,
         /// Opus encoded audio frames in Ogg container
-        /// ([OggOpus](https://wiki.xiph.org/OggOpus)).
+        /// (\[OggOpus\](<https://wiki.xiph.org/OggOpus>)).
         /// `sample_rate_hertz` must be one of 8000, 12000, 16000, 24000, or 48000.
         OggOpus = 6,
         /// Although the use of lossy encodings is not recommended, if a very low
         /// bitrate encoding is required, `OGG_OPUS` is highly preferred over
-        /// Speex encoding. The [Speex](https://speex.org/)  encoding supported by
+        /// Speex encoding. The \[Speex\](<https://speex.org/>)  encoding supported by
         /// Cloud Speech API has a header byte in each block, as in MIME type
         /// `audio/x-speex-with-header-byte`.
         /// It is a variant of the RTP Speex encoding defined in
-        /// [RFC 5574](https://tools.ietf.org/html/rfc5574).
+        /// [RFC 5574](<https://tools.ietf.org/html/rfc5574>).
         /// The stream is a sequence of blocks, one block per RTP packet. Each block
         /// starts with a byte containing the length of the block, in bytes, followed
         /// by one or more frames of Speex data, padded to an integral number of
@@ -303,7 +330,7 @@ pub struct SpeakerDiarizationConfig {
     /// number of speakers. If not set, the default value is 6.
     #[prost(int32, tag = "3")]
     pub max_speaker_count: i32,
-    /// Unused.
+    /// Output only. Unused.
     #[deprecated]
     #[prost(int32, tag = "5")]
     pub speaker_tag: i32,
@@ -317,7 +344,7 @@ pub struct RecognitionMetadata {
     /// The industry vertical to which this speech recognition request most
     /// closely applies. This is most indicative of the topics contained
     /// in the audio.  Use the 6-digit NAICS code to identify the industry
-    /// vertical - see https://www.naics.com/search/.
+    /// vertical - see <https://www.naics.com/search/.>
     #[prost(uint32, tag = "3")]
     pub industry_naics_code_of_audio: u32,
     /// The audio type that most closely describes the audio being recognized.
@@ -337,7 +364,7 @@ pub struct RecognitionMetadata {
     /// Mime type of the original audio file.  For example `audio/m4a`,
     /// `audio/x-alaw-basic`, `audio/mp3`, `audio/3gpp`.
     /// A list of possible audio mime types is maintained at
-    /// http://www.iana.org/assignments/media-types/media-types.xhtml#audio
+    /// <http://www.iana.org/assignments/media-types/media-types.xhtml#audio>
     #[prost(string, tag = "8")]
     pub original_mime_type: ::prost::alloc::string::String,
     /// Description of the content. Eg. "Recordings of federal supreme court
@@ -433,7 +460,7 @@ pub struct SpeechContext {
     /// to improve the accuracy for specific words and phrases, for example, if
     /// specific commands are typically spoken by the user. This can also be used
     /// to add additional words to the vocabulary of the recognizer. See
-    /// [usage limits](https://cloud.google.com/speech-to-text/quotas#content).
+    /// [usage limits](<https://cloud.google.com/speech-to-text/quotas#content>).
     ///
     /// List items can also be set to classes for groups of words that represent
     /// common concepts that occur in natural language. For example, rather than
@@ -445,8 +472,8 @@ pub struct SpeechContext {
 }
 /// Contains audio data in the encoding specified in the `RecognitionConfig`.
 /// Either `content` or `uri` must be supplied. Supplying both or neither
-/// returns [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. See
-/// [content limits](https://cloud.google.com/speech-to-text/quotas#content).
+/// returns \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]. See
+/// [content limits](<https://cloud.google.com/speech-to-text/quotas#content>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RecognitionAudio {
     /// The audio source, which is either inline content or a Google Cloud
@@ -470,8 +497,8 @@ pub mod recognition_audio {
         /// Currently, only Google Cloud Storage URIs are
         /// supported, which must be specified in the following format:
         /// `gs://bucket_name/object_name` (other URI formats return
-        /// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For more information, see
-        /// [Request URIs](https://cloud.google.com/storage/docs/reference-uris).
+        /// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For more information, see
+        /// [Request URIs](<https://cloud.google.com/storage/docs/reference-uris>).
         #[prost(string, tag = "2")]
         Uri(::prost::alloc::string::String),
     }
@@ -485,6 +512,9 @@ pub struct RecognizeResponse {
     /// sequential portions of audio.
     #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
+    /// When available, billed audio seconds for the corresponding request.
+    #[prost(message, optional, tag = "3")]
+    pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// The only message returned to the client by the `LongRunningRecognize` method.
 /// It contains the result as zero or more sequential `SpeechRecognitionResult`
@@ -497,6 +527,9 @@ pub struct LongRunningRecognizeResponse {
     /// sequential portions of audio.
     #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
+    /// When available, billed audio seconds for the corresponding request.
+    #[prost(message, optional, tag = "3")]
+    pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// Describes the progress of a long-running `LongRunningRecognize` call. It is
 /// included in the `metadata` field of the `Operation` returned by the
@@ -513,6 +546,10 @@ pub struct LongRunningRecognizeMetadata {
     /// Time of the most recent processing update.
     #[prost(message, optional, tag = "3")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The URI of the audio file being transcribed. Empty if the audio was sent
+    /// as byte content.
+    #[prost(string, tag = "4")]
+    pub uri: ::prost::alloc::string::String,
 }
 /// `StreamingRecognizeResponse` is the only message returned to the client by
 /// `StreamingRecognize`. A series of zero or more `StreamingRecognizeResponse`
@@ -520,8 +557,8 @@ pub struct LongRunningRecognizeMetadata {
 /// audio, and `single_utterance` is set to false, then no messages are streamed
 /// back to the client.
 ///
-/// Here's an example of a series of ten `StreamingRecognizeResponse`s that might
-/// be returned while processing audio:
+/// Here's an example of a series of `StreamingRecognizeResponse`s that might be
+/// returned while processing audio:
 ///
 /// 1. results { alternatives { transcript: "tube" } stability: 0.01 }
 ///
@@ -565,7 +602,7 @@ pub struct LongRunningRecognizeMetadata {
 ///     one or more (repeated) `results`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingRecognizeResponse {
-    /// If set, returns a [google.rpc.Status][google.rpc.Status] message that
+    /// If set, returns a \[google.rpc.Status][google.rpc.Status\] message that
     /// specifies the error for the operation.
     #[prost(message, optional, tag = "1")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
@@ -576,11 +613,12 @@ pub struct StreamingRecognizeResponse {
     #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<StreamingRecognitionResult>,
     /// Indicates the type of speech event.
-    #[prost(
-        enumeration = "streaming_recognize_response::SpeechEventType",
-        tag = "4"
-    )]
+    #[prost(enumeration = "streaming_recognize_response::SpeechEventType", tag = "4")]
     pub speech_event_type: i32,
+    /// When available, billed audio seconds for the stream.
+    /// Set only if this is the last response in the stream.
+    #[prost(message, optional, tag = "5")]
+    pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `StreamingRecognizeResponse`.
 pub mod streaming_recognize_response {
@@ -633,7 +671,7 @@ pub struct StreamingRecognitionResult {
     /// For audio_channel_count = N, its output values can range from '1' to 'N'.
     #[prost(int32, tag = "5")]
     pub channel_tag: i32,
-    /// The [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag of
+    /// The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag of
     /// the language in this result. This language code was detected to have the
     /// most likelihood of being spoken in the audio.
     #[prost(string, tag = "6")]
@@ -697,7 +735,7 @@ pub struct WordInfo {
     /// The word corresponding to this set of information.
     #[prost(string, tag = "3")]
     pub word: ::prost::alloc::string::String,
-    /// A distinct integer value is assigned for every speaker within
+    /// Output only. A distinct integer value is assigned for every speaker within
     /// the audio. This field specifies which one of those speakers was detected to
     /// have spoken this word. Value ranges from '1' to diarization_speaker_count.
     /// speaker_tag is set if enable_speaker_diarization = 'true' and only in the
@@ -717,7 +755,7 @@ pub mod speech_client {
     impl<T> SpeechClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -730,7 +768,7 @@ pub mod speech_client {
             interceptor: F,
         ) -> SpeechClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -816,9 +854,7 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1.Speech/StreamingRecognize",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }

@@ -57,22 +57,22 @@ pub mod budget_amount {
         SpecifiedAmount(super::super::super::super::super::r#type::Money),
         /// Use the last period's actual spend as the budget for the present period.
         /// LastPeriodAmount can only be set when the budget's time period is a
-        /// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].
+        /// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\].
         /// It cannot be set in combination with
-        /// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
+        /// \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
         #[prost(message, tag = "2")]
         LastPeriodAmount(super::LastPeriodAmount),
     }
 }
 /// Describes a budget amount targeted to the last
-/// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period]
+/// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\]
 /// spend. At this time, the amount is automatically 100% of the last calendar
 /// period's spend; that is, there are no other options yet.
 /// Future configuration options will be described here (for example, configuring
 /// a percentage of last period's spend).
 /// LastPeriodAmount cannot be set for a budget configured with
 /// a
-/// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
+/// \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LastPeriodAmount {}
 /// ThresholdRule contains a definition of a threshold which triggers
@@ -107,9 +107,9 @@ pub mod threshold_rule {
         /// Use forecasted spend for the period as the basis for comparison against
         /// the threshold.
         /// FORECASTED_SPEND can only be set when the budget's time period is a
-        /// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].
+        /// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\].
         /// It cannot be set in combination with
-        /// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
+        /// \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
         ForecastedSpend = 2,
     }
 }
@@ -121,21 +121,21 @@ pub struct AllUpdatesRule {
     /// be published, in the form `projects/{project_id}/topics/{topic_id}`.
     /// Updates are sent at regular intervals to the topic. The topic needs to be
     /// created before the budget is created; see
-    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
+    /// <https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications>
     /// for more details.
     /// Caller is expected to have
     /// `pubsub.topics.setIamPolicy` permission on the topic when it's set for a
     /// budget, otherwise, the API call will fail with PERMISSION_DENIED. See
-    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task
+    /// <https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task>
     /// for more details on Pub/Sub roles and permissions.
     #[prost(string, tag = "1")]
     pub pubsub_topic: ::prost::alloc::string::String,
     /// Optional. Required when
-    /// [AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic]
+    /// \[AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\]
     /// is set. The schema version of the notification sent to
-    /// [AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic].
+    /// \[AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\].
     /// Only "1.0" is accepted. It represents the JSON schema as defined in
-    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.
+    /// <https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.>
     #[prost(string, tag = "2")]
     pub schema_version: ::prost::alloc::string::String,
     /// Optional. Targets to send notifications to when a threshold is exceeded.
@@ -144,7 +144,7 @@ pub struct AllUpdatesRule {
     /// notification channel with the form
     /// `projects/{project_id}/notificationChannels/{channel_id}`. A maximum of 5
     /// channels are allowed. See
-    /// https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients
+    /// <https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients>
     /// for more details.
     #[prost(string, repeated, tag = "3")]
     pub monitoring_notification_channels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -166,14 +166,14 @@ pub struct Filter {
     #[prost(string, repeated, tag = "1")]
     pub projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If
-    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
+    /// \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\]
     /// is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be
     /// subtracted from gross cost to determine the spend for threshold
     /// calculations. See [a list of acceptable credit type
-    /// values](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
+    /// values](<https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>).
     ///
     /// If
-    /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
+    /// \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\]
     /// is **not** INCLUDE_SPECIFIED_CREDITS, this field must be empty.
     #[prost(string, repeated, tag = "7")]
     pub credit_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -185,7 +185,7 @@ pub struct Filter {
     /// included in the budget. If omitted, the report will include usage for
     /// all the services.
     /// The service names are available through the Catalog API:
-    /// https://cloud.google.com/billing/v1/how-tos/catalog-api.
+    /// <https://cloud.google.com/billing/v1/how-tos/catalog-api.>
     #[prost(string, repeated, tag = "3")]
     pub services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,
@@ -215,7 +215,7 @@ pub mod filter {
     /// threshold calculations. Budgets track the total cost minus any applicable
     /// selected credits.
     /// [See the documentation for a list of credit
-    /// types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
+    /// types](<https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CreditTypesTreatment {
@@ -227,7 +227,7 @@ pub mod filter {
         /// threshold calculations.
         ExcludeAllCredits = 2,
         /// [Credit
-        /// types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type)
+        /// types](<https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>)
         /// specified in the credit_types field are subtracted from the
         /// gross cost to determine the spend for threshold calculations.
         IncludeSpecifiedCredits = 3,
@@ -302,7 +302,7 @@ pub struct UpdateBudgetRequest {
     /// Read-only fields (such as `name`) cannot be changed. If this is not
     /// provided, then only fields with non-default values from the request are
     /// updated. See
-    /// https://developers.google.com/protocol-buffers/docs/proto3#default for more
+    /// <https://developers.google.com/protocol-buffers/docs/proto3#default> for more
     /// details about default values.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
@@ -364,7 +364,7 @@ pub mod budget_service_client {
     impl<T> BudgetServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -377,7 +377,7 @@ pub mod budget_service_client {
             interceptor: F,
         ) -> BudgetServiceClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

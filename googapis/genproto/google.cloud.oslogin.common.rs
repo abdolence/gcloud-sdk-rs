@@ -40,7 +40,7 @@ pub struct PosixAccount {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SshPublicKey {
     /// Public key text in SSH format, defined by
-    /// <a href="https://www.ietf.org/rfc/rfc4253.txt" target="_blank">RFC4253</a>
+    /// <a href="<https://www.ietf.org/rfc/rfc4253.txt"> target="_blank">RFC4253</a>
     /// section 6.6.
     #[prost(string, tag = "1")]
     pub key: ::prost::alloc::string::String,

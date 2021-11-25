@@ -114,7 +114,7 @@ pub mod attribute_context {
         /// (`sub`) claims within a JWT. The issuer and subject should be `/`
         /// delimited, with `/` percent-encoded within the subject fragment. For
         /// Google accounts, the principal format is:
-        /// "https://accounts.google.com/{id}"
+        /// "<https://accounts.google.com/{id}">
         #[prost(string, tag = "1")]
         pub principal: ::prost::alloc::string::String,
         /// The intended audience(s) for this authentication information. Reflects
@@ -123,9 +123,9 @@ pub mod attribute_context {
         /// the following pieces of information:
         ///
         /// *  The services intended to receive the credential. For example,
-        ///    ["https://pubsub.googleapis.com/", "https://storage.googleapis.com/"].
+        ///    ["<https://pubsub.googleapis.com/",> "<https://storage.googleapis.com/"].>
         /// *  A set of service-based scopes. For example,
-        ///    ["https://www.googleapis.com/auth/cloud-platform"].
+        ///    \["<https://www.googleapis.com/auth/cloud-platform"\].>
         /// *  The client id of an app, such as the Firebase project id for JWTs
         ///    from Firebase Auth.
         ///
@@ -209,7 +209,7 @@ pub mod attribute_context {
         pub size: i64,
         /// The network protocol used with the request, such as "http/1.1",
         /// "spdy/3", "h2", "h2c", "webrtc", "tcp", "udp", "quic". See
-        /// https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids
+        /// <https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids>
         /// for details.
         #[prost(string, tag = "11")]
         pub protocol: ::prost::alloc::string::String,
@@ -270,9 +270,9 @@ pub mod attribute_context {
         ///     `//pubsub.googleapis.com/projects/123/topics/news-feed`.
         /// *   URI often includes protocol and version information, so it can
         ///     be used directly by applications. For example,
-        ///     `https://pubsub.googleapis.com/v1/projects/123/topics/news-feed`.
+        ///     `<https://pubsub.googleapis.com/v1/projects/123/topics/news-feed`.>
         ///
-        /// See https://cloud.google.com/apis/design/resource_names for details.
+        /// See <https://cloud.google.com/apis/design/resource_names> for details.
         #[prost(string, tag = "2")]
         pub name: ::prost::alloc::string::String,
         /// The type of the resource. The syntax is platform-specific because
@@ -299,7 +299,7 @@ pub mod attribute_context {
         /// may be set by external tools to store and retrieve arbitrary metadata.
         /// They are not queryable and should be preserved when modifying objects.
         ///
-        /// More info: https://kubernetes.io/docs/user-guide/annotations
+        /// More info: <https://kubernetes.io/docs/user-guide/annotations>
         #[prost(map = "string, string", tag = "6")]
         pub annotations: ::std::collections::HashMap<
             ::prost::alloc::string::String,

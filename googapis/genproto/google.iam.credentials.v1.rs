@@ -19,7 +19,7 @@ pub struct GenerateAccessTokenRequest {
     #[prost(string, repeated, tag = "2")]
     pub delegates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Code to identify the scopes to be included in the OAuth 2.0 access token.
-    /// See https://developers.google.com/identity/protocols/googlescopes for more
+    /// See <https://developers.google.com/identity/protocols/googlescopes> for more
     /// information.
     /// At least one value required.
     #[prost(string, repeated, tag = "4")]
@@ -162,7 +162,7 @@ pub mod iam_credentials_client {
     impl<T> IamCredentialsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -175,7 +175,7 @@ pub mod iam_credentials_client {
             interceptor: F,
         ) -> IamCredentialsClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

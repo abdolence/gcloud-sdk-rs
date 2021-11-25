@@ -202,7 +202,7 @@ pub mod field {
         pub reverting: bool,
     }
 }
-/// The request for [FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta2.FirestoreAdmin.CreateIndex].
+/// The request for \[FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta2.FirestoreAdmin.CreateIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
     /// A parent name of the form
@@ -213,7 +213,7 @@ pub struct CreateIndexRequest {
     #[prost(message, optional, tag = "2")]
     pub index: ::core::option::Option<Index>,
 }
-/// The request for [FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta2.FirestoreAdmin.ListIndexes].
+/// The request for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta2.FirestoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesRequest {
     /// A parent name of the form
@@ -227,12 +227,12 @@ pub struct ListIndexesRequest {
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A page token, returned from a previous call to
-    /// [FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta2.FirestoreAdmin.ListIndexes], that may be used to get the next
+    /// \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta2.FirestoreAdmin.ListIndexes\], that may be used to get the next
     /// page of results.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for [FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta2.FirestoreAdmin.ListIndexes].
+/// The response for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta2.FirestoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// The requested indexes.
@@ -243,7 +243,7 @@ pub struct ListIndexesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.GetIndex][google.firestore.admin.v1beta2.FirestoreAdmin.GetIndex].
+/// The request for \[FirestoreAdmin.GetIndex][google.firestore.admin.v1beta2.FirestoreAdmin.GetIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIndexRequest {
     /// A name of the form
@@ -251,7 +251,7 @@ pub struct GetIndexRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.DeleteIndex][google.firestore.admin.v1beta2.FirestoreAdmin.DeleteIndex].
+/// The request for \[FirestoreAdmin.DeleteIndex][google.firestore.admin.v1beta2.FirestoreAdmin.DeleteIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteIndexRequest {
     /// A name of the form
@@ -259,7 +259,7 @@ pub struct DeleteIndexRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.UpdateField][google.firestore.admin.v1beta2.FirestoreAdmin.UpdateField].
+/// The request for \[FirestoreAdmin.UpdateField][google.firestore.admin.v1beta2.FirestoreAdmin.UpdateField\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFieldRequest {
     /// The field to be updated.
@@ -270,7 +270,7 @@ pub struct UpdateFieldRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// The request for [FirestoreAdmin.GetField][google.firestore.admin.v1beta2.FirestoreAdmin.GetField].
+/// The request for \[FirestoreAdmin.GetField][google.firestore.admin.v1beta2.FirestoreAdmin.GetField\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetFieldRequest {
     /// A name of the form
@@ -278,7 +278,7 @@ pub struct GetFieldRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields].
+/// The request for \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFieldsRequest {
     /// A parent name of the form
@@ -286,9 +286,9 @@ pub struct ListFieldsRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter to apply to list results. Currently,
-    /// [FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields] only supports listing fields
+    /// \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\] only supports listing fields
     /// that have been explicitly overridden. To issue this query, call
-    /// [FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields] with the filter set to
+    /// \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\] with the filter set to
     /// `indexConfig.usesAncestorConfig:false`.
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
@@ -296,12 +296,12 @@ pub struct ListFieldsRequest {
     #[prost(int32, tag = "3")]
     pub page_size: i32,
     /// A page token, returned from a previous call to
-    /// [FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields], that may be used to get the next
+    /// \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\], that may be used to get the next
     /// page of results.
     #[prost(string, tag = "4")]
     pub page_token: ::prost::alloc::string::String,
 }
-/// The response for [FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields].
+/// The response for \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFieldsResponse {
     /// The requested fields.
@@ -312,7 +312,7 @@ pub struct ListFieldsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ExportDocuments].
+/// The request for \[FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ExportDocuments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsRequest {
     /// Database to export. Should be of the form:
@@ -323,17 +323,17 @@ pub struct ExportDocumentsRequest {
     #[prost(string, repeated, tag = "2")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The output URI. Currently only supports Google Cloud Storage URIs of the
-    /// form: `gs://BUCKET_NAME[/NAMESPACE_PATH]`, where `BUCKET_NAME` is the name
+    /// form: `gs://BUCKET_NAME\[/NAMESPACE_PATH\]`, where `BUCKET_NAME` is the name
     /// of the Google Cloud Storage bucket and `NAMESPACE_PATH` is an optional
     /// Google Cloud Storage namespace path. When
     /// choosing a name, be sure to consider Google Cloud Storage naming
-    /// guidelines: https://cloud.google.com/storage/docs/naming.
+    /// guidelines: <https://cloud.google.com/storage/docs/naming.>
     /// If the URI is a bucket (without a namespace path), a prefix will be
     /// generated based on the start time.
     #[prost(string, tag = "3")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
-/// The request for [FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ImportDocuments].
+/// The request for \[FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ImportDocuments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsRequest {
     /// Database to import into. Should be of the form:
@@ -348,7 +348,7 @@ pub struct ImportDocumentsRequest {
     /// This must match the output_uri_prefix of an ExportDocumentsResponse from
     /// an export that has completed successfully.
     /// See:
-    /// [google.firestore.admin.v1beta2.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1beta2.ExportDocumentsResponse.output_uri_prefix].
+    /// \[google.firestore.admin.v1beta2.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1beta2.ExportDocumentsResponse.output_uri_prefix\].
     #[prost(string, tag = "3")]
     pub input_uri_prefix: ::prost::alloc::string::String,
 }
@@ -365,7 +365,7 @@ pub mod firestore_admin_client {
     impl<T> FirestoreAdminClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -378,7 +378,7 @@ pub mod firestore_admin_client {
             interceptor: F,
         ) -> FirestoreAdminClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -600,8 +600,8 @@ pub mod firestore_admin_client {
         }
     }
 }
-/// Metadata for [google.longrunning.Operation][google.longrunning.Operation] results from
-/// [FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta2.FirestoreAdmin.CreateIndex].
+/// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
+/// \[FirestoreAdmin.CreateIndex][google.firestore.admin.v1beta2.FirestoreAdmin.CreateIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexOperationMetadata {
     /// The time this operation started.
@@ -625,8 +625,8 @@ pub struct IndexOperationMetadata {
     #[prost(message, optional, tag = "6")]
     pub progress_bytes: ::core::option::Option<Progress>,
 }
-/// Metadata for [google.longrunning.Operation][google.longrunning.Operation] results from
-/// [FirestoreAdmin.UpdateField][google.firestore.admin.v1beta2.FirestoreAdmin.UpdateField].
+/// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
+/// \[FirestoreAdmin.UpdateField][google.firestore.admin.v1beta2.FirestoreAdmin.UpdateField\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FieldOperationMetadata {
     /// The time this operation started.
@@ -640,7 +640,7 @@ pub struct FieldOperationMetadata {
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_path}`
     #[prost(string, tag = "3")]
     pub field: ::prost::alloc::string::String,
-    /// A list of [IndexConfigDelta][google.firestore.admin.v1beta2.FieldOperationMetadata.IndexConfigDelta], which describe the intent of this
+    /// A list of \[IndexConfigDelta][google.firestore.admin.v1beta2.FieldOperationMetadata.IndexConfigDelta\], which describe the intent of this
     /// operation.
     #[prost(message, repeated, tag = "4")]
     pub index_config_deltas: ::prost::alloc::vec::Vec<field_operation_metadata::IndexConfigDelta>,
@@ -683,8 +683,8 @@ pub mod field_operation_metadata {
         }
     }
 }
-/// Metadata for [google.longrunning.Operation][google.longrunning.Operation] results from
-/// [FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ExportDocuments].
+/// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
+/// \[FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ExportDocuments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsMetadata {
     /// The time this operation started.
@@ -710,8 +710,8 @@ pub struct ExportDocumentsMetadata {
     #[prost(string, tag = "7")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
-/// Metadata for [google.longrunning.Operation][google.longrunning.Operation] results from
-/// [FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ImportDocuments].
+/// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
+/// \[FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ImportDocuments\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsMetadata {
     /// The time this operation started.
@@ -737,7 +737,7 @@ pub struct ImportDocumentsMetadata {
     #[prost(string, tag = "7")]
     pub input_uri_prefix: ::prost::alloc::string::String,
 }
-/// Returned in the [google.longrunning.Operation][google.longrunning.Operation] response field.
+/// Returned in the \[google.longrunning.Operation][google.longrunning.Operation\] response field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsResponse {
     /// Location of the output files. This can be used to begin an import
@@ -747,7 +747,7 @@ pub struct ExportDocumentsResponse {
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// Describes the progress of the operation.
-/// Unit of work is generic and must be interpreted based on where [Progress][google.firestore.admin.v1beta2.Progress]
+/// Unit of work is generic and must be interpreted based on where \[Progress][google.firestore.admin.v1beta2.Progress\]
 /// is used.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {

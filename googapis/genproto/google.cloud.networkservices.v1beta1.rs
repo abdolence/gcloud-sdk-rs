@@ -18,7 +18,7 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
+    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
     /// corresponding to `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
@@ -30,7 +30,7 @@ pub struct OperationMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficPortSelector {
     /// Optional. A list of ports. Can be port numbers or port range
-    /// (example, [80-90] specifies all ports from 80 to 90, including
+    /// (example, \[80-90\] specifies all ports from 80 to 90, including
     /// 80 and 90) or named ports or * to specify all ports. If the
     /// list is empty, all ports are selected.
     #[prost(string, repeated, tag = "1")]
@@ -75,10 +75,7 @@ pub mod endpoint_matcher {
         /// If there is more than one best match, (for example, if a
         /// config P4 with selector <A:1,D:1> exists and if a client with
         /// label <A:1,B:1,D:1> connects), an error will be thrown.
-        #[prost(
-            enumeration = "metadata_label_matcher::MetadataLabelMatchCriteria",
-            tag = "1"
-        )]
+        #[prost(enumeration = "metadata_label_matcher::MetadataLabelMatchCriteria", tag = "1")]
         pub metadata_label_match_criteria: i32,
         /// The list of label value pairs that must match labels in the
         /// provided metadata based on filterMatchCriteria This list can
@@ -283,7 +280,7 @@ pub mod network_services_client {
     impl<T> NetworkServicesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -296,7 +293,7 @@ pub mod network_services_client {
             interceptor: F,
         ) -> NetworkServicesClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<

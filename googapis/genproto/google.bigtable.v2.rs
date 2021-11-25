@@ -19,7 +19,7 @@ pub struct Family {
     /// The unique key which identifies this family within its row. This is the
     /// same key that's used to identify the family in, for example, a RowFilter
     /// which sets its "family_name_regex_filter" field.
-    /// Must match `[-_.a-zA-Z0-9]+`, except that AggregatingRowProcessors may
+    /// Must match `\[-_.a-zA-Z0-9\]+`, except that AggregatingRowProcessors may
     /// produce cells in a sentinel family with an empty name.
     /// Must be no greater than 64 characters in length.
     #[prost(string, tag = "1")]
@@ -59,7 +59,7 @@ pub struct Cell {
     /// length.
     #[prost(bytes = "vec", tag = "2")]
     pub value: ::prost::alloc::vec::Vec<u8>,
-    /// Labels applied to the cell by a [RowFilter][google.bigtable.v2.RowFilter].
+    /// Labels applied to the cell by a \[RowFilter][google.bigtable.v2.RowFilter\].
     #[prost(string, repeated, tag = "3")]
     pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -215,10 +215,10 @@ pub mod value_range {
 /// * True filters alter the input row by excluding some of its cells wholesale
 /// from the output row. An example of a true filter is the `value_regex_filter`,
 /// which excludes cells whose values don't match the specified pattern. All
-/// regex true filters use RE2 syntax (https://github.com/google/re2/wiki/Syntax)
+/// regex true filters use RE2 syntax (<https://github.com/google/re2/wiki/Syntax>)
 /// in raw byte mode (RE2::Latin1), and are evaluated as full matches. An
 /// important point to keep in mind is that `RE2(.)` is equivalent by default to
-/// `RE2([^\n])`, meaning that it does not match newlines. When attempting to
+/// `RE2(\[^\n\])`, meaning that it does not match newlines. When attempting to
 /// match an arbitrary byte, you should therefore use the escape sequence `\C`,
 /// which may need to be further escaped as `\\C` in your client language.
 ///
@@ -352,13 +352,13 @@ pub mod row_filter {
         ///               |                          |
         ///             All()                    Label(foo)
         ///               |                          |
-        ///            A,A,1,w              A,A,1,w,labels:[foo]
-        ///            A,B,2,x              A,B,2,x,labels:[foo]
+        ///            A,A,1,w              A,A,1,w,labels:\[foo\]
+        ///            A,B,2,x              A,B,2,x,labels:\[foo\]
         ///               |                          |
         ///               |                        Sink() --------------+
         ///               |                          |                  |
-        ///               +------------+      x------+          A,A,1,w,labels:[foo]
-        ///                            |                        A,B,2,x,labels:[foo]
+        ///               +------------+      x------+          A,A,1,w,labels:\[foo\]
+        ///                            |                        A,B,2,x,labels:\[foo\]
         ///                         A,A,1,w                             |
         ///                         A,B,2,x                             |
         ///                            |                                |
@@ -368,14 +368,14 @@ pub mod row_filter {
         ///                            |                                |
         ///                            +--------------------------------+
         ///                            |
-        ///                         A,A,1,w,labels:[foo]
-        ///                         A,B,2,x,labels:[foo]  // could be switched
+        ///                         A,A,1,w,labels:\[foo\]
+        ///                         A,B,2,x,labels:\[foo\]  // could be switched
         ///                         A,B,2,x               // could be switched
         ///
         /// Despite being excluded by the qualifier filter, a copy of every cell
         /// that reaches the sink is present in the final result.
         ///
-        /// As with an [Interleave][google.bigtable.v2.RowFilter.Interleave],
+        /// As with an \[Interleave][google.bigtable.v2.RowFilter.Interleave\],
         /// duplicate cells are possible, and appear in an unspecified mutual order.
         /// In this case we have a duplicate with column "A:B" and timestamp 2,
         /// because one copy passed through the all filter while the other was
@@ -383,7 +383,7 @@ pub mod row_filter {
         /// while the other does not.
         ///
         /// Cannot be used within the `predicate_filter`, `true_filter`, or
-        /// `false_filter` of a [Condition][google.bigtable.v2.RowFilter.Condition].
+        /// `false_filter` of a \[Condition][google.bigtable.v2.RowFilter.Condition\].
         #[prost(bool, tag = "16")]
         Sink(bool),
         /// Matches all cells, regardless of input. Functionally equivalent to
@@ -465,7 +465,7 @@ pub mod row_filter {
         /// the filter.
         ///
         /// Values must be at most 15 characters in length, and match the RE2
-        /// pattern `[a-z0-9\\-]+`
+        /// pattern `\[a-z0-9\\-\]+`
         ///
         /// Due to a technical limitation, it is not currently possible to apply
         /// multiple labels to a cell. As a result, a Chain may have no more than
@@ -490,7 +490,7 @@ pub mod mutation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SetCell {
         /// The name of the family into which new data should be written.
-        /// Must match `[-_.a-zA-Z0-9]+`
+        /// Must match `\[-_.a-zA-Z0-9\]+`
         #[prost(string, tag = "1")]
         pub family_name: ::prost::alloc::string::String,
         /// The qualifier of the column into which new data should be written.
@@ -513,7 +513,7 @@ pub mod mutation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeleteFromColumn {
         /// The name of the family from which cells should be deleted.
-        /// Must match `[-_.a-zA-Z0-9]+`
+        /// Must match `\[-_.a-zA-Z0-9\]+`
         #[prost(string, tag = "1")]
         pub family_name: ::prost::alloc::string::String,
         /// The qualifier of the column from which cells should be deleted.
@@ -528,7 +528,7 @@ pub mod mutation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DeleteFromFamily {
         /// The name of the family from which cells should be deleted.
-        /// Must match `[-_.a-zA-Z0-9]+`
+        /// Must match `\[-_.a-zA-Z0-9\]+`
         #[prost(string, tag = "1")]
         pub family_name: ::prost::alloc::string::String,
     }
@@ -557,7 +557,7 @@ pub mod mutation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadModifyWriteRule {
     /// The name of the family to which the read/modify/write should be applied.
-    /// Must match `[-_.a-zA-Z0-9]+`
+    /// Must match `\[-_.a-zA-Z0-9\]+`
     #[prost(string, tag = "1")]
     pub family_name: ::prost::alloc::string::String,
     /// The qualifier of the column to which the read/modify/write should be
@@ -667,7 +667,7 @@ pub mod read_rows_response {
         #[prost(int64, tag = "4")]
         pub timestamp_micros: i64,
         /// Labels applied to the cell by a
-        /// [RowFilter][google.bigtable.v2.RowFilter].  Labels are only set
+        /// \[RowFilter][google.bigtable.v2.RowFilter\].  Labels are only set
         /// on the first CellChunk per cell.
         #[prost(string, repeated, tag = "5")]
         pub labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
@@ -904,7 +904,7 @@ pub mod bigtable_client {
     impl<T> BigtableClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + Sync + 'static,
+        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
@@ -917,7 +917,7 @@ pub mod bigtable_client {
             interceptor: F,
         ) -> BigtableClient<InterceptedService<T, F>>
         where
-            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            F: tonic::service::Interceptor,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
@@ -961,9 +961,7 @@ pub mod bigtable_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.bigtable.v2.Bigtable/ReadRows");
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Returns a sample of row keys in the table. The returned row keys will"]
         #[doc = " delimit contiguous sections of the table of approximately equal size,"]
@@ -985,9 +983,7 @@ pub mod bigtable_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.bigtable.v2.Bigtable/SampleRowKeys");
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Mutates a row atomically. Cells already present in the row are left"]
         #[doc = " unchanged unless explicitly changed by `mutation`."]
@@ -1025,9 +1021,7 @@ pub mod bigtable_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.bigtable.v2.Bigtable/MutateRows");
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
         #[doc = " Mutates a row atomically based on the output of a predicate Reader filter."]
         pub async fn check_and_mutate_row(
