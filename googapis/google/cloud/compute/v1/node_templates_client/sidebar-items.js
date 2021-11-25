@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NodeTemplatesClient","The NodeTemplates API."]]});

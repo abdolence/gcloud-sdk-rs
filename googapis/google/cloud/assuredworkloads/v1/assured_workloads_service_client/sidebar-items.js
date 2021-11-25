@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AssuredWorkloadsServiceClient","Service to manage AssuredWorkloads."]]});

@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.texttospeech.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.texttospeech.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.texttospeech.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.texttospeech.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -331,19 +329,52 @@
 <span id="329">329</span>
 <span id="330">330</span>
 <span id="331">331</span>
-</pre><pre class="rust">
-<span class="doccomment">/// The top-level message sent by the client for the `ListVoices` method.</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+</pre><pre class="rust"><code><span class="doccomment">/// The top-level message sent by the client for the `ListVoices` method.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListVoicesRequest</span> {
     <span class="doccomment">/// Optional. Recommended.</span>
-    <span class="doccomment">/// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.</span>
+    <span class="doccomment">/// \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;) language tag.</span>
     <span class="doccomment">/// If not specified, the API will return all supported voices.</span>
     <span class="doccomment">/// If specified, the ListVoices call will only return voices that can be used</span>
-    <span class="doccomment">/// to synthesize this language_code. E.g. when specifying &quot;en-NZ&quot;, you will</span>
-    <span class="doccomment">/// get supported &quot;en-NZ&quot; voices; when specifying &quot;no&quot;, you will get supported</span>
-    <span class="doccomment">/// &quot;no-\*&quot; (Norwegian) and &quot;nb-\*&quot; (Norwegian Bokmal) voices; specifying &quot;zh&quot;</span>
-    <span class="doccomment">/// will also get supported &quot;cmn-\*&quot; voices; specifying &quot;zh-hk&quot; will also get</span>
-    <span class="doccomment">/// supported &quot;yue-hk&quot; voices.</span>
+    <span class="doccomment">/// to synthesize this language_code. E.g. when specifying `&quot;en-NZ&quot;`, you will</span>
+    <span class="doccomment">/// get supported `&quot;en-NZ&quot;` voices; when specifying `&quot;no&quot;`, you will get</span>
+    <span class="doccomment">/// supported `&quot;no-\*&quot;` (Norwegian) and `&quot;nb-\*&quot;` (Norwegian Bokmal) voices;</span>
+    <span class="doccomment">/// specifying `&quot;zh&quot;` will also get supported `&quot;cmn-\*&quot;` voices; specifying</span>
+    <span class="doccomment">/// `&quot;zh-hk&quot;` will also get supported `&quot;yue-hk&quot;` voices.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -358,7 +389,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Voice</span> {
     <span class="doccomment">/// The languages that this voice supports, expressed as</span>
-    <span class="doccomment">/// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tags (e.g.</span>
+    <span class="doccomment">/// \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;) language tags (e.g.</span>
     <span class="doccomment">/// &quot;en-US&quot;, &quot;es-419&quot;, &quot;cmn-tw&quot;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">language_codes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -406,7 +437,7 @@
 }
 <span class="doccomment">/// Contains text input to be synthesized. Either `text` or `ssml` must be</span>
 <span class="doccomment">/// supplied. Supplying both or neither returns</span>
-<span class="doccomment">/// [google.rpc.Code.INVALID_ARGUMENT][]. The input size is limited to 5000</span>
+<span class="doccomment">/// \[google.rpc.Code.INVALID_ARGUMENT][\]. The input size is limited to 5000</span>
 <span class="doccomment">/// characters.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SynthesisInput</span> {
@@ -424,8 +455,8 @@
         <span class="ident">Text</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// The SSML document to be synthesized. The SSML document must be valid</span>
         <span class="doccomment">/// and well-formed. Otherwise the RPC will fail and return</span>
-        <span class="doccomment">/// [google.rpc.Code.INVALID_ARGUMENT][]. For more information, see</span>
-        <span class="doccomment">/// [SSML](https://cloud.google.com/text-to-speech/docs/ssml).</span>
+        <span class="doccomment">/// \[google.rpc.Code.INVALID_ARGUMENT][\]. For more information, see</span>
+        <span class="doccomment">/// \[SSML\](&lt;https://cloud.google.com/text-to-speech/docs/ssml&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">Ssml</span>(<span class="ident">::prost::alloc::string::String</span>),
     }
@@ -434,7 +465,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VoiceSelectionParams</span> {
     <span class="doccomment">/// Required. The language (and potentially also the region) of the voice expressed as a</span>
-    <span class="doccomment">/// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag, e.g.</span>
+    <span class="doccomment">/// \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;) language tag, e.g.</span>
     <span class="doccomment">/// &quot;en-US&quot;. This should not include a script tag (e.g. use</span>
     <span class="doccomment">/// &quot;cmn-cn&quot; rather than &quot;cmn-Hant-cn&quot;), because the script will be inferred</span>
     <span class="doccomment">/// from the input provided in the SynthesisInput.  The TTS service</span>
@@ -457,6 +488,11 @@
     <span class="doccomment">/// substitute a voice with a different gender rather than failing the request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;SsmlVoiceGender&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">ssml_gender</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// The configuration for a custom voice. If \[CustomVoiceParams.model\] is set,</span>
+    <span class="doccomment">/// the service will choose the custom voice matching the specified</span>
+    <span class="doccomment">/// configuration.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">custom_voice</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">CustomVoiceParams</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Description of audio data to be synthesized.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -491,17 +527,46 @@
     <span class="doccomment">/// converting to the desired sample rate (which might result in worse audio</span>
     <span class="doccomment">/// quality), unless the specified sample rate is not supported for the</span>
     <span class="doccomment">/// encoding chosen, in which case it will fail the request and return</span>
-    <span class="doccomment">/// [google.rpc.Code.INVALID_ARGUMENT][].</span>
+    <span class="doccomment">/// \[google.rpc.Code.INVALID_ARGUMENT][\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">sample_rate_hertz</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. Input only. An identifier which selects &#39;audio effects&#39; profiles</span>
     <span class="doccomment">/// that are applied on (post synthesized) text to speech. Effects are applied</span>
     <span class="doccomment">/// on top of each other in the order they are given. See</span>
     <span class="doccomment">/// [audio</span>
-    <span class="doccomment">/// profiles](https://cloud.google.com/text-to-speech/docs/audio-profiles) for</span>
+    <span class="doccomment">/// profiles](&lt;https://cloud.google.com/text-to-speech/docs/audio-profiles&gt;) for</span>
     <span class="doccomment">/// current supported profile ids.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">effects_profile_id</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Description of the custom voice to be synthesized.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CustomVoiceParams</span> {
+    <span class="doccomment">/// Required. The name of the AutoML model that synthesizes the custom voice.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">model</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. The usage of the synthesized audio to be reported.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;custom_voice_params::ReportedUsage&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">reported_usage</span>: <span class="ident">i32</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `CustomVoiceParams`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">custom_voice_params</span> {
+    <span class="doccomment">/// The usage of the synthesized audio. You must report your honest and</span>
+    <span class="doccomment">/// correct usage of the service as it&#39;s regulated by contract and will cause</span>
+    <span class="doccomment">/// significant difference in billing.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ReportedUsage</span> {
+        <span class="doccomment">/// Request with reported usage unspecified will be rejected.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// For scenarios where the synthesized audio is not downloadable and can</span>
+        <span class="doccomment">/// only be used once. For example, real-time request in IVR system.</span>
+        <span class="ident">Realtime</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// For scenarios where the synthesized audio is downloadable and can be</span>
+        <span class="doccomment">/// reused. For example, the synthesized audio is downloaded, stored in</span>
+        <span class="doccomment">/// customer service system and played repeatedly.</span>
+        <span class="ident">Offline</span> <span class="op">=</span> <span class="number">2</span>,
+    }
 }
 <span class="doccomment">/// The message returned to the client by the `SynthesizeSpeech` method.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -533,7 +598,7 @@
     <span class="kw">pub</span> <span class="ident">time_seconds</span>: <span class="ident">f64</span>,
 }
 <span class="doccomment">/// Gender of the voice as described in</span>
-<span class="doccomment">/// [SSML voice element](https://www.w3.org/TR/speech-synthesis11/#edef_voice).</span>
+<span class="doccomment">/// [SSML voice element](&lt;https://www.w3.org/TR/speech-synthesis11/#edef_voice&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SsmlVoiceGender</span> {
@@ -555,7 +620,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AudioEncoding</span> {
-    <span class="doccomment">/// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].</span>
+    <span class="doccomment">/// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].</span>
     <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="doccomment">/// Uncompressed 16-bit signed little-endian samples (Linear PCM).</span>
     <span class="doccomment">/// Audio content returned as LINEAR16 also contains a WAV header.</span>
@@ -588,7 +653,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">TextToSpeechClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -601,7 +666,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TextToSpeechClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -629,8 +694,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns a list of Voice supported for synthesis.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_voices</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListVoicesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListVoicesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListVoicesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListVoicesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -647,8 +712,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; has been processed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">synthesize_speech</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SynthesizeSpeechRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SynthesizeSpeechResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SynthesizeSpeechRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SynthesizeSpeechResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -663,5 +728,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

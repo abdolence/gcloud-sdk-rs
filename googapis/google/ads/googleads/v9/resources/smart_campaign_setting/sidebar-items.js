@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BusinessSetting","The business setting of this campaign."]],"struct":[["PhoneNumber","Phone number and country code in smart campaign settings."]]});

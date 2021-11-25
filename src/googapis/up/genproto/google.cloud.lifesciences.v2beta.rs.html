@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.lifesciences.v2beta.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.lifesciences.v2beta.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.lifesciences.v2beta.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.lifesciences.v2beta.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -816,8 +814,7 @@
 <span id="814">814</span>
 <span id="815">815</span>
 <span id="816">816</span>
-</pre><pre class="rust">
-<span class="doccomment">/// The arguments to the `RunPipeline` method. The requesting user must have</span>
+</pre><pre class="rust"><code><span class="doccomment">/// The arguments to the `RunPipeline` method. The requesting user must have</span>
 <span class="doccomment">/// the `iam.serviceAccounts.actAs` permission for the Cloud Life Sciences</span>
 <span class="doccomment">/// service account or the request will fail.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -894,7 +891,7 @@
     <span class="doccomment">/// If the specified image is not public, the service account specified for</span>
     <span class="doccomment">/// the Virtual Machine must have access to pull the images from GCR, or</span>
     <span class="doccomment">/// appropriate credentials must be specified in the</span>
-    <span class="doccomment">/// [google.cloud.lifesciences.v2beta.Action.credentials][google.cloud.lifesciences.v2beta.Action.credentials] field.</span>
+    <span class="doccomment">/// \[google.cloud.lifesciences.v2beta.Action.credentials][google.cloud.lifesciences.v2beta.Action.credentials\] field.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">image_uri</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// If specified, overrides the `CMD` specified in the container. If the</span>
@@ -907,7 +904,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">entrypoint</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The environment to pass into the container. This environment is merged</span>
-    <span class="doccomment">/// with values specified in the [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]</span>
+    <span class="doccomment">/// with values specified in the \[google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline\]</span>
     <span class="doccomment">/// message, overwriting any duplicate values.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// In addition to the values passed here, a few other values are</span>
@@ -1078,7 +1075,7 @@
     <span class="doccomment">/// type (such as &quot;custom-1-4096&quot;, where &quot;1&quot; indicates the number of vCPUs and</span>
     <span class="doccomment">/// &quot;4096&quot; indicates the memory in MB). See</span>
     <span class="doccomment">/// [Creating an instance with a custom machine</span>
-    <span class="doccomment">/// type](https://cloud.google.com/compute/docs/instances/creating-instance-with-custom-machine-type#create)</span>
+    <span class="doccomment">/// type](&lt;https://cloud.google.com/compute/docs/instances/creating-instance-with-custom-machine-type#create&gt;)</span>
     <span class="doccomment">/// for more specifications on creating a custom machine type.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">machine_type</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1087,7 +1084,7 @@
     <span class="kw">pub</span> <span class="ident">preemptible</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Optional set of labels to apply to the VM and any attached disk resources.</span>
     <span class="doccomment">/// These labels must adhere to the [name and value</span>
-    <span class="doccomment">/// restrictions](https://cloud.google.com/compute/docs/labeling-resources) on</span>
+    <span class="doccomment">/// restrictions](&lt;https://cloud.google.com/compute/docs/labeling-resources&gt;) on</span>
     <span class="doccomment">/// VM labels imposed by Compute Engine.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Labels keys with the prefix &#39;google-&#39; are reserved for use by Google.</span>
@@ -1125,7 +1122,7 @@
     <span class="doccomment">/// loads where the CPU platform has a significant impact.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For more information about the effect of this parameter, see</span>
-    <span class="doccomment">/// https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">cpu_platform</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The host operating system image to use.</span>
@@ -1213,7 +1210,7 @@
     <span class="doccomment">/// without a public IP address, additional configuration is required to</span>
     <span class="doccomment">/// allow the VM to access Google services.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See https://cloud.google.com/vpc/docs/configure-private-google-access</span>
+    <span class="doccomment">/// See &lt;https://cloud.google.com/vpc/docs/configure-private-google-access&gt;</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">use_private_address</span>: <span class="ident">bool</span>,
@@ -1231,11 +1228,11 @@
 }
 <span class="doccomment">/// Carries information about a disk that can be attached to a VM.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See https://cloud.google.com/compute/docs/disks/performance for more</span>
+<span class="doccomment">/// See &lt;https://cloud.google.com/compute/docs/disks/performance&gt; for more</span>
 <span class="doccomment">/// information about disk type, size, and performance considerations.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Specify either [`Volume`][google.cloud.lifesciences.v2beta.Volume] or</span>
-<span class="doccomment">/// [`Disk`][google.cloud.lifesciences.v2beta.Disk], but not both.</span>
+<span class="doccomment">/// Specify either \[`Volume`][google.cloud.lifesciences.v2beta.Volume\] or</span>
+<span class="doccomment">/// \[`Disk`][google.cloud.lifesciences.v2beta.Disk\], but not both.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Disk</span> {
     <span class="doccomment">/// A user-supplied name for the disk. Used when mounting the disk into</span>
@@ -1261,12 +1258,12 @@
 }
 <span class="doccomment">/// Carries information about storage that can be attached to a VM.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Specify either [`Volume`][google.cloud.lifesciences.v2beta.Volume] or</span>
-<span class="doccomment">/// [`Disk`][google.cloud.lifesciences.v2beta.Disk], but not both.</span>
+<span class="doccomment">/// Specify either \[`Volume`][google.cloud.lifesciences.v2beta.Volume\] or</span>
+<span class="doccomment">/// \[`Disk`][google.cloud.lifesciences.v2beta.Disk\], but not both.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Volume</span> {
     <span class="doccomment">/// A user-supplied name for the volume. Used when mounting the volume into</span>
-    <span class="doccomment">/// [`Actions`][google.cloud.lifesciences.v2beta.Action]. The name must contain</span>
+    <span class="doccomment">/// \[`Actions`][google.cloud.lifesciences.v2beta.Action\]. The name must contain</span>
     <span class="doccomment">/// only upper and lowercase alphanumeric characters and hyphens and cannot</span>
     <span class="doccomment">/// start with a hyphen.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -1280,18 +1277,18 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Storage</span> {
         <span class="doccomment">/// Configuration for a persistent disk.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">PersistentDisk</span>(<span class="kw">super</span><span class="ident">::PersistentDisk</span>),
+        <span class="ident">PersistentDisk</span>(<span class="ident"><span class="kw">super</span>::PersistentDisk</span>),
         <span class="doccomment">/// Configuration for a existing disk.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">ExistingDisk</span>(<span class="kw">super</span><span class="ident">::ExistingDisk</span>),
+        <span class="ident">ExistingDisk</span>(<span class="ident"><span class="kw">super</span>::ExistingDisk</span>),
         <span class="doccomment">/// Configuration for an NFS mount.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">NfsMount</span>(<span class="kw">super</span><span class="ident">::NfsMount</span>),
+        <span class="ident">NfsMount</span>(<span class="ident"><span class="kw">super</span>::NfsMount</span>),
     }
 }
 <span class="doccomment">/// Configuration for a persistent disk to be attached to the VM.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See https://cloud.google.com/compute/docs/disks/performance for more</span>
+<span class="doccomment">/// See &lt;https://cloud.google.com/compute/docs/disks/performance&gt; for more</span>
 <span class="doccomment">/// information about disk type, size, and performance considerations.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PersistentDisk</span> {
@@ -1386,36 +1383,36 @@
     <span class="doccomment">/// Machine-readable details about the event.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Details</span> {
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.DelayedEvent][google.cloud.lifesciences.v2beta.DelayedEvent].</span>
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.DelayedEvent][google.cloud.lifesciences.v2beta.DelayedEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;17&quot;</span>)]</span>
-        <span class="ident">Delayed</span>(<span class="kw">super</span><span class="ident">::DelayedEvent</span>),
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.WorkerAssignedEvent][google.cloud.lifesciences.v2beta.WorkerAssignedEvent].</span>
+        <span class="ident">Delayed</span>(<span class="ident"><span class="kw">super</span>::DelayedEvent</span>),
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.WorkerAssignedEvent][google.cloud.lifesciences.v2beta.WorkerAssignedEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;18&quot;</span>)]</span>
-        <span class="ident">WorkerAssigned</span>(<span class="kw">super</span><span class="ident">::WorkerAssignedEvent</span>),
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.WorkerReleasedEvent][google.cloud.lifesciences.v2beta.WorkerReleasedEvent].</span>
+        <span class="ident">WorkerAssigned</span>(<span class="ident"><span class="kw">super</span>::WorkerAssignedEvent</span>),
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.WorkerReleasedEvent][google.cloud.lifesciences.v2beta.WorkerReleasedEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;19&quot;</span>)]</span>
-        <span class="ident">WorkerReleased</span>(<span class="kw">super</span><span class="ident">::WorkerReleasedEvent</span>),
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.PullStartedEvent][google.cloud.lifesciences.v2beta.PullStartedEvent].</span>
+        <span class="ident">WorkerReleased</span>(<span class="ident"><span class="kw">super</span>::WorkerReleasedEvent</span>),
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.PullStartedEvent][google.cloud.lifesciences.v2beta.PullStartedEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;20&quot;</span>)]</span>
-        <span class="ident">PullStarted</span>(<span class="kw">super</span><span class="ident">::PullStartedEvent</span>),
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.PullStoppedEvent][google.cloud.lifesciences.v2beta.PullStoppedEvent].</span>
+        <span class="ident">PullStarted</span>(<span class="ident"><span class="kw">super</span>::PullStartedEvent</span>),
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.PullStoppedEvent][google.cloud.lifesciences.v2beta.PullStoppedEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;21&quot;</span>)]</span>
-        <span class="ident">PullStopped</span>(<span class="kw">super</span><span class="ident">::PullStoppedEvent</span>),
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.ContainerStartedEvent][google.cloud.lifesciences.v2beta.ContainerStartedEvent].</span>
+        <span class="ident">PullStopped</span>(<span class="ident"><span class="kw">super</span>::PullStoppedEvent</span>),
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.ContainerStartedEvent][google.cloud.lifesciences.v2beta.ContainerStartedEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;22&quot;</span>)]</span>
-        <span class="ident">ContainerStarted</span>(<span class="kw">super</span><span class="ident">::ContainerStartedEvent</span>),
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.ContainerStoppedEvent][google.cloud.lifesciences.v2beta.ContainerStoppedEvent].</span>
+        <span class="ident">ContainerStarted</span>(<span class="ident"><span class="kw">super</span>::ContainerStartedEvent</span>),
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.ContainerStoppedEvent][google.cloud.lifesciences.v2beta.ContainerStoppedEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;23&quot;</span>)]</span>
-        <span class="ident">ContainerStopped</span>(<span class="kw">super</span><span class="ident">::ContainerStoppedEvent</span>),
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.ContainerKilledEvent][google.cloud.lifesciences.v2beta.ContainerKilledEvent].</span>
+        <span class="ident">ContainerStopped</span>(<span class="ident"><span class="kw">super</span>::ContainerStoppedEvent</span>),
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.ContainerKilledEvent][google.cloud.lifesciences.v2beta.ContainerKilledEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;24&quot;</span>)]</span>
-        <span class="ident">ContainerKilled</span>(<span class="kw">super</span><span class="ident">::ContainerKilledEvent</span>),
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent][google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent].</span>
+        <span class="ident">ContainerKilled</span>(<span class="ident"><span class="kw">super</span>::ContainerKilledEvent</span>),
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent][google.cloud.lifesciences.v2beta.UnexpectedExitStatusEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;25&quot;</span>)]</span>
-        <span class="ident">UnexpectedExitStatus</span>(<span class="kw">super</span><span class="ident">::UnexpectedExitStatusEvent</span>),
-        <span class="doccomment">/// See [google.cloud.lifesciences.v2beta.FailedEvent][google.cloud.lifesciences.v2beta.FailedEvent].</span>
+        <span class="ident">UnexpectedExitStatus</span>(<span class="ident"><span class="kw">super</span>::UnexpectedExitStatusEvent</span>),
+        <span class="doccomment">/// See \[google.cloud.lifesciences.v2beta.FailedEvent][google.cloud.lifesciences.v2beta.FailedEvent\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;26&quot;</span>)]</span>
-        <span class="ident">Failed</span>(<span class="kw">super</span><span class="ident">::FailedEvent</span>),
+        <span class="ident">Failed</span>(<span class="ident"><span class="kw">super</span>::FailedEvent</span>),
     }
 }
 <span class="doccomment">/// An event generated whenever a resource limitation or transient error</span>
@@ -1557,7 +1554,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">WorkflowsServiceV2BetaClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1570,7 +1567,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WorkflowsServiceV2BetaClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -1614,9 +1611,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * `lifesciences.workflows.run`&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run_pipeline</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RunPipelineRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RunPipelineRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1633,5 +1630,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

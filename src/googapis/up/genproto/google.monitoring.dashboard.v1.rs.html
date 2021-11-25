@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.monitoring.dashboard.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.monitoring.dashboard.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.monitoring.dashboard.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.monitoring.dashboard.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1253,13 +1251,12 @@
 <span id="1251">1251</span>
 <span id="1252">1252</span>
 <span id="1253">1253</span>
-</pre><pre class="rust">
-<span class="doccomment">/// A chart that displays alert policy data.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// A chart that displays alert policy data.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AlertChart</span> {
     <span class="doccomment">/// Required. The resource name of the alert policy. The format is:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     projects/[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID]</span>
+    <span class="doccomment">///     projects/\[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID\]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -1288,12 +1285,12 @@
 <span class="doccomment">/// representative data can be more easily graphed and comprehended, and the</span>
 <span class="doccomment">/// individual time series data is still available for later drilldown. For more</span>
 <span class="doccomment">/// details, see [Filtering and</span>
-<span class="doccomment">/// aggregation](https://cloud.google.com/monitoring/api/v3/aggregation).</span>
+<span class="doccomment">/// aggregation](&lt;https://cloud.google.com/monitoring/api/v3/aggregation&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Aggregation</span> {
     <span class="doccomment">/// The `alignment_period` specifies a time interval, in seconds, that is used</span>
     <span class="doccomment">/// to divide the data in all the</span>
-    <span class="doccomment">/// [time series][google.monitoring.v3.TimeSeries] into consistent blocks of</span>
+    <span class="doccomment">/// [time series]\[google.monitoring.v3.TimeSeries\] into consistent blocks of</span>
     <span class="doccomment">/// time. This will be done before the per-series aligner can be applied to</span>
     <span class="doccomment">/// the data.</span>
     <span class="doccomment">///</span>
@@ -1378,11 +1375,11 @@
         <span class="doccomment">/// `value_type` of the input.</span>
         <span class="ident">AlignNone</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// Align and convert to</span>
-        <span class="doccomment">/// [DELTA][google.api.MetricDescriptor.MetricKind.DELTA].</span>
+        <span class="doccomment">/// \[DELTA][google.api.MetricDescriptor.MetricKind.DELTA\].</span>
         <span class="doccomment">/// The output is `delta = y1 - y0`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// This alignment is valid for</span>
-        <span class="doccomment">/// [CUMULATIVE][google.api.MetricDescriptor.MetricKind.CUMULATIVE] and</span>
+        <span class="doccomment">/// \[CUMULATIVE][google.api.MetricDescriptor.MetricKind.CUMULATIVE\] and</span>
         <span class="doccomment">/// `DELTA` metrics. If the selected alignment period results in periods</span>
         <span class="doccomment">/// with no data, then the aligned value for such a period is created by</span>
         <span class="doccomment">/// interpolation. The `value_type`  of the aligned result is the same as</span>
@@ -1455,28 +1452,28 @@
         <span class="doccomment">/// value is in the range [0.0, 1.0] and has `value_type` `DOUBLE`.</span>
         <span class="ident">AlignFractionTrue</span> <span class="op">=</span> <span class="number">17</span>,
         <span class="doccomment">/// Align the time series by using [percentile</span>
-        <span class="doccomment">/// aggregation](https://en.wikipedia.org/wiki/Percentile). The resulting</span>
+        <span class="doccomment">/// aggregation](&lt;https://en.wikipedia.org/wiki/Percentile&gt;). The resulting</span>
         <span class="doccomment">/// data point in each alignment period is the 99th percentile of all data</span>
         <span class="doccomment">/// points in the period. This aligner is valid for `GAUGE` and `DELTA`</span>
         <span class="doccomment">/// metrics with distribution values. The output is a `GAUGE` metric with</span>
         <span class="doccomment">/// `value_type` `DOUBLE`.</span>
         <span class="ident">AlignPercentile99</span> <span class="op">=</span> <span class="number">18</span>,
         <span class="doccomment">/// Align the time series by using [percentile</span>
-        <span class="doccomment">/// aggregation](https://en.wikipedia.org/wiki/Percentile). The resulting</span>
+        <span class="doccomment">/// aggregation](&lt;https://en.wikipedia.org/wiki/Percentile&gt;). The resulting</span>
         <span class="doccomment">/// data point in each alignment period is the 95th percentile of all data</span>
         <span class="doccomment">/// points in the period. This aligner is valid for `GAUGE` and `DELTA`</span>
         <span class="doccomment">/// metrics with distribution values. The output is a `GAUGE` metric with</span>
         <span class="doccomment">/// `value_type` `DOUBLE`.</span>
         <span class="ident">AlignPercentile95</span> <span class="op">=</span> <span class="number">19</span>,
         <span class="doccomment">/// Align the time series by using [percentile</span>
-        <span class="doccomment">/// aggregation](https://en.wikipedia.org/wiki/Percentile). The resulting</span>
+        <span class="doccomment">/// aggregation](&lt;https://en.wikipedia.org/wiki/Percentile&gt;). The resulting</span>
         <span class="doccomment">/// data point in each alignment period is the 50th percentile of all data</span>
         <span class="doccomment">/// points in the period. This aligner is valid for `GAUGE` and `DELTA`</span>
         <span class="doccomment">/// metrics with distribution values. The output is a `GAUGE` metric with</span>
         <span class="doccomment">/// `value_type` `DOUBLE`.</span>
         <span class="ident">AlignPercentile50</span> <span class="op">=</span> <span class="number">20</span>,
         <span class="doccomment">/// Align the time series by using [percentile</span>
-        <span class="doccomment">/// aggregation](https://en.wikipedia.org/wiki/Percentile). The resulting</span>
+        <span class="doccomment">/// aggregation](&lt;https://en.wikipedia.org/wiki/Percentile&gt;). The resulting</span>
         <span class="doccomment">/// data point in each alignment period is the 5th percentile of all data</span>
         <span class="doccomment">/// points in the period. This aligner is valid for `GAUGE` and `DELTA`</span>
         <span class="doccomment">/// metrics with distribution values. The output is a `GAUGE` metric with</span>
@@ -1512,10 +1509,10 @@
         <span class="ident">ReduceNone</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// Reduce by computing the mean value across time series for each</span>
         <span class="doccomment">/// alignment period. This reducer is valid for</span>
-        <span class="doccomment">/// [DELTA][google.api.MetricDescriptor.MetricKind.DELTA] and</span>
-        <span class="doccomment">/// [GAUGE][google.api.MetricDescriptor.MetricKind.GAUGE] metrics with</span>
+        <span class="doccomment">/// \[DELTA][google.api.MetricDescriptor.MetricKind.DELTA\] and</span>
+        <span class="doccomment">/// \[GAUGE][google.api.MetricDescriptor.MetricKind.GAUGE\] metrics with</span>
         <span class="doccomment">/// numeric or distribution values. The `value_type` of the output is</span>
-        <span class="doccomment">/// [DOUBLE][google.api.MetricDescriptor.ValueType.DOUBLE].</span>
+        <span class="doccomment">/// \[DOUBLE][google.api.MetricDescriptor.ValueType.DOUBLE\].</span>
         <span class="ident">ReduceMean</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// Reduce by computing the minimum value across time series for each</span>
         <span class="doccomment">/// alignment period. This reducer is valid for `DELTA` and `GAUGE` metrics</span>
@@ -1559,25 +1556,25 @@
         <span class="doccomment">/// `DOUBLE`.</span>
         <span class="ident">ReduceFractionTrue</span> <span class="op">=</span> <span class="number">8</span>,
         <span class="doccomment">/// Reduce by computing the [99th</span>
-        <span class="doccomment">/// percentile](https://en.wikipedia.org/wiki/Percentile) of data points</span>
+        <span class="doccomment">/// percentile](&lt;https://en.wikipedia.org/wiki/Percentile&gt;) of data points</span>
         <span class="doccomment">/// across time series for each alignment period. This reducer is valid for</span>
         <span class="doccomment">/// `GAUGE` and `DELTA` metrics of numeric and distribution type. The value</span>
         <span class="doccomment">/// of the output is `DOUBLE`.</span>
         <span class="ident">ReducePercentile99</span> <span class="op">=</span> <span class="number">9</span>,
         <span class="doccomment">/// Reduce by computing the [95th</span>
-        <span class="doccomment">/// percentile](https://en.wikipedia.org/wiki/Percentile) of data points</span>
+        <span class="doccomment">/// percentile](&lt;https://en.wikipedia.org/wiki/Percentile&gt;) of data points</span>
         <span class="doccomment">/// across time series for each alignment period. This reducer is valid for</span>
         <span class="doccomment">/// `GAUGE` and `DELTA` metrics of numeric and distribution type. The value</span>
         <span class="doccomment">/// of the output is `DOUBLE`.</span>
         <span class="ident">ReducePercentile95</span> <span class="op">=</span> <span class="number">10</span>,
         <span class="doccomment">/// Reduce by computing the [50th</span>
-        <span class="doccomment">/// percentile](https://en.wikipedia.org/wiki/Percentile) of data points</span>
+        <span class="doccomment">/// percentile](&lt;https://en.wikipedia.org/wiki/Percentile&gt;) of data points</span>
         <span class="doccomment">/// across time series for each alignment period. This reducer is valid for</span>
         <span class="doccomment">/// `GAUGE` and `DELTA` metrics of numeric and distribution type. The value</span>
         <span class="doccomment">/// of the output is `DOUBLE`.</span>
         <span class="ident">ReducePercentile50</span> <span class="op">=</span> <span class="number">11</span>,
         <span class="doccomment">/// Reduce by computing the [5th</span>
-        <span class="doccomment">/// percentile](https://en.wikipedia.org/wiki/Percentile) of data points</span>
+        <span class="doccomment">/// percentile](&lt;https://en.wikipedia.org/wiki/Percentile&gt;) of data points</span>
         <span class="doccomment">/// across time series for each alignment period. This reducer is valid for</span>
         <span class="doccomment">/// `GAUGE` and `DELTA` metrics of numeric and distribution type. The value</span>
         <span class="doccomment">/// of the output is `DOUBLE`.</span>
@@ -1673,7 +1670,7 @@
     <span class="doccomment">/// The unit of data contained in fetched time series. If non-empty, this</span>
     <span class="doccomment">/// unit will override any unit that accompanies fetched data. The format is</span>
     <span class="doccomment">/// the same as the</span>
-    <span class="doccomment">/// [`unit`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors)</span>
+    <span class="doccomment">/// \[`unit`\](&lt;https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.metricDescriptors&gt;)</span>
     <span class="doccomment">/// field in `MetricDescriptor`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">unit_override</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1688,10 +1685,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
         <span class="doccomment">/// Filter parameters to fetch time series.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">TimeSeriesFilter</span>(<span class="kw">super</span><span class="ident">::TimeSeriesFilter</span>),
+        <span class="ident">TimeSeriesFilter</span>(<span class="ident"><span class="kw">super</span>::TimeSeriesFilter</span>),
         <span class="doccomment">/// Parameters to fetch a ratio between two time series filters.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">TimeSeriesFilterRatio</span>(<span class="kw">super</span><span class="ident">::TimeSeriesFilterRatio</span>),
+        <span class="ident">TimeSeriesFilterRatio</span>(<span class="ident"><span class="kw">super</span>::TimeSeriesFilterRatio</span>),
         <span class="doccomment">/// A query used to fetch time series.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="ident">TimeSeriesQueryLanguage</span>(<span class="ident">::prost::alloc::string::String</span>),
@@ -1699,11 +1696,11 @@
 }
 <span class="doccomment">/// A filter that defines a subset of time series data that is displayed in a</span>
 <span class="doccomment">/// widget. Time series data is fetched using the</span>
-<span class="doccomment">/// [`ListTimeSeries`](https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list)</span>
+<span class="doccomment">/// \[`ListTimeSeries`\](&lt;https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list&gt;)</span>
 <span class="doccomment">/// method.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TimeSeriesFilter</span> {
-    <span class="doccomment">/// Required. The [monitoring filter](https://cloud.google.com/monitoring/api/v3/filters)</span>
+    <span class="doccomment">/// Required. The [monitoring filter](&lt;https://cloud.google.com/monitoring/api/v3/filters&gt;)</span>
     <span class="doccomment">/// that identifies the metric types, resources, and projects to query.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1726,11 +1723,11 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">OutputFilter</span> {
         <span class="doccomment">/// Ranking based time series filter.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">PickTimeSeriesFilter</span>(<span class="kw">super</span><span class="ident">::PickTimeSeriesFilter</span>),
+        <span class="ident">PickTimeSeriesFilter</span>(<span class="ident"><span class="kw">super</span>::PickTimeSeriesFilter</span>),
         <span class="doccomment">/// Statistics based time series filter.</span>
         <span class="doccomment">/// Note: This field is deprecated and completely ignored by the API.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">StatisticalTimeSeriesFilter</span>(<span class="kw">super</span><span class="ident">::StatisticalTimeSeriesFilter</span>),
+        <span class="ident">StatisticalTimeSeriesFilter</span>(<span class="ident"><span class="kw">super</span>::StatisticalTimeSeriesFilter</span>),
     }
 }
 <span class="doccomment">/// A pair of time series filters that define a ratio computation. The output</span>
@@ -1759,7 +1756,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RatioPart</span> {
         <span class="doccomment">/// Required. The [monitoring</span>
-        <span class="doccomment">/// filter](https://cloud.google.com/monitoring/api/v3/filters) that</span>
+        <span class="doccomment">/// filter](&lt;https://cloud.google.com/monitoring/api/v3/filters&gt;) that</span>
         <span class="doccomment">/// identifies the metric types, resources, and projects to query.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1767,7 +1764,7 @@
         <span class="doccomment">/// Use this field to combine multiple time series for different views of the</span>
         <span class="doccomment">/// data.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">aggregation</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Aggregation</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">aggregation</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Aggregation</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Selects an optional filter that is applied to the time series after</span>
     <span class="doccomment">/// computing the ratio.</span>
@@ -1775,11 +1772,11 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">OutputFilter</span> {
         <span class="doccomment">/// Ranking based time series filter.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">PickTimeSeriesFilter</span>(<span class="kw">super</span><span class="ident">::PickTimeSeriesFilter</span>),
+        <span class="ident">PickTimeSeriesFilter</span>(<span class="ident"><span class="kw">super</span>::PickTimeSeriesFilter</span>),
         <span class="doccomment">/// Statistics based time series filter.</span>
         <span class="doccomment">/// Note: This field is deprecated and completely ignored by the API.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">StatisticalTimeSeriesFilter</span>(<span class="kw">super</span><span class="ident">::StatisticalTimeSeriesFilter</span>),
+        <span class="ident">StatisticalTimeSeriesFilter</span>(<span class="ident"><span class="kw">super</span>::StatisticalTimeSeriesFilter</span>),
     }
 }
 <span class="doccomment">/// Defines a threshold for categorizing time series values.</span>
@@ -1994,7 +1991,7 @@
         <span class="doccomment">/// Required. Fields for querying time series data from the</span>
         <span class="doccomment">/// Stackdriver metrics API.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">time_series_query</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TimeSeriesQuery</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">time_series_query</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TimeSeriesQuery</span><span class="op">&gt;</span>,
         <span class="doccomment">/// How this data should be plotted on the chart.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;data_set::PlotType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">plot_type</span>: <span class="ident">i32</span>,
@@ -2111,19 +2108,19 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Content</span> {
         <span class="doccomment">/// A chart of time series data.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">XyChart</span>(<span class="kw">super</span><span class="ident">::XyChart</span>),
+        <span class="ident">XyChart</span>(<span class="ident"><span class="kw">super</span>::XyChart</span>),
         <span class="doccomment">/// A scorecard summarizing time series data.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Scorecard</span>(<span class="kw">super</span><span class="ident">::Scorecard</span>),
+        <span class="ident">Scorecard</span>(<span class="ident"><span class="kw">super</span>::Scorecard</span>),
         <span class="doccomment">/// A raw string or markdown displaying textual content.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Text</span>(<span class="kw">super</span><span class="ident">::Text</span>),
+        <span class="ident">Text</span>(<span class="ident"><span class="kw">super</span>::Text</span>),
         <span class="doccomment">/// A blank space.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
         <span class="ident">Blank</span>(()),
         <span class="doccomment">/// A chart of alert policy data.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">AlertChart</span>(<span class="kw">super</span><span class="ident">::AlertChart</span>),
+        <span class="ident">AlertChart</span>(<span class="ident"><span class="kw">super</span>::AlertChart</span>),
     }
 }
 <span class="doccomment">/// A basic layout divides the available space into vertical columns of equal</span>
@@ -2176,7 +2173,7 @@
         <span class="kw">pub</span> <span class="ident">height</span>: <span class="ident">i32</span>,
         <span class="doccomment">/// The informational widget contained in the tile. For example an `XyChart`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">widget</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Widget</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">widget</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Widget</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// A simplified layout that divides the available space into rows</span>
@@ -2200,7 +2197,7 @@
         <span class="kw">pub</span> <span class="ident">weight</span>: <span class="ident">i64</span>,
         <span class="doccomment">/// The display widgets arranged horizontally in this row.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">widgets</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Widget</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">widgets</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Widget</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// A simplified layout that divides the available space into vertical columns</span>
@@ -2224,7 +2221,7 @@
         <span class="kw">pub</span> <span class="ident">weight</span>: <span class="ident">i64</span>,
         <span class="doccomment">/// The display widgets arranged vertically in this column.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">widgets</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Widget</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">widgets</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Widget</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// A Google Stackdriver dashboard. Dashboards define the content and layout</span>
@@ -2258,19 +2255,19 @@
         <span class="doccomment">/// Content is arranged with a basic layout that re-flows a simple list of</span>
         <span class="doccomment">/// informational elements like widgets or tiles.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">GridLayout</span>(<span class="kw">super</span><span class="ident">::GridLayout</span>),
+        <span class="ident">GridLayout</span>(<span class="ident"><span class="kw">super</span>::GridLayout</span>),
         <span class="doccomment">/// The content is arranged as a grid of tiles, with each content widget</span>
         <span class="doccomment">/// occupying one or more grid blocks.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">MosaicLayout</span>(<span class="kw">super</span><span class="ident">::MosaicLayout</span>),
+        <span class="ident">MosaicLayout</span>(<span class="ident"><span class="kw">super</span>::MosaicLayout</span>),
         <span class="doccomment">/// The content is divided into equally spaced rows and the widgets are</span>
         <span class="doccomment">/// arranged horizontally.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">RowLayout</span>(<span class="kw">super</span><span class="ident">::RowLayout</span>),
+        <span class="ident">RowLayout</span>(<span class="ident"><span class="kw">super</span>::RowLayout</span>),
         <span class="doccomment">/// The content is divided into equally spaced columns and the widgets are</span>
         <span class="doccomment">/// arranged vertically.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">ColumnLayout</span>(<span class="kw">super</span><span class="ident">::ColumnLayout</span>),
+        <span class="ident">ColumnLayout</span>(<span class="ident"><span class="kw">super</span>::ColumnLayout</span>),
     }
 }
 <span class="doccomment">/// The `CreateDashboard` request.</span>
@@ -2278,9 +2275,9 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateDashboardRequest</span> {
     <span class="doccomment">/// Required. The project on which to execute the request. The format is:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     projects/[PROJECT_ID_OR_NUMBER]</span>
+    <span class="doccomment">///     projects/\[PROJECT_ID_OR_NUMBER\]</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The `[PROJECT_ID_OR_NUMBER]` must match the dashboard resource name.</span>
+    <span class="doccomment">/// The `\[PROJECT_ID_OR_NUMBER\]` must match the dashboard resource name.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The initial dashboard specification.</span>
@@ -2296,7 +2293,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDashboardsRequest</span> {
     <span class="doccomment">/// Required. The scope of the dashboards to list. The format is:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     projects/[PROJECT_ID_OR_NUMBER]</span>
+    <span class="doccomment">///     projects/\[PROJECT_ID_OR_NUMBER\]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// A positive number that is the maximum number of results to return.</span>
@@ -2326,8 +2323,8 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetDashboardRequest</span> {
     <span class="doccomment">/// Required. The resource name of the Dashboard. The format is one of:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///  -  `dashboards/[DASHBOARD_ID]` (for system dashboards)</span>
-    <span class="doccomment">///  -  `projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]`</span>
+    <span class="doccomment">///  -  `dashboards/\[DASHBOARD_ID\]` (for system dashboards)</span>
+    <span class="doccomment">///  -  `projects/\[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID\]`</span>
     <span class="doccomment">///       (for custom dashboards).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2337,7 +2334,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteDashboardRequest</span> {
     <span class="doccomment">/// Required. The resource name of the Dashboard. The format is:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     projects/[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID]</span>
+    <span class="doccomment">///     projects/\[PROJECT_ID_OR_NUMBER]/dashboards/[DASHBOARD_ID\]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -2365,7 +2362,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DashboardsServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2378,7 +2375,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DashboardsServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2407,8 +2404,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This method requires the `monitoring.dashboards.create` permission on the specified project. For more information about permissions, see [Cloud Identity and Access Management](https://cloud.google.com/iam).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_dashboard</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateDashboardRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Dashboard</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateDashboardRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Dashboard</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2428,8 +2425,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Cloud Identity and Access Management](https://cloud.google.com/iam).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_dashboards</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDashboardsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDashboardsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDashboardsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDashboardsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2449,8 +2446,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Cloud Identity and Access Management](https://cloud.google.com/iam).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_dashboard</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetDashboardRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Dashboard</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetDashboardRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Dashboard</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2470,7 +2467,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Cloud Identity and Access Management](https://cloud.google.com/iam).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_dashboard</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteDashboardRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteDashboardRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -2491,8 +2488,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Cloud Identity and Access Management](https://cloud.google.com/iam).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_dashboard</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateDashboardRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Dashboard</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateDashboardRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Dashboard</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2507,5 +2504,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

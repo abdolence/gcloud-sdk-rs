@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["VanityPharmaText","Enum describing possible text."]]});

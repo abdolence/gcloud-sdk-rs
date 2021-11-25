@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AutomaticFailover","Configurations to follow when automatic failover happens."]]});

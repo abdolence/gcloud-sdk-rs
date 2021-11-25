@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Interface","Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. For performance characteristics of SCSI over NVMe, see Local SSD performance."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SqlTranslationErrorType","The error type of the SQL translation job."]]});

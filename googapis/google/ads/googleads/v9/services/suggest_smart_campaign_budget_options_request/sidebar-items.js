@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SuggestionData","Required. For first time campaign creation use SuggestionInfo, for subsequent updates on BudgetOptions based on an already created campaign use that campaign."]]});

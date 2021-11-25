@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GroupPlacementViewServiceClient","Service to fetch Group Placement views."]]});

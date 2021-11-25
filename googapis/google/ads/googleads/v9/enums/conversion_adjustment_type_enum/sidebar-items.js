@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConversionAdjustmentType","The different actions advertisers can take to adjust the conversions that they already reported. Retractions negate a conversion. Restatements change the value of a conversion."]]});

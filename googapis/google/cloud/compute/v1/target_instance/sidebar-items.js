@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["NatPolicy","NAT option controlling how IPs are NAT’ed to the instance. Currently only NO_NAT (default value) is supported."]]});

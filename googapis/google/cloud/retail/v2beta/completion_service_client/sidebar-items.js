@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CompletionServiceClient","Auto-completion service for retail."]]});

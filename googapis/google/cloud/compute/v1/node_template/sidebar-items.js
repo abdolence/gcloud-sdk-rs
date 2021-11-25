@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CpuOvercommitType","CPU overcommit."],["Status","[Output Only] The status of the node template. One of the following values: CREATING, READY, and DELETING."]]});

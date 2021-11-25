@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["OnUpdateAction","Specifies which action to take on instance update with this disk. Default is to use the existing disk."]]});

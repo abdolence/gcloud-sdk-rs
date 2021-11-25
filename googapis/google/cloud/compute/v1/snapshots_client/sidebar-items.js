@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SnapshotsClient","The Snapshots API."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DesiredState","Desired state of the file."],["Source","The source for the contents of the file."]]});

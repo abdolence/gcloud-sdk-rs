@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.actions.sdk.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.sdk.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.actions.sdk.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.sdk.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1949,15 +1947,14 @@
 <span id="1947">1947</span>
 <span id="1948">1948</span>
 <span id="1949">1949</span>
-</pre><pre class="rust">
-<span class="doccomment">/// AccountLinking allows Google to guide the user to sign-in to the App&#39;s web</span>
+</pre><pre class="rust"><code><span class="doccomment">/// AccountLinking allows Google to guide the user to sign-in to the App&#39;s web</span>
 <span class="doccomment">/// services.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// For Google Sign In and OAuth + Google Sign In linking types, Google generates</span>
 <span class="doccomment">/// a client ID identifying your App to Google (&quot;Client ID issued by Google to</span>
 <span class="doccomment">/// your Actions&quot; on Console UI). This field is read-only and can be checked by</span>
 <span class="doccomment">/// navigating to the Console UI&#39;s Account Linking page.</span>
-<span class="doccomment">/// See: https://developers.google.com/assistant/identity/google-sign-in</span>
+<span class="doccomment">/// See: &lt;https://developers.google.com/assistant/identity/google-sign-in&gt;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Note: For all account linking setting types (except for Google Sign In), you</span>
 <span class="doccomment">/// must provide a username and password for a test account in</span>
@@ -1974,7 +1971,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">enable_account_creation</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Required. The linking type to use.</span>
-    <span class="doccomment">/// See https://developers.google.com/assistant/identity for further details on</span>
+    <span class="doccomment">/// See &lt;https://developers.google.com/assistant/identity&gt; for further details on</span>
     <span class="doccomment">/// the linking types.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;account_linking::LinkingType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">linking_type</span>: <span class="ident">i32</span>,
@@ -2357,7 +2354,7 @@
     <span class="doccomment">/// `disabled_regions` is set. If both `enabled_regions` and `disabled_regions`</span>
     <span class="doccomment">/// are not specified, users can invoke your Actions in all regions. Each</span>
     <span class="doccomment">/// region is represented using the Canonical Name of Adwords geotargets. See</span>
-    <span class="doccomment">/// https://developers.google.com/adwords/api/docs/appendix/geotargeting</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/adwords/api/docs/appendix/geotargeting&gt;</span>
     <span class="doccomment">/// Examples include:</span>
     <span class="doccomment">/// - &quot;Germany&quot;</span>
     <span class="doccomment">/// - &quot;Ghana&quot;</span>
@@ -2372,7 +2369,7 @@
     <span class="doccomment">/// Represents the regions where your Actions are blocked, based on the user&#39;s</span>
     <span class="doccomment">/// location of presence. Cannot be set if `enabled_regions` is set.</span>
     <span class="doccomment">/// Each region is represented using the Canonical Name of Adwords geotargets.</span>
-    <span class="doccomment">/// See https://developers.google.com/adwords/api/docs/appendix/geotargeting</span>
+    <span class="doccomment">/// See &lt;https://developers.google.com/adwords/api/docs/appendix/geotargeting&gt;</span>
     <span class="doccomment">/// Examples include:</span>
     <span class="doccomment">/// - &quot;Germany&quot;</span>
     <span class="doccomment">/// - &quot;Ghana&quot;</span>
@@ -2430,7 +2427,7 @@
     <span class="doccomment">/// Android apps selected to acccess Google Play purchases for transactions.</span>
     <span class="doccomment">/// This is a selection from the Android apps connected to the actions project</span>
     <span class="doccomment">/// to verify brand ownership and enable additional features. See</span>
-    <span class="doccomment">/// https://developers.google.com/assistant/console/brand-verification for more</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/assistant/console/brand-verification&gt; for more</span>
     <span class="doccomment">/// information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;20&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">selected_android_apps</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -2521,9 +2518,9 @@
         <span class="doccomment">/// The HTTPS base URL for your fulfillment endpoint (HTTP is not supported).</span>
         <span class="doccomment">/// Handler names are appended to the base URL path after a colon</span>
         <span class="doccomment">/// (following the style guide in</span>
-        <span class="doccomment">/// https://cloud.google.com/apis/design/custom_methods).</span>
-        <span class="doccomment">/// For example a base URL of &#39;https://gactions.service.com/api&#39; would</span>
-        <span class="doccomment">/// receive requests with URL &#39;https://gactions.service.com/api:{method}&#39;.</span>
+        <span class="doccomment">/// &lt;https://cloud.google.com/apis/design/custom_methods&gt;).</span>
+        <span class="doccomment">/// For example a base URL of &#39;&lt;https://gactions.service.com/api&#39;&gt; would</span>
+        <span class="doccomment">/// receive requests with URL &#39;&lt;https://gactions.service.com/api:{method}&#39;.&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">base_url</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Map of HTTP parameters to be included in the POST request.</span>
@@ -2589,11 +2586,11 @@
         <span class="doccomment">/// Single manifest file.</span>
         <span class="doccomment">/// Allowed file path: `manifest.yaml`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Manifest</span>(<span class="kw">super</span><span class="ident">::Manifest</span>),
+        <span class="ident">Manifest</span>(<span class="ident"><span class="kw">super</span>::Manifest</span>),
         <span class="doccomment">/// Single actions file with all the actions defined.</span>
         <span class="doccomment">/// Allowed file paths: `actions/{language}?/actions.yaml`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Actions</span>(<span class="kw">super</span><span class="ident">::Actions</span>),
+        <span class="ident">Actions</span>(<span class="ident"><span class="kw">super</span>::Actions</span>),
         <span class="doccomment">/// Single settings config which includes non-localizable settings and</span>
         <span class="doccomment">/// settings for the project&#39;s default locale (if specified).</span>
         <span class="doccomment">/// For a locale override file, only localized_settings field will be</span>
@@ -2602,41 +2599,41 @@
         <span class="doccomment">/// Note that the non-localized settings file `settings/settings.yaml` must</span>
         <span class="doccomment">/// be present in the write flow requests.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Settings</span>(<span class="kw">super</span><span class="ident">::Settings</span>),
+        <span class="ident">Settings</span>(<span class="ident"><span class="kw">super</span>::Settings</span>),
         <span class="doccomment">/// Single webhook definition.</span>
         <span class="doccomment">/// Allowed file path: `webhooks/{WebhookName}.yaml`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">Webhook</span>(<span class="kw">super</span><span class="ident">::Webhook</span>),
+        <span class="ident">Webhook</span>(<span class="ident"><span class="kw">super</span>::Webhook</span>),
         <span class="doccomment">/// Single intent definition.</span>
         <span class="doccomment">/// Allowed file paths: `custom/intents/{language}?/{IntentName}.yaml`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">Intent</span>(<span class="kw">super</span><span class="ident">::interactionmodel::Intent</span>),
+        <span class="ident">Intent</span>(<span class="ident"><span class="kw">super</span>::interactionmodel::Intent</span>),
         <span class="doccomment">/// Single type definition.</span>
         <span class="doccomment">/// Allowed file paths: `custom/types/{language}?/{TypeName}.yaml`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">Type</span>(<span class="kw">super</span><span class="ident">::interactionmodel</span>::<span class="ident">r#type</span><span class="ident">::Type</span>),
+        <span class="ident">Type</span>(<span class="ident"><span class="kw">super</span>::interactionmodel</span>::<span class="ident">r#type</span><span class="ident">::Type</span>),
         <span class="doccomment">/// Single entity set definition.</span>
         <span class="doccomment">/// Allowed file paths: `custom/entitySets/{language}?/{EntitySetName}.yaml`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
-        <span class="ident">EntitySet</span>(<span class="kw">super</span><span class="ident">::interactionmodel::EntitySet</span>),
+        <span class="ident">EntitySet</span>(<span class="ident"><span class="kw">super</span>::interactionmodel::EntitySet</span>),
         <span class="doccomment">/// Single global intent event definition.</span>
         <span class="doccomment">/// Allowed file paths: `custom/global/{GlobalIntentEventName}.yaml`</span>
         <span class="doccomment">/// The file name (GlobalIntentEventName) should be the name of the intent</span>
         <span class="doccomment">/// that this global intent event corresponds to.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">GlobalIntentEvent</span>(<span class="kw">super</span><span class="ident">::interactionmodel::GlobalIntentEvent</span>),
+        <span class="ident">GlobalIntentEvent</span>(<span class="ident"><span class="kw">super</span>::interactionmodel::GlobalIntentEvent</span>),
         <span class="doccomment">/// Single scene definition.</span>
         <span class="doccomment">/// Allowed file paths: `custom/scenes/{SceneName}.yaml`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
-        <span class="ident">Scene</span>(<span class="kw">super</span><span class="ident">::interactionmodel::Scene</span>),
+        <span class="ident">Scene</span>(<span class="ident"><span class="kw">super</span>::interactionmodel::Scene</span>),
         <span class="doccomment">/// Single static prompt definition.</span>
         <span class="doccomment">/// Allowed file paths: `custom/prompts/{language}?/{StaticPromptName}.yaml`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
-        <span class="ident">StaticPrompt</span>(<span class="kw">super</span><span class="ident">::interactionmodel::prompt::StaticPrompt</span>),
+        <span class="ident">StaticPrompt</span>(<span class="ident"><span class="kw">super</span>::interactionmodel::prompt::StaticPrompt</span>),
         <span class="doccomment">/// Metadata corresponding to the client secret used in account linking.</span>
         <span class="doccomment">/// Allowed file path: `settings/accountLinkingSecret.yaml`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
-        <span class="ident">AccountLinkingSecret</span>(<span class="kw">super</span><span class="ident">::AccountLinkingSecret</span>),
+        <span class="ident">AccountLinkingSecret</span>(<span class="ident"><span class="kw">super</span>::AccountLinkingSecret</span>),
         <span class="doccomment">/// Single resource bundle, which is a map from a string to a string or list</span>
         <span class="doccomment">/// of strings. Resource bundles could be used for localizing strings in</span>
         <span class="doccomment">/// static prompts.</span>
@@ -2673,7 +2670,7 @@
     <span class="kw">pub</span> <span class="ident">file_path</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The content type of this asset. Example: `text/html`. The content</span>
     <span class="doccomment">/// type must comply with the specification</span>
-    <span class="doccomment">/// (http://www.w3.org/Protocols/rfc1341/4_Content-Type.html).</span>
+    <span class="doccomment">/// (&lt;http://www.w3.org/Protocols/rfc1341/4_Content-Type.html&gt;).</span>
     <span class="doccomment">/// Cloud functions must be in zip format and the content type should</span>
     <span class="doccomment">/// be `application/zip;zip_type=cloud_function`. The zip_type parameter</span>
     <span class="doccomment">/// indicates that the zip is for a cloud function.</span>
@@ -2702,11 +2699,11 @@
         <span class="doccomment">/// List of config files. This includes manifest, settings, interaction model</span>
         <span class="doccomment">/// resource bundles and more.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">ConfigFiles</span>(<span class="kw">super</span><span class="ident">::ConfigFiles</span>),
+        <span class="ident">ConfigFiles</span>(<span class="ident"><span class="kw">super</span>::ConfigFiles</span>),
         <span class="doccomment">/// List of data files. This includes image, audio file, cloud function</span>
         <span class="doccomment">/// source code.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">DataFiles</span>(<span class="kw">super</span><span class="ident">::DataFiles</span>),
+        <span class="ident">DataFiles</span>(<span class="ident"><span class="kw">super</span>::DataFiles</span>),
     }
 }
 <span class="doccomment">/// Definition of release channel resource.</span>
@@ -2750,7 +2747,7 @@
         <span class="doccomment">/// Language code of the lozalized resource.</span>
         <span class="doccomment">/// Empty if the error is for non-localized resource.</span>
         <span class="doccomment">/// See the list of supported languages in</span>
-        <span class="doccomment">/// https://developers.google.com/assistant/console/languages-locales</span>
+        <span class="doccomment">/// &lt;https://developers.google.com/assistant/console/languages-locales&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
@@ -2895,7 +2892,7 @@
         <span class="doccomment">/// 4. The webhook ConfigFile corresponding to inline cloud function must be</span>
         <span class="doccomment">///    streamed before the DataFile corresponding to its source code.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Files</span>(<span class="kw">super</span><span class="ident">::Files</span>),
+        <span class="ident">Files</span>(<span class="ident"><span class="kw">super</span>::Files</span>),
         <span class="doccomment">/// Content sourced from the project draft.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
         <span class="ident">Draft</span>(<span class="ident">ContentFromDraft</span>),
@@ -3125,7 +3122,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ActionsSdkClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -3138,7 +3135,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ActionsSdkClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -3166,8 +3163,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates the project draft based on the model.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write_draft</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::WriteDraftRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Draft</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::WriteDraftRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Draft</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3185,8 +3182,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates the user&#39;s project preview based on the model.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write_preview</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::WritePreviewRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Preview</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::WritePreviewRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Preview</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3205,8 +3202,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; specified release channel, if specified.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_version</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::CreateVersionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Version</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::CreateVersionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Version</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3224,8 +3221,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Reads the entire content of the project draft.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">read_draft</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadDraftRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadDraftResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadDraftRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadDraftResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3243,9 +3240,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Reads the entire content of a project version.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">read_version</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadVersionRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadVersionRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadVersionResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadVersionResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3269,8 +3266,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; rotation).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">encrypt_secret</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EncryptSecretRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EncryptSecretResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EncryptSecretRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EncryptSecretResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3287,8 +3284,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This can be used to view the client secret (e.g. after pulling a project).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">decrypt_secret</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DecryptSecretRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DecryptSecretResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DecryptSecretRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DecryptSecretResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3304,8 +3301,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists all the sample projects supported by the gactions CLI.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_sample_projects</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListSampleProjectsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListSampleProjectsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListSampleProjectsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListSampleProjectsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3321,8 +3318,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists all release channels and corresponding versions, if any.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_release_channels</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListReleaseChannelsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListReleaseChannelsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListReleaseChannelsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListReleaseChannelsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3338,8 +3335,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists all versions and their current states.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_versions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListVersionsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListVersionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListVersionsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListVersionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3357,7 +3354,7 @@
 <span class="doccomment">/// Contains information about execution event which happened during processing</span>
 <span class="doccomment">/// Actions Builder conversation request. For an overview of the stages involved</span>
 <span class="doccomment">/// in a conversation request, see</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/actions.</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/actions.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecutionEvent</span> {
     <span class="doccomment">/// Timestamp when the event happened.</span>
@@ -3368,7 +3365,7 @@
     <span class="kw">pub</span> <span class="ident">execution_state</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ExecutionState</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Resulting status of particular execution step.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// List of warnings generated during execution of this Event. Warnings are</span>
     <span class="doccomment">/// tips for the developer discovered during the conversation request. These</span>
     <span class="doccomment">/// are usually non-critical and do not halt the execution of the request. For</span>
@@ -3395,43 +3392,43 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EventData</span> {
         <span class="doccomment">/// User input handling event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">UserInput</span>(<span class="kw">super</span><span class="ident">::UserConversationInput</span>),
+        <span class="ident">UserInput</span>(<span class="ident"><span class="kw">super</span>::UserConversationInput</span>),
         <span class="doccomment">/// Intent matching event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">IntentMatch</span>(<span class="kw">super</span><span class="ident">::IntentMatch</span>),
+        <span class="ident">IntentMatch</span>(<span class="ident"><span class="kw">super</span>::IntentMatch</span>),
         <span class="doccomment">/// Condition evaluation event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">ConditionsEvaluated</span>(<span class="kw">super</span><span class="ident">::ConditionsEvaluated</span>),
+        <span class="ident">ConditionsEvaluated</span>(<span class="ident"><span class="kw">super</span>::ConditionsEvaluated</span>),
         <span class="doccomment">/// OnSceneEnter execution event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">OnSceneEnter</span>(<span class="kw">super</span><span class="ident">::OnSceneEnter</span>),
+        <span class="ident">OnSceneEnter</span>(<span class="ident"><span class="kw">super</span>::OnSceneEnter</span>),
         <span class="doccomment">/// Webhook request dispatch event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">WebhookRequest</span>(<span class="kw">super</span><span class="ident">::WebhookRequest</span>),
+        <span class="ident">WebhookRequest</span>(<span class="ident"><span class="kw">super</span>::WebhookRequest</span>),
         <span class="doccomment">/// Webhook response receipt event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">WebhookResponse</span>(<span class="kw">super</span><span class="ident">::WebhookResponse</span>),
+        <span class="ident">WebhookResponse</span>(<span class="ident"><span class="kw">super</span>::WebhookResponse</span>),
         <span class="doccomment">/// Webhook-initiated transition event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
-        <span class="ident">WebhookInitiatedTransition</span>(<span class="kw">super</span><span class="ident">::WebhookInitiatedTransition</span>),
+        <span class="ident">WebhookInitiatedTransition</span>(<span class="ident"><span class="kw">super</span>::WebhookInitiatedTransition</span>),
         <span class="doccomment">/// Slot matching event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
-        <span class="ident">SlotMatch</span>(<span class="kw">super</span><span class="ident">::SlotMatch</span>),
+        <span class="ident">SlotMatch</span>(<span class="ident"><span class="kw">super</span>::SlotMatch</span>),
         <span class="doccomment">/// Slot requesting event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
-        <span class="ident">SlotRequested</span>(<span class="kw">super</span><span class="ident">::SlotRequested</span>),
+        <span class="ident">SlotRequested</span>(<span class="ident"><span class="kw">super</span>::SlotRequested</span>),
         <span class="doccomment">/// Slot validation event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
-        <span class="ident">SlotValidated</span>(<span class="kw">super</span><span class="ident">::SlotValidated</span>),
+        <span class="ident">SlotValidated</span>(<span class="ident"><span class="kw">super</span>::SlotValidated</span>),
         <span class="doccomment">/// Form filling event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
-        <span class="ident">FormFilled</span>(<span class="kw">super</span><span class="ident">::FormFilled</span>),
+        <span class="ident">FormFilled</span>(<span class="ident"><span class="kw">super</span>::FormFilled</span>),
         <span class="doccomment">/// Waiting-for-user-input event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
-        <span class="ident">WaitingUserInput</span>(<span class="kw">super</span><span class="ident">::WaitingForUserInput</span>),
+        <span class="ident">WaitingUserInput</span>(<span class="ident"><span class="kw">super</span>::WaitingForUserInput</span>),
         <span class="doccomment">/// End-of-conversation event.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>)]</span>
-        <span class="ident">EndConversation</span>(<span class="kw">super</span><span class="ident">::EndConversation</span>),
+        <span class="ident">EndConversation</span>(<span class="ident"><span class="kw">super</span>::EndConversation</span>),
     }
 }
 <span class="doccomment">/// Current state of the execution.</span>
@@ -3441,23 +3438,23 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">current_scene_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// State of the session storage:</span>
-    <span class="doccomment">/// https://developers.google.com/assistant/conversational/storage-session</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/storage-session&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">session_storage</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
     <span class="doccomment">/// State of the slots filling, if applicable:</span>
-    <span class="doccomment">/// https://developers.google.com/assistant/conversational/scenes#slot_filling</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/scenes#slot_filling&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">slots</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Slots</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Prompt queue:</span>
-    <span class="doccomment">/// https://developers.google.com/assistant/conversational/prompts</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/prompts&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">prompt_queue</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">conversation::Prompt</span><span class="op">&gt;</span>,
     <span class="doccomment">/// State of the user storage:</span>
-    <span class="doccomment">/// https://developers.google.com/assistant/conversational/storage-user</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/storage-user&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">user_storage</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
     <span class="doccomment">/// State of the home storage:</span>
-    <span class="doccomment">/// https://developers.google.com/assistant/conversational/storage-home</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/storage-home&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">household_storage</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
 }
@@ -3482,7 +3479,7 @@
     <span class="kw">pub</span> <span class="ident">original_query</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Information about triggered intent match (global or within a scene):</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/intents</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/intents&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IntentMatch</span> {
     <span class="doccomment">/// Intent id which triggered this interaction.</span>
@@ -3502,7 +3499,7 @@
     <span class="kw">pub</span> <span class="ident">next_scene_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Results of conditions evaluation:</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/scenes#conditions</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/scenes#conditions&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ConditionsEvaluated</span> {
     <span class="doccomment">/// List of conditions which were evaluated to &#39;false&#39;.</span>
@@ -3526,7 +3523,7 @@
     <span class="kw">pub</span> <span class="ident">next_scene_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Information about execution of onSceneEnter stage:</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/scenes#on_enter</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/scenes#on_enter&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OnSceneEnter</span> {
     <span class="doccomment">/// Handler name specified in onSceneEnter event.</span>
@@ -3534,7 +3531,7 @@
     <span class="kw">pub</span> <span class="ident">handler</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Event triggered by destination scene returned from webhook:</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/webhooks#transition_scenes</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/webhooks#transition_scenes&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WebhookInitiatedTransition</span> {
     <span class="doccomment">/// ID of the scene the transition is leading to.</span>
@@ -3542,7 +3539,7 @@
     <span class="kw">pub</span> <span class="ident">next_scene_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Information about a request dispatched to the Action webhook:</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/webhooks#payloads</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/webhooks#payloads&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WebhookRequest</span> {
     <span class="doccomment">/// Payload of the webhook request.</span>
@@ -3550,7 +3547,7 @@
     <span class="kw">pub</span> <span class="ident">request_json</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Information about a response received from the Action webhook:</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/webhooks#payloads</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/webhooks#payloads&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WebhookResponse</span> {
     <span class="doccomment">/// Payload of the webhook response.</span>
@@ -3558,7 +3555,7 @@
     <span class="kw">pub</span> <span class="ident">response_json</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Information about matched slot(s):</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/scenes#slot_filling</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/scenes#slot_filling&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SlotMatch</span> {
     <span class="doccomment">/// Parameters extracted by NLU from user input.</span>
@@ -3569,7 +3566,7 @@
     <span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Information about currently requested slot:</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/scenes#slot_filling</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/scenes#slot_filling&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SlotRequested</span> {
     <span class="doccomment">/// Name of the requested slot.</span>
@@ -3580,15 +3577,15 @@
     <span class="kw">pub</span> <span class="ident">prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">conversation::Prompt</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Event which happens after webhook validation was finished for slot(s):</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/scenes#slot_filling</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/scenes#slot_filling&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SlotValidated</span> {}
 <span class="doccomment">/// Event which happens when form is fully filled:</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/scenes#slot_filling</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/scenes#slot_filling&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FormFilled</span> {}
 <span class="doccomment">/// Event which happens when system needs user input:</span>
-<span class="doccomment">/// https://developers.google.com/assistant/conversational/scenes#input</span>
+<span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/scenes#input&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WaitingForUserInput</span> {}
 <span class="doccomment">/// Event which informs that conversation with agent was ended.</span>
@@ -3652,14 +3649,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">location</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Location</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Locale as set on the device.</span>
-    <span class="doccomment">/// The format should follow BCP 47: https://tools.ietf.org/html/bcp47</span>
+    <span class="doccomment">/// The format should follow BCP 47: &lt;https://tools.ietf.org/html/bcp47&gt;</span>
     <span class="doccomment">/// Examples: en, en-US, es-419 (more examples at</span>
-    <span class="doccomment">/// https://tools.ietf.org/html/bcp47#appendix-A).</span>
+    <span class="doccomment">/// &lt;https://tools.ietf.org/html/bcp47#appendix-A&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">locale</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Time zone as set on the device.</span>
     <span class="doccomment">/// The format should follow the IANA Time Zone Database, e.g.</span>
-    <span class="doccomment">/// &quot;America/New_York&quot;: https://www.iana.org/time-zones</span>
+    <span class="doccomment">/// &quot;America/New_York&quot;: &lt;https://www.iana.org/time-zones&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">time_zone</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -3688,27 +3685,27 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Location</span> {
     <span class="doccomment">/// Geo coordinates.</span>
-    <span class="doccomment">/// Requires the [DEVICE_PRECISE_LOCATION]</span>
-    <span class="doccomment">/// [google.actions.v2.Permission.DEVICE_PRECISE_LOCATION] permission.</span>
+    <span class="doccomment">/// Requires the \[DEVICE_PRECISE_LOCATION\]</span>
+    <span class="doccomment">/// \[google.actions.v2.Permission.DEVICE_PRECISE_LOCATION\] permission.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">coordinates</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::LatLng</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">coordinates</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::LatLng</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Display address, e.g., &quot;1600 Amphitheatre Pkwy, Mountain View, CA 94043&quot;.</span>
-    <span class="doccomment">/// Requires the [DEVICE_PRECISE_LOCATION]</span>
-    <span class="doccomment">/// [google.actions.v2.Permission.DEVICE_PRECISE_LOCATION] permission.</span>
+    <span class="doccomment">/// Requires the \[DEVICE_PRECISE_LOCATION\]</span>
+    <span class="doccomment">/// \[google.actions.v2.Permission.DEVICE_PRECISE_LOCATION\] permission.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">formatted_address</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Zip code.</span>
-    <span class="doccomment">/// Requires the [DEVICE_PRECISE_LOCATION]</span>
-    <span class="doccomment">/// [google.actions.v2.Permission.DEVICE_PRECISE_LOCATION] or</span>
-    <span class="doccomment">/// [DEVICE_COARSE_LOCATION]</span>
-    <span class="doccomment">/// [google.actions.v2.Permission.DEVICE_COARSE_LOCATION] permission.</span>
+    <span class="doccomment">/// Requires the \[DEVICE_PRECISE_LOCATION\]</span>
+    <span class="doccomment">/// \[google.actions.v2.Permission.DEVICE_PRECISE_LOCATION\] or</span>
+    <span class="doccomment">/// \[DEVICE_COARSE_LOCATION\]</span>
+    <span class="doccomment">/// \[google.actions.v2.Permission.DEVICE_COARSE_LOCATION\] permission.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">zip_code</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// City.</span>
-    <span class="doccomment">/// Requires the [DEVICE_PRECISE_LOCATION]</span>
-    <span class="doccomment">/// [google.actions.v2.Permission.DEVICE_PRECISE_LOCATION] or</span>
-    <span class="doccomment">/// [DEVICE_COARSE_LOCATION]</span>
-    <span class="doccomment">/// [google.actions.v2.Permission.DEVICE_COARSE_LOCATION] permission.</span>
+    <span class="doccomment">/// Requires the \[DEVICE_PRECISE_LOCATION\]</span>
+    <span class="doccomment">/// \[google.actions.v2.Permission.DEVICE_PRECISE_LOCATION\] or</span>
+    <span class="doccomment">/// \[DEVICE_COARSE_LOCATION\]</span>
+    <span class="doccomment">/// \[google.actions.v2.Permission.DEVICE_COARSE_LOCATION\] permission.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">city</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -3741,7 +3738,7 @@
     <span class="kw">pub</span> <span class="ident">canvas</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">conversation::Canvas</span><span class="op">&gt;</span>,
     <span class="doccomment">/// State of the prompt at the end of the conversation round.</span>
     <span class="doccomment">/// More information about the prompt:</span>
-    <span class="doccomment">/// https://developers.google.com/assistant/conversational/prompts</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/prompts&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">actions_builder_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">conversation::Prompt</span><span class="op">&gt;</span>,
 }
@@ -3765,9 +3762,9 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">query</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. Locale to use to evaluate the query, such as &quot;en&quot;.</span>
-    <span class="doccomment">/// The format should follow BCP 47: https://tools.ietf.org/html/bcp47</span>
+    <span class="doccomment">/// The format should follow BCP 47: &lt;https://tools.ietf.org/html/bcp47&gt;</span>
     <span class="doccomment">/// See the list of supported languages in</span>
-    <span class="doccomment">/// https://developers.google.com/assistant/console/languages-locales</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/assistant/console/languages-locales&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">locale</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -3798,7 +3795,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ActionsTestingClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -3811,7 +3808,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ActionsTestingClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -3839,8 +3836,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Plays one round of the conversation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">send_interaction</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SendInteractionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SendInteractionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SendInteractionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SendInteractionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3856,8 +3853,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Finds the intents that match a given query.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">match_intents</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::MatchIntentsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::MatchIntentsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::MatchIntentsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::MatchIntentsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3883,7 +3880,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; https://support.google.com/websearch/answer/54068.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_web_and_app_activity_control</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetWebAndAppActivityControlRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetWebAndAppActivityControlRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3899,5 +3896,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AppPlaceholderField","Possible values for App placeholder fields."]]});

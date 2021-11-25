@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConversionOrigin","The possible places where a conversion can occur."]]});

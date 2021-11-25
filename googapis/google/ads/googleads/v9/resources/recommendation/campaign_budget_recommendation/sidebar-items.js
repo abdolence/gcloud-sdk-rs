@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CampaignBudgetRecommendationOption","The impact estimates for a given budget amount."]]});

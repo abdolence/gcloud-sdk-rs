@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.binaryauthorization.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.binaryauthorization.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.binaryauthorization.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.binaryauthorization.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -688,8 +686,70 @@
 <span id="686">686</span>
 <span id="687">687</span>
 <span id="688">688</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Represents an auditing event from Continuous Validation.</span>
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
+<span id="719">719</span>
+<span id="720">720</span>
+<span id="721">721</span>
+<span id="722">722</span>
+<span id="723">723</span>
+<span id="724">724</span>
+<span id="725">725</span>
+<span id="726">726</span>
+<span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Represents an auditing event from Continuous Validation.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ContinuousValidationEvent</span> {
     <span class="doccomment">/// Type of CV event.</span>
@@ -781,8 +841,7 @@
         <span class="ident">UnsupportedPolicyEvent</span>(<span class="ident">UnsupportedPolicyEvent</span>),
     }
 }
-<span class="doccomment">/// A [policy][google.cloud.binaryauthorization.v1beta1.Policy] for container</span>
-<span class="doccomment">/// image binary authorization.</span>
+<span class="doccomment">/// A \[policy][google.cloud.binaryauthorization.v1beta1.Policy\] for Binary Authorization.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Policy</span> {
     <span class="doccomment">/// Output only. The resource name, in the format `projects/*/policy`. There is</span>
@@ -809,9 +868,27 @@
     <span class="doccomment">/// A `location` is either a compute zone (e.g. us-central1-a) or a region</span>
     <span class="doccomment">/// (e.g. us-central1).</span>
     <span class="doccomment">/// For `clusterId` syntax restrictions see</span>
-    <span class="doccomment">/// https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">cluster_admission_rules</span>:
+        <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">AdmissionRule</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Per-kubernetes-namespace admission rules. K8s namespace spec format:</span>
+    <span class="doccomment">///   `\[a-z.-\]+`, e.g. `some-namespace`</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">kubernetes_namespace_admission_rules</span>:
+        <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">AdmissionRule</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Per-kubernetes-service-account admission rules. Service account</span>
+    <span class="doccomment">/// spec format: `namespace:serviceaccount`. e.g. `test-ns:default`</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">kubernetes_service_account_admission_rules</span>:
+        <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">AdmissionRule</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Per-istio-service-identity admission rules. Istio service</span>
+    <span class="doccomment">/// identity spec format:</span>
+    <span class="doccomment">/// `spiffe://&lt;domain&gt;/ns/&lt;namespace&gt;/sa/&lt;serviceaccount&gt;` or</span>
+    <span class="doccomment">/// `&lt;domain&gt;/ns/&lt;namespace&gt;/sa/&lt;serviceaccount&gt;`</span>
+    <span class="doccomment">/// e.g. `spiffe://example.com/ns/test-ns/sa/default`</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">istio_service_identity_admission_rules</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">AdmissionRule</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Required. Default admission rule for a cluster without a per-cluster, per-</span>
     <span class="doccomment">/// kubernetes-service-account, or per-istio-service-identity admission rule.</span>
@@ -828,32 +905,32 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">GlobalPolicyEvaluationMode</span> {
         <span class="doccomment">/// Not specified: DISABLE is assumed.</span>
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
-        <span class="doccomment">/// Enables global policy evaluation.</span>
+        <span class="doccomment">/// Enables system policy evaluation.</span>
         <span class="ident">Enable</span> <span class="op">=</span> <span class="number">1</span>,
-        <span class="doccomment">/// Disables global policy evaluation.</span>
+        <span class="doccomment">/// Disables system policy evaluation.</span>
         <span class="ident">Disable</span> <span class="op">=</span> <span class="number">2</span>,
     }
 }
-<span class="doccomment">/// An [admission allowlist</span>
-<span class="doccomment">/// pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern]</span>
-<span class="doccomment">/// exempts images from checks by [admission</span>
-<span class="doccomment">/// rules][google.cloud.binaryauthorization.v1beta1.AdmissionRule].</span>
+<span class="doccomment">/// An [admission allowlist pattern]\[google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern\] exempts images</span>
+<span class="doccomment">/// from checks by [admission rules]\[google.cloud.binaryauthorization.v1beta1.AdmissionRule\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AdmissionWhitelistPattern</span> {
-    <span class="doccomment">/// An image name pattern to allow, in the form `registry/path/to/image`.</span>
+    <span class="doccomment">/// An image name pattern to allowlist, in the form `registry/path/to/image`.</span>
     <span class="doccomment">/// This supports a trailing `*` as a wildcard, but this is allowed only in</span>
-    <span class="doccomment">/// text after the `registry/` part.</span>
+    <span class="doccomment">/// text after the `registry/` part. `*` wildcard does not match `/`, i.e.,</span>
+    <span class="doccomment">/// `gcr.io/nginx*` matches `gcr.io/nginx@latest`, but it does not match</span>
+    <span class="doccomment">/// `gcr.io/nginx/image`. This also supports a trailing `**` wildcard which</span>
+    <span class="doccomment">/// matches subdirectories, i.e., `gcr.io/nginx**` matches</span>
+    <span class="doccomment">/// `gcr.io/nginx/image`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name_pattern</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// An [admission rule][google.cloud.binaryauthorization.v1beta1.AdmissionRule]</span>
-<span class="doccomment">/// specifies either that all container images used in a pod creation request</span>
-<span class="doccomment">/// must be attested to by one or more</span>
-<span class="doccomment">/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor], that all pod</span>
-<span class="doccomment">/// creations will be allowed, or that all pod creations will be denied.</span>
+<span class="doccomment">/// An [admission rule]\[google.cloud.binaryauthorization.v1beta1.AdmissionRule\] specifies either that all container images</span>
+<span class="doccomment">/// used in a pod creation request must be attested to by one or more</span>
+<span class="doccomment">/// \[attestors][google.cloud.binaryauthorization.v1beta1.Attestor\], that all pod creations will be allowed, or that all</span>
+<span class="doccomment">/// pod creations will be denied.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Images matching an [admission allowlist</span>
-<span class="doccomment">/// pattern][google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern]</span>
+<span class="doccomment">/// Images matching an [admission allowlist pattern]\[google.cloud.binaryauthorization.v1beta1.AdmissionWhitelistPattern\]</span>
 <span class="doccomment">/// are exempted from admission rules and will never block a pod creation.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AdmissionRule</span> {
@@ -884,7 +961,7 @@
         <span class="doccomment">/// This rule allows all all pod creations.</span>
         <span class="ident">AlwaysAllow</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// This rule allows a pod creation if all the attestors listed in</span>
-        <span class="doccomment">/// &#39;require_attestations_by&#39; have valid attestations for all of the</span>
+        <span class="doccomment">/// `require_attestations_by` have valid attestations for all of the</span>
         <span class="doccomment">/// images in the pod spec.</span>
         <span class="ident">RequireAttestation</span> <span class="op">=</span> <span class="number">2</span>,
         <span class="doccomment">/// This rule denies all pod creations.</span>
@@ -904,9 +981,9 @@
         <span class="ident">DryrunAuditLogOnly</span> <span class="op">=</span> <span class="number">2</span>,
     }
 }
-<span class="doccomment">/// An [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests</span>
-<span class="doccomment">/// to container image artifacts. An existing attestor cannot be modified except</span>
-<span class="doccomment">/// where indicated.</span>
+<span class="doccomment">/// An \[attestor][google.cloud.binaryauthorization.v1beta1.Attestor\] that attests to container image</span>
+<span class="doccomment">/// artifacts. An existing attestor cannot be modified except where</span>
+<span class="doccomment">/// indicated.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Attestor</span> {
     <span class="doccomment">/// Required. The resource name, in the format:</span>
@@ -920,31 +997,30 @@
     <span class="doccomment">/// Output only. Time when the attestor was last updated.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Required. Identifies an</span>
-    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests</span>
-    <span class="doccomment">/// to a container image artifact. This determines how an attestation will be</span>
-    <span class="doccomment">/// stored, and how it will be used during policy enforcement. Updates may not</span>
-    <span class="doccomment">/// change the attestor type, but individual attestor fields may be updated</span>
+    <span class="doccomment">/// Required. Identifies an \[attestor][google.cloud.binaryauthorization.v1beta1.Attestor\] that attests to a</span>
+    <span class="doccomment">/// container image artifact. This determines how an attestation will</span>
+    <span class="doccomment">/// be stored, and how it will be used during policy</span>
+    <span class="doccomment">/// enforcement. Updates may not change the attestor type, but individual</span>
+    <span class="doccomment">/// attestor fields may be updated.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;attestor::AttestorType&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">attestor_type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">attestor::AttestorType</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Nested message and enum types in `Attestor`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">attestor</span> {
-    <span class="doccomment">/// Required. Identifies an</span>
-    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] that attests</span>
-    <span class="doccomment">/// to a container image artifact. This determines how an attestation will be</span>
-    <span class="doccomment">/// stored, and how it will be used during policy enforcement. Updates may not</span>
-    <span class="doccomment">/// change the attestor type, but individual attestor fields may be updated</span>
+    <span class="doccomment">/// Required. Identifies an \[attestor][google.cloud.binaryauthorization.v1beta1.Attestor\] that attests to a</span>
+    <span class="doccomment">/// container image artifact. This determines how an attestation will</span>
+    <span class="doccomment">/// be stored, and how it will be used during policy</span>
+    <span class="doccomment">/// enforcement. Updates may not change the attestor type, but individual</span>
+    <span class="doccomment">/// attestor fields may be updated.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AttestorType</span> {
         <span class="doccomment">/// A Drydock ATTESTATION_AUTHORITY Note, created by the user.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">UserOwnedDrydockNote</span>(<span class="kw">super</span><span class="ident">::UserOwnedDrydockNote</span>),
+        <span class="ident">UserOwnedDrydockNote</span>(<span class="ident"><span class="kw">super</span>::UserOwnedDrydockNote</span>),
     }
 }
-<span class="doccomment">/// An [user owned drydock</span>
-<span class="doccomment">/// note][google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote]</span>
-<span class="doccomment">/// references a Drydock ATTESTATION_AUTHORITY Note created by the user.</span>
+<span class="doccomment">/// An [user owned drydock note]\[google.cloud.binaryauthorization.v1beta1.UserOwnedDrydockNote\] references a Drydock</span>
+<span class="doccomment">/// ATTESTATION_AUTHORITY Note created by the user.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UserOwnedDrydockNote</span> {
     <span class="doccomment">/// Required. The Drydock resource name of a ATTESTATION_AUTHORITY Note,</span>
@@ -970,7 +1046,7 @@
     <span class="doccomment">/// Output only. This field will contain the service account email address</span>
     <span class="doccomment">/// that this Attestor will use as the principal when querying Container</span>
     <span class="doccomment">/// Analysis. Attestor administrators must grant this service account the</span>
-    <span class="doccomment">/// IAM role needed to read attestations from the [note_reference][Note] in</span>
+    <span class="doccomment">/// IAM role needed to read attestations from the \[note_reference][Note\] in</span>
     <span class="doccomment">/// Container Analysis (`containeranalysis.notes.occurrences.viewer`).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This email address is fixed for the lifetime of the Attestor, but callers</span>
@@ -980,13 +1056,13 @@
     <span class="kw">pub</span> <span class="ident">delegation_service_account_email</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// A public key in the PkixPublicKey format (see</span>
-<span class="doccomment">/// https://tools.ietf.org/html/rfc5280#section-4.1.2.7 for details).</span>
+<span class="doccomment">/// &lt;https://tools.ietf.org/html/rfc5280#section-4.1.2.7&gt; for details).</span>
 <span class="doccomment">/// Public keys of this type are typically textually encoded using the PEM</span>
 <span class="doccomment">/// format.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PkixPublicKey</span> {
     <span class="doccomment">/// A PEM-encoded public key, as described in</span>
-    <span class="doccomment">/// https://tools.ietf.org/html/rfc7468#section-13</span>
+    <span class="doccomment">/// &lt;https://tools.ietf.org/html/rfc7468#section-13&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">public_key_pem</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The signature algorithm used to verify a message against a signature using</span>
@@ -1003,7 +1079,7 @@
     <span class="doccomment">/// signatures with a given public key.</span>
     <span class="doccomment">/// This is based primarily on the public key types supported by Tink&#39;s</span>
     <span class="doccomment">/// PemKeyType, which is in turn based on KMS&#39;s supported signing algorithms.</span>
-    <span class="doccomment">/// See https://cloud.google.com/kms/docs/algorithms. In the future, BinAuthz</span>
+    <span class="doccomment">/// See &lt;https://cloud.google.com/kms/docs/algorithms.&gt; In the future, BinAuthz</span>
     <span class="doccomment">/// might support additional public key types independently of Tink and/or KMS.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
@@ -1034,9 +1110,8 @@
         <span class="ident">EcdsaP521Sha512</span> <span class="op">=</span> <span class="number">11</span>,
     }
 }
-<span class="doccomment">/// An [attestor public</span>
-<span class="doccomment">/// key][google.cloud.binaryauthorization.v1beta1.AttestorPublicKey] that will be</span>
-<span class="doccomment">/// used to verify attestations signed by this attestor.</span>
+<span class="doccomment">/// An [attestor public key]\[google.cloud.binaryauthorization.v1beta1.AttestorPublicKey\] that will be used to verify</span>
+<span class="doccomment">/// attestations signed by this attestor.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AttestorPublicKey</span> {
     <span class="doccomment">/// Optional. A descriptive comment. This field may be updated.</span>
@@ -1079,75 +1154,63 @@
         <span class="doccomment">/// blank, a default one will be computed based on the digest of the DER</span>
         <span class="doccomment">/// encoding of the public key.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">PkixPublicKey</span>(<span class="kw">super</span><span class="ident">::PkixPublicKey</span>),
+        <span class="ident">PkixPublicKey</span>(<span class="ident"><span class="kw">super</span>::PkixPublicKey</span>),
     }
 }
-<span class="doccomment">/// Request message for [BinauthzManagementService.GetPolicy][].</span>
+<span class="doccomment">/// Request message for \[BinauthzManagementService.GetPolicy][\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetPolicyRequest</span> {
-    <span class="doccomment">/// Required. The resource name of the</span>
-    <span class="doccomment">/// [policy][google.cloud.binaryauthorization.v1beta1.Policy] to retrieve, in</span>
-    <span class="doccomment">/// the format `projects/*/policy`.</span>
+    <span class="doccomment">/// Required. The resource name of the \[policy][google.cloud.binaryauthorization.v1beta1.Policy\] to retrieve,</span>
+    <span class="doccomment">/// in the format `projects/*/policy`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [BinauthzManagementService.UpdatePolicy][].</span>
+<span class="doccomment">/// Request message for \[BinauthzManagementService.UpdatePolicy][\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdatePolicyRequest</span> {
-    <span class="doccomment">/// Required. A new or updated</span>
-    <span class="doccomment">/// [policy][google.cloud.binaryauthorization.v1beta1.Policy] value. The</span>
-    <span class="doccomment">/// service will overwrite the [policy</span>
-    <span class="doccomment">/// name][google.cloud.binaryauthorization.v1beta1.Policy.name] field with the</span>
-    <span class="doccomment">/// resource name in the request URL, in the format `projects/*/policy`.</span>
+    <span class="doccomment">/// Required. A new or updated \[policy][google.cloud.binaryauthorization.v1beta1.Policy\] value. The service will</span>
+    <span class="doccomment">/// overwrite the [policy name]\[google.cloud.binaryauthorization.v1beta1.Policy.name\] field with the resource name in</span>
+    <span class="doccomment">/// the request URL, in the format `projects/*/policy`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">policy</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Policy</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [BinauthzManagementService.CreateAttestor][].</span>
+<span class="doccomment">/// Request message for \[BinauthzManagementService.CreateAttestor][\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateAttestorRequest</span> {
-    <span class="doccomment">/// Required. The parent of this</span>
-    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].</span>
+    <span class="doccomment">/// Required. The parent of this \[attestor][google.cloud.binaryauthorization.v1beta1.Attestor\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Required. The</span>
-    <span class="doccomment">/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor] ID.</span>
+    <span class="doccomment">/// Required. The \[attestors][google.cloud.binaryauthorization.v1beta1.Attestor\] ID.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">attestor_id</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Required. The initial</span>
-    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] value. The</span>
-    <span class="doccomment">/// service will overwrite the [attestor</span>
-    <span class="doccomment">/// name][google.cloud.binaryauthorization.v1beta1.Attestor.name] field with</span>
-    <span class="doccomment">/// the resource name, in the format `projects/*/attestors/*`.</span>
+    <span class="doccomment">/// Required. The initial \[attestor][google.cloud.binaryauthorization.v1beta1.Attestor\] value. The service will</span>
+    <span class="doccomment">/// overwrite the [attestor name]\[google.cloud.binaryauthorization.v1beta1.Attestor.name\] field with the resource name,</span>
+    <span class="doccomment">/// in the format `projects/*/attestors/*`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">attestor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Attestor</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [BinauthzManagementService.GetAttestor][].</span>
+<span class="doccomment">/// Request message for \[BinauthzManagementService.GetAttestor][\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetAttestorRequest</span> {
-    <span class="doccomment">/// Required. The name of the</span>
-    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] to retrieve,</span>
-    <span class="doccomment">/// in the format `projects/*/attestors/*`.</span>
+    <span class="doccomment">/// Required. The name of the \[attestor][google.cloud.binaryauthorization.v1beta1.Attestor\] to retrieve, in the format</span>
+    <span class="doccomment">/// `projects/*/attestors/*`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [BinauthzManagementService.UpdateAttestor][].</span>
+<span class="doccomment">/// Request message for \[BinauthzManagementService.UpdateAttestor][\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateAttestorRequest</span> {
-    <span class="doccomment">/// Required. The updated</span>
-    <span class="doccomment">/// [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] value. The</span>
-    <span class="doccomment">/// service will overwrite the [attestor</span>
-    <span class="doccomment">/// name][google.cloud.binaryauthorization.v1beta1.Attestor.name] field with</span>
-    <span class="doccomment">/// the resource name in the request URL, in the format</span>
-    <span class="doccomment">/// `projects/*/attestors/*`.</span>
+    <span class="doccomment">/// Required. The updated \[attestor][google.cloud.binaryauthorization.v1beta1.Attestor\] value. The service will</span>
+    <span class="doccomment">/// overwrite the [attestor name]\[google.cloud.binaryauthorization.v1beta1.Attestor.name\] field with the resource name</span>
+    <span class="doccomment">/// in the request URL, in the format `projects/*/attestors/*`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">attestor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Attestor</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [BinauthzManagementService.ListAttestors][].</span>
+<span class="doccomment">/// Request message for \[BinauthzManagementService.ListAttestors][\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListAttestorsRequest</span> {
     <span class="doccomment">/// Required. The resource name of the project associated with the</span>
-    <span class="doccomment">/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor], in the</span>
-    <span class="doccomment">/// format `projects/*`.</span>
+    <span class="doccomment">/// \[attestors][google.cloud.binaryauthorization.v1beta1.Attestor\], in the format `projects/*`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Requested page size. The server may return fewer results than requested. If</span>
@@ -1155,31 +1218,36 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// A token identifying a page of results the server should return. Typically,</span>
-    <span class="doccomment">/// this is the value of</span>
-    <span class="doccomment">/// [ListAttestorsResponse.next_page_token][google.cloud.binaryauthorization.v1beta1.ListAttestorsResponse.next_page_token]</span>
-    <span class="doccomment">/// returned from the previous call to the `ListAttestors` method.</span>
+    <span class="doccomment">/// this is the value of \[ListAttestorsResponse.next_page_token][google.cloud.binaryauthorization.v1beta1.ListAttestorsResponse.next_page_token\] returned</span>
+    <span class="doccomment">/// from the previous call to the `ListAttestors` method.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response message for [BinauthzManagementService.ListAttestors][].</span>
+<span class="doccomment">/// Response message for \[BinauthzManagementService.ListAttestors][\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListAttestorsResponse</span> {
-    <span class="doccomment">/// The list of [attestors][google.cloud.binaryauthorization.v1beta1.Attestor].</span>
+    <span class="doccomment">/// The list of \[attestors][google.cloud.binaryauthorization.v1beta1.Attestor\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">attestors</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Attestor</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A token to retrieve the next page of results. Pass this value in the</span>
-    <span class="doccomment">/// [ListAttestorsRequest.page_token][google.cloud.binaryauthorization.v1beta1.ListAttestorsRequest.page_token]</span>
-    <span class="doccomment">/// field in the subsequent call to the `ListAttestors` method to retrieve the</span>
-    <span class="doccomment">/// next page of results.</span>
+    <span class="doccomment">/// \[ListAttestorsRequest.page_token][google.cloud.binaryauthorization.v1beta1.ListAttestorsRequest.page_token\] field in the subsequent call to the</span>
+    <span class="doccomment">/// `ListAttestors` method to retrieve the next page of results.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [BinauthzManagementService.DeleteAttestor][].</span>
+<span class="doccomment">/// Request message for \[BinauthzManagementService.DeleteAttestor][\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteAttestorRequest</span> {
-    <span class="doccomment">/// Required. The name of the</span>
-    <span class="doccomment">/// [attestors][google.cloud.binaryauthorization.v1beta1.Attestor] to delete,</span>
-    <span class="doccomment">/// in the format `projects/*/attestors/*`.</span>
+    <span class="doccomment">/// Required. The name of the \[attestors][google.cloud.binaryauthorization.v1beta1.Attestor\] to delete, in the format</span>
+    <span class="doccomment">/// `projects/*/attestors/*`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Request to read the current system policy.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetSystemPolicyRequest</span> {
+    <span class="doccomment">/// Required. The resource name, in the format `locations/*/policy`.</span>
+    <span class="doccomment">/// Note that the system policy is not associated with a project.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -1201,7 +1269,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">BinauthzManagementServiceV1Beta1Client</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1214,7 +1282,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BinauthzManagementServiceV1Beta1Client</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -1239,20 +1307,17 @@
             <span class="self">self</span>.<span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">accept_gzip</span>();
             <span class="self">self</span>
         }
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; A [policy][google.cloud.binaryauthorization.v1beta1.Policy] specifies the&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestors][google.cloud.binaryauthorization.v1beta1.Attestor] that must&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; attest to a container image, before the project is allowed to deploy that&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; A [policy][google.cloud.binaryauthorization.v1beta1.Policy] specifies the [attestors][google.cloud.binaryauthorization.v1beta1.Attestor] that must attest to&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; a container image, before the project is allowed to deploy that&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; image. There is at most one policy per project. All image admission&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; requests are permitted if a project has no policy.&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the [policy][google.cloud.binaryauthorization.v1beta1.Policy] for this&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; project. Returns a default&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [policy][google.cloud.binaryauthorization.v1beta1.Policy] if the project&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; does not have one.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the [policy][google.cloud.binaryauthorization.v1beta1.Policy] for this project. Returns a default&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [policy][google.cloud.binaryauthorization.v1beta1.Policy] if the project does not have one.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetPolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1263,17 +1328,15 @@
             <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/GetPolicy&quot;</span>) ;
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates or updates a project&#39;s&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [policy][google.cloud.binaryauthorization.v1beta1.Policy], and returns a&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; copy of the new [policy][google.cloud.binaryauthorization.v1beta1.Policy].&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; A policy is always updated as a whole, to avoid race conditions with&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; concurrent policy enforcement (or management!) requests. Returns NOT_FOUND&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; if the project does not exist, INVALID_ARGUMENT if the request is&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; malformed.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates or updates a project&#39;s [policy][google.cloud.binaryauthorization.v1beta1.Policy], and returns a copy of the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; new [policy][google.cloud.binaryauthorization.v1beta1.Policy]. A policy is always updated as a whole, to avoid race&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; conditions with concurrent policy enforcement (or management!)&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; requests. Returns NOT_FOUND if the project does not exist, INVALID_ARGUMENT&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; if the request is malformed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdatePolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdatePolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1284,17 +1347,14 @@
             <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/UpdatePolicy&quot;</span>) ;
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor],&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; and returns a copy of the new&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]. Returns&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; NOT_FOUND if the project does not exist, INVALID_ARGUMENT if the request is&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; malformed, ALREADY_EXISTS if the&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] already&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exists.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor], and returns a copy of the new&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]. Returns NOT_FOUND if the project does not exist,&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; INVALID_ARGUMENT if the request is malformed, ALREADY_EXISTS if the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] already exists.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_attestor</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateAttestorRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Attestor</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateAttestorRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Attestor</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1306,13 +1366,11 @@
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns NOT_FOUND if the&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] does not&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exist.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns NOT_FOUND if the [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] does not exist.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_attestor</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetAttestorRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Attestor</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetAttestorRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Attestor</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1324,13 +1382,11 @@
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns NOT_FOUND if the&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] does not&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exist.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns NOT_FOUND if the [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] does not exist.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_attestor</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateAttestorRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Attestor</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateAttestorRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Attestor</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1345,8 +1401,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns INVALID_ARGUMENT if the project does not exist.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_attestors</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAttestorsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAttestorsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAttestorsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAttestorsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1357,13 +1413,11 @@
             <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http</span> :: <span class="ident">uri</span> :: <span class="ident">PathAndQuery</span> :: <span class="ident">from_static</span> (<span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.BinauthzManagementServiceV1Beta1/ListAttestors&quot;</span>) ;
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor].&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns NOT_FOUND if the&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] does not&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exist.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes an [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]. Returns NOT_FOUND if the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [attestor][google.cloud.binaryauthorization.v1beta1.Attestor] does not exist.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_attestor</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteAttestorRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteAttestorRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -1377,5 +1431,76 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Generated client implementations.&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">system_policy_v1_beta1_client</span> {
+    <span class="attribute">#![<span class="ident">allow</span>(<span class="ident">unused_variables</span>, <span class="ident">dead_code</span>, <span class="ident">missing_docs</span>, <span class="ident">clippy::let_unit_value</span>)]</span>
+    <span class="kw">use</span> <span class="ident">tonic::codegen</span>::<span class="kw-2">*</span>;
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; API for working with the system policy.&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SystemPolicyV1Beta1Client</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
+        <span class="ident">inner</span>: <span class="ident">tonic::client::Grpc</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>,
+    }
+    <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">SystemPolicyV1Beta1Client</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
+    <span class="kw">where</span>
+        <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
+        <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
+    {
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">inner</span>: <span class="ident">T</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">let</span> <span class="ident">inner</span> <span class="op">=</span> <span class="ident">tonic::client::Grpc::new</span>(<span class="ident">inner</span>);
+            <span class="self">Self</span> { <span class="ident">inner</span> }
+        }
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_interceptor</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(
+            <span class="ident">inner</span>: <span class="ident">T</span>,
+            <span class="ident">interceptor</span>: <span class="ident">F</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SystemPolicyV1Beta1Client</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
+        <span class="kw">where</span>
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
+            <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
+                <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
+                <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
+                    <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::ResponseBody</span>,
+                <span class="op">&gt;</span>,
+            <span class="op">&gt;</span>,
+            <span class="op">&lt;</span><span class="ident">T</span> <span class="kw">as</span> <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span><span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::Error</span>:
+                <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span>,
+        {
+            <span class="ident">SystemPolicyV1Beta1Client::new</span>(<span class="ident">InterceptedService::new</span>(<span class="ident">inner</span>, <span class="ident">interceptor</span>))
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Compress requests with `gzip`.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; This requires the server to support it otherwise it might respond with an&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; error.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_gzip</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="self">self</span>.<span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">send_gzip</span>();
+            <span class="self">self</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Enable decompressing responses with `gzip`.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept_gzip</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="self">self</span>.<span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">accept_gzip</span>();
+            <span class="self">self</span>
+        }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the current system policy in the specified location.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_system_policy</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetSystemPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.cloud.binaryauthorization.v1beta1.SystemPolicyV1Beta1/GetSystemPolicy&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
+    }
+}
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

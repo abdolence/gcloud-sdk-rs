@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Reason","Describes how the table metadata was changed."]]});

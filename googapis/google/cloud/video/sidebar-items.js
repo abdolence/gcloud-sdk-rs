@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["transcoder",""]]});
+initSidebarItems({"mod":[["livestream",""],["transcoder",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RenderState","Valid states of the render operation."]],"mod":[["target_render","Nested message and enum types in `TargetRender`."]],"struct":[["TargetRender","Details of rendering for a single target."]]});

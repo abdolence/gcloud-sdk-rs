@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Version","The PostgreSQL database version."]]});

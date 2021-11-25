@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Level","The Log4j level for job execution. When running an Apache Hive job, Cloud Dataproc configures the Hive client to an equivalent verbosity level."]]});

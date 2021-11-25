@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ManagedNotebookServiceClient","API v1 service for Managed Notebooks."]]});

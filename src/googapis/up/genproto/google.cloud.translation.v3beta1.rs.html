@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.translation.v3beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.translation.v3beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.translation.v3beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.translation.v3beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1569,8 +1567,16 @@
 <span id="1567">1567</span>
 <span id="1568">1568</span>
 <span id="1569">1569</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Configures which glossary should be used for a specific target language,</span>
+<span id="1570">1570</span>
+<span id="1571">1571</span>
+<span id="1572">1572</span>
+<span id="1573">1573</span>
+<span id="1574">1574</span>
+<span id="1575">1575</span>
+<span id="1576">1576</span>
+<span id="1577">1577</span>
+<span id="1578">1578</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Configures which glossary should be used for a specific target language,</span>
 <span class="doccomment">/// and defines options for applying that glossary.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TranslateTextGlossaryConfig</span> {
@@ -1632,14 +1638,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// - General (built-in) models:</span>
     <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,</span>
-    <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/base`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For global (non-regionalized) requests, use `location-id` `global`.</span>
     <span class="doccomment">/// For example,</span>
     <span class="doccomment">/// `projects/{project-number-or-id}/locations/global/models/general/nmt`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If missing, the system decides which google base model to use.</span>
+    <span class="doccomment">/// If not provided, the default Google model (NMT) will be used</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">model</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. Glossary to be applied. The glossary must be</span>
@@ -1654,7 +1659,7 @@
     <span class="doccomment">/// characters, underscores and dashes. International characters are allowed.</span>
     <span class="doccomment">/// Label values are optional. Label keys must start with a letter.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See https://cloud.google.com/translate/docs/labels for more information.</span>
+    <span class="doccomment">/// See &lt;https://cloud.google.com/translate/docs/labels&gt; for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -1663,14 +1668,14 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TranslateTextResponse</span> {
     <span class="doccomment">/// Text translation responses with no glossary applied.</span>
     <span class="doccomment">/// This field has the same length as</span>
-    <span class="doccomment">/// [`contents`][google.cloud.translation.v3beta1.TranslateTextRequest.contents].</span>
+    <span class="doccomment">/// \[`contents`][google.cloud.translation.v3beta1.TranslateTextRequest.contents\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">translations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Translation</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Text translation responses if a glossary is provided in the request.</span>
     <span class="doccomment">/// This can be the same as</span>
-    <span class="doccomment">/// [`translations`][google.cloud.translation.v3beta1.TranslateTextResponse.translations]</span>
+    <span class="doccomment">/// \[`translations`][google.cloud.translation.v3beta1.TranslateTextResponse.translations\]</span>
     <span class="doccomment">/// if no terms apply. This field has the same length as</span>
-    <span class="doccomment">/// [`contents`][google.cloud.translation.v3beta1.TranslateTextRequest.contents].</span>
+    <span class="doccomment">/// \[`contents`][google.cloud.translation.v3beta1.TranslateTextRequest.contents\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">glossary_translations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Translation</span><span class="op">&gt;</span>,
 }
@@ -1678,6 +1683,8 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Translation</span> {
     <span class="doccomment">/// Text translated into the target language.</span>
+    <span class="doccomment">/// If an error occurs during translation, this field might be excluded from</span>
+    <span class="doccomment">/// the response.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">translated_text</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Only present when `model` is present in the request.</span>
@@ -1712,7 +1719,7 @@
     <span class="doccomment">/// For global calls, use `projects/{project-number-or-id}/locations/global` or</span>
     <span class="doccomment">/// `projects/{project-number-or-id}`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Only models within the same region, which have the same location-id, can be used.</span>
+    <span class="doccomment">/// Only models within the same region (has same location-id) can be used.</span>
     <span class="doccomment">/// Otherwise an INVALID_ARGUMENT (400) error is returned.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1738,7 +1745,7 @@
     <span class="doccomment">/// characters, underscores and dashes. International characters are allowed.</span>
     <span class="doccomment">/// Label values are optional. Label keys must start with a letter.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See https://cloud.google.com/translate/docs/labels for more information.</span>
+    <span class="doccomment">/// See &lt;https://cloud.google.com/translate/docs/labels&gt; for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -1807,11 +1814,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// - General (built-in) models:</span>
     <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,</span>
-    <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/base`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Returns languages supported by the specified model.</span>
-    <span class="doccomment">/// If missing, we get supported languages of Google general base (PBMT) model.</span>
+    <span class="doccomment">/// If missing, we get supported languages of Google general NMT model.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">model</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -1881,14 +1887,14 @@
         <span class="doccomment">/// otherwise an error might be returned.</span>
         <span class="doccomment">/// Note that the input tsv must be RFC 4180 compliant.</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// You could use https://github.com/Clever/csvlint to check potential</span>
+        <span class="doccomment">/// You could use &lt;https://github.com/Clever/csvlint&gt; to check potential</span>
         <span class="doccomment">/// formatting errors in your tsv file.</span>
         <span class="doccomment">/// csvlint --delimiter=&#39;\t&#39; your_input_file.tsv</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The other supported file extensions are `.txt` or `.html`, which is</span>
         <span class="doccomment">/// treated as a single large chunk of text.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">GcsSource</span>(<span class="kw">super</span><span class="ident">::GcsSource</span>),
+        <span class="ident">GcsSource</span>(<span class="ident"><span class="kw">super</span>::GcsSource</span>),
     }
 }
 <span class="doccomment">/// The Google Cloud Storage location for the output content.</span>
@@ -1913,7 +1919,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Destination</span> {
         <span class="doccomment">/// Google Cloud Storage destination for output content.</span>
-        <span class="doccomment">/// For every single input file (for example, gs://a/b/c.[extension]), we</span>
+        <span class="doccomment">/// For every single input file (for example, gs://a/b/c.\[extension\]), we</span>
         <span class="doccomment">/// generate at most 2 * n output files. (n is the # of target_language_codes</span>
         <span class="doccomment">/// in the BatchTranslateTextRequest).</span>
         <span class="doccomment">///</span>
@@ -1940,17 +1946,17 @@
         <span class="doccomment">/// content to output.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Once a row is present in index.csv, the input/output matching never</span>
-        <span class="doccomment">/// changes. Callers should also expect the contents in the input_file are</span>
+        <span class="doccomment">/// changes. Callers should also expect all the content in input_file are</span>
         <span class="doccomment">/// processed and ready to be consumed (that is, no partial output file is</span>
         <span class="doccomment">/// written).</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// Since index.csv will be updated during the process, please make</span>
+        <span class="doccomment">/// Since index.csv will be keeping updated during the process, please make</span>
         <span class="doccomment">/// sure there is no custom retention policy applied on the output bucket</span>
-        <span class="doccomment">/// that may prevent file updating.</span>
-        <span class="doccomment">/// (https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy)</span>
+        <span class="doccomment">/// that may avoid file updating.</span>
+        <span class="doccomment">/// (&lt;https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy&gt;)</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The format of translations_file (for target language code &#39;trg&#39;) is:</span>
-        <span class="doccomment">/// gs://translation_test/a_b_c_&#39;trg&#39;_translations.[extension]</span>
+        <span class="doccomment">/// gs://translation_test/a_b_c_&#39;trg&#39;_translations.\[extension\]</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// If the input file extension is tsv, the output has the following</span>
         <span class="doccomment">/// columns:</span>
@@ -1967,10 +1973,10 @@
         <span class="doccomment">/// If input file extension is a txt or html, the translation is directly</span>
         <span class="doccomment">/// written to the output file. If glossary is requested, a separate</span>
         <span class="doccomment">/// glossary_translations_file has format of</span>
-        <span class="doccomment">/// gs://translation_test/a_b_c_&#39;trg&#39;_glossary_translations.[extension]</span>
+        <span class="doccomment">/// gs://translation_test/a_b_c_&#39;trg&#39;_glossary_translations.\[extension\]</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The format of errors file (for target language code &#39;trg&#39;) is:</span>
-        <span class="doccomment">/// gs://translation_test/a_b_c_&#39;trg&#39;_errors.[extension]</span>
+        <span class="doccomment">/// gs://translation_test/a_b_c_&#39;trg&#39;_errors.\[extension\]</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// If the input file extension is tsv, errors_file contains the following:</span>
         <span class="doccomment">/// Column 1: ID of the request provided in the input, if it&#39;s not</span>
@@ -1982,9 +1988,9 @@
         <span class="doccomment">///</span>
         <span class="doccomment">/// If the input file extension is txt or html, glossary_error_file will be</span>
         <span class="doccomment">/// generated that contains error details. glossary_error_file has format of</span>
-        <span class="doccomment">/// gs://translation_test/a_b_c_&#39;trg&#39;_glossary_errors.[extension]</span>
+        <span class="doccomment">/// gs://translation_test/a_b_c_&#39;trg&#39;_glossary_errors.\[extension\]</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
     }
 }
 <span class="doccomment">/// A document translation request input config.</span>
@@ -2029,7 +2035,7 @@
         <span class="doccomment">/// Google Cloud Storage location. This must be a single file.</span>
         <span class="doccomment">/// For example: gs://example_bucket/example_file.pdf</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">GcsSource</span>(<span class="kw">super</span><span class="ident">::GcsSource</span>),
+        <span class="ident">GcsSource</span>(<span class="ident"><span class="kw">super</span>::GcsSource</span>),
     }
 }
 <span class="doccomment">/// A document translation request output config.</span>
@@ -2073,34 +2079,34 @@
         <span class="doccomment">/// already exists in the destination an error will be returned.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// For a DocumentInputConfig.contents provided document, the output file</span>
-        <span class="doccomment">/// will have the name &quot;output_[trg]_translations.[ext]&quot;, where</span>
-        <span class="doccomment">/// - [trg] corresponds to the translated file&#39;s language code,</span>
-        <span class="doccomment">/// - [ext] corresponds to the translated file&#39;s extension according to its</span>
+        <span class="doccomment">/// will have the name &quot;output_\[trg]_translations.[ext\]&quot;, where</span>
+        <span class="doccomment">/// - \[trg\] corresponds to the translated file&#39;s language code,</span>
+        <span class="doccomment">/// - \[ext\] corresponds to the translated file&#39;s extension according to its</span>
         <span class="doccomment">/// mime type.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// For a DocumentInputConfig.gcs_uri provided document, the output file will</span>
         <span class="doccomment">/// have a name according to its URI. For example: an input file with URI:</span>
-        <span class="doccomment">/// &quot;gs://a/b/c.[extension]&quot; stored in a gcs_destination bucket with name</span>
+        <span class="doccomment">/// &quot;gs://a/b/c.\[extension\]&quot; stored in a gcs_destination bucket with name</span>
         <span class="doccomment">/// &quot;my_bucket&quot; will have an output URI:</span>
-        <span class="doccomment">/// &quot;gs://my_bucket/a_b_c_[trg]_translations.[ext]&quot;, where</span>
-        <span class="doccomment">/// - [trg] corresponds to the translated file&#39;s language code,</span>
-        <span class="doccomment">/// - [ext] corresponds to the translated file&#39;s extension according to its</span>
+        <span class="doccomment">/// &quot;gs://my_bucket/a_b_c_\[trg]_translations.[ext\]&quot;, where</span>
+        <span class="doccomment">/// - \[trg\] corresponds to the translated file&#39;s language code,</span>
+        <span class="doccomment">/// - \[ext\] corresponds to the translated file&#39;s extension according to its</span>
         <span class="doccomment">/// mime type.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// If the document was directly provided through the request, then the</span>
         <span class="doccomment">/// output document will have the format:</span>
-        <span class="doccomment">/// &quot;gs://my_bucket/translated_document_[trg]_translations.[ext], where</span>
-        <span class="doccomment">/// - [trg] corresponds to the translated file&#39;s language code,</span>
-        <span class="doccomment">/// - [ext] corresponds to the translated file&#39;s extension according to its</span>
+        <span class="doccomment">/// &quot;gs://my_bucket/translated_document_\[trg]_translations.[ext\], where</span>
+        <span class="doccomment">/// - \[trg\] corresponds to the translated file&#39;s language code,</span>
+        <span class="doccomment">/// - \[ext\] corresponds to the translated file&#39;s extension according to its</span>
         <span class="doccomment">/// mime type.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// If a glossary was provided, then the output URI for the glossary</span>
         <span class="doccomment">/// translation will be equal to the default output URI but have</span>
         <span class="doccomment">/// `glossary_translations` instead of `translations`. For the previous</span>
         <span class="doccomment">/// example, its glossary URI would be:</span>
-        <span class="doccomment">/// &quot;gs://my_bucket/a_b_c_[trg]_glossary_translations.[ext]&quot;.</span>
+        <span class="doccomment">/// &quot;gs://my_bucket/a_b_c_\[trg]_glossary_translations.[ext\]&quot;.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Thus the max number of output files will be 2 (Translated document,</span>
         <span class="doccomment">/// Glossary translated document).</span>
@@ -2109,7 +2115,7 @@
         <span class="doccomment">/// document translation, no output will be stored in the Cloud Storage</span>
         <span class="doccomment">/// bucket.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
     }
 }
 <span class="doccomment">/// A document translation request.</span>
@@ -2119,8 +2125,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format: `projects/{project-number-or-id}/locations/{location-id}`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// For global calls, use `projects/{project-number-or-id}/locations/global` or</span>
-    <span class="doccomment">/// `projects/{project-number-or-id}`.</span>
+    <span class="doccomment">/// For global calls, use `projects/{project-number-or-id}/locations/global`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Non-global location is required for requests using AutoML models or custom</span>
     <span class="doccomment">/// glossaries.</span>
@@ -2160,7 +2165,6 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// - General (built-in) models:</span>
     <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,</span>
-    <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/base`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If not provided, the default Google model (NMT) will be used for</span>
@@ -2179,7 +2183,7 @@
     <span class="doccomment">/// underscores and dashes. International characters are allowed. Label values</span>
     <span class="doccomment">/// are optional. Label keys must start with a letter.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See https://cloud.google.com/translate/docs/advanced/labels for more</span>
+    <span class="doccomment">/// See &lt;https://cloud.google.com/translate/docs/advanced/labels&gt; for more</span>
     <span class="doccomment">/// information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>:
@@ -2211,7 +2215,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">document_translation</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">DocumentTranslation</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The document&#39;s translation output if a glossary is provided in the request.</span>
-    <span class="doccomment">/// This can be the same as [TranslateDocumentResponse.document_translation]</span>
+    <span class="doccomment">/// This can be the same as \[TranslateDocumentResponse.document_translation\]</span>
     <span class="doccomment">/// if no glossary terms apply.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">glossary_document_translation</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">DocumentTranslation</span><span class="op">&gt;</span>,
@@ -2250,7 +2254,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">target_language_codes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. The models to use for translation. Map&#39;s key is target language</span>
-    <span class="doccomment">/// code. Map&#39;s value is the model name. Value can be a built-in general model,</span>
+    <span class="doccomment">/// code. Map&#39;s value is model name. Value can be a built-in general model,</span>
     <span class="doccomment">/// or an AutoML Translation model.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The value format depends on model type:</span>
@@ -2260,7 +2264,6 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// - General (built-in) models:</span>
     <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,</span>
-    <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/base`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the map is empty or a specific model is</span>
@@ -2291,7 +2294,7 @@
     <span class="doccomment">/// characters, underscores and dashes. International characters are allowed.</span>
     <span class="doccomment">/// Label values are optional. Label keys must start with a letter.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See https://cloud.google.com/translate/docs/labels for more information.</span>
+    <span class="doccomment">/// See &lt;https://cloud.google.com/translate/docs/labels&gt; for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -2343,7 +2346,7 @@
     }
 }
 <span class="doccomment">/// Stored in the</span>
-<span class="doccomment">/// [google.longrunning.Operation.response][google.longrunning.Operation.response]</span>
+<span class="doccomment">/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]</span>
 <span class="doccomment">/// field returned by BatchTranslateText if at least one sentence is translated</span>
 <span class="doccomment">/// successfully.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -2361,7 +2364,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">submit_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The time when the operation is finished and</span>
-    <span class="doccomment">/// [google.longrunning.Operation.done][google.longrunning.Operation.done] is</span>
+    <span class="doccomment">/// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is</span>
     <span class="doccomment">/// set to true.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">end_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
@@ -2380,7 +2383,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
         <span class="doccomment">/// Required. Google Cloud Storage location of glossary data.</span>
         <span class="doccomment">/// File format is determined based on the filename extension. API returns</span>
-        <span class="doccomment">/// [google.rpc.Code.INVALID_ARGUMENT] for unsupported URI-s and file</span>
+        <span class="doccomment">/// \[google.rpc.Code.INVALID_ARGUMENT\] for unsupported URI-s and file</span>
         <span class="doccomment">/// formats. Wildcards are not allowed. This must be a single file in one of</span>
         <span class="doccomment">/// the following formats:</span>
         <span class="doccomment">///</span>
@@ -2399,9 +2402,9 @@
         <span class="doccomment">/// - CSV (`.csv`): Multi-column CSV file defining equivalent glossary terms</span>
         <span class="doccomment">///   in multiple languages. The format is defined for Google Translation</span>
         <span class="doccomment">///   Toolkit and documented in [Use a</span>
-        <span class="doccomment">///   glossary](https://support.google.com/translatortoolkit/answer/6306379?hl=en).</span>
+        <span class="doccomment">///   glossary](&lt;https://support.google.com/translatortoolkit/answer/6306379?hl=en&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsSource</span>(<span class="kw">super</span><span class="ident">::GcsSource</span>),
+        <span class="ident">GcsSource</span>(<span class="ident"><span class="kw">super</span>::GcsSource</span>),
     }
 }
 <span class="doccomment">/// Represents a glossary built from user provided data.</span>
@@ -2497,7 +2500,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results the server should return.</span>
-    <span class="doccomment">/// Typically, this is the value of [ListGlossariesResponse.next_page_token]</span>
+    <span class="doccomment">/// Typically, this is the value of \[ListGlossariesResponse.next_page_token\]</span>
     <span class="doccomment">/// returned from the previous call to `ListGlossaries` method.</span>
     <span class="doccomment">/// The first page is returned if `page_token`is empty or missing.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
@@ -2528,13 +2531,13 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">glossaries</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Glossary</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A token to retrieve a page of results. Pass this value in the</span>
-    <span class="doccomment">/// [ListGlossariesRequest.page_token] field in the subsequent call to</span>
+    <span class="doccomment">/// \[ListGlossariesRequest.page_token\] field in the subsequent call to</span>
     <span class="doccomment">/// `ListGlossaries` method to retrieve the next page of results.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Stored in the</span>
-<span class="doccomment">/// [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata]</span>
+<span class="doccomment">/// \[google.longrunning.Operation.metadata][google.longrunning.Operation.metadata\]</span>
 <span class="doccomment">/// field returned by CreateGlossary.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateGlossaryMetadata</span> {
@@ -2570,7 +2573,7 @@
     }
 }
 <span class="doccomment">/// Stored in the</span>
-<span class="doccomment">/// [google.longrunning.Operation.metadata][google.longrunning.Operation.metadata]</span>
+<span class="doccomment">/// \[google.longrunning.Operation.metadata][google.longrunning.Operation.metadata\]</span>
 <span class="doccomment">/// field returned by DeleteGlossary.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteGlossaryMetadata</span> {
@@ -2606,7 +2609,7 @@
     }
 }
 <span class="doccomment">/// Stored in the</span>
-<span class="doccomment">/// [google.longrunning.Operation.response][google.longrunning.Operation.response]</span>
+<span class="doccomment">/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]</span>
 <span class="doccomment">/// field returned by DeleteGlossary.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteGlossaryResponse</span> {
@@ -2617,7 +2620,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">submit_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The time when the glossary deletion is finished and</span>
-    <span class="doccomment">/// [google.longrunning.Operation.done][google.longrunning.Operation.done] is</span>
+    <span class="doccomment">/// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is</span>
     <span class="doccomment">/// set to true.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">end_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
@@ -2638,7 +2641,7 @@
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The BCP-47 language code of the input document if known, for</span>
     <span class="doccomment">/// example, &quot;en-US&quot; or &quot;sr-Latn&quot;. Supported language codes are listed in</span>
-    <span class="doccomment">/// Language Support (https://cloud.google.com/translate/docs/languages).</span>
+    <span class="doccomment">/// Language Support (&lt;https://cloud.google.com/translate/docs/languages&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">source_language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The BCP-47 language code to use for translation of the input</span>
@@ -2667,7 +2670,6 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// - General (built-in) models:</span>
     <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/nmt`,</span>
-    <span class="doccomment">///   `projects/{project-number-or-id}/locations/{location-id}/models/general/base`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the map is empty or a specific model is not requested for a language</span>
@@ -2679,6 +2681,19 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">glossaries</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">TranslateTextGlossaryConfig</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. File format conversion map to be applied to all input files.</span>
+    <span class="doccomment">/// Map&#39;s key is the original mime_type. Map&#39;s value is the target mime_type of</span>
+    <span class="doccomment">/// translated documents.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Supported file format conversion includes:</span>
+    <span class="doccomment">/// - `application/pdf` to</span>
+    <span class="doccomment">///   `application/vnd.openxmlformats-officedocument.wordprocessingml.document`</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// If nothing specified, output files will be in the same format as the</span>
+    <span class="doccomment">/// original file.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">format_conversions</span>:
+        <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Input configuration for BatchTranslateDocument request.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -2707,12 +2722,12 @@
         <span class="doccomment">/// - `xlsx`,</span>
         <span class="doccomment">/// application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// The max file size supported for `.docx`, `.pptx` and `.xlsx` is 100MB.</span>
-        <span class="doccomment">/// The max file size supported for `.pdf` is 1GB and the max page limit is</span>
+        <span class="doccomment">/// The max file size to support for `.docx`, `.pptx` and `.xlsx` is 100MB.</span>
+        <span class="doccomment">/// The max file size to support for `.pdf` is 1GB and the max page limit is</span>
         <span class="doccomment">/// 1000 pages.</span>
-        <span class="doccomment">/// The max file size supported for all input documents is 1GB.</span>
+        <span class="doccomment">/// The max file size to support for all input documents is 1GB.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsSource</span>(<span class="kw">super</span><span class="ident">::GcsSource</span>),
+        <span class="ident">GcsSource</span>(<span class="ident"><span class="kw">super</span>::GcsSource</span>),
     }
 }
 <span class="doccomment">/// Output configuration for BatchTranslateDocument request.</span>
@@ -2730,7 +2745,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Destination</span> {
         <span class="doccomment">/// Google Cloud Storage destination for output content.</span>
-        <span class="doccomment">/// For every single input document (for example, gs://a/b/c.[extension]), we</span>
+        <span class="doccomment">/// For every single input document (for example, gs://a/b/c.\[extension\]), we</span>
         <span class="doccomment">/// generate at most 2 * n output files. (n is the # of target_language_codes</span>
         <span class="doccomment">/// in the BatchTranslateDocumentRequest).</span>
         <span class="doccomment">///</span>
@@ -2760,40 +2775,40 @@
         <span class="doccomment">/// Since index.csv will be keeping updated during the process, please make</span>
         <span class="doccomment">/// sure there is no custom retention policy applied on the output bucket</span>
         <span class="doccomment">/// that may avoid file updating.</span>
-        <span class="doccomment">/// (https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy)</span>
+        <span class="doccomment">/// (&lt;https://cloud.google.com/storage/docs/bucket-lock?hl=en#retention-policy&gt;)</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The naming format of translation output files follows (for target</span>
-        <span class="doccomment">/// language code [trg]): `translation_output`:</span>
-        <span class="doccomment">/// gs://translation_output/a_b_c_[trg]_translation.[extension]</span>
+        <span class="doccomment">/// language code \[trg\]): `translation_output`:</span>
+        <span class="doccomment">/// gs://translation_output/a_b_c_\[trg]_translation.[extension\]</span>
         <span class="doccomment">/// `glossary_translation_output`:</span>
-        <span class="doccomment">/// gs://translation_test/a_b_c_[trg]_glossary_translation.[extension] The</span>
+        <span class="doccomment">/// gs://translation_test/a_b_c_\[trg]_glossary_translation.[extension\] The</span>
         <span class="doccomment">/// output document will maintain the same file format as the input document.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The naming format of error output files follows (for target language code</span>
-        <span class="doccomment">/// [trg]): `error_output`: gs://translation_test/a_b_c_[trg]_errors.txt</span>
+        <span class="doccomment">/// \[trg\]): `error_output`: gs://translation_test/a_b_c_\[trg\]_errors.txt</span>
         <span class="doccomment">/// `glossary_error_output`:</span>
-        <span class="doccomment">/// gs://translation_test/a_b_c_[trg]_glossary_translation.txt The error</span>
+        <span class="doccomment">/// gs://translation_test/a_b_c_\[trg\]_glossary_translation.txt The error</span>
         <span class="doccomment">/// output is a txt file containing error details.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
     }
 }
 <span class="doccomment">/// Stored in the</span>
-<span class="doccomment">/// [google.longrunning.Operation.response][google.longrunning.Operation.response]</span>
+<span class="doccomment">/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]</span>
 <span class="doccomment">/// field returned by BatchTranslateDocument if at least one document is</span>
 <span class="doccomment">/// translated successfully.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchTranslateDocumentResponse</span> {
-    <span class="doccomment">/// Total number of pages to translate in all documents. Documents without a</span>
+    <span class="doccomment">/// Total number of pages to translate in all documents. Documents without</span>
     <span class="doccomment">/// clear page definition (such as XLSX) are not counted.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">total_pages</span>: <span class="ident">i64</span>,
     <span class="doccomment">/// Number of successfully translated pages in all documents. Documents without</span>
-    <span class="doccomment">/// a clear page definition (such as XLSX) are not counted.</span>
+    <span class="doccomment">/// clear page definition (such as XLSX) are not counted.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">translated_pages</span>: <span class="ident">i64</span>,
     <span class="doccomment">/// Number of pages that failed to process in all documents. Documents without</span>
-    <span class="doccomment">/// a clear page definition (such as XLSX) are not counted.</span>
+    <span class="doccomment">/// clear page definition (such as XLSX) are not counted.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">failed_pages</span>: <span class="ident">i64</span>,
     <span class="doccomment">/// Number of billable pages in documents with clear page definition (such as</span>
@@ -2819,7 +2834,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">submit_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The time when the operation is finished and</span>
-    <span class="doccomment">/// [google.longrunning.Operation.done][google.longrunning.Operation.done] is</span>
+    <span class="doccomment">/// \[google.longrunning.Operation.done][google.longrunning.Operation.done\] is</span>
     <span class="doccomment">/// set to true.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">end_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
@@ -2900,7 +2915,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">TranslationServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2913,7 +2928,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TranslationServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2941,8 +2956,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Translates input text and returns translated text.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">translate_text</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TranslateTextRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TranslateTextResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TranslateTextRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TranslateTextResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2958,8 +2973,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Detects the language of text within a request.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">detect_language</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DetectLanguageRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DetectLanguageResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DetectLanguageRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DetectLanguageResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2975,8 +2990,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns a list of supported languages for translation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_supported_languages</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetSupportedLanguagesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SupportedLanguages</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetSupportedLanguagesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SupportedLanguages</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2992,8 +3007,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Translates documents in synchronous mode.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">translate_document</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TranslateDocumentRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TranslateDocumentResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TranslateDocumentRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TranslateDocumentResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3015,9 +3030,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; use google.longrunning.Operation.name to poll the status of the call.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_translate_text</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchTranslateTextRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchTranslateTextRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3041,9 +3056,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; google.longrunning.Operation.name to poll the status of the call.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_translate_document</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchTranslateDocumentRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchTranslateDocumentRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3062,9 +3077,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; NOT_FOUND, if the project doesn&#39;t exist.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_glossary</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateGlossaryRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateGlossaryRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3083,8 +3098,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exist.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_glossaries</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListGlossariesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListGlossariesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListGlossariesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListGlossariesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3101,8 +3116,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; exist.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_glossary</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetGlossaryRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Glossary</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetGlossaryRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Glossary</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3120,9 +3135,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns NOT_FOUND, if the glossary doesn&#39;t exist.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_glossary</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteGlossaryRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteGlossaryRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3139,5 +3154,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

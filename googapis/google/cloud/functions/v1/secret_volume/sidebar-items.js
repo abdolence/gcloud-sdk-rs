@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SecretVersion","Configuration for a single version."]]});

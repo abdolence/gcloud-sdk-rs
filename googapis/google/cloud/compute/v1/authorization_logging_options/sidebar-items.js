@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PermissionType","This is deprecated and has no effect. Do not use."]]});

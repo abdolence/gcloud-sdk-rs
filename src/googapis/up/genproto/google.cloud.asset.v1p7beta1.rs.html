@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.asset.v1p7beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.asset.v1p7beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.asset.v1p7beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.asset.v1p7beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -561,16 +559,15 @@
 <span id="559">559</span>
 <span id="560">560</span>
 <span id="561">561</span>
-</pre><pre class="rust">
-<span class="comment">// The Cloud Asset API.</span>
+</pre><pre class="rust"><code><span class="comment">// The Cloud Asset API.</span>
 
 <span class="doccomment">/// An asset in Google Cloud. An asset can be any resource in the Google Cloud</span>
 <span class="doccomment">/// [resource</span>
-<span class="doccomment">/// hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),</span>
+<span class="doccomment">/// hierarchy](&lt;https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy&gt;),</span>
 <span class="doccomment">/// a resource outside the Google Cloud resource hierarchy (such as Google</span>
 <span class="doccomment">/// Kubernetes Engine clusters and objects), or a policy (e.g. Cloud IAM policy).</span>
 <span class="doccomment">/// See [Supported asset</span>
-<span class="doccomment">/// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)</span>
+<span class="doccomment">/// types](&lt;https://cloud.google.com/asset-inventory/docs/supported-asset-types&gt;)</span>
 <span class="doccomment">/// for more information.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Asset</span> {
@@ -582,14 +579,14 @@
     <span class="doccomment">/// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [Resource</span>
-    <span class="doccomment">/// names](https://cloud.google.com/apis/design/resource_names#full_resource_name)</span>
+    <span class="doccomment">/// names](&lt;https://cloud.google.com/apis/design/resource_names#full_resource_name&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The type of the asset. Example: `compute.googleapis.com/Disk`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [Supported asset</span>
-    <span class="doccomment">/// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)</span>
+    <span class="doccomment">/// types](&lt;https://cloud.google.com/asset-inventory/docs/supported-asset-types&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">asset_type</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -603,22 +600,22 @@
     <span class="doccomment">/// effectively policy is the union of both the policy set on this resource</span>
     <span class="doccomment">/// and each policy set on all of the resource&#39;s ancestry resource levels in</span>
     <span class="doccomment">/// the hierarchy. See</span>
-    <span class="doccomment">/// [this topic](https://cloud.google.com/iam/docs/policies#inheritance) for</span>
+    <span class="doccomment">/// [this topic](&lt;https://cloud.google.com/iam/docs/policies#inheritance&gt;) for</span>
     <span class="doccomment">/// more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">iam_policy</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::Policy</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">iam_policy</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::Policy</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A representation of an [organization</span>
-    <span class="doccomment">/// policy](https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy).</span>
+    <span class="doccomment">/// policy](&lt;https://cloud.google.com/resource-manager/docs/organization-policy/overview#organization_policy&gt;).</span>
     <span class="doccomment">/// There can be more than one organization policy with different constraints</span>
     <span class="doccomment">/// set on a given resource.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">org_policy</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::orgpolicy::v1::Policy</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">org_policy</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::orgpolicy::v1::Policy</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The related assets of the asset of one relationship type.</span>
     <span class="doccomment">/// One asset only represents one type of relationship.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">related_assets</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">RelatedAssets</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The ancestry path of an asset in Google Cloud [resource</span>
-    <span class="doccomment">/// hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),</span>
+    <span class="doccomment">/// hierarchy](&lt;https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy&gt;),</span>
     <span class="doccomment">/// represented as a list of relative resource names. An ancestry path starts</span>
     <span class="doccomment">/// with the closest ancestor in the hierarchy and ends at root. If the asset</span>
     <span class="doccomment">/// is a project, folder, or organization, the ancestry path starts from the</span>
@@ -628,29 +625,29 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">ancestors</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A representation of an [access</span>
-    <span class="doccomment">/// policy](https://cloud.google.com/access-context-manager/docs/overview#access-policies).</span>
+    <span class="doccomment">/// policy](&lt;https://cloud.google.com/access-context-manager/docs/overview#access-policies&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;asset::AccessContextPolicy&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;7, 8, 9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">access_context_policy</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">asset::AccessContextPolicy</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Nested message and enum types in `Asset`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">asset</span> {
     <span class="doccomment">/// A representation of an [access</span>
-    <span class="doccomment">/// policy](https://cloud.google.com/access-context-manager/docs/overview#access-policies).</span>
+    <span class="doccomment">/// policy](&lt;https://cloud.google.com/access-context-manager/docs/overview#access-policies&gt;).</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AccessContextPolicy</span> {
         <span class="doccomment">/// Please also refer to the [access policy user</span>
-        <span class="doccomment">/// guide](https://cloud.google.com/access-context-manager/docs/overview#access-policies).</span>
+        <span class="doccomment">/// guide](&lt;https://cloud.google.com/access-context-manager/docs/overview#access-policies&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">AccessPolicy</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::identity::accesscontextmanager::v1::AccessPolicy</span>),
+        <span class="ident">AccessPolicy</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::identity::accesscontextmanager::v1::AccessPolicy</span>),
         <span class="doccomment">/// Please also refer to the [access level user</span>
-        <span class="doccomment">/// guide](https://cloud.google.com/access-context-manager/docs/overview#access-levels).</span>
+        <span class="doccomment">/// guide](&lt;https://cloud.google.com/access-context-manager/docs/overview#access-levels&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">AccessLevel</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::identity::accesscontextmanager::v1::AccessLevel</span>),
+        <span class="ident">AccessLevel</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::identity::accesscontextmanager::v1::AccessLevel</span>),
         <span class="doccomment">/// Please also refer to the [service perimeter user</span>
-        <span class="doccomment">/// guide](https://cloud.google.com/vpc-service-controls/docs/overview).</span>
+        <span class="doccomment">/// guide](&lt;https://cloud.google.com/vpc-service-controls/docs/overview&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
         <span class="ident">ServicePerimeter</span>(
-            <span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::identity::accesscontextmanager::v1::ServicePerimeter</span>,
+            <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::identity::accesscontextmanager::v1::ServicePerimeter</span>,
         ),
     }
 }
@@ -662,7 +659,7 @@
     <span class="kw">pub</span> <span class="ident">version</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The URL of the discovery document containing the resource&#39;s JSON schema.</span>
     <span class="doccomment">/// Example:</span>
-    <span class="doccomment">/// `https://www.googleapis.com/discovery/v1/apis/compute/v1/rest`</span>
+    <span class="doccomment">/// `&lt;https://www.googleapis.com/discovery/v1/apis/compute/v1/rest`&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This value is unspecified for resources that do not have an API based on a</span>
     <span class="doccomment">/// discovery document, such as Cloud Bigtable.</span>
@@ -677,19 +674,19 @@
     <span class="kw">pub</span> <span class="ident">discovery_name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The REST URL for accessing the resource. An HTTP `GET` request using this</span>
     <span class="doccomment">/// URL returns the resource itself. Example:</span>
-    <span class="doccomment">/// `https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`</span>
+    <span class="doccomment">/// `&lt;https://cloudresourcemanager.googleapis.com/v1/projects/my-project-123`&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This value is unspecified for resources without a REST API.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">resource_url</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The full name of the immediate parent of this resource. See</span>
     <span class="doccomment">/// [Resource</span>
-    <span class="doccomment">/// Names](https://cloud.google.com/apis/design/resource_names#full_resource_name)</span>
+    <span class="doccomment">/// Names](&lt;https://cloud.google.com/apis/design/resource_names#full_resource_name&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For Google Cloud assets, this value is the parent resource defined in the</span>
     <span class="doccomment">/// [Cloud IAM policy</span>
-    <span class="doccomment">/// hierarchy](https://cloud.google.com/iam/docs/overview#policy_hierarchy).</span>
+    <span class="doccomment">/// hierarchy](&lt;https://cloud.google.com/iam/docs/overview#policy_hierarchy&gt;).</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">/// `//cloudresourcemanager.googleapis.com/projects/my_project_123`</span>
     <span class="doccomment">///</span>
@@ -701,7 +698,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The location of the resource in Google Cloud, such as its zone and region.</span>
-    <span class="doccomment">/// For more information, see https://cloud.google.com/about/locations/.</span>
+    <span class="doccomment">/// For more information, see &lt;https://cloud.google.com/about/locations/.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">location</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -735,11 +732,11 @@
 }
 <span class="doccomment">/// An asset identify in Google Cloud which contains its name, type and</span>
 <span class="doccomment">/// ancestors. An asset can be any resource in the Google Cloud [resource</span>
-<span class="doccomment">/// hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),</span>
+<span class="doccomment">/// hierarchy](&lt;https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy&gt;),</span>
 <span class="doccomment">/// a resource outside the Google Cloud resource hierarchy (such as Google</span>
 <span class="doccomment">/// Kubernetes Engine clusters and objects), or a policy (e.g. Cloud IAM policy).</span>
 <span class="doccomment">/// See [Supported asset</span>
-<span class="doccomment">/// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)</span>
+<span class="doccomment">/// types](&lt;https://cloud.google.com/asset-inventory/docs/supported-asset-types&gt;)</span>
 <span class="doccomment">/// for more information.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RelatedAsset</span> {
@@ -747,19 +744,19 @@
     <span class="doccomment">/// `//compute.googleapis.com/projects/my_project_123/zones/zone1/instances/instance1`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [Resource</span>
-    <span class="doccomment">/// names](https://cloud.google.com/apis/design/resource_names#full_resource_name)</span>
+    <span class="doccomment">/// names](&lt;https://cloud.google.com/apis/design/resource_names#full_resource_name&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">asset</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The type of the asset. Example: `compute.googleapis.com/Disk`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [Supported asset</span>
-    <span class="doccomment">/// types](https://cloud.google.com/asset-inventory/docs/supported-asset-types)</span>
+    <span class="doccomment">/// types](&lt;https://cloud.google.com/asset-inventory/docs/supported-asset-types&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">asset_type</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The ancestors of an asset in Google Cloud [resource</span>
-    <span class="doccomment">/// hierarchy](https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy),</span>
+    <span class="doccomment">/// hierarchy](&lt;https://cloud.google.com/resource-manager/docs/cloud-platform-resource-hierarchy&gt;),</span>
     <span class="doccomment">/// represented as a list of relative resource names. An ancestry path starts</span>
     <span class="doccomment">/// with the closest ancestor in the hierarchy and ends at root.</span>
     <span class="doccomment">///</span>
@@ -793,13 +790,13 @@
     <span class="doccomment">/// * &quot;.*Instance&quot; snapshots resources whose asset type ends with &quot;Instance&quot;.</span>
     <span class="doccomment">/// * &quot;.*Instance.*&quot; snapshots resources whose asset type contains &quot;Instance&quot;.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See [RE2](https://github.com/google/re2/wiki/Syntax) for all supported</span>
+    <span class="doccomment">/// See \[RE2\](&lt;https://github.com/google/re2/wiki/Syntax&gt;) for all supported</span>
     <span class="doccomment">/// regular expression syntax. If the regular expression does not match any</span>
     <span class="doccomment">/// supported asset type, an INVALID_ARGUMENT error will be returned.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If specified, only matching assets will be returned, otherwise, it will</span>
     <span class="doccomment">/// snapshot all asset types. See [Introduction to Cloud Asset</span>
-    <span class="doccomment">/// Inventory](https://cloud.google.com/asset-inventory/docs/overview)</span>
+    <span class="doccomment">/// Inventory](&lt;https://cloud.google.com/asset-inventory/docs/overview&gt;)</span>
     <span class="doccomment">/// for all supported asset types.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">asset_types</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -813,21 +810,21 @@
     <span class="kw">pub</span> <span class="ident">output_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">OutputConfig</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A list of relationship types to export, for example:</span>
     <span class="doccomment">/// `INSTANCE_TO_INSTANCEGROUP`. This field should only be specified if</span>
-    <span class="doccomment">/// content_type=RELATIONSHIP. If specified, it will snapshot [asset_types]&#39;</span>
+    <span class="doccomment">/// content_type=RELATIONSHIP. If specified, it will snapshot \[asset_types\]&#39;</span>
     <span class="doccomment">/// specified relationships, or give errors if any relationship_types&#39;</span>
-    <span class="doccomment">/// supported types are not in [asset_types]. If not specified, it will</span>
-    <span class="doccomment">/// snapshot all [asset_types]&#39; supported relationships. An unspecified</span>
-    <span class="doccomment">/// [asset_types] field means all supported asset_types. See [Introduction to</span>
+    <span class="doccomment">/// supported types are not in \[asset_types\]. If not specified, it will</span>
+    <span class="doccomment">/// snapshot all \[asset_types\]&#39; supported relationships. An unspecified</span>
+    <span class="doccomment">/// \[asset_types\] field means all supported asset_types. See [Introduction to</span>
     <span class="doccomment">/// Cloud Asset</span>
-    <span class="doccomment">/// Inventory](https://cloud.google.com/asset-inventory/docs/overview) for all</span>
+    <span class="doccomment">/// Inventory](&lt;https://cloud.google.com/asset-inventory/docs/overview&gt;) for all</span>
     <span class="doccomment">/// supported asset types and relationship types.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">relationship_types</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// The export asset response. This message is returned by the</span>
-<span class="doccomment">/// [google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation]</span>
+<span class="doccomment">/// \[google.longrunning.Operations.GetOperation][google.longrunning.Operations.GetOperation\]</span>
 <span class="doccomment">/// method in the returned</span>
-<span class="doccomment">/// [google.longrunning.Operation.response][google.longrunning.Operation.response]</span>
+<span class="doccomment">/// \[google.longrunning.Operation.response][google.longrunning.Operation.response\]</span>
 <span class="doccomment">/// field.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportAssetsResponse</span> {
@@ -839,7 +836,7 @@
     <span class="kw">pub</span> <span class="ident">output_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">OutputConfig</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output result indicating where the assets were exported to. For example, a</span>
     <span class="doccomment">/// set of actual Google Cloud Storage object uris where the assets are</span>
-    <span class="doccomment">/// exported to. The uris can be different from what [output_config] has</span>
+    <span class="doccomment">/// exported to. The uris can be different from what \[output_config\] has</span>
     <span class="doccomment">/// specified, as the service will split the output object into multiple ones</span>
     <span class="doccomment">/// once it exceeds a single Google Cloud Storage object limit.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
@@ -859,11 +856,11 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Destination</span> {
         <span class="doccomment">/// Destination on Cloud Storage.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
         <span class="doccomment">/// Destination on BigQuery. The output table stores the fields in asset</span>
         <span class="doccomment">/// proto as columns in BigQuery.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">BigqueryDestination</span>(<span class="kw">super</span><span class="ident">::BigQueryDestination</span>),
+        <span class="ident">BigqueryDestination</span>(<span class="ident"><span class="kw">super</span>::BigQueryDestination</span>),
     }
 }
 <span class="doccomment">/// Output result of export assets.</span>
@@ -880,7 +877,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="prelude-ty">Result</span> {
         <span class="doccomment">/// Export result on Cloud Storage.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsResult</span>(<span class="kw">super</span><span class="ident">::GcsOutputResult</span>),
+        <span class="ident">GcsResult</span>(<span class="ident"><span class="kw">super</span>::GcsOutputResult</span>),
     }
 }
 <span class="doccomment">/// A Cloud Storage output result.</span>
@@ -906,7 +903,7 @@
         <span class="doccomment">/// The uri of the Cloud Storage object. It&#39;s the same uri that is used by</span>
         <span class="doccomment">/// gsutil. Example: &quot;gs://bucket_name/object_name&quot;. See [Viewing and</span>
         <span class="doccomment">/// Editing Object</span>
-        <span class="doccomment">/// Metadata](https://cloud.google.com/storage/docs/viewing-editing-metadata)</span>
+        <span class="doccomment">/// Metadata](&lt;https://cloud.google.com/storage/docs/viewing-editing-metadata&gt;)</span>
         <span class="doccomment">/// for more information.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="ident">Uri</span>(<span class="ident">::prost::alloc::string::String</span>),
@@ -943,44 +940,44 @@
     <span class="doccomment">/// call returns an INVALID_ARGUMEMT error.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">force</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// [partition_spec] determines whether to export to partitioned table(s) and</span>
+    <span class="doccomment">/// \[partition_spec\] determines whether to export to partitioned table(s) and</span>
     <span class="doccomment">/// how to partition the data.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [partition_spec] is unset or [partition_spec.partition_key] is unset or</span>
+    <span class="doccomment">/// If \[partition_spec\] is unset or \[partition_spec.partition_key\] is unset or</span>
     <span class="doccomment">/// `PARTITION_KEY_UNSPECIFIED`, the snapshot results will be exported to</span>
-    <span class="doccomment">/// non-partitioned table(s). [force] will decide whether to overwrite existing</span>
+    <span class="doccomment">/// non-partitioned table(s). \[force\] will decide whether to overwrite existing</span>
     <span class="doccomment">/// table(s).</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [partition_spec] is specified. First, the snapshot results will be</span>
+    <span class="doccomment">/// If \[partition_spec\] is specified. First, the snapshot results will be</span>
     <span class="doccomment">/// written to partitioned table(s) with two additional timestamp columns,</span>
     <span class="doccomment">/// readTime and requestTime, one of which will be the partition key. Secondly,</span>
     <span class="doccomment">/// in the case when any destination table already exists, it will first try to</span>
     <span class="doccomment">/// update existing table&#39;s schema as necessary by appending additional</span>
-    <span class="doccomment">/// columns. Then, if [force] is `TRUE`, the corresponding partition will be</span>
+    <span class="doccomment">/// columns. Then, if \[force\] is `TRUE`, the corresponding partition will be</span>
     <span class="doccomment">/// overwritten by the snapshot results (data in different partitions will</span>
-    <span class="doccomment">/// remain intact); if [force] is unset or `FALSE`, it will append the data. An</span>
+    <span class="doccomment">/// remain intact); if \[force\] is unset or `FALSE`, it will append the data. An</span>
     <span class="doccomment">/// error will be returned if the schema update or data appension fails.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">partition_spec</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">PartitionSpec</span><span class="op">&gt;</span>,
     <span class="doccomment">/// If this flag is `TRUE`, the snapshot results will be written to one or</span>
     <span class="doccomment">/// multiple tables, each of which contains results of one asset type. The</span>
-    <span class="doccomment">/// [force] and [partition_spec] fields will apply to each of them.</span>
+    <span class="doccomment">/// \[force\] and \[partition_spec\] fields will apply to each of them.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Field [table] will be concatenated with &quot;_&quot; and the asset type names (see</span>
-    <span class="doccomment">/// https://cloud.google.com/asset-inventory/docs/supported-asset-types for</span>
+    <span class="doccomment">/// Field \[table\] will be concatenated with &quot;_&quot; and the asset type names (see</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/asset-inventory/docs/supported-asset-types&gt; for</span>
     <span class="doccomment">/// supported asset types) to construct per-asset-type table names, in which</span>
     <span class="doccomment">/// all non-alphanumeric characters like &quot;.&quot; and &quot;/&quot; will be substituted by</span>
-    <span class="doccomment">/// &quot;_&quot;. Example: if field [table] is &quot;mytable&quot; and snapshot results</span>
+    <span class="doccomment">/// &quot;_&quot;. Example: if field \[table\] is &quot;mytable&quot; and snapshot results</span>
     <span class="doccomment">/// contain &quot;storage.googleapis.com/Bucket&quot; assets, the corresponding table</span>
     <span class="doccomment">/// name will be &quot;mytable_storage_googleapis_com_Bucket&quot;. If any of these</span>
     <span class="doccomment">/// tables does not exist, a new table with the concatenated name will be</span>
     <span class="doccomment">/// created.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// When [content_type] in the ExportAssetsRequest is `RESOURCE`, the schema of</span>
+    <span class="doccomment">/// When \[content_type\] in the ExportAssetsRequest is `RESOURCE`, the schema of</span>
     <span class="doccomment">/// each table will include RECORD-type columns mapped to the nested fields in</span>
     <span class="doccomment">/// the Asset.resource.data field of that asset type (up to the 15 nested level</span>
     <span class="doccomment">/// BigQuery supports</span>
-    <span class="doccomment">/// (https://cloud.google.com/bigquery/docs/nested-repeated#limitations)). The</span>
+    <span class="doccomment">/// (&lt;https://cloud.google.com/bigquery/docs/nested-repeated#limitations&gt;)). The</span>
     <span class="doccomment">/// fields in &gt;15 nested levels will be stored in JSON format string as a child</span>
     <span class="doccomment">/// column of its parent RECORD column.</span>
     <span class="doccomment">///</span>
@@ -1005,7 +1002,7 @@
     <span class="doccomment">/// assets to BigQuery partitioned table(s). Note that, if the partition key is</span>
     <span class="doccomment">/// a timestamp column, the actual partition is based on its date value</span>
     <span class="doccomment">/// (expressed in UTC. see details in</span>
-    <span class="doccomment">/// https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables).</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/bigquery/docs/partitioned-tables#date_timestamp_partitioned_tables&gt;).</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PartitionKey</span> {
@@ -1013,7 +1010,7 @@
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// The time when the snapshot is taken. If specified as partition key, the</span>
         <span class="doccomment">/// result table(s) is partitoned by the additional timestamp column,</span>
-        <span class="doccomment">/// readTime. If [read_time] in ExportAssetsRequest is specified, the</span>
+        <span class="doccomment">/// readTime. If \[read_time\] in ExportAssetsRequest is specified, the</span>
         <span class="doccomment">/// readTime column&#39;s value will be the same as it. Otherwise, its value will</span>
         <span class="doccomment">/// be the current time that is used to take the snapshot.</span>
         <span class="ident">ReadTime</span> <span class="op">=</span> <span class="number">1</span>,
@@ -1053,7 +1050,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AssetServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1066,7 +1063,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AssetServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -1104,9 +1101,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; 5 minutes.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">export_assets</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ExportAssetsRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ExportAssetsRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1123,5 +1120,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

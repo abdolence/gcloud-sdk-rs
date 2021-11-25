@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LoggingSettings","Define behaviors on logging."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Target","The targeted resource."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["OnHostMaintenance",""],["RestartType","Defines whether the Instance should be automatically restarted whenever it is terminated by Compute Engine (not terminated by user)."]]});

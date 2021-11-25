@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["executions_system_log","Nested message and enum types in `ExecutionsSystemLog`."]],"struct":[["ExecutionsSystemLog","Logged during the lifetime of Workflow Execution."]]});
+initSidebarItems({"mod":[["engine_call_log","Nested message and enum types in `EngineCallLog`."],["executions_system_log","Nested message and enum types in `ExecutionsSystemLog`."]],"struct":[["EngineCallLog","Logged during a workflow execution if the customer has requested call logging."],["ExecutionsSystemLog","Logged during the lifetime of Workflow Execution."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Crop","Video cropping configuration for the input video. The cropped input video is scaled to match the output resolution."],["Pad","Pad filter configuration for the input video. The padded input video is scaled after padding with black to match the output resolution."]]});

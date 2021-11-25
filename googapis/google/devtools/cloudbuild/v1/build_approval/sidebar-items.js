@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Specifies the current state of a build’s approval."]]});

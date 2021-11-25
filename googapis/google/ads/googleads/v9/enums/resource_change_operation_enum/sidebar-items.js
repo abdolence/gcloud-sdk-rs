@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ResourceChangeOperation","The operation on the changed resource in change_event resource."]]});

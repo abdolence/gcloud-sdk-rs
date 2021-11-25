@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Inventory","VM inventory details."]]});

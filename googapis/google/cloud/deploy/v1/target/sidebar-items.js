@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DeploymentTarget","Destination to which the Skaffold configuration is applied during a rollout."]]});

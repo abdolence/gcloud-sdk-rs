@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Utilization report state."],["TimeFrame","Report time frame options."]]});

@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["AutoscalingPolicyServiceClient","The API interface for managing autoscaling policies in the Cloud Dataproc API."]]});

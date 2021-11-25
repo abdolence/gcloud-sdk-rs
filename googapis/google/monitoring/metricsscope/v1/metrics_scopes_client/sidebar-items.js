@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MetricsScopesClient","Manages Cloud Monitoring Metrics Scopes, and the monitoring of Google Cloud projects and AWS accounts."]]});

@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.spanner.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.spanner.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.spanner.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.spanner.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2223,8 +2221,7 @@
 <span id="2221">2221</span>
 <span id="2222">2222</span>
 <span id="2223">2223</span>
-</pre><pre class="rust">
-<span class="doccomment">/// The response for [Commit][google.spanner.v1.Spanner.Commit].</span>
+</pre><pre class="rust"><code><span class="doccomment">/// The response for \[Commit][google.spanner.v1.Spanner.Commit\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommitResponse</span> {
     <span class="doccomment">/// The Cloud Spanner timestamp at which the transaction committed.</span>
@@ -2232,7 +2229,7 @@
     <span class="kw">pub</span> <span class="ident">commit_timestamp</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The statistics about this Commit. Not returned by default.</span>
     <span class="doccomment">/// For more information, see</span>
-    <span class="doccomment">/// [CommitRequest.return_commit_stats][google.spanner.v1.CommitRequest.return_commit_stats].</span>
+    <span class="doccomment">/// \[CommitRequest.return_commit_stats][google.spanner.v1.CommitRequest.return_commit_stats\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">commit_stats</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">commit_response::CommitStats</span><span class="op">&gt;</span>,
 }
@@ -2245,9 +2242,9 @@
         <span class="doccomment">/// `mutation_count` value can help you maximize the number of mutations</span>
         <span class="doccomment">/// in a transaction and minimize the number of API round trips. You can</span>
         <span class="doccomment">/// also monitor this value to prevent transactions from exceeding the system</span>
-        <span class="doccomment">/// [limit](http://cloud.google.com/spanner/quotas#limits_for_creating_reading_updating_and_deleting_data).</span>
+        <span class="doccomment">/// \[limit\](&lt;http://cloud.google.com/spanner/quotas#limits_for_creating_reading_updating_and_deleting_data&gt;).</span>
         <span class="doccomment">/// If the number of mutations exceeds the limit, the server returns</span>
-        <span class="doccomment">/// [INVALID_ARGUMENT](http://cloud.google.com/spanner/docs/reference/rest/v1/Code#ENUM_VALUES.INVALID_ARGUMENT).</span>
+        <span class="doccomment">/// \[INVALID_ARGUMENT\](&lt;http://cloud.google.com/spanner/docs/reference/rest/v1/Code#ENUM_VALUES.INVALID_ARGUMENT&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">mutation_count</span>: <span class="ident">i64</span>,
     }
@@ -2260,7 +2257,7 @@
 <span class="doccomment">/// Keys are represented by lists, where the ith value in the list</span>
 <span class="doccomment">/// corresponds to the ith component of the table or index primary key.</span>
 <span class="doccomment">/// Individual values are encoded as described</span>
-<span class="doccomment">/// [here][google.spanner.v1.TypeCode].</span>
+<span class="doccomment">/// \[here][google.spanner.v1.TypeCode\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// For example, consider the following table definition:</span>
 <span class="doccomment">///</span>
@@ -2296,16 +2293,16 @@
 <span class="doccomment">/// occurred during and after the year 2000:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     &quot;start_closed&quot;: [&quot;Bob&quot;, &quot;2000-01-01&quot;]</span>
-<span class="doccomment">///     &quot;end_closed&quot;: [&quot;Bob&quot;]</span>
+<span class="doccomment">///     &quot;end_closed&quot;: \[&quot;Bob&quot;\]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The next example retrieves all events for `&quot;Bob&quot;`:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     &quot;start_closed&quot;: [&quot;Bob&quot;]</span>
-<span class="doccomment">///     &quot;end_closed&quot;: [&quot;Bob&quot;]</span>
+<span class="doccomment">///     &quot;start_closed&quot;: \[&quot;Bob&quot;\]</span>
+<span class="doccomment">///     &quot;end_closed&quot;: \[&quot;Bob&quot;\]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// To retrieve events before the year 2000:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     &quot;start_closed&quot;: [&quot;Bob&quot;]</span>
+<span class="doccomment">///     &quot;start_closed&quot;: \[&quot;Bob&quot;\]</span>
 <span class="doccomment">///     &quot;end_open&quot;: [&quot;Bob&quot;, &quot;2000-01-01&quot;]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The following range includes all rows in the table:</span>
@@ -2316,13 +2313,13 @@
 <span class="doccomment">/// This range returns all users whose `UserName` begins with any</span>
 <span class="doccomment">/// character from A to C:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     &quot;start_closed&quot;: [&quot;A&quot;]</span>
-<span class="doccomment">///     &quot;end_open&quot;: [&quot;D&quot;]</span>
+<span class="doccomment">///     &quot;start_closed&quot;: \[&quot;A&quot;\]</span>
+<span class="doccomment">///     &quot;end_open&quot;: \[&quot;D&quot;\]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// This range returns all users whose `UserName` begins with B:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     &quot;start_closed&quot;: [&quot;B&quot;]</span>
-<span class="doccomment">///     &quot;end_open&quot;: [&quot;C&quot;]</span>
+<span class="doccomment">///     &quot;start_closed&quot;: \[&quot;B&quot;\]</span>
+<span class="doccomment">///     &quot;end_open&quot;: \[&quot;C&quot;\]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Key ranges honor column sort order. For example, suppose a table is</span>
 <span class="doccomment">/// defined as follows:</span>
@@ -2335,8 +2332,8 @@
 <span class="doccomment">/// The following range retrieves all rows with key values between 1</span>
 <span class="doccomment">/// and 100 inclusive:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     &quot;start_closed&quot;: [&quot;100&quot;]</span>
-<span class="doccomment">///     &quot;end_closed&quot;: [&quot;1&quot;]</span>
+<span class="doccomment">///     &quot;start_closed&quot;: \[&quot;100&quot;\]</span>
+<span class="doccomment">///     &quot;end_closed&quot;: \[&quot;1&quot;\]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Note that 100 is passed as the start, and 1 is passed as the end,</span>
 <span class="doccomment">/// because `Key` is a descending column in the schema.</span>
@@ -2388,10 +2385,10 @@
     <span class="doccomment">/// A list of specific keys. Entries in `keys` should have exactly as</span>
     <span class="doccomment">/// many elements as there are columns in the primary or index key</span>
     <span class="doccomment">/// with which this `KeySet` is used.  Individual key values are</span>
-    <span class="doccomment">/// encoded as described [here][google.spanner.v1.TypeCode].</span>
+    <span class="doccomment">/// encoded as described \[here][google.spanner.v1.TypeCode\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">keys</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost_types::ListValue</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A list of key ranges. See [KeyRange][google.spanner.v1.KeyRange] for more information about</span>
+    <span class="doccomment">/// A list of key ranges. See \[KeyRange][google.spanner.v1.KeyRange\] for more information about</span>
     <span class="doccomment">/// key range specifications.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">ranges</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">KeyRange</span><span class="op">&gt;</span>,
@@ -2403,7 +2400,7 @@
 }
 <span class="doccomment">/// A modification to one or more Cloud Spanner rows.  Mutations can be</span>
 <span class="doccomment">/// applied to a Cloud Spanner database by sending them in a</span>
-<span class="doccomment">/// [Commit][google.spanner.v1.Spanner.Commit] call.</span>
+<span class="doccomment">/// \[Commit][google.spanner.v1.Spanner.Commit\] call.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Mutation</span> {
     <span class="doccomment">/// Required. The operation to perform.</span>
@@ -2412,14 +2409,14 @@
 }
 <span class="doccomment">/// Nested message and enum types in `Mutation`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">mutation</span> {
-    <span class="doccomment">/// Arguments to [insert][google.spanner.v1.Mutation.insert], [update][google.spanner.v1.Mutation.update], [insert_or_update][google.spanner.v1.Mutation.insert_or_update], and</span>
-    <span class="doccomment">/// [replace][google.spanner.v1.Mutation.replace] operations.</span>
+    <span class="doccomment">/// Arguments to \[insert][google.spanner.v1.Mutation.insert\], \[update][google.spanner.v1.Mutation.update\], \[insert_or_update][google.spanner.v1.Mutation.insert_or_update\], and</span>
+    <span class="doccomment">/// \[replace][google.spanner.v1.Mutation.replace\] operations.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Write</span> {
         <span class="doccomment">/// Required. The table whose rows will be written.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">table</span>: <span class="ident">::prost::alloc::string::String</span>,
-        <span class="doccomment">/// The names of the columns in [table][google.spanner.v1.Mutation.Write.table] to be written.</span>
+        <span class="doccomment">/// The names of the columns in \[table][google.spanner.v1.Mutation.Write.table\] to be written.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The list of columns must contain enough columns to allow</span>
         <span class="doccomment">/// Cloud Spanner to derive values for all primary key columns in the</span>
@@ -2429,28 +2426,28 @@
         <span class="doccomment">/// The values to be written. `values` can contain more than one</span>
         <span class="doccomment">/// list of values. If it does, then multiple rows are written, one</span>
         <span class="doccomment">/// for each entry in `values`. Each list in `values` must have</span>
-        <span class="doccomment">/// exactly as many entries as there are entries in [columns][google.spanner.v1.Mutation.Write.columns]</span>
+        <span class="doccomment">/// exactly as many entries as there are entries in \[columns][google.spanner.v1.Mutation.Write.columns\]</span>
         <span class="doccomment">/// above. Sending multiple lists is equivalent to sending multiple</span>
         <span class="doccomment">/// `Mutation`s, each containing one `values` entry and repeating</span>
-        <span class="doccomment">/// [table][google.spanner.v1.Mutation.Write.table] and [columns][google.spanner.v1.Mutation.Write.columns]. Individual values in each list are</span>
-        <span class="doccomment">/// encoded as described [here][google.spanner.v1.TypeCode].</span>
+        <span class="doccomment">/// \[table][google.spanner.v1.Mutation.Write.table\] and \[columns][google.spanner.v1.Mutation.Write.columns\]. Individual values in each list are</span>
+        <span class="doccomment">/// encoded as described \[here][google.spanner.v1.TypeCode\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">values</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost_types::ListValue</span><span class="op">&gt;</span>,
     }
-    <span class="doccomment">/// Arguments to [delete][google.spanner.v1.Mutation.delete] operations.</span>
+    <span class="doccomment">/// Arguments to \[delete][google.spanner.v1.Mutation.delete\] operations.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Delete</span> {
         <span class="doccomment">/// Required. The table whose rows will be deleted.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">table</span>: <span class="ident">::prost::alloc::string::String</span>,
-        <span class="doccomment">/// Required. The primary keys of the rows within [table][google.spanner.v1.Mutation.Delete.table] to delete.  The</span>
+        <span class="doccomment">/// Required. The primary keys of the rows within \[table][google.spanner.v1.Mutation.Delete.table\] to delete.  The</span>
         <span class="doccomment">/// primary keys must be specified in the order in which they appear in the</span>
         <span class="doccomment">/// `PRIMARY KEY()` clause of the table&#39;s equivalent DDL statement (the DDL</span>
         <span class="doccomment">/// statement used to create the table).</span>
         <span class="doccomment">/// Delete is idempotent. The transaction will succeed even if some or all</span>
         <span class="doccomment">/// rows do not exist.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">key_set</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::KeySet</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">key_set</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::KeySet</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Required. The operation to perform.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
@@ -2463,18 +2460,18 @@
         <span class="doccomment">/// already exist, the transaction fails with error `NOT_FOUND`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">Update</span>(<span class="ident">Write</span>),
-        <span class="doccomment">/// Like [insert][google.spanner.v1.Mutation.insert], except that if the row already exists, then</span>
+        <span class="doccomment">/// Like \[insert][google.spanner.v1.Mutation.insert\], except that if the row already exists, then</span>
         <span class="doccomment">/// its column values are overwritten with the ones provided. Any</span>
         <span class="doccomment">/// column values not explicitly written are preserved.</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// When using [insert_or_update][google.spanner.v1.Mutation.insert_or_update], just as when using [insert][google.spanner.v1.Mutation.insert], all `NOT</span>
+        <span class="doccomment">/// When using \[insert_or_update][google.spanner.v1.Mutation.insert_or_update\], just as when using \[insert][google.spanner.v1.Mutation.insert\], all `NOT</span>
         <span class="doccomment">/// NULL` columns in the table must be given a value. This holds true</span>
         <span class="doccomment">/// even when the row already exists and will therefore actually be updated.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="ident">InsertOrUpdate</span>(<span class="ident">Write</span>),
-        <span class="doccomment">/// Like [insert][google.spanner.v1.Mutation.insert], except that if the row already exists, it is</span>
+        <span class="doccomment">/// Like \[insert][google.spanner.v1.Mutation.insert\], except that if the row already exists, it is</span>
         <span class="doccomment">/// deleted, and the column values provided are inserted</span>
-        <span class="doccomment">/// instead. Unlike [insert_or_update][google.spanner.v1.Mutation.insert_or_update], this means any values not</span>
+        <span class="doccomment">/// instead. Unlike \[insert_or_update][google.spanner.v1.Mutation.insert_or_update\], this means any values not</span>
         <span class="doccomment">/// explicitly written become `NULL`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// In an interleaved table, if you create the child table with the</span>
@@ -2489,15 +2486,15 @@
         <span class="ident">Delete</span>(<span class="ident">Delete</span>),
     }
 }
-<span class="doccomment">/// Node information for nodes appearing in a [QueryPlan.plan_nodes][google.spanner.v1.QueryPlan.plan_nodes].</span>
+<span class="doccomment">/// Node information for nodes appearing in a \[QueryPlan.plan_nodes][google.spanner.v1.QueryPlan.plan_nodes\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PlanNode</span> {
-    <span class="doccomment">/// The `PlanNode`&#39;s index in [node list][google.spanner.v1.QueryPlan.plan_nodes].</span>
+    <span class="doccomment">/// The `PlanNode`&#39;s index in [node list]\[google.spanner.v1.QueryPlan.plan_nodes\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">index</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Used to determine the type of node. May be needed for visualizing</span>
     <span class="doccomment">/// different kinds of nodes differently. For example, If the node is a</span>
-    <span class="doccomment">/// [SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] node, it will have a condensed representation</span>
+    <span class="doccomment">/// \[SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR\] node, it will have a condensed representation</span>
     <span class="doccomment">/// which can be used to directly embed a description of the node in its</span>
     <span class="doccomment">/// parent.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;plan_node::Kind&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -2508,7 +2505,7 @@
     <span class="doccomment">/// List of child node `index`es and their relationship to this parent.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">child_links</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">plan_node::ChildLink</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Condensed representation for [SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] nodes.</span>
+    <span class="doccomment">/// Condensed representation for \[SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR\] nodes.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">short_representation</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">plan_node::ShortRepresentation</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Attributes relevant to the node contained in a group of key-value pairs.</span>
@@ -2531,7 +2528,7 @@
 <span class="doccomment">/// Nested message and enum types in `PlanNode`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">plan_node</span> {
     <span class="doccomment">/// Metadata associated with a parent-child relationship appearing in a</span>
-    <span class="doccomment">/// [PlanNode][google.spanner.v1.PlanNode].</span>
+    <span class="doccomment">/// \[PlanNode][google.spanner.v1.PlanNode\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChildLink</span> {
         <span class="doccomment">/// The node to which the link points.</span>
@@ -2543,7 +2540,7 @@
         <span class="doccomment">/// with the output variable.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">::prost::alloc::string::String</span>,
-        <span class="doccomment">/// Only present if the child node is [SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR] and corresponds</span>
+        <span class="doccomment">/// Only present if the child node is \[SCALAR][google.spanner.v1.PlanNode.Kind.SCALAR\] and corresponds</span>
         <span class="doccomment">/// to an output variable of the parent node. The field carries the name of</span>
         <span class="doccomment">/// the output variable.</span>
         <span class="doccomment">/// For example, a `TableScan` operator that reads rows from a table will</span>
@@ -2555,7 +2552,7 @@
         <span class="kw">pub</span> <span class="ident">variable</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
     <span class="doccomment">/// Condensed representation of a node and its subtree. Only present for</span>
-    <span class="doccomment">/// `SCALAR` [PlanNode(s)][google.spanner.v1.PlanNode].</span>
+    <span class="doccomment">/// `SCALAR` \[PlanNode(s)][google.spanner.v1.PlanNode\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ShortRepresentation</span> {
         <span class="doccomment">/// A string representation of the expression subtree rooted at this node.</span>
@@ -2569,7 +2566,7 @@
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, int32&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">subqueries</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">i32</span><span class="op">&gt;</span>,
     }
-    <span class="doccomment">/// The kind of [PlanNode][google.spanner.v1.PlanNode]. Distinguishes between the two different kinds of</span>
+    <span class="doccomment">/// The kind of \[PlanNode][google.spanner.v1.PlanNode\]. Distinguishes between the two different kinds of</span>
     <span class="doccomment">/// nodes that can appear in a query plan.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
@@ -2591,7 +2588,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">QueryPlan</span> {
     <span class="doccomment">/// The nodes in the query plan. Plan nodes are returned in pre-order starting</span>
-    <span class="doccomment">/// with the plan root. Each [PlanNode][google.spanner.v1.PlanNode]&#39;s `id` corresponds to its index in</span>
+    <span class="doccomment">/// with the plan root. Each \[PlanNode][google.spanner.v1.PlanNode\]&#39;s `id` corresponds to its index in</span>
     <span class="doccomment">/// `plan_nodes`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">plan_nodes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">PlanNode</span><span class="op">&gt;</span>,
@@ -2649,16 +2646,16 @@
 <span class="doccomment">/// and cause less contention. Cloud Spanner attempts to keep read locks</span>
 <span class="doccomment">/// active as long as the transaction continues to do reads, and the</span>
 <span class="doccomment">/// transaction has not been terminated by</span>
-<span class="doccomment">/// [Commit][google.spanner.v1.Spanner.Commit] or</span>
-<span class="doccomment">/// [Rollback][google.spanner.v1.Spanner.Rollback].  Long periods of</span>
+<span class="doccomment">/// \[Commit][google.spanner.v1.Spanner.Commit\] or</span>
+<span class="doccomment">/// \[Rollback][google.spanner.v1.Spanner.Rollback\].  Long periods of</span>
 <span class="doccomment">/// inactivity at the client may cause Cloud Spanner to release a</span>
 <span class="doccomment">/// transaction&#39;s locks and abort it.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Conceptually, a read-write transaction consists of zero or more</span>
 <span class="doccomment">/// reads or SQL statements followed by</span>
-<span class="doccomment">/// [Commit][google.spanner.v1.Spanner.Commit]. At any time before</span>
-<span class="doccomment">/// [Commit][google.spanner.v1.Spanner.Commit], the client can send a</span>
-<span class="doccomment">/// [Rollback][google.spanner.v1.Spanner.Rollback] request to abort the</span>
+<span class="doccomment">/// \[Commit][google.spanner.v1.Spanner.Commit\]. At any time before</span>
+<span class="doccomment">/// \[Commit][google.spanner.v1.Spanner.Commit\], the client can send a</span>
+<span class="doccomment">/// \[Rollback][google.spanner.v1.Spanner.Rollback\] request to abort the</span>
 <span class="doccomment">/// transaction.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Semantics</span>
@@ -2720,8 +2717,8 @@
 <span class="doccomment">/// need to worry about this in practice.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Snapshot read-only transactions do not need to call</span>
-<span class="doccomment">/// [Commit][google.spanner.v1.Spanner.Commit] or</span>
-<span class="doccomment">/// [Rollback][google.spanner.v1.Spanner.Rollback] (and in fact are not</span>
+<span class="doccomment">/// \[Commit][google.spanner.v1.Spanner.Commit\] or</span>
+<span class="doccomment">/// \[Rollback][google.spanner.v1.Spanner.Rollback\] (and in fact are not</span>
 <span class="doccomment">/// permitted to do so).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// To execute a snapshot transaction, the client specifies a timestamp</span>
@@ -2754,7 +2751,7 @@
 <span class="doccomment">/// reads should be executed within a transaction or at an exact read</span>
 <span class="doccomment">/// timestamp.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See [TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong].</span>
+<span class="doccomment">/// See \[TransactionOptions.ReadOnly.strong][google.spanner.v1.TransactionOptions.ReadOnly.strong\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Exact Staleness</span>
 <span class="doccomment">///</span>
@@ -2775,8 +2772,8 @@
 <span class="doccomment">/// equivalent boundedly stale concurrency modes. On the other hand,</span>
 <span class="doccomment">/// boundedly stale reads usually return fresher results.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See [TransactionOptions.ReadOnly.read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp] and</span>
-<span class="doccomment">/// [TransactionOptions.ReadOnly.exact_staleness][google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness].</span>
+<span class="doccomment">/// See \[TransactionOptions.ReadOnly.read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.read_timestamp\] and</span>
+<span class="doccomment">/// \[TransactionOptions.ReadOnly.exact_staleness][google.spanner.v1.TransactionOptions.ReadOnly.exact_staleness\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Bounded Staleness</span>
 <span class="doccomment">///</span>
@@ -2805,8 +2802,8 @@
 <span class="doccomment">/// which rows will be read, it can only be used with single-use</span>
 <span class="doccomment">/// read-only transactions.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See [TransactionOptions.ReadOnly.max_staleness][google.spanner.v1.TransactionOptions.ReadOnly.max_staleness] and</span>
-<span class="doccomment">/// [TransactionOptions.ReadOnly.min_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp].</span>
+<span class="doccomment">/// See \[TransactionOptions.ReadOnly.max_staleness][google.spanner.v1.TransactionOptions.ReadOnly.max_staleness\] and</span>
+<span class="doccomment">/// \[TransactionOptions.ReadOnly.min_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.min_read_timestamp\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Old Read Timestamps and Garbage Collection</span>
 <span class="doccomment">///</span>
@@ -2893,7 +2890,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReadOnly</span> {
         <span class="doccomment">/// If true, the Cloud Spanner-selected read timestamp is included in</span>
-        <span class="doccomment">/// the [Transaction][google.spanner.v1.Transaction] message that describes the transaction.</span>
+        <span class="doccomment">/// the \[Transaction][google.spanner.v1.Transaction\] message that describes the transaction.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">return_read_timestamp</span>: <span class="ident">bool</span>,
         <span class="doccomment">/// How to choose the timestamp for the read-only transaction.</span>
@@ -2995,10 +2992,10 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Transaction</span> {
     <span class="doccomment">/// `id` may be used to identify the transaction in subsequent</span>
-    <span class="doccomment">/// [Read][google.spanner.v1.Spanner.Read],</span>
-    <span class="doccomment">/// [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql],</span>
-    <span class="doccomment">/// [Commit][google.spanner.v1.Spanner.Commit], or</span>
-    <span class="doccomment">/// [Rollback][google.spanner.v1.Spanner.Rollback] calls.</span>
+    <span class="doccomment">/// \[Read][google.spanner.v1.Spanner.Read\],</span>
+    <span class="doccomment">/// \[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql\],</span>
+    <span class="doccomment">/// \[Commit][google.spanner.v1.Spanner.Commit\], or</span>
+    <span class="doccomment">/// \[Rollback][google.spanner.v1.Spanner.Rollback\] calls.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Single-use read-only transactions do not have IDs, because</span>
     <span class="doccomment">/// single-use transactions do not support multiple requests.</span>
@@ -3006,7 +3003,7 @@
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="doccomment">/// For snapshot read-only transactions, the read timestamp chosen</span>
     <span class="doccomment">/// for the transaction. Not returned by default: see</span>
-    <span class="doccomment">/// [TransactionOptions.ReadOnly.return_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.return_read_timestamp].</span>
+    <span class="doccomment">/// \[TransactionOptions.ReadOnly.return_read_timestamp][google.spanner.v1.TransactionOptions.ReadOnly.return_read_timestamp\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A timestamp in RFC3339 UTC \&quot;Zulu\&quot; format, accurate to nanoseconds.</span>
     <span class="doccomment">/// Example: `&quot;2014-10-02T15:01:23.045123456Z&quot;`.</span>
@@ -3014,10 +3011,10 @@
     <span class="kw">pub</span> <span class="ident">read_timestamp</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// This message is used to select the transaction in which a</span>
-<span class="doccomment">/// [Read][google.spanner.v1.Spanner.Read] or</span>
-<span class="doccomment">/// [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] call runs.</span>
+<span class="doccomment">/// \[Read][google.spanner.v1.Spanner.Read\] or</span>
+<span class="doccomment">/// \[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql\] call runs.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See [TransactionOptions][google.spanner.v1.TransactionOptions] for more information about transactions.</span>
+<span class="doccomment">/// See \[TransactionOptions][google.spanner.v1.TransactionOptions\] for more information about transactions.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TransactionSelector</span> {
     <span class="doccomment">/// If no fields are set, the default is a single use transaction</span>
@@ -3035,40 +3032,40 @@
         <span class="doccomment">/// This is the most efficient way to execute a transaction that</span>
         <span class="doccomment">/// consists of a single SQL query.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">SingleUse</span>(<span class="kw">super</span><span class="ident">::TransactionOptions</span>),
+        <span class="ident">SingleUse</span>(<span class="ident"><span class="kw">super</span>::TransactionOptions</span>),
         <span class="doccomment">/// Execute the read or SQL query in a previously-started transaction.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">Id</span>(<span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
         <span class="doccomment">/// Begin a new transaction and execute this read or SQL query in</span>
         <span class="doccomment">/// it. The transaction ID of the new transaction is returned in</span>
-        <span class="doccomment">/// [ResultSetMetadata.transaction][google.spanner.v1.ResultSetMetadata.transaction], which is a [Transaction][google.spanner.v1.Transaction].</span>
+        <span class="doccomment">/// \[ResultSetMetadata.transaction][google.spanner.v1.ResultSetMetadata.transaction\], which is a \[Transaction][google.spanner.v1.Transaction\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Begin</span>(<span class="kw">super</span><span class="ident">::TransactionOptions</span>),
+        <span class="ident">Begin</span>(<span class="ident"><span class="kw">super</span>::TransactionOptions</span>),
     }
 }
 <span class="doccomment">/// `Type` indicates the type of a Cloud Spanner value, as might be stored in a</span>
 <span class="doccomment">/// table cell or returned from an SQL query.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Type</span> {
-    <span class="doccomment">/// Required. The [TypeCode][google.spanner.v1.TypeCode] for this type.</span>
+    <span class="doccomment">/// Required. The \[TypeCode][google.spanner.v1.TypeCode\] for this type.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;TypeCode&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">code</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// If [code][google.spanner.v1.Type.code] == [ARRAY][google.spanner.v1.TypeCode.ARRAY], then `array_element_type`</span>
+    <span class="doccomment">/// If \[code][google.spanner.v1.Type.code\] == \[ARRAY][google.spanner.v1.TypeCode.ARRAY\], then `array_element_type`</span>
     <span class="doccomment">/// is the type of the array elements.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">array_element_type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident">Type</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// If [code][google.spanner.v1.Type.code] == [STRUCT][google.spanner.v1.TypeCode.STRUCT], then `struct_type`</span>
+    <span class="doccomment">/// If \[code][google.spanner.v1.Type.code\] == \[STRUCT][google.spanner.v1.TypeCode.STRUCT\], then `struct_type`</span>
     <span class="doccomment">/// provides type information for the struct&#39;s fields.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">struct_type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">StructType</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// `StructType` defines the fields of a [STRUCT][google.spanner.v1.TypeCode.STRUCT] type.</span>
+<span class="doccomment">/// `StructType` defines the fields of a \[STRUCT][google.spanner.v1.TypeCode.STRUCT\] type.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StructType</span> {
     <span class="doccomment">/// The list of fields that make up this struct. Order is</span>
     <span class="doccomment">/// significant, because values of this struct type are represented as</span>
     <span class="doccomment">/// lists, where the order of field values matches the order of</span>
-    <span class="doccomment">/// fields in the [StructType][google.spanner.v1.StructType]. In turn, the order of fields</span>
+    <span class="doccomment">/// fields in the \[StructType][google.spanner.v1.StructType\]. In turn, the order of fields</span>
     <span class="doccomment">/// matches the order of columns in a read request, or the order of</span>
     <span class="doccomment">/// fields in the `SELECT` clause of a query.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -3090,10 +3087,10 @@
         <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// The type of the field.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Type</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Type</span><span class="op">&gt;</span>,
     }
 }
-<span class="doccomment">/// `TypeCode` is used as part of [Type][google.spanner.v1.Type] to</span>
+<span class="doccomment">/// `TypeCode` is used as part of \[Type][google.spanner.v1.Type\] to</span>
 <span class="doccomment">/// indicate the type of a Cloud Spanner value.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Each legal value of a type can be encoded to or decoded from a JSON</span>
@@ -3130,19 +3127,19 @@
     <span class="ident">Bytes</span> <span class="op">=</span> <span class="number">7</span>,
     <span class="doccomment">/// Encoded as `list`, where the list elements are represented</span>
     <span class="doccomment">/// according to</span>
-    <span class="doccomment">/// [array_element_type][google.spanner.v1.Type.array_element_type].</span>
+    <span class="doccomment">/// \[array_element_type][google.spanner.v1.Type.array_element_type\].</span>
     <span class="ident">Array</span> <span class="op">=</span> <span class="number">8</span>,
     <span class="doccomment">/// Encoded as `list`, where list element `i` is represented according</span>
-    <span class="doccomment">/// to [struct_type.fields[i]][google.spanner.v1.StructType.fields].</span>
+    <span class="doccomment">/// to \[struct_type.fields[i]][google.spanner.v1.StructType.fields\].</span>
     <span class="ident">Struct</span> <span class="op">=</span> <span class="number">9</span>,
     <span class="doccomment">/// Encoded as `string`, in decimal format or scientific notation format.</span>
     <span class="doccomment">/// &lt;br&gt;Decimal format:</span>
-    <span class="doccomment">/// &lt;br&gt;`[+-]Digits[.[Digits]]` or</span>
-    <span class="doccomment">/// &lt;br&gt;`[+-][Digits].Digits`</span>
+    <span class="doccomment">/// &lt;br&gt;`\[+-]Digits[.[Digits]\]` or</span>
+    <span class="doccomment">/// &lt;br&gt;`\[+-][Digits\].Digits`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Scientific notation:</span>
-    <span class="doccomment">/// &lt;br&gt;`[+-]Digits[.[Digits]][ExponentIndicator[+-]Digits]` or</span>
-    <span class="doccomment">/// &lt;br&gt;`[+-][Digits].Digits[ExponentIndicator[+-]Digits]`</span>
+    <span class="doccomment">/// &lt;br&gt;`\[+-]Digits[.[Digits]][ExponentIndicator[+-]Digits\]` or</span>
+    <span class="doccomment">/// &lt;br&gt;`\[+-][Digits].Digits[ExponentIndicator[+-]Digits\]`</span>
     <span class="doccomment">/// &lt;br&gt;(ExponentIndicator is `&quot;e&quot;` or `&quot;E&quot;`)</span>
     <span class="ident">Numeric</span> <span class="op">=</span> <span class="number">10</span>,
     <span class="doccomment">/// Encoded as a JSON-formatted &#39;string&#39; as described in RFC 7159. The</span>
@@ -3154,29 +3151,29 @@
     <span class="doccomment">///   preserved. JSON array elements will have their order preserved.</span>
     <span class="ident">Json</span> <span class="op">=</span> <span class="number">11</span>,
 }
-<span class="doccomment">/// Results from [Read][google.spanner.v1.Spanner.Read] or</span>
-<span class="doccomment">/// [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql].</span>
+<span class="doccomment">/// Results from \[Read][google.spanner.v1.Spanner.Read\] or</span>
+<span class="doccomment">/// \[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResultSet</span> {
     <span class="doccomment">/// Metadata about the result set, such as row type information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">metadata</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ResultSetMetadata</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Each element in `rows` is a row whose format is defined by</span>
-    <span class="doccomment">/// [metadata.row_type][google.spanner.v1.ResultSetMetadata.row_type]. The ith element</span>
+    <span class="doccomment">/// \[metadata.row_type][google.spanner.v1.ResultSetMetadata.row_type\]. The ith element</span>
     <span class="doccomment">/// in each row matches the ith field in</span>
-    <span class="doccomment">/// [metadata.row_type][google.spanner.v1.ResultSetMetadata.row_type]. Elements are</span>
+    <span class="doccomment">/// \[metadata.row_type][google.spanner.v1.ResultSetMetadata.row_type\]. Elements are</span>
     <span class="doccomment">/// encoded based on type as described</span>
-    <span class="doccomment">/// [here][google.spanner.v1.TypeCode].</span>
+    <span class="doccomment">/// \[here][google.spanner.v1.TypeCode\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">rows</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost_types::ListValue</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Query plan and execution statistics for the SQL statement that</span>
     <span class="doccomment">/// produced this result set. These can be requested by setting</span>
-    <span class="doccomment">/// [ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode].</span>
+    <span class="doccomment">/// \[ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode\].</span>
     <span class="doccomment">/// DML statements always produce stats containing the number of rows</span>
     <span class="doccomment">/// modified, unless executed using the</span>
-    <span class="doccomment">/// [ExecuteSqlRequest.QueryMode.PLAN][google.spanner.v1.ExecuteSqlRequest.QueryMode.PLAN] [ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode].</span>
+    <span class="doccomment">/// \[ExecuteSqlRequest.QueryMode.PLAN][google.spanner.v1.ExecuteSqlRequest.QueryMode.PLAN\] \[ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode\].</span>
     <span class="doccomment">/// Other fields may or may not be populated, based on the</span>
-    <span class="doccomment">/// [ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode].</span>
+    <span class="doccomment">/// \[ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">stats</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ResultSetStats</span><span class="op">&gt;</span>,
 }
@@ -3193,14 +3190,14 @@
     <span class="doccomment">/// be split into many `PartialResultSet` messages to accommodate</span>
     <span class="doccomment">/// large rows and/or large values. Every N complete values defines a</span>
     <span class="doccomment">/// row, where N is equal to the number of entries in</span>
-    <span class="doccomment">/// [metadata.row_type.fields][google.spanner.v1.StructType.fields].</span>
+    <span class="doccomment">/// \[metadata.row_type.fields][google.spanner.v1.StructType.fields\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Most values are encoded based on type as described</span>
-    <span class="doccomment">/// [here][google.spanner.v1.TypeCode].</span>
+    <span class="doccomment">/// \[here][google.spanner.v1.TypeCode\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It is possible that the last value in values is &quot;chunked&quot;,</span>
     <span class="doccomment">/// meaning that the rest of the value is sent in subsequent</span>
-    <span class="doccomment">/// `PartialResultSet`(s). This is denoted by the [chunked_value][google.spanner.v1.PartialResultSet.chunked_value]</span>
+    <span class="doccomment">/// `PartialResultSet`(s). This is denoted by the \[chunked_value][google.spanner.v1.PartialResultSet.chunked_value\]</span>
     <span class="doccomment">/// field. Two or more chunked values can be merged to form a</span>
     <span class="doccomment">/// complete value as follows:</span>
     <span class="doccomment">///</span>
@@ -3219,7 +3216,7 @@
     <span class="doccomment">///     &quot;foo&quot;, &quot;bar&quot; =&gt; &quot;foobar&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     # Lists of non-strings are concatenated.</span>
-    <span class="doccomment">///     [2, 3], [4] =&gt; [2, 3, 4]</span>
+    <span class="doccomment">///     [2, 3], \[4\] =&gt; [2, 3, 4]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     # Lists are concatenated, but the last and first elements are merged</span>
     <span class="doccomment">///     # because they are strings.</span>
@@ -3228,7 +3225,7 @@
     <span class="doccomment">///     # Lists are concatenated, but the last and first elements are merged</span>
     <span class="doccomment">///     # because they are lists. Recursively, the last and first elements</span>
     <span class="doccomment">///     # of the inner lists are merged because they are strings.</span>
-    <span class="doccomment">///     [&quot;a&quot;, [&quot;b&quot;, &quot;c&quot;]], [[&quot;d&quot;], &quot;e&quot;] =&gt; [&quot;a&quot;, [&quot;b&quot;, &quot;cd&quot;], &quot;e&quot;]</span>
+    <span class="doccomment">///     [&quot;a&quot;, [&quot;b&quot;, &quot;c&quot;]], \[[&quot;d&quot;\], &quot;e&quot;] =&gt; [&quot;a&quot;, [&quot;b&quot;, &quot;cd&quot;], &quot;e&quot;]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     # Non-overlapping object fields are combined.</span>
     <span class="doccomment">///     {&quot;a&quot;: &quot;1&quot;}, {&quot;b&quot;: &quot;2&quot;} =&gt; {&quot;a&quot;: &quot;1&quot;, &quot;b&quot;: 2&quot;}</span>
@@ -3237,7 +3234,7 @@
     <span class="doccomment">///     {&quot;a&quot;: &quot;1&quot;}, {&quot;a&quot;: &quot;2&quot;} =&gt; {&quot;a&quot;: &quot;12&quot;}</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     # Examples of merging objects containing lists of strings.</span>
-    <span class="doccomment">///     {&quot;a&quot;: [&quot;1&quot;]}, {&quot;a&quot;: [&quot;2&quot;]} =&gt; {&quot;a&quot;: [&quot;12&quot;]}</span>
+    <span class="doccomment">///     {&quot;a&quot;: \[&quot;1&quot;\]}, {&quot;a&quot;: \[&quot;2&quot;\]} =&gt; {&quot;a&quot;: \[&quot;12&quot;\]}</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For a more complete example, suppose a streaming SQL query is</span>
     <span class="doccomment">/// yielding a result set whose rows contain a single string</span>
@@ -3250,12 +3247,12 @@
     <span class="doccomment">///       &quot;resume_token&quot;: &quot;Af65...&quot;</span>
     <span class="doccomment">///     }</span>
     <span class="doccomment">///     {</span>
-    <span class="doccomment">///       &quot;values&quot;: [&quot;orl&quot;]</span>
+    <span class="doccomment">///       &quot;values&quot;: \[&quot;orl&quot;\]</span>
     <span class="doccomment">///       &quot;chunked_value&quot;: true</span>
     <span class="doccomment">///       &quot;resume_token&quot;: &quot;Bqp2...&quot;</span>
     <span class="doccomment">///     }</span>
     <span class="doccomment">///     {</span>
-    <span class="doccomment">///       &quot;values&quot;: [&quot;d&quot;]</span>
+    <span class="doccomment">///       &quot;values&quot;: \[&quot;d&quot;\]</span>
     <span class="doccomment">///       &quot;resume_token&quot;: &quot;Zx1B...&quot;</span>
     <span class="doccomment">///     }</span>
     <span class="doccomment">///</span>
@@ -3264,7 +3261,7 @@
     <span class="doccomment">/// field value `&quot;World&quot; = &quot;W&quot; + &quot;orl&quot; + &quot;d&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">values</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost_types::Value</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// If true, then the final value in [values][google.spanner.v1.PartialResultSet.values] is chunked, and must</span>
+    <span class="doccomment">/// If true, then the final value in \[values][google.spanner.v1.PartialResultSet.values\] is chunked, and must</span>
     <span class="doccomment">/// be combined with more values from subsequent `PartialResultSet`s</span>
     <span class="doccomment">/// to obtain a complete field value.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
@@ -3278,14 +3275,14 @@
     <span class="kw">pub</span> <span class="ident">resume_token</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Query plan and execution statistics for the statement that produced this</span>
     <span class="doccomment">/// streaming result set. These can be requested by setting</span>
-    <span class="doccomment">/// [ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode] and are sent</span>
+    <span class="doccomment">/// \[ExecuteSqlRequest.query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode\] and are sent</span>
     <span class="doccomment">/// only once with the last response in the stream.</span>
     <span class="doccomment">/// This field will also be present in the last response for DML</span>
     <span class="doccomment">/// statements.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">stats</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ResultSetStats</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Metadata about a [ResultSet][google.spanner.v1.ResultSet] or [PartialResultSet][google.spanner.v1.PartialResultSet].</span>
+<span class="doccomment">/// Metadata about a \[ResultSet][google.spanner.v1.ResultSet\] or \[PartialResultSet][google.spanner.v1.PartialResultSet\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResultSetMetadata</span> {
     <span class="doccomment">/// Indicates the field names and types for the rows in the result</span>
@@ -3303,10 +3300,10 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Transaction</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Additional statistics about a [ResultSet][google.spanner.v1.ResultSet] or [PartialResultSet][google.spanner.v1.PartialResultSet].</span>
+<span class="doccomment">/// Additional statistics about a \[ResultSet][google.spanner.v1.ResultSet\] or \[PartialResultSet][google.spanner.v1.PartialResultSet\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResultSetStats</span> {
-    <span class="doccomment">/// [QueryPlan][google.spanner.v1.QueryPlan] for the query associated with this result.</span>
+    <span class="doccomment">/// \[QueryPlan][google.spanner.v1.QueryPlan\] for the query associated with this result.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">query_plan</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">QueryPlan</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Aggregated statistics from the execution of the query. Only present when</span>
@@ -3338,7 +3335,7 @@
         <span class="ident">RowCountLowerBound</span>(<span class="ident">i64</span>),
     }
 }
-<span class="doccomment">/// The request for [CreateSession][google.spanner.v1.Spanner.CreateSession].</span>
+<span class="doccomment">/// The request for \[CreateSession][google.spanner.v1.Spanner.CreateSession\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateSessionRequest</span> {
     <span class="doccomment">/// Required. The database in which the new session is created.</span>
@@ -3348,7 +3345,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">session</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Session</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].</span>
+<span class="doccomment">/// The request for \[BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchCreateSessionsRequest</span> {
     <span class="doccomment">/// Required. The database in which the new sessions are created.</span>
@@ -3361,11 +3358,11 @@
     <span class="doccomment">/// The API may return fewer than the requested number of sessions. If a</span>
     <span class="doccomment">/// specific number of sessions are desired, the client can make additional</span>
     <span class="doccomment">/// calls to BatchCreateSessions (adjusting</span>
-    <span class="doccomment">/// [session_count][google.spanner.v1.BatchCreateSessionsRequest.session_count] as necessary).</span>
+    <span class="doccomment">/// \[session_count][google.spanner.v1.BatchCreateSessionsRequest.session_count\] as necessary).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">session_count</span>: <span class="ident">i32</span>,
 }
-<span class="doccomment">/// The response for [BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions].</span>
+<span class="doccomment">/// The response for \[BatchCreateSessions][google.spanner.v1.Spanner.BatchCreateSessions\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchCreateSessionsResponse</span> {
     <span class="doccomment">/// The freshly created sessions.</span>
@@ -3381,12 +3378,12 @@
     <span class="doccomment">/// The labels for the session.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///  * Label keys must be between 1 and 63 characters long and must conform to</span>
-    <span class="doccomment">///    the following regular expression: `[a-z]([-a-z0-9]*[a-z0-9])?`.</span>
+    <span class="doccomment">///    the following regular expression: `\[a-z]([-a-z0-9]*[a-z0-9\])?`.</span>
     <span class="doccomment">///  * Label values must be between 0 and 63 characters long and must conform</span>
-    <span class="doccomment">///    to the regular expression `([a-z]([-a-z0-9]*[a-z0-9])?)?`.</span>
+    <span class="doccomment">///    to the regular expression `(\[a-z]([-a-z0-9]*[a-z0-9\])?)?`.</span>
     <span class="doccomment">///  * No more than 64 labels can be associated with a given session.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See https://goo.gl/xmQnxf for more information on and examples of labels.</span>
+    <span class="doccomment">/// See &lt;https://goo.gl/xmQnxf&gt; for more information on and examples of labels.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -3398,14 +3395,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">approximate_last_use_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [GetSession][google.spanner.v1.Spanner.GetSession].</span>
+<span class="doccomment">/// The request for \[GetSession][google.spanner.v1.Spanner.GetSession\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetSessionRequest</span> {
     <span class="doccomment">/// Required. The name of the session to retrieve.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [ListSessions][google.spanner.v1.Spanner.ListSessions].</span>
+<span class="doccomment">/// The request for \[ListSessions][google.spanner.v1.Spanner.ListSessions\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListSessionsRequest</span> {
     <span class="doccomment">/// Required. The database in which to list sessions.</span>
@@ -3416,8 +3413,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// If non-empty, `page_token` should contain a</span>
-    <span class="doccomment">/// [next_page_token][google.spanner.v1.ListSessionsResponse.next_page_token] from a previous</span>
-    <span class="doccomment">/// [ListSessionsResponse][google.spanner.v1.ListSessionsResponse].</span>
+    <span class="doccomment">/// \[next_page_token][google.spanner.v1.ListSessionsResponse.next_page_token\] from a previous</span>
+    <span class="doccomment">/// \[ListSessionsResponse][google.spanner.v1.ListSessionsResponse\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// An expression for filtering the results of the request. Filter rules are</span>
@@ -3433,19 +3430,19 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The response for [ListSessions][google.spanner.v1.Spanner.ListSessions].</span>
+<span class="doccomment">/// The response for \[ListSessions][google.spanner.v1.Spanner.ListSessions\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListSessionsResponse</span> {
     <span class="doccomment">/// The list of requested sessions.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">sessions</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Session</span><span class="op">&gt;</span>,
     <span class="doccomment">/// `next_page_token` can be sent in a subsequent</span>
-    <span class="doccomment">/// [ListSessions][google.spanner.v1.Spanner.ListSessions] call to fetch more of the matching</span>
+    <span class="doccomment">/// \[ListSessions][google.spanner.v1.Spanner.ListSessions\] call to fetch more of the matching</span>
     <span class="doccomment">/// sessions.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [DeleteSession][google.spanner.v1.Spanner.DeleteSession].</span>
+<span class="doccomment">/// The request for \[DeleteSession][google.spanner.v1.Spanner.DeleteSession\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteSessionRequest</span> {
     <span class="doccomment">/// Required. The name of the session to delete.</span>
@@ -3485,7 +3482,7 @@
 <span class="doccomment">/// Nested message and enum types in `RequestOptions`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">request_options</span> {
     <span class="doccomment">/// The relative priority for requests. Note that priority is not applicable</span>
-    <span class="doccomment">/// for [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].</span>
+    <span class="doccomment">/// for \[BeginTransaction][google.spanner.v1.Spanner.BeginTransaction\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The priority acts as a hint to the Cloud Spanner scheduler and does not</span>
     <span class="doccomment">/// guarantee priority or order of execution. For example:</span>
@@ -3513,8 +3510,8 @@
         <span class="ident">High</span> <span class="op">=</span> <span class="number">3</span>,
     }
 }
-<span class="doccomment">/// The request for [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and</span>
-<span class="doccomment">/// [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql].</span>
+<span class="doccomment">/// The request for \[ExecuteSql][google.spanner.v1.Spanner.ExecuteSql\] and</span>
+<span class="doccomment">/// \[ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecuteSqlRequest</span> {
     <span class="doccomment">/// Required. The session in which the SQL query should be performed.</span>
@@ -3540,7 +3537,7 @@
     <span class="doccomment">/// A parameter placeholder consists of the `@` character followed by the</span>
     <span class="doccomment">/// parameter name (for example, `@firstName`). Parameter names must conform</span>
     <span class="doccomment">/// to the naming requirements of identifiers as specified at</span>
-    <span class="doccomment">/// https://cloud.google.com/spanner/docs/lexical#identifiers.</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/spanner/docs/lexical#identifiers.&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Parameters can appear anywhere that a literal value is expected.  The same</span>
     <span class="doccomment">/// parameter name can be used more than once, for example:</span>
@@ -3552,25 +3549,25 @@
     <span class="kw">pub</span> <span class="ident">params</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
     <span class="doccomment">/// It is not always possible for Cloud Spanner to infer the right SQL type</span>
     <span class="doccomment">/// from a JSON value.  For example, values of type `BYTES` and values</span>
-    <span class="doccomment">/// of type `STRING` both appear in [params][google.spanner.v1.ExecuteSqlRequest.params] as JSON strings.</span>
+    <span class="doccomment">/// of type `STRING` both appear in \[params][google.spanner.v1.ExecuteSqlRequest.params\] as JSON strings.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// In these cases, `param_types` can be used to specify the exact</span>
     <span class="doccomment">/// SQL type for some or all of the SQL statement parameters. See the</span>
-    <span class="doccomment">/// definition of [Type][google.spanner.v1.Type] for more information</span>
+    <span class="doccomment">/// definition of \[Type][google.spanner.v1.Type\] for more information</span>
     <span class="doccomment">/// about SQL types.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">param_types</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">Type</span><span class="op">&gt;</span>,
     <span class="doccomment">/// If this request is resuming a previously interrupted SQL statement</span>
     <span class="doccomment">/// execution, `resume_token` should be copied from the last</span>
-    <span class="doccomment">/// [PartialResultSet][google.spanner.v1.PartialResultSet] yielded before the interruption. Doing this</span>
+    <span class="doccomment">/// \[PartialResultSet][google.spanner.v1.PartialResultSet\] yielded before the interruption. Doing this</span>
     <span class="doccomment">/// enables the new SQL statement execution to resume where the last one left</span>
     <span class="doccomment">/// off. The rest of the request parameters must exactly match the</span>
     <span class="doccomment">/// request that yielded this token.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">resume_token</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Used to control the amount of debugging information returned in</span>
-    <span class="doccomment">/// [ResultSetStats][google.spanner.v1.ResultSetStats]. If [partition_token][google.spanner.v1.ExecuteSqlRequest.partition_token] is set, [query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode] can only</span>
-    <span class="doccomment">/// be set to [QueryMode.NORMAL][google.spanner.v1.ExecuteSqlRequest.QueryMode.NORMAL].</span>
+    <span class="doccomment">/// \[ResultSetStats][google.spanner.v1.ResultSetStats\]. If \[partition_token][google.spanner.v1.ExecuteSqlRequest.partition_token\] is set, \[query_mode][google.spanner.v1.ExecuteSqlRequest.query_mode\] can only</span>
+    <span class="doccomment">/// be set to \[QueryMode.NORMAL][google.spanner.v1.ExecuteSqlRequest.QueryMode.NORMAL\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;execute_sql_request::QueryMode&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">query_mode</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// If present, results will be restricted to the specified partition</span>
@@ -3621,7 +3618,7 @@
         <span class="doccomment">/// an `INVALID_ARGUMENT` error.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// See</span>
-        <span class="doccomment">/// https://cloud.google.com/spanner/docs/query-optimizer/manage-query-optimizer</span>
+        <span class="doccomment">/// &lt;https://cloud.google.com/spanner/docs/query-optimizer/manage-query-optimizer&gt;</span>
         <span class="doccomment">/// for more information on managing the query optimizer.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The `optimizer_version` statement hint has precedence over this setting.</span>
@@ -3668,7 +3665,7 @@
         <span class="ident">Profile</span> <span class="op">=</span> <span class="number">2</span>,
     }
 }
-<span class="doccomment">/// The request for [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml].</span>
+<span class="doccomment">/// The request for \[ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecuteBatchDmlRequest</span> {
     <span class="doccomment">/// Required. The session in which the DML statements should be performed.</span>
@@ -3727,55 +3724,55 @@
         <span class="kw">pub</span> <span class="ident">params</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
         <span class="doccomment">/// It is not always possible for Cloud Spanner to infer the right SQL type</span>
         <span class="doccomment">/// from a JSON value.  For example, values of type `BYTES` and values</span>
-        <span class="doccomment">/// of type `STRING` both appear in [params][google.spanner.v1.ExecuteBatchDmlRequest.Statement.params] as JSON strings.</span>
+        <span class="doccomment">/// of type `STRING` both appear in \[params][google.spanner.v1.ExecuteBatchDmlRequest.Statement.params\] as JSON strings.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// In these cases, `param_types` can be used to specify the exact</span>
         <span class="doccomment">/// SQL type for some or all of the SQL statement parameters. See the</span>
-        <span class="doccomment">/// definition of [Type][google.spanner.v1.Type] for more information</span>
+        <span class="doccomment">/// definition of \[Type][google.spanner.v1.Type\] for more information</span>
         <span class="doccomment">/// about SQL types.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">param_types</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="kw">super</span><span class="ident">::Type</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">param_types</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident"><span class="kw">super</span>::Type</span><span class="op">&gt;</span>,
     }
 }
-<span class="doccomment">/// The response for [ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml]. Contains a list</span>
-<span class="doccomment">/// of [ResultSet][google.spanner.v1.ResultSet] messages, one for each DML statement that has successfully</span>
+<span class="doccomment">/// The response for \[ExecuteBatchDml][google.spanner.v1.Spanner.ExecuteBatchDml\]. Contains a list</span>
+<span class="doccomment">/// of \[ResultSet][google.spanner.v1.ResultSet\] messages, one for each DML statement that has successfully</span>
 <span class="doccomment">/// executed, in the same order as the statements in the request. If a statement</span>
 <span class="doccomment">/// fails, the status in the response body identifies the cause of the failure.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// To check for DML statements that failed, use the following approach:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// 1. Check the status in the response message. The [google.rpc.Code][google.rpc.Code] enum</span>
+<span class="doccomment">/// 1. Check the status in the response message. The \[google.rpc.Code][google.rpc.Code\] enum</span>
 <span class="doccomment">///    value `OK` indicates that all statements were executed successfully.</span>
 <span class="doccomment">/// 2. If the status was not `OK`, check the number of result sets in the</span>
-<span class="doccomment">///    response. If the response contains `N` [ResultSet][google.spanner.v1.ResultSet] messages, then</span>
+<span class="doccomment">///    response. If the response contains `N` \[ResultSet][google.spanner.v1.ResultSet\] messages, then</span>
 <span class="doccomment">///    statement `N+1` in the request failed.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Example 1:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// * Request: 5 DML statements, all executed successfully.</span>
-<span class="doccomment">/// * Response: 5 [ResultSet][google.spanner.v1.ResultSet] messages, with the status `OK`.</span>
+<span class="doccomment">/// * Response: 5 \[ResultSet][google.spanner.v1.ResultSet\] messages, with the status `OK`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Example 2:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// * Request: 5 DML statements. The third statement has a syntax error.</span>
-<span class="doccomment">/// * Response: 2 [ResultSet][google.spanner.v1.ResultSet] messages, and a syntax error (`INVALID_ARGUMENT`)</span>
-<span class="doccomment">///   status. The number of [ResultSet][google.spanner.v1.ResultSet] messages indicates that the third</span>
+<span class="doccomment">/// * Response: 2 \[ResultSet][google.spanner.v1.ResultSet\] messages, and a syntax error (`INVALID_ARGUMENT`)</span>
+<span class="doccomment">///   status. The number of \[ResultSet][google.spanner.v1.ResultSet\] messages indicates that the third</span>
 <span class="doccomment">///   statement failed, and the fourth and fifth statements were not executed.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecuteBatchDmlResponse</span> {
-    <span class="doccomment">/// One [ResultSet][google.spanner.v1.ResultSet] for each statement in the request that ran successfully,</span>
-    <span class="doccomment">/// in the same order as the statements in the request. Each [ResultSet][google.spanner.v1.ResultSet] does</span>
-    <span class="doccomment">/// not contain any rows. The [ResultSetStats][google.spanner.v1.ResultSetStats] in each [ResultSet][google.spanner.v1.ResultSet] contain</span>
+    <span class="doccomment">/// One \[ResultSet][google.spanner.v1.ResultSet\] for each statement in the request that ran successfully,</span>
+    <span class="doccomment">/// in the same order as the statements in the request. Each \[ResultSet][google.spanner.v1.ResultSet\] does</span>
+    <span class="doccomment">/// not contain any rows. The \[ResultSetStats][google.spanner.v1.ResultSetStats\] in each \[ResultSet][google.spanner.v1.ResultSet\] contain</span>
     <span class="doccomment">/// the number of rows modified by the statement.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Only the first [ResultSet][google.spanner.v1.ResultSet] in the response contains valid</span>
-    <span class="doccomment">/// [ResultSetMetadata][google.spanner.v1.ResultSetMetadata].</span>
+    <span class="doccomment">/// Only the first \[ResultSet][google.spanner.v1.ResultSet\] in the response contains valid</span>
+    <span class="doccomment">/// \[ResultSetMetadata][google.spanner.v1.ResultSetMetadata\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">result_sets</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ResultSet</span><span class="op">&gt;</span>,
     <span class="doccomment">/// If all DML statements are executed successfully, the status is `OK`.</span>
     <span class="doccomment">/// Otherwise, the error status of the first failed statement.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Options for a PartitionQueryRequest and</span>
 <span class="doccomment">/// PartitionReadRequest.</span>
@@ -3800,7 +3797,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_partitions</span>: <span class="ident">i64</span>,
 }
-<span class="doccomment">/// The request for [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]</span>
+<span class="doccomment">/// The request for \[PartitionQuery][google.spanner.v1.Spanner.PartitionQuery\]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PartitionQueryRequest</span> {
     <span class="doccomment">/// Required. The session used to create the partitions.</span>
@@ -3818,7 +3815,7 @@
     <span class="doccomment">/// then unions all results.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This must not contain DML commands, such as INSERT, UPDATE, or</span>
-    <span class="doccomment">/// DELETE. Use [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] with a</span>
+    <span class="doccomment">/// DELETE. Use \[ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql\] with a</span>
     <span class="doccomment">/// PartitionedDml transaction for large, partition-friendly DML operations.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">sql</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3838,11 +3835,11 @@
     <span class="kw">pub</span> <span class="ident">params</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
     <span class="doccomment">/// It is not always possible for Cloud Spanner to infer the right SQL type</span>
     <span class="doccomment">/// from a JSON value.  For example, values of type `BYTES` and values</span>
-    <span class="doccomment">/// of type `STRING` both appear in [params][google.spanner.v1.PartitionQueryRequest.params] as JSON strings.</span>
+    <span class="doccomment">/// of type `STRING` both appear in \[params][google.spanner.v1.PartitionQueryRequest.params\] as JSON strings.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// In these cases, `param_types` can be used to specify the exact</span>
     <span class="doccomment">/// SQL type for some or all of the SQL query parameters. See the</span>
-    <span class="doccomment">/// definition of [Type][google.spanner.v1.Type] for more information</span>
+    <span class="doccomment">/// definition of \[Type][google.spanner.v1.Type\] for more information</span>
     <span class="doccomment">/// about SQL types.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">param_types</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">Type</span><span class="op">&gt;</span>,
@@ -3850,7 +3847,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">partition_options</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">PartitionOptions</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [PartitionRead][google.spanner.v1.Spanner.PartitionRead]</span>
+<span class="doccomment">/// The request for \[PartitionRead][google.spanner.v1.Spanner.PartitionRead\]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PartitionReadRequest</span> {
     <span class="doccomment">/// Required. The session used to create the partitions.</span>
@@ -3863,19 +3860,19 @@
     <span class="doccomment">/// Required. The name of the table in the database to be read.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">table</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// If non-empty, the name of an index on [table][google.spanner.v1.PartitionReadRequest.table]. This index is</span>
-    <span class="doccomment">/// used instead of the table primary key when interpreting [key_set][google.spanner.v1.PartitionReadRequest.key_set]</span>
-    <span class="doccomment">/// and sorting result rows. See [key_set][google.spanner.v1.PartitionReadRequest.key_set] for further information.</span>
+    <span class="doccomment">/// If non-empty, the name of an index on \[table][google.spanner.v1.PartitionReadRequest.table\]. This index is</span>
+    <span class="doccomment">/// used instead of the table primary key when interpreting \[key_set][google.spanner.v1.PartitionReadRequest.key_set\]</span>
+    <span class="doccomment">/// and sorting result rows. See \[key_set][google.spanner.v1.PartitionReadRequest.key_set\] for further information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">index</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The columns of [table][google.spanner.v1.PartitionReadRequest.table] to be returned for each row matching</span>
+    <span class="doccomment">/// The columns of \[table][google.spanner.v1.PartitionReadRequest.table\] to be returned for each row matching</span>
     <span class="doccomment">/// this request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">columns</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Required. `key_set` identifies the rows to be yielded. `key_set` names the</span>
-    <span class="doccomment">/// primary keys of the rows in [table][google.spanner.v1.PartitionReadRequest.table] to be yielded, unless [index][google.spanner.v1.PartitionReadRequest.index]</span>
-    <span class="doccomment">/// is present. If [index][google.spanner.v1.PartitionReadRequest.index] is present, then [key_set][google.spanner.v1.PartitionReadRequest.key_set] instead names</span>
-    <span class="doccomment">/// index keys in [index][google.spanner.v1.PartitionReadRequest.index].</span>
+    <span class="doccomment">/// primary keys of the rows in \[table][google.spanner.v1.PartitionReadRequest.table\] to be yielded, unless \[index][google.spanner.v1.PartitionReadRequest.index\]</span>
+    <span class="doccomment">/// is present. If \[index][google.spanner.v1.PartitionReadRequest.index\] is present, then \[key_set][google.spanner.v1.PartitionReadRequest.key_set\] instead names</span>
+    <span class="doccomment">/// index keys in \[index][google.spanner.v1.PartitionReadRequest.index\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It is not an error for the `key_set` to name rows that do not</span>
     <span class="doccomment">/// exist in the database. Read yields nothing for nonexistent rows.</span>
@@ -3895,8 +3892,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">partition_token</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response for [PartitionQuery][google.spanner.v1.Spanner.PartitionQuery]</span>
-<span class="doccomment">/// or [PartitionRead][google.spanner.v1.Spanner.PartitionRead]</span>
+<span class="doccomment">/// The response for \[PartitionQuery][google.spanner.v1.Spanner.PartitionQuery\]</span>
+<span class="doccomment">/// or \[PartitionRead][google.spanner.v1.Spanner.PartitionRead\]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PartitionResponse</span> {
     <span class="doccomment">/// Partitions created by this request.</span>
@@ -3906,8 +3903,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Transaction</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Read][google.spanner.v1.Spanner.Read] and</span>
-<span class="doccomment">/// [StreamingRead][google.spanner.v1.Spanner.StreamingRead].</span>
+<span class="doccomment">/// The request for \[Read][google.spanner.v1.Spanner.Read\] and</span>
+<span class="doccomment">/// \[StreamingRead][google.spanner.v1.Spanner.StreamingRead\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReadRequest</span> {
     <span class="doccomment">/// Required. The session in which the read should be performed.</span>
@@ -3920,23 +3917,23 @@
     <span class="doccomment">/// Required. The name of the table in the database to be read.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">table</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// If non-empty, the name of an index on [table][google.spanner.v1.ReadRequest.table]. This index is</span>
-    <span class="doccomment">/// used instead of the table primary key when interpreting [key_set][google.spanner.v1.ReadRequest.key_set]</span>
-    <span class="doccomment">/// and sorting result rows. See [key_set][google.spanner.v1.ReadRequest.key_set] for further information.</span>
+    <span class="doccomment">/// If non-empty, the name of an index on \[table][google.spanner.v1.ReadRequest.table\]. This index is</span>
+    <span class="doccomment">/// used instead of the table primary key when interpreting \[key_set][google.spanner.v1.ReadRequest.key_set\]</span>
+    <span class="doccomment">/// and sorting result rows. See \[key_set][google.spanner.v1.ReadRequest.key_set\] for further information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">index</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Required. The columns of [table][google.spanner.v1.ReadRequest.table] to be returned for each row matching</span>
+    <span class="doccomment">/// Required. The columns of \[table][google.spanner.v1.ReadRequest.table\] to be returned for each row matching</span>
     <span class="doccomment">/// this request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">columns</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Required. `key_set` identifies the rows to be yielded. `key_set` names the</span>
-    <span class="doccomment">/// primary keys of the rows in [table][google.spanner.v1.ReadRequest.table] to be yielded, unless [index][google.spanner.v1.ReadRequest.index]</span>
-    <span class="doccomment">/// is present. If [index][google.spanner.v1.ReadRequest.index] is present, then [key_set][google.spanner.v1.ReadRequest.key_set] instead names</span>
-    <span class="doccomment">/// index keys in [index][google.spanner.v1.ReadRequest.index].</span>
+    <span class="doccomment">/// primary keys of the rows in \[table][google.spanner.v1.ReadRequest.table\] to be yielded, unless \[index][google.spanner.v1.ReadRequest.index\]</span>
+    <span class="doccomment">/// is present. If \[index][google.spanner.v1.ReadRequest.index\] is present, then \[key_set][google.spanner.v1.ReadRequest.key_set\] instead names</span>
+    <span class="doccomment">/// index keys in \[index][google.spanner.v1.ReadRequest.index\].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If the [partition_token][google.spanner.v1.ReadRequest.partition_token] field is empty, rows are yielded</span>
-    <span class="doccomment">/// in table primary key order (if [index][google.spanner.v1.ReadRequest.index] is empty) or index key order</span>
-    <span class="doccomment">/// (if [index][google.spanner.v1.ReadRequest.index] is non-empty).  If the [partition_token][google.spanner.v1.ReadRequest.partition_token] field is not</span>
+    <span class="doccomment">/// If the \[partition_token][google.spanner.v1.ReadRequest.partition_token\] field is empty, rows are yielded</span>
+    <span class="doccomment">/// in table primary key order (if \[index][google.spanner.v1.ReadRequest.index\] is empty) or index key order</span>
+    <span class="doccomment">/// (if \[index][google.spanner.v1.ReadRequest.index\] is non-empty).  If the \[partition_token][google.spanner.v1.ReadRequest.partition_token\] field is not</span>
     <span class="doccomment">/// empty, rows will be yielded in an unspecified order.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// It is not an error for the `key_set` to name rows that do not</span>
@@ -3950,7 +3947,7 @@
     <span class="kw">pub</span> <span class="ident">limit</span>: <span class="ident">i64</span>,
     <span class="doccomment">/// If this request is resuming a previously interrupted read,</span>
     <span class="doccomment">/// `resume_token` should be copied from the last</span>
-    <span class="doccomment">/// [PartialResultSet][google.spanner.v1.PartialResultSet] yielded before the interruption. Doing this</span>
+    <span class="doccomment">/// \[PartialResultSet][google.spanner.v1.PartialResultSet\] yielded before the interruption. Doing this</span>
     <span class="doccomment">/// enables the new read to resume where the last read left off. The</span>
     <span class="doccomment">/// rest of the request parameters must exactly match the request</span>
     <span class="doccomment">/// that yielded this token.</span>
@@ -3966,7 +3963,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">request_options</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">RequestOptions</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction].</span>
+<span class="doccomment">/// The request for \[BeginTransaction][google.spanner.v1.Spanner.BeginTransaction\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BeginTransactionRequest</span> {
     <span class="doccomment">/// Required. The session in which the transaction runs.</span>
@@ -3983,7 +3980,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">request_options</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">RequestOptions</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Commit][google.spanner.v1.Spanner.Commit].</span>
+<span class="doccomment">/// The request for \[Commit][google.spanner.v1.Spanner.Commit\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommitRequest</span> {
     <span class="doccomment">/// Required. The session in which the transaction to be committed is running.</span>
@@ -3995,7 +3992,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">mutations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Mutation</span><span class="op">&gt;</span>,
     <span class="doccomment">/// If `true`, then statistics related to the transaction will be included in</span>
-    <span class="doccomment">/// the [CommitResponse][google.spanner.v1.CommitResponse.commit_stats]. Default value is</span>
+    <span class="doccomment">/// the \[CommitResponse][google.spanner.v1.CommitResponse.commit_stats\]. Default value is</span>
     <span class="doccomment">/// `false`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">return_commit_stats</span>: <span class="ident">bool</span>,
@@ -4021,13 +4018,13 @@
         <span class="doccomment">/// instance, due to retries in the application, or in the</span>
         <span class="doccomment">/// transport library), it is possible that the mutations are</span>
         <span class="doccomment">/// executed more than once. If this is undesirable, use</span>
-        <span class="doccomment">/// [BeginTransaction][google.spanner.v1.Spanner.BeginTransaction] and</span>
-        <span class="doccomment">/// [Commit][google.spanner.v1.Spanner.Commit] instead.</span>
+        <span class="doccomment">/// \[BeginTransaction][google.spanner.v1.Spanner.BeginTransaction\] and</span>
+        <span class="doccomment">/// \[Commit][google.spanner.v1.Spanner.Commit\] instead.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">SingleUseTransaction</span>(<span class="kw">super</span><span class="ident">::TransactionOptions</span>),
+        <span class="ident">SingleUseTransaction</span>(<span class="ident"><span class="kw">super</span>::TransactionOptions</span>),
     }
 }
-<span class="doccomment">/// The request for [Rollback][google.spanner.v1.Spanner.Rollback].</span>
+<span class="doccomment">/// The request for \[Rollback][google.spanner.v1.Spanner.Rollback\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RollbackRequest</span> {
     <span class="doccomment">/// Required. The session in which the transaction to roll back is running.</span>
@@ -4052,7 +4049,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">SpannerClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -4065,7 +4062,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SpannerClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -4111,8 +4108,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; periodically, e.g., `\&quot;SELECT 1\&quot;`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_session</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateSessionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Session</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateSessionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Session</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4130,8 +4127,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; See https://goo.gl/TgSFN2 for best practices on session cache management.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_create_sessions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchCreateSessionsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchCreateSessionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchCreateSessionsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchCreateSessionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4149,8 +4146,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; alive.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_session</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetSessionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Session</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetSessionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Session</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4165,8 +4162,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists all sessions in a given database.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_sessions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListSessionsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListSessionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListSessionsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListSessionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4183,7 +4180,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; this session.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_session</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteSessionRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteSessionRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4209,8 +4206,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql] instead.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">execute_sql</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ExecuteSqlRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ResultSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ExecuteSqlRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ResultSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4229,8 +4226,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; column value can exceed 10 MiB.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">execute_streaming_sql</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ExecuteSqlRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PartialResultSet</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ExecuteSqlRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PartialResultSet</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4259,8 +4256,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; are not executed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">execute_batch_dml</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ExecuteBatchDmlRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ExecuteBatchDmlResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ExecuteBatchDmlRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ExecuteBatchDmlResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4287,8 +4284,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [StreamingRead][google.spanner.v1.Spanner.StreamingRead] instead.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">read</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ResultSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ResultSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4306,8 +4303,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; 10 MiB.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">streaming_read</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PartialResultSet</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PartialResultSet</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4328,8 +4325,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; side-effect.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">begin_transaction</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BeginTransactionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Transaction</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BeginTransactionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Transaction</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4357,8 +4354,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; state of things as they are now.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">commit</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CommitRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CommitResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CommitRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CommitResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4379,7 +4376,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; found. `Rollback` never returns `ABORTED`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">rollback</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RollbackRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RollbackRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4404,8 +4401,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the whole operation must be restarted from the beginning.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">partition_query</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PartitionQueryRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PartitionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PartitionQueryRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PartitionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4432,8 +4429,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the whole operation must be restarted from the beginning.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">partition_read</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PartitionReadRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PartitionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PartitionReadRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PartitionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4447,5 +4444,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

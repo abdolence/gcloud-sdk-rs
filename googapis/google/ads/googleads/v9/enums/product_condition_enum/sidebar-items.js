@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ProductCondition","Enum describing the condition of a product offer."]]});

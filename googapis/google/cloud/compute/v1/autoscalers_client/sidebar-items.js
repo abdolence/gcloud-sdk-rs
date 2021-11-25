@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AutoscalersClient","The Autoscalers API."]]});

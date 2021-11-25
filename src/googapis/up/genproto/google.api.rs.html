@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.api.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.api.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.api.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.api.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3211,8 +3209,444 @@
 <span id="3209">3209</span>
 <span id="3210">3210</span>
 <span id="3211">3211</span>
-</pre><pre class="rust">
-<span class="doccomment">/// An indicator of the behavior of a given field (for example, that a field</span>
+<span id="3212">3212</span>
+<span id="3213">3213</span>
+<span id="3214">3214</span>
+<span id="3215">3215</span>
+<span id="3216">3216</span>
+<span id="3217">3217</span>
+<span id="3218">3218</span>
+<span id="3219">3219</span>
+<span id="3220">3220</span>
+<span id="3221">3221</span>
+<span id="3222">3222</span>
+<span id="3223">3223</span>
+<span id="3224">3224</span>
+<span id="3225">3225</span>
+<span id="3226">3226</span>
+<span id="3227">3227</span>
+<span id="3228">3228</span>
+<span id="3229">3229</span>
+<span id="3230">3230</span>
+<span id="3231">3231</span>
+<span id="3232">3232</span>
+<span id="3233">3233</span>
+<span id="3234">3234</span>
+<span id="3235">3235</span>
+<span id="3236">3236</span>
+<span id="3237">3237</span>
+<span id="3238">3238</span>
+<span id="3239">3239</span>
+<span id="3240">3240</span>
+<span id="3241">3241</span>
+<span id="3242">3242</span>
+<span id="3243">3243</span>
+<span id="3244">3244</span>
+<span id="3245">3245</span>
+<span id="3246">3246</span>
+<span id="3247">3247</span>
+<span id="3248">3248</span>
+<span id="3249">3249</span>
+<span id="3250">3250</span>
+<span id="3251">3251</span>
+<span id="3252">3252</span>
+<span id="3253">3253</span>
+<span id="3254">3254</span>
+<span id="3255">3255</span>
+<span id="3256">3256</span>
+<span id="3257">3257</span>
+<span id="3258">3258</span>
+<span id="3259">3259</span>
+<span id="3260">3260</span>
+<span id="3261">3261</span>
+<span id="3262">3262</span>
+<span id="3263">3263</span>
+<span id="3264">3264</span>
+<span id="3265">3265</span>
+<span id="3266">3266</span>
+<span id="3267">3267</span>
+<span id="3268">3268</span>
+<span id="3269">3269</span>
+<span id="3270">3270</span>
+<span id="3271">3271</span>
+<span id="3272">3272</span>
+<span id="3273">3273</span>
+<span id="3274">3274</span>
+<span id="3275">3275</span>
+<span id="3276">3276</span>
+<span id="3277">3277</span>
+<span id="3278">3278</span>
+<span id="3279">3279</span>
+<span id="3280">3280</span>
+<span id="3281">3281</span>
+<span id="3282">3282</span>
+<span id="3283">3283</span>
+<span id="3284">3284</span>
+<span id="3285">3285</span>
+<span id="3286">3286</span>
+<span id="3287">3287</span>
+<span id="3288">3288</span>
+<span id="3289">3289</span>
+<span id="3290">3290</span>
+<span id="3291">3291</span>
+<span id="3292">3292</span>
+<span id="3293">3293</span>
+<span id="3294">3294</span>
+<span id="3295">3295</span>
+<span id="3296">3296</span>
+<span id="3297">3297</span>
+<span id="3298">3298</span>
+<span id="3299">3299</span>
+<span id="3300">3300</span>
+<span id="3301">3301</span>
+<span id="3302">3302</span>
+<span id="3303">3303</span>
+<span id="3304">3304</span>
+<span id="3305">3305</span>
+<span id="3306">3306</span>
+<span id="3307">3307</span>
+<span id="3308">3308</span>
+<span id="3309">3309</span>
+<span id="3310">3310</span>
+<span id="3311">3311</span>
+<span id="3312">3312</span>
+<span id="3313">3313</span>
+<span id="3314">3314</span>
+<span id="3315">3315</span>
+<span id="3316">3316</span>
+<span id="3317">3317</span>
+<span id="3318">3318</span>
+<span id="3319">3319</span>
+<span id="3320">3320</span>
+<span id="3321">3321</span>
+<span id="3322">3322</span>
+<span id="3323">3323</span>
+<span id="3324">3324</span>
+<span id="3325">3325</span>
+<span id="3326">3326</span>
+<span id="3327">3327</span>
+<span id="3328">3328</span>
+<span id="3329">3329</span>
+<span id="3330">3330</span>
+<span id="3331">3331</span>
+<span id="3332">3332</span>
+<span id="3333">3333</span>
+<span id="3334">3334</span>
+<span id="3335">3335</span>
+<span id="3336">3336</span>
+<span id="3337">3337</span>
+<span id="3338">3338</span>
+<span id="3339">3339</span>
+<span id="3340">3340</span>
+<span id="3341">3341</span>
+<span id="3342">3342</span>
+<span id="3343">3343</span>
+<span id="3344">3344</span>
+<span id="3345">3345</span>
+<span id="3346">3346</span>
+<span id="3347">3347</span>
+<span id="3348">3348</span>
+<span id="3349">3349</span>
+<span id="3350">3350</span>
+<span id="3351">3351</span>
+<span id="3352">3352</span>
+<span id="3353">3353</span>
+<span id="3354">3354</span>
+<span id="3355">3355</span>
+<span id="3356">3356</span>
+<span id="3357">3357</span>
+<span id="3358">3358</span>
+<span id="3359">3359</span>
+<span id="3360">3360</span>
+<span id="3361">3361</span>
+<span id="3362">3362</span>
+<span id="3363">3363</span>
+<span id="3364">3364</span>
+<span id="3365">3365</span>
+<span id="3366">3366</span>
+<span id="3367">3367</span>
+<span id="3368">3368</span>
+<span id="3369">3369</span>
+<span id="3370">3370</span>
+<span id="3371">3371</span>
+<span id="3372">3372</span>
+<span id="3373">3373</span>
+<span id="3374">3374</span>
+<span id="3375">3375</span>
+<span id="3376">3376</span>
+<span id="3377">3377</span>
+<span id="3378">3378</span>
+<span id="3379">3379</span>
+<span id="3380">3380</span>
+<span id="3381">3381</span>
+<span id="3382">3382</span>
+<span id="3383">3383</span>
+<span id="3384">3384</span>
+<span id="3385">3385</span>
+<span id="3386">3386</span>
+<span id="3387">3387</span>
+<span id="3388">3388</span>
+<span id="3389">3389</span>
+<span id="3390">3390</span>
+<span id="3391">3391</span>
+<span id="3392">3392</span>
+<span id="3393">3393</span>
+<span id="3394">3394</span>
+<span id="3395">3395</span>
+<span id="3396">3396</span>
+<span id="3397">3397</span>
+<span id="3398">3398</span>
+<span id="3399">3399</span>
+<span id="3400">3400</span>
+<span id="3401">3401</span>
+<span id="3402">3402</span>
+<span id="3403">3403</span>
+<span id="3404">3404</span>
+<span id="3405">3405</span>
+<span id="3406">3406</span>
+<span id="3407">3407</span>
+<span id="3408">3408</span>
+<span id="3409">3409</span>
+<span id="3410">3410</span>
+<span id="3411">3411</span>
+<span id="3412">3412</span>
+<span id="3413">3413</span>
+<span id="3414">3414</span>
+<span id="3415">3415</span>
+<span id="3416">3416</span>
+<span id="3417">3417</span>
+<span id="3418">3418</span>
+<span id="3419">3419</span>
+<span id="3420">3420</span>
+<span id="3421">3421</span>
+<span id="3422">3422</span>
+<span id="3423">3423</span>
+<span id="3424">3424</span>
+<span id="3425">3425</span>
+<span id="3426">3426</span>
+<span id="3427">3427</span>
+<span id="3428">3428</span>
+<span id="3429">3429</span>
+<span id="3430">3430</span>
+<span id="3431">3431</span>
+<span id="3432">3432</span>
+<span id="3433">3433</span>
+<span id="3434">3434</span>
+<span id="3435">3435</span>
+<span id="3436">3436</span>
+<span id="3437">3437</span>
+<span id="3438">3438</span>
+<span id="3439">3439</span>
+<span id="3440">3440</span>
+<span id="3441">3441</span>
+<span id="3442">3442</span>
+<span id="3443">3443</span>
+<span id="3444">3444</span>
+<span id="3445">3445</span>
+<span id="3446">3446</span>
+<span id="3447">3447</span>
+<span id="3448">3448</span>
+<span id="3449">3449</span>
+<span id="3450">3450</span>
+<span id="3451">3451</span>
+<span id="3452">3452</span>
+<span id="3453">3453</span>
+<span id="3454">3454</span>
+<span id="3455">3455</span>
+<span id="3456">3456</span>
+<span id="3457">3457</span>
+<span id="3458">3458</span>
+<span id="3459">3459</span>
+<span id="3460">3460</span>
+<span id="3461">3461</span>
+<span id="3462">3462</span>
+<span id="3463">3463</span>
+<span id="3464">3464</span>
+<span id="3465">3465</span>
+<span id="3466">3466</span>
+<span id="3467">3467</span>
+<span id="3468">3468</span>
+<span id="3469">3469</span>
+<span id="3470">3470</span>
+<span id="3471">3471</span>
+<span id="3472">3472</span>
+<span id="3473">3473</span>
+<span id="3474">3474</span>
+<span id="3475">3475</span>
+<span id="3476">3476</span>
+<span id="3477">3477</span>
+<span id="3478">3478</span>
+<span id="3479">3479</span>
+<span id="3480">3480</span>
+<span id="3481">3481</span>
+<span id="3482">3482</span>
+<span id="3483">3483</span>
+<span id="3484">3484</span>
+<span id="3485">3485</span>
+<span id="3486">3486</span>
+<span id="3487">3487</span>
+<span id="3488">3488</span>
+<span id="3489">3489</span>
+<span id="3490">3490</span>
+<span id="3491">3491</span>
+<span id="3492">3492</span>
+<span id="3493">3493</span>
+<span id="3494">3494</span>
+<span id="3495">3495</span>
+<span id="3496">3496</span>
+<span id="3497">3497</span>
+<span id="3498">3498</span>
+<span id="3499">3499</span>
+<span id="3500">3500</span>
+<span id="3501">3501</span>
+<span id="3502">3502</span>
+<span id="3503">3503</span>
+<span id="3504">3504</span>
+<span id="3505">3505</span>
+<span id="3506">3506</span>
+<span id="3507">3507</span>
+<span id="3508">3508</span>
+<span id="3509">3509</span>
+<span id="3510">3510</span>
+<span id="3511">3511</span>
+<span id="3512">3512</span>
+<span id="3513">3513</span>
+<span id="3514">3514</span>
+<span id="3515">3515</span>
+<span id="3516">3516</span>
+<span id="3517">3517</span>
+<span id="3518">3518</span>
+<span id="3519">3519</span>
+<span id="3520">3520</span>
+<span id="3521">3521</span>
+<span id="3522">3522</span>
+<span id="3523">3523</span>
+<span id="3524">3524</span>
+<span id="3525">3525</span>
+<span id="3526">3526</span>
+<span id="3527">3527</span>
+<span id="3528">3528</span>
+<span id="3529">3529</span>
+<span id="3530">3530</span>
+<span id="3531">3531</span>
+<span id="3532">3532</span>
+<span id="3533">3533</span>
+<span id="3534">3534</span>
+<span id="3535">3535</span>
+<span id="3536">3536</span>
+<span id="3537">3537</span>
+<span id="3538">3538</span>
+<span id="3539">3539</span>
+<span id="3540">3540</span>
+<span id="3541">3541</span>
+<span id="3542">3542</span>
+<span id="3543">3543</span>
+<span id="3544">3544</span>
+<span id="3545">3545</span>
+<span id="3546">3546</span>
+<span id="3547">3547</span>
+<span id="3548">3548</span>
+<span id="3549">3549</span>
+<span id="3550">3550</span>
+<span id="3551">3551</span>
+<span id="3552">3552</span>
+<span id="3553">3553</span>
+<span id="3554">3554</span>
+<span id="3555">3555</span>
+<span id="3556">3556</span>
+<span id="3557">3557</span>
+<span id="3558">3558</span>
+<span id="3559">3559</span>
+<span id="3560">3560</span>
+<span id="3561">3561</span>
+<span id="3562">3562</span>
+<span id="3563">3563</span>
+<span id="3564">3564</span>
+<span id="3565">3565</span>
+<span id="3566">3566</span>
+<span id="3567">3567</span>
+<span id="3568">3568</span>
+<span id="3569">3569</span>
+<span id="3570">3570</span>
+<span id="3571">3571</span>
+<span id="3572">3572</span>
+<span id="3573">3573</span>
+<span id="3574">3574</span>
+<span id="3575">3575</span>
+<span id="3576">3576</span>
+<span id="3577">3577</span>
+<span id="3578">3578</span>
+<span id="3579">3579</span>
+<span id="3580">3580</span>
+<span id="3581">3581</span>
+<span id="3582">3582</span>
+<span id="3583">3583</span>
+<span id="3584">3584</span>
+<span id="3585">3585</span>
+<span id="3586">3586</span>
+<span id="3587">3587</span>
+<span id="3588">3588</span>
+<span id="3589">3589</span>
+<span id="3590">3590</span>
+<span id="3591">3591</span>
+<span id="3592">3592</span>
+<span id="3593">3593</span>
+<span id="3594">3594</span>
+<span id="3595">3595</span>
+<span id="3596">3596</span>
+<span id="3597">3597</span>
+<span id="3598">3598</span>
+<span id="3599">3599</span>
+<span id="3600">3600</span>
+<span id="3601">3601</span>
+<span id="3602">3602</span>
+<span id="3603">3603</span>
+<span id="3604">3604</span>
+<span id="3605">3605</span>
+<span id="3606">3606</span>
+<span id="3607">3607</span>
+<span id="3608">3608</span>
+<span id="3609">3609</span>
+<span id="3610">3610</span>
+<span id="3611">3611</span>
+<span id="3612">3612</span>
+<span id="3613">3613</span>
+<span id="3614">3614</span>
+<span id="3615">3615</span>
+<span id="3616">3616</span>
+<span id="3617">3617</span>
+<span id="3618">3618</span>
+<span id="3619">3619</span>
+<span id="3620">3620</span>
+<span id="3621">3621</span>
+<span id="3622">3622</span>
+<span id="3623">3623</span>
+<span id="3624">3624</span>
+<span id="3625">3625</span>
+<span id="3626">3626</span>
+<span id="3627">3627</span>
+<span id="3628">3628</span>
+<span id="3629">3629</span>
+<span id="3630">3630</span>
+<span id="3631">3631</span>
+<span id="3632">3632</span>
+<span id="3633">3633</span>
+<span id="3634">3634</span>
+<span id="3635">3635</span>
+<span id="3636">3636</span>
+<span id="3637">3637</span>
+<span id="3638">3638</span>
+<span id="3639">3639</span>
+<span id="3640">3640</span>
+<span id="3641">3641</span>
+<span id="3642">3642</span>
+<span id="3643">3643</span>
+<span id="3644">3644</span>
+<span id="3645">3645</span>
+<span id="3646">3646</span>
+<span id="3647">3647</span>
+<span id="3648">3648</span>
+</pre><pre class="rust"><code><span class="doccomment">/// An indicator of the behavior of a given field (for example, that a field</span>
 <span class="doccomment">/// is required in requests, or given as output but ignored as input).</span>
 <span class="doccomment">/// This **does not** change the behavior in protocol buffers itself; it only</span>
 <span class="doccomment">/// denotes the behavior and may affect how API tooling handles the field.</span>
@@ -3372,7 +3806,7 @@
     <span class="doccomment">/// Example: `storage.googleapis.com/Bucket`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The value of the resource_type_kind must follow the regular expression</span>
-    <span class="doccomment">/// /[A-Za-z][a-zA-Z0-9]+/. It should start with an upper case character and</span>
+    <span class="doccomment">/// /\[A-Za-z][a-zA-Z0-9\]+/. It should start with an upper case character and</span>
     <span class="doccomment">/// should use PascalCase (UpperCamelCase). The maximum number of</span>
     <span class="doccomment">/// characters allowed for the `resource_type_kind` is 100.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -3423,14 +3857,14 @@
     <span class="doccomment">/// &#39;projects&#39; for the resource name of &#39;projects/{project}&#39; and the permission</span>
     <span class="doccomment">/// name of &#39;cloudresourcemanager.googleapis.com/projects.get&#39;. It is the same</span>
     <span class="doccomment">/// concept of the `plural` field in k8s CRD spec</span>
-    <span class="doccomment">/// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/</span>
+    <span class="doccomment">/// &lt;https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note: The plural form is required even for singleton resources. See</span>
-    <span class="doccomment">/// https://aip.dev/156</span>
+    <span class="doccomment">/// &lt;https://aip.dev/156&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">plural</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The same concept of the `singular` field in k8s CRD spec</span>
-    <span class="doccomment">/// https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/</span>
+    <span class="doccomment">/// &lt;https://kubernetes.io/docs/tasks/access-kubernetes-api/custom-resources/custom-resource-definitions/&gt;</span>
     <span class="doccomment">/// Such as &quot;project&quot; for the `resourcemanager.googleapis.com/Project` type.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">singular</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3515,7 +3949,7 @@
     <span class="kw">pub</span> <span class="ident">child_type</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Defines the HTTP configuration for an API service. It contains a list of</span>
-<span class="doccomment">/// [HttpRule][google.api.HttpRule], each specifying the mapping of an RPC method</span>
+<span class="doccomment">/// \[HttpRule][google.api.HttpRule\], each specifying the mapping of an RPC method</span>
 <span class="doccomment">/// to one or more HTTP REST API methods.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Http</span> {
@@ -3538,10 +3972,10 @@
 <span class="doccomment">/// gRPC Transcoding is a feature for mapping between a gRPC method and one or</span>
 <span class="doccomment">/// more HTTP REST endpoints. It allows developers to build a single API service</span>
 <span class="doccomment">/// that supports both gRPC APIs and REST APIs. Many systems, including [Google</span>
-<span class="doccomment">/// APIs](https://github.com/googleapis/googleapis),</span>
-<span class="doccomment">/// [Cloud Endpoints](https://cloud.google.com/endpoints), [gRPC</span>
-<span class="doccomment">/// Gateway](https://github.com/grpc-ecosystem/grpc-gateway),</span>
-<span class="doccomment">/// and [Envoy](https://github.com/envoyproxy/envoy) proxy support this feature</span>
+<span class="doccomment">/// APIs](&lt;https://github.com/googleapis/googleapis&gt;),</span>
+<span class="doccomment">/// [Cloud Endpoints](&lt;https://cloud.google.com/endpoints&gt;), [gRPC</span>
+<span class="doccomment">/// Gateway](&lt;https://github.com/grpc-ecosystem/grpc-gateway&gt;),</span>
+<span class="doccomment">/// and \[Envoy\](&lt;https://github.com/envoyproxy/envoy&gt;) proxy support this feature</span>
 <span class="doccomment">/// and use it for large scale production services.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// `HttpRule` defines the schema of the gRPC/REST mapping. The mapping specifies</span>
@@ -3702,15 +4136,15 @@
 <span class="doccomment">/// 1. Leaf request fields (recursive expansion nested messages in the request</span>
 <span class="doccomment">///    message) are classified into three categories:</span>
 <span class="doccomment">///    - Fields referred by the path template. They are passed via the URL path.</span>
-<span class="doccomment">///    - Fields referred by the [HttpRule.body][google.api.HttpRule.body]. They are passed via the HTTP</span>
+<span class="doccomment">///    - Fields referred by the \[HttpRule.body][google.api.HttpRule.body\]. They are passed via the HTTP</span>
 <span class="doccomment">///      request body.</span>
 <span class="doccomment">///    - All other fields are passed via the URL query parameters, and the</span>
 <span class="doccomment">///      parameter name is the field path in the request message. A repeated</span>
 <span class="doccomment">///      field can be represented as multiple query parameters under the same</span>
 <span class="doccomment">///      name.</span>
-<span class="doccomment">///  2. If [HttpRule.body][google.api.HttpRule.body] is &quot;*&quot;, there is no URL query parameter, all fields</span>
+<span class="doccomment">///  2. If \[HttpRule.body][google.api.HttpRule.body\] is &quot;*&quot;, there is no URL query parameter, all fields</span>
 <span class="doccomment">///     are passed via URL path and HTTP request body.</span>
-<span class="doccomment">///  3. If [HttpRule.body][google.api.HttpRule.body] is omitted, there is no HTTP request body, all</span>
+<span class="doccomment">///  3. If \[HttpRule.body][google.api.HttpRule.body\] is omitted, there is no HTTP request body, all</span>
 <span class="doccomment">///     fields are passed via URL path and URL query parameters.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ### Path template syntax</span>
@@ -3737,19 +4171,19 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// If a variable contains exactly one path segment, such as `&quot;{var}&quot;` or</span>
 <span class="doccomment">/// `&quot;{var=*}&quot;`, when such a variable is expanded into a URL path on the client</span>
-<span class="doccomment">/// side, all characters except `[-_.~0-9a-zA-Z]` are percent-encoded. The</span>
+<span class="doccomment">/// side, all characters except `\[-_.~0-9a-zA-Z\]` are percent-encoded. The</span>
 <span class="doccomment">/// server side does the reverse decoding. Such variables show up in the</span>
 <span class="doccomment">/// [Discovery</span>
-<span class="doccomment">/// Document](https://developers.google.com/discovery/v1/reference/apis) as</span>
+<span class="doccomment">/// Document](&lt;https://developers.google.com/discovery/v1/reference/apis&gt;) as</span>
 <span class="doccomment">/// `{var}`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// If a variable contains multiple path segments, such as `&quot;{var=foo/*}&quot;`</span>
 <span class="doccomment">/// or `&quot;{var=**}&quot;`, when such a variable is expanded into a URL path on the</span>
-<span class="doccomment">/// client side, all characters except `[-_.~/0-9a-zA-Z]` are percent-encoded.</span>
+<span class="doccomment">/// client side, all characters except `\[-_.~/0-9a-zA-Z\]` are percent-encoded.</span>
 <span class="doccomment">/// The server side does the reverse decoding, except &quot;%2F&quot; and &quot;%2f&quot; are left</span>
 <span class="doccomment">/// unchanged. Such variables show up in the</span>
 <span class="doccomment">/// [Discovery</span>
-<span class="doccomment">/// Document](https://developers.google.com/discovery/v1/reference/apis) as</span>
+<span class="doccomment">/// Document](&lt;https://developers.google.com/discovery/v1/reference/apis&gt;) as</span>
 <span class="doccomment">/// `{+var}`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ## Using gRPC API Service Configuration</span>
@@ -3779,10 +4213,10 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// When gRPC Transcoding is used to map a gRPC to JSON REST endpoints, the</span>
 <span class="doccomment">/// proto to JSON conversion must follow the [proto3</span>
-<span class="doccomment">/// specification](https://developers.google.com/protocol-buffers/docs/proto3#json).</span>
+<span class="doccomment">/// specification](&lt;https://developers.google.com/protocol-buffers/docs/proto3#json&gt;).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// While the single segment variable follows the semantics of</span>
-<span class="doccomment">/// [RFC 6570](https://tools.ietf.org/html/rfc6570) Section 3.2.2 Simple String</span>
+<span class="doccomment">/// [RFC 6570](&lt;https://tools.ietf.org/html/rfc6570&gt;) Section 3.2.2 Simple String</span>
 <span class="doccomment">/// Expansion, the multi segment variable **does not** follow RFC 6570 Section</span>
 <span class="doccomment">/// 3.2.3 Reserved Expansion. The reason is that the Reserved Expansion</span>
 <span class="doccomment">/// does not expand special characters like `?` and `#`, which would lead</span>
@@ -3806,7 +4240,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HttpRule</span> {
     <span class="doccomment">/// Selects a method to which this rule applies.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.</span>
+    <span class="doccomment">/// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">selector</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the request field whose value is mapped to the HTTP request</span>
@@ -3864,7 +4298,7 @@
         <span class="doccomment">/// HTTP method unspecified for this rule. The wild-card rule is useful</span>
         <span class="doccomment">/// for services that provide content to Web (HTML) clients.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">Custom</span>(<span class="kw">super</span><span class="ident">::CustomHttpPattern</span>),
+        <span class="ident">Custom</span>(<span class="ident"><span class="kw">super</span>::CustomHttpPattern</span>),
     }
 }
 <span class="doccomment">/// A custom pattern is used for defining custom HTTP verb.</span>
@@ -3886,15 +4320,15 @@
 <span class="doccomment">///     authentication:</span>
 <span class="doccomment">///       providers:</span>
 <span class="doccomment">///       - id: google_calendar_auth</span>
-<span class="doccomment">///         jwks_uri: https://www.googleapis.com/oauth2/v1/certs</span>
-<span class="doccomment">///         issuer: https://securetoken.google.com</span>
+<span class="doccomment">///         jwks_uri: &lt;https://www.googleapis.com/oauth2/v1/certs&gt;</span>
+<span class="doccomment">///         issuer: &lt;https://securetoken.google.com&gt;</span>
 <span class="doccomment">///       rules:</span>
 <span class="doccomment">///       - selector: &quot;*&quot;</span>
 <span class="doccomment">///         requirements:</span>
 <span class="doccomment">///           provider_id: google_calendar_auth</span>
 <span class="doccomment">///       - selector: google.calendar.Delegate</span>
 <span class="doccomment">///         oauth:</span>
-<span class="doccomment">///           canonical_scopes: https://www.googleapis.com/auth/calendar.read</span>
+<span class="doccomment">///           canonical_scopes: &lt;https://www.googleapis.com/auth/calendar.read&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Authentication</span> {
     <span class="doccomment">/// A list of authentication rules that apply to individual API methods.</span>
@@ -3919,7 +4353,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AuthenticationRule</span> {
     <span class="doccomment">/// Selects the methods to which this rule applies.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.</span>
+    <span class="doccomment">/// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">selector</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The requirements for OAuth credentials.</span>
@@ -3963,7 +4397,7 @@
 }
 <span class="doccomment">/// Configuration for an authentication provider, including support for</span>
 <span class="doccomment">/// [JSON Web Token</span>
-<span class="doccomment">/// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).</span>
+<span class="doccomment">/// (JWT)](&lt;https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AuthProvider</span> {
     <span class="doccomment">/// The unique identifier of the auth provider. It will be referred to by</span>
@@ -3973,39 +4407,39 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Identifies the principal that issued the JWT. See</span>
-    <span class="doccomment">/// https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.1</span>
+    <span class="doccomment">/// &lt;https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.1&gt;</span>
     <span class="doccomment">/// Usually a URL or an email address.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Example: https://securetoken.google.com</span>
+    <span class="doccomment">/// Example: &lt;https://securetoken.google.com&gt;</span>
     <span class="doccomment">/// Example: 1234567-compute@developer.gserviceaccount.com</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">issuer</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// URL of the provider&#39;s public key set to validate signature of the JWT. See</span>
     <span class="doccomment">/// [OpenID</span>
-    <span class="doccomment">/// Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata).</span>
+    <span class="doccomment">/// Discovery](&lt;https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata&gt;).</span>
     <span class="doccomment">/// Optional if the key set document:</span>
     <span class="doccomment">///  - can be retrieved from</span>
     <span class="doccomment">///    [OpenID</span>
-    <span class="doccomment">///    Discovery](https://openid.net/specs/openid-connect-discovery-1_0.html)</span>
+    <span class="doccomment">///    Discovery](&lt;https://openid.net/specs/openid-connect-discovery-1_0.html&gt;)</span>
     <span class="doccomment">///    of the issuer.</span>
     <span class="doccomment">///  - can be inferred from the email domain of the issuer (e.g. a Google</span>
     <span class="doccomment">///  service account).</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Example: https://www.googleapis.com/oauth2/v1/certs</span>
+    <span class="doccomment">/// Example: &lt;https://www.googleapis.com/oauth2/v1/certs&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">jwks_uri</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The list of JWT</span>
-    <span class="doccomment">/// [audiences](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3).</span>
+    <span class="doccomment">/// \[audiences\](&lt;https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3&gt;).</span>
     <span class="doccomment">/// that are allowed to access. A JWT containing any of these audiences will</span>
     <span class="doccomment">/// be accepted. When this setting is absent, JWTs with audiences:</span>
-    <span class="doccomment">///   - &quot;https://[service.name]/[google.protobuf.Api.name]&quot;</span>
-    <span class="doccomment">///   - &quot;https://[service.name]/&quot;</span>
+    <span class="doccomment">///   - &quot;&lt;https://\[service.name]/[google.protobuf.Api.name\]&quot;&gt;</span>
+    <span class="doccomment">///   - &quot;&lt;https://\[service.name\]/&quot;&gt;</span>
     <span class="doccomment">/// will be accepted.</span>
     <span class="doccomment">/// For example, if no audiences are in the setting, LibraryService API will</span>
     <span class="doccomment">/// accept JWTs with the following audiences:</span>
     <span class="doccomment">///   -</span>
-    <span class="doccomment">///   https://library-example.googleapis.com/google.example.library.v1.LibraryService</span>
-    <span class="doccomment">///   - https://library-example.googleapis.com/</span>
+    <span class="doccomment">///   &lt;https://library-example.googleapis.com/google.example.library.v1.LibraryService&gt;</span>
+    <span class="doccomment">///   - &lt;https://library-example.googleapis.com/&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">///</span>
@@ -4062,17 +4496,17 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///      canonical_scopes: https://www.googleapis.com/auth/calendar,</span>
-    <span class="doccomment">///                        https://www.googleapis.com/auth/calendar.read</span>
+    <span class="doccomment">///      canonical_scopes: &lt;https://www.googleapis.com/auth/calendar,&gt;</span>
+    <span class="doccomment">///                        &lt;https://www.googleapis.com/auth/calendar.read&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">canonical_scopes</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// User-defined authentication requirements, including support for</span>
 <span class="doccomment">/// [JSON Web Token</span>
-<span class="doccomment">/// (JWT)](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32).</span>
+<span class="doccomment">/// (JWT)](&lt;https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AuthRequirement</span> {
-    <span class="doccomment">/// [id][google.api.AuthProvider.id] from authentication provider.</span>
+    <span class="doccomment">/// \[id][google.api.AuthProvider.id\] from authentication provider.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">///</span>
@@ -4083,13 +4517,13 @@
     <span class="doccomment">/// implemented and accepted in all the runtime components.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The list of JWT</span>
-    <span class="doccomment">/// [audiences](https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3).</span>
+    <span class="doccomment">/// \[audiences\](&lt;https://tools.ietf.org/html/draft-ietf-oauth-json-web-token-32#section-4.1.3&gt;).</span>
     <span class="doccomment">/// that are allowed to access. A JWT containing any of these audiences will</span>
     <span class="doccomment">/// be accepted. When this setting is absent, only JWTs with audience</span>
-    <span class="doccomment">/// &quot;https://[Service_name][google.api.Service.name]/[API_name][google.protobuf.Api.name]&quot;</span>
+    <span class="doccomment">/// &quot;&lt;https://\[Service_name][google.api.Service.name]/[API_name][google.protobuf.Api.name\]&quot;&gt;</span>
     <span class="doccomment">/// will be accepted. For example, if no audiences are in the setting,</span>
     <span class="doccomment">/// LibraryService API will only accept JWTs with the following audience</span>
-    <span class="doccomment">/// &quot;https://library-example.googleapis.com/google.example.library.v1.LibraryService&quot;.</span>
+    <span class="doccomment">/// &quot;&lt;https://library-example.googleapis.com/google.example.library.v1.LibraryService&quot;.&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">///</span>
@@ -4112,7 +4546,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BackendRule</span> {
     <span class="doccomment">/// Selects the methods to which this rule applies.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.</span>
+    <span class="doccomment">/// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">selector</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The address of the API backend.</span>
@@ -4133,7 +4567,7 @@
     <span class="doccomment">/// - 80 for schemes without TLS</span>
     <span class="doccomment">/// - 443 for schemes with TLS</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// For HTTP backends, use [protocol][google.api.BackendRule.protocol]</span>
+    <span class="doccomment">/// For HTTP backends, use \[protocol][google.api.BackendRule.protocol\]</span>
     <span class="doccomment">/// to specify the protocol version.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">address</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -4155,7 +4589,7 @@
     <span class="doccomment">/// The supported values are &quot;http/1.1&quot; and &quot;h2&quot;.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The default value is inferred from the scheme in the</span>
-    <span class="doccomment">/// [address][google.api.BackendRule.address] field:</span>
+    <span class="doccomment">/// \[address][google.api.BackendRule.address\] field:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///    SCHEME        PROTOCOL</span>
     <span class="doccomment">///    http://       http/1.1</span>
@@ -4170,7 +4604,7 @@
     <span class="doccomment">/// HTTP backends. This field will be ignored for all other backends.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See</span>
-    <span class="doccomment">/// https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids</span>
+    <span class="doccomment">/// &lt;https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids&gt;</span>
     <span class="doccomment">/// for more details on the supported values.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">protocol</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -4186,7 +4620,7 @@
     <span class="doccomment">/// When authentication is unspecified, the resulting behavior is the same</span>
     <span class="doccomment">/// as `disable_auth` set to `true`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to https://developers.google.com/identity/protocols/OpenIDConnect for</span>
+    <span class="doccomment">/// Refer to &lt;https://developers.google.com/identity/protocols/OpenIDConnect&gt; for</span>
     <span class="doccomment">/// JWT ID token.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;backend_rule::Authentication&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;7, 8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">authentication</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">backend_rule::Authentication</span><span class="op">&gt;</span>,
@@ -4215,18 +4649,18 @@
         <span class="doccomment">/// Given the following operation config:</span>
         <span class="doccomment">///</span>
         <span class="doccomment">///     Method path:        /api/company/{cid}/user/{uid}</span>
-        <span class="doccomment">///     Backend address:    https://example.cloudfunctions.net/getUser</span>
+        <span class="doccomment">///     Backend address:    &lt;https://example.cloudfunctions.net/getUser&gt;</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Requests to the following request paths will call the backend at the</span>
         <span class="doccomment">/// translated path:</span>
         <span class="doccomment">///</span>
         <span class="doccomment">///     Request path: /api/company/widgetworks/user/johndoe</span>
         <span class="doccomment">///     Translated:</span>
-        <span class="doccomment">///     https://example.cloudfunctions.net/getUser?cid=widgetworks&amp;uid=johndoe</span>
+        <span class="doccomment">///     &lt;https://example.cloudfunctions.net/getUser?cid=widgetworks&amp;uid=johndoe&gt;</span>
         <span class="doccomment">///</span>
         <span class="doccomment">///     Request path: /api/company/widgetworks/user/johndoe?timezone=EST</span>
         <span class="doccomment">///     Translated:</span>
-        <span class="doccomment">///     https://example.cloudfunctions.net/getUser?timezone=EST&amp;cid=widgetworks&amp;uid=johndoe</span>
+        <span class="doccomment">///     &lt;https://example.cloudfunctions.net/getUser?timezone=EST&amp;cid=widgetworks&amp;uid=johndoe&gt;</span>
         <span class="ident">ConstantAddress</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// The request path will be appended to the backend address.</span>
         <span class="doccomment">///</span>
@@ -4235,18 +4669,18 @@
         <span class="doccomment">/// Given the following operation config:</span>
         <span class="doccomment">///</span>
         <span class="doccomment">///     Method path:        /api/company/{cid}/user/{uid}</span>
-        <span class="doccomment">///     Backend address:    https://example.appspot.com</span>
+        <span class="doccomment">///     Backend address:    &lt;https://example.appspot.com&gt;</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Requests to the following request paths will call the backend at the</span>
         <span class="doccomment">/// translated path:</span>
         <span class="doccomment">///</span>
         <span class="doccomment">///     Request path: /api/company/widgetworks/user/johndoe</span>
         <span class="doccomment">///     Translated:</span>
-        <span class="doccomment">///     https://example.appspot.com/api/company/widgetworks/user/johndoe</span>
+        <span class="doccomment">///     &lt;https://example.appspot.com/api/company/widgetworks/user/johndoe&gt;</span>
         <span class="doccomment">///</span>
         <span class="doccomment">///     Request path: /api/company/widgetworks/user/johndoe?timezone=EST</span>
         <span class="doccomment">///     Translated:</span>
-        <span class="doccomment">///     https://example.appspot.com/api/company/widgetworks/user/johndoe?timezone=EST</span>
+        <span class="doccomment">///     &lt;https://example.appspot.com/api/company/widgetworks/user/johndoe?timezone=EST&gt;</span>
         <span class="ident">AppendPathToAddress</span> <span class="op">=</span> <span class="number">2</span>,
     }
     <span class="doccomment">/// Authentication settings used by the backend.</span>
@@ -4261,7 +4695,7 @@
     <span class="doccomment">/// When authentication is unspecified, the resulting behavior is the same</span>
     <span class="doccomment">/// as `disable_auth` set to `true`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to https://developers.google.com/identity/protocols/OpenIDConnect for</span>
+    <span class="doccomment">/// Refer to &lt;https://developers.google.com/identity/protocols/OpenIDConnect&gt; for</span>
     <span class="doccomment">/// JWT ID token.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Authentication</span> {
@@ -4306,7 +4740,7 @@
     }
 }
 <span class="doccomment">/// The launch stage as defined by [Google Cloud Platform</span>
-<span class="doccomment">/// Launch Stages](http://cloud.google.com/terms/launch-stages).</span>
+<span class="doccomment">/// Launch Stages](&lt;http://cloud.google.com/terms/launch-stages&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LaunchStage</span> {
@@ -4343,9 +4777,9 @@
     <span class="ident">Ga</span> <span class="op">=</span> <span class="number">4</span>,
     <span class="doccomment">/// Deprecated features are scheduled to be shut down and removed. For more</span>
     <span class="doccomment">/// information, see the “Deprecation Policy” section of our [Terms of</span>
-    <span class="doccomment">/// Service](https://cloud.google.com/terms/)</span>
+    <span class="doccomment">/// Service](&lt;https://cloud.google.com/terms/&gt;)</span>
     <span class="doccomment">/// and the [Google Cloud Platform Subject to the Deprecation</span>
-    <span class="doccomment">/// Policy](https://cloud.google.com/terms/deprecation) documentation.</span>
+    <span class="doccomment">/// Policy](&lt;https://cloud.google.com/terms/deprecation&gt;) documentation.</span>
     <span class="ident">Deprecated</span> <span class="op">=</span> <span class="number">5</span>,
 }
 <span class="doccomment">/// Defines a metric type and its schema. Once a metric descriptor is created,</span>
@@ -4404,7 +4838,7 @@
     <span class="doccomment">/// or use `Kis{CPU}` and write `11.723` (which is `12005/1024`).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The supported units are a subset of [The Unified Code for Units of</span>
-    <span class="doccomment">/// Measure](https://unitsofmeasure.org/ucum.html) standard:</span>
+    <span class="doccomment">/// Measure](&lt;https://unitsofmeasure.org/ucum.html&gt;) standard:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// **Basic units (UNIT)**</span>
     <span class="doccomment">///</span>
@@ -4472,7 +4906,7 @@
     <span class="doccomment">/// * `NAME` is a sequence of non-blank printable ASCII characters not</span>
     <span class="doccomment">///    containing `{` or `}`.</span>
     <span class="doccomment">/// * `1` represents a unitary [dimensionless</span>
-    <span class="doccomment">///    unit](https://en.wikipedia.org/wiki/Dimensionless_quantity) of 1, such</span>
+    <span class="doccomment">///    unit](&lt;https://en.wikipedia.org/wiki/Dimensionless_quantity&gt;) of 1, such</span>
     <span class="doccomment">///    as in `1/s`. It is typically used when none of the basic units are</span>
     <span class="doccomment">///    appropriate. For example, &quot;new users per day&quot; can be represented as</span>
     <span class="doccomment">///    `1/d` or `{new-users}/d` (and a metric value `5` would mean &quot;5 new</span>
@@ -4503,8 +4937,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;LaunchStage&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">launch_stage</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Read-only. If present, then a [time</span>
-    <span class="doccomment">/// series][google.monitoring.v3.TimeSeries], which is identified partially by</span>
-    <span class="doccomment">/// a metric type and a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor], that is associated</span>
+    <span class="doccomment">/// series]\[google.monitoring.v3.TimeSeries\], which is identified partially by</span>
+    <span class="doccomment">/// a metric type and a \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\], that is associated</span>
     <span class="doccomment">/// with this metric type can only be associated with one of the monitored</span>
     <span class="doccomment">/// resource types listed here.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
@@ -4515,7 +4949,7 @@
     <span class="doccomment">/// Additional annotations that can be used to guide the usage of a metric.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MetricDescriptorMetadata</span> {
-        <span class="doccomment">/// Deprecated. Must use the [MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage] instead.</span>
+        <span class="doccomment">/// Deprecated. Must use the \[MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage\] instead.</span>
         <span class="attribute">#[<span class="ident">deprecated</span>]</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;super::LaunchStage&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">launch_stage</span>: <span class="ident">i32</span>,
@@ -4533,7 +4967,7 @@
     }
     <span class="doccomment">/// The kind of measurement. It describes how the data is reported.</span>
     <span class="doccomment">/// For information on setting the start time and end time based on</span>
-    <span class="doccomment">/// the MetricKind, see [TimeInterval][google.monitoring.v3.TimeInterval].</span>
+    <span class="doccomment">/// the MetricKind, see \[TimeInterval][google.monitoring.v3.TimeInterval\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MetricKind</span> {
@@ -4566,17 +5000,17 @@
         <span class="doccomment">/// The value is a text string.</span>
         <span class="doccomment">/// This value type can be used only if the metric kind is `GAUGE`.</span>
         <span class="ident">String</span> <span class="op">=</span> <span class="number">4</span>,
-        <span class="doccomment">/// The value is a [`Distribution`][google.api.Distribution].</span>
+        <span class="doccomment">/// The value is a \[`Distribution`][google.api.Distribution\].</span>
         <span class="ident">Distribution</span> <span class="op">=</span> <span class="number">5</span>,
         <span class="doccomment">/// The value is money.</span>
         <span class="ident">Money</span> <span class="op">=</span> <span class="number">6</span>,
     }
 }
 <span class="doccomment">/// A specific metric, identified by specifying values for all of the</span>
-<span class="doccomment">/// labels of a [`MetricDescriptor`][google.api.MetricDescriptor].</span>
+<span class="doccomment">/// labels of a \[`MetricDescriptor`][google.api.MetricDescriptor\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Metric</span> {
-    <span class="doccomment">/// An existing metric type, see [google.api.MetricDescriptor][google.api.MetricDescriptor].</span>
+    <span class="doccomment">/// An existing metric type, see \[google.api.MetricDescriptor][google.api.MetricDescriptor\].</span>
     <span class="doccomment">/// For example, `custom.googleapis.com/invoice/paid/amount`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -4634,11 +5068,11 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BillingDestination</span> {
         <span class="doccomment">/// The monitored resource type. The type must be defined in</span>
-        <span class="doccomment">/// [Service.monitored_resources][google.api.Service.monitored_resources] section.</span>
+        <span class="doccomment">/// \[Service.monitored_resources][google.api.Service.monitored_resources\] section.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">monitored_resource</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Names of the metrics to report to this billing destination.</span>
-        <span class="doccomment">/// Each name must be defined in [Service.metrics][google.api.Service.metrics] section.</span>
+        <span class="doccomment">/// Each name must be defined in \[Service.metrics][google.api.Service.metrics\] section.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">metrics</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     }
@@ -4657,9 +5091,9 @@
     <span class="doccomment">/// &#39;key&#39; is used. If the field has no unique identifier, the numeric index</span>
     <span class="doccomment">/// is used.</span>
     <span class="doccomment">/// Examples:</span>
-    <span class="doccomment">/// - visibility.rules[selector==&quot;google.LibraryService.ListBooks&quot;].restriction</span>
-    <span class="doccomment">/// - quota.metric_rules[selector==&quot;google&quot;].metric_costs[key==&quot;reads&quot;].value</span>
-    <span class="doccomment">/// - logging.producer_destinations[0]</span>
+    <span class="doccomment">/// - visibility.rules\[selector==&quot;google.LibraryService.ListBooks&quot;\].restriction</span>
+    <span class="doccomment">/// - quota.metric_rules\[selector==&quot;google&quot;].metric_costs[key==&quot;reads&quot;\].value</span>
+    <span class="doccomment">/// - logging.producer_destinations\[0\]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">element</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Value of the changed object in the old Service configuration,</span>
@@ -4816,7 +5250,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ContextRule</span> {
     <span class="doccomment">/// Selects the methods to which this rule applies.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.</span>
+    <span class="doccomment">/// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">selector</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// A list of full type names of requested contexts.</span>
@@ -4872,7 +5306,7 @@
     <span class="doccomment">/// The sum of squared deviations from the mean of the values in the</span>
     <span class="doccomment">/// population. For values x_i this is:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     Sum[i=1..n]((x_i - mean)^2)</span>
+    <span class="doccomment">///     Sum\[i=1..n\]((x_i - mean)^2)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Knuth, &quot;The Art of Computer Programming&quot;, Vol. 2, page 232, 3rd edition</span>
     <span class="doccomment">/// describes Welford&#39;s method for accumulating this sum in one pass.</span>
@@ -4991,7 +5425,7 @@
         <span class="doccomment">/// There are `size(bounds) + 1` (= N) buckets. Bucket `i` has the following</span>
         <span class="doccomment">/// boundaries:</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">///    Upper bound (0 &lt;= i &lt; N-1):     bounds[i]</span>
+        <span class="doccomment">///    Upper bound (0 &lt;= i &lt; N-1):     bounds\[i\]</span>
         <span class="doccomment">///    Lower bound (1 &lt;= i &lt; N);       bounds[i - 1]</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The `bounds` field must contain at least one element. If `bounds` has</span>
@@ -5176,7 +5610,7 @@
     <span class="doccomment">///     content: &amp;#40;== include tutorial_java.md ==&amp;#41;</span>
     <span class="doccomment">/// &lt;/code&gt;&lt;/pre&gt;</span>
     <span class="doccomment">/// You can reference `Java` page using Markdown reference link syntax:</span>
-    <span class="doccomment">/// `[Java][Tutorial.Java]`.</span>
+    <span class="doccomment">/// `\[Java][Tutorial.Java\]`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The Markdown content of the page. You can use &lt;code&gt;&amp;#40;== include {path}</span>
@@ -5212,7 +5646,7 @@
     <span class="doccomment">/// Unimplemented. Dot not use.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// DEPRECATED: This field is no longer supported. Instead of using aliases,</span>
-    <span class="doccomment">/// please specify multiple [google.api.Endpoint][google.api.Endpoint] for each of the intended</span>
+    <span class="doccomment">/// please specify multiple \[google.api.Endpoint][google.api.Endpoint\] for each of the intended</span>
     <span class="doccomment">/// aliases.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Additional names that this endpoint will be hosted on.</span>
@@ -5221,13 +5655,13 @@
     <span class="kw">pub</span> <span class="ident">aliases</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The specification of an Internet routable address of API frontend that will</span>
     <span class="doccomment">/// handle requests to this [API</span>
-    <span class="doccomment">/// Endpoint](https://cloud.google.com/apis/design/glossary). It should be</span>
+    <span class="doccomment">/// Endpoint](&lt;https://cloud.google.com/apis/design/glossary&gt;). It should be</span>
     <span class="doccomment">/// either a valid IPv4 address or a fully-qualified domain name. For example,</span>
     <span class="doccomment">/// &quot;8.8.8.8&quot; or &quot;myservice.appspot.com&quot;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;101&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">target</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Allowing</span>
-    <span class="doccomment">/// [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing), aka</span>
+    <span class="doccomment">/// \[CORS\](&lt;https://en.wikipedia.org/wiki/Cross-origin_resource_sharing&gt;), aka</span>
     <span class="doccomment">/// cross-domain traffic, would allow the backends served from this endpoint to</span>
     <span class="doccomment">/// receive and respond to HTTP OPTIONS requests. The response will be used by</span>
     <span class="doccomment">/// the browser to determine whether the subsequent cross-origin request is</span>
@@ -5237,7 +5671,7 @@
 }
 <span class="doccomment">/// Defines the supported values for `google.rpc.ErrorInfo.reason` for the</span>
 <span class="doccomment">/// `googleapis.com` error domain. This error domain is reserved for [Service</span>
-<span class="doccomment">/// Infrastructure](https://cloud.google.com/service-infrastructure/docs/overview).</span>
+<span class="doccomment">/// Infrastructure](&lt;https://cloud.google.com/service-infrastructure/docs/overview&gt;).</span>
 <span class="doccomment">/// For each error info of this domain, the metadata key &quot;service&quot; refers to the</span>
 <span class="doccomment">/// logical identifier of an API service, such as &quot;pubsub.googleapis.com&quot;. The</span>
 <span class="doccomment">/// &quot;consumer&quot; refers to the entity that consumes an API Service. It typically is</span>
@@ -5283,7 +5717,7 @@
     <span class="doccomment">/// This response indicates the billing account associated has been disabled.</span>
     <span class="ident">BillingDisabled</span> <span class="op">=</span> <span class="number">2</span>,
     <span class="doccomment">/// The request is denied because the provided [API</span>
-    <span class="doccomment">/// key](https://cloud.google.com/docs/authentication/api-keys) is invalid. It</span>
+    <span class="doccomment">/// key](&lt;https://cloud.google.com/docs/authentication/api-keys&gt;) is invalid. It</span>
     <span class="doccomment">/// may be in a bad format, cannot be found, or has been expired).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when the request is contacting</span>
@@ -5297,7 +5731,7 @@
     <span class="doccomment">///     }</span>
     <span class="ident">ApiKeyInvalid</span> <span class="op">=</span> <span class="number">3</span>,
     <span class="doccomment">/// The request is denied because it violates [API key API</span>
-    <span class="doccomment">/// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_api_restrictions).</span>
+    <span class="doccomment">/// restrictions](&lt;https://cloud.google.com/docs/authentication/api-keys#adding_api_restrictions&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when the consumer &quot;projects/123&quot; fails to call the</span>
     <span class="doccomment">/// &quot;storage.googleapis.com&quot; service because this service is restricted in the</span>
@@ -5312,7 +5746,7 @@
     <span class="doccomment">///     }</span>
     <span class="ident">ApiKeyServiceBlocked</span> <span class="op">=</span> <span class="number">4</span>,
     <span class="doccomment">/// The request is denied because it violates [API key HTTP</span>
-    <span class="doccomment">/// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_http_restrictions).</span>
+    <span class="doccomment">/// restrictions](&lt;https://cloud.google.com/docs/authentication/api-keys#adding_http_restrictions&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when the consumer &quot;projects/123&quot; fails to call</span>
     <span class="doccomment">/// &quot;storage.googleapis.com&quot; service because the http referrer of the request</span>
@@ -5327,7 +5761,7 @@
     <span class="doccomment">///     }</span>
     <span class="ident">ApiKeyHttpReferrerBlocked</span> <span class="op">=</span> <span class="number">7</span>,
     <span class="doccomment">/// The request is denied because it violates [API key IP address</span>
-    <span class="doccomment">/// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions).</span>
+    <span class="doccomment">/// restrictions](&lt;https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when the consumer &quot;projects/123&quot; fails to call</span>
     <span class="doccomment">/// &quot;storage.googleapis.com&quot; service because the caller IP of the request</span>
@@ -5342,7 +5776,7 @@
     <span class="doccomment">///     }</span>
     <span class="ident">ApiKeyIpAddressBlocked</span> <span class="op">=</span> <span class="number">8</span>,
     <span class="doccomment">/// The request is denied because it violates [API key Android application</span>
-    <span class="doccomment">/// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions).</span>
+    <span class="doccomment">/// restrictions](&lt;https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when the consumer &quot;projects/123&quot; fails to call</span>
     <span class="doccomment">/// &quot;storage.googleapis.com&quot; service because the request from the Android apps</span>
@@ -5357,7 +5791,7 @@
     <span class="doccomment">///     }</span>
     <span class="ident">ApiKeyAndroidAppBlocked</span> <span class="op">=</span> <span class="number">9</span>,
     <span class="doccomment">/// The request is denied because it violates [API key iOS application</span>
-    <span class="doccomment">/// restrictions](https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions).</span>
+    <span class="doccomment">/// restrictions](&lt;https://cloud.google.com/docs/authentication/api-keys#adding_application_restrictions&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when the consumer &quot;projects/123&quot; fails to call</span>
     <span class="doccomment">/// &quot;storage.googleapis.com&quot; service because the request from the iOS apps</span>
@@ -5461,7 +5895,7 @@
     <span class="doccomment">/// The request is denied because the caller does not have required permission</span>
     <span class="doccomment">/// on the user project &quot;projects/123&quot; or the user project is invalid. For more</span>
     <span class="doccomment">/// information, check the [userProject System</span>
-    <span class="doccomment">/// Parameters](https://cloud.google.com/apis/docs/system-parameters).</span>
+    <span class="doccomment">/// Parameters](&lt;https://cloud.google.com/apis/docs/system-parameters&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when the caller is calling Cloud Storage service</span>
     <span class="doccomment">/// with insufficient permissions on the user project:</span>
@@ -5476,7 +5910,7 @@
     <span class="ident">UserProjectDenied</span> <span class="op">=</span> <span class="number">11</span>,
     <span class="doccomment">/// The request is denied because the consumer &quot;projects/123&quot; is suspended due</span>
     <span class="doccomment">/// to Terms of Service(Tos) violations. Check [Project suspension</span>
-    <span class="doccomment">/// guidelines](https://cloud.google.com/resource-manager/docs/project-suspension-guidelines)</span>
+    <span class="doccomment">/// guidelines](&lt;https://cloud.google.com/resource-manager/docs/project-suspension-guidelines&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when calling Cloud Storage service with the</span>
@@ -5505,11 +5939,11 @@
     <span class="doccomment">///     }</span>
     <span class="ident">ConsumerInvalid</span> <span class="op">=</span> <span class="number">14</span>,
     <span class="doccomment">/// The request is denied because it violates [VPC Service</span>
-    <span class="doccomment">/// Controls](https://cloud.google.com/vpc-service-controls/docs/overview).</span>
+    <span class="doccomment">/// Controls](&lt;https://cloud.google.com/vpc-service-controls/docs/overview&gt;).</span>
     <span class="doccomment">/// The &#39;uid&#39; field is a random generated identifier that customer can use it</span>
     <span class="doccomment">/// to search the audit log for a request rejected by VPC Service Controls. For</span>
     <span class="doccomment">/// more information, please refer [VPC Service Controls</span>
-    <span class="doccomment">/// Troubleshooting](https://cloud.google.com/vpc-service-controls/docs/troubleshooting#unique-id)</span>
+    <span class="doccomment">/// Troubleshooting](&lt;https://cloud.google.com/vpc-service-controls/docs/troubleshooting#unique-id&gt;)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when the consumer &quot;projects/123&quot; fails to call</span>
     <span class="doccomment">/// Cloud Storage service because the request is prohibited by the VPC Service</span>
@@ -5540,7 +5974,7 @@
     <span class="doccomment">/// The request is denied because the provided access token doesn&#39;t have at</span>
     <span class="doccomment">/// least one of the acceptable scopes required for the API. Please check</span>
     <span class="doccomment">/// [OAuth 2.0 Scopes for Google</span>
-    <span class="doccomment">/// APIs](https://developers.google.com/identity/protocols/oauth2/scopes) for</span>
+    <span class="doccomment">/// APIs](&lt;https://developers.google.com/identity/protocols/oauth2/scopes&gt;) for</span>
     <span class="doccomment">/// the list of the OAuth 2.0 scopes that you might need to request to access</span>
     <span class="doccomment">/// the API.</span>
     <span class="doccomment">///</span>
@@ -5557,7 +5991,7 @@
     <span class="ident">AccessTokenScopeInsufficient</span> <span class="op">=</span> <span class="number">17</span>,
     <span class="doccomment">/// The request is denied because the account associated with the provided</span>
     <span class="doccomment">/// access token is in an invalid state, such as disabled or deleted.</span>
-    <span class="doccomment">/// For more information, see https://cloud.google.com/docs/authentication.</span>
+    <span class="doccomment">/// For more information, see &lt;https://cloud.google.com/docs/authentication.&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Warning: For privacy reasons, the server may not be able to disclose the</span>
     <span class="doccomment">/// email address for some accounts. The client MUST NOT depend on the</span>
@@ -5565,7 +5999,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example of an ErrorInfo when the request is to the Cloud Storage API with</span>
     <span class="doccomment">/// an access token that is associated with a disabled or deleted [service</span>
-    <span class="doccomment">/// account](http://cloud/iam/docs/service-accounts):</span>
+    <span class="doccomment">/// account](&lt;http://cloud/iam/docs/service-accounts&gt;):</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     { &quot;reason&quot;: &quot;ACCOUNT_STATE_INVALID&quot;,</span>
     <span class="doccomment">///       &quot;domain&quot;: &quot;googleapis.com&quot;,</span>
@@ -5611,12 +6045,15 @@
 <span class="doccomment">///</span>
 <span class="doccomment">///       // The raw HTTP body is bound to this field.</span>
 <span class="doccomment">///       google.api.HttpBody http_body = 2;</span>
+<span class="doccomment">///</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     service ResourceService {</span>
-<span class="doccomment">///       rpc GetResource(GetResourceRequest) returns (google.api.HttpBody);</span>
-<span class="doccomment">///       rpc UpdateResource(google.api.HttpBody) returns</span>
-<span class="doccomment">///       (google.protobuf.Empty);</span>
+<span class="doccomment">///       rpc GetResource(GetResourceRequest)</span>
+<span class="doccomment">///         returns (google.api.HttpBody);</span>
+<span class="doccomment">///       rpc UpdateResource(google.api.HttpBody)</span>
+<span class="doccomment">///         returns (google.protobuf.Empty);</span>
+<span class="doccomment">///</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Example with streaming methods:</span>
@@ -5626,6 +6063,7 @@
 <span class="doccomment">///         returns (stream google.api.HttpBody);</span>
 <span class="doccomment">///       rpc UpdateCalendar(stream google.api.HttpBody)</span>
 <span class="doccomment">///         returns (stream google.api.HttpBody);</span>
+<span class="doccomment">///</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Use of this type only changes how the request and response bodies are</span>
@@ -5655,8 +6093,8 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LogDescriptor</span> {
     <span class="doccomment">/// The name of the log. It must be less than 512 characters long and can</span>
     <span class="doccomment">/// include the following characters: upper- and lower-case alphanumeric</span>
-    <span class="doccomment">/// characters [A-Za-z0-9], and punctuation characters including</span>
-    <span class="doccomment">/// slash, underscore, hyphen, period [/_-.].</span>
+    <span class="doccomment">/// characters \[A-Za-z0-9\], and punctuation characters including</span>
+    <span class="doccomment">/// slash, underscore, hyphen, period \[/_-.\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The set of labels that are available to describe a specific log entry.</span>
@@ -5724,18 +6162,18 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LoggingDestination</span> {
         <span class="doccomment">/// The monitored resource type. The type must be defined in the</span>
-        <span class="doccomment">/// [Service.monitored_resources][google.api.Service.monitored_resources] section.</span>
+        <span class="doccomment">/// \[Service.monitored_resources][google.api.Service.monitored_resources\] section.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">monitored_resource</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Names of the logs to be sent to this destination. Each name must</span>
-        <span class="doccomment">/// be defined in the [Service.logs][google.api.Service.logs] section. If the log name is</span>
+        <span class="doccomment">/// be defined in the \[Service.logs][google.api.Service.logs\] section. If the log name is</span>
         <span class="doccomment">/// not a domain scoped name, it will be automatically prefixed with</span>
         <span class="doccomment">/// the service name followed by &quot;/&quot;.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">logs</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     }
 }
-<span class="doccomment">/// An object that describes the schema of a [MonitoredResource][google.api.MonitoredResource] object using a</span>
+<span class="doccomment">/// An object that describes the schema of a \[MonitoredResource][google.api.MonitoredResource\] object using a</span>
 <span class="doccomment">/// type name and a set of labels.  For example, the monitored resource</span>
 <span class="doccomment">/// descriptor for Google Compute Engine VM instances has a type of</span>
 <span class="doccomment">/// `&quot;gce_instance&quot;` and specifies the use of the labels `&quot;instance_id&quot;` and</span>
@@ -5781,11 +6219,11 @@
 <span class="doccomment">/// An object representing a resource that can be used for monitoring, logging,</span>
 <span class="doccomment">/// billing, or other purposes. Examples include virtual machine instances,</span>
 <span class="doccomment">/// databases, and storage devices such as disks. The `type` field identifies a</span>
-<span class="doccomment">/// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object that describes the resource&#39;s</span>
+<span class="doccomment">/// \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\] object that describes the resource&#39;s</span>
 <span class="doccomment">/// schema. Information in the `labels` field identifies the actual resource and</span>
 <span class="doccomment">/// its attributes according to the schema. For example, a particular Compute</span>
 <span class="doccomment">/// Engine VM instance could be represented by the following object, because the</span>
-<span class="doccomment">/// [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] for `&quot;gce_instance&quot;` has labels</span>
+<span class="doccomment">/// \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\] for `&quot;gce_instance&quot;` has labels</span>
 <span class="doccomment">/// `&quot;instance_id&quot;` and `&quot;zone&quot;`:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///     { &quot;type&quot;: &quot;gce_instance&quot;,</span>
@@ -5794,7 +6232,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MonitoredResource</span> {
     <span class="doccomment">/// Required. The monitored resource type. This field must match</span>
-    <span class="doccomment">/// the `type` field of a [MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor] object. For</span>
+    <span class="doccomment">/// the `type` field of a \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\] object. For</span>
     <span class="doccomment">/// example, the type of a Compute Engine VM instance is `gce_instance`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -5805,8 +6243,8 @@
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Auxiliary metadata for a [MonitoredResource][google.api.MonitoredResource] object.</span>
-<span class="doccomment">/// [MonitoredResource][google.api.MonitoredResource] objects contain the minimum set of information to</span>
+<span class="doccomment">/// Auxiliary metadata for a \[MonitoredResource][google.api.MonitoredResource\] object.</span>
+<span class="doccomment">/// \[MonitoredResource][google.api.MonitoredResource\] objects contain the minimum set of information to</span>
 <span class="doccomment">/// uniquely identify a monitored resource instance. There is some other useful</span>
 <span class="doccomment">/// auxiliary metadata. Monitoring and Logging use an ingestion</span>
 <span class="doccomment">/// pipeline to extract metadata for cloud resources of all types, and store</span>
@@ -5908,11 +6346,11 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MonitoringDestination</span> {
         <span class="doccomment">/// The monitored resource type. The type must be defined in</span>
-        <span class="doccomment">/// [Service.monitored_resources][google.api.Service.monitored_resources] section.</span>
+        <span class="doccomment">/// \[Service.monitored_resources][google.api.Service.monitored_resources\] section.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">monitored_resource</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Types of the metrics to report to this monitoring destination.</span>
-        <span class="doccomment">/// Each type must be defined in [Service.metrics][google.api.Service.metrics] section.</span>
+        <span class="doccomment">/// Each type must be defined in \[Service.metrics][google.api.Service.metrics\] section.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">metrics</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     }
@@ -5984,7 +6422,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MetricRule</span> {
     <span class="doccomment">/// Selects the methods to which this rule applies.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.</span>
+    <span class="doccomment">/// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">selector</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Metrics to update when the selected methods are called, and the associated</span>
@@ -6058,7 +6496,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">metric</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Specify the unit of the quota limit. It uses the same syntax as</span>
-    <span class="doccomment">/// [Metric.unit][]. The supported unit kinds are determined by the quota</span>
+    <span class="doccomment">/// \[Metric.unit][\]. The supported unit kinds are determined by the quota</span>
     <span class="doccomment">/// backend system.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Here are some examples:</span>
@@ -6079,6 +6517,439 @@
     <span class="doccomment">/// display name generated from the configuration.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Specifies the routing information that should be sent along with the request</span>
+<span class="doccomment">/// in the form of routing header.</span>
+<span class="doccomment">/// **NOTE:** All service configuration rules follow the &quot;last one wins&quot; order.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The examples below will apply to an RPC which has the following request type:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Message Definition:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     message Request {</span>
+<span class="doccomment">///       // The name of the Table</span>
+<span class="doccomment">///       // Values can be of the following formats:</span>
+<span class="doccomment">///       // - `projects/&lt;project&gt;/tables/&lt;table&gt;`</span>
+<span class="doccomment">///       // - `projects/&lt;project&gt;/instances/&lt;instance&gt;/tables/&lt;table&gt;`</span>
+<span class="doccomment">///       // - `region/&lt;region&gt;/zones/&lt;zone&gt;/tables/&lt;table&gt;`</span>
+<span class="doccomment">///       string table_name = 1;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///       // This value specifies routing for replication.</span>
+<span class="doccomment">///       // It can be in the following formats:</span>
+<span class="doccomment">///       // - `profiles/&lt;profile_id&gt;`</span>
+<span class="doccomment">///       // - a legacy `profile_id` that can be any string</span>
+<span class="doccomment">///       string app_profile_id = 2;</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example message:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     {</span>
+<span class="doccomment">///       table_name: projects/proj_foo/instances/instance_bar/table/table_baz,</span>
+<span class="doccomment">///       app_profile_id: profiles/prof_qux</span>
+<span class="doccomment">///     }</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The routing header consists of one or multiple key-value pairs. Every key</span>
+<span class="doccomment">/// and value must be percent-encoded, and joined together in the format of</span>
+<span class="doccomment">/// `key1=value1&amp;key2=value2`.</span>
+<span class="doccomment">/// In the examples below I am skipping the percent-encoding for readablity.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example 1</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Extracting a field from the request to put into the routing header</span>
+<span class="doccomment">/// unchanged, with the key equal to the field name.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // Take the `app_profile_id`.</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;app_profile_id&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params: app_profile_id=profiles/prof_qux</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example 2</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Extracting a field from the request to put into the routing header</span>
+<span class="doccomment">/// unchanged, with the key different from the field name.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // Take the `app_profile_id`, but name it `routing_id` in the header.</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;app_profile_id&quot;</span>
+<span class="doccomment">///         path_template: &quot;{routing_id=**}&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params: routing_id=profiles/prof_qux</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example 3</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Extracting a field from the request to put into the routing</span>
+<span class="doccomment">/// header, while matching a path template syntax on the field&#39;s value.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// NB: it is more useful to send nothing than to send garbage for the purpose</span>
+<span class="doccomment">/// of dynamic routing, since garbage pollutes cache. Thus the matching.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Sub-example 3a</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The field matches the template.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // Take the `table_name`, if it&#39;s well-formed (with project-based</span>
+<span class="doccomment">///       // syntax).</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{table_name=projects/*/instances/*/**}&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params:</span>
+<span class="doccomment">///     table_name=projects/proj_foo/instances/instance_bar/table/table_baz</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Sub-example 3b</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// The field does not match the template.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // Take the `table_name`, if it&#39;s well-formed (with region-based</span>
+<span class="doccomment">///       // syntax).</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{table_name=regions/*/zones/*/**}&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     &lt;no routing header will be sent&gt;</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Sub-example 3c</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Multiple alternative conflictingly named path templates are</span>
+<span class="doccomment">/// specified. The one that matches is used to construct the header.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // Take the `table_name`, if it&#39;s well-formed, whether</span>
+<span class="doccomment">///       // using the region- or projects-based syntax.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{table_name=regions/*/zones/*/**}&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{table_name=projects/*/instances/*/**}&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params:</span>
+<span class="doccomment">///     table_name=projects/proj_foo/instances/instance_bar/table/table_baz</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example 4</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Extracting a single routing header key-value pair by matching a</span>
+<span class="doccomment">/// template syntax on (a part of) a single request field.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // Take just the project id from the `table_name` field.</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{routing_id=projects/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params: routing_id=projects/proj_foo</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example 5</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Extracting a single routing header key-value pair by matching</span>
+<span class="doccomment">/// several conflictingly named path templates on (parts of) a single request</span>
+<span class="doccomment">/// field. The last template to match &quot;wins&quot; the conflict.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // If the `table_name` does not have instances information,</span>
+<span class="doccomment">///       // take just the project id for routing.</span>
+<span class="doccomment">///       // Otherwise take project + instance.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{routing_id=projects/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{routing_id=projects/*/instances/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params:</span>
+<span class="doccomment">///     routing_id=projects/proj_foo/instances/instance_bar</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example 6</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Extracting multiple routing header key-value pairs by matching</span>
+<span class="doccomment">/// several non-conflicting path templates on (parts of) a single request field.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Sub-example 6a</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Make the templates strict, so that if the `table_name` does not</span>
+<span class="doccomment">/// have an instance information, nothing is sent.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // The routing code needs two keys instead of one composite</span>
+<span class="doccomment">///       // but works only for the tables with the &quot;project-instance&quot; name</span>
+<span class="doccomment">///       // syntax.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{project_id=projects/*}/instances/*/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;projects/*/{instance_id=instances/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params:</span>
+<span class="doccomment">///     project_id=projects/proj_foo&amp;instance_id=instances/instance_bar</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Sub-example 6b</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Make the templates loose, so that if the `table_name` does not</span>
+<span class="doccomment">/// have an instance information, just the project id part is sent.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // The routing code wants two keys instead of one composite</span>
+<span class="doccomment">///       // but will work with just the `project_id` for tables without</span>
+<span class="doccomment">///       // an instance in the `table_name`.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{project_id=projects/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;projects/*/{instance_id=instances/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result (is the same as 6a for our example message because it has the instance</span>
+<span class="doccomment">/// information):</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params:</span>
+<span class="doccomment">///     project_id=projects/proj_foo&amp;instance_id=instances/instance_bar</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example 7</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Extracting multiple routing header key-value pairs by matching</span>
+<span class="doccomment">/// several path templates on multiple request fields.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// NB: note that here there is no way to specify sending nothing if one of the</span>
+<span class="doccomment">/// fields does not match its template. E.g. if the `table_name` is in the wrong</span>
+<span class="doccomment">/// format, the `project_id` will not be sent, but the `routing_id` will be.</span>
+<span class="doccomment">/// The backend routing code has to be aware of that and be prepared to not</span>
+<span class="doccomment">/// receive a full complement of keys if it expects multiple.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // The routing needs both `project_id` and `routing_id`</span>
+<span class="doccomment">///       // (from the `app_profile_id` field) for routing.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{project_id=projects/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;app_profile_id&quot;</span>
+<span class="doccomment">///         path_template: &quot;{routing_id=**}&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params:</span>
+<span class="doccomment">///     project_id=projects/proj_foo&amp;routing_id=profiles/prof_qux</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example 8</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Extracting a single routing header key-value pair by matching</span>
+<span class="doccomment">/// several conflictingly named path templates on several request fields. The</span>
+<span class="doccomment">/// last template to match &quot;wins&quot; the conflict.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // The `routing_id` can be a project id or a region id depending on</span>
+<span class="doccomment">///       // the table name format, but only if the `app_profile_id` is not set.</span>
+<span class="doccomment">///       // If `app_profile_id` is set it should be used instead.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{routing_id=projects/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///          field: &quot;table_name&quot;</span>
+<span class="doccomment">///          path_template: &quot;{routing_id=regions/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;app_profile_id&quot;</span>
+<span class="doccomment">///         path_template: &quot;{routing_id=**}&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params: routing_id=profiles/prof_qux</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Example 9</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// Bringing it all together.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// annotation:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     option (google.api.routing) = {</span>
+<span class="doccomment">///       // For routing both `table_location` and a `routing_id` are needed.</span>
+<span class="doccomment">///       //</span>
+<span class="doccomment">///       // table_location can be either an instance id or a region+zone id.</span>
+<span class="doccomment">///       //</span>
+<span class="doccomment">///       // For `routing_id`, take the value of `app_profile_id`</span>
+<span class="doccomment">///       // - If it&#39;s in the format `profiles/&lt;profile_id&gt;`, send</span>
+<span class="doccomment">///       // just the `&lt;profile_id&gt;` part.</span>
+<span class="doccomment">///       // - If it&#39;s any other literal, send it as is.</span>
+<span class="doccomment">///       // If the `app_profile_id` is empty, and the `table_name` starts with</span>
+<span class="doccomment">///       // the project_id, send that instead.</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;projects/*/{table_location=instances/*}/tables/*&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{table_location=regions/*/zones/*}/tables/*&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;table_name&quot;</span>
+<span class="doccomment">///         path_template: &quot;{routing_id=projects/*}/**&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;app_profile_id&quot;</span>
+<span class="doccomment">///         path_template: &quot;{routing_id=**}&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///       routing_parameters {</span>
+<span class="doccomment">///         field: &quot;app_profile_id&quot;</span>
+<span class="doccomment">///         path_template: &quot;profiles/{routing_id=*}&quot;</span>
+<span class="doccomment">///       }</span>
+<span class="doccomment">///     };</span>
+<span class="doccomment">///</span>
+<span class="doccomment">/// result:</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///     x-goog-request-params:</span>
+<span class="doccomment">///     table_location=instances/instance_bar&amp;routing_id=prof_qux</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RoutingRule</span> {
+    <span class="doccomment">/// A collection of Routing Parameter specifications.</span>
+    <span class="doccomment">/// **NOTE:** If multiple Routing Parameters describe the same key</span>
+    <span class="doccomment">/// (via the `path_template` field or via the `field` field when</span>
+    <span class="doccomment">/// `path_template` is not provided), &quot;last one wins&quot; rule</span>
+    <span class="doccomment">/// determines which Parameter gets used.</span>
+    <span class="doccomment">/// See the examples for more details.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">routing_parameters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">RoutingParameter</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// A projection from an input message to the GRPC or REST header.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RoutingParameter</span> {
+    <span class="doccomment">/// A request field to extract the header key-value pair from.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">field</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// A pattern matching the key-value field. Optional.</span>
+    <span class="doccomment">/// If not specified, the whole field specified in the `field` field will be</span>
+    <span class="doccomment">/// taken as value, and its name used as key. If specified, it MUST contain</span>
+    <span class="doccomment">/// exactly one named segment (along with any number of unnamed segments) The</span>
+    <span class="doccomment">/// pattern will be matched over the field specified in the `field` field, then</span>
+    <span class="doccomment">/// if the match is successful:</span>
+    <span class="doccomment">/// - the name of the single named segment will be used as a header name,</span>
+    <span class="doccomment">/// - the match value of the segment will be used as a header value;</span>
+    <span class="doccomment">/// if the match is NOT successful, nothing will be sent.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// Example:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///               -- This is a field in the request message</span>
+    <span class="doccomment">///              |   that the header value will be extracted from.</span>
+    <span class="doccomment">///              |</span>
+    <span class="doccomment">///              |                     -- This is the key name in the</span>
+    <span class="doccomment">///              |                    |   routing header.</span>
+    <span class="doccomment">///              V                    |</span>
+    <span class="doccomment">///     field: &quot;table_name&quot;           v</span>
+    <span class="doccomment">///     path_template: &quot;projects/*/{table_location=instances/*}/tables/*&quot;</span>
+    <span class="doccomment">///                                                ^            ^</span>
+    <span class="doccomment">///                                                |            |</span>
+    <span class="doccomment">///       In the {} brackets is the pattern that --             |</span>
+    <span class="doccomment">///       specifies what to extract from the                    |</span>
+    <span class="doccomment">///       field as a value to be sent.                          |</span>
+    <span class="doccomment">///                                                             |</span>
+    <span class="doccomment">///      The string in the field must match the whole pattern --</span>
+    <span class="doccomment">///      before brackets, inside brackets, after brackets.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// When looking at this specific example, we can see that:</span>
+    <span class="doccomment">/// - A key-value pair with the key `table_location`</span>
+    <span class="doccomment">///   and the value matching `instances/*` should be added</span>
+    <span class="doccomment">///   to the x-goog-request-params routing header.</span>
+    <span class="doccomment">/// - The value is extracted from the request message&#39;s `table_name` field</span>
+    <span class="doccomment">///   if it matches the full pattern specified:</span>
+    <span class="doccomment">///   `projects/*/instances/*/tables/*`.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// **NB:** If the `path_template` field is not provided, the key name is</span>
+    <span class="doccomment">/// equal to the field name, and the whole field should be sent as a value.</span>
+    <span class="doccomment">/// This makes the pattern for the field and the value functionally equivalent</span>
+    <span class="doccomment">/// to `**`, and the configuration</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     {</span>
+    <span class="doccomment">///       field: &quot;table_name&quot;</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// is a functionally equivalent shorthand to:</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">///     {</span>
+    <span class="doccomment">///       field: &quot;table_name&quot;</span>
+    <span class="doccomment">///       path_template: &quot;{table_name=**}&quot;</span>
+    <span class="doccomment">///     }</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// See Example 1 for more details.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">path_template</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Source information used to create a Service Config</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -6134,7 +7005,7 @@
     <span class="doccomment">/// Selects the methods to which this rule applies. Use &#39;*&#39; to indicate all</span>
     <span class="doccomment">/// methods in all APIs.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.</span>
+    <span class="doccomment">/// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">selector</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Define parameters. Multiple names may be defined for a parameter.</span>
@@ -6185,10 +7056,10 @@
     <span class="doccomment">/// service producer.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Google Service Management currently only supports</span>
-    <span class="doccomment">/// [Google Cloud Pub/Sub](https://cloud.google.com/pubsub) as a notification</span>
+    <span class="doccomment">/// [Google Cloud Pub/Sub](&lt;https://cloud.google.com/pubsub&gt;) as a notification</span>
     <span class="doccomment">/// channel. To use Google Cloud Pub/Sub as the channel, this must be the name</span>
     <span class="doccomment">/// of a Cloud Pub/Sub topic that uses the Cloud Pub/Sub topic name format</span>
-    <span class="doccomment">/// documented in https://cloud.google.com/pubsub/docs/overview.</span>
+    <span class="doccomment">/// documented in &lt;https://cloud.google.com/pubsub/docs/overview.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">producer_notification_channel</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -6222,7 +7093,7 @@
     <span class="doccomment">/// Selects the methods to which this rule applies. Use &#39;*&#39; to indicate all</span>
     <span class="doccomment">/// methods in all APIs.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.</span>
+    <span class="doccomment">/// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">selector</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// If true, the selected method allows unregistered calls, e.g. calls</span>
@@ -6252,8 +7123,8 @@
 <span class="doccomment">///     authentication:</span>
 <span class="doccomment">///       providers:</span>
 <span class="doccomment">///       - id: google_calendar_auth</span>
-<span class="doccomment">///         jwks_uri: https://www.googleapis.com/oauth2/v1/certs</span>
-<span class="doccomment">///         issuer: https://securetoken.google.com</span>
+<span class="doccomment">///         jwks_uri: &lt;https://www.googleapis.com/oauth2/v1/certs&gt;</span>
+<span class="doccomment">///         issuer: &lt;https://securetoken.google.com&gt;</span>
 <span class="doccomment">///       rules:</span>
 <span class="doccomment">///       - selector: &quot;*&quot;</span>
 <span class="doccomment">///         requirements:</span>
@@ -6279,7 +7150,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;33&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// A list of API interfaces exported by this service. Only the `name` field</span>
-    <span class="doccomment">/// of the [google.protobuf.Api][google.protobuf.Api] needs to be provided by the configuration</span>
+    <span class="doccomment">/// of the \[google.protobuf.Api][google.protobuf.Api\] needs to be provided by the configuration</span>
     <span class="doccomment">/// author, as the remaining fields will be derived from the IDL during the</span>
     <span class="doccomment">/// normalization process. It is an error to specify an API interface here</span>
     <span class="doccomment">/// which cannot be resolved against the associated IDL files.</span>
@@ -6340,7 +7211,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;24&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">metrics</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">MetricDescriptor</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Defines the monitored resources used by this service. This is required</span>
-    <span class="doccomment">/// by the [Service.monitoring][google.api.Service.monitoring] and [Service.logging][google.api.Service.logging] configurations.</span>
+    <span class="doccomment">/// by the \[Service.monitoring][google.api.Service.monitoring\] and \[Service.logging][google.api.Service.logging\] configurations.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;25&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">monitored_resources</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">MonitoredResourceDescriptor</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Billing configuration.</span>
@@ -6402,7 +7273,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VisibilityRule</span> {
     <span class="doccomment">/// Selects methods, messages, fields, enums, etc. to which this rule applies.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Refer to [selector][google.api.DocumentationRule.selector] for syntax details.</span>
+    <span class="doccomment">/// Refer to \[selector][google.api.DocumentationRule.selector\] for syntax details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">selector</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// A comma-separated list of visibility labels that apply to the `selector`.</span>
@@ -6423,5 +7294,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">restriction</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

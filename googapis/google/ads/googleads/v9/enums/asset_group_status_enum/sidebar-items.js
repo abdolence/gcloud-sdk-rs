@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AssetGroupStatus","The possible statuses of an asset group."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GlobalAddressesClient","The GlobalAddresses API."]]});

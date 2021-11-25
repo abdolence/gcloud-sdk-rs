@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Status","[Output only] Status of the managed certificate resource."]]});

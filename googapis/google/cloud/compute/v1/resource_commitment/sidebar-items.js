@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","Type of resource for which this commitment applies. Possible values are VCPU and MEMORY"]]});

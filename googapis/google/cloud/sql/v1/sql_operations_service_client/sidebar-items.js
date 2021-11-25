@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SqlOperationsServiceClient","Service to fetch operations for database instances."]]});

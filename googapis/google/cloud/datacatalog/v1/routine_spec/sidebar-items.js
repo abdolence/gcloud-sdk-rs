@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RoutineType","The fine-grained type of the routine."],["SystemSpec","Contains fields specific to the source system."]],"mod":[["argument","Nested message and enum types in `Argument`."]],"struct":[["Argument","Input or output argument of a function or stored procedure."]]});

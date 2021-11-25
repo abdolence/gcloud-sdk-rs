@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RegionTargetHttpProxiesClient","The RegionTargetHttpProxies API."]]});

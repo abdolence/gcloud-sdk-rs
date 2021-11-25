@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RestoreType","The type of restore. If unspecified, defaults to `METADATA_ONLY`."],["State","The current state of the restore."]]});

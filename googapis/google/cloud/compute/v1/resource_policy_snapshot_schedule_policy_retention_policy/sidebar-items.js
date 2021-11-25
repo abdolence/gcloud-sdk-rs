@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["OnSourceDiskDelete","Specifies the behavior to apply to scheduled snapshots when the source disk is deleted."]]});

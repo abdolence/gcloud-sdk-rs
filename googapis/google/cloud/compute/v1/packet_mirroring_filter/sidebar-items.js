@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Direction","Direction of traffic to mirror, either INGRESS, EGRESS, or BOTH. The default is BOTH."]]});

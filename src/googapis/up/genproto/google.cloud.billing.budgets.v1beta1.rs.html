@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.billing.budgets.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.billing.budgets.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.billing.budgets.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.billing.budgets.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -507,8 +505,7 @@
 <span id="505">505</span>
 <span id="506">506</span>
 <span id="507">507</span>
-</pre><pre class="rust">
-<span class="doccomment">/// A budget is a plan that describes what you expect to spend on Cloud</span>
+</pre><pre class="rust"><code><span class="doccomment">/// A budget is a plan that describes what you expect to spend on Cloud</span>
 <span class="doccomment">/// projects, plus the rules to execute as spend is tracked against that plan,</span>
 <span class="doccomment">/// (for example, send an alert when 90% of the target spend is met).</span>
 <span class="doccomment">/// The budget time period is configurable, with options such as month (default),</span>
@@ -564,25 +561,25 @@
         <span class="doccomment">/// budget, it must match the currency_code of the existing budget.</span>
         <span class="doccomment">/// The `currency_code` is provided on output.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">SpecifiedAmount</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Money</span>),
+        <span class="ident">SpecifiedAmount</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Money</span>),
         <span class="doccomment">/// Use the last period&#39;s actual spend as the budget for the present period.</span>
         <span class="doccomment">/// LastPeriodAmount can only be set when the budget&#39;s time period is a</span>
-        <span class="doccomment">/// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].</span>
+        <span class="doccomment">/// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\].</span>
         <span class="doccomment">/// It cannot be set in combination with</span>
-        <span class="doccomment">/// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].</span>
+        <span class="doccomment">/// \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">LastPeriodAmount</span>(<span class="kw">super</span><span class="ident">::LastPeriodAmount</span>),
+        <span class="ident">LastPeriodAmount</span>(<span class="ident"><span class="kw">super</span>::LastPeriodAmount</span>),
     }
 }
 <span class="doccomment">/// Describes a budget amount targeted to the last</span>
-<span class="doccomment">/// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period]</span>
+<span class="doccomment">/// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\]</span>
 <span class="doccomment">/// spend. At this time, the amount is automatically 100% of the last calendar</span>
 <span class="doccomment">/// period&#39;s spend; that is, there are no other options yet.</span>
 <span class="doccomment">/// Future configuration options will be described here (for example, configuring</span>
 <span class="doccomment">/// a percentage of last period&#39;s spend).</span>
 <span class="doccomment">/// LastPeriodAmount cannot be set for a budget configured with</span>
 <span class="doccomment">/// a</span>
-<span class="doccomment">/// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].</span>
+<span class="doccomment">/// \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LastPeriodAmount</span> {}
 <span class="doccomment">/// ThresholdRule contains a definition of a threshold which triggers</span>
@@ -617,9 +614,9 @@
         <span class="doccomment">/// Use forecasted spend for the period as the basis for comparison against</span>
         <span class="doccomment">/// the threshold.</span>
         <span class="doccomment">/// FORECASTED_SPEND can only be set when the budget&#39;s time period is a</span>
-        <span class="doccomment">/// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].</span>
+        <span class="doccomment">/// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\].</span>
         <span class="doccomment">/// It cannot be set in combination with</span>
-        <span class="doccomment">/// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].</span>
+        <span class="doccomment">/// \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].</span>
         <span class="ident">ForecastedSpend</span> <span class="op">=</span> <span class="number">2</span>,
     }
 }
@@ -631,21 +628,21 @@
     <span class="doccomment">/// be published, in the form `projects/{project_id}/topics/{topic_id}`.</span>
     <span class="doccomment">/// Updates are sent at regular intervals to the topic. The topic needs to be</span>
     <span class="doccomment">/// created before the budget is created; see</span>
-    <span class="doccomment">/// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications&gt;</span>
     <span class="doccomment">/// for more details.</span>
     <span class="doccomment">/// Caller is expected to have</span>
     <span class="doccomment">/// `pubsub.topics.setIamPolicy` permission on the topic when it&#39;s set for a</span>
     <span class="doccomment">/// budget, otherwise, the API call will fail with PERMISSION_DENIED. See</span>
-    <span class="doccomment">/// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task&gt;</span>
     <span class="doccomment">/// for more details on Pub/Sub roles and permissions.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">pubsub_topic</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. Required when</span>
-    <span class="doccomment">/// [AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic]</span>
+    <span class="doccomment">/// \[AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\]</span>
     <span class="doccomment">/// is set. The schema version of the notification sent to</span>
-    <span class="doccomment">/// [AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic].</span>
+    <span class="doccomment">/// \[AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\].</span>
     <span class="doccomment">/// Only &quot;1.0&quot; is accepted. It represents the JSON schema as defined in</span>
-    <span class="doccomment">/// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">schema_version</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. Targets to send notifications to when a threshold is exceeded.</span>
@@ -654,7 +651,7 @@
     <span class="doccomment">/// notification channel with the form</span>
     <span class="doccomment">/// `projects/{project_id}/notificationChannels/{channel_id}`. A maximum of 5</span>
     <span class="doccomment">/// channels are allowed. See</span>
-    <span class="doccomment">/// https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients&gt;</span>
     <span class="doccomment">/// for more details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">monitoring_notification_channels</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -676,14 +673,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">projects</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. If</span>
-    <span class="doccomment">/// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]</span>
+    <span class="doccomment">/// \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\]</span>
     <span class="doccomment">/// is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be</span>
     <span class="doccomment">/// subtracted from gross cost to determine the spend for threshold</span>
     <span class="doccomment">/// calculations. See [a list of acceptable credit type</span>
-    <span class="doccomment">/// values](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).</span>
+    <span class="doccomment">/// values](&lt;https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If</span>
-    <span class="doccomment">/// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]</span>
+    <span class="doccomment">/// \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\]</span>
     <span class="doccomment">/// is **not** INCLUDE_SPECIFIED_CREDITS, this field must be empty.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">credit_types</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -695,7 +692,7 @@
     <span class="doccomment">/// included in the budget. If omitted, the report will include usage for</span>
     <span class="doccomment">/// all the services.</span>
     <span class="doccomment">/// The service names are available through the Catalog API:</span>
-    <span class="doccomment">/// https://cloud.google.com/billing/v1/how-tos/catalog-api.</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/billing/v1/how-tos/catalog-api.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">services</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,</span>
@@ -725,7 +722,7 @@
     <span class="doccomment">/// threshold calculations. Budgets track the total cost minus any applicable</span>
     <span class="doccomment">/// selected credits.</span>
     <span class="doccomment">/// [See the documentation for a list of credit</span>
-    <span class="doccomment">/// types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).</span>
+    <span class="doccomment">/// types](&lt;https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type&gt;).</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">CreditTypesTreatment</span> {
@@ -737,7 +734,7 @@
         <span class="doccomment">/// threshold calculations.</span>
         <span class="ident">ExcludeAllCredits</span> <span class="op">=</span> <span class="number">2</span>,
         <span class="doccomment">/// [Credit</span>
-        <span class="doccomment">/// types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type)</span>
+        <span class="doccomment">/// types](&lt;https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type&gt;)</span>
         <span class="doccomment">/// specified in the credit_types field are subtracted from the</span>
         <span class="doccomment">/// gross cost to determine the spend for threshold calculations.</span>
         <span class="ident">IncludeSpecifiedCredits</span> <span class="op">=</span> <span class="number">3</span>,
@@ -758,7 +755,7 @@
         <span class="doccomment">/// Optional. Specifies to track usage from any start date (required) to any</span>
         <span class="doccomment">/// end date (optional). This time period is static, it does not recur.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">CustomPeriod</span>(<span class="kw">super</span><span class="ident">::CustomPeriod</span>),
+        <span class="ident">CustomPeriod</span>(<span class="ident"><span class="kw">super</span>::CustomPeriod</span>),
     }
 }
 <span class="doccomment">/// All date times begin at 12 AM US and Canadian Pacific Time (UTC-8).</span>
@@ -766,12 +763,12 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CustomPeriod</span> {
     <span class="doccomment">/// Required. The start date must be after January 1, 2017.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">start_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">start_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. The end date of the time period. Budgets with elapsed end date</span>
     <span class="doccomment">/// won&#39;t be processed. If unset, specifies to track all usage incurred since</span>
     <span class="doccomment">/// the start_date.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">end_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">end_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// A `CalendarPeriod` represents the abstract concept of a time period that</span>
 <span class="doccomment">/// has a canonical start. Grammatically, &quot;the start of the current</span>
@@ -812,7 +809,7 @@
     <span class="doccomment">/// Read-only fields (such as `name`) cannot be changed. If this is not</span>
     <span class="doccomment">/// provided, then only fields with non-default values from the request are</span>
     <span class="doccomment">/// updated. See</span>
-    <span class="doccomment">/// https://developers.google.com/protocol-buffers/docs/proto3#default for more</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/protocol-buffers/docs/proto3#default&gt; for more</span>
     <span class="doccomment">/// details about default values.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
@@ -874,7 +871,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">BudgetServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -887,7 +884,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BudgetServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -917,8 +914,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; for more information on the limits of the number of budgets you can create.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_budget</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateBudgetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Budget</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateBudgetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Budget</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -938,8 +935,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; this API will not be changed by this method.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_budget</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateBudgetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Budget</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateBudgetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Budget</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -960,8 +957,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; in the Cloud Console.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_budget</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetBudgetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Budget</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetBudgetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Budget</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -982,8 +979,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; in the Cloud Console.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_budgets</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBudgetsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBudgetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBudgetsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBudgetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -999,7 +996,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a budget. Returns successfully if already deleted.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_budget</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteBudgetRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteBudgetRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -1015,5 +1012,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

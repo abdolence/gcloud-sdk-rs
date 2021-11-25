@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.apps.drive.activity.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.apps.drive.activity.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.apps.drive.activity.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.apps.drive.activity.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1121,8 +1119,7 @@
 <span id="1119">1119</span>
 <span id="1120">1120</span>
 <span id="1121">1121</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Information about time ranges.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Information about time ranges.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TimeRange</span> {
     <span class="doccomment">/// The start of the time range.</span>
@@ -1166,19 +1163,19 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Type</span> {
         <span class="doccomment">/// An end user.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">User</span>(<span class="kw">super</span><span class="ident">::User</span>),
+        <span class="ident">User</span>(<span class="ident"><span class="kw">super</span>::User</span>),
         <span class="doccomment">/// An anonymous user.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Anonymous</span>(<span class="kw">super</span><span class="ident">::AnonymousUser</span>),
+        <span class="ident">Anonymous</span>(<span class="ident"><span class="kw">super</span>::AnonymousUser</span>),
         <span class="doccomment">/// An account acting on behalf of another.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Impersonation</span>(<span class="kw">super</span><span class="ident">::Impersonation</span>),
+        <span class="ident">Impersonation</span>(<span class="ident"><span class="kw">super</span>::Impersonation</span>),
         <span class="doccomment">/// A non-user actor (i.e. system triggered).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">System</span>(<span class="kw">super</span><span class="ident">::SystemEvent</span>),
+        <span class="ident">System</span>(<span class="ident"><span class="kw">super</span>::SystemEvent</span>),
         <span class="doccomment">/// An administrator.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Administrator</span>(<span class="kw">super</span><span class="ident">::Administrator</span>),
+        <span class="ident">Administrator</span>(<span class="ident"><span class="kw">super</span>::Administrator</span>),
     }
 }
 <span class="doccomment">/// Information about an end user.</span>
@@ -1195,7 +1192,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">KnownUser</span> {
         <span class="doccomment">/// The identifier for this user that can be used with the People API to get</span>
         <span class="doccomment">/// more information. The format is `people/ACCOUNT_ID`. See</span>
-        <span class="doccomment">/// https://developers.google.com/people/.</span>
+        <span class="doccomment">/// &lt;https://developers.google.com/people/.&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">person_name</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// True if this is the user making the request.</span>
@@ -1276,13 +1273,13 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Object</span> {
         <span class="doccomment">/// The target is a Drive item.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">DriveItem</span>(<span class="kw">super</span><span class="ident">::DriveItem</span>),
+        <span class="ident">DriveItem</span>(<span class="ident"><span class="kw">super</span>::DriveItem</span>),
         <span class="doccomment">/// The target is a shared drive.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Drive</span>(<span class="kw">super</span><span class="ident">::Drive</span>),
+        <span class="ident">Drive</span>(<span class="ident"><span class="kw">super</span>::Drive</span>),
         <span class="doccomment">/// The target is a comment on a Drive file.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">FileComment</span>(<span class="kw">super</span><span class="ident">::FileComment</span>),
+        <span class="ident">FileComment</span>(<span class="ident"><span class="kw">super</span>::FileComment</span>),
     }
 }
 <span class="doccomment">/// A lightweight reference to the target of activity.</span>
@@ -1303,10 +1300,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Object</span> {
         <span class="doccomment">/// The target is a Drive item.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">DriveItem</span>(<span class="kw">super</span><span class="ident">::DriveItemReference</span>),
+        <span class="ident">DriveItem</span>(<span class="ident"><span class="kw">super</span>::DriveItemReference</span>),
         <span class="doccomment">/// The target is a shared drive.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Drive</span>(<span class="kw">super</span><span class="ident">::DriveReference</span>),
+        <span class="ident">Drive</span>(<span class="ident"><span class="kw">super</span>::DriveReference</span>),
     }
 }
 <span class="doccomment">/// A comment on a file.</span>
@@ -1314,17 +1311,17 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FileComment</span> {
     <span class="doccomment">/// The comment in the discussion thread. This identifier is an opaque string</span>
     <span class="doccomment">/// compatible with the Drive API; see</span>
-    <span class="doccomment">/// https://developers.google.com/drive/v3/reference/comments/get</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/drive/v3/reference/comments/get&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">legacy_comment_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The discussion thread to which the comment was added. This identifier is an</span>
     <span class="doccomment">/// opaque string compatible with the Drive API and references the first</span>
     <span class="doccomment">/// comment in a discussion; see</span>
-    <span class="doccomment">/// https://developers.google.com/drive/v3/reference/comments/get</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/drive/v3/reference/comments/get&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">legacy_discussion_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The link to the discussion thread containing this comment, for example,</span>
-    <span class="doccomment">/// `https://docs.google.com/DOCUMENT_ID/edit?disco=THREAD_ID`.</span>
+    <span class="doccomment">/// `&lt;https://docs.google.com/DOCUMENT_ID/edit?disco=THREAD_ID`.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">link_to_discussion</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The Drive item containing this comment.</span>
@@ -1349,7 +1346,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">folder</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">drive_item::Folder</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The MIME type of the Drive item.  See</span>
-    <span class="doccomment">/// https://developers.google.com/drive/v3/web/mime-types.</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/drive/v3/web/mime-types.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">mime_type</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Information about the owner of this Drive item.</span>
@@ -1450,10 +1447,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Owner</span> {
         <span class="doccomment">/// The user that owns the Drive item.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">User</span>(<span class="kw">super</span><span class="ident">::User</span>),
+        <span class="ident">User</span>(<span class="ident"><span class="kw">super</span>::User</span>),
         <span class="doccomment">/// The drive that owns the item.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Drive</span>(<span class="kw">super</span><span class="ident">::DriveReference</span>),
+        <span class="ident">Drive</span>(<span class="ident"><span class="kw">super</span>::DriveReference</span>),
     }
 }
 <span class="doccomment">/// This item is deprecated; please see `Drive` instead.</span>
@@ -1512,11 +1509,11 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ItemType</span> {
         <span class="doccomment">/// The Drive item is a file.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">DriveFile</span>(<span class="kw">super</span><span class="ident">::drive_item::DriveFile</span>),
+        <span class="ident">DriveFile</span>(<span class="ident"><span class="kw">super</span>::drive_item::DriveFile</span>),
         <span class="doccomment">/// The Drive item is a folder. Includes information about the type of</span>
         <span class="doccomment">/// folder.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">DriveFolder</span>(<span class="kw">super</span><span class="ident">::drive_item::DriveFolder</span>),
+        <span class="ident">DriveFolder</span>(<span class="ident"><span class="kw">super</span>::drive_item::DriveFolder</span>),
     }
 }
 <span class="doccomment">/// This item is deprecated; please see `DriveReference` instead.</span>
@@ -1569,7 +1566,7 @@
         <span class="ident">Timestamp</span>(<span class="ident">::prost_types::Timestamp</span>),
         <span class="doccomment">/// The action occurred over this time range.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">TimeRange</span>(<span class="kw">super</span><span class="ident">::TimeRange</span>),
+        <span class="ident">TimeRange</span>(<span class="ident"><span class="kw">super</span>::TimeRange</span>),
     }
 }
 <span class="doccomment">/// Data describing the type and additional information of an action.</span>
@@ -1589,37 +1586,37 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ActionDetail</span> {
         <span class="doccomment">/// An object was created.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Create</span>(<span class="kw">super</span><span class="ident">::Create</span>),
+        <span class="ident">Create</span>(<span class="ident"><span class="kw">super</span>::Create</span>),
         <span class="doccomment">/// An object was edited.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Edit</span>(<span class="kw">super</span><span class="ident">::Edit</span>),
+        <span class="ident">Edit</span>(<span class="ident"><span class="kw">super</span>::Edit</span>),
         <span class="doccomment">/// An object was moved.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Move</span>(<span class="kw">super</span><span class="ident">::Move</span>),
+        <span class="ident">Move</span>(<span class="ident"><span class="kw">super</span>::Move</span>),
         <span class="doccomment">/// An object was renamed.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Rename</span>(<span class="kw">super</span><span class="ident">::Rename</span>),
+        <span class="ident">Rename</span>(<span class="ident"><span class="kw">super</span>::Rename</span>),
         <span class="doccomment">/// An object was deleted.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Delete</span>(<span class="kw">super</span><span class="ident">::Delete</span>),
+        <span class="ident">Delete</span>(<span class="ident"><span class="kw">super</span>::Delete</span>),
         <span class="doccomment">/// A deleted object was restored.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">Restore</span>(<span class="kw">super</span><span class="ident">::Restore</span>),
+        <span class="ident">Restore</span>(<span class="ident"><span class="kw">super</span>::Restore</span>),
         <span class="doccomment">/// The permission on an object was changed.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">PermissionChange</span>(<span class="kw">super</span><span class="ident">::PermissionChange</span>),
+        <span class="ident">PermissionChange</span>(<span class="ident"><span class="kw">super</span>::PermissionChange</span>),
         <span class="doccomment">/// A change about comments was made.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">Comment</span>(<span class="kw">super</span><span class="ident">::Comment</span>),
+        <span class="ident">Comment</span>(<span class="ident"><span class="kw">super</span>::Comment</span>),
         <span class="doccomment">/// A change happened in data leak prevention status.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">DlpChange</span>(<span class="kw">super</span><span class="ident">::DataLeakPreventionChange</span>),
+        <span class="ident">DlpChange</span>(<span class="ident"><span class="kw">super</span>::DataLeakPreventionChange</span>),
         <span class="doccomment">/// An object was referenced in an application outside of Drive/Docs.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
-        <span class="ident">Reference</span>(<span class="kw">super</span><span class="ident">::ApplicationReference</span>),
+        <span class="ident">Reference</span>(<span class="ident"><span class="kw">super</span>::ApplicationReference</span>),
         <span class="doccomment">/// Settings were changed.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
-        <span class="ident">SettingsChange</span>(<span class="kw">super</span><span class="ident">::SettingsChange</span>),
+        <span class="ident">SettingsChange</span>(<span class="ident"><span class="kw">super</span>::SettingsChange</span>),
     }
 }
 <span class="doccomment">/// An object was created.</span>
@@ -1642,7 +1639,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Copy</span> {
         <span class="doccomment">/// The original object.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">original_object</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TargetReference</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">original_object</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TargetReference</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// The origin of the new object.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
@@ -1739,7 +1736,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Permission</span> {
     <span class="doccomment">/// Indicates the</span>
     <span class="doccomment">/// [Google Drive permissions</span>
-    <span class="doccomment">/// role](https://developers.google.com/drive/web/manage-sharing#roles). The</span>
+    <span class="doccomment">/// role](&lt;https://developers.google.com/drive/web/manage-sharing#roles&gt;). The</span>
     <span class="doccomment">/// role determines a user&#39;s ability to read, write, and comment on items.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;permission::Role&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">role</span>: <span class="ident">i32</span>,
@@ -1757,7 +1754,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Anyone</span> {}
     <span class="doccomment">/// The [Google Drive permissions</span>
-    <span class="doccomment">/// roles](https://developers.google.com/drive/web/manage-sharing#roles).</span>
+    <span class="doccomment">/// roles](&lt;https://developers.google.com/drive/web/manage-sharing#roles&gt;).</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Role</span> {
@@ -1779,7 +1776,7 @@
         <span class="ident">Viewer</span> <span class="op">=</span> <span class="number">6</span>,
         <span class="doccomment">/// A role granting the ability to view content only after it has been</span>
         <span class="doccomment">/// published to the web. This role is sometimes also known as &quot;published</span>
-        <span class="doccomment">/// reader&quot;. See https://support.google.com/sites/answer/6372880 for more</span>
+        <span class="doccomment">/// reader&quot;. See &lt;https://support.google.com/sites/answer/6372880&gt; for more</span>
         <span class="doccomment">/// information.</span>
         <span class="ident">PublishedViewer</span> <span class="op">=</span> <span class="number">7</span>,
     }
@@ -1788,13 +1785,13 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Scope</span> {
         <span class="doccomment">/// The user to whom this permission applies.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">User</span>(<span class="kw">super</span><span class="ident">::User</span>),
+        <span class="ident">User</span>(<span class="ident"><span class="kw">super</span>::User</span>),
         <span class="doccomment">/// The group to whom this permission applies.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Group</span>(<span class="kw">super</span><span class="ident">::Group</span>),
+        <span class="ident">Group</span>(<span class="ident"><span class="kw">super</span>::Group</span>),
         <span class="doccomment">/// The domain to whom this permission applies.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Domain</span>(<span class="kw">super</span><span class="ident">::Domain</span>),
+        <span class="ident">Domain</span>(<span class="ident"><span class="kw">super</span>::Domain</span>),
         <span class="doccomment">/// If set, this permission applies to anyone, even logged out users.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
         <span class="ident">Anyone</span>(<span class="ident">Anyone</span>),
@@ -1851,7 +1848,7 @@
         <span class="kw">pub</span> <span class="ident">subtype</span>: <span class="ident">i32</span>,
         <span class="doccomment">/// The user to whom the comment was assigned.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">assigned_user</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::User</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">assigned_user</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::User</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Nested message and enum types in `Assignment`.</span>
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">assignment</span> {
@@ -2169,7 +2166,7 @@
         <span class="ident">Timestamp</span>(<span class="ident">::prost_types::Timestamp</span>),
         <span class="doccomment">/// The activity occurred over this time range.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">TimeRange</span>(<span class="kw">super</span><span class="ident">::TimeRange</span>),
+        <span class="ident">TimeRange</span>(<span class="ident"><span class="kw">super</span>::TimeRange</span>),
     }
 }
 <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Generated client implementations.&quot;</span>]</span>
@@ -2186,7 +2183,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DriveActivityServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2199,7 +2196,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DriveActivityServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2227,8 +2224,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Query past activity in Google Drive.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">query_drive_activity</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryDriveActivityRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryDriveActivityResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryDriveActivityRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryDriveActivityResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2243,5 +2240,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

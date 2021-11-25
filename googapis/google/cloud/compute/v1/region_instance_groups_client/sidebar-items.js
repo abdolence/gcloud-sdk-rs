@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RegionInstanceGroupsClient","The RegionInstanceGroups API."]]});

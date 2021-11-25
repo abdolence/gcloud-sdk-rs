@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AssessmentTaskDetails","Assessment task details."]]});

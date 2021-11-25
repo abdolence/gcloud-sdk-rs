@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.tasks.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.tasks.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.tasks.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.tasks.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1663,8 +1661,7 @@
 <span id="1661">1661</span>
 <span id="1662">1662</span>
 <span id="1663">1663</span>
-</pre><pre class="rust">
-<span class="doccomment">/// HTTP request.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// HTTP request.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The task will be pushed to the worker as an HTTP request. If the worker</span>
 <span class="doccomment">/// or the redirected worker acknowledges the task by returning a successful HTTP</span>
@@ -1672,8 +1669,8 @@
 <span class="doccomment">/// any other HTTP response code is returned or no response is received, the</span>
 <span class="doccomment">/// task will be retried according to the following:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// * User-specified throttling: [retry configuration][google.cloud.tasks.v2.Queue.retry_config],</span>
-<span class="doccomment">///   [rate limits][google.cloud.tasks.v2.Queue.rate_limits], and the [queue&#39;s state][google.cloud.tasks.v2.Queue.state].</span>
+<span class="doccomment">/// * User-specified throttling: [retry configuration]\[google.cloud.tasks.v2.Queue.retry_config\],</span>
+<span class="doccomment">///   [rate limits]\[google.cloud.tasks.v2.Queue.rate_limits\], and the [queue&#39;s state]\[google.cloud.tasks.v2.Queue.state\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// * System throttling: To prevent the worker from overloading, Cloud Tasks may</span>
 <span class="doccomment">///   temporarily reduce the queue&#39;s effective rate. User-specified settings</span>
@@ -1682,7 +1679,7 @@
 <span class="doccomment">///  System throttling happens because:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///   * Cloud Tasks backs off on all errors. Normally the backoff specified in</span>
-<span class="doccomment">///     [rate limits][google.cloud.tasks.v2.Queue.rate_limits] will be used. But if the worker returns</span>
+<span class="doccomment">///     [rate limits]\[google.cloud.tasks.v2.Queue.rate_limits\] will be used. But if the worker returns</span>
 <span class="doccomment">///     `429` (Too Many Requests), `503` (Service Unavailable), or the rate of</span>
 <span class="doccomment">///     errors is high, Cloud Tasks will use a higher backoff rate. The retry</span>
 <span class="doccomment">///     specified in the `Retry-After` HTTP response header is considered.</span>
@@ -1696,8 +1693,8 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HttpRequest</span> {
     <span class="doccomment">/// Required. The full url path that the request will be sent to.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This string must begin with either &quot;http://&quot; or &quot;https://&quot;. Some examples</span>
-    <span class="doccomment">/// are: `http://acme.com` and `https://acme.com/sales:8080`. Cloud Tasks will</span>
+    <span class="doccomment">/// This string must begin with either &quot;&lt;http://&quot;&gt; or &quot;&lt;https://&quot;.&gt; Some examples</span>
+    <span class="doccomment">/// are: `&lt;http://acme.com`&gt; and `&lt;https://acme.com/sales:8080`.&gt; Cloud Tasks will</span>
     <span class="doccomment">/// encode some characters for safety and compatibility. The maximum allowed</span>
     <span class="doccomment">/// URL length is 2083 characters after encoding.</span>
     <span class="doccomment">///</span>
@@ -1712,7 +1709,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This map contains the header field names and values.</span>
     <span class="doccomment">/// Headers can be set when the</span>
-    <span class="doccomment">/// [task is created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].</span>
+    <span class="doccomment">/// [task is created]\[google.cloud.tasks.v2beta3.CloudTasks.CreateTask\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// These headers represent a subset of the headers that will accompany the</span>
     <span class="doccomment">/// task&#39;s HTTP request. Some HTTP request headers will be ignored or replaced.</span>
@@ -1720,15 +1717,15 @@
     <span class="doccomment">/// A partial list of headers that will be ignored or replaced is:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * Host: This will be computed by Cloud Tasks and derived from</span>
-    <span class="doccomment">///   [HttpRequest.url][google.cloud.tasks.v2.HttpRequest.url].</span>
+    <span class="doccomment">///   \[HttpRequest.url][google.cloud.tasks.v2.HttpRequest.url\].</span>
     <span class="doccomment">/// * Content-Length: This will be computed by Cloud Tasks.</span>
     <span class="doccomment">/// * User-Agent: This will be set to `&quot;Google-Cloud-Tasks&quot;`.</span>
-    <span class="doccomment">/// * X-Google-*: Google use only.</span>
-    <span class="doccomment">/// * X-AppEngine-*: Google use only.</span>
+    <span class="doccomment">/// * `X-Google-*`: Google use only.</span>
+    <span class="doccomment">/// * `X-AppEngine-*`: Google use only.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `Content-Type` won&#39;t be set by Cloud Tasks. You can explicitly set</span>
     <span class="doccomment">/// `Content-Type` to a media type when the</span>
-    <span class="doccomment">///  [task is created][google.cloud.tasks.v2beta3.CloudTasks.CreateTask].</span>
+    <span class="doccomment">///  [task is created]\[google.cloud.tasks.v2beta3.CloudTasks.CreateTask\].</span>
     <span class="doccomment">///  For example, `Content-Type` can be set to `&quot;application/octet-stream&quot;` or</span>
     <span class="doccomment">///  `&quot;application/json&quot;`.</span>
     <span class="doccomment">///</span>
@@ -1742,13 +1739,13 @@
     <span class="doccomment">/// HTTP request body.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A request body is allowed only if the</span>
-    <span class="doccomment">/// [HTTP method][google.cloud.tasks.v2.HttpRequest.http_method] is POST, PUT, or PATCH. It is an</span>
-    <span class="doccomment">/// error to set body on a task with an incompatible [HttpMethod][google.cloud.tasks.v2.HttpMethod].</span>
+    <span class="doccomment">/// [HTTP method]\[google.cloud.tasks.v2.HttpRequest.http_method\] is POST, PUT, or PATCH. It is an</span>
+    <span class="doccomment">/// error to set body on a task with an incompatible \[HttpMethod][google.cloud.tasks.v2.HttpMethod\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">body</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The mode for generating an `Authorization` header for HTTP requests.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If specified, all `Authorization` headers in the [HttpRequest.headers][google.cloud.tasks.v2.HttpRequest.headers]</span>
+    <span class="doccomment">/// If specified, all `Authorization` headers in the \[HttpRequest.headers][google.cloud.tasks.v2.HttpRequest.headers\]</span>
     <span class="doccomment">/// field will be overridden.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;http_request::AuthorizationHeader&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;5, 6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">authorization_header</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">http_request::AuthorizationHeader</span><span class="op">&gt;</span>,
@@ -1757,21 +1754,21 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">http_request</span> {
     <span class="doccomment">/// The mode for generating an `Authorization` header for HTTP requests.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If specified, all `Authorization` headers in the [HttpRequest.headers][google.cloud.tasks.v2.HttpRequest.headers]</span>
+    <span class="doccomment">/// If specified, all `Authorization` headers in the \[HttpRequest.headers][google.cloud.tasks.v2.HttpRequest.headers\]</span>
     <span class="doccomment">/// field will be overridden.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AuthorizationHeader</span> {
         <span class="doccomment">/// If specified, an</span>
-        <span class="doccomment">/// [OAuth token](https://developers.google.com/identity/protocols/OAuth2)</span>
+        <span class="doccomment">/// [OAuth token](&lt;https://developers.google.com/identity/protocols/OAuth2&gt;)</span>
         <span class="doccomment">/// will be generated and attached as an `Authorization` header in the HTTP</span>
         <span class="doccomment">/// request.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// This type of authorization should generally only be used when calling</span>
         <span class="doccomment">/// Google APIs hosted on *.googleapis.com.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">OauthToken</span>(<span class="kw">super</span><span class="ident">::OAuthToken</span>),
+        <span class="ident">OauthToken</span>(<span class="ident"><span class="kw">super</span>::OAuthToken</span>),
         <span class="doccomment">/// If specified, an</span>
-        <span class="doccomment">/// [OIDC](https://developers.google.com/identity/protocols/OpenIDConnect)</span>
+        <span class="doccomment">/// \[OIDC\](&lt;https://developers.google.com/identity/protocols/OpenIDConnect&gt;)</span>
         <span class="doccomment">/// token will be generated and attached as an `Authorization` header in the</span>
         <span class="doccomment">/// HTTP request.</span>
         <span class="doccomment">///</span>
@@ -1779,7 +1776,7 @@
         <span class="doccomment">/// calling Cloud Run, or endpoints where you intend to validate the token</span>
         <span class="doccomment">/// yourself.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">OidcToken</span>(<span class="kw">super</span><span class="ident">::OidcToken</span>),
+        <span class="ident">OidcToken</span>(<span class="ident"><span class="kw">super</span>::OidcToken</span>),
     }
 }
 <span class="doccomment">/// App Engine HTTP request.</span>
@@ -1787,56 +1784,56 @@
 <span class="doccomment">/// The message defines the HTTP request that is sent to an App Engine app when</span>
 <span class="doccomment">/// the task is dispatched.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Using [AppEngineHttpRequest][google.cloud.tasks.v2.AppEngineHttpRequest] requires</span>
-<span class="doccomment">/// [`appengine.applications.get`](https://cloud.google.com/appengine/docs/admin-api/access-control)</span>
+<span class="doccomment">/// Using \[AppEngineHttpRequest][google.cloud.tasks.v2.AppEngineHttpRequest\] requires</span>
+<span class="doccomment">/// \[`appengine.applications.get`\](&lt;https://cloud.google.com/appengine/docs/admin-api/access-control&gt;)</span>
 <span class="doccomment">/// Google IAM permission for the project</span>
 <span class="doccomment">/// and the following scope:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// `https://www.googleapis.com/auth/cloud-platform`</span>
+<span class="doccomment">/// `&lt;https://www.googleapis.com/auth/cloud-platform`&gt;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The task will be delivered to the App Engine app which belongs to the same</span>
 <span class="doccomment">/// project as the queue. For more information, see</span>
 <span class="doccomment">/// [How Requests are</span>
-<span class="doccomment">/// Routed](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed)</span>
+<span class="doccomment">/// Routed](&lt;https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed&gt;)</span>
 <span class="doccomment">/// and how routing is affected by</span>
 <span class="doccomment">/// [dispatch</span>
-<span class="doccomment">/// files](https://cloud.google.com/appengine/docs/python/config/dispatchref).</span>
+<span class="doccomment">/// files](&lt;https://cloud.google.com/appengine/docs/python/config/dispatchref&gt;).</span>
 <span class="doccomment">/// Traffic is encrypted during transport and never leaves Google datacenters.</span>
 <span class="doccomment">/// Because this traffic is carried over a communication mechanism internal to</span>
 <span class="doccomment">/// Google, you cannot explicitly set the protocol (for example, HTTP or HTTPS).</span>
 <span class="doccomment">/// The request to the handler, however, will appear to have used the HTTP</span>
 <span class="doccomment">/// protocol.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The [AppEngineRouting][google.cloud.tasks.v2.AppEngineRouting] used to construct the URL that the task is</span>
+<span class="doccomment">/// The \[AppEngineRouting][google.cloud.tasks.v2.AppEngineRouting\] used to construct the URL that the task is</span>
 <span class="doccomment">/// delivered to can be set at the queue-level or task-level:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// * If [app_engine_routing_override is set on the</span>
-<span class="doccomment">///    queue][Queue.app_engine_routing_override], this value is used for all</span>
+<span class="doccomment">///    queue]\[Queue.app_engine_routing_override\], this value is used for all</span>
 <span class="doccomment">///    tasks in the queue, no matter what the setting is for the [task-level</span>
-<span class="doccomment">///    app_engine_routing][AppEngineHttpRequest.app_engine_routing].</span>
+<span class="doccomment">///    app_engine_routing]\[AppEngineHttpRequest.app_engine_routing\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The `url` that the task will be sent to is:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// * `url =` [host][google.cloud.tasks.v2.AppEngineRouting.host] `+`</span>
-<span class="doccomment">///   [relative_uri][google.cloud.tasks.v2.AppEngineHttpRequest.relative_uri]</span>
+<span class="doccomment">/// * `url =` \[host][google.cloud.tasks.v2.AppEngineRouting.host\] `+`</span>
+<span class="doccomment">///   \[relative_uri][google.cloud.tasks.v2.AppEngineHttpRequest.relative_uri\]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Tasks can be dispatched to secure app handlers, unsecure app handlers, and</span>
 <span class="doccomment">/// URIs restricted with</span>
 <span class="doccomment">/// [`login:</span>
-<span class="doccomment">/// admin`](https://cloud.google.com/appengine/docs/standard/python/config/appref).</span>
+<span class="doccomment">/// admin`](&lt;https://cloud.google.com/appengine/docs/standard/python/config/appref&gt;).</span>
 <span class="doccomment">/// Because tasks are not run as any user, they cannot be dispatched to URIs</span>
 <span class="doccomment">/// restricted with</span>
 <span class="doccomment">/// [`login:</span>
-<span class="doccomment">/// required`](https://cloud.google.com/appengine/docs/standard/python/config/appref)</span>
+<span class="doccomment">/// required`](&lt;https://cloud.google.com/appengine/docs/standard/python/config/appref&gt;)</span>
 <span class="doccomment">/// Task dispatches also do not follow redirects.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The task attempt has succeeded if the app&#39;s request handler returns an HTTP</span>
 <span class="doccomment">/// response code in the range [`200` - `299`]. The task attempt has failed if</span>
 <span class="doccomment">/// the app&#39;s handler returns a non-2xx response code or Cloud Tasks does</span>
-<span class="doccomment">/// not receive response before the [deadline][google.cloud.tasks.v2.Task.dispatch_deadline]. Failed</span>
+<span class="doccomment">/// not receive response before the \[deadline][google.cloud.tasks.v2.Task.dispatch_deadline\]. Failed</span>
 <span class="doccomment">/// tasks will be retried according to the</span>
-<span class="doccomment">/// [retry configuration][google.cloud.tasks.v2.Queue.retry_config]. `503` (Service Unavailable) is</span>
+<span class="doccomment">/// [retry configuration]\[google.cloud.tasks.v2.Queue.retry_config\]. `503` (Service Unavailable) is</span>
 <span class="doccomment">/// considered an App Engine system error instead of an application error and</span>
 <span class="doccomment">/// will cause Cloud Tasks&#39; traffic congestion control to temporarily throttle</span>
 <span class="doccomment">/// the queue&#39;s dispatches. Unlike other types of task targets, a `429` (Too Many</span>
@@ -1850,19 +1847,19 @@
     <span class="doccomment">/// HTTP requests with this http_method, otherwise the task attempt will fail</span>
     <span class="doccomment">/// with error code 405 (Method Not Allowed). See</span>
     <span class="doccomment">/// [Writing a push task request</span>
-    <span class="doccomment">/// handler](https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler)</span>
+    <span class="doccomment">/// handler](&lt;https://cloud.google.com/appengine/docs/java/taskqueue/push/creating-handlers#writing_a_push_task_request_handler&gt;)</span>
     <span class="doccomment">/// and the documentation for the request handlers in the language your app is</span>
     <span class="doccomment">/// written in e.g.</span>
     <span class="doccomment">/// [Python Request</span>
-    <span class="doccomment">/// Handler](https://cloud.google.com/appengine/docs/python/tools/webapp/requesthandlerclass).</span>
+    <span class="doccomment">/// Handler](&lt;https://cloud.google.com/appengine/docs/python/tools/webapp/requesthandlerclass&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;HttpMethod&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">http_method</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Task-level setting for App Engine routing.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * If [app_engine_routing_override is set on the</span>
-    <span class="doccomment">///    queue][Queue.app_engine_routing_override], this value is used for all</span>
+    <span class="doccomment">///    queue]\[Queue.app_engine_routing_override\], this value is used for all</span>
     <span class="doccomment">///    tasks in the queue, no matter what the setting is for the [task-level</span>
-    <span class="doccomment">///    app_engine_routing][AppEngineHttpRequest.app_engine_routing].</span>
+    <span class="doccomment">///    app_engine_routing]\[AppEngineHttpRequest.app_engine_routing\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">app_engine_routing</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">AppEngineRouting</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The relative URI.</span>
@@ -1877,24 +1874,24 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This map contains the header field names and values.</span>
     <span class="doccomment">/// Headers can be set when the</span>
-    <span class="doccomment">/// [task is created][google.cloud.tasks.v2.CloudTasks.CreateTask].</span>
+    <span class="doccomment">/// [task is created]\[google.cloud.tasks.v2.CloudTasks.CreateTask\].</span>
     <span class="doccomment">/// Repeated headers are not supported but a header value can contain commas.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Cloud Tasks sets some headers to default values:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `User-Agent`: By default, this header is</span>
-    <span class="doccomment">///   `&quot;AppEngine-Google; (+http://code.google.com/appengine)&quot;`.</span>
+    <span class="doccomment">///   `&quot;AppEngine-Google; (+&lt;http://code.google.com/appengine&gt;)&quot;`.</span>
     <span class="doccomment">///   This header can be modified, but Cloud Tasks will append</span>
-    <span class="doccomment">///   `&quot;AppEngine-Google; (+http://code.google.com/appengine)&quot;` to the</span>
+    <span class="doccomment">///   `&quot;AppEngine-Google; (+&lt;http://code.google.com/appengine&gt;)&quot;` to the</span>
     <span class="doccomment">///   modified `User-Agent`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If the task has a [body][google.cloud.tasks.v2.AppEngineHttpRequest.body], Cloud</span>
+    <span class="doccomment">/// If the task has a \[body][google.cloud.tasks.v2.AppEngineHttpRequest.body\], Cloud</span>
     <span class="doccomment">/// Tasks sets the following headers:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `Content-Type`: By default, the `Content-Type` header is set to</span>
     <span class="doccomment">///   `&quot;application/octet-stream&quot;`. The default can be overridden by explicitly</span>
     <span class="doccomment">///   setting `Content-Type` to a particular media type when the</span>
-    <span class="doccomment">///   [task is created][google.cloud.tasks.v2.CloudTasks.CreateTask].</span>
+    <span class="doccomment">///   [task is created]\[google.cloud.tasks.v2.CloudTasks.CreateTask\].</span>
     <span class="doccomment">///   For example, `Content-Type` can be set to `&quot;application/json&quot;`.</span>
     <span class="doccomment">/// * `Content-Length`: This is computed by Cloud Tasks. This value is</span>
     <span class="doccomment">///   output only.   It cannot be changed.</span>
@@ -1908,20 +1905,20 @@
     <span class="doccomment">/// In addition, Cloud Tasks sets some headers when the task is dispatched,</span>
     <span class="doccomment">/// such as headers containing information about the task; see</span>
     <span class="doccomment">/// [request</span>
-    <span class="doccomment">/// headers](https://cloud.google.com/tasks/docs/creating-appengine-handlers#reading_request_headers).</span>
+    <span class="doccomment">/// headers](&lt;https://cloud.google.com/tasks/docs/creating-appengine-handlers#reading_request_headers&gt;).</span>
     <span class="doccomment">/// These headers are set only when the task is dispatched, so they are not</span>
     <span class="doccomment">/// visible when the task is returned in a Cloud Tasks response.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Although there is no specific limit for the maximum number of headers or</span>
-    <span class="doccomment">/// the size, there is a limit on the maximum size of the [Task][google.cloud.tasks.v2.Task]. For more</span>
-    <span class="doccomment">/// information, see the [CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask] documentation.</span>
+    <span class="doccomment">/// the size, there is a limit on the maximum size of the \[Task][google.cloud.tasks.v2.Task\]. For more</span>
+    <span class="doccomment">/// information, see the \[CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask\] documentation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">headers</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// HTTP request body.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A request body is allowed only if the HTTP method is POST or PUT. It is</span>
-    <span class="doccomment">/// an error to set a body on a task with an incompatible [HttpMethod][google.cloud.tasks.v2.HttpMethod].</span>
+    <span class="doccomment">/// an error to set a body on a task with an incompatible \[HttpMethod][google.cloud.tasks.v2.HttpMethod\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">body</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
@@ -1932,20 +1929,20 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// For more information about services, versions, and instances see</span>
 <span class="doccomment">/// [An Overview of App</span>
-<span class="doccomment">/// Engine](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine),</span>
+<span class="doccomment">/// Engine](&lt;https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine&gt;),</span>
 <span class="doccomment">/// [Microservices Architecture on Google App</span>
-<span class="doccomment">/// Engine](https://cloud.google.com/appengine/docs/python/microservices-on-app-engine),</span>
+<span class="doccomment">/// Engine](&lt;https://cloud.google.com/appengine/docs/python/microservices-on-app-engine&gt;),</span>
 <span class="doccomment">/// [App Engine Standard request</span>
-<span class="doccomment">/// routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed),</span>
+<span class="doccomment">/// routing](&lt;https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed&gt;),</span>
 <span class="doccomment">/// and [App Engine Flex request</span>
-<span class="doccomment">/// routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).</span>
+<span class="doccomment">/// routing](&lt;https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed&gt;).</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Using [AppEngineRouting][google.cloud.tasks.v2.AppEngineRouting] requires</span>
-<span class="doccomment">/// [`appengine.applications.get`](https://cloud.google.com/appengine/docs/admin-api/access-control)</span>
+<span class="doccomment">/// Using \[AppEngineRouting][google.cloud.tasks.v2.AppEngineRouting\] requires</span>
+<span class="doccomment">/// \[`appengine.applications.get`\](&lt;https://cloud.google.com/appengine/docs/admin-api/access-control&gt;)</span>
 <span class="doccomment">/// Google IAM permission for the project</span>
 <span class="doccomment">/// and the following scope:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// `https://www.googleapis.com/auth/cloud-platform`</span>
+<span class="doccomment">/// `&lt;https://www.googleapis.com/auth/cloud-platform`&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AppEngineRouting</span> {
     <span class="doccomment">/// App service.</span>
@@ -1954,16 +1951,16 @@
     <span class="doccomment">/// service when the task is attempted.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For some queues or tasks which were created using the App Engine</span>
-    <span class="doccomment">/// Task Queue API, [host][google.cloud.tasks.v2.AppEngineRouting.host] is not parsable</span>
-    <span class="doccomment">/// into [service][google.cloud.tasks.v2.AppEngineRouting.service],</span>
-    <span class="doccomment">/// [version][google.cloud.tasks.v2.AppEngineRouting.version], and</span>
-    <span class="doccomment">/// [instance][google.cloud.tasks.v2.AppEngineRouting.instance]. For example, some tasks</span>
+    <span class="doccomment">/// Task Queue API, \[host][google.cloud.tasks.v2.AppEngineRouting.host\] is not parsable</span>
+    <span class="doccomment">/// into \[service][google.cloud.tasks.v2.AppEngineRouting.service\],</span>
+    <span class="doccomment">/// \[version][google.cloud.tasks.v2.AppEngineRouting.version\], and</span>
+    <span class="doccomment">/// \[instance][google.cloud.tasks.v2.AppEngineRouting.instance\]. For example, some tasks</span>
     <span class="doccomment">/// which were created using the App Engine SDK use a custom domain</span>
     <span class="doccomment">/// name; custom domains are not parsed by Cloud Tasks. If</span>
-    <span class="doccomment">/// [host][google.cloud.tasks.v2.AppEngineRouting.host] is not parsable, then</span>
-    <span class="doccomment">/// [service][google.cloud.tasks.v2.AppEngineRouting.service],</span>
-    <span class="doccomment">/// [version][google.cloud.tasks.v2.AppEngineRouting.version], and</span>
-    <span class="doccomment">/// [instance][google.cloud.tasks.v2.AppEngineRouting.instance] are the empty string.</span>
+    <span class="doccomment">/// \[host][google.cloud.tasks.v2.AppEngineRouting.host\] is not parsable, then</span>
+    <span class="doccomment">/// \[service][google.cloud.tasks.v2.AppEngineRouting.service\],</span>
+    <span class="doccomment">/// \[version][google.cloud.tasks.v2.AppEngineRouting.version\], and</span>
+    <span class="doccomment">/// \[instance][google.cloud.tasks.v2.AppEngineRouting.instance\] are the empty string.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// App version.</span>
@@ -1972,16 +1969,16 @@
     <span class="doccomment">/// version when the task is attempted.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For some queues or tasks which were created using the App Engine</span>
-    <span class="doccomment">/// Task Queue API, [host][google.cloud.tasks.v2.AppEngineRouting.host] is not parsable</span>
-    <span class="doccomment">/// into [service][google.cloud.tasks.v2.AppEngineRouting.service],</span>
-    <span class="doccomment">/// [version][google.cloud.tasks.v2.AppEngineRouting.version], and</span>
-    <span class="doccomment">/// [instance][google.cloud.tasks.v2.AppEngineRouting.instance]. For example, some tasks</span>
+    <span class="doccomment">/// Task Queue API, \[host][google.cloud.tasks.v2.AppEngineRouting.host\] is not parsable</span>
+    <span class="doccomment">/// into \[service][google.cloud.tasks.v2.AppEngineRouting.service\],</span>
+    <span class="doccomment">/// \[version][google.cloud.tasks.v2.AppEngineRouting.version\], and</span>
+    <span class="doccomment">/// \[instance][google.cloud.tasks.v2.AppEngineRouting.instance\]. For example, some tasks</span>
     <span class="doccomment">/// which were created using the App Engine SDK use a custom domain</span>
     <span class="doccomment">/// name; custom domains are not parsed by Cloud Tasks. If</span>
-    <span class="doccomment">/// [host][google.cloud.tasks.v2.AppEngineRouting.host] is not parsable, then</span>
-    <span class="doccomment">/// [service][google.cloud.tasks.v2.AppEngineRouting.service],</span>
-    <span class="doccomment">/// [version][google.cloud.tasks.v2.AppEngineRouting.version], and</span>
-    <span class="doccomment">/// [instance][google.cloud.tasks.v2.AppEngineRouting.instance] are the empty string.</span>
+    <span class="doccomment">/// \[host][google.cloud.tasks.v2.AppEngineRouting.host\] is not parsable, then</span>
+    <span class="doccomment">/// \[service][google.cloud.tasks.v2.AppEngineRouting.service\],</span>
+    <span class="doccomment">/// \[version][google.cloud.tasks.v2.AppEngineRouting.version\], and</span>
+    <span class="doccomment">/// \[instance][google.cloud.tasks.v2.AppEngineRouting.instance\] are the empty string.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">version</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// App instance.</span>
@@ -1991,35 +1988,35 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Requests can only be sent to a specific instance if</span>
     <span class="doccomment">/// [manual scaling is used in App Engine</span>
-    <span class="doccomment">/// Standard](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes).</span>
+    <span class="doccomment">/// Standard](&lt;https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes&gt;).</span>
     <span class="doccomment">/// App Engine Flex does not support instances. For more information, see</span>
     <span class="doccomment">/// [App Engine Standard request</span>
-    <span class="doccomment">/// routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed)</span>
+    <span class="doccomment">/// routing](&lt;https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed&gt;)</span>
     <span class="doccomment">/// and [App Engine Flex request</span>
-    <span class="doccomment">/// routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).</span>
+    <span class="doccomment">/// routing](&lt;https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. The host that the task is sent to.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The host is constructed from the domain name of the app associated with</span>
     <span class="doccomment">/// the queue&#39;s project ID (for example &lt;app-id&gt;.appspot.com), and the</span>
-    <span class="doccomment">/// [service][google.cloud.tasks.v2.AppEngineRouting.service], [version][google.cloud.tasks.v2.AppEngineRouting.version],</span>
-    <span class="doccomment">/// and [instance][google.cloud.tasks.v2.AppEngineRouting.instance]. Tasks which were created using</span>
+    <span class="doccomment">/// \[service][google.cloud.tasks.v2.AppEngineRouting.service\], \[version][google.cloud.tasks.v2.AppEngineRouting.version\],</span>
+    <span class="doccomment">/// and \[instance][google.cloud.tasks.v2.AppEngineRouting.instance\]. Tasks which were created using</span>
     <span class="doccomment">/// the App Engine SDK might have a custom domain name.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For more information, see</span>
     <span class="doccomment">/// [How Requests are</span>
-    <span class="doccomment">/// Routed](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed).</span>
+    <span class="doccomment">/// Routed](&lt;https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">host</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Contains information needed for generating an</span>
-<span class="doccomment">/// [OAuth token](https://developers.google.com/identity/protocols/OAuth2).</span>
+<span class="doccomment">/// [OAuth token](&lt;https://developers.google.com/identity/protocols/OAuth2&gt;).</span>
 <span class="doccomment">/// This type of authorization should generally only be used when calling Google</span>
 <span class="doccomment">/// APIs hosted on *.googleapis.com.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OAuthToken</span> {
-    <span class="doccomment">/// [Service account email](https://cloud.google.com/iam/docs/service-accounts)</span>
+    <span class="doccomment">/// [Service account email](&lt;https://cloud.google.com/iam/docs/service-accounts&gt;)</span>
     <span class="doccomment">/// to be used for generating OAuth token.</span>
     <span class="doccomment">/// The service account must be within the same project as the queue. The</span>
     <span class="doccomment">/// caller must have iam.serviceAccounts.actAs permission for the service</span>
@@ -2027,20 +2024,20 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_account_email</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// OAuth scope to be used for generating OAuth access token.</span>
-    <span class="doccomment">/// If not specified, &quot;https://www.googleapis.com/auth/cloud-platform&quot;</span>
+    <span class="doccomment">/// If not specified, &quot;&lt;https://www.googleapis.com/auth/cloud-platform&quot;&gt;</span>
     <span class="doccomment">/// will be used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">scope</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Contains information needed for generating an</span>
 <span class="doccomment">/// [OpenID Connect</span>
-<span class="doccomment">/// token](https://developers.google.com/identity/protocols/OpenIDConnect).</span>
+<span class="doccomment">/// token](&lt;https://developers.google.com/identity/protocols/OpenIDConnect&gt;).</span>
 <span class="doccomment">/// This type of authorization can be used for many scenarios, including</span>
 <span class="doccomment">/// calling Cloud Run, or endpoints where you intend to validate the token</span>
 <span class="doccomment">/// yourself.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OidcToken</span> {
-    <span class="doccomment">/// [Service account email](https://cloud.google.com/iam/docs/service-accounts)</span>
+    <span class="doccomment">/// [Service account email](&lt;https://cloud.google.com/iam/docs/service-accounts&gt;)</span>
     <span class="doccomment">/// to be used for generating OIDC token.</span>
     <span class="doccomment">/// The service account must be within the same project as the queue. The</span>
     <span class="doccomment">/// caller must have iam.serviceAccounts.actAs permission for the service</span>
@@ -2078,7 +2075,7 @@
 <span class="doccomment">/// retry options, queue types, and others.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Queue</span> {
-    <span class="doccomment">/// Caller-specified and required in [CreateQueue][google.cloud.tasks.v2.CloudTasks.CreateQueue],</span>
+    <span class="doccomment">/// Caller-specified and required in \[CreateQueue][google.cloud.tasks.v2.CloudTasks.CreateQueue\],</span>
     <span class="doccomment">/// after which it becomes output only.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The queue name.</span>
@@ -2086,52 +2083,52 @@
     <span class="doccomment">/// The queue name must have the following format:</span>
     <span class="doccomment">/// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * `PROJECT_ID` can contain letters ([A-Za-z]), numbers ([0-9]),</span>
+    <span class="doccomment">/// * `PROJECT_ID` can contain letters (\[A-Za-z\]), numbers (\[0-9\]),</span>
     <span class="doccomment">///    hyphens (-), colons (:), or periods (.).</span>
     <span class="doccomment">///    For more information, see</span>
     <span class="doccomment">///    [Identifying</span>
-    <span class="doccomment">///    projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects)</span>
+    <span class="doccomment">///    projects](&lt;https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects&gt;)</span>
     <span class="doccomment">/// * `LOCATION_ID` is the canonical ID for the queue&#39;s location.</span>
     <span class="doccomment">///    The list of available locations can be obtained by calling</span>
-    <span class="doccomment">///    [ListLocations][google.cloud.location.Locations.ListLocations].</span>
-    <span class="doccomment">///    For more information, see https://cloud.google.com/about/locations/.</span>
-    <span class="doccomment">/// * `QUEUE_ID` can contain letters ([A-Za-z]), numbers ([0-9]), or</span>
+    <span class="doccomment">///    \[ListLocations][google.cloud.location.Locations.ListLocations\].</span>
+    <span class="doccomment">///    For more information, see &lt;https://cloud.google.com/about/locations/.&gt;</span>
+    <span class="doccomment">/// * `QUEUE_ID` can contain letters (\[A-Za-z\]), numbers (\[0-9\]), or</span>
     <span class="doccomment">///   hyphens (-). The maximum length is 100 characters.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Overrides for</span>
-    <span class="doccomment">/// [task-level app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].</span>
+    <span class="doccomment">/// [task-level app_engine_routing]\[google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing\].</span>
     <span class="doccomment">/// These settings apply only to</span>
-    <span class="doccomment">/// [App Engine tasks][google.cloud.tasks.v2.AppEngineHttpRequest] in this queue.</span>
-    <span class="doccomment">/// [Http tasks][google.cloud.tasks.v2.HttpRequest] are not affected.</span>
+    <span class="doccomment">/// [App Engine tasks]\[google.cloud.tasks.v2.AppEngineHttpRequest\] in this queue.</span>
+    <span class="doccomment">/// [Http tasks]\[google.cloud.tasks.v2.HttpRequest\] are not affected.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If set, `app_engine_routing_override` is used for all</span>
-    <span class="doccomment">/// [App Engine tasks][google.cloud.tasks.v2.AppEngineHttpRequest] in the queue, no matter what the</span>
+    <span class="doccomment">/// [App Engine tasks]\[google.cloud.tasks.v2.AppEngineHttpRequest\] in the queue, no matter what the</span>
     <span class="doccomment">/// setting is for the</span>
-    <span class="doccomment">/// [task-level app_engine_routing][google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing].</span>
+    <span class="doccomment">/// [task-level app_engine_routing]\[google.cloud.tasks.v2.AppEngineHttpRequest.app_engine_routing\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">app_engine_routing_override</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">AppEngineRouting</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Rate limits for task dispatches.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [rate_limits][google.cloud.tasks.v2.Queue.rate_limits] and [retry_config][google.cloud.tasks.v2.Queue.retry_config] are</span>
+    <span class="doccomment">/// \[rate_limits][google.cloud.tasks.v2.Queue.rate_limits\] and \[retry_config][google.cloud.tasks.v2.Queue.retry_config\] are</span>
     <span class="doccomment">/// related because they both control task attempts. However they control task</span>
     <span class="doccomment">/// attempts in different ways:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [rate_limits][google.cloud.tasks.v2.Queue.rate_limits] controls the total rate of</span>
+    <span class="doccomment">/// * \[rate_limits][google.cloud.tasks.v2.Queue.rate_limits\] controls the total rate of</span>
     <span class="doccomment">///   dispatches from a queue (i.e. all traffic dispatched from the</span>
     <span class="doccomment">///   queue, regardless of whether the dispatch is from a first</span>
     <span class="doccomment">///   attempt or a retry).</span>
-    <span class="doccomment">/// * [retry_config][google.cloud.tasks.v2.Queue.retry_config] controls what happens to</span>
+    <span class="doccomment">/// * \[retry_config][google.cloud.tasks.v2.Queue.retry_config\] controls what happens to</span>
     <span class="doccomment">///   particular a task after its first attempt fails. That is,</span>
-    <span class="doccomment">///   [retry_config][google.cloud.tasks.v2.Queue.retry_config] controls task retries (the</span>
+    <span class="doccomment">///   \[retry_config][google.cloud.tasks.v2.Queue.retry_config\] controls task retries (the</span>
     <span class="doccomment">///   second attempt, third attempt, etc).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The queue&#39;s actual dispatch rate is the result of:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * Number of tasks in the queue</span>
-    <span class="doccomment">/// * User-specified throttling: [rate_limits][google.cloud.tasks.v2.Queue.rate_limits],</span>
-    <span class="doccomment">///   [retry_config][google.cloud.tasks.v2.Queue.retry_config], and the</span>
-    <span class="doccomment">///   [queue&#39;s state][google.cloud.tasks.v2.Queue.state].</span>
+    <span class="doccomment">/// * User-specified throttling: \[rate_limits][google.cloud.tasks.v2.Queue.rate_limits\],</span>
+    <span class="doccomment">///   \[retry_config][google.cloud.tasks.v2.Queue.retry_config\], and the</span>
+    <span class="doccomment">///   [queue&#39;s state]\[google.cloud.tasks.v2.Queue.state\].</span>
     <span class="doccomment">/// * System throttling due to `429` (Too Many Requests) or `503` (Service</span>
     <span class="doccomment">///   Unavailable) responses from the worker, high error rates, or to smooth</span>
     <span class="doccomment">///   sudden large traffic spikes.</span>
@@ -2146,33 +2143,33 @@
     <span class="doccomment">///   settings apply to all tasks in the queue which do not have retry settings</span>
     <span class="doccomment">///   explicitly set on the task and were created by the App Engine SDK. See</span>
     <span class="doccomment">///   [App Engine</span>
-    <span class="doccomment">///   documentation](https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/retrying-tasks).</span>
+    <span class="doccomment">///   documentation](&lt;https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/retrying-tasks&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">retry_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">RetryConfig</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. The state of the queue.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `state` can only be changed by called</span>
-    <span class="doccomment">/// [PauseQueue][google.cloud.tasks.v2.CloudTasks.PauseQueue],</span>
-    <span class="doccomment">/// [ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue], or uploading</span>
-    <span class="doccomment">/// [queue.yaml/xml](https://cloud.google.com/appengine/docs/python/config/queueref).</span>
-    <span class="doccomment">/// [UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue] cannot be used to change `state`.</span>
+    <span class="doccomment">/// \[PauseQueue][google.cloud.tasks.v2.CloudTasks.PauseQueue\],</span>
+    <span class="doccomment">/// \[ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue\], or uploading</span>
+    <span class="doccomment">/// \[queue.yaml/xml\](&lt;https://cloud.google.com/appengine/docs/python/config/queueref&gt;).</span>
+    <span class="doccomment">/// \[UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue\] cannot be used to change `state`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;queue::State&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">state</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Output only. The last time this queue was purged.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// All tasks that were [created][google.cloud.tasks.v2.Task.create_time] before this time</span>
+    <span class="doccomment">/// All tasks that were \[created][google.cloud.tasks.v2.Task.create_time\] before this time</span>
     <span class="doccomment">/// were purged.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// A queue can be purged using [PurgeQueue][google.cloud.tasks.v2.CloudTasks.PurgeQueue], the</span>
+    <span class="doccomment">/// A queue can be purged using \[PurgeQueue][google.cloud.tasks.v2.CloudTasks.PurgeQueue\], the</span>
     <span class="doccomment">/// [App Engine Task Queue SDK, or the Cloud</span>
-    <span class="doccomment">/// Console](https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/deleting-tasks-and-queues#purging_all_tasks_from_a_queue).</span>
+    <span class="doccomment">/// Console](&lt;https://cloud.google.com/appengine/docs/standard/python/taskqueue/push/deleting-tasks-and-queues#purging_all_tasks_from_a_queue&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Purge time will be truncated to the nearest microsecond. Purge</span>
     <span class="doccomment">/// time will be unset if the queue has never been purged.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">purge_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Configuration options for writing logs to</span>
-    <span class="doccomment">/// [Stackdriver Logging](https://cloud.google.com/logging/docs/). If this</span>
+    <span class="doccomment">/// [Stackdriver Logging](&lt;https://cloud.google.com/logging/docs/&gt;). If this</span>
     <span class="doccomment">/// field is unset, then no logs are written.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">stackdriver_logging_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">StackdriverLoggingConfig</span><span class="op">&gt;</span>,
@@ -2190,7 +2187,7 @@
         <span class="doccomment">/// If the queue was created using Cloud Tasks and the queue has</span>
         <span class="doccomment">/// had no activity (method calls or task dispatches) for 30 days,</span>
         <span class="doccomment">/// the queue may take a few minutes to re-activate. Some method</span>
-        <span class="doccomment">/// calls may return [NOT_FOUND][google.rpc.Code.NOT_FOUND] and</span>
+        <span class="doccomment">/// calls may return \[NOT_FOUND][google.rpc.Code.NOT_FOUND\] and</span>
         <span class="doccomment">/// tasks may not be dispatched for a few minutes until the queue</span>
         <span class="doccomment">/// has been re-activated.</span>
         <span class="ident">Running</span> <span class="op">=</span> <span class="number">1</span>,
@@ -2201,9 +2198,9 @@
         <span class="doccomment">/// The queue is disabled.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// A queue becomes `DISABLED` when</span>
-        <span class="doccomment">/// [queue.yaml](https://cloud.google.com/appengine/docs/python/config/queueref)</span>
+        <span class="doccomment">/// \[queue.yaml\](&lt;https://cloud.google.com/appengine/docs/python/config/queueref&gt;)</span>
         <span class="doccomment">/// or</span>
-        <span class="doccomment">/// [queue.xml](https://cloud.google.com/appengine/docs/standard/java/config/queueref)</span>
+        <span class="doccomment">/// \[queue.xml\](&lt;https://cloud.google.com/appengine/docs/standard/java/config/queueref&gt;)</span>
         <span class="doccomment">/// is uploaded which does not contain the queue. You cannot directly disable</span>
         <span class="doccomment">/// a queue.</span>
         <span class="doccomment">///</span>
@@ -2211,7 +2208,7 @@
         <span class="doccomment">/// but the tasks are not dispatched.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// To permanently delete this queue and all of its tasks, call</span>
-        <span class="doccomment">/// [DeleteQueue][google.cloud.tasks.v2.CloudTasks.DeleteQueue].</span>
+        <span class="doccomment">/// \[DeleteQueue][google.cloud.tasks.v2.CloudTasks.DeleteQueue\].</span>
         <span class="ident">Disabled</span> <span class="op">=</span> <span class="number">3</span>,
     }
 }
@@ -2220,8 +2217,8 @@
 <span class="doccomment">/// This message determines the maximum rate that tasks can be dispatched by a</span>
 <span class="doccomment">/// queue, regardless of whether the dispatch is a first task attempt or a retry.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Note: The debugging command, [RunTask][google.cloud.tasks.v2.CloudTasks.RunTask], will run a task</span>
-<span class="doccomment">/// even if the queue has reached its [RateLimits][google.cloud.tasks.v2.RateLimits].</span>
+<span class="doccomment">/// Note: The debugging command, \[RunTask][google.cloud.tasks.v2.CloudTasks.RunTask\], will run a task</span>
+<span class="doccomment">/// even if the queue has reached its \[RateLimits][google.cloud.tasks.v2.RateLimits\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RateLimits</span> {
     <span class="doccomment">/// The maximum rate at which tasks are dispatched from this queue.</span>
@@ -2234,7 +2231,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This field has the same meaning as</span>
     <span class="doccomment">/// [rate in</span>
-    <span class="doccomment">/// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#rate).</span>
+    <span class="doccomment">/// queue.yaml/xml](&lt;https://cloud.google.com/appengine/docs/standard/python/config/queueref#rate&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_dispatches_per_second</span>: <span class="ident">f64</span>,
     <span class="doccomment">/// Output only. The max burst size.</span>
@@ -2245,29 +2242,29 @@
     <span class="doccomment">/// after a task is enqueued, but still limits resource usage when</span>
     <span class="doccomment">/// many tasks are enqueued in a short period of time.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The [token bucket](https://wikipedia.org/wiki/Token_Bucket)</span>
+    <span class="doccomment">/// The [token bucket](&lt;https://wikipedia.org/wiki/Token_Bucket&gt;)</span>
     <span class="doccomment">/// algorithm is used to control the rate of task dispatches. Each</span>
     <span class="doccomment">/// queue has a token bucket that holds tokens, up to the maximum</span>
     <span class="doccomment">/// specified by `max_burst_size`. Each time a task is dispatched, a</span>
     <span class="doccomment">/// token is removed from the bucket. Tasks will be dispatched until</span>
     <span class="doccomment">/// the queue&#39;s bucket runs out of tokens. The bucket will be</span>
     <span class="doccomment">/// continuously refilled with new tokens based on</span>
-    <span class="doccomment">/// [max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second].</span>
+    <span class="doccomment">/// \[max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Cloud Tasks will pick the value of `max_burst_size` based on the</span>
     <span class="doccomment">/// value of</span>
-    <span class="doccomment">/// [max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second].</span>
+    <span class="doccomment">/// \[max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For queues that were created or updated using</span>
     <span class="doccomment">/// `queue.yaml/xml`, `max_burst_size` is equal to</span>
-    <span class="doccomment">/// [bucket_size](https://cloud.google.com/appengine/docs/standard/python/config/queueref#bucket_size).</span>
+    <span class="doccomment">/// \[bucket_size\](&lt;https://cloud.google.com/appengine/docs/standard/python/config/queueref#bucket_size&gt;).</span>
     <span class="doccomment">/// Since `max_burst_size` is output only, if</span>
-    <span class="doccomment">/// [UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue] is called on a queue</span>
+    <span class="doccomment">/// \[UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue\] is called on a queue</span>
     <span class="doccomment">/// created by `queue.yaml/xml`, `max_burst_size` will be reset based</span>
     <span class="doccomment">/// on the value of</span>
-    <span class="doccomment">/// [max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second],</span>
+    <span class="doccomment">/// \[max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second\],</span>
     <span class="doccomment">/// regardless of whether</span>
-    <span class="doccomment">/// [max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second]</span>
+    <span class="doccomment">/// \[max_dispatches_per_second][google.cloud.tasks.v2.RateLimits.max_dispatches_per_second\]</span>
     <span class="doccomment">/// is updated.</span>
     <span class="doccomment">///</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -2286,7 +2283,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This field has the same meaning as</span>
     <span class="doccomment">/// [max_concurrent_requests in</span>
-    <span class="doccomment">/// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests).</span>
+    <span class="doccomment">/// queue.yaml/xml](&lt;https://cloud.google.com/appengine/docs/standard/python/config/queueref#max_concurrent_requests&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_concurrent_dispatches</span>: <span class="ident">i32</span>,
 }
@@ -2308,13 +2305,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This field has the same meaning as</span>
     <span class="doccomment">/// [task_retry_limit in</span>
-    <span class="doccomment">/// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters).</span>
+    <span class="doccomment">/// queue.yaml/xml](&lt;https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_attempts</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// If positive, `max_retry_duration` specifies the time limit for</span>
     <span class="doccomment">/// retrying a failed task, measured from when the task was first</span>
     <span class="doccomment">/// attempted. Once `max_retry_duration` time has passed *and* the</span>
-    <span class="doccomment">/// task has been attempted [max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts]</span>
+    <span class="doccomment">/// task has been attempted \[max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts\]</span>
     <span class="doccomment">/// times, no further attempts will be made and the task will be</span>
     <span class="doccomment">/// deleted.</span>
     <span class="doccomment">///</span>
@@ -2328,13 +2325,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This field has the same meaning as</span>
     <span class="doccomment">/// [task_age_limit in</span>
-    <span class="doccomment">/// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters).</span>
+    <span class="doccomment">/// queue.yaml/xml](&lt;https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_retry_duration</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A task will be [scheduled][google.cloud.tasks.v2.Task.schedule_time] for retry between</span>
-    <span class="doccomment">/// [min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff] and</span>
-    <span class="doccomment">/// [max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff] duration after it fails,</span>
-    <span class="doccomment">/// if the queue&#39;s [RetryConfig][google.cloud.tasks.v2.RetryConfig] specifies that the task should be</span>
+    <span class="doccomment">/// A task will be \[scheduled][google.cloud.tasks.v2.Task.schedule_time\] for retry between</span>
+    <span class="doccomment">/// \[min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff\] and</span>
+    <span class="doccomment">/// \[max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff\] duration after it fails,</span>
+    <span class="doccomment">/// if the queue&#39;s \[RetryConfig][google.cloud.tasks.v2.RetryConfig\] specifies that the task should be</span>
     <span class="doccomment">/// retried.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If unspecified when the queue is created, Cloud Tasks will pick the</span>
@@ -2345,13 +2342,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This field has the same meaning as</span>
     <span class="doccomment">/// [min_backoff_seconds in</span>
-    <span class="doccomment">/// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters).</span>
+    <span class="doccomment">/// queue.yaml/xml](&lt;https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">min_backoff</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// A task will be [scheduled][google.cloud.tasks.v2.Task.schedule_time] for retry between</span>
-    <span class="doccomment">/// [min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff] and</span>
-    <span class="doccomment">/// [max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff] duration after it fails,</span>
-    <span class="doccomment">/// if the queue&#39;s [RetryConfig][google.cloud.tasks.v2.RetryConfig] specifies that the task should be</span>
+    <span class="doccomment">/// A task will be \[scheduled][google.cloud.tasks.v2.Task.schedule_time\] for retry between</span>
+    <span class="doccomment">/// \[min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff\] and</span>
+    <span class="doccomment">/// \[max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff\] duration after it fails,</span>
+    <span class="doccomment">/// if the queue&#39;s \[RetryConfig][google.cloud.tasks.v2.RetryConfig\] specifies that the task should be</span>
     <span class="doccomment">/// retried.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If unspecified when the queue is created, Cloud Tasks will pick the</span>
@@ -2362,25 +2359,25 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This field has the same meaning as</span>
     <span class="doccomment">/// [max_backoff_seconds in</span>
-    <span class="doccomment">/// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters).</span>
+    <span class="doccomment">/// queue.yaml/xml](&lt;https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_backoff</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The time between retries will double `max_doublings` times.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A task&#39;s retry interval starts at</span>
-    <span class="doccomment">/// [min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff], then doubles</span>
+    <span class="doccomment">/// \[min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff\], then doubles</span>
     <span class="doccomment">/// `max_doublings` times, then increases linearly, and finally</span>
     <span class="doccomment">/// retries retries at intervals of</span>
-    <span class="doccomment">/// [max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff] up to</span>
-    <span class="doccomment">/// [max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts] times.</span>
+    <span class="doccomment">/// \[max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff\] up to</span>
+    <span class="doccomment">/// \[max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts\] times.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// For example, if [min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff] is 10s,</span>
-    <span class="doccomment">/// [max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff] is 300s, and</span>
+    <span class="doccomment">/// For example, if \[min_backoff][google.cloud.tasks.v2.RetryConfig.min_backoff\] is 10s,</span>
+    <span class="doccomment">/// \[max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff\] is 300s, and</span>
     <span class="doccomment">/// `max_doublings` is 3, then the a task will first be retried in</span>
     <span class="doccomment">/// 10s. The retry interval will double three times, and then</span>
     <span class="doccomment">/// increase linearly by 2^3 * 10s.  Finally, the task will retry at</span>
-    <span class="doccomment">/// intervals of [max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff] until the</span>
-    <span class="doccomment">/// task has been attempted [max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts]</span>
+    <span class="doccomment">/// intervals of \[max_backoff][google.cloud.tasks.v2.RetryConfig.max_backoff\] until the</span>
+    <span class="doccomment">/// task has been attempted \[max_attempts][google.cloud.tasks.v2.RetryConfig.max_attempts\]</span>
     <span class="doccomment">/// times. Thus, the requests will retry at 10s, 20s, 40s, 80s, 160s,</span>
     <span class="doccomment">/// 240s, 300s, 300s, ....</span>
     <span class="doccomment">///</span>
@@ -2390,16 +2387,16 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// This field has the same meaning as</span>
     <span class="doccomment">/// [max_doublings in</span>
-    <span class="doccomment">/// queue.yaml/xml](https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters).</span>
+    <span class="doccomment">/// queue.yaml/xml](&lt;https://cloud.google.com/appengine/docs/standard/python/config/queueref#retry_parameters&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_doublings</span>: <span class="ident">i32</span>,
 }
 <span class="doccomment">/// Configuration options for writing logs to</span>
-<span class="doccomment">/// [Stackdriver Logging](https://cloud.google.com/logging/docs/).</span>
+<span class="doccomment">/// [Stackdriver Logging](&lt;https://cloud.google.com/logging/docs/&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StackdriverLoggingConfig</span> {
     <span class="doccomment">/// Specifies the fraction of operations to write to</span>
-    <span class="doccomment">/// [Stackdriver Logging](https://cloud.google.com/logging/docs/).</span>
+    <span class="doccomment">/// [Stackdriver Logging](&lt;https://cloud.google.com/logging/docs/&gt;).</span>
     <span class="doccomment">/// This field may contain any value between 0.0 and 1.0, inclusive.</span>
     <span class="doccomment">/// 0.0 is the default and means that no operations are logged.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -2408,25 +2405,25 @@
 <span class="doccomment">/// A unit of scheduled work.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Task</span> {
-    <span class="doccomment">/// Optionally caller-specified in [CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask].</span>
+    <span class="doccomment">/// Optionally caller-specified in \[CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The task name.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The task name must have the following format:</span>
     <span class="doccomment">/// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * `PROJECT_ID` can contain letters ([A-Za-z]), numbers ([0-9]),</span>
+    <span class="doccomment">/// * `PROJECT_ID` can contain letters (\[A-Za-z\]), numbers (\[0-9\]),</span>
     <span class="doccomment">///    hyphens (-), colons (:), or periods (.).</span>
     <span class="doccomment">///    For more information, see</span>
     <span class="doccomment">///    [Identifying</span>
-    <span class="doccomment">///    projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects)</span>
+    <span class="doccomment">///    projects](&lt;https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects&gt;)</span>
     <span class="doccomment">/// * `LOCATION_ID` is the canonical ID for the task&#39;s location.</span>
     <span class="doccomment">///    The list of available locations can be obtained by calling</span>
-    <span class="doccomment">///    [ListLocations][google.cloud.location.Locations.ListLocations].</span>
-    <span class="doccomment">///    For more information, see https://cloud.google.com/about/locations/.</span>
-    <span class="doccomment">/// * `QUEUE_ID` can contain letters ([A-Za-z]), numbers ([0-9]), or</span>
+    <span class="doccomment">///    \[ListLocations][google.cloud.location.Locations.ListLocations\].</span>
+    <span class="doccomment">///    For more information, see &lt;https://cloud.google.com/about/locations/.&gt;</span>
+    <span class="doccomment">/// * `QUEUE_ID` can contain letters (\[A-Za-z\]), numbers (\[0-9\]), or</span>
     <span class="doccomment">///   hyphens (-). The maximum length is 100 characters.</span>
-    <span class="doccomment">/// * `TASK_ID` can contain only letters ([A-Za-z]), numbers ([0-9]),</span>
+    <span class="doccomment">/// * `TASK_ID` can contain only letters (\[A-Za-z\]), numbers (\[0-9\]),</span>
     <span class="doccomment">///   hyphens (-), or underscores (_). The maximum length is 500 characters.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2443,7 +2440,7 @@
     <span class="doccomment">/// The deadline for requests sent to the worker. If the worker does not</span>
     <span class="doccomment">/// respond by this deadline then the request is cancelled and the attempt</span>
     <span class="doccomment">/// is marked as a `DEADLINE_EXCEEDED` failure. Cloud Tasks will retry the</span>
-    <span class="doccomment">/// task according to the [RetryConfig][google.cloud.tasks.v2.RetryConfig].</span>
+    <span class="doccomment">/// task according to the \[RetryConfig][google.cloud.tasks.v2.RetryConfig\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that when the request is cancelled, Cloud Tasks will stop listing for</span>
     <span class="doccomment">/// the response, but whether the worker stops processing depends on the</span>
@@ -2452,13 +2449,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The default and maximum values depend on the type of request:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * For [HTTP tasks][google.cloud.tasks.v2.HttpRequest], the default is 10 minutes. The deadline</span>
+    <span class="doccomment">/// * For [HTTP tasks]\[google.cloud.tasks.v2.HttpRequest\], the default is 10 minutes. The deadline</span>
     <span class="doccomment">///   must be in the interval [15 seconds, 30 minutes].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * For [App Engine tasks][google.cloud.tasks.v2.AppEngineHttpRequest], 0 indicates that the</span>
+    <span class="doccomment">/// * For [App Engine tasks]\[google.cloud.tasks.v2.AppEngineHttpRequest\], 0 indicates that the</span>
     <span class="doccomment">///   request has the default deadline. The default deadline depends on the</span>
     <span class="doccomment">///   [scaling</span>
-    <span class="doccomment">///   type](https://cloud.google.com/appengine/docs/standard/go/how-instances-are-managed#instance_scaling)</span>
+    <span class="doccomment">///   type](&lt;https://cloud.google.com/appengine/docs/standard/go/how-instances-are-managed#instance_scaling&gt;)</span>
     <span class="doccomment">///   of the service: 10 minutes for standard apps with automatic scaling, 24</span>
     <span class="doccomment">///   hours for standard apps with manual and basic scaling, and 60 minutes for</span>
     <span class="doccomment">///   flex apps. If the request deadline is set, it must be in the interval [15</span>
@@ -2467,7 +2464,7 @@
     <span class="doccomment">///   the service&#39;s timeout. We recommend setting the `dispatch_deadline` to</span>
     <span class="doccomment">///   at most a few seconds more than the app handler&#39;s timeout. For more</span>
     <span class="doccomment">///   information see</span>
-    <span class="doccomment">///   [Timeouts](https://cloud.google.com/tasks/docs/creating-appengine-handlers#timeouts).</span>
+    <span class="doccomment">///   \[Timeouts\](&lt;https://cloud.google.com/tasks/docs/creating-appengine-handlers#timeouts&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `dispatch_deadline` will be truncated to the nearest millisecond. The</span>
     <span class="doccomment">/// deadline is an approximate deadline.</span>
@@ -2484,14 +2481,14 @@
     <span class="kw">pub</span> <span class="ident">response_count</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Output only. The status of the task&#39;s first attempt.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Only [dispatch_time][google.cloud.tasks.v2.Attempt.dispatch_time] will be set.</span>
-    <span class="doccomment">/// The other [Attempt][google.cloud.tasks.v2.Attempt] information is not retained by Cloud Tasks.</span>
+    <span class="doccomment">/// Only \[dispatch_time][google.cloud.tasks.v2.Attempt.dispatch_time\] will be set.</span>
+    <span class="doccomment">/// The other \[Attempt][google.cloud.tasks.v2.Attempt\] information is not retained by Cloud Tasks.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">first_attempt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Attempt</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. The status of the task&#39;s last attempt.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">last_attempt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Attempt</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Output only. The view specifies which subset of the [Task][google.cloud.tasks.v2.Task] has</span>
+    <span class="doccomment">/// Output only. The view specifies which subset of the \[Task][google.cloud.tasks.v2.Task\] has</span>
     <span class="doccomment">/// been returned.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;task::View&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">view</span>: <span class="ident">i32</span>,
@@ -2501,7 +2498,7 @@
 }
 <span class="doccomment">/// Nested message and enum types in `Task`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">task</span> {
-    <span class="doccomment">/// The view specifies a subset of [Task][google.cloud.tasks.v2.Task] data.</span>
+    <span class="doccomment">/// The view specifies a subset of \[Task][google.cloud.tasks.v2.Task\] data.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// When a task is returned in a response, not all</span>
     <span class="doccomment">/// information is retrieved by default because some data, such as</span>
@@ -2517,16 +2514,16 @@
         <span class="doccomment">/// sensitive data.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// This view does not include the</span>
-        <span class="doccomment">/// [body in AppEngineHttpRequest][google.cloud.tasks.v2.AppEngineHttpRequest.body].</span>
+        <span class="doccomment">/// [body in AppEngineHttpRequest]\[google.cloud.tasks.v2.AppEngineHttpRequest.body\].</span>
         <span class="doccomment">/// Bodies are desirable to return only when needed, because they</span>
         <span class="doccomment">/// can be large and because of the sensitivity of the data that you</span>
         <span class="doccomment">/// choose to store in it.</span>
         <span class="ident">Basic</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// All information is returned.</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// Authorization for [FULL][google.cloud.tasks.v2.Task.View.FULL] requires</span>
-        <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](https://cloud.google.com/iam/)</span>
-        <span class="doccomment">/// permission on the [Queue][google.cloud.tasks.v2.Queue] resource.</span>
+        <span class="doccomment">/// Authorization for \[FULL][google.cloud.tasks.v2.Task.View.FULL\] requires</span>
+        <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](&lt;https://cloud.google.com/iam/&gt;)</span>
+        <span class="doccomment">/// permission on the \[Queue][google.cloud.tasks.v2.Queue\] resource.</span>
         <span class="ident">Full</span> <span class="op">=</span> <span class="number">2</span>,
     }
     <span class="doccomment">/// Required. The message to send to the worker.</span>
@@ -2534,14 +2531,14 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MessageType</span> {
         <span class="doccomment">/// HTTP request that is sent to the App Engine app handler.</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// An App Engine task is a task that has [AppEngineHttpRequest][google.cloud.tasks.v2.AppEngineHttpRequest] set.</span>
+        <span class="doccomment">/// An App Engine task is a task that has \[AppEngineHttpRequest][google.cloud.tasks.v2.AppEngineHttpRequest\] set.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">AppEngineHttpRequest</span>(<span class="kw">super</span><span class="ident">::AppEngineHttpRequest</span>),
+        <span class="ident">AppEngineHttpRequest</span>(<span class="ident"><span class="kw">super</span>::AppEngineHttpRequest</span>),
         <span class="doccomment">/// HTTP request that is sent to the worker.</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// An HTTP task is a task that has [HttpRequest][google.cloud.tasks.v2.HttpRequest] set.</span>
+        <span class="doccomment">/// An HTTP task is a task that has \[HttpRequest][google.cloud.tasks.v2.HttpRequest\] set.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">HttpRequest</span>(<span class="kw">super</span><span class="ident">::HttpRequest</span>),
+        <span class="ident">HttpRequest</span>(<span class="ident"><span class="kw">super</span>::HttpRequest</span>),
     }
 }
 <span class="doccomment">/// The status of a task attempt.</span>
@@ -2567,21 +2564,21 @@
     <span class="doccomment">/// If `response_time` is unset, then the task has not been attempted or is</span>
     <span class="doccomment">/// currently running and the `response_status` field is meaningless.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">response_status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">response_status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues].</span>
+<span class="doccomment">/// Request message for \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListQueuesRequest</span> {
     <span class="doccomment">/// Required. The location name.</span>
     <span class="doccomment">/// For example: `projects/PROJECT_ID/locations/LOCATION_ID`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// `filter` can be used to specify a subset of queues. Any [Queue][google.cloud.tasks.v2.Queue]</span>
+    <span class="doccomment">/// `filter` can be used to specify a subset of queues. Any \[Queue][google.cloud.tasks.v2.Queue\]</span>
     <span class="doccomment">/// field can be used as a filter and several operators as supported.</span>
     <span class="doccomment">/// For example: `&lt;=, &lt;, &gt;=, &gt;, !=, =, :`. The filter syntax is the same as</span>
     <span class="doccomment">/// described in</span>
     <span class="doccomment">/// [Stackdriver&#39;s Advanced Logs</span>
-    <span class="doccomment">/// Filters](https://cloud.google.com/logging/docs/view/advanced_filters).</span>
+    <span class="doccomment">/// Filters](&lt;https://cloud.google.com/logging/docs/view/advanced_filters&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Sample filter &quot;state: PAUSED&quot;.</span>
     <span class="doccomment">///</span>
@@ -2594,7 +2591,7 @@
     <span class="doccomment">/// The maximum page size is 9800. If unspecified, the page size will</span>
     <span class="doccomment">/// be the maximum. Fewer queues than requested might be returned,</span>
     <span class="doccomment">/// even if more queues exist; use the</span>
-    <span class="doccomment">/// [next_page_token][google.cloud.tasks.v2.ListQueuesResponse.next_page_token] in the</span>
+    <span class="doccomment">/// \[next_page_token][google.cloud.tasks.v2.ListQueuesResponse.next_page_token\] in the</span>
     <span class="doccomment">/// response to determine if more queues exist.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
@@ -2602,14 +2599,14 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// To request the first page results, page_token must be empty. To</span>
     <span class="doccomment">/// request the next page of results, page_token must be the value of</span>
-    <span class="doccomment">/// [next_page_token][google.cloud.tasks.v2.ListQueuesResponse.next_page_token] returned</span>
-    <span class="doccomment">/// from the previous call to [ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues]</span>
+    <span class="doccomment">/// \[next_page_token][google.cloud.tasks.v2.ListQueuesResponse.next_page_token\] returned</span>
+    <span class="doccomment">/// from the previous call to \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\]</span>
     <span class="doccomment">/// method. It is an error to switch the value of the</span>
-    <span class="doccomment">/// [filter][google.cloud.tasks.v2.ListQueuesRequest.filter] while iterating through pages.</span>
+    <span class="doccomment">/// \[filter][google.cloud.tasks.v2.ListQueuesRequest.filter\] while iterating through pages.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response message for [ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues].</span>
+<span class="doccomment">/// Response message for \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListQueuesResponse</span> {
     <span class="doccomment">/// The list of queues.</span>
@@ -2618,8 +2615,8 @@
     <span class="doccomment">/// A token to retrieve next page of results.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// To return the next page of results, call</span>
-    <span class="doccomment">/// [ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues] with this value as the</span>
-    <span class="doccomment">/// [page_token][google.cloud.tasks.v2.ListQueuesRequest.page_token].</span>
+    <span class="doccomment">/// \[ListQueues][google.cloud.tasks.v2.CloudTasks.ListQueues\] with this value as the</span>
+    <span class="doccomment">/// \[page_token][google.cloud.tasks.v2.ListQueuesRequest.page_token\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the next_page_token is empty, there are no more results.</span>
     <span class="doccomment">///</span>
@@ -2627,7 +2624,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [GetQueue][google.cloud.tasks.v2.CloudTasks.GetQueue].</span>
+<span class="doccomment">/// Request message for \[GetQueue][google.cloud.tasks.v2.CloudTasks.GetQueue\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetQueueRequest</span> {
     <span class="doccomment">/// Required. The resource name of the queue. For example:</span>
@@ -2635,7 +2632,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [CreateQueue][google.cloud.tasks.v2.CloudTasks.CreateQueue].</span>
+<span class="doccomment">/// Request message for \[CreateQueue][google.cloud.tasks.v2.CloudTasks.CreateQueue\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateQueueRequest</span> {
     <span class="doccomment">/// Required. The location name in which the queue will be created.</span>
@@ -2643,25 +2640,25 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The list of allowed locations can be obtained by calling Cloud</span>
     <span class="doccomment">/// Tasks&#39; implementation of</span>
-    <span class="doccomment">/// [ListLocations][google.cloud.location.Locations.ListLocations].</span>
+    <span class="doccomment">/// \[ListLocations][google.cloud.location.Locations.ListLocations\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The queue to create.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [Queue&#39;s name][google.cloud.tasks.v2.Queue.name] cannot be the same as an existing queue.</span>
+    <span class="doccomment">/// [Queue&#39;s name]\[google.cloud.tasks.v2.Queue.name\] cannot be the same as an existing queue.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">queue</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Queue</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue].</span>
+<span class="doccomment">/// Request message for \[UpdateQueue][google.cloud.tasks.v2.CloudTasks.UpdateQueue\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateQueueRequest</span> {
     <span class="doccomment">/// Required. The queue to create or update.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The queue&#39;s [name][google.cloud.tasks.v2.Queue.name] must be specified.</span>
+    <span class="doccomment">/// The queue&#39;s \[name][google.cloud.tasks.v2.Queue.name\] must be specified.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Output only fields cannot be modified using UpdateQueue.</span>
     <span class="doccomment">/// Any value specified for an output only field will be ignored.</span>
-    <span class="doccomment">/// The queue&#39;s [name][google.cloud.tasks.v2.Queue.name] cannot be changed.</span>
+    <span class="doccomment">/// The queue&#39;s \[name][google.cloud.tasks.v2.Queue.name\] cannot be changed.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">queue</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Queue</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A mask used to specify which fields of the queue are being updated.</span>
@@ -2670,7 +2667,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [DeleteQueue][google.cloud.tasks.v2.CloudTasks.DeleteQueue].</span>
+<span class="doccomment">/// Request message for \[DeleteQueue][google.cloud.tasks.v2.CloudTasks.DeleteQueue\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteQueueRequest</span> {
     <span class="doccomment">/// Required. The queue name. For example:</span>
@@ -2678,7 +2675,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [PurgeQueue][google.cloud.tasks.v2.CloudTasks.PurgeQueue].</span>
+<span class="doccomment">/// Request message for \[PurgeQueue][google.cloud.tasks.v2.CloudTasks.PurgeQueue\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PurgeQueueRequest</span> {
     <span class="doccomment">/// Required. The queue name. For example:</span>
@@ -2686,7 +2683,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [PauseQueue][google.cloud.tasks.v2.CloudTasks.PauseQueue].</span>
+<span class="doccomment">/// Request message for \[PauseQueue][google.cloud.tasks.v2.CloudTasks.PauseQueue\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PauseQueueRequest</span> {
     <span class="doccomment">/// Required. The queue name. For example:</span>
@@ -2694,7 +2691,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue].</span>
+<span class="doccomment">/// Request message for \[ResumeQueue][google.cloud.tasks.v2.CloudTasks.ResumeQueue\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResumeQueueRequest</span> {
     <span class="doccomment">/// Required. The queue name. For example:</span>
@@ -2702,31 +2699,31 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for listing tasks using [ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks].</span>
+<span class="doccomment">/// Request message for listing tasks using \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListTasksRequest</span> {
     <span class="doccomment">/// Required. The queue name. For example:</span>
     <span class="doccomment">/// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The response_view specifies which subset of the [Task][google.cloud.tasks.v2.Task] will be</span>
+    <span class="doccomment">/// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2.Task\] will be</span>
     <span class="doccomment">/// returned.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// By default response_view is [BASIC][google.cloud.tasks.v2.Task.View.BASIC]; not all</span>
+    <span class="doccomment">/// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\]; not all</span>
     <span class="doccomment">/// information is retrieved by default because some data, such as</span>
     <span class="doccomment">/// payloads, might be desirable to return only when needed because</span>
     <span class="doccomment">/// of its large size or because of the sensitivity of data that it</span>
     <span class="doccomment">/// contains.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Authorization for [FULL][google.cloud.tasks.v2.Task.View.FULL] requires</span>
-    <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](https://cloud.google.com/iam/)</span>
-    <span class="doccomment">/// permission on the [Task][google.cloud.tasks.v2.Task] resource.</span>
+    <span class="doccomment">/// Authorization for \[FULL][google.cloud.tasks.v2.Task.View.FULL\] requires</span>
+    <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](&lt;https://cloud.google.com/iam/&gt;)</span>
+    <span class="doccomment">/// permission on the \[Task][google.cloud.tasks.v2.Task\] resource.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;task::View&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">response_view</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Maximum page size.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Fewer tasks than requested might be returned, even if more tasks exist; use</span>
-    <span class="doccomment">/// [next_page_token][google.cloud.tasks.v2.ListTasksResponse.next_page_token] in the response to</span>
+    <span class="doccomment">/// \[next_page_token][google.cloud.tasks.v2.ListTasksResponse.next_page_token\] in the response to</span>
     <span class="doccomment">/// determine if more tasks exist.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The maximum page size is 1000. If unspecified, the page size will be the</span>
@@ -2737,15 +2734,15 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// To request the first page results, page_token must be empty. To</span>
     <span class="doccomment">/// request the next page of results, page_token must be the value of</span>
-    <span class="doccomment">/// [next_page_token][google.cloud.tasks.v2.ListTasksResponse.next_page_token] returned</span>
-    <span class="doccomment">/// from the previous call to [ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks]</span>
+    <span class="doccomment">/// \[next_page_token][google.cloud.tasks.v2.ListTasksResponse.next_page_token\] returned</span>
+    <span class="doccomment">/// from the previous call to \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\]</span>
     <span class="doccomment">/// method.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The page token is valid for only 2 hours.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response message for listing tasks using [ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks].</span>
+<span class="doccomment">/// Response message for listing tasks using \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListTasksResponse</span> {
     <span class="doccomment">/// The list of tasks.</span>
@@ -2754,36 +2751,36 @@
     <span class="doccomment">/// A token to retrieve next page of results.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// To return the next page of results, call</span>
-    <span class="doccomment">/// [ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks] with this value as the</span>
-    <span class="doccomment">/// [page_token][google.cloud.tasks.v2.ListTasksRequest.page_token].</span>
+    <span class="doccomment">/// \[ListTasks][google.cloud.tasks.v2.CloudTasks.ListTasks\] with this value as the</span>
+    <span class="doccomment">/// \[page_token][google.cloud.tasks.v2.ListTasksRequest.page_token\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the next_page_token is empty, there are no more results.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for getting a task using [GetTask][google.cloud.tasks.v2.CloudTasks.GetTask].</span>
+<span class="doccomment">/// Request message for getting a task using \[GetTask][google.cloud.tasks.v2.CloudTasks.GetTask\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetTaskRequest</span> {
     <span class="doccomment">/// Required. The task name. For example:</span>
     <span class="doccomment">/// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The response_view specifies which subset of the [Task][google.cloud.tasks.v2.Task] will be</span>
+    <span class="doccomment">/// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2.Task\] will be</span>
     <span class="doccomment">/// returned.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// By default response_view is [BASIC][google.cloud.tasks.v2.Task.View.BASIC]; not all</span>
+    <span class="doccomment">/// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\]; not all</span>
     <span class="doccomment">/// information is retrieved by default because some data, such as</span>
     <span class="doccomment">/// payloads, might be desirable to return only when needed because</span>
     <span class="doccomment">/// of its large size or because of the sensitivity of data that it</span>
     <span class="doccomment">/// contains.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Authorization for [FULL][google.cloud.tasks.v2.Task.View.FULL] requires</span>
-    <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](https://cloud.google.com/iam/)</span>
-    <span class="doccomment">/// permission on the [Task][google.cloud.tasks.v2.Task] resource.</span>
+    <span class="doccomment">/// Authorization for \[FULL][google.cloud.tasks.v2.Task.View.FULL\] requires</span>
+    <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](&lt;https://cloud.google.com/iam/&gt;)</span>
+    <span class="doccomment">/// permission on the \[Task][google.cloud.tasks.v2.Task\] resource.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;task::View&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">response_view</span>: <span class="ident">i32</span>,
 }
-<span class="doccomment">/// Request message for [CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask].</span>
+<span class="doccomment">/// Request message for \[CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateTaskRequest</span> {
     <span class="doccomment">/// Required. The queue name. For example:</span>
@@ -2796,12 +2793,12 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Task names have the following format:</span>
     <span class="doccomment">/// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`.</span>
-    <span class="doccomment">/// The user can optionally specify a task [name][google.cloud.tasks.v2.Task.name]. If a</span>
+    <span class="doccomment">/// The user can optionally specify a task \[name][google.cloud.tasks.v2.Task.name\]. If a</span>
     <span class="doccomment">/// name is not specified then the system will generate a random</span>
     <span class="doccomment">/// unique task id, which will be set in the task returned in the</span>
-    <span class="doccomment">/// [response][google.cloud.tasks.v2.Task.name].</span>
+    <span class="doccomment">/// \[response][google.cloud.tasks.v2.Task.name\].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [schedule_time][google.cloud.tasks.v2.Task.schedule_time] is not set or is in the</span>
+    <span class="doccomment">/// If \[schedule_time][google.cloud.tasks.v2.Task.schedule_time\] is not set or is in the</span>
     <span class="doccomment">/// past then Cloud Tasks will set it to the current time.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Task De-duplication:</span>
@@ -2809,7 +2806,7 @@
     <span class="doccomment">/// Explicitly specifying a task ID enables task de-duplication.  If</span>
     <span class="doccomment">/// a task&#39;s ID is identical to that of an existing task or a task</span>
     <span class="doccomment">/// that was deleted or executed recently then the call will fail</span>
-    <span class="doccomment">/// with [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS].</span>
+    <span class="doccomment">/// with \[ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS\].</span>
     <span class="doccomment">/// If the task&#39;s queue was created using Cloud Tasks, then another task with</span>
     <span class="doccomment">/// the same name can&#39;t be created for ~1hour after the original task was</span>
     <span class="doccomment">/// deleted or executed. If the task&#39;s queue was created using queue.yaml or</span>
@@ -2817,7 +2814,7 @@
     <span class="doccomment">/// for ~9days after the original task was deleted or executed.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Because there is an extra lookup cost to identify duplicate task</span>
-    <span class="doccomment">/// names, these [CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask] calls have significantly</span>
+    <span class="doccomment">/// names, these \[CreateTask][google.cloud.tasks.v2.CloudTasks.CreateTask\] calls have significantly</span>
     <span class="doccomment">/// increased latency. Using hashed strings for the task id or for</span>
     <span class="doccomment">/// the prefix of the task id is recommended. Choosing task ids that</span>
     <span class="doccomment">/// are sequential or have sequential prefixes, for example using a</span>
@@ -2827,23 +2824,23 @@
     <span class="doccomment">/// efficiently.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">task</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Task</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The response_view specifies which subset of the [Task][google.cloud.tasks.v2.Task] will be</span>
+    <span class="doccomment">/// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2.Task\] will be</span>
     <span class="doccomment">/// returned.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// By default response_view is [BASIC][google.cloud.tasks.v2.Task.View.BASIC]; not all</span>
+    <span class="doccomment">/// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\]; not all</span>
     <span class="doccomment">/// information is retrieved by default because some data, such as</span>
     <span class="doccomment">/// payloads, might be desirable to return only when needed because</span>
     <span class="doccomment">/// of its large size or because of the sensitivity of data that it</span>
     <span class="doccomment">/// contains.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Authorization for [FULL][google.cloud.tasks.v2.Task.View.FULL] requires</span>
-    <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](https://cloud.google.com/iam/)</span>
-    <span class="doccomment">/// permission on the [Task][google.cloud.tasks.v2.Task] resource.</span>
+    <span class="doccomment">/// Authorization for \[FULL][google.cloud.tasks.v2.Task.View.FULL\] requires</span>
+    <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](&lt;https://cloud.google.com/iam/&gt;)</span>
+    <span class="doccomment">/// permission on the \[Task][google.cloud.tasks.v2.Task\] resource.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;task::View&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">response_view</span>: <span class="ident">i32</span>,
 }
 <span class="doccomment">/// Request message for deleting a task using</span>
-<span class="doccomment">/// [DeleteTask][google.cloud.tasks.v2.CloudTasks.DeleteTask].</span>
+<span class="doccomment">/// \[DeleteTask][google.cloud.tasks.v2.CloudTasks.DeleteTask\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteTaskRequest</span> {
     <span class="doccomment">/// Required. The task name. For example:</span>
@@ -2852,25 +2849,25 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Request message for forcing a task to run now using</span>
-<span class="doccomment">/// [RunTask][google.cloud.tasks.v2.CloudTasks.RunTask].</span>
+<span class="doccomment">/// \[RunTask][google.cloud.tasks.v2.CloudTasks.RunTask\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunTaskRequest</span> {
     <span class="doccomment">/// Required. The task name. For example:</span>
     <span class="doccomment">/// `projects/PROJECT_ID/locations/LOCATION_ID/queues/QUEUE_ID/tasks/TASK_ID`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The response_view specifies which subset of the [Task][google.cloud.tasks.v2.Task] will be</span>
+    <span class="doccomment">/// The response_view specifies which subset of the \[Task][google.cloud.tasks.v2.Task\] will be</span>
     <span class="doccomment">/// returned.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// By default response_view is [BASIC][google.cloud.tasks.v2.Task.View.BASIC]; not all</span>
+    <span class="doccomment">/// By default response_view is \[BASIC][google.cloud.tasks.v2.Task.View.BASIC\]; not all</span>
     <span class="doccomment">/// information is retrieved by default because some data, such as</span>
     <span class="doccomment">/// payloads, might be desirable to return only when needed because</span>
     <span class="doccomment">/// of its large size or because of the sensitivity of data that it</span>
     <span class="doccomment">/// contains.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Authorization for [FULL][google.cloud.tasks.v2.Task.View.FULL] requires</span>
-    <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](https://cloud.google.com/iam/)</span>
-    <span class="doccomment">/// permission on the [Task][google.cloud.tasks.v2.Task] resource.</span>
+    <span class="doccomment">/// Authorization for \[FULL][google.cloud.tasks.v2.Task.View.FULL\] requires</span>
+    <span class="doccomment">/// `cloudtasks.tasks.fullView` [Google IAM](&lt;https://cloud.google.com/iam/&gt;)</span>
+    <span class="doccomment">/// permission on the \[Task][google.cloud.tasks.v2.Task\] resource.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;task::View&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">response_view</span>: <span class="ident">i32</span>,
 }
@@ -2887,7 +2884,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">CloudTasksClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2900,7 +2897,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CloudTasksClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2930,8 +2927,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Queues are returned in lexicographical order.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_queues</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListQueuesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListQueuesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListQueuesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListQueuesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2947,8 +2944,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a queue.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_queue</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetQueueRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetQueueRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2974,8 +2971,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; this method.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_queue</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateQueueRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateQueueRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3005,8 +3002,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; this method.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_queue</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateQueueRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateQueueRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3034,7 +3031,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; this method.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_queue</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteQueueRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteQueueRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3056,8 +3053,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; might be dispatched before the purge takes effect. A purge is irreversible.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">purge_queue</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PurgeQueueRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PurgeQueueRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3079,8 +3076,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [state][google.cloud.tasks.v2.Queue.state] is [PAUSED][google.cloud.tasks.v2.Queue.State.PAUSED].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">pause_queue</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PauseQueueRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PauseQueueRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3108,8 +3105,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Risks](https://cloud.google.com/tasks/docs/manage-cloud-task-scaling).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">resume_queue</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ResumeQueueRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ResumeQueueRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Queue</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3133,8 +3130,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * `cloudtasks.queues.getIamPolicy`&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_iam_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::GetIamPolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::GetIamPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3161,8 +3158,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * `cloudtasks.queues.setIamPolicy`&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_iam_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::SetIamPolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::SetIamPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3186,10 +3183,10 @@
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_iam_permissions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
             <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span>
-                <span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::TestIamPermissionsRequest</span>,
+                <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::TestIamPermissionsRequest</span>,
             <span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::TestIamPermissionsResponse</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::TestIamPermissionsResponse</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3215,8 +3212,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; time.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_tasks</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListTasksRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListTasksResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListTasksRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListTasksResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3231,8 +3228,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a task.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_task</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetTaskRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Task</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetTaskRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Task</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3251,8 +3248,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * The maximum task size is 100KB.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_task</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateTaskRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Task</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateTaskRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Task</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3272,7 +3269,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; failed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_task</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteTaskRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteTaskRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3312,8 +3309,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; task that has already succeeded or permanently failed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run_task</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RunTaskRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Task</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RunTaskRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Task</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3327,5 +3324,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

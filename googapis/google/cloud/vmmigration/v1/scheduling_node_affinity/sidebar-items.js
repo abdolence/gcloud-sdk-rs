@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Operator","Possible types of node selection operators. Valid operators are IN for affinity and NOT_IN for anti-affinity."]]});

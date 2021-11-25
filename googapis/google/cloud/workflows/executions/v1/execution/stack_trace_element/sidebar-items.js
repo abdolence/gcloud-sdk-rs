@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Position","Position contains source position information about the stack trace element such as line number, column number and length of the code block in bytes."]]});

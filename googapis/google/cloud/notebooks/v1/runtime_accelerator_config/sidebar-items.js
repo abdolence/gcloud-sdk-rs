@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AcceleratorType","Type of this accelerator."]]});

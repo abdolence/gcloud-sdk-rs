@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ManagerLinkStatus","Possible statuses of a link."]]});

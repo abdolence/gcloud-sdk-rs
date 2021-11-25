@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ListingGroupFilterVertical","The type of the listing group filter vertical."]]});

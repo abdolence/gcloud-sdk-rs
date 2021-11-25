@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Max","The upper bound of the interval. If neither of the max fields are set, then the upper bound is positive infinity."],["Min","The lower bound of the interval. If neither of the min fields are set, then the lower bound is negative infinity."]]});

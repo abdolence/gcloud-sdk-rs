@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GlobalForwardingRulesClient","The GlobalForwardingRules API."]]});

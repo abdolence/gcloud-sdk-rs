@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RegionDiskTypesClient","The RegionDiskTypes API."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SearchTermMatchType","Possible match types for a keyword triggering an ad, including variants."]]});

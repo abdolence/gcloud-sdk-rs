@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Invocation","A message representing a method invocation."]]});

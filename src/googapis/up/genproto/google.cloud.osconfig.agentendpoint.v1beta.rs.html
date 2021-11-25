@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.osconfig.agentendpoint.v1beta.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.osconfig.agentendpoint.v1beta.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.osconfig.agentendpoint.v1beta.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.osconfig.agentendpoint.v1beta.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1346,8 +1344,7 @@
 <span id="1344">1344</span>
 <span id="1345">1345</span>
 <span id="1346">1346</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Package is a reference to the software package to be installed or removed.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Package is a reference to the software package to be installed or removed.</span>
 <span class="doccomment">/// The agent on the VM instance uses the system package manager to apply the</span>
 <span class="doccomment">/// config.</span>
 <span class="doccomment">///</span>
@@ -1515,16 +1512,16 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Repository</span> {
         <span class="doccomment">/// An Apt Repository.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Apt</span>(<span class="kw">super</span><span class="ident">::AptRepository</span>),
+        <span class="ident">Apt</span>(<span class="ident"><span class="kw">super</span>::AptRepository</span>),
         <span class="doccomment">/// A Yum Repository.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Yum</span>(<span class="kw">super</span><span class="ident">::YumRepository</span>),
+        <span class="ident">Yum</span>(<span class="ident"><span class="kw">super</span>::YumRepository</span>),
         <span class="doccomment">/// A Zypper Repository.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Zypper</span>(<span class="kw">super</span><span class="ident">::ZypperRepository</span>),
+        <span class="ident">Zypper</span>(<span class="ident"><span class="kw">super</span>::ZypperRepository</span>),
         <span class="doccomment">/// A Goo Repository.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Goo</span>(<span class="kw">super</span><span class="ident">::GooRepository</span>),
+        <span class="ident">Goo</span>(<span class="ident"><span class="kw">super</span>::GooRepository</span>),
     }
 }
 <span class="doccomment">/// A software recipe is a set of instructions for installing and configuring a</span>
@@ -1636,21 +1633,21 @@
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Gcs</span> {
             <span class="doccomment">/// Bucket of the Cloud Storage object.</span>
             <span class="doccomment">/// Given an example URL:</span>
-            <span class="doccomment">/// `https://storage.googleapis.com/my-bucket/foo/bar#1234567`</span>
+            <span class="doccomment">/// `&lt;https://storage.googleapis.com/my-bucket/foo/bar#1234567`&gt;</span>
             <span class="doccomment">/// this value would be `my-bucket`.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">bucket</span>: <span class="ident">::prost::alloc::string::String</span>,
             <span class="doccomment">/// Name of the Cloud Storage object.</span>
-            <span class="doccomment">/// As specified [here]</span>
-            <span class="doccomment">/// (https://cloud.google.com/storage/docs/naming#objectnames)</span>
+            <span class="doccomment">/// As specified \[here\]</span>
+            <span class="doccomment">/// (&lt;https://cloud.google.com/storage/docs/naming#objectnames&gt;)</span>
             <span class="doccomment">/// Given an example URL:</span>
-            <span class="doccomment">/// `https://storage.googleapis.com/my-bucket/foo/bar#1234567`</span>
+            <span class="doccomment">/// `&lt;https://storage.googleapis.com/my-bucket/foo/bar#1234567`&gt;</span>
             <span class="doccomment">/// this value would be `foo/bar`.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">object</span>: <span class="ident">::prost::alloc::string::String</span>,
             <span class="doccomment">/// Must be provided if allow_insecure is false.</span>
             <span class="doccomment">/// Generation number of the Cloud Storage object.</span>
-            <span class="doccomment">/// `https://storage.googleapis.com/my-bucket/foo/bar#1234567`</span>
+            <span class="doccomment">/// `&lt;https://storage.googleapis.com/my-bucket/foo/bar#1234567`&gt;</span>
             <span class="doccomment">/// this value would be `1234567`.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">generation</span>: <span class="ident">i64</span>,
@@ -1750,11 +1747,11 @@
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">artifact_id</span>: <span class="ident">::prost::alloc::string::String</span>,
             <span class="doccomment">/// The flags to use when installing the MSI</span>
-            <span class="doccomment">/// defaults to [&quot;/i&quot;] (i.e. the install flag).</span>
+            <span class="doccomment">/// defaults to \[&quot;/i&quot;\] (i.e. the install flag).</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">flags</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Return codes that indicate that the software installed or updated</span>
-            <span class="doccomment">/// successfully. Behaviour defaults to [0]</span>
+            <span class="doccomment">/// successfully. Behaviour defaults to \[0\]</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">allowed_exit_codes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
         }
@@ -1778,7 +1775,7 @@
             <span class="doccomment">/// Arguments to be passed to the provided executable.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">args</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
-            <span class="doccomment">/// Defaults to [0]. A list of possible return values that the program</span>
+            <span class="doccomment">/// Defaults to \[0\]. A list of possible return values that the program</span>
             <span class="doccomment">/// can return to indicate a success.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">allowed_exit_codes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
@@ -1806,13 +1803,13 @@
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">script</span>: <span class="ident">::prost::alloc::string::String</span>,
             <span class="doccomment">/// Return codes that indicate that the software installed or updated</span>
-            <span class="doccomment">/// successfully. Behaviour defaults to [0]</span>
+            <span class="doccomment">/// successfully. Behaviour defaults to \[0\]</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">allowed_exit_codes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
             <span class="doccomment">/// The script interpreter to use to run the script. If no interpreter is</span>
             <span class="doccomment">/// specified the script is executed directly, which likely</span>
             <span class="doccomment">/// only succeed for scripts with</span>
-            <span class="doccomment">/// [shebang lines](https://en.wikipedia.org/wiki/Shebang_(Unix)).</span>
+            <span class="doccomment">/// [shebang lines](&lt;https://en.wikipedia.org/wiki/Shebang_(Unix&gt;)).</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;run_script::Interpreter&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">interpreter</span>: <span class="ident">i32</span>,
         }
@@ -1864,7 +1861,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LookupEffectiveGuestPolicyRequest</span> {
     <span class="doccomment">/// Required. This is the GCE instance identity token described in</span>
-    <span class="doccomment">/// https://cloud.google.com/compute/docs/instances/verifying-instance-identity</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/compute/docs/instances/verifying-instance-identity&gt;</span>
     <span class="doccomment">/// where the audience is &#39;osconfig.googleapis.com&#39; and the format is &#39;full&#39;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance_id_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1908,7 +1905,7 @@
         <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// A software package to configure on the VM instance.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">package</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Package</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">package</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Package</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// A guest policy package repository including its source.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -1918,7 +1915,7 @@
         <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// A software package repository to configure on the VM instance.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">package_repository</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PackageRepository</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">package_repository</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PackageRepository</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// A guest policy recipe including its source.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -1928,7 +1925,7 @@
         <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// A software recipe to configure on the VM instance.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">software_recipe</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SoftwareRecipe</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">software_recipe</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SoftwareRecipe</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// The desired state that the OS Config agent will maintain on the VM.</span>
@@ -2059,7 +2056,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GooSettings</span> {}
 <span class="doccomment">/// Zypper patching is performed by running `zypper patch`.</span>
-<span class="doccomment">/// See also https://en.opensuse.org/SDB:Zypper_manual.</span>
+<span class="doccomment">/// See also &lt;https://en.opensuse.org/SDB:Zypper_manual.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ZypperSettings</span> {
     <span class="doccomment">/// Adds the `--with-optional` flag to `zypper patch`.</span>
@@ -2108,47 +2105,47 @@
 <span class="doccomment">/// Nested message and enum types in `WindowsUpdateSettings`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">windows_update_settings</span> {
     <span class="doccomment">/// Microsoft Windows update classifications as defined in</span>
-    <span class="doccomment">/// [1]</span>
-    <span class="doccomment">/// https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro</span>
+    <span class="doccomment">/// \[1\]</span>
+    <span class="doccomment">/// &lt;https://support.microsoft.com/en-us/help/824684/description-of-the-standard-terminology-that-is-used-to-describe-micro&gt;</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Classification</span> {
         <span class="doccomment">/// Invalid. If classifications are included, they must be specified.</span>
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// &quot;A widely released fix for a specific problem that addresses a critical,</span>
-        <span class="doccomment">/// non-security-related bug.&quot; [1]</span>
+        <span class="doccomment">/// non-security-related bug.&quot; \[1\]</span>
         <span class="ident">Critical</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// &quot;A widely released fix for a product-specific, security-related</span>
         <span class="doccomment">/// vulnerability. Security vulnerabilities are rated by their severity. The</span>
         <span class="doccomment">/// severity rating is indicated in the Microsoft security bulletin as</span>
-        <span class="doccomment">/// critical, important, moderate, or low.&quot; [1]</span>
+        <span class="doccomment">/// critical, important, moderate, or low.&quot; \[1\]</span>
         <span class="ident">Security</span> <span class="op">=</span> <span class="number">2</span>,
         <span class="doccomment">/// &quot;A widely released and frequent software update that contains additions</span>
         <span class="doccomment">/// to a product’s definition database. Definition databases are often used</span>
         <span class="doccomment">/// to detect objects that have specific attributes, such as malicious code,</span>
-        <span class="doccomment">/// phishing websites, or junk mail.&quot; [1]</span>
+        <span class="doccomment">/// phishing websites, or junk mail.&quot; \[1\]</span>
         <span class="ident">Definition</span> <span class="op">=</span> <span class="number">3</span>,
-        <span class="doccomment">/// &quot;Software that controls the input and output of a device.&quot; [1]</span>
+        <span class="doccomment">/// &quot;Software that controls the input and output of a device.&quot; \[1\]</span>
         <span class="ident">Driver</span> <span class="op">=</span> <span class="number">4</span>,
         <span class="doccomment">/// &quot;New product functionality that is first distributed outside the context</span>
         <span class="doccomment">/// of a product release and that is typically included in the next full</span>
-        <span class="doccomment">/// product release.&quot; [1]</span>
+        <span class="doccomment">/// product release.&quot; \[1\]</span>
         <span class="ident">FeaturePack</span> <span class="op">=</span> <span class="number">5</span>,
         <span class="doccomment">/// &quot;A tested, cumulative set of all hotfixes, security updates, critical</span>
         <span class="doccomment">/// updates, and updates. Additionally, service packs may contain additional</span>
         <span class="doccomment">/// fixes for problems that are found internally since the release of the</span>
         <span class="doccomment">/// product. Service packs my also contain a limited number of</span>
-        <span class="doccomment">/// customer-requested design changes or features.&quot; [1]</span>
+        <span class="doccomment">/// customer-requested design changes or features.&quot; \[1\]</span>
         <span class="ident">ServicePack</span> <span class="op">=</span> <span class="number">6</span>,
-        <span class="doccomment">/// &quot;A utility or feature that helps complete a task or set of tasks.&quot; [1]</span>
+        <span class="doccomment">/// &quot;A utility or feature that helps complete a task or set of tasks.&quot; \[1\]</span>
         <span class="ident">Tool</span> <span class="op">=</span> <span class="number">7</span>,
         <span class="doccomment">/// &quot;A tested, cumulative set of hotfixes, security updates, critical</span>
         <span class="doccomment">/// updates, and updates that are packaged together for easy deployment. A</span>
         <span class="doccomment">/// rollup generally targets a specific area, such as security, or a</span>
-        <span class="doccomment">/// component of a product, such as Internet Information Services (IIS).&quot; [1]</span>
+        <span class="doccomment">/// component of a product, such as Internet Information Services (IIS).&quot; \[1\]</span>
         <span class="ident">UpdateRollup</span> <span class="op">=</span> <span class="number">8</span>,
         <span class="doccomment">/// &quot;A widely released fix for a specific problem. An update addresses a</span>
-        <span class="doccomment">/// noncritical, non-security-related bug.&quot; [1]</span>
+        <span class="doccomment">/// noncritical, non-security-related bug.&quot; \[1\]</span>
         <span class="ident">Update</span> <span class="op">=</span> <span class="number">9</span>,
     }
 }
@@ -2173,14 +2170,14 @@
 <span class="doccomment">/// Common configurations for an ExecStep.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExecStepConfig</span> {
-    <span class="doccomment">/// Defaults to [0]. A list of possible return values that the</span>
+    <span class="doccomment">/// Defaults to \[0\]. A list of possible return values that the</span>
     <span class="doccomment">/// execution can return to indicate a success.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">allowed_success_codes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The script interpreter to use to run the script. If no interpreter is</span>
     <span class="doccomment">/// specified the script will be executed directly, which will likely</span>
     <span class="doccomment">/// only succeed for scripts with shebang lines.</span>
-    <span class="doccomment">/// [Wikipedia shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)).</span>
+    <span class="doccomment">/// [Wikipedia shebang](&lt;https://en.wikipedia.org/wiki/Shebang_(Unix&gt;)).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;exec_step_config::Interpreter&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">interpreter</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Location of the executable.</span>
@@ -2211,7 +2208,7 @@
         <span class="ident">LocalPath</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// A GCS object containing the executable.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">GcsObject</span>(<span class="kw">super</span><span class="ident">::GcsObject</span>),
+        <span class="ident">GcsObject</span>(<span class="ident"><span class="kw">super</span>::GcsObject</span>),
     }
 }
 <span class="doccomment">/// GCS object representation.</span>
@@ -2260,10 +2257,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TaskDetails</span> {
         <span class="doccomment">/// Details about the apply patches task to perform.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">ApplyPatchesTask</span>(<span class="kw">super</span><span class="ident">::ApplyPatchesTask</span>),
+        <span class="ident">ApplyPatchesTask</span>(<span class="ident"><span class="kw">super</span>::ApplyPatchesTask</span>),
         <span class="doccomment">/// Details about the exec step task to perform.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">ExecStepTask</span>(<span class="kw">super</span><span class="ident">::ExecStepTask</span>),
+        <span class="ident">ExecStepTask</span>(<span class="ident"><span class="kw">super</span>::ExecStepTask</span>),
     }
 }
 <span class="doccomment">/// Message which instructs agent to apply patches.</span>
@@ -2406,7 +2403,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReceiveTaskNotificationRequest</span> {
     <span class="doccomment">/// Required. This is the Compute Engine instance identity token described in</span>
-    <span class="doccomment">/// https://cloud.google.com/compute/docs/instances/verifying-instance-identity</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/compute/docs/instances/verifying-instance-identity&gt;</span>
     <span class="doccomment">/// where the audience is &#39;osconfig.googleapis.com&#39; and the format is &#39;full&#39;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance_id_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2422,7 +2419,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StartNextTaskRequest</span> {
     <span class="doccomment">/// Required. This is the Compute Engine instance identity token described in</span>
-    <span class="doccomment">/// https://cloud.google.com/compute/docs/instances/verifying-instance-identity</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/compute/docs/instances/verifying-instance-identity&gt;</span>
     <span class="doccomment">/// where the audience is &#39;osconfig.googleapis.com&#39; and the format is &#39;full&#39;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance_id_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2439,7 +2436,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReportTaskProgressRequest</span> {
     <span class="doccomment">/// Required. This is the Compute Engine instance identity token described in</span>
-    <span class="doccomment">/// https://cloud.google.com/compute/docs/instances/verifying-instance-identity</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/compute/docs/instances/verifying-instance-identity&gt;</span>
     <span class="doccomment">/// where the audience is &#39;osconfig.googleapis.com&#39; and the format is &#39;full&#39;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance_id_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2465,10 +2462,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Progress</span> {
         <span class="doccomment">/// Details about the progress of the apply patches task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">ApplyPatchesTaskProgress</span>(<span class="kw">super</span><span class="ident">::ApplyPatchesTaskProgress</span>),
+        <span class="ident">ApplyPatchesTaskProgress</span>(<span class="ident"><span class="kw">super</span>::ApplyPatchesTaskProgress</span>),
         <span class="doccomment">/// Details about the progress of the exec step task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">ExecStepTaskProgress</span>(<span class="kw">super</span><span class="ident">::ExecStepTaskProgress</span>),
+        <span class="ident">ExecStepTaskProgress</span>(<span class="ident"><span class="kw">super</span>::ExecStepTaskProgress</span>),
     }
 }
 <span class="doccomment">/// The response message after the agent reported the current task progress.</span>
@@ -2482,7 +2479,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReportTaskCompleteRequest</span> {
     <span class="doccomment">/// Required. This is the Compute Engine instance identity token described in</span>
-    <span class="doccomment">/// https://cloud.google.com/compute/docs/instances/verifying-instance-identity</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/compute/docs/instances/verifying-instance-identity&gt;</span>
     <span class="doccomment">/// where the audience is &#39;osconfig.googleapis.com&#39; and the format is &#39;full&#39;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance_id_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2511,10 +2508,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Output</span> {
         <span class="doccomment">/// Final output details of the apply patches task;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">ApplyPatchesTaskOutput</span>(<span class="kw">super</span><span class="ident">::ApplyPatchesTaskOutput</span>),
+        <span class="ident">ApplyPatchesTaskOutput</span>(<span class="ident"><span class="kw">super</span>::ApplyPatchesTaskOutput</span>),
         <span class="doccomment">/// Final output details of the exec step task;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">ExecStepTaskOutput</span>(<span class="kw">super</span><span class="ident">::ExecStepTaskOutput</span>),
+        <span class="ident">ExecStepTaskOutput</span>(<span class="ident"><span class="kw">super</span>::ExecStepTaskOutput</span>),
     }
 }
 <span class="doccomment">/// The response message after the agent signaled the current task complete.</span>
@@ -2524,7 +2521,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RegisterAgentRequest</span> {
     <span class="doccomment">/// Required. This is the Compute Engine instance identity token described in</span>
-    <span class="doccomment">/// https://cloud.google.com/compute/docs/instances/verifying-instance-identity</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/compute/docs/instances/verifying-instance-identity&gt;</span>
     <span class="doccomment">/// where the audience is &#39;osconfig.googleapis.com&#39; and the format is &#39;full&#39;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance_id_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2552,7 +2549,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AgentEndpointServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2565,7 +2562,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AgentEndpointServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2593,9 +2590,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Stream established by client to receive Task notifications.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">receive_task_notification</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReceiveTaskNotificationRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReceiveTaskNotificationRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReceiveTaskNotificationResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReceiveTaskNotificationResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2613,8 +2610,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Signals the start of a task execution and returns the task info.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">start_next_task</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::StartNextTaskRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::StartNextTaskResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::StartNextTaskRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::StartNextTaskResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2630,8 +2627,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Signals an intermediary progress checkpoint in task execution.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">report_task_progress</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReportTaskProgressRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReportTaskProgressResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReportTaskProgressRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReportTaskProgressResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2646,8 +2643,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; task.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">report_task_complete</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReportTaskCompleteRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReportTaskCompleteResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReportTaskCompleteRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReportTaskCompleteResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2662,8 +2659,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; lookup merges all policies that are assigned to the instance ancestry.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">lookup_effective_guest_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LookupEffectiveGuestPolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EffectiveGuestPolicy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LookupEffectiveGuestPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EffectiveGuestPolicy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2677,8 +2674,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Registers the agent running on the VM.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">register_agent</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RegisterAgentRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RegisterAgentResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RegisterAgentRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RegisterAgentResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2693,5 +2690,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

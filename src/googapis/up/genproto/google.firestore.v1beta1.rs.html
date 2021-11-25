@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.firestore.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.firestore.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.firestore.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.firestore.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1924,15 +1922,14 @@
 <span id="1922">1922</span>
 <span id="1923">1923</span>
 <span id="1924">1924</span>
-</pre><pre class="rust">
-<span class="doccomment">/// A set of field paths on a document.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// A set of field paths on a document.</span>
 <span class="doccomment">/// Used to restrict a get or update operation on a document to a subset of its</span>
 <span class="doccomment">/// fields.</span>
 <span class="doccomment">/// This is different from standard field masks, as this is always scoped to a</span>
-<span class="doccomment">/// [Document][google.firestore.v1beta1.Document], and takes in account the dynamic nature of [Value][google.firestore.v1beta1.Value].</span>
+<span class="doccomment">/// \[Document][google.firestore.v1beta1.Document\], and takes in account the dynamic nature of \[Value][google.firestore.v1beta1.Value\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DocumentMask</span> {
-    <span class="doccomment">/// The list of field paths in the mask. See [Document.fields][google.firestore.v1beta1.Document.fields] for a field</span>
+    <span class="doccomment">/// The list of field paths in the mask. See \[Document.fields][google.firestore.v1beta1.Document.fields\] for a field</span>
     <span class="doccomment">/// path syntax reference.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">field_paths</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -2108,16 +2105,16 @@
         <span class="ident">ReferenceValue</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// A geo point value representing a point on the surface of Earth.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">GeoPointValue</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::LatLng</span>),
+        <span class="ident">GeoPointValue</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::LatLng</span>),
         <span class="doccomment">/// An array value.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Cannot directly contain another array value, though can contain an</span>
         <span class="doccomment">/// map which contains another array.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">ArrayValue</span>(<span class="kw">super</span><span class="ident">::ArrayValue</span>),
+        <span class="ident">ArrayValue</span>(<span class="ident"><span class="kw">super</span>::ArrayValue</span>),
         <span class="doccomment">/// A map value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">MapValue</span>(<span class="kw">super</span><span class="ident">::MapValue</span>),
+        <span class="ident">MapValue</span>(<span class="ident"><span class="kw">super</span>::MapValue</span>),
     }
 }
 <span class="doccomment">/// An array value.</span>
@@ -2219,13 +2216,13 @@
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">FilterType</span> {
             <span class="doccomment">/// A composite filter.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-            <span class="ident">CompositeFilter</span>(<span class="kw">super</span><span class="ident">::CompositeFilter</span>),
+            <span class="ident">CompositeFilter</span>(<span class="ident"><span class="kw">super</span>::CompositeFilter</span>),
             <span class="doccomment">/// A filter on a document field.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-            <span class="ident">FieldFilter</span>(<span class="kw">super</span><span class="ident">::FieldFilter</span>),
+            <span class="ident">FieldFilter</span>(<span class="ident"><span class="kw">super</span>::FieldFilter</span>),
             <span class="doccomment">/// A filter that takes exactly one argument.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-            <span class="ident">UnaryFilter</span>(<span class="kw">super</span><span class="ident">::UnaryFilter</span>),
+            <span class="ident">UnaryFilter</span>(<span class="ident"><span class="kw">super</span>::UnaryFilter</span>),
         }
     }
     <span class="doccomment">/// A filter that merges multiple other filters using the given operator.</span>
@@ -2264,7 +2261,7 @@
         <span class="kw">pub</span> <span class="ident">op</span>: <span class="ident">i32</span>,
         <span class="doccomment">/// The value to compare to.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Value</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Value</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Nested message and enum types in `FieldFilter`.</span>
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">field_filter</span> {
@@ -2381,7 +2378,7 @@
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">OperandType</span> {
             <span class="doccomment">/// The field to which to apply the operator.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-            <span class="ident">Field</span>(<span class="kw">super</span><span class="ident">::FieldReference</span>),
+            <span class="ident">Field</span>(<span class="ident"><span class="kw">super</span>::FieldReference</span>),
         }
     }
     <span class="doccomment">/// A reference to a field, such as `max(messages.time) as max_time`.</span>
@@ -2406,7 +2403,7 @@
         <span class="doccomment">/// The fields to return.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// If empty, all fields are returned. To only return the name</span>
-        <span class="doccomment">/// of the document, use `[&#39;__name__&#39;]`.</span>
+        <span class="doccomment">/// of the document, use `\[&#39;__name__&#39;\]`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">fields</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">FieldReference</span><span class="op">&gt;</span>,
     }
@@ -2474,14 +2471,14 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Operation</span> {
         <span class="doccomment">/// A document to write.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Update</span>(<span class="kw">super</span><span class="ident">::Document</span>),
+        <span class="ident">Update</span>(<span class="ident"><span class="kw">super</span>::Document</span>),
         <span class="doccomment">/// A document name to delete. In the format:</span>
         <span class="doccomment">/// `projects/{project_id}/databases/{database_id}/documents/{document_path}`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">Delete</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// Applies a transformation to a document.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">Transform</span>(<span class="kw">super</span><span class="ident">::DocumentTransform</span>),
+        <span class="ident">Transform</span>(<span class="ident"><span class="kw">super</span>::DocumentTransform</span>),
     }
 }
 <span class="doccomment">/// A transformation of a document.</span>
@@ -2501,7 +2498,7 @@
     <span class="doccomment">/// A transformation of a field of the document.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FieldTransform</span> {
-        <span class="doccomment">/// The path of the field. See [Document.fields][google.firestore.v1beta1.Document.fields] for the field path syntax</span>
+        <span class="doccomment">/// The path of the field. See \[Document.fields][google.firestore.v1beta1.Document.fields\] for the field path syntax</span>
         <span class="doccomment">/// reference.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">field_path</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2541,7 +2538,7 @@
             <span class="doccomment">/// If there is positive/negative integer overflow, the field is resolved</span>
             <span class="doccomment">/// to the largest magnitude positive/negative integer.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-            <span class="ident">Increment</span>(<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::Value</span>),
+            <span class="ident">Increment</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::Value</span>),
             <span class="doccomment">/// Sets the field to the maximum of its current value and the given value.</span>
             <span class="doccomment">///</span>
             <span class="doccomment">/// This must be an integer or a double value.</span>
@@ -2555,7 +2552,7 @@
             <span class="doccomment">/// zero input value is always the stored value.</span>
             <span class="doccomment">/// The maximum of any numeric value x and NaN is NaN.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-            <span class="ident">Maximum</span>(<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::Value</span>),
+            <span class="ident">Maximum</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::Value</span>),
             <span class="doccomment">/// Sets the field to the minimum of its current value and the given value.</span>
             <span class="doccomment">///</span>
             <span class="doccomment">/// This must be an integer or a double value.</span>
@@ -2569,7 +2566,7 @@
             <span class="doccomment">/// zero input value is always the stored value.</span>
             <span class="doccomment">/// The minimum of any numeric value x and NaN is NaN.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-            <span class="ident">Minimum</span>(<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::Value</span>),
+            <span class="ident">Minimum</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::Value</span>),
             <span class="doccomment">/// Append the given elements in order if they are not already present in</span>
             <span class="doccomment">/// the current field value.</span>
             <span class="doccomment">/// If the field is not an array, or if the field does not yet exist, it is</span>
@@ -2583,7 +2580,7 @@
             <span class="doccomment">///</span>
             <span class="doccomment">/// The corresponding transform_result will be the null value.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-            <span class="ident">AppendMissingElements</span>(<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::ArrayValue</span>),
+            <span class="ident">AppendMissingElements</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::ArrayValue</span>),
             <span class="doccomment">/// Remove all of the given elements from the array in the field.</span>
             <span class="doccomment">/// If the field is not an array, or if the field does not yet exist, it is</span>
             <span class="doccomment">/// set to the empty array.</span>
@@ -2595,7 +2592,7 @@
             <span class="doccomment">///</span>
             <span class="doccomment">/// The corresponding transform_result will be the null value.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-            <span class="ident">RemoveAllFromArray</span>(<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::ArrayValue</span>),
+            <span class="ident">RemoveAllFromArray</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::ArrayValue</span>),
         }
     }
 }
@@ -2609,21 +2606,21 @@
     <span class="doccomment">/// previous update_time.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The results of applying each [DocumentTransform.FieldTransform][google.firestore.v1beta1.DocumentTransform.FieldTransform], in the</span>
+    <span class="doccomment">/// The results of applying each \[DocumentTransform.FieldTransform][google.firestore.v1beta1.DocumentTransform.FieldTransform\], in the</span>
     <span class="doccomment">/// same order.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transform_results</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Value</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// A [Document][google.firestore.v1beta1.Document] has changed.</span>
+<span class="doccomment">/// A \[Document][google.firestore.v1beta1.Document\] has changed.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// May be the result of multiple [writes][google.firestore.v1beta1.Write], including deletes, that</span>
-<span class="doccomment">/// ultimately resulted in a new value for the [Document][google.firestore.v1beta1.Document].</span>
+<span class="doccomment">/// May be the result of multiple \[writes][google.firestore.v1beta1.Write\], including deletes, that</span>
+<span class="doccomment">/// ultimately resulted in a new value for the \[Document][google.firestore.v1beta1.Document\].</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Multiple [DocumentChange][google.firestore.v1beta1.DocumentChange] messages may be returned for the same logical</span>
+<span class="doccomment">/// Multiple \[DocumentChange][google.firestore.v1beta1.DocumentChange\] messages may be returned for the same logical</span>
 <span class="doccomment">/// change, if multiple targets are affected.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DocumentChange</span> {
-    <span class="doccomment">/// The new state of the [Document][google.firestore.v1beta1.Document].</span>
+    <span class="doccomment">/// The new state of the \[Document][google.firestore.v1beta1.Document\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If `mask` is set, contains only fields that were updated or added.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -2635,16 +2632,16 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">removed_target_ids</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// A [Document][google.firestore.v1beta1.Document] has been deleted.</span>
+<span class="doccomment">/// A \[Document][google.firestore.v1beta1.Document\] has been deleted.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// May be the result of multiple [writes][google.firestore.v1beta1.Write], including updates, the</span>
-<span class="doccomment">/// last of which deleted the [Document][google.firestore.v1beta1.Document].</span>
+<span class="doccomment">/// May be the result of multiple \[writes][google.firestore.v1beta1.Write\], including updates, the</span>
+<span class="doccomment">/// last of which deleted the \[Document][google.firestore.v1beta1.Document\].</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Multiple [DocumentDelete][google.firestore.v1beta1.DocumentDelete] messages may be returned for the same logical</span>
+<span class="doccomment">/// Multiple \[DocumentDelete][google.firestore.v1beta1.DocumentDelete\] messages may be returned for the same logical</span>
 <span class="doccomment">/// delete, if multiple targets are affected.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DocumentDelete</span> {
-    <span class="doccomment">/// The resource name of the [Document][google.firestore.v1beta1.Document] that was deleted.</span>
+    <span class="doccomment">/// The resource name of the \[Document][google.firestore.v1beta1.Document\] that was deleted.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">document</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// A set of target IDs for targets that previously matched this entity.</span>
@@ -2656,17 +2653,17 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">read_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// A [Document][google.firestore.v1beta1.Document] has been removed from the view of the targets.</span>
+<span class="doccomment">/// A \[Document][google.firestore.v1beta1.Document\] has been removed from the view of the targets.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Sent if the document is no longer relevant to a target and is out of view.</span>
 <span class="doccomment">/// Can be sent instead of a DocumentDelete or a DocumentChange if the server</span>
 <span class="doccomment">/// can not send the new value of the document.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// Multiple [DocumentRemove][google.firestore.v1beta1.DocumentRemove] messages may be returned for the same logical</span>
+<span class="doccomment">/// Multiple \[DocumentRemove][google.firestore.v1beta1.DocumentRemove\] messages may be returned for the same logical</span>
 <span class="doccomment">/// write or delete, if multiple targets are affected.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DocumentRemove</span> {
-    <span class="doccomment">/// The resource name of the [Document][google.firestore.v1beta1.Document] that has gone out of view.</span>
+    <span class="doccomment">/// The resource name of the \[Document][google.firestore.v1beta1.Document\] that has gone out of view.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">document</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// A set of target IDs for targets that previously matched this document.</span>
@@ -2684,14 +2681,14 @@
     <span class="doccomment">/// The target ID to which this filter applies.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">target_id</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// The total count of documents that match [target_id][google.firestore.v1beta1.ExistenceFilter.target_id].</span>
+    <span class="doccomment">/// The total count of documents that match \[target_id][google.firestore.v1beta1.ExistenceFilter.target_id\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If different from the count of documents in the client that match, the</span>
     <span class="doccomment">/// client must manually determine which documents no longer match the target.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">count</span>: <span class="ident">i32</span>,
 }
-<span class="doccomment">/// The request for [Firestore.GetDocument][google.firestore.v1beta1.Firestore.GetDocument].</span>
+<span class="doccomment">/// The request for \[Firestore.GetDocument][google.firestore.v1beta1.Firestore.GetDocument\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetDocumentRequest</span> {
     <span class="doccomment">/// Required. The resource name of the Document to get. In the format:</span>
@@ -2724,7 +2721,7 @@
         <span class="ident">ReadTime</span>(<span class="ident">::prost_types::Timestamp</span>),
     }
 }
-<span class="doccomment">/// The request for [Firestore.ListDocuments][google.firestore.v1beta1.Firestore.ListDocuments].</span>
+<span class="doccomment">/// The request for \[Firestore.ListDocuments][google.firestore.v1beta1.Firestore.ListDocuments\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDocumentsRequest</span> {
     <span class="doccomment">/// Required. The parent resource name. In the format:</span>
@@ -2756,8 +2753,8 @@
     <span class="kw">pub</span> <span class="ident">mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">DocumentMask</span><span class="op">&gt;</span>,
     <span class="doccomment">/// If the list should show missing documents. A missing document is a</span>
     <span class="doccomment">/// document that does not exist but has sub-documents. These documents will</span>
-    <span class="doccomment">/// be returned with a key but will not have fields, [Document.create_time][google.firestore.v1beta1.Document.create_time],</span>
-    <span class="doccomment">/// or [Document.update_time][google.firestore.v1beta1.Document.update_time] set.</span>
+    <span class="doccomment">/// be returned with a key but will not have fields, \[Document.create_time][google.firestore.v1beta1.Document.create_time\],</span>
+    <span class="doccomment">/// or \[Document.update_time][google.firestore.v1beta1.Document.update_time\] set.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Requests with `show_missing` may not specify `where` or</span>
     <span class="doccomment">/// `order_by`.</span>
@@ -2783,7 +2780,7 @@
         <span class="ident">ReadTime</span>(<span class="ident">::prost_types::Timestamp</span>),
     }
 }
-<span class="doccomment">/// The response for [Firestore.ListDocuments][google.firestore.v1beta1.Firestore.ListDocuments].</span>
+<span class="doccomment">/// The response for \[Firestore.ListDocuments][google.firestore.v1beta1.Firestore.ListDocuments\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDocumentsResponse</span> {
     <span class="doccomment">/// The Documents found.</span>
@@ -2793,7 +2790,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [Firestore.CreateDocument][google.firestore.v1beta1.Firestore.CreateDocument].</span>
+<span class="doccomment">/// The request for \[Firestore.CreateDocument][google.firestore.v1beta1.Firestore.CreateDocument\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateDocumentRequest</span> {
     <span class="doccomment">/// Required. The parent resource. For example:</span>
@@ -2819,7 +2816,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">DocumentMask</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Firestore.UpdateDocument][google.firestore.v1beta1.Firestore.UpdateDocument].</span>
+<span class="doccomment">/// The request for \[Firestore.UpdateDocument][google.firestore.v1beta1.Firestore.UpdateDocument\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateDocumentRequest</span> {
     <span class="doccomment">/// Required. The updated document.</span>
@@ -2846,7 +2843,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">current_document</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Precondition</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Firestore.DeleteDocument][google.firestore.v1beta1.Firestore.DeleteDocument].</span>
+<span class="doccomment">/// The request for \[Firestore.DeleteDocument][google.firestore.v1beta1.Firestore.DeleteDocument\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteDocumentRequest</span> {
     <span class="doccomment">/// Required. The resource name of the Document to delete. In the format:</span>
@@ -2858,7 +2855,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">current_document</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Precondition</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Firestore.BatchGetDocuments][google.firestore.v1beta1.Firestore.BatchGetDocuments].</span>
+<span class="doccomment">/// The request for \[Firestore.BatchGetDocuments][google.firestore.v1beta1.Firestore.BatchGetDocuments\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchGetDocumentsRequest</span> {
     <span class="doccomment">/// Required. The database name. In the format:</span>
@@ -2900,19 +2897,19 @@
         <span class="doccomment">/// The new transaction ID will be returned as the first response in the</span>
         <span class="doccomment">/// stream.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">NewTransaction</span>(<span class="kw">super</span><span class="ident">::TransactionOptions</span>),
+        <span class="ident">NewTransaction</span>(<span class="ident"><span class="kw">super</span>::TransactionOptions</span>),
         <span class="doccomment">/// Reads documents as they were at the given time.</span>
         <span class="doccomment">/// This may not be older than 270 seconds.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
         <span class="ident">ReadTime</span>(<span class="ident">::prost_types::Timestamp</span>),
     }
 }
-<span class="doccomment">/// The streamed response for [Firestore.BatchGetDocuments][google.firestore.v1beta1.Firestore.BatchGetDocuments].</span>
+<span class="doccomment">/// The streamed response for \[Firestore.BatchGetDocuments][google.firestore.v1beta1.Firestore.BatchGetDocuments\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchGetDocumentsResponse</span> {
     <span class="doccomment">/// The transaction that was started as part of this request.</span>
     <span class="doccomment">/// Will only be set in the first response, and only if</span>
-    <span class="doccomment">/// [BatchGetDocumentsRequest.new_transaction][google.firestore.v1beta1.BatchGetDocumentsRequest.new_transaction] was set in the request.</span>
+    <span class="doccomment">/// \[BatchGetDocumentsRequest.new_transaction][google.firestore.v1beta1.BatchGetDocumentsRequest.new_transaction\] was set in the request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The time at which the document was read.</span>
@@ -2934,14 +2931,14 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="prelude-ty">Result</span> {
         <span class="doccomment">/// A document that was requested.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Found</span>(<span class="kw">super</span><span class="ident">::Document</span>),
+        <span class="ident">Found</span>(<span class="ident"><span class="kw">super</span>::Document</span>),
         <span class="doccomment">/// A document name that was requested but does not exist. In the format:</span>
         <span class="doccomment">/// `projects/{project_id}/databases/{database_id}/documents/{document_path}`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">Missing</span>(<span class="ident">::prost::alloc::string::String</span>),
     }
 }
-<span class="doccomment">/// The request for [Firestore.BeginTransaction][google.firestore.v1beta1.Firestore.BeginTransaction].</span>
+<span class="doccomment">/// The request for \[Firestore.BeginTransaction][google.firestore.v1beta1.Firestore.BeginTransaction\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BeginTransactionRequest</span> {
     <span class="doccomment">/// Required. The database name. In the format:</span>
@@ -2953,14 +2950,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">options</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TransactionOptions</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response for [Firestore.BeginTransaction][google.firestore.v1beta1.Firestore.BeginTransaction].</span>
+<span class="doccomment">/// The response for \[Firestore.BeginTransaction][google.firestore.v1beta1.Firestore.BeginTransaction\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BeginTransactionResponse</span> {
     <span class="doccomment">/// The transaction that was started.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Firestore.Commit][google.firestore.v1beta1.Firestore.Commit].</span>
+<span class="doccomment">/// The request for \[Firestore.Commit][google.firestore.v1beta1.Firestore.Commit\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommitRequest</span> {
     <span class="doccomment">/// Required. The database name. In the format:</span>
@@ -2976,7 +2973,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response for [Firestore.Commit][google.firestore.v1beta1.Firestore.Commit].</span>
+<span class="doccomment">/// The response for \[Firestore.Commit][google.firestore.v1beta1.Firestore.Commit\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommitResponse</span> {
     <span class="doccomment">/// The result of applying the writes.</span>
@@ -2990,7 +2987,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">commit_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Firestore.Rollback][google.firestore.v1beta1.Firestore.Rollback].</span>
+<span class="doccomment">/// The request for \[Firestore.Rollback][google.firestore.v1beta1.Firestore.Rollback\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RollbackRequest</span> {
     <span class="doccomment">/// Required. The database name. In the format:</span>
@@ -3001,7 +2998,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Firestore.RunQuery][google.firestore.v1beta1.Firestore.RunQuery].</span>
+<span class="doccomment">/// The request for \[Firestore.RunQuery][google.firestore.v1beta1.Firestore.RunQuery\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunQueryRequest</span> {
     <span class="doccomment">/// Required. The parent resource name. In the format:</span>
@@ -3027,7 +3024,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">QueryType</span> {
         <span class="doccomment">/// A structured query.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">StructuredQuery</span>(<span class="kw">super</span><span class="ident">::StructuredQuery</span>),
+        <span class="ident">StructuredQuery</span>(<span class="ident"><span class="kw">super</span>::StructuredQuery</span>),
     }
     <span class="doccomment">/// The consistency mode for this transaction.</span>
     <span class="doccomment">/// If not set, defaults to strong consistency.</span>
@@ -3041,19 +3038,19 @@
         <span class="doccomment">/// The new transaction ID will be returned as the first response in the</span>
         <span class="doccomment">/// stream.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">NewTransaction</span>(<span class="kw">super</span><span class="ident">::TransactionOptions</span>),
+        <span class="ident">NewTransaction</span>(<span class="ident"><span class="kw">super</span>::TransactionOptions</span>),
         <span class="doccomment">/// Reads documents as they were at the given time.</span>
         <span class="doccomment">/// This may not be older than 270 seconds.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
         <span class="ident">ReadTime</span>(<span class="ident">::prost_types::Timestamp</span>),
     }
 }
-<span class="doccomment">/// The response for [Firestore.RunQuery][google.firestore.v1beta1.Firestore.RunQuery].</span>
+<span class="doccomment">/// The response for \[Firestore.RunQuery][google.firestore.v1beta1.Firestore.RunQuery\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunQueryResponse</span> {
     <span class="doccomment">/// The transaction that was started as part of this request.</span>
     <span class="doccomment">/// Can only be set in the first response, and only if</span>
-    <span class="doccomment">/// [RunQueryRequest.new_transaction][google.firestore.v1beta1.RunQueryRequest.new_transaction] was set in the request.</span>
+    <span class="doccomment">/// \[RunQueryRequest.new_transaction][google.firestore.v1beta1.RunQueryRequest.new_transaction\] was set in the request.</span>
     <span class="doccomment">/// If set, no other fields will be set in this response.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
@@ -3075,7 +3072,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">skipped_results</span>: <span class="ident">i32</span>,
 }
-<span class="doccomment">/// The request for [Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery].</span>
+<span class="doccomment">/// The request for \[Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PartitionQueryRequest</span> {
     <span class="doccomment">/// Required. The parent resource name. In the format:</span>
@@ -3132,10 +3129,10 @@
         <span class="doccomment">/// ascending. Other filters, order bys, limits, offsets, and start/end</span>
         <span class="doccomment">/// cursors are not supported.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">StructuredQuery</span>(<span class="kw">super</span><span class="ident">::StructuredQuery</span>),
+        <span class="ident">StructuredQuery</span>(<span class="ident"><span class="kw">super</span>::StructuredQuery</span>),
     }
 }
-<span class="doccomment">/// The response for [Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery].</span>
+<span class="doccomment">/// The response for \[Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PartitionQueryResponse</span> {
     <span class="doccomment">/// Partition results.</span>
@@ -3163,7 +3160,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [Firestore.Write][google.firestore.v1beta1.Firestore.Write].</span>
+<span class="doccomment">/// The request for \[Firestore.Write][google.firestore.v1beta1.Firestore.Write\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The first request creates a stream, or resumes an existing one from a token.</span>
 <span class="doccomment">///</span>
@@ -3196,7 +3193,7 @@
     <span class="doccomment">/// A stream token that was previously sent by the server.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The client should set this field to the token from the most recent</span>
-    <span class="doccomment">/// [WriteResponse][google.firestore.v1beta1.WriteResponse] it has received. This acknowledges that the client has</span>
+    <span class="doccomment">/// \[WriteResponse][google.firestore.v1beta1.WriteResponse\] it has received. This acknowledges that the client has</span>
     <span class="doccomment">/// received responses up to this token. After sending this token, earlier</span>
     <span class="doccomment">/// tokens may not be used anymore.</span>
     <span class="doccomment">///</span>
@@ -3214,7 +3211,7 @@
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response for [Firestore.Write][google.firestore.v1beta1.Firestore.Write].</span>
+<span class="doccomment">/// The response for \[Firestore.Write][google.firestore.v1beta1.Firestore.Write\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WriteResponse</span> {
     <span class="doccomment">/// The ID of the stream.</span>
@@ -3238,7 +3235,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">commit_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// A request for [Firestore.Listen][google.firestore.v1beta1.Firestore.Listen]</span>
+<span class="doccomment">/// A request for \[Firestore.Listen][google.firestore.v1beta1.Firestore.Listen\]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListenRequest</span> {
     <span class="doccomment">/// Required. The database name. In the format:</span>
@@ -3260,13 +3257,13 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TargetChange</span> {
         <span class="doccomment">/// A target to add to this stream.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">AddTarget</span>(<span class="kw">super</span><span class="ident">::Target</span>),
+        <span class="ident">AddTarget</span>(<span class="ident"><span class="kw">super</span>::Target</span>),
         <span class="doccomment">/// The ID of a target to remove from this stream.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="ident">RemoveTarget</span>(<span class="ident">i32</span>),
     }
 }
-<span class="doccomment">/// The response for [Firestore.Listen][google.firestore.v1beta1.Firestore.Listen].</span>
+<span class="doccomment">/// The response for \[Firestore.Listen][google.firestore.v1beta1.Firestore.Listen\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListenResponse</span> {
     <span class="doccomment">/// The supported responses.</span>
@@ -3280,24 +3277,24 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ResponseType</span> {
         <span class="doccomment">/// Targets have changed.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">TargetChange</span>(<span class="kw">super</span><span class="ident">::TargetChange</span>),
-        <span class="doccomment">/// A [Document][google.firestore.v1beta1.Document] has changed.</span>
+        <span class="ident">TargetChange</span>(<span class="ident"><span class="kw">super</span>::TargetChange</span>),
+        <span class="doccomment">/// A \[Document][google.firestore.v1beta1.Document\] has changed.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">DocumentChange</span>(<span class="kw">super</span><span class="ident">::DocumentChange</span>),
-        <span class="doccomment">/// A [Document][google.firestore.v1beta1.Document] has been deleted.</span>
+        <span class="ident">DocumentChange</span>(<span class="ident"><span class="kw">super</span>::DocumentChange</span>),
+        <span class="doccomment">/// A \[Document][google.firestore.v1beta1.Document\] has been deleted.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">DocumentDelete</span>(<span class="kw">super</span><span class="ident">::DocumentDelete</span>),
-        <span class="doccomment">/// A [Document][google.firestore.v1beta1.Document] has been removed from a target (because it is no longer</span>
+        <span class="ident">DocumentDelete</span>(<span class="ident"><span class="kw">super</span>::DocumentDelete</span>),
+        <span class="doccomment">/// A \[Document][google.firestore.v1beta1.Document\] has been removed from a target (because it is no longer</span>
         <span class="doccomment">/// relevant to that target).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">DocumentRemove</span>(<span class="kw">super</span><span class="ident">::DocumentRemove</span>),
+        <span class="ident">DocumentRemove</span>(<span class="ident"><span class="kw">super</span>::DocumentRemove</span>),
         <span class="doccomment">/// A filter to apply to the set of documents previously returned for the</span>
         <span class="doccomment">/// given target.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Returned when documents may have been removed from the given target, but</span>
         <span class="doccomment">/// the exact documents are unknown.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Filter</span>(<span class="kw">super</span><span class="ident">::ExistenceFilter</span>),
+        <span class="ident">Filter</span>(<span class="ident"><span class="kw">super</span>::ExistenceFilter</span>),
     }
 }
 <span class="doccomment">/// A specification of a set of documents to listen to.</span>
@@ -3354,7 +3351,7 @@
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">QueryType</span> {
             <span class="doccomment">/// A structured query.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-            <span class="ident">StructuredQuery</span>(<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::StructuredQuery</span>),
+            <span class="ident">StructuredQuery</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::StructuredQuery</span>),
         }
     }
     <span class="doccomment">/// The type of target to listen to.</span>
@@ -3373,7 +3370,7 @@
     <span class="doccomment">/// subsequent changes.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ResumeType</span> {
-        <span class="doccomment">/// A resume token from a prior [TargetChange][google.firestore.v1beta1.TargetChange] for an identical target.</span>
+        <span class="doccomment">/// A resume token from a prior \[TargetChange][google.firestore.v1beta1.TargetChange\] for an identical target.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Using a resume token with a different target is unsupported and may fail.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
@@ -3400,7 +3397,7 @@
     <span class="kw">pub</span> <span class="ident">target_ids</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The error that resulted in this change, if applicable.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">cause</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">cause</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A token that can be used to resume the stream for the given `target_ids`,</span>
     <span class="doccomment">/// or all targets if `target_ids` is empty.</span>
     <span class="doccomment">///</span>
@@ -3449,7 +3446,7 @@
         <span class="ident">Reset</span> <span class="op">=</span> <span class="number">4</span>,
     }
 }
-<span class="doccomment">/// The request for [Firestore.ListCollectionIds][google.firestore.v1beta1.Firestore.ListCollectionIds].</span>
+<span class="doccomment">/// The request for \[Firestore.ListCollectionIds][google.firestore.v1beta1.Firestore.ListCollectionIds\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListCollectionIdsRequest</span> {
     <span class="doccomment">/// Required. The parent document. In the format:</span>
@@ -3462,11 +3459,11 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// A page token. Must be a value from</span>
-    <span class="doccomment">/// [ListCollectionIdsResponse][google.firestore.v1beta1.ListCollectionIdsResponse].</span>
+    <span class="doccomment">/// \[ListCollectionIdsResponse][google.firestore.v1beta1.ListCollectionIdsResponse\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The response from [Firestore.ListCollectionIds][google.firestore.v1beta1.Firestore.ListCollectionIds].</span>
+<span class="doccomment">/// The response from \[Firestore.ListCollectionIds][google.firestore.v1beta1.Firestore.ListCollectionIds\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListCollectionIdsResponse</span> {
     <span class="doccomment">/// The collection ids.</span>
@@ -3476,7 +3473,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite].</span>
+<span class="doccomment">/// The request for \[Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchWriteRequest</span> {
     <span class="doccomment">/// Required. The database name. In the format:</span>
@@ -3495,7 +3492,7 @@
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response from [Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite].</span>
+<span class="doccomment">/// The response from \[Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchWriteResponse</span> {
     <span class="doccomment">/// The result of applying the writes.</span>
@@ -3509,7 +3506,7 @@
     <span class="doccomment">/// This i-th write status corresponds to the i-th write in the</span>
     <span class="doccomment">/// request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
 <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Generated client implementations.&quot;</span>]</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">firestore_client</span> {
@@ -3530,7 +3527,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">FirestoreClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -3543,7 +3540,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">FirestoreClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -3571,8 +3568,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a single document.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_document</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetDocumentRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Document</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetDocumentRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Document</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3588,8 +3585,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists documents.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_documents</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDocumentsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDocumentsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDocumentsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDocumentsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3605,8 +3602,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates or inserts a document.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_document</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateDocumentRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Document</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateDocumentRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Document</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3622,7 +3619,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a document.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_document</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteDocumentRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteDocumentRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3642,9 +3639,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; same order that they were requested.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_get_documents</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchGetDocumentsRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchGetDocumentsRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchGetDocumentsResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchGetDocumentsResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3664,8 +3661,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Starts a new transaction.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">begin_transaction</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BeginTransactionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BeginTransactionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BeginTransactionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BeginTransactionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3681,8 +3678,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Commits a transaction, while optionally updating documents.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">commit</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CommitRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CommitResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CommitRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CommitResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3697,7 +3694,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Rolls back a transaction.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">rollback</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RollbackRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RollbackRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3714,8 +3711,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Runs a query.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run_query</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RunQueryRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RunQueryResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RunQueryRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RunQueryResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3736,8 +3733,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; can be used by RunQuery as starting/end points for the query results.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">partition_query</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PartitionQueryRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PartitionQueryResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PartitionQueryRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PartitionQueryResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3753,8 +3750,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Streams batches of document updates and deletes, in order.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::WriteRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::WriteResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::WriteRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::WriteResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3772,8 +3769,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Listens to changes.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">listen</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::ListenRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListenResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::ListenRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListenResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3791,8 +3788,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists all the collection IDs underneath a document.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_collection_ids</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListCollectionIdsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListCollectionIdsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListCollectionIdsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListCollectionIdsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3816,8 +3813,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Commit][google.firestore.v1beta1.Firestore.Commit] instead.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_write</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchWriteRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchWriteResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchWriteRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchWriteResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3833,8 +3830,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a new document.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_document</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateDocumentRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Document</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateDocumentRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Document</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3849,5 +3846,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

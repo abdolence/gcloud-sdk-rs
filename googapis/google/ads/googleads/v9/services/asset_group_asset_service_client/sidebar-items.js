@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AssetGroupAssetServiceClient","Service to manage asset group asset."]]});

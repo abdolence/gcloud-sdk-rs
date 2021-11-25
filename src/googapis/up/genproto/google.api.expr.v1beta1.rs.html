@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.api.expr.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.api.expr.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.api.expr.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.api.expr.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -597,8 +595,7 @@
 <span id="595">595</span>
 <span id="596">596</span>
 <span id="597">597</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Source information collected at parse time.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Source information collected at parse time.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SourceInfo</span> {
     <span class="doccomment">/// The location name. All position information attached to an expression is</span>
@@ -611,8 +608,8 @@
     <span class="doccomment">/// Monotonically increasing list of character offsets where newlines appear.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The line number of a given position is the index `i` where for a given</span>
-    <span class="doccomment">/// `id` the `line_offsets[i] &lt; id_positions[id] &lt; line_offsets[i+1]`. The</span>
-    <span class="doccomment">/// column may be derivd from `id_positions[id] - line_offsets[i]`.</span>
+    <span class="doccomment">/// `id` the `line_offsets\[i\] &lt; id_positions\[id\] &lt; line_offsets\[i+1\]`. The</span>
+    <span class="doccomment">/// column may be derivd from `id_positions\[id\] - line_offsets\[i\]`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">line_offsets</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A map from the parse node id (e.g. `Expr.id`) to the character offset</span>
@@ -658,13 +655,13 @@
 <span class="doccomment">/// operators with the exception of the &#39;.&#39; operator are modelled as function</span>
 <span class="doccomment">/// calls. This makes it easy to represent new operators into the existing AST.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// All references within expressions must resolve to a [Decl][google.api.expr.v1beta1.Decl] provided at</span>
+<span class="doccomment">/// All references within expressions must resolve to a \[Decl][google.api.expr.v1beta1.Decl\] provided at</span>
 <span class="doccomment">/// type-check for an expression to be valid. A reference may either be a bare</span>
 <span class="doccomment">/// identifier `name` or a qualified identifier `google.api.name`. References</span>
 <span class="doccomment">/// may either refer to a value or a function declaration.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// For example, the expression `google.api.name.startsWith(&#39;expr&#39;)` references</span>
-<span class="doccomment">/// the declaration `google.api.name` within a [Expr.Select][google.api.expr.v1beta1.Expr.Select] expression, and</span>
+<span class="doccomment">/// the declaration `google.api.name` within a \[Expr.Select][google.api.expr.v1beta1.Expr.Select\] expression, and</span>
 <span class="doccomment">/// the function declaration `startsWith`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Expr</span> {
@@ -685,7 +682,7 @@
         <span class="doccomment">/// Required. Holds a single, unqualified identifier, possibly preceded by a</span>
         <span class="doccomment">/// &#39;.&#39;.</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// Qualified names are represented by the [Expr.Select][google.api.expr.v1beta1.Expr.Select] expression.</span>
+        <span class="doccomment">/// Qualified names are represented by the \[Expr.Select][google.api.expr.v1beta1.Expr.Select\] expression.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
@@ -697,7 +694,7 @@
         <span class="doccomment">/// For example, in the select expression `request.auth`, the `request`</span>
         <span class="doccomment">/// portion of the expression is the `operand`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">operand</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">operand</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Required. The name of the field to select.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// For example, in the select expression `request.auth`, the `auth` portion</span>
@@ -718,13 +715,13 @@
         <span class="doccomment">/// The target of an method call-style expression. For example, `x` in</span>
         <span class="doccomment">/// `x.f()`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">target</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">target</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Required. The name of the function or method being called.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">function</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// The arguments.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">args</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">args</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Expr</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// A list creation expression.</span>
     <span class="doccomment">///</span>
@@ -734,7 +731,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateList</span> {
         <span class="doccomment">/// The elements part of the list.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">elements</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">elements</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Expr</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// A map or message creation expression.</span>
     <span class="doccomment">///</span>
@@ -763,7 +760,7 @@
             <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">i32</span>,
             <span class="doccomment">/// Required. The value assigned to the key.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::Expr</span><span class="op">&gt;</span>,
             <span class="doccomment">/// The `Entry` key kinds.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;entry::KeyKind&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;2, 3&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">key_kind</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">entry::KeyKind</span><span class="op">&gt;</span>,
@@ -778,7 +775,7 @@
                 <span class="ident">FieldKey</span>(<span class="ident">::prost::alloc::string::String</span>),
                 <span class="doccomment">/// The key expression for a map creation statement.</span>
                 <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-                <span class="ident">MapKey</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::Expr</span>),
+                <span class="ident">MapKey</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::Expr</span>),
             }
         }
     }
@@ -815,36 +812,36 @@
         <span class="kw">pub</span> <span class="ident">iter_var</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// The range over which var iterates.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">iter_range</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">iter_range</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="doccomment">/// The name of the variable used for accumulation of the result.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">accu_var</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// The initial value of the accumulator.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">accu_init</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">accu_init</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="doccomment">/// An expression which can contain iter_var and accu_var.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Returns false when the result has been computed and may be used as</span>
         <span class="doccomment">/// a hint to short-circuit the remainder of the comprehension.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">loop_condition</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">loop_condition</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="doccomment">/// An expression which can contain iter_var and accu_var.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Computes the next value of accu_var.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">loop_step</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">loop_step</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="doccomment">/// An expression which can contain accu_var.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Computes the result.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">result</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">result</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Expr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Required. Variants of expressions.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ExprKind</span> {
         <span class="doccomment">/// A literal expression.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">LiteralExpr</span>(<span class="kw">super</span><span class="ident">::Literal</span>),
+        <span class="ident">LiteralExpr</span>(<span class="ident"><span class="kw">super</span>::Literal</span>),
         <span class="doccomment">/// An identifier expression.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
         <span class="ident">IdentExpr</span>(<span class="ident">Ident</span>),
@@ -872,7 +869,7 @@
 <span class="doccomment">/// primitives.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Lists and structs are not included as constants as these aggregate types may</span>
-<span class="doccomment">/// contain [Expr][google.api.expr.v1beta1.Expr] elements which require evaluation and are thus not constant.</span>
+<span class="doccomment">/// contain \[Expr][google.api.expr.v1beta1.Expr\] elements which require evaluation and are thus not constant.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Examples of literals include: `&quot;hello&quot;`, `b&#39;bytes&#39;`, `1u`, `4.2`, `-2`,</span>
 <span class="doccomment">/// `true`, `null`.</span>
@@ -933,10 +930,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Kind</span> {
         <span class="doccomment">/// An identifier declaration.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Ident</span>(<span class="kw">super</span><span class="ident">::IdentDecl</span>),
+        <span class="ident">Ident</span>(<span class="ident"><span class="kw">super</span>::IdentDecl</span>),
         <span class="doccomment">/// A function declaration.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Function</span>(<span class="kw">super</span><span class="ident">::FunctionDecl</span>),
+        <span class="ident">Function</span>(<span class="ident"><span class="kw">super</span>::FunctionDecl</span>),
     }
 }
 <span class="doccomment">/// The declared type of a variable.</span>
@@ -1017,16 +1014,16 @@
         <span class="ident">BytesValue</span>(<span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
         <span class="doccomment">/// An enum value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">EnumValue</span>(<span class="kw">super</span><span class="ident">::EnumValue</span>),
+        <span class="ident">EnumValue</span>(<span class="ident"><span class="kw">super</span>::EnumValue</span>),
         <span class="doccomment">/// The proto message backing an object value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
         <span class="ident">ObjectValue</span>(<span class="ident">::prost_types::Any</span>),
         <span class="doccomment">/// Map value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
-        <span class="ident">MapValue</span>(<span class="kw">super</span><span class="ident">::MapValue</span>),
+        <span class="ident">MapValue</span>(<span class="ident"><span class="kw">super</span>::MapValue</span>),
         <span class="doccomment">/// List value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
-        <span class="ident">ListValue</span>(<span class="kw">super</span><span class="ident">::ListValue</span>),
+        <span class="ident">ListValue</span>(<span class="ident"><span class="kw">super</span>::ListValue</span>),
         <span class="doccomment">/// A Type value represented by the fully qualified name of the type.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
         <span class="ident">TypeValue</span>(<span class="ident">::prost::alloc::string::String</span>),
@@ -1075,10 +1072,10 @@
         <span class="doccomment">/// Must be unique with in the map.</span>
         <span class="doccomment">/// Currently only boolean, int, uint, and string values can be keys.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Value</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Value</span><span class="op">&gt;</span>,
         <span class="doccomment">/// The value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Value</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Value</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// The state of an evaluation.</span>
@@ -1103,7 +1100,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="prelude-ty">Result</span> {
         <span class="doccomment">/// The expression this result is for.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">expr</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::IdRef</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">expr</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::IdRef</span><span class="op">&gt;</span>,
         <span class="doccomment">/// The index in `values` of the resulting value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">i32</span>,
@@ -1123,7 +1120,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Kind</span> {
         <span class="doccomment">/// A concrete value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Value</span>(<span class="kw">super</span><span class="ident">::Value</span>),
+        <span class="ident">Value</span>(<span class="ident"><span class="kw">super</span>::Value</span>),
         <span class="doccomment">/// The set of errors in the critical path of evalution.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Only errors in the critical path are included. For example,</span>
@@ -1141,7 +1138,7 @@
         <span class="doccomment">/// The exact subset of errors included for this case is unspecified and</span>
         <span class="doccomment">/// depends on the implementation details of the evaluator.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Error</span>(<span class="kw">super</span><span class="ident">::ErrorSet</span>),
+        <span class="ident">Error</span>(<span class="ident"><span class="kw">super</span>::ErrorSet</span>),
         <span class="doccomment">/// The set of unknowns in the critical path of evaluation.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Unknown behaves identically to Error with regards to propagation.</span>
@@ -1150,11 +1147,11 @@
         <span class="doccomment">/// unknowns *might* be included included when evaluation could result in</span>
         <span class="doccomment">/// different unknowns. For example:</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">///     (&lt;unknown[1]&gt; || true) &amp;&amp; &lt;unknown[2]&gt; -&gt; &lt;unknown[2]&gt;</span>
-        <span class="doccomment">///     &lt;unknown[1]&gt; || &lt;unknown[2]&gt; -&gt; &lt;unknown[1,2]&gt;</span>
-        <span class="doccomment">///     &lt;unknown[1]&gt;.foo -&gt; &lt;unknown[1]&gt;</span>
-        <span class="doccomment">///     foo(&lt;unknown[1]&gt;) -&gt; &lt;unknown[1]&gt;</span>
-        <span class="doccomment">///     &lt;unknown[1]&gt; + &lt;unknown[2]&gt; -&gt; &lt;unknown[1]&gt; or &lt;unknown[2[&gt;</span>
+        <span class="doccomment">///     (&lt;unknown\[1\]&gt; || true) &amp;&amp; &lt;unknown\[2\]&gt; -&gt; &lt;unknown\[2\]&gt;</span>
+        <span class="doccomment">///     &lt;unknown\[1\]&gt; || &lt;unknown\[2\]&gt; -&gt; &lt;unknown\[1,2\]&gt;</span>
+        <span class="doccomment">///     &lt;unknown\[1\]&gt;.foo -&gt; &lt;unknown\[1\]&gt;</span>
+        <span class="doccomment">///     foo(&lt;unknown\[1\]&gt;) -&gt; &lt;unknown\[1\]&gt;</span>
+        <span class="doccomment">///     &lt;unknown\[1\]&gt; + &lt;unknown\[2\]&gt; -&gt; &lt;unknown\[1\]&gt; or &lt;unknown[2[&gt;</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Unknown takes precidence over Error in cases where a `Value` can short</span>
         <span class="doccomment">/// circuit the result:</span>
@@ -1167,7 +1164,7 @@
         <span class="doccomment">///     &lt;unknown&gt; + &lt;error&gt; -&gt; &lt;error&gt;</span>
         <span class="doccomment">///     foo(&lt;unknown&gt;, &lt;error&gt;) -&gt; &lt;error&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Unknown</span>(<span class="kw">super</span><span class="ident">::UnknownSet</span>),
+        <span class="ident">Unknown</span>(<span class="ident"><span class="kw">super</span>::UnknownSet</span>),
     }
 }
 <span class="doccomment">/// A set of errors.</span>
@@ -1177,7 +1174,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ErrorSet</span> {
     <span class="doccomment">/// The errors in the set.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">errors</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">errors</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// A set of expressions for which the value is unknown.</span>
 <span class="doccomment">///</span>
@@ -1195,5 +1192,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">i32</span>,
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

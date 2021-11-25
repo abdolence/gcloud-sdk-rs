@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConnectionSpec",""],["ConnectionType","The type of the BigQuery connection."]]});

@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.home.graph.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.home.graph.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.home.graph.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.home.graph.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -557,8 +555,7 @@
 <span id="555">555</span>
 <span id="556">556</span>
 <span id="557">557</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Third-party device definition.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Third-party device definition.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Device</span> {
     <span class="doccomment">/// Third-party device ID.</span>
@@ -566,12 +563,12 @@
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Hardware type of the device.</span>
     <span class="doccomment">/// See [device</span>
-    <span class="doccomment">/// types](https://developers.google.com/assistant/smarthome/guides).</span>
+    <span class="doccomment">/// types](&lt;https://developers.google.com/assistant/smarthome/guides&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Traits supported by the device.</span>
     <span class="doccomment">/// See [device</span>
-    <span class="doccomment">/// traits](https://developers.google.com/assistant/smarthome/traits).</span>
+    <span class="doccomment">/// traits](&lt;https://developers.google.com/assistant/smarthome/traits&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">traits</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Names given to this device by your smart home Action.</span>
@@ -579,7 +576,7 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">DeviceNames</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Indicates whether your smart home Action will report state of this device</span>
     <span class="doccomment">/// to Google via</span>
-    <span class="doccomment">/// [ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification].</span>
+    <span class="doccomment">/// \[ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">will_report_state</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Suggested name for the room where this device is installed.</span>
@@ -598,24 +595,24 @@
     <span class="kw">pub</span> <span class="ident">attributes</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Custom device attributes stored in Home Graph and provided to your</span>
     <span class="doccomment">/// smart home Action in each</span>
-    <span class="doccomment">/// [QUERY](https://developers.google.com/assistant/smarthome/reference/intent/query)</span>
+    <span class="doccomment">/// \[QUERY\](&lt;https://developers.google.com/assistant/smarthome/reference/intent/query&gt;)</span>
     <span class="doccomment">/// and</span>
-    <span class="doccomment">/// [EXECUTE](https://developers.google.com/assistant/smarthome/reference/intent/execute)</span>
+    <span class="doccomment">/// \[EXECUTE\](&lt;https://developers.google.com/assistant/smarthome/reference/intent/execute&gt;)</span>
     <span class="doccomment">/// intent.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">custom_data</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Alternate IDs associated with this device.</span>
     <span class="doccomment">/// This is used to identify cloud synced devices enabled for [local</span>
-    <span class="doccomment">/// fulfillment](https://developers.google.com/assistant/smarthome/concepts/local).</span>
+    <span class="doccomment">/// fulfillment](&lt;https://developers.google.com/assistant/smarthome/concepts/local&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">other_device_ids</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">AgentOtherDeviceId</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Indicates whether your smart home Action will report notifications</span>
     <span class="doccomment">/// to Google for this device via</span>
-    <span class="doccomment">/// [ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification].</span>
+    <span class="doccomment">/// \[ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If your smart home Action enables users to control device notifications,</span>
     <span class="doccomment">/// you should update this field and call</span>
-    <span class="doccomment">/// [RequestSyncDevices][google.home.graph.v1.HomeGraphApiService.RequestSyncDevices].</span>
+    <span class="doccomment">/// \[RequestSyncDevices][google.home.graph.v1.HomeGraphApiService.RequestSyncDevices\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">notification_supported_by_agent</span>: <span class="ident">bool</span>,
 }
@@ -660,7 +657,7 @@
     <span class="kw">pub</span> <span class="ident">device_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Request type for the</span>
-<span class="doccomment">/// [`RequestSyncDevices`](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)</span>
+<span class="doccomment">/// \[`RequestSyncDevices`\](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)</span>
 <span class="doccomment">/// call.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RequestSyncDevicesRequest</span> {
@@ -674,7 +671,7 @@
     <span class="kw">pub</span> <span class="ident">r#async</span>: <span class="ident">bool</span>,
 }
 <span class="doccomment">/// Response type for the</span>
-<span class="doccomment">/// [`RequestSyncDevices`](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)</span>
+<span class="doccomment">/// \[`RequestSyncDevices`\](#google.home.graph.v1.HomeGraphApiService.RequestSyncDevices)</span>
 <span class="doccomment">/// call.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Intentionally empty upon success. An HTTP response code is returned</span>
@@ -682,7 +679,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RequestSyncDevicesResponse</span> {}
 <span class="doccomment">/// Request type for the</span>
-<span class="doccomment">/// [`ReportStateAndNotification`](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)</span>
+<span class="doccomment">/// \[`ReportStateAndNotification`\](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)</span>
 <span class="doccomment">/// call. It may include states, notifications, or both. States and notifications</span>
 <span class="doccomment">/// are defined per `device_id` (for example, &quot;123&quot; and &quot;456&quot; in the following</span>
 <span class="doccomment">/// example).</span>
@@ -721,7 +718,7 @@
     <span class="doccomment">/// Deprecated.</span>
     <span class="doccomment">/// (-- Token to maintain state in the follow up notification response. See the</span>
     <span class="doccomment">/// notifications guide at</span>
-    <span class="doccomment">/// https://developers.google.com/assistant/smarthome/develop/notifications for</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/assistant/smarthome/develop/notifications&gt; for</span>
     <span class="doccomment">/// details on implementing follow up notifications --)</span>
     <span class="attribute">#[<span class="ident">deprecated</span>]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
@@ -731,12 +728,12 @@
     <span class="kw">pub</span> <span class="ident">payload</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">StateAndNotificationPayload</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Response type for the</span>
-<span class="doccomment">/// [`ReportStateAndNotification`](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)</span>
+<span class="doccomment">/// \[`ReportStateAndNotification`\](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)</span>
 <span class="doccomment">/// call.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReportStateAndNotificationResponse</span> {
     <span class="doccomment">/// Request ID copied from</span>
-    <span class="doccomment">/// [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest].</span>
+    <span class="doccomment">/// \[ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">request_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -752,17 +749,17 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReportStateAndNotificationDevice</span> {
     <span class="doccomment">/// States of devices to update. See the **Device STATES** section</span>
     <span class="doccomment">/// of the individual trait [reference</span>
-    <span class="doccomment">/// guides](https://developers.google.com/assistant/smarthome/traits).</span>
+    <span class="doccomment">/// guides](&lt;https://developers.google.com/assistant/smarthome/traits&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">states</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Notifications metadata for devices. See the **Device NOTIFICATIONS**</span>
     <span class="doccomment">/// section of the individual trait [reference</span>
-    <span class="doccomment">/// guides](https://developers.google.com/assistant/smarthome/traits).</span>
+    <span class="doccomment">/// guides](&lt;https://developers.google.com/assistant/smarthome/traits&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">notifications</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Request type for the</span>
-<span class="doccomment">/// [`DeleteAgentUser`](#google.home.graph.v1.HomeGraphApiService.DeleteAgentUser)</span>
+<span class="doccomment">/// \[`DeleteAgentUser`\](#google.home.graph.v1.HomeGraphApiService.DeleteAgentUser)</span>
 <span class="doccomment">/// call.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteAgentUserRequest</span> {
@@ -774,7 +771,7 @@
     <span class="kw">pub</span> <span class="ident">agent_user_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Request type for the</span>
-<span class="doccomment">/// [`Query`](#google.home.graph.v1.HomeGraphApiService.Query) call.</span>
+<span class="doccomment">/// \[`Query`\](#google.home.graph.v1.HomeGraphApiService.Query) call.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">QueryRequest</span> {
     <span class="doccomment">/// Request ID used for debugging.</span>
@@ -788,7 +785,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">inputs</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">QueryRequestInput</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Device ID inputs to [QueryRequest][google.home.graph.v1.QueryRequest].</span>
+<span class="doccomment">/// Device ID inputs to \[QueryRequest][google.home.graph.v1.QueryRequest\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">QueryRequestInput</span> {
     <span class="doccomment">/// Payload containing third-party device IDs.</span>
@@ -810,10 +807,10 @@
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Response type for the</span>
-<span class="doccomment">/// [`Query`](#google.home.graph.v1.HomeGraphApiService.Query) call.</span>
+<span class="doccomment">/// \[`Query`\](#google.home.graph.v1.HomeGraphApiService.Query) call.</span>
 <span class="doccomment">/// This should follow the same format as the Google smart home</span>
 <span class="doccomment">/// `action.devices.QUERY`</span>
-<span class="doccomment">/// [response](https://developers.google.com/assistant/smarthome/reference/intent/query).</span>
+<span class="doccomment">/// \[response\](&lt;https://developers.google.com/assistant/smarthome/reference/intent/query&gt;).</span>
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```json</span>
@@ -855,7 +852,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">devices</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost_types::Struct</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request type for the [`Sync`](#google.home.graph.v1.HomeGraphApiService.Sync)</span>
+<span class="doccomment">/// Request type for the \[`Sync`\](#google.home.graph.v1.HomeGraphApiService.Sync)</span>
 <span class="doccomment">/// call.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SyncRequest</span> {
@@ -867,10 +864,10 @@
     <span class="kw">pub</span> <span class="ident">agent_user_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Response type for the</span>
-<span class="doccomment">/// [`Sync`](#google.home.graph.v1.HomeGraphApiService.Sync) call.</span>
+<span class="doccomment">/// \[`Sync`\](#google.home.graph.v1.HomeGraphApiService.Sync) call.</span>
 <span class="doccomment">/// This should follow the same format as the Google smart home</span>
 <span class="doccomment">/// `action.devices.SYNC`</span>
-<span class="doccomment">/// [response](https://developers.google.com/assistant/smarthome/reference/intent/sync).</span>
+<span class="doccomment">/// \[response\](&lt;https://developers.google.com/assistant/smarthome/reference/intent/sync&gt;).</span>
 <span class="doccomment">/// # Example</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```json</span>
@@ -942,7 +939,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">HomeGraphApiServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -955,7 +952,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HomeGraphApiServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -992,8 +989,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Actions console project.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">request_sync_devices</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RequestSyncDevicesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RequestSyncDevicesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RequestSyncDevicesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RequestSyncDevicesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1025,8 +1022,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Actions console project.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">report_state_and_notification</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReportStateAndNotificationRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReportStateAndNotificationResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReportStateAndNotificationRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReportStateAndNotificationResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -1054,7 +1051,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Actions console project.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_agent_user</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteAgentUserRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteAgentUserRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -1077,8 +1074,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Actions console project.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">query</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1099,8 +1096,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Actions console project.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">sync</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SyncRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SyncResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SyncRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SyncResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1115,5 +1112,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

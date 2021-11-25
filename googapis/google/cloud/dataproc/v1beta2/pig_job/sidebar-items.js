@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Queries","Required. The sequence of Pig queries to execute, specified as an HCFS file URI or a list of queries."]]});

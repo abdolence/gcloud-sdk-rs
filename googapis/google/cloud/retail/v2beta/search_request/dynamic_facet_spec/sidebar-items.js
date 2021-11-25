@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Mode","Enum to control DynamicFacet mode"]]});

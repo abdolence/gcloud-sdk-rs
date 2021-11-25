@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Driver","Required. Indicates the location of the driver’s main class. Specify either the jar file that contains the main class or the main class name. To specify both, add the jar file to `jar_file_uris`, and then specify the main class name in this property."]]});

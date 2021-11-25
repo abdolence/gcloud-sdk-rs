@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["State","The operation state."]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Role","The role of the participant."]]});
+initSidebarItems({"enum":[["Participant",""],["Role","The role of the participant."]]});

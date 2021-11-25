@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["InstanceGroupsClient","The InstanceGroups API."]]});

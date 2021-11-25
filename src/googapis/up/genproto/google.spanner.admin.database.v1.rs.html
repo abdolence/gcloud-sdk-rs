@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.spanner.admin.database.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.spanner.admin.database.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.spanner.admin.database.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.spanner.admin.database.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1402,8 +1400,7 @@
 <span id="1400">1400</span>
 <span id="1401">1401</span>
 <span id="1402">1402</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Encapsulates progress related information for a Cloud Spanner long</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Encapsulates progress related information for a Cloud Spanner long</span>
 <span class="doccomment">/// running operation.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OperationProgress</span> {
@@ -1438,7 +1435,7 @@
     <span class="doccomment">/// for this database or backup. Regardless of status, data is always encrypted</span>
     <span class="doccomment">/// at rest.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">encryption_status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">encryption_status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. A Cloud KMS key version that is being used to protect the database or</span>
     <span class="doccomment">/// backup.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -1465,7 +1462,7 @@
 <span class="doccomment">/// A backup of a Cloud Spanner database.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Backup</span> {
-    <span class="doccomment">/// Required for the [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] operation.</span>
+    <span class="doccomment">/// Required for the \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\] operation.</span>
     <span class="doccomment">/// Name of the database from which this backup was</span>
     <span class="doccomment">/// created. This needs to be in the same instance as the backup.</span>
     <span class="doccomment">/// Values are of the form</span>
@@ -1478,7 +1475,7 @@
     <span class="doccomment">/// backup.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">version_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Required for the [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup]</span>
+    <span class="doccomment">/// Required for the \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\]</span>
     <span class="doccomment">/// operation. The expiration time of the backup, with microseconds</span>
     <span class="doccomment">/// granularity that must be at least 6 hours and at most 366 days</span>
     <span class="doccomment">/// from the time the CreateBackup request is processed. Once the `expire_time`</span>
@@ -1486,12 +1483,12 @@
     <span class="doccomment">/// Spanner to free the resources used by the backup.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">expire_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Output only for the [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] operation.</span>
-    <span class="doccomment">/// Required for the [UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup] operation.</span>
+    <span class="doccomment">/// Output only for the \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\] operation.</span>
+    <span class="doccomment">/// Required for the \[UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup\] operation.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A globally unique identifier for the backup which cannot be</span>
     <span class="doccomment">/// changed. Values are of the form</span>
-    <span class="doccomment">/// `projects/&lt;project&gt;/instances/&lt;instance&gt;/backups/[a-z][a-z0-9_\-]*[a-z0-9]`</span>
+    <span class="doccomment">/// `projects/&lt;project&gt;/instances/&lt;instance&gt;/backups/\[a-z][a-z0-9_\-]*[a-z0-9\]`</span>
     <span class="doccomment">/// The final segment of the name must be between 2 and 60 characters</span>
     <span class="doccomment">/// in length.</span>
     <span class="doccomment">///</span>
@@ -1501,7 +1498,7 @@
     <span class="doccomment">/// `projects/&lt;project&gt;/instances/&lt;instance&gt;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Output only. The time the [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup]</span>
+    <span class="doccomment">/// Output only. The time the \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\]</span>
     <span class="doccomment">/// request is received. If the request does not specify `version_time`, the</span>
     <span class="doccomment">/// `version_time` of the backup will be equivalent to the `create_time`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
@@ -1540,7 +1537,7 @@
         <span class="ident">Ready</span> <span class="op">=</span> <span class="number">2</span>,
     }
 }
-<span class="doccomment">/// The request for [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup].</span>
+<span class="doccomment">/// The request for \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateBackupRequest</span> {
     <span class="doccomment">/// Required. The name of the instance in which the backup will be</span>
@@ -1562,13 +1559,13 @@
     <span class="doccomment">/// Optional. The encryption configuration used to encrypt the backup. If this field is</span>
     <span class="doccomment">/// not specified, the backup will use the same</span>
     <span class="doccomment">/// encryption configuration as the database by default, namely</span>
-    <span class="doccomment">/// [encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type] =</span>
+    <span class="doccomment">/// \[encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type\] =</span>
     <span class="doccomment">/// `USE_DATABASE_ENCRYPTION`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">encryption_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">CreateBackupEncryptionConfig</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Metadata type for the operation returned by</span>
-<span class="doccomment">/// [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup].</span>
+<span class="doccomment">/// \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateBackupMetadata</span> {
     <span class="doccomment">/// The name of the backup being created.</span>
@@ -1578,25 +1575,25 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">database</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The progress of the</span>
-    <span class="doccomment">/// [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] operation.</span>
+    <span class="doccomment">/// \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\] operation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">progress</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">OperationProgress</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The time at which cancellation of this operation was received.</span>
-    <span class="doccomment">/// [Operations.CancelOperation][google.longrunning.Operations.CancelOperation]</span>
+    <span class="doccomment">/// \[Operations.CancelOperation][google.longrunning.Operations.CancelOperation\]</span>
     <span class="doccomment">/// starts asynchronous cancellation on a long-running operation. The server</span>
     <span class="doccomment">/// makes a best effort to cancel the operation, but success is not guaranteed.</span>
     <span class="doccomment">/// Clients can use</span>
-    <span class="doccomment">/// [Operations.GetOperation][google.longrunning.Operations.GetOperation] or</span>
+    <span class="doccomment">/// \[Operations.GetOperation][google.longrunning.Operations.GetOperation\] or</span>
     <span class="doccomment">/// other methods to check whether the cancellation succeeded or whether the</span>
     <span class="doccomment">/// operation completed despite cancellation. On successful cancellation,</span>
     <span class="doccomment">/// the operation is not deleted; instead, it becomes an operation with</span>
-    <span class="doccomment">/// an [Operation.error][google.longrunning.Operation.error] value with a</span>
-    <span class="doccomment">/// [google.rpc.Status.code][google.rpc.Status.code] of 1,</span>
+    <span class="doccomment">/// an \[Operation.error][google.longrunning.Operation.error\] value with a</span>
+    <span class="doccomment">/// \[google.rpc.Status.code][google.rpc.Status.code\] of 1,</span>
     <span class="doccomment">/// corresponding to `Code.CANCELLED`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">cancel_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup].</span>
+<span class="doccomment">/// The request for \[UpdateBackup][google.spanner.admin.database.v1.DatabaseAdmin.UpdateBackup\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateBackupRequest</span> {
     <span class="doccomment">/// Required. The backup to update. `backup.name`, and the fields to be updated</span>
@@ -1613,7 +1610,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [GetBackup][google.spanner.admin.database.v1.DatabaseAdmin.GetBackup].</span>
+<span class="doccomment">/// The request for \[GetBackup][google.spanner.admin.database.v1.DatabaseAdmin.GetBackup\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetBackupRequest</span> {
     <span class="doccomment">/// Required. Name of the backup.</span>
@@ -1622,7 +1619,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [DeleteBackup][google.spanner.admin.database.v1.DatabaseAdmin.DeleteBackup].</span>
+<span class="doccomment">/// The request for \[DeleteBackup][google.spanner.admin.database.v1.DatabaseAdmin.DeleteBackup\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteBackupRequest</span> {
     <span class="doccomment">/// Required. Name of the backup to delete.</span>
@@ -1631,7 +1628,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].</span>
+<span class="doccomment">/// The request for \[ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListBackupsRequest</span> {
     <span class="doccomment">/// Required. The instance to list backups from.  Values are of the</span>
@@ -1646,7 +1643,7 @@
     <span class="doccomment">/// must be one of: `&lt;`, `&gt;`, `&lt;=`, `&gt;=`, `!=`, `=`, or `:`.</span>
     <span class="doccomment">/// Colon `:` is the contains operator. Filter rules are not case sensitive.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The following fields in the [Backup][google.spanner.admin.database.v1.Backup] are eligible for filtering:</span>
+    <span class="doccomment">/// The following fields in the \[Backup][google.spanner.admin.database.v1.Backup\] are eligible for filtering:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///   * `name`</span>
     <span class="doccomment">///   * `database`</span>
@@ -1680,13 +1677,13 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// If non-empty, `page_token` should contain a</span>
-    <span class="doccomment">/// [next_page_token][google.spanner.admin.database.v1.ListBackupsResponse.next_page_token] from a</span>
-    <span class="doccomment">/// previous [ListBackupsResponse][google.spanner.admin.database.v1.ListBackupsResponse] to the same `parent` and with the same</span>
+    <span class="doccomment">/// \[next_page_token][google.spanner.admin.database.v1.ListBackupsResponse.next_page_token\] from a</span>
+    <span class="doccomment">/// previous \[ListBackupsResponse][google.spanner.admin.database.v1.ListBackupsResponse\] to the same `parent` and with the same</span>
     <span class="doccomment">/// `filter`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The response for [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups].</span>
+<span class="doccomment">/// The response for \[ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListBackupsResponse</span> {
     <span class="doccomment">/// The list of matching backups. Backups returned are ordered by `create_time`</span>
@@ -1694,13 +1691,13 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">backups</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Backup</span><span class="op">&gt;</span>,
     <span class="doccomment">/// `next_page_token` can be sent in a subsequent</span>
-    <span class="doccomment">/// [ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups] call to fetch more</span>
+    <span class="doccomment">/// \[ListBackups][google.spanner.admin.database.v1.DatabaseAdmin.ListBackups\] call to fetch more</span>
     <span class="doccomment">/// of the matching backups.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// The request for</span>
-<span class="doccomment">/// [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].</span>
+<span class="doccomment">/// \[ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListBackupOperationsRequest</span> {
     <span class="doccomment">/// Required. The instance of the backup operations. Values are of</span>
@@ -1715,13 +1712,13 @@
     <span class="doccomment">/// must be one of: `&lt;`, `&gt;`, `&lt;=`, `&gt;=`, `!=`, `=`, or `:`.</span>
     <span class="doccomment">/// Colon `:` is the contains operator. Filter rules are not case sensitive.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The following fields in the [operation][google.longrunning.Operation]</span>
+    <span class="doccomment">/// The following fields in the \[operation][google.longrunning.Operation\]</span>
     <span class="doccomment">/// are eligible for filtering:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///   * `name` - The name of the long-running operation</span>
     <span class="doccomment">///   * `done` - False if the operation is in progress, else true.</span>
     <span class="doccomment">///   * `metadata.@type` - the type of metadata. For example, the type string</span>
-    <span class="doccomment">///      for [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata] is</span>
+    <span class="doccomment">///      for \[CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata\] is</span>
     <span class="doccomment">///      `type.googleapis.com/google.spanner.admin.database.v1.CreateBackupMetadata`.</span>
     <span class="doccomment">///   * `metadata.&lt;field_name&gt;` - any field in metadata.value.</span>
     <span class="doccomment">///   * `error` - Error associated with the long-running operation.</span>
@@ -1741,7 +1738,7 @@
     <span class="doccomment">///     `(metadata.name:howl) AND` \</span>
     <span class="doccomment">///     `(metadata.progress.start_time &lt; \&quot;2018-03-28T14:50:00Z\&quot;) AND` \</span>
     <span class="doccomment">///     `(error:*)` - Returns operations where:</span>
-    <span class="doccomment">///     * The operation&#39;s metadata type is [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata].</span>
+    <span class="doccomment">///     * The operation&#39;s metadata type is \[CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata\].</span>
     <span class="doccomment">///     * The backup name contains the string &quot;howl&quot;.</span>
     <span class="doccomment">///     * The operation started before 2018-03-28T14:50:00Z.</span>
     <span class="doccomment">///     * The operation resulted in an error.</span>
@@ -1752,29 +1749,29 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// If non-empty, `page_token` should contain a</span>
-    <span class="doccomment">/// [next_page_token][google.spanner.admin.database.v1.ListBackupOperationsResponse.next_page_token]</span>
-    <span class="doccomment">/// from a previous [ListBackupOperationsResponse][google.spanner.admin.database.v1.ListBackupOperationsResponse] to the</span>
+    <span class="doccomment">/// \[next_page_token][google.spanner.admin.database.v1.ListBackupOperationsResponse.next_page_token\]</span>
+    <span class="doccomment">/// from a previous \[ListBackupOperationsResponse][google.spanner.admin.database.v1.ListBackupOperationsResponse\] to the</span>
     <span class="doccomment">/// same `parent` and with the same `filter`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// The response for</span>
-<span class="doccomment">/// [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations].</span>
+<span class="doccomment">/// \[ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListBackupOperationsResponse</span> {
     <span class="doccomment">/// The list of matching backup [long-running</span>
-    <span class="doccomment">/// operations][google.longrunning.Operation]. Each operation&#39;s name will be</span>
+    <span class="doccomment">/// operations]\[google.longrunning.Operation\]. Each operation&#39;s name will be</span>
     <span class="doccomment">/// prefixed by the backup&#39;s name and the operation&#39;s</span>
-    <span class="doccomment">/// [metadata][google.longrunning.Operation.metadata] will be of type</span>
-    <span class="doccomment">/// [CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata]. Operations returned include those that are</span>
+    <span class="doccomment">/// \[metadata][google.longrunning.Operation.metadata\] will be of type</span>
+    <span class="doccomment">/// \[CreateBackupMetadata][google.spanner.admin.database.v1.CreateBackupMetadata\]. Operations returned include those that are</span>
     <span class="doccomment">/// pending or have completed/failed/canceled within the last 7 days.</span>
     <span class="doccomment">/// Operations returned are ordered by</span>
     <span class="doccomment">/// `operation.metadata.value.progress.start_time` in descending order starting</span>
     <span class="doccomment">/// from the most recently started operation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">operations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">operations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
     <span class="doccomment">/// `next_page_token` can be sent in a subsequent</span>
-    <span class="doccomment">/// [ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations]</span>
+    <span class="doccomment">/// \[ListBackupOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListBackupOperations\]</span>
     <span class="doccomment">/// call to fetch more of the matching metadata.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1787,12 +1784,12 @@
     <span class="kw">pub</span> <span class="ident">backup</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The backup contains an externally consistent copy of `source_database` at</span>
     <span class="doccomment">/// the timestamp specified by `version_time`. If the</span>
-    <span class="doccomment">/// [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] request did not specify</span>
+    <span class="doccomment">/// \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\] request did not specify</span>
     <span class="doccomment">/// `version_time`, the `version_time` of the backup is equivalent to the</span>
     <span class="doccomment">/// `create_time`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">version_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The time the [CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup] request was</span>
+    <span class="doccomment">/// The time the \[CreateBackup][google.spanner.admin.database.v1.DatabaseAdmin.CreateBackup\] request was</span>
     <span class="doccomment">/// received.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">create_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
@@ -1811,7 +1808,7 @@
     <span class="kw">pub</span> <span class="ident">encryption_type</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. The Cloud KMS key that will be used to protect the backup.</span>
     <span class="doccomment">/// This field should be set only when</span>
-    <span class="doccomment">/// [encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type] is</span>
+    <span class="doccomment">/// \[encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type\] is</span>
     <span class="doccomment">/// `CUSTOMER_MANAGED_ENCRYPTION`. Values are of the form</span>
     <span class="doccomment">/// `projects/&lt;project&gt;/locations/&lt;location&gt;/keyRings/&lt;key_ring&gt;/cryptoKeys/&lt;kms_key_name&gt;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -1827,7 +1824,7 @@
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// Use the same encryption configuration as the database. This is the</span>
         <span class="doccomment">/// default option when</span>
-        <span class="doccomment">/// [encryption_config][google.spanner.admin.database.v1.CreateBackupEncryptionConfig] is empty.</span>
+        <span class="doccomment">/// \[encryption_config][google.spanner.admin.database.v1.CreateBackupEncryptionConfig\] is empty.</span>
         <span class="doccomment">/// For example, if the database is using `Customer_Managed_Encryption`, the</span>
         <span class="doccomment">/// backup will be using the same Cloud KMS key as the database.</span>
         <span class="ident">UseDatabaseEncryption</span> <span class="op">=</span> <span class="number">1</span>,
@@ -1856,7 +1853,7 @@
         <span class="doccomment">/// Information about the backup used to restore the database. The backup</span>
         <span class="doccomment">/// may no longer exist.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">BackupInfo</span>(<span class="kw">super</span><span class="ident">::BackupInfo</span>),
+        <span class="ident">BackupInfo</span>(<span class="ident"><span class="kw">super</span>::BackupInfo</span>),
     }
 }
 <span class="doccomment">/// A Cloud Spanner database.</span>
@@ -1899,7 +1896,7 @@
     <span class="doccomment">/// Output only. The period in which Cloud Spanner retains all versions of data</span>
     <span class="doccomment">/// for the database. This is the same as the value of version_retention_period</span>
     <span class="doccomment">/// database option set using</span>
-    <span class="doccomment">/// [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl]. Defaults to 1 hour,</span>
+    <span class="doccomment">/// \[UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl\]. Defaults to 1 hour,</span>
     <span class="doccomment">/// if not set.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">version_retention_period</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1943,7 +1940,7 @@
         <span class="ident">ReadyOptimizing</span> <span class="op">=</span> <span class="number">3</span>,
     }
 }
-<span class="doccomment">/// The request for [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].</span>
+<span class="doccomment">/// The request for \[ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDatabasesRequest</span> {
     <span class="doccomment">/// Required. The instance whose databases should be listed.</span>
@@ -1955,24 +1952,24 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// If non-empty, `page_token` should contain a</span>
-    <span class="doccomment">/// [next_page_token][google.spanner.admin.database.v1.ListDatabasesResponse.next_page_token] from a</span>
-    <span class="doccomment">/// previous [ListDatabasesResponse][google.spanner.admin.database.v1.ListDatabasesResponse].</span>
+    <span class="doccomment">/// \[next_page_token][google.spanner.admin.database.v1.ListDatabasesResponse.next_page_token\] from a</span>
+    <span class="doccomment">/// previous \[ListDatabasesResponse][google.spanner.admin.database.v1.ListDatabasesResponse\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The response for [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases].</span>
+<span class="doccomment">/// The response for \[ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDatabasesResponse</span> {
     <span class="doccomment">/// Databases that matched the request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">databases</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Database</span><span class="op">&gt;</span>,
     <span class="doccomment">/// `next_page_token` can be sent in a subsequent</span>
-    <span class="doccomment">/// [ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases] call to fetch more</span>
+    <span class="doccomment">/// \[ListDatabases][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabases\] call to fetch more</span>
     <span class="doccomment">/// of the matching databases.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].</span>
+<span class="doccomment">/// The request for \[CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateDatabaseRequest</span> {
     <span class="doccomment">/// Required. The name of the instance that will serve the new database.</span>
@@ -1981,7 +1978,7 @@
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. A `CREATE DATABASE` statement, which specifies the ID of the</span>
     <span class="doccomment">/// new database.  The database ID must conform to the regular expression</span>
-    <span class="doccomment">/// `[a-z][a-z0-9_\-]*[a-z0-9]` and be between 2 and 30 characters in length.</span>
+    <span class="doccomment">/// `\[a-z][a-z0-9_\-]*[a-z0-9\]` and be between 2 and 30 characters in length.</span>
     <span class="doccomment">/// If the database ID is a reserved word or if it contains a hyphen, the</span>
     <span class="doccomment">/// database ID must be enclosed in backticks (`` ` ``).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -1999,14 +1996,14 @@
     <span class="kw">pub</span> <span class="ident">encryption_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EncryptionConfig</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Metadata type for the operation returned by</span>
-<span class="doccomment">/// [CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase].</span>
+<span class="doccomment">/// \[CreateDatabase][google.spanner.admin.database.v1.DatabaseAdmin.CreateDatabase\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateDatabaseMetadata</span> {
     <span class="doccomment">/// The database being created.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">database</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [GetDatabase][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase].</span>
+<span class="doccomment">/// The request for \[GetDatabase][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabase\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetDatabaseRequest</span> {
     <span class="doccomment">/// Required. The name of the requested database. Values are of the form</span>
@@ -2026,9 +2023,9 @@
 <span class="doccomment">/// subsequent statements in the batch are automatically cancelled.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Each batch of statements is assigned a name which can be used with</span>
-<span class="doccomment">/// the [Operations][google.longrunning.Operations] API to monitor</span>
+<span class="doccomment">/// the \[Operations][google.longrunning.Operations\] API to monitor</span>
 <span class="doccomment">/// progress. See the</span>
-<span class="doccomment">/// [operation_id][google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.operation_id] field for more</span>
+<span class="doccomment">/// \[operation_id][google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.operation_id\] field for more</span>
 <span class="doccomment">/// details.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateDatabaseDdlRequest</span> {
@@ -2041,27 +2038,27 @@
     <span class="doccomment">/// If empty, the new update request is assigned an</span>
     <span class="doccomment">/// automatically-generated operation ID. Otherwise, `operation_id`</span>
     <span class="doccomment">/// is used to construct the name of the resulting</span>
-    <span class="doccomment">/// [Operation][google.longrunning.Operation].</span>
+    <span class="doccomment">/// \[Operation][google.longrunning.Operation\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Specifying an explicit operation ID simplifies determining</span>
     <span class="doccomment">/// whether the statements were executed in the event that the</span>
-    <span class="doccomment">/// [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl] call is replayed,</span>
-    <span class="doccomment">/// or the return value is otherwise lost: the [database][google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.database] and</span>
+    <span class="doccomment">/// \[UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl\] call is replayed,</span>
+    <span class="doccomment">/// or the return value is otherwise lost: the \[database][google.spanner.admin.database.v1.UpdateDatabaseDdlRequest.database\] and</span>
     <span class="doccomment">/// `operation_id` fields can be combined to form the</span>
-    <span class="doccomment">/// [name][google.longrunning.Operation.name] of the resulting</span>
-    <span class="doccomment">/// [longrunning.Operation][google.longrunning.Operation]: `&lt;database&gt;/operations/&lt;operation_id&gt;`.</span>
+    <span class="doccomment">/// \[name][google.longrunning.Operation.name\] of the resulting</span>
+    <span class="doccomment">/// \[longrunning.Operation][google.longrunning.Operation\]: `&lt;database&gt;/operations/&lt;operation_id&gt;`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// `operation_id` should be unique within the database, and must be</span>
-    <span class="doccomment">/// a valid identifier: `[a-z][a-z0-9_]*`. Note that</span>
+    <span class="doccomment">/// a valid identifier: `\[a-z][a-z0-9_\]*`. Note that</span>
     <span class="doccomment">/// automatically-generated operation IDs always begin with an</span>
     <span class="doccomment">/// underscore. If the named operation already exists,</span>
-    <span class="doccomment">/// [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl] returns</span>
+    <span class="doccomment">/// \[UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl\] returns</span>
     <span class="doccomment">/// `ALREADY_EXISTS`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">operation_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Metadata type for the operation returned by</span>
-<span class="doccomment">/// [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl].</span>
+<span class="doccomment">/// \[UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateDatabaseDdlMetadata</span> {
     <span class="doccomment">/// The database being modified.</span>
@@ -2072,8 +2069,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">statements</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Reports the commit timestamps of all statements that have</span>
-    <span class="doccomment">/// succeeded so far, where `commit_timestamps[i]` is the commit</span>
-    <span class="doccomment">/// timestamp for the statement `statements[i]`.</span>
+    <span class="doccomment">/// succeeded so far, where `commit_timestamps\[i\]` is the commit</span>
+    <span class="doccomment">/// timestamp for the statement `statements\[i\]`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">commit_timestamps</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. When true, indicates that the operation is throttled e.g</span>
@@ -2082,24 +2079,24 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">throttled</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// The progress of the</span>
-    <span class="doccomment">/// [UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl] operations.</span>
+    <span class="doccomment">/// \[UpdateDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.UpdateDatabaseDdl\] operations.</span>
     <span class="doccomment">/// Currently, only index creation statements will have a continuously</span>
     <span class="doccomment">/// updating progress.</span>
-    <span class="doccomment">/// For non-index creation statements, `progress[i]` will have start time</span>
+    <span class="doccomment">/// For non-index creation statements, `progress\[i\]` will have start time</span>
     <span class="doccomment">/// and end time populated with commit timestamp of operation,</span>
     <span class="doccomment">/// as well as a progress of 100% once the operation has completed.</span>
-    <span class="doccomment">/// `progress[i]` is the operation progress for `statements[i]`.</span>
+    <span class="doccomment">/// `progress\[i\]` is the operation progress for `statements\[i\]`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">progress</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">OperationProgress</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [DropDatabase][google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase].</span>
+<span class="doccomment">/// The request for \[DropDatabase][google.spanner.admin.database.v1.DatabaseAdmin.DropDatabase\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DropDatabaseRequest</span> {
     <span class="doccomment">/// Required. The database to be dropped.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">database</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The request for [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].</span>
+<span class="doccomment">/// The request for \[GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetDatabaseDdlRequest</span> {
     <span class="doccomment">/// Required. The database whose schema we wish to get.</span>
@@ -2108,7 +2105,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">database</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The response for [GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl].</span>
+<span class="doccomment">/// The response for \[GetDatabaseDdl][google.spanner.admin.database.v1.DatabaseAdmin.GetDatabaseDdl\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetDatabaseDdlResponse</span> {
     <span class="doccomment">/// A list of formatted DDL statements defining the schema of the database</span>
@@ -2117,7 +2114,7 @@
     <span class="kw">pub</span> <span class="ident">statements</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// The request for</span>
-<span class="doccomment">/// [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].</span>
+<span class="doccomment">/// \[ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDatabaseOperationsRequest</span> {
     <span class="doccomment">/// Required. The instance of the database operations.</span>
@@ -2132,13 +2129,13 @@
     <span class="doccomment">/// must be one of: `&lt;`, `&gt;`, `&lt;=`, `&gt;=`, `!=`, `=`, or `:`.</span>
     <span class="doccomment">/// Colon `:` is the contains operator. Filter rules are not case sensitive.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The following fields in the [Operation][google.longrunning.Operation]</span>
+    <span class="doccomment">/// The following fields in the \[Operation][google.longrunning.Operation\]</span>
     <span class="doccomment">/// are eligible for filtering:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///   * `name` - The name of the long-running operation</span>
     <span class="doccomment">///   * `done` - False if the operation is in progress, else true.</span>
     <span class="doccomment">///   * `metadata.@type` - the type of metadata. For example, the type string</span>
-    <span class="doccomment">///      for [RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata] is</span>
+    <span class="doccomment">///      for \[RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata\] is</span>
     <span class="doccomment">///      `type.googleapis.com/google.spanner.admin.database.v1.RestoreDatabaseMetadata`.</span>
     <span class="doccomment">///   * `metadata.&lt;field_name&gt;` - any field in metadata.value.</span>
     <span class="doccomment">///   * `error` - Error associated with the long-running operation.</span>
@@ -2158,7 +2155,7 @@
     <span class="doccomment">///     `(metadata.name:restored_howl) AND` \</span>
     <span class="doccomment">///     `(metadata.progress.start_time &lt; \&quot;2018-03-28T14:50:00Z\&quot;) AND` \</span>
     <span class="doccomment">///     `(error:*)` - Return operations where:</span>
-    <span class="doccomment">///     * The operation&#39;s metadata type is [RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata].</span>
+    <span class="doccomment">///     * The operation&#39;s metadata type is \[RestoreDatabaseMetadata][google.spanner.admin.database.v1.RestoreDatabaseMetadata\].</span>
     <span class="doccomment">///     * The database is restored from a backup.</span>
     <span class="doccomment">///     * The backup name contains &quot;backup_howl&quot;.</span>
     <span class="doccomment">///     * The restored database&#39;s name contains &quot;restored_howl&quot;.</span>
@@ -2171,31 +2168,31 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// If non-empty, `page_token` should contain a</span>
-    <span class="doccomment">/// [next_page_token][google.spanner.admin.database.v1.ListDatabaseOperationsResponse.next_page_token]</span>
-    <span class="doccomment">/// from a previous [ListDatabaseOperationsResponse][google.spanner.admin.database.v1.ListDatabaseOperationsResponse] to the</span>
+    <span class="doccomment">/// \[next_page_token][google.spanner.admin.database.v1.ListDatabaseOperationsResponse.next_page_token\]</span>
+    <span class="doccomment">/// from a previous \[ListDatabaseOperationsResponse][google.spanner.admin.database.v1.ListDatabaseOperationsResponse\] to the</span>
     <span class="doccomment">/// same `parent` and with the same `filter`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// The response for</span>
-<span class="doccomment">/// [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations].</span>
+<span class="doccomment">/// \[ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDatabaseOperationsResponse</span> {
     <span class="doccomment">/// The list of matching database [long-running</span>
-    <span class="doccomment">/// operations][google.longrunning.Operation]. Each operation&#39;s name will be</span>
+    <span class="doccomment">/// operations]\[google.longrunning.Operation\]. Each operation&#39;s name will be</span>
     <span class="doccomment">/// prefixed by the database&#39;s name. The operation&#39;s</span>
-    <span class="doccomment">/// [metadata][google.longrunning.Operation.metadata] field type</span>
+    <span class="doccomment">/// \[metadata][google.longrunning.Operation.metadata\] field type</span>
     <span class="doccomment">/// `metadata.type_url` describes the type of the metadata.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">operations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">operations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
     <span class="doccomment">/// `next_page_token` can be sent in a subsequent</span>
-    <span class="doccomment">/// [ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations]</span>
+    <span class="doccomment">/// \[ListDatabaseOperations][google.spanner.admin.database.v1.DatabaseAdmin.ListDatabaseOperations\]</span>
     <span class="doccomment">/// call to fetch more of the matching metadata.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// The request for</span>
-<span class="doccomment">/// [RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase].</span>
+<span class="doccomment">/// \[RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RestoreDatabaseRequest</span> {
     <span class="doccomment">/// Required. The name of the instance in which to create the</span>
@@ -2215,7 +2212,7 @@
     <span class="doccomment">/// resources in Cloud KMS used to encrypt/decrypt the database to restore to.</span>
     <span class="doccomment">/// If this field is not specified, the restored database will use</span>
     <span class="doccomment">/// the same encryption configuration as the backup by default, namely</span>
-    <span class="doccomment">/// [encryption_type][google.spanner.admin.database.v1.RestoreDatabaseEncryptionConfig.encryption_type] =</span>
+    <span class="doccomment">/// \[encryption_type][google.spanner.admin.database.v1.RestoreDatabaseEncryptionConfig.encryption_type\] =</span>
     <span class="doccomment">/// `USE_CONFIG_DEFAULT_OR_BACKUP_ENCRYPTION`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">encryption_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">RestoreDatabaseEncryptionConfig</span><span class="op">&gt;</span>,
@@ -2245,7 +2242,7 @@
     <span class="kw">pub</span> <span class="ident">encryption_type</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. The Cloud KMS key that will be used to encrypt/decrypt the restored</span>
     <span class="doccomment">/// database. This field should be set only when</span>
-    <span class="doccomment">/// [encryption_type][google.spanner.admin.database.v1.RestoreDatabaseEncryptionConfig.encryption_type] is</span>
+    <span class="doccomment">/// \[encryption_type][google.spanner.admin.database.v1.RestoreDatabaseEncryptionConfig.encryption_type\] is</span>
     <span class="doccomment">/// `CUSTOMER_MANAGED_ENCRYPTION`. Values are of the form</span>
     <span class="doccomment">/// `projects/&lt;project&gt;/locations/&lt;location&gt;/keyRings/&lt;key_ring&gt;/cryptoKeys/&lt;kms_key_name&gt;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -2260,7 +2257,7 @@
         <span class="doccomment">/// Unspecified. Do not use.</span>
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// This is the default option when</span>
-        <span class="doccomment">/// [encryption_config][google.spanner.admin.database.v1.RestoreDatabaseEncryptionConfig] is not specified.</span>
+        <span class="doccomment">/// \[encryption_config][google.spanner.admin.database.v1.RestoreDatabaseEncryptionConfig\] is not specified.</span>
         <span class="ident">UseConfigDefaultOrBackupEncryption</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// Use Google default encryption.</span>
         <span class="ident">GoogleDefaultEncryption</span> <span class="op">=</span> <span class="number">2</span>,
@@ -2270,7 +2267,7 @@
     }
 }
 <span class="doccomment">/// Metadata type for the long-running operation returned by</span>
-<span class="doccomment">/// [RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase].</span>
+<span class="doccomment">/// \[RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RestoreDatabaseMetadata</span> {
     <span class="doccomment">/// Name of the database being created and restored to.</span>
@@ -2280,21 +2277,21 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;RestoreSourceType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">source_type</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// The progress of the</span>
-    <span class="doccomment">/// [RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase]</span>
+    <span class="doccomment">/// \[RestoreDatabase][google.spanner.admin.database.v1.DatabaseAdmin.RestoreDatabase\]</span>
     <span class="doccomment">/// operation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">progress</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">OperationProgress</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The time at which cancellation of this operation was received.</span>
-    <span class="doccomment">/// [Operations.CancelOperation][google.longrunning.Operations.CancelOperation]</span>
+    <span class="doccomment">/// \[Operations.CancelOperation][google.longrunning.Operations.CancelOperation\]</span>
     <span class="doccomment">/// starts asynchronous cancellation on a long-running operation. The server</span>
     <span class="doccomment">/// makes a best effort to cancel the operation, but success is not guaranteed.</span>
     <span class="doccomment">/// Clients can use</span>
-    <span class="doccomment">/// [Operations.GetOperation][google.longrunning.Operations.GetOperation] or</span>
+    <span class="doccomment">/// \[Operations.GetOperation][google.longrunning.Operations.GetOperation\] or</span>
     <span class="doccomment">/// other methods to check whether the cancellation succeeded or whether the</span>
     <span class="doccomment">/// operation completed despite cancellation. On successful cancellation,</span>
     <span class="doccomment">/// the operation is not deleted; instead, it becomes an operation with</span>
-    <span class="doccomment">/// an [Operation.error][google.longrunning.Operation.error] value with a</span>
-    <span class="doccomment">/// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to `Code.CANCELLED`.</span>
+    <span class="doccomment">/// an \[Operation.error][google.longrunning.Operation.error\] value with a</span>
+    <span class="doccomment">/// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to `Code.CANCELLED`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">cancel_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// If exists, the name of the long-running operation that will be used to</span>
@@ -2304,26 +2301,26 @@
     <span class="doccomment">/// `projects/&lt;project&gt;/instances/&lt;instance&gt;/databases/&lt;database&gt;/operations/&lt;operation&gt;`</span>
     <span class="doccomment">/// where the &lt;database&gt; is the name of database being created and restored to.</span>
     <span class="doccomment">/// The metadata type of the  long-running operation is</span>
-    <span class="doccomment">/// [OptimizeRestoredDatabaseMetadata][google.spanner.admin.database.v1.OptimizeRestoredDatabaseMetadata]. This long-running operation will be</span>
+    <span class="doccomment">/// \[OptimizeRestoredDatabaseMetadata][google.spanner.admin.database.v1.OptimizeRestoredDatabaseMetadata\]. This long-running operation will be</span>
     <span class="doccomment">/// automatically created by the system after the RestoreDatabase long-running</span>
     <span class="doccomment">/// operation completes successfully. This operation will not be created if the</span>
     <span class="doccomment">/// restore was not successful.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">optimize_database_operation_name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Information about the source used to restore the database, as specified by</span>
-    <span class="doccomment">/// `source` in [RestoreDatabaseRequest][google.spanner.admin.database.v1.RestoreDatabaseRequest].</span>
+    <span class="doccomment">/// `source` in \[RestoreDatabaseRequest][google.spanner.admin.database.v1.RestoreDatabaseRequest\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;restore_database_metadata::SourceInfo&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">source_info</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">restore_database_metadata::SourceInfo</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Nested message and enum types in `RestoreDatabaseMetadata`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">restore_database_metadata</span> {
     <span class="doccomment">/// Information about the source used to restore the database, as specified by</span>
-    <span class="doccomment">/// `source` in [RestoreDatabaseRequest][google.spanner.admin.database.v1.RestoreDatabaseRequest].</span>
+    <span class="doccomment">/// `source` in \[RestoreDatabaseRequest][google.spanner.admin.database.v1.RestoreDatabaseRequest\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">SourceInfo</span> {
         <span class="doccomment">/// Information about the backup used to restore the database.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">BackupInfo</span>(<span class="kw">super</span><span class="ident">::BackupInfo</span>),
+        <span class="ident">BackupInfo</span>(<span class="ident"><span class="kw">super</span>::BackupInfo</span>),
     }
 }
 <span class="doccomment">/// Metadata type for the long-running operation used to track the progress</span>
@@ -2365,7 +2362,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DatabaseAdminClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2378,7 +2375,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DatabaseAdminClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2406,8 +2403,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists Cloud Spanner databases.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_databases</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDatabasesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDatabasesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDatabasesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDatabasesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2430,9 +2427,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Database][google.spanner.admin.database.v1.Database], if successful.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_database</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateDatabaseRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateDatabaseRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2450,8 +2447,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the state of a Cloud Spanner database.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_database</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetDatabaseRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Database</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetDatabaseRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Database</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2473,9 +2470,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].  The operation has no response.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_database_ddl</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateDatabaseDdlRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateDatabaseDdlRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2495,7 +2492,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; `expire_time`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">drop_database</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DropDatabaseRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DropDatabaseRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -2514,8 +2511,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; be queried using the [Operations][google.longrunning.Operations] API.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_database_ddl</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetDatabaseDdlRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetDatabaseDdlResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetDatabaseDdlRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetDatabaseDdlResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2538,10 +2535,10 @@
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_iam_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
             <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span>
-                <span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::SetIamPolicyRequest</span>,
+                <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::SetIamPolicyRequest</span>,
             <span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::Policy</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::Policy</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2567,10 +2564,10 @@
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_iam_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
             <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span>
-                <span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::GetIamPolicyRequest</span>,
+                <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::GetIamPolicyRequest</span>,
             <span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::Policy</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::Policy</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2598,10 +2595,10 @@
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_iam_permissions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
             <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span>
-                <span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::TestIamPermissionsRequest</span>,
+                <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::TestIamPermissionsRequest</span>,
             <span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::iam::v1::TestIamPermissionsResponse</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::iam::v1::TestIamPermissionsResponse</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2630,9 +2627,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; of different databases can run concurrently.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_backup</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateBackupRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateBackupRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2650,8 +2647,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets metadata on a pending or completed [Backup][google.spanner.admin.database.v1.Backup].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_backup</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetBackupRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Backup</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetBackupRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Backup</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2667,8 +2664,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates a pending or completed [Backup][google.spanner.admin.database.v1.Backup].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_backup</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateBackupRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Backup</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateBackupRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Backup</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2684,7 +2681,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a pending or completed [Backup][google.spanner.admin.database.v1.Backup].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_backup</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteBackupRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteBackupRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -2703,8 +2700,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; starting from the most recent `create_time`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_backups</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBackupsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBackupsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBackupsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBackupsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2736,9 +2733,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; first restore to complete.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">restore_database</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RestoreDatabaseRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RestoreDatabaseRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2763,8 +2760,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; and pending operations.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_database_operations</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDatabaseOperationsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDatabaseOperationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDatabaseOperationsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDatabaseOperationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2789,8 +2786,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; from the most recently started operation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_backup_operations</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBackupOperationsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBackupOperationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBackupOperationsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBackupOperationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2805,5 +2802,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

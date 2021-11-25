@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["EventExecutionSnapshotMetadata","Metadata for the event/task retry."]]});

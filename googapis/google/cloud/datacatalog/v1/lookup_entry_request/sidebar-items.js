@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["TargetName","Required. Represents either the Google Cloud Platform resource or SQL name for a Google Cloud Platform resource."]]});
+initSidebarItems({"enum":[["TargetName","Required. A full name, SQL name, or a fully qualified name of a Google Cloud Platform resource."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["RuleVisibility","Rule visibility can be one of the following: STANDARD - opaque rules. (default) PREMIUM - transparent rules."]]});

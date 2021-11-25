@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ValueRuleSetAttachmentType","Possible level where a value rule set is attached."]]});

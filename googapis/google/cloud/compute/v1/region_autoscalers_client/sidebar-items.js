@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RegionAutoscalersClient","The RegionAutoscalers API."]]});

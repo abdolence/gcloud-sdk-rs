@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Possible states of the clone job."],["TargetVmDetails","Details of the VM to create as the target of this clone job."]]});

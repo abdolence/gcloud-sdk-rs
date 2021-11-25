@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","State of the event"],["Task","Required. Operation to be executed by this event."]],"struct":[["AdBreakTask","Inserts a new ad opportunity."]]});

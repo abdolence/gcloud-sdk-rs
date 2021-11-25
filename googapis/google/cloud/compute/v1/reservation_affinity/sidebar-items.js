@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConsumeReservationType","Specifies the type of reservation from which this instance can consume resources: ANY_RESERVATION (default), SPECIFIC_RESERVATION, or NO_RESERVATION. See Consuming reserved instances for examples."]]});

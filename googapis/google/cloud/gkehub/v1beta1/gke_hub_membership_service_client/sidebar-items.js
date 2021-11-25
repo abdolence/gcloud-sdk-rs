@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["GkeHubMembershipServiceClient","GKE Hub CRUD API for the Membership resource. The Membership service is currently only available in the global location."]]});
+initSidebarItems({"struct":[["GkeHubMembershipServiceClient","The GKE Hub MembershipService handles the registration of many Kubernetes clusters to Google Cloud, represented with the [Membership][google.cloud.gkehub.v1beta1.Membership] resource."]]});

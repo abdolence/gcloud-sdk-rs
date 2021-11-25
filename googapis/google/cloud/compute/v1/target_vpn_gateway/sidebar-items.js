@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Status","[Output Only] The status of the VPN gateway, which can be one of the following: CREATING, READY, FAILED, or DELETING."]]});

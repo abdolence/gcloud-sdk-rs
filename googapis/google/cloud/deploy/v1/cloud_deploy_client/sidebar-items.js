@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CloudDeployClient","CloudDeploy service creates and manages Continuous Delivery operations on Google Cloud Platform via Skaffold (https://skaffold.dev)."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SqlInstanceNamesServiceClient","Cloud SQL instance names service."]]});

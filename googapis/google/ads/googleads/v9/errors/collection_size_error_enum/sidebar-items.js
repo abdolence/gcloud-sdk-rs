@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CollectionSizeError","Enum describing possible collection size errors."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GlobalOperationsClient","The GlobalOperations API."]]});

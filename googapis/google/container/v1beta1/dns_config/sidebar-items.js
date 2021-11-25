@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DnsScope","DNSScope lists the various scopes of access to cluster DNS records."],["Provider","Provider lists the various in-cluster DNS providers."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["backup_config","Nested message and enum types in `BackupConfig`."]],"struct":[["BackupConfig","BackupConfig, an inner message type defines the configuration of creating a backup from this BackupPlan"],["RetentionPolicy","RentionPolicy is an inner message type to define:"],["Schedule","Schedule, an inner message type defines a cron schedule."]]});

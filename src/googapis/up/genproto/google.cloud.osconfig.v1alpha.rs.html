@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.osconfig.v1alpha.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.osconfig.v1alpha.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.osconfig.v1alpha.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.osconfig.v1alpha.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2111,8 +2109,39 @@
 <span id="2109">2109</span>
 <span id="2110">2110</span>
 <span id="2111">2111</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Step performed by the OS Config agent for configuring an `OSPolicyResource`</span>
+<span id="2112">2112</span>
+<span id="2113">2113</span>
+<span id="2114">2114</span>
+<span id="2115">2115</span>
+<span id="2116">2116</span>
+<span id="2117">2117</span>
+<span id="2118">2118</span>
+<span id="2119">2119</span>
+<span id="2120">2120</span>
+<span id="2121">2121</span>
+<span id="2122">2122</span>
+<span id="2123">2123</span>
+<span id="2124">2124</span>
+<span id="2125">2125</span>
+<span id="2126">2126</span>
+<span id="2127">2127</span>
+<span id="2128">2128</span>
+<span id="2129">2129</span>
+<span id="2130">2130</span>
+<span id="2131">2131</span>
+<span id="2132">2132</span>
+<span id="2133">2133</span>
+<span id="2134">2134</span>
+<span id="2135">2135</span>
+<span id="2136">2136</span>
+<span id="2137">2137</span>
+<span id="2138">2138</span>
+<span id="2139">2139</span>
+<span id="2140">2140</span>
+<span id="2141">2141</span>
+<span id="2142">2142</span>
+<span id="2143">2143</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Step performed by the OS Config agent for configuring an `OSPolicyResource`</span>
 <span class="doccomment">/// to its desired state.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OsPolicyResourceConfigStep</span> {
@@ -2224,7 +2253,7 @@
 <span class="doccomment">/// VM as well as the compliance state of an individual OS policy.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// For more information, see [View</span>
-<span class="doccomment">/// compliance](https://cloud.google.com/compute/docs/os-configuration-management/view-compliance).</span>
+<span class="doccomment">/// compliance](&lt;https://cloud.google.com/compute/docs/os-configuration-management/view-compliance&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">InstanceOsPoliciesCompliance</span> {
     <span class="doccomment">/// Output only. The `InstanceOSPoliciesCompliance` API resource name.</span>
@@ -2293,7 +2322,7 @@
         <span class="doccomment">/// VM.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">os_policy_resource_compliances</span>:
-            <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::OsPolicyResourceCompliance</span><span class="op">&gt;</span>,
+            <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::OsPolicyResourceCompliance</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// A request message for getting OS policies compliance data for the given</span>
@@ -2358,7 +2387,7 @@
 <span class="doccomment">/// You can use this API resource to determine the inventory data of your VM.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// For more information, see [Information provided by OS inventory</span>
-<span class="doccomment">/// management](https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected).</span>
+<span class="doccomment">/// management](&lt;https://cloud.google.com/compute/docs/instances/os-inventory-management#data-collected&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Inventory</span> {
     <span class="doccomment">/// Output only. The `Inventory` API resource name.</span>
@@ -2370,10 +2399,10 @@
     <span class="doccomment">/// Output only. Base level operating system information for the VM.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">os_info</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">inventory::OsInfo</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Output only. Inventory items related to the VM keyed by an opaque unique identifier for</span>
-    <span class="doccomment">/// each inventory item. The identifier is unique to each distinct and</span>
-    <span class="doccomment">/// addressable inventory item and will change, when there is a new package</span>
-    <span class="doccomment">/// version.</span>
+    <span class="doccomment">/// Output only. Inventory items related to the VM keyed by an opaque unique</span>
+    <span class="doccomment">/// identifier for each inventory item. The identifier is unique to each</span>
+    <span class="doccomment">/// distinct and addressable inventory item and will change, when there is a</span>
+    <span class="doccomment">/// new package version.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">items</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">inventory::Item</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. Timestamp of the last reported inventory for the VM.</span>
@@ -2467,17 +2496,20 @@
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Details</span> {
             <span class="doccomment">/// Software package present on the VM instance.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-            <span class="ident">InstalledPackage</span>(<span class="kw">super</span><span class="ident">::SoftwarePackage</span>),
+            <span class="ident">InstalledPackage</span>(<span class="ident"><span class="kw">super</span>::SoftwarePackage</span>),
             <span class="doccomment">/// Software package available to be installed on the VM instance.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-            <span class="ident">AvailablePackage</span>(<span class="kw">super</span><span class="ident">::SoftwarePackage</span>),
+            <span class="ident">AvailablePackage</span>(<span class="ident"><span class="kw">super</span>::SoftwarePackage</span>),
         }
     }
     <span class="doccomment">/// Software package information of the operating system.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SoftwarePackage</span> {
         <span class="doccomment">/// Information about the different types of software packages.</span>
-        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;software_package::Details&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2, 3, 4, 5, 6, 7, 8&quot;</span>)]</span>
+        <span class="attribute">#[<span class="ident">prost</span>(
+            <span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;software_package::Details&quot;</span>,
+            <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2, 3, 4, 5, 6, 7, 8, 9&quot;</span>
+        )]</span>
         <span class="kw">pub</span> <span class="ident">details</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">software_package::Details</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Nested message and enum types in `SoftwarePackage`.</span>
@@ -2487,43 +2519,46 @@
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Details</span> {
             <span class="doccomment">/// Yum package info.</span>
             <span class="doccomment">/// For details about the yum package manager, see</span>
-            <span class="doccomment">/// https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.</span>
+            <span class="doccomment">/// &lt;https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/deployment_guide/ch-yum.&gt;</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-            <span class="ident">YumPackage</span>(<span class="kw">super</span><span class="ident">::VersionedPackage</span>),
+            <span class="ident">YumPackage</span>(<span class="ident"><span class="kw">super</span>::VersionedPackage</span>),
             <span class="doccomment">/// Details of an APT package.</span>
             <span class="doccomment">/// For details about the apt package manager, see</span>
-            <span class="doccomment">/// https://wiki.debian.org/Apt.</span>
+            <span class="doccomment">/// &lt;https://wiki.debian.org/Apt.&gt;</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-            <span class="ident">AptPackage</span>(<span class="kw">super</span><span class="ident">::VersionedPackage</span>),
+            <span class="ident">AptPackage</span>(<span class="ident"><span class="kw">super</span>::VersionedPackage</span>),
             <span class="doccomment">/// Details of a Zypper package.</span>
             <span class="doccomment">/// For details about the Zypper package manager, see</span>
-            <span class="doccomment">/// https://en.opensuse.org/SDB:Zypper_manual.</span>
+            <span class="doccomment">/// &lt;https://en.opensuse.org/SDB:Zypper_manual.&gt;</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-            <span class="ident">ZypperPackage</span>(<span class="kw">super</span><span class="ident">::VersionedPackage</span>),
+            <span class="ident">ZypperPackage</span>(<span class="ident"><span class="kw">super</span>::VersionedPackage</span>),
             <span class="doccomment">/// Details of a Googet package.</span>
             <span class="doccomment">///  For details about the googet package manager, see</span>
-            <span class="doccomment">///  https://github.com/google/googet.</span>
+            <span class="doccomment">///  &lt;https://github.com/google/googet.&gt;</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-            <span class="ident">GoogetPackage</span>(<span class="kw">super</span><span class="ident">::VersionedPackage</span>),
+            <span class="ident">GoogetPackage</span>(<span class="ident"><span class="kw">super</span>::VersionedPackage</span>),
             <span class="doccomment">/// Details of a Zypper patch.</span>
             <span class="doccomment">/// For details about the Zypper package manager, see</span>
-            <span class="doccomment">/// https://en.opensuse.org/SDB:Zypper_manual.</span>
+            <span class="doccomment">/// &lt;https://en.opensuse.org/SDB:Zypper_manual.&gt;</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-            <span class="ident">ZypperPatch</span>(<span class="kw">super</span><span class="ident">::ZypperPatch</span>),
+            <span class="ident">ZypperPatch</span>(<span class="ident"><span class="kw">super</span>::ZypperPatch</span>),
             <span class="doccomment">/// Details of a Windows Update package.</span>
-            <span class="doccomment">/// See https://docs.microsoft.com/en-us/windows/win32/api/_wua/ for</span>
+            <span class="doccomment">/// See &lt;https://docs.microsoft.com/en-us/windows/win32/api/_wua/&gt; for</span>
             <span class="doccomment">/// information about Windows Update.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-            <span class="ident">WuaPackage</span>(<span class="kw">super</span><span class="ident">::WindowsUpdatePackage</span>),
+            <span class="ident">WuaPackage</span>(<span class="ident"><span class="kw">super</span>::WindowsUpdatePackage</span>),
             <span class="doccomment">/// Details of a Windows Quick Fix engineering package.</span>
             <span class="doccomment">/// See</span>
-            <span class="doccomment">/// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering</span>
+            <span class="doccomment">/// &lt;https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering&gt;</span>
             <span class="doccomment">/// for info in Windows Quick Fix Engineering.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-            <span class="ident">QfePackage</span>(<span class="kw">super</span><span class="ident">::WindowsQuickFixEngineeringPackage</span>),
+            <span class="ident">QfePackage</span>(<span class="ident"><span class="kw">super</span>::WindowsQuickFixEngineeringPackage</span>),
             <span class="doccomment">/// Details of a COS package.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-            <span class="ident">CosPackage</span>(<span class="kw">super</span><span class="ident">::VersionedPackage</span>),
+            <span class="ident">CosPackage</span>(<span class="ident"><span class="kw">super</span>::VersionedPackage</span>),
+            <span class="doccomment">/// Details of Windows Application.</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
+            <span class="ident">WindowsApplication</span>(<span class="ident"><span class="kw">super</span>::WindowsApplication</span>),
         }
     }
     <span class="doccomment">/// Information related to the a standard versioned package.  This includes</span>
@@ -2558,7 +2593,7 @@
     }
     <span class="doccomment">/// Details related to a Windows Update package.</span>
     <span class="doccomment">/// Field data and names are taken from Windows Update API IUpdate Interface:</span>
-    <span class="doccomment">/// https://docs.microsoft.com/en-us/windows/win32/api/_wua/</span>
+    <span class="doccomment">/// &lt;https://docs.microsoft.com/en-us/windows/win32/api/_wua/&gt;</span>
     <span class="doccomment">/// Descriptive fields like title, and description are localized based on</span>
     <span class="doccomment">/// the locale of the VM being updated.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -2610,7 +2645,7 @@
     <span class="doccomment">/// Information related to a Quick Fix Engineering package.</span>
     <span class="doccomment">/// Fields are taken from Windows QuickFixEngineering Interface and match</span>
     <span class="doccomment">/// the source names:</span>
-    <span class="doccomment">/// https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering</span>
+    <span class="doccomment">/// &lt;https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering&gt;</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WindowsQuickFixEngineeringPackage</span> {
         <span class="doccomment">/// A short textual description of the QFE update.</span>
@@ -2625,6 +2660,32 @@
         <span class="doccomment">/// Date that the QFE update was installed.  Mapped from installed_on field.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">install_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    }
+    <span class="doccomment">/// Contains information about a Windows application as retrieved from the</span>
+    <span class="doccomment">/// Windows Registry. For more information about these fields, see</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// [Windows Installer Properties for the Uninstall</span>
+    <span class="doccomment">/// Registry](&lt;https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key&gt;){:</span>
+    <span class="doccomment">/// class=&quot;external&quot; }</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WindowsApplication</span> {
+        <span class="doccomment">/// The name of the application or product.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// The version of the product or application in string format.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">display_version</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// The name of the manufacturer for the product or application.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">publisher</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// The last time this product received service. The value of this property</span>
+        <span class="doccomment">/// is replaced each time a patch is applied or removed from the product or</span>
+        <span class="doccomment">/// the command-line option is used to repair the product.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">install_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// The internet address for technical support.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">help_link</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
 }
 <span class="doccomment">/// A request message for getting inventory data for the specified VM.</span>
@@ -2849,7 +2910,7 @@
             <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Deb</span> {
                 <span class="doccomment">/// Required. A deb package.</span>
                 <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-                <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::File</span><span class="op">&gt;</span>,
+                <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::File</span><span class="op">&gt;</span>,
                 <span class="doccomment">/// Whether dependencies should also be installed.</span>
                 <span class="doccomment">/// - install when false: `dpkg -i package`</span>
                 <span class="doccomment">/// - install when true: `apt-get update &amp;&amp; apt-get -y install</span>
@@ -2858,8 +2919,8 @@
                 <span class="kw">pub</span> <span class="ident">pull_deps</span>: <span class="ident">bool</span>,
             }
             <span class="doccomment">/// A package managed by APT.</span>
-            <span class="doccomment">/// - install: `apt-get update &amp;&amp; apt-get -y install [name]`</span>
-            <span class="doccomment">/// - remove: `apt-get -y remove [name]`</span>
+            <span class="doccomment">/// - install: `apt-get update &amp;&amp; apt-get -y install \[name\]`</span>
+            <span class="doccomment">/// - remove: `apt-get -y remove \[name\]`</span>
             <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
             <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Apt</span> {
                 <span class="doccomment">/// Required. Package name.</span>
@@ -2871,7 +2932,7 @@
             <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Rpm</span> {
                 <span class="doccomment">/// Required. An rpm package.</span>
                 <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-                <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::File</span><span class="op">&gt;</span>,
+                <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::File</span><span class="op">&gt;</span>,
                 <span class="doccomment">/// Whether dependencies should also be installed.</span>
                 <span class="doccomment">/// - install when false: `rpm --upgrade --replacepkgs package.rpm`</span>
                 <span class="doccomment">/// - install when true: `yum -y install package.rpm` or</span>
@@ -2911,7 +2972,7 @@
             <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Msi</span> {
                 <span class="doccomment">/// Required. The MSI package.</span>
                 <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-                <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::File</span><span class="op">&gt;</span>,
+                <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::File</span><span class="op">&gt;</span>,
                 <span class="doccomment">/// Additional properties to use during installation.</span>
                 <span class="doccomment">/// This should be in the format of Property=Setting.</span>
                 <span class="doccomment">/// Appended to the defaults of `ACTION=INSTALL</span>
@@ -3155,7 +3216,7 @@
                     <span class="doccomment">/// source will be executed directly, which will likely only</span>
                     <span class="doccomment">/// succeed for executables and scripts with shebang lines.</span>
                     <span class="doccomment">/// [Wikipedia</span>
-                    <span class="doccomment">/// shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)).</span>
+                    <span class="doccomment">/// shebang](&lt;https://en.wikipedia.org/wiki/Shebang_(Unix&gt;)).</span>
                     <span class="prelude-val">None</span> <span class="op">=</span> <span class="number">1</span>,
                     <span class="doccomment">/// Indicates that the script will be run with /bin/sh on Linux and</span>
                     <span class="doccomment">/// cmd.exe on windows.</span>
@@ -3168,7 +3229,7 @@
                 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
                     <span class="doccomment">/// A remote or local file.</span>
                     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-                    <span class="ident">File</span>(<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::File</span>),
+                    <span class="ident">File</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::File</span>),
                     <span class="doccomment">/// An inline script.</span>
                     <span class="doccomment">/// The size of the script is limited to 1024 characters.</span>
                     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3227,7 +3288,7 @@
             <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
                 <span class="doccomment">/// A remote or local source.</span>
                 <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-                <span class="ident">File</span>(<span class="kw">super</span><span class="ident">::File</span>),
+                <span class="ident">File</span>(<span class="ident"><span class="kw">super</span>::File</span>),
                 <span class="doccomment">/// A a file with this content.</span>
                 <span class="doccomment">/// The size of the content is limited to 1024 characters.</span>
                 <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3316,7 +3377,7 @@
 <span class="doccomment">/// executing a script.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// For more information, see [OS policy and OS policy</span>
-<span class="doccomment">/// assignment](https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies).</span>
+<span class="doccomment">/// assignment](&lt;https://cloud.google.com/compute/docs/os-configuration-management/working-with-os-policies&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OsPolicyAssignment</span> {
     <span class="doccomment">/// Resource name.</span>
@@ -3435,7 +3496,7 @@
         <span class="doccomment">/// Required. The maximum number (or percentage) of VMs per zone to disrupt at</span>
         <span class="doccomment">/// any given moment.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">disruption_budget</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::FixedOrPercent</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">disruption_budget</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::FixedOrPercent</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Required. This determines the minimum duration of time to wait after the</span>
         <span class="doccomment">/// configuration changes are applied through the current rollout. A</span>
         <span class="doccomment">/// VM continues to count towards the `disruption_budget` at least</span>
@@ -3623,7 +3684,7 @@
 <span class="doccomment">/// Compute Engine virtual machine (VM) instance at a given point in time.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// For more information, see [Vulnerability</span>
-<span class="doccomment">/// reports](https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports).</span>
+<span class="doccomment">/// reports](&lt;https://cloud.google.com/compute/docs/instances/os-inventory-management#vulnerability-reports&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VulnerabilityReport</span> {
     <span class="doccomment">/// Output only. The `vulnerabilityReport` API resource name.</span>
@@ -3688,7 +3749,7 @@
             <span class="kw">pub</span> <span class="ident">cvss_v2_score</span>: <span class="ident">f32</span>,
             <span class="doccomment">/// The full description of the CVSSv3 for this vulnerability from NVD.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">cvss_v3</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::CvsSv3</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">cvss_v3</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::CvsSv3</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Assigned severity/impact ranking from the distro.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">severity</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3764,16 +3825,16 @@
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Common Vulnerability Scoring System version 3.</span>
-<span class="doccomment">/// For details, see https://www.first.org/cvss/specification-document</span>
+<span class="doccomment">/// For details, see &lt;https://www.first.org/cvss/specification-document&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CvsSv3</span> {
     <span class="doccomment">/// The base score is a function of the base metric scores.</span>
-    <span class="doccomment">/// https://www.first.org/cvss/specification-document#Base-Metrics</span>
+    <span class="doccomment">/// &lt;https://www.first.org/cvss/specification-document#Base-Metrics&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">base_score</span>: <span class="ident">f32</span>,
     <span class="doccomment">/// The Exploitability sub-score equation is derived from the Base</span>
     <span class="doccomment">/// Exploitability metrics.</span>
-    <span class="doccomment">/// https://www.first.org/cvss/specification-document#2-1-Exploitability-Metrics</span>
+    <span class="doccomment">/// &lt;https://www.first.org/cvss/specification-document#2-1-Exploitability-Metrics&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">exploitability_score</span>: <span class="ident">f32</span>,
     <span class="doccomment">/// The Impact sub-score equation is derived from the Base Impact metrics.</span>
@@ -3935,7 +3996,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">OsConfigZonalServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -3948,7 +4009,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">OsConfigZonalServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -3984,9 +4045,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; projects.locations.osPolicyAssignments.operations.cancel](https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_os_policy_assignment</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateOsPolicyAssignmentRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateOsPolicyAssignmentRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -4012,9 +4073,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; projects.locations.osPolicyAssignments.operations.cancel](https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_os_policy_assignment</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateOsPolicyAssignmentRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateOsPolicyAssignmentRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -4036,8 +4097,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; `name` parameter.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_os_policy_assignment</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetOsPolicyAssignmentRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::OsPolicyAssignment</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetOsPolicyAssignmentRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::OsPolicyAssignment</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4055,8 +4116,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; For each OS policy assignment, the latest revision is returned.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_os_policy_assignments</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListOsPolicyAssignmentsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListOsPolicyAssignmentsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListOsPolicyAssignmentsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListOsPolicyAssignmentsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4073,8 +4134,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; List the OS policy assignment revisions for a given OS policy assignment.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_os_policy_assignment_revisions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListOsPolicyAssignmentRevisionsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListOsPolicyAssignmentRevisionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListOsPolicyAssignmentRevisionsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListOsPolicyAssignmentRevisionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4100,9 +4161,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; projects.locations.osPolicyAssignments.operations.cancel](https://cloud.google.com/compute/docs/osconfig/rest/v1alpha/projects.locations.osPolicyAssignments.operations/cancel).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_os_policy_assignment</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteOsPolicyAssignmentRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteOsPolicyAssignmentRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -4121,8 +4182,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; instance.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_instance_os_policies_compliance</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetInstanceOsPoliciesComplianceRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::InstanceOsPoliciesCompliance</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetInstanceOsPoliciesComplianceRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::InstanceOsPoliciesCompliance</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4137,8 +4198,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; specified zone.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_instance_os_policies_compliances</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListInstanceOsPoliciesCompliancesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListInstanceOsPoliciesCompliancesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListInstanceOsPoliciesCompliancesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListInstanceOsPoliciesCompliancesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4154,8 +4215,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; associated inventory, the message `NOT_FOUND` is returned.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_inventory</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetInventoryRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Inventory</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetInventoryRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Inventory</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4171,8 +4232,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; List inventory data for all VM instances in the specified zone.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_inventories</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListInventoriesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListInventoriesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListInventoriesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListInventoriesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4189,8 +4250,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; inventory data have vulnerability reports associated with them.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_vulnerability_report</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetVulnerabilityReportRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::VulnerabilityReport</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetVulnerabilityReportRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::VulnerabilityReport</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4206,8 +4267,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; List vulnerability reports for all VM instances in the specified zone.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_vulnerability_reports</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListVulnerabilityReportsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListVulnerabilityReportsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListVulnerabilityReportsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListVulnerabilityReportsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4223,5 +4284,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

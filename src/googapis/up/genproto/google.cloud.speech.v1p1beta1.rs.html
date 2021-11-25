@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.speech.v1p1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.speech.v1p1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.speech.v1p1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.speech.v1p1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1467,8 +1465,42 @@
 <span id="1465">1465</span>
 <span id="1466">1466</span>
 <span id="1467">1467</span>
-</pre><pre class="rust">
-<span class="doccomment">/// A set of words or phrases that represents a common concept likely to appear</span>
+<span id="1468">1468</span>
+<span id="1469">1469</span>
+<span id="1470">1470</span>
+<span id="1471">1471</span>
+<span id="1472">1472</span>
+<span id="1473">1473</span>
+<span id="1474">1474</span>
+<span id="1475">1475</span>
+<span id="1476">1476</span>
+<span id="1477">1477</span>
+<span id="1478">1478</span>
+<span id="1479">1479</span>
+<span id="1480">1480</span>
+<span id="1481">1481</span>
+<span id="1482">1482</span>
+<span id="1483">1483</span>
+<span id="1484">1484</span>
+<span id="1485">1485</span>
+<span id="1486">1486</span>
+<span id="1487">1487</span>
+<span id="1488">1488</span>
+<span id="1489">1489</span>
+<span id="1490">1490</span>
+<span id="1491">1491</span>
+<span id="1492">1492</span>
+<span id="1493">1493</span>
+<span id="1494">1494</span>
+<span id="1495">1495</span>
+<span id="1496">1496</span>
+<span id="1497">1497</span>
+<span id="1498">1498</span>
+<span id="1499">1499</span>
+<span id="1500">1500</span>
+<span id="1501">1501</span>
+<span id="1502">1502</span>
+</pre><pre class="rust"><code><span class="doccomment">/// A set of words or phrases that represents a common concept likely to appear</span>
 <span class="doccomment">/// in your audio, for example a list of passenger ship names. CustomClass items</span>
 <span class="doccomment">/// can be substituted into placeholders that you set in PhraseSet phrases.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -1523,7 +1555,7 @@
     <span class="doccomment">/// to improve the accuracy for specific words and phrases, for example, if</span>
     <span class="doccomment">/// specific commands are typically spoken by the user. This can also be used</span>
     <span class="doccomment">/// to add additional words to the vocabulary of the recognizer. See</span>
-    <span class="doccomment">/// [usage limits](https://cloud.google.com/speech-to-text/quotas#content).</span>
+    <span class="doccomment">/// [usage limits](&lt;https://cloud.google.com/speech-to-text/quotas#content&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// List items can also include pre-built or custom classes containing groups</span>
     <span class="doccomment">/// of words that represent common concepts that occur in natural language. For</span>
@@ -1573,6 +1605,35 @@
     <span class="doccomment">/// `custom_class_id`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">custom_classes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">CustomClass</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Transcription normalization configuration. Use transcription normalization</span>
+<span class="doccomment">/// to automatically replace parts of the transcript with phrases of your</span>
+<span class="doccomment">/// choosing. For StreamingRecognize, this normalization only applies to stable</span>
+<span class="doccomment">/// partial transcripts (stability &gt; 0.8) and final transcripts.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TranscriptNormalization</span> {
+    <span class="doccomment">/// A list of replacement entries. We will perform replacement with one entry</span>
+    <span class="doccomment">/// at a time. For example, the second entry in [&quot;cat&quot; =&gt; &quot;dog&quot;, &quot;mountain cat&quot;</span>
+    <span class="doccomment">/// =&gt; &quot;mountain dog&quot;] will never be applied because we will always process the</span>
+    <span class="doccomment">/// first entry before it. At most 100 entries.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">entries</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">transcript_normalization::Entry</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `TranscriptNormalization`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">transcript_normalization</span> {
+    <span class="doccomment">/// A single replacement configuration.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Entry</span> {
+        <span class="doccomment">/// What to replace. Max length is 100 characters.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">search</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// What to replace with. Max length is 100 characters.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">replace</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// Whether the search is case sensitive.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">case_sensitive</span>: <span class="ident">bool</span>,
+    }
 }
 <span class="doccomment">/// The top-level message sent by the client for the `Recognize` method.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -1637,7 +1698,7 @@
         <span class="doccomment">/// request. The first `StreamingRecognizeRequest` message must contain a</span>
         <span class="doccomment">/// `streaming_config`  message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">StreamingConfig</span>(<span class="kw">super</span><span class="ident">::StreamingRecognitionConfig</span>),
+        <span class="ident">StreamingConfig</span>(<span class="ident"><span class="kw">super</span>::StreamingRecognitionConfig</span>),
         <span class="doccomment">/// The audio data to be recognized. Sequential chunks of audio data are sent</span>
         <span class="doccomment">/// in sequential `StreamingRecognizeRequest` messages. The first</span>
         <span class="doccomment">/// `StreamingRecognizeRequest` message must not contain `audio_content` data</span>
@@ -1645,7 +1706,7 @@
         <span class="doccomment">/// `audio_content` data. The audio bytes must be encoded as specified in</span>
         <span class="doccomment">/// `RecognitionConfig`. Note: as with all bytes fields, proto buffers use a</span>
         <span class="doccomment">/// pure binary representation (not base64). See</span>
-        <span class="doccomment">/// [content limits](https://cloud.google.com/speech-to-text/quotas#content).</span>
+        <span class="doccomment">/// [content limits](&lt;https://cloud.google.com/speech-to-text/quotas#content&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">AudioContent</span>(<span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
     }
@@ -1671,7 +1732,7 @@
     <span class="doccomment">/// `true`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The `single_utterance` field can only be used with specified models,</span>
-    <span class="doccomment">/// otherwise an error is thrown. The `model` field in [`RecognitionConfig`][]</span>
+    <span class="doccomment">/// otherwise an error is thrown. The `model` field in \[`RecognitionConfig`][\]</span>
     <span class="doccomment">/// must be set to:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `command_and_search`</span>
@@ -1694,7 +1755,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RecognitionConfig</span> {
     <span class="doccomment">/// Encoding of audio data sent in all `RecognitionAudio` messages.</span>
     <span class="doccomment">/// This field is optional for `FLAC` and `WAV` audio files and required</span>
-    <span class="doccomment">/// for all other audio formats. For details, see [AudioEncoding][google.cloud.speech.v1p1beta1.RecognitionConfig.AudioEncoding].</span>
+    <span class="doccomment">/// for all other audio formats. For details, see \[AudioEncoding][google.cloud.speech.v1p1beta1.RecognitionConfig.AudioEncoding\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;recognition_config::AudioEncoding&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">encoding</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Sample rate in Hertz of the audio data sent in all</span>
@@ -1703,7 +1764,7 @@
     <span class="doccomment">/// source to 16000 Hz. If that&#39;s not possible, use the native sample rate of</span>
     <span class="doccomment">/// the audio source (instead of re-sampling).</span>
     <span class="doccomment">/// This field is optional for FLAC and WAV audio files, but is</span>
-    <span class="doccomment">/// required for all other audio formats. For details, see [AudioEncoding][google.cloud.speech.v1p1beta1.RecognitionConfig.AudioEncoding].</span>
+    <span class="doccomment">/// required for all other audio formats. For details, see \[AudioEncoding][google.cloud.speech.v1p1beta1.RecognitionConfig.AudioEncoding\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">sample_rate_hertz</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// The number of channels in the input audio data.</span>
@@ -1726,18 +1787,18 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">enable_separate_recognition_per_channel</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Required. The language of the supplied audio as a</span>
-    <span class="doccomment">/// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.</span>
+    <span class="doccomment">/// \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;) language tag.</span>
     <span class="doccomment">/// Example: &quot;en-US&quot;.</span>
     <span class="doccomment">/// See [Language</span>
-    <span class="doccomment">/// Support](https://cloud.google.com/speech-to-text/docs/languages) for a list</span>
+    <span class="doccomment">/// Support](&lt;https://cloud.google.com/speech-to-text/docs/languages&gt;) for a list</span>
     <span class="doccomment">/// of the currently supported language codes.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// A list of up to 3 additional</span>
-    <span class="doccomment">/// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tags,</span>
+    <span class="doccomment">/// \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;) language tags,</span>
     <span class="doccomment">/// listing possible alternative languages of the supplied audio.</span>
     <span class="doccomment">/// See [Language</span>
-    <span class="doccomment">/// Support](https://cloud.google.com/speech-to-text/docs/languages) for a list</span>
+    <span class="doccomment">/// Support](&lt;https://cloud.google.com/speech-to-text/docs/languages&gt;) for a list</span>
     <span class="doccomment">/// of the currently supported language codes. If alternative languages are</span>
     <span class="doccomment">/// listed, recognition result will contain recognition in the most likely</span>
     <span class="doccomment">/// language detected including the main language_code. The recognition result</span>
@@ -1764,15 +1825,21 @@
     <span class="doccomment">/// Speech adaptation configuration improves the accuracy of speech</span>
     <span class="doccomment">/// recognition. When speech adaptation is set it supersedes the</span>
     <span class="doccomment">/// `speech_contexts` field. For more information, see the [speech</span>
-    <span class="doccomment">/// adaptation](https://cloud.google.com/speech-to-text/docs/adaptation)</span>
+    <span class="doccomment">/// adaptation](&lt;https://cloud.google.com/speech-to-text/docs/adaptation&gt;)</span>
     <span class="doccomment">/// documentation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;20&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">adaptation</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">SpeechAdaptation</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Array of [SpeechContext][google.cloud.speech.v1p1beta1.SpeechContext].</span>
+    <span class="doccomment">/// Use transcription normalization to automatically replace parts of the</span>
+    <span class="doccomment">/// transcript with phrases of your choosing. For StreamingRecognize, this</span>
+    <span class="doccomment">/// normalization only applies to stable partial transcripts (stability &gt; 0.8)</span>
+    <span class="doccomment">/// and final transcripts.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;24&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">transcript_normalization</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TranscriptNormalization</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Array of \[SpeechContext][google.cloud.speech.v1p1beta1.SpeechContext\].</span>
     <span class="doccomment">/// A means to provide context to assist the speech recognition. For more</span>
     <span class="doccomment">/// information, see</span>
     <span class="doccomment">/// [speech</span>
-    <span class="doccomment">/// adaptation](https://cloud.google.com/speech-to-text/docs/adaptation).</span>
+    <span class="doccomment">/// adaptation](&lt;https://cloud.google.com/speech-to-text/docs/adaptation&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">speech_contexts</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">SpeechContext</span><span class="op">&gt;</span>,
     <span class="doccomment">/// If `true`, the top result includes a list of words and</span>
@@ -1797,7 +1864,7 @@
     <span class="doccomment">/// e.g. command_and_search will enable spoken punctuation by default</span>
     <span class="doccomment">/// If &#39;true&#39;, replaces spoken punctuation with the corresponding symbols in</span>
     <span class="doccomment">/// the request. For example, &quot;how are you question mark&quot; becomes &quot;how are</span>
-    <span class="doccomment">/// you?&quot;. See https://cloud.google.com/speech-to-text/docs/spoken-punctuation</span>
+    <span class="doccomment">/// you?&quot;. See &lt;https://cloud.google.com/speech-to-text/docs/spoken-punctuation&gt;</span>
     <span class="doccomment">/// for support. If &#39;false&#39;, spoken punctuation is not replaced.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;22&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">enable_spoken_punctuation</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
@@ -1902,7 +1969,7 @@
     <span class="doccomment">/// an `AudioEncoding` when you send  send `FLAC` or `WAV` audio, the</span>
     <span class="doccomment">/// encoding configuration must match the encoding described in the audio</span>
     <span class="doccomment">/// header; otherwise the request returns an</span>
-    <span class="doccomment">/// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error code.</span>
+    <span class="doccomment">/// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\] error code.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AudioEncoding</span> {
@@ -1924,16 +1991,16 @@
         <span class="doccomment">/// Adaptive Multi-Rate Wideband codec. `sample_rate_hertz` must be 16000.</span>
         <span class="ident">AmrWb</span> <span class="op">=</span> <span class="number">5</span>,
         <span class="doccomment">/// Opus encoded audio frames in Ogg container</span>
-        <span class="doccomment">/// ([OggOpus](https://wiki.xiph.org/OggOpus)).</span>
+        <span class="doccomment">/// (\[OggOpus\](&lt;https://wiki.xiph.org/OggOpus&gt;)).</span>
         <span class="doccomment">/// `sample_rate_hertz` must be one of 8000, 12000, 16000, 24000, or 48000.</span>
         <span class="ident">OggOpus</span> <span class="op">=</span> <span class="number">6</span>,
         <span class="doccomment">/// Although the use of lossy encodings is not recommended, if a very low</span>
         <span class="doccomment">/// bitrate encoding is required, `OGG_OPUS` is highly preferred over</span>
-        <span class="doccomment">/// Speex encoding. The [Speex](https://speex.org/)  encoding supported by</span>
+        <span class="doccomment">/// Speex encoding. The \[Speex\](&lt;https://speex.org/&gt;)  encoding supported by</span>
         <span class="doccomment">/// Cloud Speech API has a header byte in each block, as in MIME type</span>
         <span class="doccomment">/// `audio/x-speex-with-header-byte`.</span>
         <span class="doccomment">/// It is a variant of the RTP Speex encoding defined in</span>
-        <span class="doccomment">/// [RFC 5574](https://tools.ietf.org/html/rfc5574).</span>
+        <span class="doccomment">/// [RFC 5574](&lt;https://tools.ietf.org/html/rfc5574&gt;).</span>
         <span class="doccomment">/// The stream is a sequence of blocks, one block per RTP packet. Each block</span>
         <span class="doccomment">/// starts with a byte containing the length of the block, in bytes, followed</span>
         <span class="doccomment">/// by one or more frames of Speex data, padded to an integral number of</span>
@@ -1947,7 +2014,7 @@
         <span class="doccomment">/// sample rate of the file being used.</span>
         <span class="ident">Mp3</span> <span class="op">=</span> <span class="number">8</span>,
         <span class="doccomment">/// Opus encoded audio frames in WebM container</span>
-        <span class="doccomment">/// ([OggOpus](https://wiki.xiph.org/OggOpus)). This is a Beta features and</span>
+        <span class="doccomment">/// (\[OggOpus\](&lt;https://wiki.xiph.org/OggOpus&gt;)). This is a Beta features and</span>
         <span class="doccomment">/// only available in v1p1beta1. `sample_rate_hertz` must be one of 8000,</span>
         <span class="doccomment">/// 12000, 16000, 24000, or 48000.</span>
         <span class="ident">WebmOpus</span> <span class="op">=</span> <span class="number">9</span>,
@@ -1985,7 +2052,7 @@
     <span class="doccomment">/// The industry vertical to which this speech recognition request most</span>
     <span class="doccomment">/// closely applies. This is most indicative of the topics contained</span>
     <span class="doccomment">/// in the audio.  Use the 6-digit NAICS code to identify the industry</span>
-    <span class="doccomment">/// vertical - see https://www.naics.com/search/.</span>
+    <span class="doccomment">/// vertical - see &lt;https://www.naics.com/search/.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">uint32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">industry_naics_code_of_audio</span>: <span class="ident">u32</span>,
     <span class="doccomment">/// The audio type that most closely describes the audio being recognized.</span>
@@ -2005,7 +2072,7 @@
     <span class="doccomment">/// Mime type of the original audio file.  For example `audio/m4a`,</span>
     <span class="doccomment">/// `audio/x-alaw-basic`, `audio/mp3`, `audio/3gpp`.</span>
     <span class="doccomment">/// A list of possible audio mime types is maintained at</span>
-    <span class="doccomment">/// http://www.iana.org/assignments/media-types/media-types.xhtml#audio</span>
+    <span class="doccomment">/// &lt;http://www.iana.org/assignments/media-types/media-types.xhtml#audio&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">original_mime_type</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Obfuscated (privacy-protected) ID of the user, to identify number of</span>
@@ -2106,7 +2173,7 @@
     <span class="doccomment">/// to improve the accuracy for specific words and phrases, for example, if</span>
     <span class="doccomment">/// specific commands are typically spoken by the user. This can also be used</span>
     <span class="doccomment">/// to add additional words to the vocabulary of the recognizer. See</span>
-    <span class="doccomment">/// [usage limits](https://cloud.google.com/speech-to-text/quotas#content).</span>
+    <span class="doccomment">/// [usage limits](&lt;https://cloud.google.com/speech-to-text/quotas#content&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// List items can also be set to classes for groups of words that represent</span>
     <span class="doccomment">/// common concepts that occur in natural language. For example, rather than</span>
@@ -2128,8 +2195,8 @@
 }
 <span class="doccomment">/// Contains audio data in the encoding specified in the `RecognitionConfig`.</span>
 <span class="doccomment">/// Either `content` or `uri` must be supplied. Supplying both or neither</span>
-<span class="doccomment">/// returns [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]. See</span>
-<span class="doccomment">/// [content limits](https://cloud.google.com/speech-to-text/quotas#content).</span>
+<span class="doccomment">/// returns \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]. See</span>
+<span class="doccomment">/// [content limits](&lt;https://cloud.google.com/speech-to-text/quotas#content&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RecognitionAudio</span> {
     <span class="doccomment">/// The audio source, which is either inline content or a Google Cloud</span>
@@ -2153,8 +2220,8 @@
         <span class="doccomment">/// Currently, only Google Cloud Storage URIs are</span>
         <span class="doccomment">/// supported, which must be specified in the following format:</span>
         <span class="doccomment">/// `gs://bucket_name/object_name` (other URI formats return</span>
-        <span class="doccomment">/// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For more information, see</span>
-        <span class="doccomment">/// [Request URIs](https://cloud.google.com/storage/docs/reference-uris).</span>
+        <span class="doccomment">/// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For more information, see</span>
+        <span class="doccomment">/// [Request URIs](&lt;https://cloud.google.com/storage/docs/reference-uris&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">Uri</span>(<span class="ident">::prost::alloc::string::String</span>),
     }
@@ -2191,7 +2258,7 @@
     <span class="kw">pub</span> <span class="ident">output_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TranscriptOutputConfig</span><span class="op">&gt;</span>,
     <span class="doccomment">/// If the transcript output fails this field contains the relevant error.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">output_error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">output_error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Describes the progress of a long-running `LongRunningRecognize` call. It is</span>
 <span class="doccomment">/// included in the `metadata` field of the `Operation` returned by the</span>
@@ -2267,10 +2334,10 @@
 <span class="doccomment">///     one or more (repeated) `results`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StreamingRecognizeResponse</span> {
-    <span class="doccomment">/// If set, returns a [google.rpc.Status][google.rpc.Status] message that</span>
+    <span class="doccomment">/// If set, returns a \[google.rpc.Status][google.rpc.Status\] message that</span>
     <span class="doccomment">/// specifies the error for the operation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// This repeated list contains zero or more results that</span>
     <span class="doccomment">/// correspond to consecutive portions of the audio currently being processed.</span>
     <span class="doccomment">/// It contains zero or one `is_final=true` result (the newly settled portion),</span>
@@ -2339,7 +2406,7 @@
     <span class="doccomment">/// For audio_channel_count = N, its output values can range from &#39;1&#39; to &#39;N&#39;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">channel_tag</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// Output only. The [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag</span>
+    <span class="doccomment">/// Output only. The \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;) language tag</span>
     <span class="doccomment">/// of the language in this result. This language code was detected to have</span>
     <span class="doccomment">/// the most likelihood of being spoken in the audio.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
@@ -2359,7 +2426,7 @@
     <span class="doccomment">/// For audio_channel_count = N, its output values can range from &#39;1&#39; to &#39;N&#39;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">channel_tag</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// Output only. The [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag</span>
+    <span class="doccomment">/// Output only. The \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;) language tag</span>
     <span class="doccomment">/// of the language in this result. This language code was detected to have</span>
     <span class="doccomment">/// the most likelihood of being spoken in the audio.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
@@ -2437,7 +2504,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">SpeechClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2450,7 +2517,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SpeechClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2479,8 +2546,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; has been sent and processed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">recognize</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RecognizeRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RecognizeResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RecognizeRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RecognizeResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2501,9 +2568,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [how-to](https://cloud.google.com/speech-to-text/docs/async-recognize).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">long_running_recognize</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LongRunningRecognizeRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LongRunningRecognizeRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2522,9 +2589,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; sending audio. This method is only available via the gRPC API (not REST).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">streaming_recognize</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::StreamingRecognizeRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::StreamingRecognizeRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::StreamingRecognizeResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::StreamingRecognizeResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2555,7 +2622,7 @@
     <span class="doccomment">/// component of the phrase set&#39;s resource name.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This value should be 4-63 characters, and valid characters</span>
-    <span class="doccomment">/// are /[a-z][0-9]-/.</span>
+    <span class="doccomment">/// are /\[a-z][0-9\]-/.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">phrase_set_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The phrase set to create.</span>
@@ -2639,7 +2706,7 @@
     <span class="doccomment">/// component of the custom class&#39; resource name.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This value should be 4-63 characters, and valid characters</span>
-    <span class="doccomment">/// are /[a-z][0-9]-/.</span>
+    <span class="doccomment">/// are /\[a-z][0-9\]-/.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">custom_class_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The custom class to create.</span>
@@ -2723,7 +2790,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AdaptationClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2736,7 +2803,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AdaptationClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2766,8 +2833,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; recognition model when you send a call that includes the PhraseSet.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_phrase_set</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreatePhraseSetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PhraseSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreatePhraseSetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PhraseSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2783,8 +2850,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Get a phrase set.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_phrase_set</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetPhraseSetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PhraseSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetPhraseSetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PhraseSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2800,8 +2867,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; List phrase sets.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_phrase_set</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListPhraseSetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListPhraseSetResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListPhraseSetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListPhraseSetResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2817,8 +2884,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Update a phrase set.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_phrase_set</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdatePhraseSetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PhraseSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdatePhraseSetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PhraseSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2834,7 +2901,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Delete a phrase set.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_phrase_set</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeletePhraseSetRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeletePhraseSetRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -2851,8 +2918,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Create a custom class.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_custom_class</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateCustomClassRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CustomClass</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateCustomClassRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CustomClass</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2868,8 +2935,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Get a custom class.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_custom_class</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetCustomClassRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CustomClass</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetCustomClassRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CustomClass</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2885,8 +2952,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; List custom classes.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_custom_classes</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListCustomClassesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListCustomClassesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListCustomClassesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListCustomClassesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2902,8 +2969,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Update a custom class.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_custom_class</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateCustomClassRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CustomClass</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateCustomClassRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CustomClass</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2919,7 +2986,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Delete a custom class.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_custom_class</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteCustomClassRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteCustomClassRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -2935,5 +3002,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

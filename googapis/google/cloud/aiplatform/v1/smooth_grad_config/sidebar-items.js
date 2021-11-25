@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["GradientNoiseSigma","Represents the standard deviation of the gaussian kernel that will be used to add noise to the interpolated inputs prior to computing gradients."]]});

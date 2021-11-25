@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.api.servicecontrol.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.api.servicecontrol.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.api.servicecontrol.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.api.servicecontrol.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1158,9 +1156,8 @@
 <span id="1156">1156</span>
 <span id="1157">1157</span>
 <span id="1158">1158</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Defines the errors to be returned in</span>
-<span class="doccomment">/// [google.api.servicecontrol.v1.CheckResponse.check_errors][google.api.servicecontrol.v1.CheckResponse.check_errors].</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Defines the errors to be returned in</span>
+<span class="doccomment">/// \[google.api.servicecontrol.v1.CheckResponse.check_errors][google.api.servicecontrol.v1.CheckResponse.check_errors\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CheckError</span> {
     <span class="doccomment">/// The error code.</span>
@@ -1181,7 +1178,7 @@
     <span class="doccomment">/// `status.code` will be non zero and client can propagate it out as public</span>
     <span class="doccomment">/// error.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Nested message and enum types in `CheckError`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">check_error</span> {
@@ -1192,12 +1189,12 @@
         <span class="doccomment">/// This is never used in `CheckResponse`.</span>
         <span class="ident">ErrorCodeUnspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// The consumer&#39;s project id, network container, or resource container was</span>
-        <span class="doccomment">/// not found. Same as [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND].</span>
+        <span class="doccomment">/// not found. Same as \[google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND\].</span>
         <span class="ident">NotFound</span> <span class="op">=</span> <span class="number">5</span>,
         <span class="doccomment">/// The consumer doesn&#39;t have access to the specified resource.</span>
-        <span class="doccomment">/// Same as [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED].</span>
+        <span class="doccomment">/// Same as \[google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED\].</span>
         <span class="ident">PermissionDenied</span> <span class="op">=</span> <span class="number">7</span>,
-        <span class="doccomment">/// Quota check failed. Same as [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].</span>
+        <span class="doccomment">/// Quota check failed. Same as \[google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED\].</span>
         <span class="ident">ResourceExhausted</span> <span class="op">=</span> <span class="number">8</span>,
         <span class="doccomment">/// The consumer hasn&#39;t activated the service.</span>
         <span class="ident">ServiceNotActivated</span> <span class="op">=</span> <span class="number">104</span>,
@@ -1244,10 +1241,10 @@
 <span class="doccomment">/// points. It contains the size of the population of sample points plus</span>
 <span class="doccomment">/// additional optional information:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///   - the arithmetic mean of the samples</span>
-<span class="doccomment">///   - the minimum and maximum of the samples</span>
-<span class="doccomment">///   - the sum-squared-deviation of the samples, used to compute variance</span>
-<span class="doccomment">///   - a histogram of the values of the sample points</span>
+<span class="doccomment">/// * the arithmetic mean of the samples</span>
+<span class="doccomment">/// * the minimum and maximum of the samples</span>
+<span class="doccomment">/// * the sum-squared-deviation of the samples, used to compute variance</span>
+<span class="doccomment">/// * a histogram of the values of the sample points</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Distribution</span> {
     <span class="doccomment">/// The total number of samples in the distribution. Must be &gt;= 0.</span>
@@ -1264,7 +1261,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">maximum</span>: <span class="ident">f64</span>,
     <span class="doccomment">/// The sum of squared deviations from the mean:</span>
-    <span class="doccomment">///   Sum[i=1..count]((x_i - mean)^2)</span>
+    <span class="doccomment">///   Sum\[i=1..count\]((x_i - mean)^2)</span>
     <span class="doccomment">/// where each x_i is a sample values. If `count` is zero then this field</span>
     <span class="doccomment">/// must be zero, otherwise validation of the request fails.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
@@ -1273,9 +1270,9 @@
     <span class="doccomment">/// optional. If present, they must sum to the `count` value.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The buckets are defined below in `bucket_option`. There are N buckets.</span>
-    <span class="doccomment">/// `bucket_counts[0]` is the number of samples in the underflow bucket.</span>
-    <span class="doccomment">/// `bucket_counts[1]` to `bucket_counts[N-1]` are the numbers of samples</span>
-    <span class="doccomment">/// in each of the finite buckets. And `bucket_counts[N] is the number</span>
+    <span class="doccomment">/// `bucket_counts\[0\]` is the number of samples in the underflow bucket.</span>
+    <span class="doccomment">/// `bucket_counts\[1\]` to `bucket_counts\[N-1\]` are the numbers of samples</span>
+    <span class="doccomment">/// in each of the finite buckets. And `bucket_counts\[N\] is the number</span>
     <span class="doccomment">/// of samples in the overflow bucket. See the comments of `bucket_option`</span>
     <span class="doccomment">/// below for more details.</span>
     <span class="doccomment">///</span>
@@ -1284,7 +1281,7 @@
     <span class="kw">pub</span> <span class="ident">bucket_counts</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Example points. Must be in increasing order of `value` field.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">exemplars</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::distribution::Exemplar</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">exemplars</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::distribution::Exemplar</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Defines the buckets in the histogram. `bucket_option` and `bucket_counts`</span>
     <span class="doccomment">/// must be both set, or both unset.</span>
     <span class="doccomment">///</span>
@@ -1362,16 +1359,16 @@
         <span class="doccomment">/// of fenceposting. See comments on `bucket_options` for details.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The i&#39;th finite bucket covers the interval</span>
-        <span class="doccomment">///   [bound[i-1], bound[i])</span>
+        <span class="doccomment">///   \[bound[i-1\], bound\[i\])</span>
         <span class="doccomment">/// where i ranges from 1 to bound_size() - 1. Note that there are no</span>
         <span class="doccomment">/// finite buckets at all if &#39;bound&#39; only contains a single element; in</span>
         <span class="doccomment">/// that special case the single bound defines the boundary between the</span>
         <span class="doccomment">/// underflow and overflow buckets.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// bucket number                   lower bound    upper bound</span>
-        <span class="doccomment">///  i == 0 (underflow)              -inf           bound[i]</span>
-        <span class="doccomment">///  0 &lt; i &lt; bound_size()            bound[i-1]     bound[i]</span>
-        <span class="doccomment">///  i == bound_size() (overflow)    bound[i-1]     +inf</span>
+        <span class="doccomment">///  i == 0 (underflow)              -inf           bound\[i\]</span>
+        <span class="doccomment">///  0 &lt; i &lt; bound_size()            bound\[i-1\]     bound\[i\]</span>
+        <span class="doccomment">///  i == bound_size() (overflow)    bound\[i-1\]     +inf</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">bounds</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
     }
@@ -1421,7 +1418,7 @@
     <span class="kw">pub</span> <span class="ident">request_method</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The scheme (http, https), the host name, the path, and the query</span>
     <span class="doccomment">/// portion of the URL that was requested.</span>
-    <span class="doccomment">/// Example: `&quot;http://example.com/some/info?color=red&quot;`.</span>
+    <span class="doccomment">/// Example: `&quot;&lt;http://example.com/some/info?color=red&quot;`.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">request_url</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The size of the HTTP request message in bytes, including the request</span>
@@ -1451,7 +1448,7 @@
     <span class="kw">pub</span> <span class="ident">server_ip</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The referer URL of the request, as defined in</span>
     <span class="doccomment">/// [HTTP/1.1 Header Field</span>
-    <span class="doccomment">/// Definitions](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html).</span>
+    <span class="doccomment">/// Definitions](&lt;http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">referer</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The request processing latency on the server, from the time the request was</span>
@@ -1534,7 +1531,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Payload</span> {
         <span class="doccomment">/// The log entry payload, represented as a protocol buffer that is</span>
         <span class="doccomment">/// expressed as a JSON object. The only accepted type currently is</span>
-        <span class="doccomment">/// [AuditLog][google.cloud.audit.AuditLog].</span>
+        <span class="doccomment">/// \[AuditLog][google.cloud.audit.AuditLog\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">ProtoPayload</span>(<span class="ident">::prost_types::Any</span>),
         <span class="doccomment">/// The log entry payload, represented as a Unicode string (UTF-8).</span>
@@ -1591,7 +1588,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MetricValue</span> {
     <span class="doccomment">/// The labels describing the metric value.</span>
-    <span class="doccomment">/// See comments on [google.api.servicecontrol.v1.Operation.labels][google.api.servicecontrol.v1.Operation.labels] for</span>
+    <span class="doccomment">/// See comments on \[google.api.servicecontrol.v1.Operation.labels][google.api.servicecontrol.v1.Operation.labels\] for</span>
     <span class="doccomment">/// the overriding relationship.</span>
     <span class="doccomment">/// Note that this map must not contain monitored resource labels.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -1601,12 +1598,12 @@
     <span class="doccomment">/// applies. The time period has different semantics for different metric</span>
     <span class="doccomment">/// types (cumulative, delta, and gauge). See the metric definition</span>
     <span class="doccomment">/// documentation in the service configuration for details. If not specified,</span>
-    <span class="doccomment">/// [google.api.servicecontrol.v1.Operation.start_time][google.api.servicecontrol.v1.Operation.start_time] will be used.</span>
+    <span class="doccomment">/// \[google.api.servicecontrol.v1.Operation.start_time][google.api.servicecontrol.v1.Operation.start_time\] will be used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">start_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The end of the time period over which this metric value&#39;s measurement</span>
     <span class="doccomment">/// applies.  If not specified,</span>
-    <span class="doccomment">/// [google.api.servicecontrol.v1.Operation.end_time][google.api.servicecontrol.v1.Operation.end_time] will be used.</span>
+    <span class="doccomment">/// \[google.api.servicecontrol.v1.Operation.end_time][google.api.servicecontrol.v1.Operation.end_time\] will be used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">end_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The value. The type of value used in the request must</span>
@@ -1636,7 +1633,7 @@
         <span class="ident">StringValue</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// A distribution value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">DistributionValue</span>(<span class="kw">super</span><span class="ident">::Distribution</span>),
+        <span class="ident">DistributionValue</span>(<span class="ident"><span class="kw">super</span>::Distribution</span>),
     }
 }
 <span class="doccomment">/// Represents a set of metric values in the same metric.</span>
@@ -1687,9 +1684,9 @@
     <span class="kw">pub</span> <span class="ident">start_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// End time of the operation.</span>
     <span class="doccomment">/// Required when the operation is used in</span>
-    <span class="doccomment">/// [ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report],</span>
+    <span class="doccomment">/// \[ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report\],</span>
     <span class="doccomment">/// but optional when the operation is used in</span>
-    <span class="doccomment">/// [ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check].</span>
+    <span class="doccomment">/// \[ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">end_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Labels describing the operation. Only the following labels are allowed:</span>
@@ -1754,7 +1751,7 @@
     <span class="doccomment">/// Name of the service as specified in the service configuration. For example,</span>
     <span class="doccomment">/// `&quot;pubsub.googleapis.com&quot;`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See [google.api.Service][google.api.Service] for the definition of a service name.</span>
+    <span class="doccomment">/// See \[google.api.Service][google.api.Service\] for the definition of a service name.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Operation that describes the quota allocation.</span>
@@ -1891,7 +1888,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_config_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Represents error information for [QuotaOperation][google.api.servicecontrol.v1.QuotaOperation].</span>
+<span class="doccomment">/// Represents error information for \[QuotaOperation][google.api.servicecontrol.v1.QuotaOperation\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">QuotaError</span> {
     <span class="doccomment">/// Error code.</span>
@@ -1908,7 +1905,7 @@
     <span class="doccomment">/// Contains additional information about the quota error.</span>
     <span class="doccomment">/// If available, `status.code` will be non zero.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Nested message and enum types in `QuotaError`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">quota_error</span> {
@@ -1923,7 +1920,7 @@
         <span class="doccomment">/// This is never used.</span>
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// Quota allocation failed.</span>
-        <span class="doccomment">/// Same as [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED].</span>
+        <span class="doccomment">/// Same as \[google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED\].</span>
         <span class="ident">ResourceExhausted</span> <span class="op">=</span> <span class="number">8</span>,
         <span class="doccomment">/// Consumer cannot access the service because the service requires active</span>
         <span class="doccomment">/// billing.</span>
@@ -1951,7 +1948,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">QuotaControllerClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1964,7 +1961,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">QuotaControllerClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2002,8 +1999,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; dependency on the quota functionality.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">allocate_quota</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AllocateQuotaRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AllocateQuotaResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AllocateQuotaRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AllocateQuotaResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2025,7 +2022,7 @@
     <span class="doccomment">/// `&quot;pubsub.googleapis.com&quot;`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See</span>
-    <span class="doccomment">/// [google.api.Service](https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service)</span>
+    <span class="doccomment">/// \[google.api.Service\](&lt;https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service&gt;)</span>
     <span class="doccomment">/// for the definition of a service name.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_name</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2044,7 +2041,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CheckResponse</span> {
     <span class="doccomment">/// The same operation_id value used in the</span>
-    <span class="doccomment">/// [CheckRequest][google.api.servicecontrol.v1.CheckRequest]. Used for logging</span>
+    <span class="doccomment">/// \[CheckRequest][google.api.servicecontrol.v1.CheckRequest\]. Used for logging</span>
     <span class="doccomment">/// and diagnostics purposes.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">operation_id</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2090,7 +2087,7 @@
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">project_number</span>: <span class="ident">i64</span>,
         <span class="doccomment">/// The type of the consumer which should have been defined in</span>
-        <span class="doccomment">/// [Google Resource Manager](https://cloud.google.com/resource-manager/).</span>
+        <span class="doccomment">/// [Google Resource Manager](&lt;https://cloud.google.com/resource-manager/&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;consumer_info::ConsumerType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">i32</span>,
         <span class="doccomment">/// The consumer identity number, can be Google cloud project number, folder</span>
@@ -2102,7 +2099,7 @@
     <span class="doccomment">/// Nested message and enum types in `ConsumerInfo`.</span>
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">consumer_info</span> {
         <span class="doccomment">/// The type of the consumer as defined in</span>
-        <span class="doccomment">/// [Google Resource Manager](https://cloud.google.com/resource-manager/).</span>
+        <span class="doccomment">/// [Google Resource Manager](&lt;https://cloud.google.com/resource-manager/&gt;).</span>
         <span class="attribute">#[<span class="ident">derive</span>(
             <span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>,
         )]</span>
@@ -2130,7 +2127,7 @@
     <span class="doccomment">/// `&quot;pubsub.googleapis.com&quot;`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See</span>
-    <span class="doccomment">/// [google.api.Service](https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service)</span>
+    <span class="doccomment">/// \[google.api.Service\](&lt;https://cloud.google.com/service-management/reference/rpc/google.api#google.api.Service&gt;)</span>
     <span class="doccomment">/// for the definition of a service name.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_name</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2143,7 +2140,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// There is no limit on the number of operations in the same ReportRequest,</span>
     <span class="doccomment">/// however the ReportRequest size should be no larger than 1MB. See</span>
-    <span class="doccomment">/// [ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors]</span>
+    <span class="doccomment">/// \[ReportResponse.report_errors][google.api.servicecontrol.v1.ReportResponse.report_errors\]</span>
     <span class="doccomment">/// for partial failure behavior.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">operations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Operation</span><span class="op">&gt;</span>,
@@ -2184,18 +2181,18 @@
 <span class="doccomment">/// Nested message and enum types in `ReportResponse`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">report_response</span> {
     <span class="doccomment">/// Represents the processing error of one</span>
-    <span class="doccomment">/// [Operation][google.api.servicecontrol.v1.Operation] in the request.</span>
+    <span class="doccomment">/// \[Operation][google.api.servicecontrol.v1.Operation\] in the request.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReportError</span> {
         <span class="doccomment">/// The</span>
-        <span class="doccomment">/// [Operation.operation_id][google.api.servicecontrol.v1.Operation.operation_id]</span>
+        <span class="doccomment">/// \[Operation.operation_id][google.api.servicecontrol.v1.Operation.operation_id\]</span>
         <span class="doccomment">/// value from the request.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">operation_id</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Details of the error when processing the</span>
-        <span class="doccomment">/// [Operation][google.api.servicecontrol.v1.Operation].</span>
+        <span class="doccomment">/// \[Operation][google.api.servicecontrol.v1.Operation\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     }
 }
 <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Generated client implementations.&quot;</span>]</span>
@@ -2213,7 +2210,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ServiceControllerClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2226,7 +2223,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ServiceControllerClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2270,8 +2267,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Cloud IAM](https://cloud.google.com/iam).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">check</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CheckRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CheckResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CheckRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CheckResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2301,8 +2298,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Google Cloud IAM](https://cloud.google.com/iam).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">report</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReportRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReportResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReportRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReportResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2317,5 +2314,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

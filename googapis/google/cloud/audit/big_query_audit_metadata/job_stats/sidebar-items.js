@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Extended","Statistics specific to the job type."]],"struct":[["Extract","Extract job statistics."],["Load","Load job statistics."],["Query","Query job statistics."],["ReservationResourceUsage","Job resource usage breakdown by reservation."]]});

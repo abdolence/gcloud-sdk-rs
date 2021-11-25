@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","The possible values of the state/health of source VM."],["TargetVmDefaults","The default configuration of the target VM that will be created in GCP as a result of the migration."]]});

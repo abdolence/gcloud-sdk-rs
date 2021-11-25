@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["KeywordPlanAdGroupKeywordError","Enum describing possible errors from applying a keyword plan ad group keyword or keyword plan campaign keyword."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["IndexServiceClient","A service for creating and managing Vertex AI’s Index resources."]]});

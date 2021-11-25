@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","Possible states a Featurestore can have."]],"struct":[["OnlineServingConfig","OnlineServingConfig specifies the details for provisioning online serving resources."]]});

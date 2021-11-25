@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.ads.googleads.v7.errors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.ads.googleads.v7.errors.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.ads.googleads.v7.errors.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.ads.googleads.v7.errors.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -6305,8 +6303,7 @@
 <span id="6303">6303</span>
 <span id="6304">6304</span>
 <span id="6305">6305</span>
-</pre><pre class="rust">
-<span class="comment">// Proto file describing AccessInvitation errors.</span>
+</pre><pre class="rust"><code><span class="comment">// Proto file describing AccessInvitation errors.</span>
 
 <span class="doccomment">/// Container for enum describing possible AccessInvitation errors.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -6336,7 +6333,7 @@
         <span class="doccomment">/// Pending invitation limit exceeded for the customer.</span>
         <span class="ident">PendingInvitationsLimitExceeded</span> <span class="op">=</span> <span class="number">8</span>,
         <span class="doccomment">/// Email address doesn&#39;t conform to the email domain policy. Please see</span>
-        <span class="doccomment">/// https://support.google.com/google-ads/answer/2375456</span>
+        <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/2375456&gt;</span>
         <span class="ident">EmailDomainPolicyViolated</span> <span class="op">=</span> <span class="number">9</span>,
     }
 }
@@ -6683,7 +6680,7 @@
         <span class="doccomment">/// URL must not contain a query.</span>
         <span class="ident">UrlQueryNotAllowed</span> <span class="op">=</span> <span class="number">100</span>,
         <span class="doccomment">/// A url scheme is not allowed in front of tag in tracking url template</span>
-        <span class="doccomment">/// (e.g. http://{lpurl})</span>
+        <span class="doccomment">/// (e.g. &lt;http://{lpurl}&gt;)</span>
         <span class="ident">UrlSchemeBeforeExpandedDynamicSearchAdTag</span> <span class="op">=</span> <span class="number">102</span>,
         <span class="doccomment">/// The user does not have permissions to create a template ad for the given</span>
         <span class="doccomment">/// template.</span>
@@ -6747,7 +6744,7 @@
         <span class="doccomment">/// The associated ad is not compatible with restriction type.</span>
         <span class="ident">IncompatibleWithRestrictionType</span> <span class="op">=</span> <span class="number">130</span>,
         <span class="doccomment">/// Consent for call recording is required for creating/updating call only</span>
-        <span class="doccomment">/// ads. Please see https://support.google.com/google-ads/answer/7412639.</span>
+        <span class="doccomment">/// ads. Please see &lt;https://support.google.com/google-ads/answer/7412639.&gt;</span>
         <span class="ident">CustomerConsentForCallRecordingRequired</span> <span class="op">=</span> <span class="number">131</span>,
         <span class="doccomment">/// Either an image or a media bundle is required in a display upload ad.</span>
         <span class="ident">MissingImageOrMediaBundle</span> <span class="op">=</span> <span class="number">132</span>,
@@ -7249,11 +7246,11 @@
         <span class="ident">UserIdInvalid</span> <span class="op">=</span> <span class="number">22</span>,
         <span class="doccomment">/// An account administrator changed this account&#39;s authentication settings.</span>
         <span class="doccomment">/// To access this Google Ads account, enable 2-Step Verification in your</span>
-        <span class="doccomment">/// Google account at https://www.google.com/landing/2step.</span>
+        <span class="doccomment">/// Google account at &lt;https://www.google.com/landing/2step.&gt;</span>
         <span class="ident">TwoStepVerificationNotEnrolled</span> <span class="op">=</span> <span class="number">23</span>,
         <span class="doccomment">/// An account administrator changed this account&#39;s authentication settings.</span>
         <span class="doccomment">/// To access this Google Ads account, enable Advanced Protection in your</span>
-        <span class="doccomment">/// Google account at https://landing.google.com/advancedprotection.</span>
+        <span class="doccomment">/// Google account at &lt;https://landing.google.com/advancedprotection.&gt;</span>
         <span class="ident">AdvancedProtectionNotEnrolled</span> <span class="op">=</span> <span class="number">24</span>,
     }
 }
@@ -7275,7 +7272,7 @@
         <span class="doccomment">/// User doesn&#39;t have permission to access customer. Note: If you&#39;re</span>
         <span class="doccomment">/// accessing a client customer, the manager&#39;s customer ID must be set in the</span>
         <span class="doccomment">/// `login-customer-id` header. Learn more at</span>
-        <span class="doccomment">/// https://developers.google.com/google-ads/api/docs/concepts/call-structure#cid</span>
+        <span class="doccomment">/// &lt;https://developers.google.com/google-ads/api/docs/concepts/call-structure#cid&gt;</span>
         <span class="ident">UserPermissionDenied</span> <span class="op">=</span> <span class="number">2</span>,
         <span class="doccomment">/// The developer token is not on the allow-list.</span>
         <span class="ident">DeveloperTokenNotOnAllowlist</span> <span class="op">=</span> <span class="number">13</span>,
@@ -8900,7 +8897,7 @@
         <span class="ident">CalltrackingNotSupportedForCountry</span> <span class="op">=</span> <span class="number">16</span>,
         <span class="doccomment">/// Customer hasn&#39;t consented for call recording, which is required for</span>
         <span class="doccomment">/// creating/updating call feed items. Please see</span>
-        <span class="doccomment">/// https://support.google.com/google-ads/answer/7412639.</span>
+        <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/7412639.&gt;</span>
         <span class="ident">CustomerConsentForCallRecordingRequired</span> <span class="op">=</span> <span class="number">17</span>,
         <span class="doccomment">/// App id provided for an app extension is invalid.</span>
         <span class="ident">InvalidAppId</span> <span class="op">=</span> <span class="number">18</span>,
@@ -9128,7 +9125,7 @@
         <span class="ident">UnsupportedLanguage</span> <span class="op">=</span> <span class="number">65</span>,
         <span class="doccomment">/// Customer hasn&#39;t consented for call recording, which is required for</span>
         <span class="doccomment">/// adding/updating call extensions. Please see</span>
-        <span class="doccomment">/// https://support.google.com/google-ads/answer/7412639.</span>
+        <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/7412639.&gt;</span>
         <span class="ident">CustomerConsentForCallRecordingRequired</span> <span class="op">=</span> <span class="number">66</span>,
         <span class="doccomment">/// The UPDATE operation does not specify any fields other than the resource</span>
         <span class="doccomment">/// name in the update mask.</span>
@@ -9544,7 +9541,7 @@
         <span class="ident">InvalidFinalUrlSuffixFormat</span> <span class="op">=</span> <span class="number">83</span>,
         <span class="doccomment">/// Consent for call recording, which is required for the use of call</span>
         <span class="doccomment">/// extensions, was not provided by the advertiser. Please see</span>
-        <span class="doccomment">/// https://support.google.com/google-ads/answer/7412639.</span>
+        <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/7412639.&gt;</span>
         <span class="ident">CustomerConsentForCallRecordingRequired</span> <span class="op">=</span> <span class="number">84</span>,
         <span class="doccomment">/// Multiple message delivery options are set.</span>
         <span class="ident">OnlyOneDeliveryOptionIsAllowed</span> <span class="op">=</span> <span class="number">85</span>,
@@ -11845,7 +11842,7 @@
     <span class="kw">pub</span> <span class="ident">message</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The value that triggered the error.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">trigger</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::common::Value</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">trigger</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::common::Value</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Describes the part of the request proto that caused the error.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">location</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ErrorLocation</span><span class="op">&gt;</span>,
@@ -12538,7 +12535,7 @@
     <span class="doccomment">/// Unique identifier for this violation.</span>
     <span class="doccomment">/// If policy is exemptible, this key may be used to request exemption.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::common::PolicyViolationKey</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::common::PolicyViolationKey</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Human readable name of the policy.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">external_policy_name</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -12555,7 +12552,7 @@
     <span class="doccomment">/// FULLY_LIMITED policy topic entries that prevented the resource from being</span>
     <span class="doccomment">/// saved (among any other entries the resource may also have).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">policy_topic_entries</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::common::PolicyTopicEntry</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">policy_topic_entries</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::common::PolicyTopicEntry</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Additional quota error details when there is QuotaError.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -12611,5 +12608,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">existing_count</span>: <span class="ident">i32</span>,
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

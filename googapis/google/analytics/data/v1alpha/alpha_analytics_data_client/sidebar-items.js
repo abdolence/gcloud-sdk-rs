@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["AlphaAnalyticsDataClient","Google Analytics reporting data service."]]});

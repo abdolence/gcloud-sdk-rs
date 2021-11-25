@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Decision","Specifies whether or not this manual approval result is to approve or reject a build."]]});

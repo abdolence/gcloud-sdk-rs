@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.datalabeling.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.datalabeling.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.datalabeling.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.datalabeling.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3167,8 +3165,7 @@
 <span id="3165">3165</span>
 <span id="3166">3166</span>
 <span id="3167">3167</span>
-</pre><pre class="rust">
-<span class="doccomment">/// An AnnotationSpecSet is a collection of label definitions. For example, in</span>
+</pre><pre class="rust"><code><span class="doccomment">/// An AnnotationSpecSet is a collection of label definitions. For example, in</span>
 <span class="doccomment">/// image classification tasks, you define a set of possible labels for images as</span>
 <span class="doccomment">/// an AnnotationSpecSet. An AnnotationSpecSet is immutable upon creation.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -3249,35 +3246,35 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ValueType</span> {
         <span class="doccomment">/// Annotation value for image classification case.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">ImageClassificationAnnotation</span>(<span class="kw">super</span><span class="ident">::ImageClassificationAnnotation</span>),
+        <span class="ident">ImageClassificationAnnotation</span>(<span class="ident"><span class="kw">super</span>::ImageClassificationAnnotation</span>),
         <span class="doccomment">/// Annotation value for image bounding box, oriented bounding box</span>
         <span class="doccomment">/// and polygon cases.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">ImageBoundingPolyAnnotation</span>(<span class="kw">super</span><span class="ident">::ImageBoundingPolyAnnotation</span>),
+        <span class="ident">ImageBoundingPolyAnnotation</span>(<span class="ident"><span class="kw">super</span>::ImageBoundingPolyAnnotation</span>),
         <span class="doccomment">/// Annotation value for image polyline cases.</span>
         <span class="doccomment">/// Polyline here is different from BoundingPoly. It is formed by</span>
         <span class="doccomment">/// line segments connected to each other but not closed form(Bounding Poly).</span>
         <span class="doccomment">/// The line segments can cross each other.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">ImagePolylineAnnotation</span>(<span class="kw">super</span><span class="ident">::ImagePolylineAnnotation</span>),
+        <span class="ident">ImagePolylineAnnotation</span>(<span class="ident"><span class="kw">super</span>::ImagePolylineAnnotation</span>),
         <span class="doccomment">/// Annotation value for image segmentation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">ImageSegmentationAnnotation</span>(<span class="kw">super</span><span class="ident">::ImageSegmentationAnnotation</span>),
+        <span class="ident">ImageSegmentationAnnotation</span>(<span class="ident"><span class="kw">super</span>::ImageSegmentationAnnotation</span>),
         <span class="doccomment">/// Annotation value for text classification case.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">TextClassificationAnnotation</span>(<span class="kw">super</span><span class="ident">::TextClassificationAnnotation</span>),
+        <span class="ident">TextClassificationAnnotation</span>(<span class="ident"><span class="kw">super</span>::TextClassificationAnnotation</span>),
         <span class="doccomment">/// Annotation value for text entity extraction case.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
-        <span class="ident">TextEntityExtractionAnnotation</span>(<span class="kw">super</span><span class="ident">::TextEntityExtractionAnnotation</span>),
+        <span class="ident">TextEntityExtractionAnnotation</span>(<span class="ident"><span class="kw">super</span>::TextEntityExtractionAnnotation</span>),
         <span class="doccomment">/// Annotation value for video classification case.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">VideoClassificationAnnotation</span>(<span class="kw">super</span><span class="ident">::VideoClassificationAnnotation</span>),
+        <span class="ident">VideoClassificationAnnotation</span>(<span class="ident"><span class="kw">super</span>::VideoClassificationAnnotation</span>),
         <span class="doccomment">/// Annotation value for video object detection and tracking case.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">VideoObjectTrackingAnnotation</span>(<span class="kw">super</span><span class="ident">::VideoObjectTrackingAnnotation</span>),
+        <span class="ident">VideoObjectTrackingAnnotation</span>(<span class="ident"><span class="kw">super</span>::VideoObjectTrackingAnnotation</span>),
         <span class="doccomment">/// Annotation value for video event case.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">VideoEventAnnotation</span>(<span class="kw">super</span><span class="ident">::VideoEventAnnotation</span>),
+        <span class="ident">VideoEventAnnotation</span>(<span class="ident"><span class="kw">super</span>::VideoEventAnnotation</span>),
     }
 }
 <span class="doccomment">/// Image classification annotation definition.</span>
@@ -3343,9 +3340,9 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BoundedArea</span> {
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">BoundingPoly</span>(<span class="kw">super</span><span class="ident">::BoundingPoly</span>),
+        <span class="ident">BoundingPoly</span>(<span class="ident"><span class="kw">super</span>::BoundingPoly</span>),
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">NormalizedBoundingPoly</span>(<span class="kw">super</span><span class="ident">::NormalizedBoundingPoly</span>),
+        <span class="ident">NormalizedBoundingPoly</span>(<span class="ident"><span class="kw">super</span>::NormalizedBoundingPoly</span>),
     }
 }
 <span class="doccomment">/// A line with multiple line segments.</span>
@@ -3376,9 +3373,9 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Poly</span> {
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Polyline</span>(<span class="kw">super</span><span class="ident">::Polyline</span>),
+        <span class="ident">Polyline</span>(<span class="ident"><span class="kw">super</span>::Polyline</span>),
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">NormalizedPolyline</span>(<span class="kw">super</span><span class="ident">::NormalizedPolyline</span>),
+        <span class="ident">NormalizedPolyline</span>(<span class="ident"><span class="kw">super</span>::NormalizedPolyline</span>),
     }
 }
 <span class="doccomment">/// Image segmentation annotation.</span>
@@ -3462,9 +3459,9 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BoundedArea</span> {
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">BoundingPoly</span>(<span class="kw">super</span><span class="ident">::BoundingPoly</span>),
+        <span class="ident">BoundingPoly</span>(<span class="ident"><span class="kw">super</span>::BoundingPoly</span>),
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">NormalizedBoundingPoly</span>(<span class="kw">super</span><span class="ident">::NormalizedBoundingPoly</span>),
+        <span class="ident">NormalizedBoundingPoly</span>(<span class="ident"><span class="kw">super</span>::NormalizedBoundingPoly</span>),
     }
 }
 <span class="doccomment">/// Video object tracking annotation.</span>
@@ -3635,11 +3632,11 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">annotated_dataset_description</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. A human-readable label used to logically group labeling tasks.</span>
-    <span class="doccomment">/// This string must match the regular expression `[a-zA-Z\\d_-]{0,128}`.</span>
+    <span class="doccomment">/// This string must match the regular expression `\[a-zA-Z\\d_-\]{0,128}`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">label_group</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. The Language of this question, as a</span>
-    <span class="doccomment">/// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt).</span>
+    <span class="doccomment">/// \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;).</span>
     <span class="doccomment">/// Default value is en-US.</span>
     <span class="doccomment">/// Only need to set this when task is language related. For example, French</span>
     <span class="doccomment">/// text classification.</span>
@@ -3659,7 +3656,7 @@
     <span class="doccomment">/// this labeling request, you can set these contributors here. We will give</span>
     <span class="doccomment">/// them access to the question types in crowdcompute. Note that these</span>
     <span class="doccomment">/// emails must be registered in crowdcompute worker UI:</span>
-    <span class="doccomment">/// https://crowd-compute.appspot.com/</span>
+    <span class="doccomment">/// &lt;https://crowd-compute.appspot.com/&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">contributor_emails</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Email of the user who started the labeling task and should be notified by</span>
@@ -3856,11 +3853,11 @@
     <span class="kw">pub</span> <span class="ident">data_type</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. The type of annotation to be performed on this data. You must</span>
     <span class="doccomment">/// specify this field if you are using this InputConfig in an</span>
-    <span class="doccomment">/// [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].</span>
+    <span class="doccomment">/// \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;AnnotationType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">annotation_type</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. Metadata about annotations for the input. You must specify this</span>
-    <span class="doccomment">/// field if you are using this InputConfig in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob] for a</span>
+    <span class="doccomment">/// field if you are using this InputConfig in an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\] for a</span>
     <span class="doccomment">/// model version that performs classification.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">classification_metadata</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ClassificationMetadata</span><span class="op">&gt;</span>,
@@ -3878,25 +3875,25 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DataTypeMetadata</span> {
         <span class="doccomment">/// Required for text import, as language code must be specified.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">TextMetadata</span>(<span class="kw">super</span><span class="ident">::TextMetadata</span>),
+        <span class="ident">TextMetadata</span>(<span class="ident"><span class="kw">super</span>::TextMetadata</span>),
     }
     <span class="doccomment">/// Required. Where the data is from.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
         <span class="doccomment">/// Source located in Cloud Storage.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">GcsSource</span>(<span class="kw">super</span><span class="ident">::GcsSource</span>),
+        <span class="ident">GcsSource</span>(<span class="ident"><span class="kw">super</span>::GcsSource</span>),
         <span class="doccomment">/// Source located in BigQuery. You must specify this field if you are using</span>
-        <span class="doccomment">/// this InputConfig in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob].</span>
+        <span class="doccomment">/// this InputConfig in an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">BigquerySource</span>(<span class="kw">super</span><span class="ident">::BigQuerySource</span>),
+        <span class="ident">BigquerySource</span>(<span class="ident"><span class="kw">super</span>::BigQuerySource</span>),
     }
 }
 <span class="doccomment">/// Metadata for the text.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextMetadata</span> {
     <span class="doccomment">/// The language of this text, as a</span>
-    <span class="doccomment">/// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt).</span>
+    <span class="doccomment">/// \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;).</span>
     <span class="doccomment">/// Default value is en-US.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3919,7 +3916,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">mime_type</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// The BigQuery location for input data. If used in an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob], this</span>
+<span class="doccomment">/// The BigQuery location for input data. If used in an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\], this</span>
 <span class="doccomment">/// is where the service saves the prediction input and output sampled from the</span>
 <span class="doccomment">/// model version.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -3927,7 +3924,7 @@
     <span class="doccomment">/// Required. BigQuery URI to a table, up to 2,000 characters long. If you</span>
     <span class="doccomment">/// specify the URI of a table that does not exist, Data Labeling Service</span>
     <span class="doccomment">/// creates a table at the URI with the correct schema when you create your</span>
-    <span class="doccomment">/// [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob]. If you specify the URI of a table that already exists,</span>
+    <span class="doccomment">/// \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\]. If you specify the URI of a table that already exists,</span>
     <span class="doccomment">/// it must have the</span>
     <span class="doccomment">/// [correct</span>
     <span class="doccomment">/// schema](/ml-engine/docs/continuous-evaluation/create-job#table-schema).</span>
@@ -3956,11 +3953,11 @@
         <span class="doccomment">/// Output to a file in Cloud Storage. Should be used for labeling output</span>
         <span class="doccomment">/// other than image segmentation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
         <span class="doccomment">/// Output to a folder in Cloud Storage. Should be used for image</span>
         <span class="doccomment">/// segmentation labeling output.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">GcsFolderDestination</span>(<span class="kw">super</span><span class="ident">::GcsFolderDestination</span>),
+        <span class="ident">GcsFolderDestination</span>(<span class="ident"><span class="kw">super</span>::GcsFolderDestination</span>),
     }
 }
 <span class="doccomment">/// Export destination of the data.Only gcs path is allowed in</span>
@@ -4001,13 +3998,13 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Payload</span> {
         <span class="doccomment">/// The image payload, a container of the image bytes/uri.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">ImagePayload</span>(<span class="kw">super</span><span class="ident">::ImagePayload</span>),
+        <span class="ident">ImagePayload</span>(<span class="ident"><span class="kw">super</span>::ImagePayload</span>),
         <span class="doccomment">/// The text payload, a container of text content.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">TextPayload</span>(<span class="kw">super</span><span class="ident">::TextPayload</span>),
+        <span class="ident">TextPayload</span>(<span class="ident"><span class="kw">super</span>::TextPayload</span>),
         <span class="doccomment">/// The video payload, a container of the video uri.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">VideoPayload</span>(<span class="kw">super</span><span class="ident">::VideoPayload</span>),
+        <span class="ident">VideoPayload</span>(<span class="ident"><span class="kw">super</span>::VideoPayload</span>),
     }
 }
 <span class="doccomment">/// AnnotatedDataset is a set holding annotations for data in a Dataset. Each</span>
@@ -4091,34 +4088,34 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AnnotationRequestConfig</span> {
         <span class="doccomment">/// Configuration for image classification task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">ImageClassificationConfig</span>(<span class="kw">super</span><span class="ident">::ImageClassificationConfig</span>),
+        <span class="ident">ImageClassificationConfig</span>(<span class="ident"><span class="kw">super</span>::ImageClassificationConfig</span>),
         <span class="doccomment">/// Configuration for image bounding box and bounding poly task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">BoundingPolyConfig</span>(<span class="kw">super</span><span class="ident">::BoundingPolyConfig</span>),
+        <span class="ident">BoundingPolyConfig</span>(<span class="ident"><span class="kw">super</span>::BoundingPolyConfig</span>),
         <span class="doccomment">/// Configuration for image polyline task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">PolylineConfig</span>(<span class="kw">super</span><span class="ident">::PolylineConfig</span>),
+        <span class="ident">PolylineConfig</span>(<span class="ident"><span class="kw">super</span>::PolylineConfig</span>),
         <span class="doccomment">/// Configuration for image segmentation task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">SegmentationConfig</span>(<span class="kw">super</span><span class="ident">::SegmentationConfig</span>),
+        <span class="ident">SegmentationConfig</span>(<span class="ident"><span class="kw">super</span>::SegmentationConfig</span>),
         <span class="doccomment">/// Configuration for video classification task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">VideoClassificationConfig</span>(<span class="kw">super</span><span class="ident">::VideoClassificationConfig</span>),
+        <span class="ident">VideoClassificationConfig</span>(<span class="ident"><span class="kw">super</span>::VideoClassificationConfig</span>),
         <span class="doccomment">/// Configuration for video object detection task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">ObjectDetectionConfig</span>(<span class="kw">super</span><span class="ident">::ObjectDetectionConfig</span>),
+        <span class="ident">ObjectDetectionConfig</span>(<span class="ident"><span class="kw">super</span>::ObjectDetectionConfig</span>),
         <span class="doccomment">/// Configuration for video object tracking task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">ObjectTrackingConfig</span>(<span class="kw">super</span><span class="ident">::ObjectTrackingConfig</span>),
+        <span class="ident">ObjectTrackingConfig</span>(<span class="ident"><span class="kw">super</span>::ObjectTrackingConfig</span>),
         <span class="doccomment">/// Configuration for video event labeling task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">EventConfig</span>(<span class="kw">super</span><span class="ident">::EventConfig</span>),
+        <span class="ident">EventConfig</span>(<span class="ident"><span class="kw">super</span>::EventConfig</span>),
         <span class="doccomment">/// Configuration for text classification task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
-        <span class="ident">TextClassificationConfig</span>(<span class="kw">super</span><span class="ident">::TextClassificationConfig</span>),
+        <span class="ident">TextClassificationConfig</span>(<span class="ident"><span class="kw">super</span>::TextClassificationConfig</span>),
         <span class="doccomment">/// Configuration for text entity extraction task.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
-        <span class="ident">TextEntityExtractionConfig</span>(<span class="kw">super</span><span class="ident">::TextEntityExtractionConfig</span>),
+        <span class="ident">TextEntityExtractionConfig</span>(<span class="ident"><span class="kw">super</span>::TextEntityExtractionConfig</span>),
     }
 }
 <span class="doccomment">/// An Example is a piece of data and its annotation. For example, an image with</span>
@@ -4145,13 +4142,13 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Payload</span> {
         <span class="doccomment">/// The image payload, a container of the image bytes/uri.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">ImagePayload</span>(<span class="kw">super</span><span class="ident">::ImagePayload</span>),
+        <span class="ident">ImagePayload</span>(<span class="ident"><span class="kw">super</span>::ImagePayload</span>),
         <span class="doccomment">/// The text payload, a container of the text content.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">TextPayload</span>(<span class="kw">super</span><span class="ident">::TextPayload</span>),
+        <span class="ident">TextPayload</span>(<span class="ident"><span class="kw">super</span>::TextPayload</span>),
         <span class="doccomment">/// The video payload, a container of the video uri.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">VideoPayload</span>(<span class="kw">super</span><span class="ident">::VideoPayload</span>),
+        <span class="ident">VideoPayload</span>(<span class="ident"><span class="kw">super</span>::VideoPayload</span>),
     }
 }
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
@@ -4167,7 +4164,7 @@
     <span class="ident">GeneralData</span> <span class="op">=</span> <span class="number">6</span>,
 }
 <span class="doccomment">/// Describes an evaluation between a machine learning model&#39;s predictions and</span>
-<span class="doccomment">/// ground truth labels. Created when an [EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob] runs successfully.</span>
+<span class="doccomment">/// ground truth labels. Created when an \[EvaluationJob][google.cloud.datalabeling.v1beta1.EvaluationJob\] runs successfully.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Evaluation</span> {
     <span class="doccomment">/// Output only. Resource name of an evaluation. The name has the following</span>
@@ -4193,7 +4190,7 @@
     <span class="doccomment">/// Output only. Type of task that the model version being evaluated performs,</span>
     <span class="doccomment">/// as defined in the</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [evaluationJobConfig.inputConfig.annotationType][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config]</span>
+    <span class="doccomment">/// \[evaluationJobConfig.inputConfig.annotationType][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config\]</span>
     <span class="doccomment">/// field of the evaluation job that created this evaluation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;AnnotationType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">annotation_type</span>: <span class="ident">i32</span>,
@@ -4204,7 +4201,7 @@
     <span class="kw">pub</span> <span class="ident">evaluated_item_count</span>: <span class="ident">i64</span>,
 }
 <span class="doccomment">/// Configuration details used for calculating evaluation metrics and creating an</span>
-<span class="doccomment">/// [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation].</span>
+<span class="doccomment">/// \[Evaluation][google.cloud.datalabeling.v1beta1.Evaluation\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EvaluationConfig</span> {
     <span class="doccomment">/// Vertical specific options for general metrics.</span>
@@ -4220,7 +4217,7 @@
         <span class="doccomment">/// detection (`IMAGE_BOUNDING_BOX_ANNOTATION`). Describes how to evaluate</span>
         <span class="doccomment">/// bounding boxes.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">BoundingBoxEvaluationOptions</span>(<span class="kw">super</span><span class="ident">::BoundingBoxEvaluationOptions</span>),
+        <span class="ident">BoundingBoxEvaluationOptions</span>(<span class="ident"><span class="kw">super</span>::BoundingBoxEvaluationOptions</span>),
     }
 }
 <span class="doccomment">/// Options regarding evaluation between bounding boxes.</span>
@@ -4247,9 +4244,9 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Metrics</span> {
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">ClassificationMetrics</span>(<span class="kw">super</span><span class="ident">::ClassificationMetrics</span>),
+        <span class="ident">ClassificationMetrics</span>(<span class="ident"><span class="kw">super</span>::ClassificationMetrics</span>),
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">ObjectDetectionMetrics</span>(<span class="kw">super</span><span class="ident">::ObjectDetectionMetrics</span>),
+        <span class="ident">ObjectDetectionMetrics</span>(<span class="ident"><span class="kw">super</span>::ObjectDetectionMetrics</span>),
     }
 }
 <span class="doccomment">/// Metrics calculated for a classification model.</span>
@@ -4322,7 +4319,7 @@
         <span class="doccomment">/// Precision value for entries with label that has highest score.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">precision_at1</span>: <span class="ident">f32</span>,
-        <span class="doccomment">/// The harmonic mean of [recall_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at1] and [precision_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at1].</span>
+        <span class="doccomment">/// The harmonic mean of \[recall_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at1\] and \[precision_at1][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at1\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">f1_score_at1</span>: <span class="ident">f32</span>,
         <span class="doccomment">/// Recall value for entries with label that has highest 5 scores.</span>
@@ -4331,7 +4328,7 @@
         <span class="doccomment">/// Precision value for entries with label that has highest 5 scores.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">precision_at5</span>: <span class="ident">f32</span>,
-        <span class="doccomment">/// The harmonic mean of [recall_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at5] and [precision_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at5].</span>
+        <span class="doccomment">/// The harmonic mean of \[recall_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.recall_at5\] and \[precision_at5][google.cloud.datalabeling.v1beta1.PrCurve.ConfidenceMetricsEntry.precision_at5\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">f1_score_at5</span>: <span class="ident">f32</span>,
     }
@@ -4350,7 +4347,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ConfusionMatrixEntry</span> {
         <span class="doccomment">/// The annotation spec of a predicted label.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">annotation_spec</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AnnotationSpec</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">annotation_spec</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AnnotationSpec</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Number of items predicted to have this label. (The ground truth label for</span>
         <span class="doccomment">/// these items is the `Row.annotationSpec` of this entry&#39;s parent.)</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -4362,7 +4359,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Row</span> {
         <span class="doccomment">/// The annotation spec of the ground truth label for this row.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">annotation_spec</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AnnotationSpec</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">annotation_spec</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AnnotationSpec</span><span class="op">&gt;</span>,
         <span class="doccomment">/// A list of the confusion matrix entries. One entry for each possible</span>
         <span class="doccomment">/// predicted label.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -4370,7 +4367,7 @@
     }
 }
 <span class="doccomment">/// Defines an evaluation job that runs periodically to generate</span>
-<span class="doccomment">/// [Evaluations][google.cloud.datalabeling.v1beta1.Evaluation]. [Creating an evaluation</span>
+<span class="doccomment">/// \[Evaluations][google.cloud.datalabeling.v1beta1.Evaluation\]. [Creating an evaluation</span>
 <span class="doccomment">/// job](/ml-engine/docs/continuous-evaluation/create-job) is the starting point</span>
 <span class="doccomment">/// for using continuous evaluation.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -4414,7 +4411,7 @@
     <span class="doccomment">/// Required. Configuration details for the evaluation job.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">evaluation_job_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EvaluationJobConfig</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Required. Name of the [AnnotationSpecSet][google.cloud.datalabeling.v1beta1.AnnotationSpecSet] describing all the</span>
+    <span class="doccomment">/// Required. Name of the \[AnnotationSpecSet][google.cloud.datalabeling.v1beta1.AnnotationSpecSet\] describing all the</span>
     <span class="doccomment">/// labels that your machine learning model outputs. You must create this</span>
     <span class="doccomment">/// resource before you create an evaluation job and provide its name in the</span>
     <span class="doccomment">/// following format:</span>
@@ -4444,9 +4441,9 @@
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">State</span> {
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
-        <span class="doccomment">/// The job is scheduled to run at the [configured interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule]. You</span>
-        <span class="doccomment">/// can [pause][google.cloud.datalabeling.v1beta1.DataLabelingService.PauseEvaluationJob] or</span>
-        <span class="doccomment">/// [delete][google.cloud.datalabeling.v1beta1.DataLabelingService.DeleteEvaluationJob] the job.</span>
+        <span class="doccomment">/// The job is scheduled to run at the [configured interval]\[google.cloud.datalabeling.v1beta1.EvaluationJob.schedule\]. You</span>
+        <span class="doccomment">/// can \[pause][google.cloud.datalabeling.v1beta1.DataLabelingService.PauseEvaluationJob\] or</span>
+        <span class="doccomment">/// \[delete][google.cloud.datalabeling.v1beta1.DataLabelingService.DeleteEvaluationJob\] the job.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// When the job is in this state, it samples prediction input and output</span>
         <span class="doccomment">/// from your model version into your BigQuery table as predictions occur.</span>
@@ -4456,7 +4453,7 @@
         <span class="doccomment">///</span>
         <span class="doccomment">/// 1. If you have configured your job to use Data Labeling Service for</span>
         <span class="doccomment">///    ground truth labeling, the service creates a</span>
-        <span class="doccomment">///    [Dataset][google.cloud.datalabeling.v1beta1.Dataset] and a labeling task for all data sampled</span>
+        <span class="doccomment">///    \[Dataset][google.cloud.datalabeling.v1beta1.Dataset\] and a labeling task for all data sampled</span>
         <span class="doccomment">///    since the last time the job ran. Human labelers provide ground truth</span>
         <span class="doccomment">///    labels for your data. Human labeling may take hours, or even days,</span>
         <span class="doccomment">///    depending on how much data has been sampled. The job remains in the</span>
@@ -4466,12 +4463,12 @@
         <span class="doccomment">///    finished labeling the data, the next step occurs.</span>
         <span class="doccomment">///    &lt;br&gt;&lt;br&gt;</span>
         <span class="doccomment">///    If you have configured your job to provide your own ground truth</span>
-        <span class="doccomment">///    labels, Data Labeling Service still creates a [Dataset][google.cloud.datalabeling.v1beta1.Dataset] for newly</span>
+        <span class="doccomment">///    labels, Data Labeling Service still creates a \[Dataset][google.cloud.datalabeling.v1beta1.Dataset\] for newly</span>
         <span class="doccomment">///    sampled data, but it expects that you have already added ground truth</span>
         <span class="doccomment">///    labels to the BigQuery table by this time. The next step occurs</span>
         <span class="doccomment">///    immediately.</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// 2. Data Labeling Service creates an [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation] by comparing your</span>
+        <span class="doccomment">/// 2. Data Labeling Service creates an \[Evaluation][google.cloud.datalabeling.v1beta1.Evaluation\] by comparing your</span>
         <span class="doccomment">///    model version&#39;s predictions with the ground truth labels.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// If the job remains in this state for a long time, it continues to sample</span>
@@ -4480,7 +4477,7 @@
         <span class="ident">Running</span> <span class="op">=</span> <span class="number">2</span>,
         <span class="doccomment">/// The job is not sampling prediction input and output into your BigQuery</span>
         <span class="doccomment">/// table and it will not run according to its schedule. You can</span>
-        <span class="doccomment">/// [resume][google.cloud.datalabeling.v1beta1.DataLabelingService.ResumeEvaluationJob] the job.</span>
+        <span class="doccomment">/// \[resume][google.cloud.datalabeling.v1beta1.DataLabelingService.ResumeEvaluationJob\] the job.</span>
         <span class="ident">Paused</span> <span class="op">=</span> <span class="number">3</span>,
         <span class="doccomment">/// The job has this state right before it is deleted.</span>
         <span class="ident">Stopped</span> <span class="op">=</span> <span class="number">4</span>,
@@ -4503,18 +4500,18 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">input_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">InputConfig</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Required. Details for calculating evaluation metrics and creating</span>
-    <span class="doccomment">/// [Evaulations][google.cloud.datalabeling.v1beta1.Evaluation]. If your model version performs image object</span>
+    <span class="doccomment">/// \[Evaulations][google.cloud.datalabeling.v1beta1.Evaluation\]. If your model version performs image object</span>
     <span class="doccomment">/// detection, you must specify the `boundingBoxEvaluationOptions` field within</span>
     <span class="doccomment">/// this configuration. Otherwise, provide an empty object for this</span>
     <span class="doccomment">/// configuration.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">evaluation_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EvaluationConfig</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. Details for human annotation of your data. If you set</span>
-    <span class="doccomment">/// [labelMissingGroundTruth][google.cloud.datalabeling.v1beta1.EvaluationJob.label_missing_ground_truth] to</span>
+    <span class="doccomment">/// \[labelMissingGroundTruth][google.cloud.datalabeling.v1beta1.EvaluationJob.label_missing_ground_truth\] to</span>
     <span class="doccomment">/// `true` for this evaluation job, then you must specify this field. If you</span>
     <span class="doccomment">/// plan to provide your own ground truth labels, then omit this field.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that you must create an [Instruction][google.cloud.datalabeling.v1beta1.Instruction] resource before you can</span>
+    <span class="doccomment">/// Note that you must create an \[Instruction][google.cloud.datalabeling.v1beta1.Instruction\] resource before you can</span>
     <span class="doccomment">/// specify this field. Provide the name of the instruction resource in the</span>
     <span class="doccomment">/// `instruction` field within this configuration.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
@@ -4542,14 +4539,14 @@
     <span class="kw">pub</span> <span class="ident">bigquery_import_keys</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Required. The maximum number of predictions to sample and save to BigQuery</span>
-    <span class="doccomment">/// during each [evaluation interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule]. This limit</span>
+    <span class="doccomment">/// during each [evaluation interval]\[google.cloud.datalabeling.v1beta1.EvaluationJob.schedule\]. This limit</span>
     <span class="doccomment">/// overrides `example_sample_percentage`: even if the service has not sampled</span>
     <span class="doccomment">/// enough predictions to fulfill `example_sample_perecentage` during an</span>
     <span class="doccomment">/// interval, it stops sampling predictions when it meets this limit.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">example_count</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Required. Fraction of predictions to sample and save to BigQuery during</span>
-    <span class="doccomment">/// each [evaluation interval][google.cloud.datalabeling.v1beta1.EvaluationJob.schedule]. For example, 0.1 means</span>
+    <span class="doccomment">/// each [evaluation interval]\[google.cloud.datalabeling.v1beta1.EvaluationJob.schedule\]. For example, 0.1 means</span>
     <span class="doccomment">/// 10% of predictions served by your model version get saved to BigQuery.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">example_sample_percentage</span>: <span class="ident">f64</span>,
@@ -4577,26 +4574,26 @@
         <span class="doccomment">/// general classification.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// `annotationSpecSet` in this configuration must match</span>
-        <span class="doccomment">/// [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].</span>
+        <span class="doccomment">/// \[EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set\].</span>
         <span class="doccomment">/// `allowMultiLabel` in this configuration must match</span>
-        <span class="doccomment">/// `classificationMetadata.isMultiLabel` in [input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config].</span>
+        <span class="doccomment">/// `classificationMetadata.isMultiLabel` in \[input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">ImageClassificationConfig</span>(<span class="kw">super</span><span class="ident">::ImageClassificationConfig</span>),
+        <span class="ident">ImageClassificationConfig</span>(<span class="ident"><span class="kw">super</span>::ImageClassificationConfig</span>),
         <span class="doccomment">/// Specify this field if your model version performs image object detection</span>
         <span class="doccomment">/// (bounding box detection).</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// `annotationSpecSet` in this configuration must match</span>
-        <span class="doccomment">/// [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].</span>
+        <span class="doccomment">/// \[EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">BoundingPolyConfig</span>(<span class="kw">super</span><span class="ident">::BoundingPolyConfig</span>),
+        <span class="ident">BoundingPolyConfig</span>(<span class="ident"><span class="kw">super</span>::BoundingPolyConfig</span>),
         <span class="doccomment">/// Specify this field if your model version performs text classification.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// `annotationSpecSet` in this configuration must match</span>
-        <span class="doccomment">/// [EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set].</span>
+        <span class="doccomment">/// \[EvaluationJob.annotationSpecSet][google.cloud.datalabeling.v1beta1.EvaluationJob.annotation_spec_set\].</span>
         <span class="doccomment">/// `allowMultiLabel` in this configuration must match</span>
-        <span class="doccomment">/// `classificationMetadata.isMultiLabel` in [input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config].</span>
+        <span class="doccomment">/// `classificationMetadata.isMultiLabel` in \[input_config][google.cloud.datalabeling.v1beta1.EvaluationJobConfig.input_config\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">TextClassificationConfig</span>(<span class="kw">super</span><span class="ident">::TextClassificationConfig</span>),
+        <span class="ident">TextClassificationConfig</span>(<span class="ident"><span class="kw">super</span>::TextClassificationConfig</span>),
     }
 }
 <span class="doccomment">/// Provides details for how an evaluation job sends email alerts based on the</span>
@@ -4609,7 +4606,7 @@
     <span class="doccomment">/// Required. A number between 0 and 1 that describes a minimum mean average</span>
     <span class="doccomment">/// precision threshold. When the evaluation job runs, if it calculates that</span>
     <span class="doccomment">/// your model version&#39;s predictions from the recent interval have</span>
-    <span class="doccomment">/// [meanAveragePrecision][google.cloud.datalabeling.v1beta1.PrCurve.mean_average_precision] below this</span>
+    <span class="doccomment">/// \[meanAveragePrecision][google.cloud.datalabeling.v1beta1.PrCurve.mean_average_precision\] below this</span>
     <span class="doccomment">/// threshold, then it sends an alert to your specified email.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">min_acceptable_mean_average_precision</span>: <span class="ident">f64</span>,
@@ -4621,7 +4618,7 @@
     <span class="kw">pub</span> <span class="ident">attempt_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Details of errors that occurred.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Instruction of how to perform the labeling task for human operators.</span>
 <span class="doccomment">/// Currently only PDF instruction is supported.</span>
@@ -4715,8 +4712,8 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained by</span>
-    <span class="doccomment">/// [ListDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDatasetsResponse.next_page_token] of the previous</span>
-    <span class="doccomment">/// [DataLabelingService.ListDatasets] call.</span>
+    <span class="doccomment">/// \[ListDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDatasetsResponse.next_page_token\] of the previous</span>
+    <span class="doccomment">/// \[DataLabelingService.ListDatasets\] call.</span>
     <span class="doccomment">/// Returns the first page if empty.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -4803,8 +4800,8 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained by</span>
-    <span class="doccomment">/// [ListDataItemsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDataItemsResponse.next_page_token] of the previous</span>
-    <span class="doccomment">/// [DataLabelingService.ListDataItems] call.</span>
+    <span class="doccomment">/// \[ListDataItemsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListDataItemsResponse.next_page_token\] of the previous</span>
+    <span class="doccomment">/// \[DataLabelingService.ListDataItems\] call.</span>
     <span class="doccomment">/// Return first page if empty.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -4844,8 +4841,8 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained by</span>
-    <span class="doccomment">/// [ListAnnotatedDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse.next_page_token] of the previous</span>
-    <span class="doccomment">/// [DataLabelingService.ListAnnotatedDatasets] call.</span>
+    <span class="doccomment">/// \[ListAnnotatedDatasetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotatedDatasetsResponse.next_page_token\] of the previous</span>
+    <span class="doccomment">/// \[DataLabelingService.ListAnnotatedDatasets\] call.</span>
     <span class="doccomment">/// Return first page if empty.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -4919,22 +4916,22 @@
         <span class="doccomment">/// One of image_classification_config, bounding_poly_config,</span>
         <span class="doccomment">/// polyline_config and segmentation_config are required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">ImageClassificationConfig</span>(<span class="kw">super</span><span class="ident">::ImageClassificationConfig</span>),
+        <span class="ident">ImageClassificationConfig</span>(<span class="ident"><span class="kw">super</span>::ImageClassificationConfig</span>),
         <span class="doccomment">/// Configuration for bounding box and bounding poly task.</span>
         <span class="doccomment">/// One of image_classification_config, bounding_poly_config,</span>
         <span class="doccomment">/// polyline_config and segmentation_config are required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">BoundingPolyConfig</span>(<span class="kw">super</span><span class="ident">::BoundingPolyConfig</span>),
+        <span class="ident">BoundingPolyConfig</span>(<span class="ident"><span class="kw">super</span>::BoundingPolyConfig</span>),
         <span class="doccomment">/// Configuration for polyline task.</span>
         <span class="doccomment">/// One of image_classification_config, bounding_poly_config,</span>
         <span class="doccomment">/// polyline_config and segmentation_config are required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">PolylineConfig</span>(<span class="kw">super</span><span class="ident">::PolylineConfig</span>),
+        <span class="ident">PolylineConfig</span>(<span class="ident"><span class="kw">super</span>::PolylineConfig</span>),
         <span class="doccomment">/// Configuration for segmentation task.</span>
         <span class="doccomment">/// One of image_classification_config, bounding_poly_config,</span>
         <span class="doccomment">/// polyline_config and segmentation_config are required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">SegmentationConfig</span>(<span class="kw">super</span><span class="ident">::SegmentationConfig</span>),
+        <span class="ident">SegmentationConfig</span>(<span class="ident"><span class="kw">super</span>::SegmentationConfig</span>),
     }
 }
 <span class="doccomment">/// Request message for LabelVideo.</span>
@@ -4979,22 +4976,22 @@
         <span class="doccomment">/// One of video_classification_config, object_detection_config,</span>
         <span class="doccomment">/// object_tracking_config and event_config is required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">VideoClassificationConfig</span>(<span class="kw">super</span><span class="ident">::VideoClassificationConfig</span>),
+        <span class="ident">VideoClassificationConfig</span>(<span class="ident"><span class="kw">super</span>::VideoClassificationConfig</span>),
         <span class="doccomment">/// Configuration for video object detection task.</span>
         <span class="doccomment">/// One of video_classification_config, object_detection_config,</span>
         <span class="doccomment">/// object_tracking_config and event_config is required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">ObjectDetectionConfig</span>(<span class="kw">super</span><span class="ident">::ObjectDetectionConfig</span>),
+        <span class="ident">ObjectDetectionConfig</span>(<span class="ident"><span class="kw">super</span>::ObjectDetectionConfig</span>),
         <span class="doccomment">/// Configuration for video object tracking task.</span>
         <span class="doccomment">/// One of video_classification_config, object_detection_config,</span>
         <span class="doccomment">/// object_tracking_config and event_config is required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">ObjectTrackingConfig</span>(<span class="kw">super</span><span class="ident">::ObjectTrackingConfig</span>),
+        <span class="ident">ObjectTrackingConfig</span>(<span class="ident"><span class="kw">super</span>::ObjectTrackingConfig</span>),
         <span class="doccomment">/// Configuration for video event task.</span>
         <span class="doccomment">/// One of video_classification_config, object_detection_config,</span>
         <span class="doccomment">/// object_tracking_config and event_config is required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">EventConfig</span>(<span class="kw">super</span><span class="ident">::EventConfig</span>),
+        <span class="ident">EventConfig</span>(<span class="ident"><span class="kw">super</span>::EventConfig</span>),
     }
 }
 <span class="doccomment">/// Request message for LabelText.</span>
@@ -5035,12 +5032,12 @@
         <span class="doccomment">/// One of text_classification_config and text_entity_extraction_config</span>
         <span class="doccomment">/// is required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">TextClassificationConfig</span>(<span class="kw">super</span><span class="ident">::TextClassificationConfig</span>),
+        <span class="ident">TextClassificationConfig</span>(<span class="ident"><span class="kw">super</span>::TextClassificationConfig</span>),
         <span class="doccomment">/// Configuration for entity extraction task.</span>
         <span class="doccomment">/// One of text_classification_config and text_entity_extraction_config</span>
         <span class="doccomment">/// is required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">TextEntityExtractionConfig</span>(<span class="kw">super</span><span class="ident">::TextEntityExtractionConfig</span>),
+        <span class="ident">TextEntityExtractionConfig</span>(<span class="ident"><span class="kw">super</span>::TextEntityExtractionConfig</span>),
     }
 }
 <span class="doccomment">/// Request message for GetExample</span>
@@ -5075,8 +5072,8 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained by</span>
-    <span class="doccomment">/// [ListExamplesResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListExamplesResponse.next_page_token] of the previous</span>
-    <span class="doccomment">/// [DataLabelingService.ListExamples] call.</span>
+    <span class="doccomment">/// \[ListExamplesResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListExamplesResponse.next_page_token\] of the previous</span>
+    <span class="doccomment">/// \[DataLabelingService.ListExamples\] call.</span>
     <span class="doccomment">/// Return first page if empty.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -5128,8 +5125,8 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained by</span>
-    <span class="doccomment">/// [ListAnnotationSpecSetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse.next_page_token] of the previous</span>
-    <span class="doccomment">/// [DataLabelingService.ListAnnotationSpecSets] call.</span>
+    <span class="doccomment">/// \[ListAnnotationSpecSetsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListAnnotationSpecSetsResponse.next_page_token\] of the previous</span>
+    <span class="doccomment">/// \[DataLabelingService.ListAnnotationSpecSets\] call.</span>
     <span class="doccomment">/// Return first page if empty.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -5195,8 +5192,8 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained by</span>
-    <span class="doccomment">/// [ListInstructionsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListInstructionsResponse.next_page_token] of the previous</span>
-    <span class="doccomment">/// [DataLabelingService.ListInstructions] call.</span>
+    <span class="doccomment">/// \[ListInstructionsResponse.next_page_token][google.cloud.datalabeling.v1beta1.ListInstructionsResponse.next_page_token\] of the previous</span>
+    <span class="doccomment">/// \[DataLabelingService.ListInstructions\] call.</span>
     <span class="doccomment">/// Return first page if empty.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -5230,21 +5227,21 @@
     <span class="doccomment">/// Optional. To search evaluations, you can filter by the following:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * evaluation&lt;span&gt;_&lt;/span&gt;job.evaluation_job_id (the last part of</span>
-    <span class="doccomment">///   [EvaluationJob.name][google.cloud.datalabeling.v1beta1.EvaluationJob.name])</span>
+    <span class="doccomment">///   \[EvaluationJob.name][google.cloud.datalabeling.v1beta1.EvaluationJob.name\])</span>
     <span class="doccomment">/// * evaluation&lt;span&gt;_&lt;/span&gt;job.model_id (the &lt;var&gt;{model_name}&lt;/var&gt; portion</span>
-    <span class="doccomment">///   of [EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version])</span>
+    <span class="doccomment">///   of \[EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version\])</span>
     <span class="doccomment">/// * evaluation&lt;span&gt;_&lt;/span&gt;job.evaluation_job_run_time_start (Minimum</span>
     <span class="doccomment">///   threshold for the</span>
-    <span class="doccomment">///   [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time] that created</span>
+    <span class="doccomment">///   \[evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time\] that created</span>
     <span class="doccomment">///   the evaluation)</span>
     <span class="doccomment">/// * evaluation&lt;span&gt;_&lt;/span&gt;job.evaluation_job_run_time_end (Maximum</span>
     <span class="doccomment">///   threshold for the</span>
-    <span class="doccomment">///   [evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time] that created</span>
+    <span class="doccomment">///   \[evaluationJobRunTime][google.cloud.datalabeling.v1beta1.Evaluation.evaluation_job_run_time\] that created</span>
     <span class="doccomment">///   the evaluation)</span>
-    <span class="doccomment">/// * evaluation&lt;span&gt;_&lt;/span&gt;job.job_state ([EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state])</span>
+    <span class="doccomment">/// * evaluation&lt;span&gt;_&lt;/span&gt;job.job_state (\[EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state\])</span>
     <span class="doccomment">/// * annotation&lt;span&gt;_&lt;/span&gt;spec.display_name (the Evaluation contains a</span>
     <span class="doccomment">///   metric for the annotation spec with this</span>
-    <span class="doccomment">///   [displayName][google.cloud.datalabeling.v1beta1.AnnotationSpec.display_name])</span>
+    <span class="doccomment">///   \[displayName][google.cloud.datalabeling.v1beta1.AnnotationSpec.display_name\])</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// To filter by multiple critiera, use the `AND` operator or the `OR`</span>
     <span class="doccomment">/// operator. The following examples shows a string that filters by several</span>
@@ -5266,7 +5263,7 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained by the</span>
-    <span class="doccomment">/// [nextPageToken][google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse.next_page_token] of the response</span>
+    <span class="doccomment">/// \[nextPageToken][google.cloud.datalabeling.v1beta1.SearchEvaluationsResponse.next_page_token\] of the response</span>
     <span class="doccomment">/// to a previous search request.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If you don&#39;t specify this field, the API call requests the first page of</span>
@@ -5287,7 +5284,7 @@
 <span class="doccomment">/// Request message of SearchExampleComparisons.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SearchExampleComparisonsRequest</span> {
-    <span class="doccomment">/// Required. Name of the [Evaluation][google.cloud.datalabeling.v1beta1.Evaluation] resource to search for example</span>
+    <span class="doccomment">/// Required. Name of the \[Evaluation][google.cloud.datalabeling.v1beta1.Evaluation\] resource to search for example</span>
     <span class="doccomment">/// comparisons from. Format:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// &quot;projects/&lt;var&gt;{project_id}&lt;/var&gt;/datasets/&lt;var&gt;{dataset_id}&lt;/var&gt;/evaluations/&lt;var&gt;{evaluation_id}&lt;/var&gt;&quot;</span>
@@ -5299,7 +5296,7 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained by the</span>
-    <span class="doccomment">/// [nextPageToken][SearchExampleComparisons.next_page_token] of the response</span>
+    <span class="doccomment">/// \[nextPageToken][SearchExampleComparisons.next_page_token\] of the response</span>
     <span class="doccomment">/// to a previous search rquest.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If you don&#39;t specify this field, the API call requests the first page of</span>
@@ -5326,10 +5323,10 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExampleComparison</span> {
         <span class="doccomment">/// The ground truth output for the input.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">ground_truth_example</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Example</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">ground_truth_example</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Example</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Predictions by the model for the input.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">model_created_examples</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Example</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">model_created_examples</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Example</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// Request message for CreateEvaluationJob.</span>
@@ -5406,8 +5403,8 @@
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. You can filter the jobs to list by model_id (also known as</span>
     <span class="doccomment">/// model_name, as described in</span>
-    <span class="doccomment">/// [EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version]) or by</span>
-    <span class="doccomment">/// evaluation job state (as described in [EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state]). To filter</span>
+    <span class="doccomment">/// \[EvaluationJob.modelVersion][google.cloud.datalabeling.v1beta1.EvaluationJob.model_version\]) or by</span>
+    <span class="doccomment">/// evaluation job state (as described in \[EvaluationJob.state][google.cloud.datalabeling.v1beta1.EvaluationJob.state\]). To filter</span>
     <span class="doccomment">/// by both criteria, use the `AND` operator or the `OR` operator. For example,</span>
     <span class="doccomment">/// you can use the following string for your filter:</span>
     <span class="doccomment">/// &quot;evaluation&lt;span&gt;_&lt;/span&gt;job.model_id = &lt;var&gt;{model_name}&lt;/var&gt; AND</span>
@@ -5420,7 +5417,7 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained by the</span>
-    <span class="doccomment">/// [nextPageToken][google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse.next_page_token] in the response</span>
+    <span class="doccomment">/// \[nextPageToken][google.cloud.datalabeling.v1beta1.ListEvaluationJobsResponse.next_page_token\] in the response</span>
     <span class="doccomment">/// to the previous request. The request returns the first page if this is</span>
     <span class="doccomment">/// empty.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
@@ -5448,7 +5445,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DataLabelingServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -5461,7 +5458,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DataLabelingServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -5489,8 +5486,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates dataset. If success return a Dataset resource.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_dataset</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateDatasetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Dataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateDatasetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Dataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5506,8 +5503,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets dataset by resource name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_dataset</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetDatasetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Dataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetDatasetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Dataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5523,8 +5520,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists datasets under a project. Pagination is supported.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_datasets</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDatasetsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDatasetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDatasetsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDatasetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5540,7 +5537,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a dataset by resource name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_dataset</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteDatasetRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteDatasetRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -5561,9 +5558,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; importing is still ongoing. Vice versa.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import_data</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ImportDataRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ImportDataRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -5581,9 +5578,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Exports data and annotations from dataset.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">export_data</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ExportDataRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ExportDataRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -5602,8 +5599,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; called after data are imported into dataset.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_data_item</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetDataItemRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DataItem</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetDataItemRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DataItem</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5620,8 +5617,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; are imported into dataset. Pagination is supported.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_data_items</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDataItemsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDataItemsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDataItemsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDataItemsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5637,8 +5634,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets an annotated dataset by resource name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_annotated_dataset</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetAnnotatedDatasetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AnnotatedDataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetAnnotatedDatasetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AnnotatedDataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5654,8 +5651,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists annotated datasets for a dataset. Pagination is supported.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_annotated_datasets</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAnnotatedDatasetsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAnnotatedDatasetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAnnotatedDatasetsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAnnotatedDatasetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5671,7 +5668,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes an annotated dataset by resource name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_annotated_dataset</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteAnnotatedDatasetRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteAnnotatedDatasetRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -5689,9 +5686,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; configured by feature in the request.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">label_image</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LabelImageRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LabelImageRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -5710,9 +5707,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; configured by feature in the request.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">label_video</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LabelVideoRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LabelVideoRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -5731,9 +5728,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; configured by feature in the request.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">label_text</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LabelTextRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LabelTextRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -5751,8 +5748,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets an example by resource name, including both data and annotation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_example</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetExampleRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Example</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetExampleRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Example</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5768,8 +5765,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists examples in an annotated dataset. Pagination is supported.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_examples</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListExamplesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListExamplesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListExamplesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListExamplesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5785,8 +5782,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates an annotation spec set by providing a set of labels.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_annotation_spec_set</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateAnnotationSpecSetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AnnotationSpecSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateAnnotationSpecSetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AnnotationSpecSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5802,8 +5799,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets an annotation spec set by resource name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_annotation_spec_set</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetAnnotationSpecSetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AnnotationSpecSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetAnnotationSpecSetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AnnotationSpecSet</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5819,8 +5816,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists annotation spec sets for a project. Pagination is supported.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_annotation_spec_sets</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAnnotationSpecSetsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAnnotationSpecSetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAnnotationSpecSetsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAnnotationSpecSetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5836,7 +5833,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes an annotation spec set by resource name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_annotation_spec_set</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteAnnotationSpecSetRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteAnnotationSpecSetRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -5853,9 +5850,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates an instruction for how data should be labeled.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_instruction</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateInstructionRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateInstructionRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -5873,8 +5870,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets an instruction by resource name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_instruction</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetInstructionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Instruction</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetInstructionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Instruction</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5890,8 +5887,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists instructions for a project. Pagination is supported.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_instructions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListInstructionsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListInstructionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListInstructionsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListInstructionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5907,7 +5904,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes an instruction object by resource name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_instruction</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteInstructionRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteInstructionRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -5925,8 +5922,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [projects.evaluations.search][google.cloud.datalabeling.v1beta1.DataLabelingService.SearchEvaluations]).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_evaluation</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetEvaluationRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Evaluation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetEvaluationRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Evaluation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5942,8 +5939,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Searches [evaluations][google.cloud.datalabeling.v1beta1.Evaluation] within a project.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">search_evaluations</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SearchEvaluationsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SearchEvaluationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SearchEvaluationsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SearchEvaluationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -5961,8 +5958,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; a single input. Search by providing an evaluation ID.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">search_example_comparisons</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SearchExampleComparisonsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SearchExampleComparisonsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SearchExampleComparisonsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SearchExampleComparisonsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -5979,8 +5976,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates an evaluation job.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_evaluation_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateEvaluationJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EvaluationJob</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateEvaluationJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EvaluationJob</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -6001,8 +5998,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; delete the job and create a new one.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_evaluation_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateEvaluationJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EvaluationJob</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateEvaluationJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EvaluationJob</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -6018,8 +6015,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets an evaluation job by resource name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_evaluation_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetEvaluationJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EvaluationJob</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetEvaluationJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EvaluationJob</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -6036,7 +6033,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; `PAUSED` state is a no-op.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">pause_evaluation_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PauseEvaluationJobRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PauseEvaluationJobRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -6054,7 +6051,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Resuming a running or scheduled evaluation job is a no-op.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">resume_evaluation_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ResumeEvaluationJobRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ResumeEvaluationJobRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -6071,7 +6068,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Stops and deletes an evaluation job.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_evaluation_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteEvaluationJobRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteEvaluationJobRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -6089,8 +6086,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Pagination is supported.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_evaluation_jobs</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListEvaluationJobsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListEvaluationJobsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListEvaluationJobsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListEvaluationJobsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -6149,7 +6146,7 @@
     <span class="doccomment">/// E.g. single files that couldn&#39;t be read.</span>
     <span class="doccomment">/// Status details field will contain standard GCP error details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. Timestamp when import dataset request was created.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">create_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
@@ -6165,7 +6162,7 @@
     <span class="doccomment">/// E.g. single files that couldn&#39;t be read.</span>
     <span class="doccomment">/// Status details field will contain standard GCP error details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. Timestamp when export dataset request was created.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">create_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
@@ -6181,7 +6178,7 @@
     <span class="doccomment">/// E.g. single files that couldn&#39;t be read.</span>
     <span class="doccomment">/// Status details field will contain standard GCP error details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. Timestamp when labeling request was created.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">create_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
@@ -6199,40 +6196,40 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Details</span> {
         <span class="doccomment">/// Details of label image classification operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">ImageClassificationDetails</span>(<span class="kw">super</span><span class="ident">::LabelImageClassificationOperationMetadata</span>),
+        <span class="ident">ImageClassificationDetails</span>(<span class="ident"><span class="kw">super</span>::LabelImageClassificationOperationMetadata</span>),
         <span class="doccomment">/// Details of label image bounding box operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">ImageBoundingBoxDetails</span>(<span class="kw">super</span><span class="ident">::LabelImageBoundingBoxOperationMetadata</span>),
+        <span class="ident">ImageBoundingBoxDetails</span>(<span class="ident"><span class="kw">super</span>::LabelImageBoundingBoxOperationMetadata</span>),
         <span class="doccomment">/// Details of label image bounding poly operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
-        <span class="ident">ImageBoundingPolyDetails</span>(<span class="kw">super</span><span class="ident">::LabelImageBoundingPolyOperationMetadata</span>),
+        <span class="ident">ImageBoundingPolyDetails</span>(<span class="ident"><span class="kw">super</span>::LabelImageBoundingPolyOperationMetadata</span>),
         <span class="doccomment">/// Details of label image oriented bounding box operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
-        <span class="ident">ImageOrientedBoundingBoxDetails</span>(<span class="kw">super</span><span class="ident">::LabelImageOrientedBoundingBoxOperationMetadata</span>),
+        <span class="ident">ImageOrientedBoundingBoxDetails</span>(<span class="ident"><span class="kw">super</span>::LabelImageOrientedBoundingBoxOperationMetadata</span>),
         <span class="doccomment">/// Details of label image polyline operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
-        <span class="ident">ImagePolylineDetails</span>(<span class="kw">super</span><span class="ident">::LabelImagePolylineOperationMetadata</span>),
+        <span class="ident">ImagePolylineDetails</span>(<span class="ident"><span class="kw">super</span>::LabelImagePolylineOperationMetadata</span>),
         <span class="doccomment">/// Details of label image segmentation operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
-        <span class="ident">ImageSegmentationDetails</span>(<span class="kw">super</span><span class="ident">::LabelImageSegmentationOperationMetadata</span>),
+        <span class="ident">ImageSegmentationDetails</span>(<span class="ident"><span class="kw">super</span>::LabelImageSegmentationOperationMetadata</span>),
         <span class="doccomment">/// Details of label video classification operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">VideoClassificationDetails</span>(<span class="kw">super</span><span class="ident">::LabelVideoClassificationOperationMetadata</span>),
+        <span class="ident">VideoClassificationDetails</span>(<span class="ident"><span class="kw">super</span>::LabelVideoClassificationOperationMetadata</span>),
         <span class="doccomment">/// Details of label video object detection operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">VideoObjectDetectionDetails</span>(<span class="kw">super</span><span class="ident">::LabelVideoObjectDetectionOperationMetadata</span>),
+        <span class="ident">VideoObjectDetectionDetails</span>(<span class="ident"><span class="kw">super</span>::LabelVideoObjectDetectionOperationMetadata</span>),
         <span class="doccomment">/// Details of label video object tracking operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">VideoObjectTrackingDetails</span>(<span class="kw">super</span><span class="ident">::LabelVideoObjectTrackingOperationMetadata</span>),
+        <span class="ident">VideoObjectTrackingDetails</span>(<span class="ident"><span class="kw">super</span>::LabelVideoObjectTrackingOperationMetadata</span>),
         <span class="doccomment">/// Details of label video event operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">VideoEventDetails</span>(<span class="kw">super</span><span class="ident">::LabelVideoEventOperationMetadata</span>),
+        <span class="ident">VideoEventDetails</span>(<span class="ident"><span class="kw">super</span>::LabelVideoEventOperationMetadata</span>),
         <span class="doccomment">/// Details of label text classification operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">TextClassificationDetails</span>(<span class="kw">super</span><span class="ident">::LabelTextClassificationOperationMetadata</span>),
+        <span class="ident">TextClassificationDetails</span>(<span class="ident"><span class="kw">super</span>::LabelTextClassificationOperationMetadata</span>),
         <span class="doccomment">/// Details of label text entity extraction operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
-        <span class="ident">TextEntityExtractionDetails</span>(<span class="kw">super</span><span class="ident">::LabelTextEntityExtractionOperationMetadata</span>),
+        <span class="ident">TextEntityExtractionDetails</span>(<span class="ident"><span class="kw">super</span>::LabelTextEntityExtractionOperationMetadata</span>),
     }
 }
 <span class="doccomment">/// Metadata of a LabelImageClassification operation.</span>
@@ -6330,10 +6327,12 @@
     <span class="doccomment">/// E.g. single files that couldn&#39;t be read.</span>
     <span class="doccomment">/// Status details field will contain standard GCP error details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Timestamp when create instruction request was created.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">create_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

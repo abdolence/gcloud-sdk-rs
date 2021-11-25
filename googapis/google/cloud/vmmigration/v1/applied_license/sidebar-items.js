@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","License types used in OS adaptation."]]});

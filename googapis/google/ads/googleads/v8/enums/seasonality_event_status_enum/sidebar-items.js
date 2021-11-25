@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SeasonalityEventStatus","The possible statuses of a Seasonality Event."]]});

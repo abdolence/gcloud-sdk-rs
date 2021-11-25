@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ImagePlaceholderField","Possible values for Advertiser Provided Image placeholder fields."]]});

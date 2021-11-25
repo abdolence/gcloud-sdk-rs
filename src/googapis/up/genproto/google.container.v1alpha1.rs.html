@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.container.v1alpha1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.container.v1alpha1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.container.v1alpha1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.container.v1alpha1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2376,8 +2374,7 @@
 <span id="2374">2374</span>
 <span id="2375">2375</span>
 <span id="2376">2376</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Parameters that describe the nodes in a cluster.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Parameters that describe the nodes in a cluster.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NodeConfig</span> {
     <span class="doccomment">/// The name of a Google Compute Engine [machine</span>
@@ -2400,9 +2397,9 @@
     <span class="doccomment">/// The following scopes are recommended, but not required, and by default are</span>
     <span class="doccomment">/// not included:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * `https://www.googleapis.com/auth/compute` is required for mounting</span>
+    <span class="doccomment">/// * `&lt;https://www.googleapis.com/auth/compute`&gt; is required for mounting</span>
     <span class="doccomment">/// persistent storage on your nodes.</span>
-    <span class="doccomment">/// * `https://www.googleapis.com/auth/devstorage.read_only` is required for</span>
+    <span class="doccomment">/// * `&lt;https://www.googleapis.com/auth/devstorage.read_only`&gt; is required for</span>
     <span class="doccomment">/// communicating with **gcr.io**</span>
     <span class="doccomment">/// (the [Google Container Registry](/container-registry/)).</span>
     <span class="doccomment">///</span>
@@ -2416,7 +2413,7 @@
     <span class="kw">pub</span> <span class="ident">service_account</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The metadata key/value pairs assigned to instances in the cluster.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Keys must conform to the regexp [a-zA-Z0-9-_]+ and be less than 128 bytes</span>
+    <span class="doccomment">/// Keys must conform to the regexp \[a-zA-Z0-9-_\]+ and be less than 128 bytes</span>
     <span class="doccomment">/// in length. These are reflected as part of a URL in the metadata server.</span>
     <span class="doccomment">/// Additionally, to avoid ambiguity, keys must not conflict with any other</span>
     <span class="doccomment">/// metadata keys for the project or be one of the four reserved keys:</span>
@@ -2441,7 +2438,7 @@
     <span class="doccomment">/// the Kubernetes version -- it&#39;s best to assume the behavior is undefined</span>
     <span class="doccomment">/// and conflicts should be avoided.</span>
     <span class="doccomment">/// For more information, including usage and the valid values, see:</span>
-    <span class="doccomment">/// https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/</span>
+    <span class="doccomment">/// &lt;https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -2449,7 +2446,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The limit for this value is dependant upon the maximum number of</span>
     <span class="doccomment">/// disks available on a machine per zone. See:</span>
-    <span class="doccomment">/// https://cloud.google.com/compute/docs/disks/local-ssd#local_ssd_limits</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/compute/docs/disks/local-ssd#local_ssd_limits&gt;</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">local_ssd_count</span>: <span class="ident">i32</span>,
@@ -2460,12 +2457,12 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">tags</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Whether the nodes are created as preemptible VM instances. See:</span>
-    <span class="doccomment">/// https://cloud.google.com/compute/docs/instances/preemptible for more</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/compute/docs/instances/preemptible&gt; for more</span>
     <span class="doccomment">/// inforamtion about preemptible VM instances.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">preemptible</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// A list of hardware accelerators to be attached to each node.</span>
-    <span class="doccomment">/// See https://cloud.google.com/compute/docs/gpus for more information about</span>
+    <span class="doccomment">/// See &lt;https://cloud.google.com/compute/docs/gpus&gt; for more information about</span>
     <span class="doccomment">/// support for GPUs.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">accelerators</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">AcceleratorConfig</span><span class="op">&gt;</span>,
@@ -2474,13 +2471,13 @@
     <span class="doccomment">/// friendly names of CPU platforms, such as</span>
     <span class="doccomment">/// &lt;code&gt;minCpuPlatform: &amp;quot;Intel Haswell&amp;quot;&lt;/code&gt; or</span>
     <span class="doccomment">/// &lt;code&gt;minCpuPlatform: &amp;quot;Intel Sandy Bridge&amp;quot;&lt;/code&gt;. For more</span>
-    <span class="doccomment">/// information, read [how to specify min CPU platform](https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform)</span>
+    <span class="doccomment">/// information, read [how to specify min CPU platform](&lt;https://cloud.google.com/compute/docs/instances/specify-min-cpu-platform&gt;)</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">min_cpu_platform</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// List of kubernetes taints to be applied to each node.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For more information, including usage and the valid values, see:</span>
-    <span class="doccomment">/// https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/</span>
+    <span class="doccomment">/// &lt;https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">taints</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">NodeTaint</span><span class="op">&gt;</span>,
 }
@@ -2488,7 +2485,7 @@
 <span class="doccomment">/// can only be one of three types:  NoSchedule, PreferNoSchedule or NoExecute.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// For more information, including usage and the valid values, see:</span>
-<span class="doccomment">/// https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/</span>
+<span class="doccomment">/// &lt;https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NodeTaint</span> {
     <span class="doccomment">/// Key for taint.</span>
@@ -2644,7 +2641,7 @@
     }
 }
 <span class="doccomment">/// Configuration options for the NetworkPolicy feature.</span>
-<span class="doccomment">/// https://kubernetes.io/docs/concepts/services-networking/networkpolicies/</span>
+<span class="doccomment">/// &lt;https://kubernetes.io/docs/concepts/services-networking/networkpolicies/&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NetworkPolicy</span> {
     <span class="doccomment">/// The selected network policy provider.</span>
@@ -2720,7 +2717,7 @@
     <span class="doccomment">/// netmask.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Set to a</span>
-    <span class="doccomment">/// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)</span>
+    <span class="doccomment">/// \[CIDR\](&lt;http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&gt;)</span>
     <span class="doccomment">/// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.</span>
     <span class="doccomment">/// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range</span>
     <span class="doccomment">/// to use.</span>
@@ -2736,7 +2733,7 @@
     <span class="doccomment">/// netmask.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Set to a</span>
-    <span class="doccomment">/// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)</span>
+    <span class="doccomment">/// \[CIDR\](&lt;http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&gt;)</span>
     <span class="doccomment">/// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.</span>
     <span class="doccomment">/// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range</span>
     <span class="doccomment">/// to use.</span>
@@ -2753,7 +2750,7 @@
     <span class="doccomment">/// netmask.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Set to a</span>
-    <span class="doccomment">/// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)</span>
+    <span class="doccomment">/// \[CIDR\](&lt;http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&gt;)</span>
     <span class="doccomment">/// notation (e.g. `10.96.0.0/14`) from the RFC-1918 private networks (e.g.</span>
     <span class="doccomment">/// `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`) to pick a specific range</span>
     <span class="doccomment">/// to use.</span>
@@ -2824,13 +2821,13 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">monitoring_service</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [network](/compute/docs/networks-and-firewalls#networks) to which the</span>
+    <span class="doccomment">/// \[network\](/compute/docs/networks-and-firewalls#networks) to which the</span>
     <span class="doccomment">/// cluster is connected. If left unspecified, the `default` network</span>
     <span class="doccomment">/// will be used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">network</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The IP address range of the container pods in this cluster, in</span>
-    <span class="doccomment">/// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)</span>
+    <span class="doccomment">/// \[CIDR\](&lt;http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&gt;)</span>
     <span class="doccomment">/// notation (e.g. `10.96.0.0/14`). Leave blank to have</span>
     <span class="doccomment">/// one automatically chosen or specify a `/14` block in `10.0.0.0/8`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
@@ -2839,7 +2836,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">addons_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">AddonsConfig</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [subnetwork](/compute/docs/subnetworks) to which the</span>
+    <span class="doccomment">/// \[subnetwork\](/compute/docs/subnetworks) to which the</span>
     <span class="doccomment">/// cluster is connected.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">subnetwork</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2849,7 +2846,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">node_pools</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">NodePool</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The list of Google Compute Engine</span>
-    <span class="doccomment">/// [locations](/compute/docs/zones#available) in which the cluster&#39;s nodes</span>
+    <span class="doccomment">/// \[locations\](/compute/docs/zones#available) in which the cluster&#39;s nodes</span>
     <span class="doccomment">/// should be located.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">locations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -2880,14 +2877,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;100&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">self_link</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use location instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;101&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">zone</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] The IP address of this cluster&#39;s master endpoint.</span>
     <span class="doccomment">/// The endpoint can be accessed from the internet at</span>
-    <span class="doccomment">/// `https://username:password@endpoint/`.</span>
+    <span class="doccomment">/// `&lt;https://username:password@endpoint/`.&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See the `masterAuth` property of this resource for username and</span>
     <span class="doccomment">/// password information.</span>
@@ -2908,7 +2905,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;105&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">current_node_version</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] The time the cluster was created, in</span>
-    <span class="doccomment">/// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.</span>
+    <span class="doccomment">/// \[RFC3339\](&lt;https://www.ietf.org/rfc/rfc3339.txt&gt;) text format.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;106&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">create_time</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] The current status of this cluster.</span>
@@ -2925,7 +2922,7 @@
     <span class="kw">pub</span> <span class="ident">node_ipv4_cidr_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// [Output only] The IP address range of the Kubernetes services in</span>
     <span class="doccomment">/// this cluster, in</span>
-    <span class="doccomment">/// [CIDR](http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing)</span>
+    <span class="doccomment">/// \[CIDR\](&lt;http://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing&gt;)</span>
     <span class="doccomment">/// notation (e.g. `1.2.3.4/29`). Service addresses are</span>
     <span class="doccomment">/// typically put in the last `/16` from the container CIDR.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;110&quot;</span>)]</span>
@@ -2939,12 +2936,12 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;112&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">current_node_count</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// [Output only] The time the cluster will be automatically</span>
-    <span class="doccomment">/// deleted in [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.</span>
+    <span class="doccomment">/// deleted in \[RFC3339\](&lt;https://www.ietf.org/rfc/rfc3339.txt&gt;) text format.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;113&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">expire_time</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/regions-zones/regions-zones#available) or</span>
-    <span class="doccomment">/// [region](/compute/docs/regions-zones/regions-zones#available) in which</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/regions-zones/regions-zones#available) or</span>
+    <span class="doccomment">/// \[region\](/compute/docs/regions-zones/regions-zones#available) in which</span>
     <span class="doccomment">/// the cluster resides.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;114&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">location</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3010,7 +3007,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">desired_node_pool_autoscaling</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">NodePoolAutoscaling</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The desired list of Google Compute Engine</span>
-    <span class="doccomment">/// [locations](/compute/docs/zones#available) in which the cluster&#39;s nodes</span>
+    <span class="doccomment">/// \[locations\](/compute/docs/zones#available) in which the cluster&#39;s nodes</span>
     <span class="doccomment">/// should be located. Changing the locations a cluster is in will result</span>
     <span class="doccomment">/// in nodes being either created or removed from the cluster, depending on</span>
     <span class="doccomment">/// whether locations are being added or removed.</span>
@@ -3039,7 +3036,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the operation</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the operation</span>
     <span class="doccomment">/// is taking place.</span>
     <span class="doccomment">/// This field is deprecated, use location instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3063,17 +3060,17 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">target_link</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/regions-zones/regions-zones#available) or</span>
-    <span class="doccomment">/// [region](/compute/docs/regions-zones/regions-zones#available) in which</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/regions-zones/regions-zones#available) or</span>
+    <span class="doccomment">/// \[region\](/compute/docs/regions-zones/regions-zones#available) in which</span>
     <span class="doccomment">/// the cluster resides.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">location</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] The time the operation started, in</span>
-    <span class="doccomment">/// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.</span>
+    <span class="doccomment">/// \[RFC3339\](&lt;https://www.ietf.org/rfc/rfc3339.txt&gt;) text format.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">start_time</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] The time the operation completed, in</span>
-    <span class="doccomment">/// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.</span>
+    <span class="doccomment">/// \[RFC3339\](&lt;https://www.ietf.org/rfc/rfc3339.txt&gt;) text format.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">end_time</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -3138,12 +3135,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateClusterRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3161,12 +3158,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetClusterRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3184,12 +3181,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateClusterRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3210,12 +3207,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateNodePoolRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3245,12 +3242,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetNodePoolAutoscalingRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3276,12 +3273,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetLoggingServiceRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">zone</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3305,12 +3302,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetMonitoringServiceRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3335,12 +3332,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetAddonsConfigRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3362,12 +3359,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetLocationsRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3377,7 +3374,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">cluster_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The desired list of Google Compute Engine</span>
-    <span class="doccomment">/// [locations](/compute/docs/zones#available) in which the cluster&#39;s nodes</span>
+    <span class="doccomment">/// \[locations\](/compute/docs/zones#available) in which the cluster&#39;s nodes</span>
     <span class="doccomment">/// should be located. Changing the locations a cluster is in will result</span>
     <span class="doccomment">/// in nodes being either created or removed from the cluster, depending on</span>
     <span class="doccomment">/// whether locations are being added or removed.</span>
@@ -3394,11 +3391,11 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateMasterRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3421,12 +3418,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetMasterAuthRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3469,12 +3466,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteClusterRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3492,12 +3489,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListClustersRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides, or &quot;-&quot; for all zones.</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3524,12 +3521,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetOperationRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3547,11 +3544,11 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListOperationsRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The name of the Google Compute Engine [zone](/compute/docs/zones#available)</span>
+    <span class="doccomment">/// The name of the Google Compute Engine \[zone\](/compute/docs/zones#available)</span>
     <span class="doccomment">/// to return operations for, or `-` for all zones.</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3566,12 +3563,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CancelOperationRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the operation resides.</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the operation resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">zone</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3599,11 +3596,11 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetServerConfigRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The name of the Google Compute Engine [zone](/compute/docs/zones#available)</span>
+    <span class="doccomment">/// The name of the Google Compute Engine \[zone\](/compute/docs/zones#available)</span>
     <span class="doccomment">/// to return operations for.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3636,12 +3633,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateNodePoolRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://developers.google.com/console/help/new/#projectnumber).</span>
+    <span class="doccomment">/// number](&lt;https://developers.google.com/console/help/new/#projectnumber&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3662,12 +3659,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteNodePoolRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://developers.google.com/console/help/new/#projectnumber).</span>
+    <span class="doccomment">/// number](&lt;https://developers.google.com/console/help/new/#projectnumber&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3689,12 +3686,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListNodePoolsRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://developers.google.com/console/help/new/#projectnumber).</span>
+    <span class="doccomment">/// number](&lt;https://developers.google.com/console/help/new/#projectnumber&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use parent instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3712,12 +3709,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetNodePoolRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://developers.google.com/console/help/new/#projectnumber).</span>
+    <span class="doccomment">/// number](&lt;https://developers.google.com/console/help/new/#projectnumber&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3830,7 +3827,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AutoUpgradeOptions</span> {
     <span class="doccomment">/// [Output only] This field is set when upgrades are about to commence</span>
     <span class="doccomment">/// with the approximate start time for the upgrades, in</span>
-    <span class="doccomment">/// [RFC3339](https://www.ietf.org/rfc/rfc3339.txt) text format.</span>
+    <span class="doccomment">/// \[RFC3339\](&lt;https://www.ietf.org/rfc/rfc3339.txt&gt;) text format.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">auto_upgrade_start_time</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] This field is set when upgrades are about to commence</span>
@@ -3861,14 +3858,14 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Policy</span> {
         <span class="doccomment">/// DailyMaintenanceWindow specifies a daily maintenance operation window.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">DailyMaintenanceWindow</span>(<span class="kw">super</span><span class="ident">::DailyMaintenanceWindow</span>),
+        <span class="ident">DailyMaintenanceWindow</span>(<span class="ident"><span class="kw">super</span>::DailyMaintenanceWindow</span>),
     }
 }
 <span class="doccomment">/// Time window specified for daily maintenance operations.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DailyMaintenanceWindow</span> {
     <span class="doccomment">/// Time within the maintenance window to start the maintenance operations.</span>
-    <span class="doccomment">/// It must be in format &quot;HH:MM”, where HH : [00-23] and MM : [00-59] GMT.</span>
+    <span class="doccomment">/// It must be in format &quot;HH:MM”, where HH : \[00-23\] and MM : \[00-59\] GMT.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">start_time</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// [Output only] Duration of the time window, automatically chosen to be</span>
@@ -3881,12 +3878,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetNodePoolManagementRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3913,11 +3910,11 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetNodePoolSizeRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3945,12 +3942,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RollbackNodePoolUpgradeRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3998,12 +3995,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetLabelsRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://developers.google.com/console/help/new/#projectnumber).</span>
+    <span class="doccomment">/// number](&lt;https://developers.google.com/console/help/new/#projectnumber&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -4034,12 +4031,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetLegacyAbacRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -4061,12 +4058,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StartIpRotationRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://developers.google.com/console/help/new/#projectnumber).</span>
+    <span class="doccomment">/// number](&lt;https://developers.google.com/console/help/new/#projectnumber&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -4084,12 +4081,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CompleteIpRotationRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://developers.google.com/console/help/new/#projectnumber).</span>
+    <span class="doccomment">/// number](&lt;https://developers.google.com/console/help/new/#projectnumber&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -4110,7 +4107,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">accelerator_count</span>: <span class="ident">i64</span>,
     <span class="doccomment">/// The accelerator type resource name. List of supported accelerators</span>
-    <span class="doccomment">/// [here](/compute/docs/gpus/#Introduction)</span>
+    <span class="doccomment">/// \[here\](/compute/docs/gpus/#Introduction)</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">accelerator_type</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -4118,12 +4115,12 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetNetworkPolicyRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://developers.google.com/console/help/new/#projectnumber).</span>
+    <span class="doccomment">/// number](&lt;https://developers.google.com/console/help/new/#projectnumber&gt;).</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="doccomment">/// This field is deprecated, use name instead.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -4145,11 +4142,11 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetMaintenancePolicyRequest</span> {
     <span class="doccomment">/// The Google Developers Console [project ID or project</span>
-    <span class="doccomment">/// number](https://support.google.com/cloud/answer/6158840).</span>
+    <span class="doccomment">/// number](&lt;https://support.google.com/cloud/answer/6158840&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the Google Compute Engine</span>
-    <span class="doccomment">/// [zone](/compute/docs/zones#available) in which the cluster</span>
+    <span class="doccomment">/// \[zone\](/compute/docs/zones#available) in which the cluster</span>
     <span class="doccomment">/// resides.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">zone</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -4178,7 +4175,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ClusterManagerClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -4191,7 +4188,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ClusterManagerClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -4220,8 +4217,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; zones.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_clusters</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListClustersRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListClustersResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListClustersRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListClustersResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4237,8 +4234,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the details of a specific cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_cluster</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetClusterRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Cluster</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetClusterRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Cluster</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4266,8 +4263,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; which CIDR range is being used by the cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_cluster</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateClusterRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateClusterRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4283,8 +4280,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates the settings of a specific cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_cluster</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateClusterRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateClusterRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4300,8 +4297,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates the version and/or iamge type of a specific node pool.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_node_pool</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateNodePoolRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateNodePoolRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4317,8 +4314,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Sets the autoscaling settings of a specific node pool.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_node_pool_autoscaling</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetNodePoolAutoscalingRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetNodePoolAutoscalingRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4334,8 +4331,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Sets the logging service of a specific cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_logging_service</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetLoggingServiceRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetLoggingServiceRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4351,8 +4348,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Sets the monitoring service of a specific cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_monitoring_service</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetMonitoringServiceRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetMonitoringServiceRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4368,8 +4365,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Sets the addons of a specific cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_addons_config</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetAddonsConfigRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetAddonsConfigRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4385,8 +4382,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Sets the locations of a specific cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_locations</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetLocationsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetLocationsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4402,8 +4399,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates the master of a specific cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_master</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateMasterRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateMasterRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4422,8 +4419,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Modify basic_auth.csv and reset the K8S API server.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_master_auth</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetMasterAuthRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetMasterAuthRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4447,8 +4444,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; at the initial create time.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_cluster</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteClusterRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteClusterRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4464,8 +4461,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists all operations in a project in a specific zone or all zones.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_operations</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListOperationsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListOperationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListOperationsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListOperationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4481,8 +4478,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the specified operation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_operation</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetOperationRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetOperationRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4498,7 +4495,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Cancels the specified operation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">cancel_operation</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CancelOperationRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CancelOperationRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4515,8 +4512,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns configuration info about the Container Engine service.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_server_config</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetServerConfigRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServerConfig</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetServerConfigRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServerConfig</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4532,8 +4529,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists the node pools for a cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_node_pools</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListNodePoolsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListNodePoolsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListNodePoolsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListNodePoolsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4549,8 +4546,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Retrieves the node pool requested.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_node_pool</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetNodePoolRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::NodePool</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetNodePoolRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::NodePool</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4566,8 +4563,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a node pool for a cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_node_pool</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateNodePoolRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateNodePoolRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4583,8 +4580,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a node pool from a cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_node_pool</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteNodePoolRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteNodePoolRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4601,8 +4598,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This will be an no-op if the last upgrade successfully completed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">rollback_node_pool_upgrade</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RollbackNodePoolUpgradeRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RollbackNodePoolUpgradeRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4618,8 +4615,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Sets the NodeManagement options for a node pool.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_node_pool_management</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetNodePoolManagementRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetNodePoolManagementRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4635,8 +4632,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Sets labels on a cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_labels</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetLabelsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetLabelsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4652,8 +4649,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Enables or disables the ABAC authorization mechanism on a cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_legacy_abac</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetLegacyAbacRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetLegacyAbacRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4669,8 +4666,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Start master IP rotation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">start_ip_rotation</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::StartIpRotationRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::StartIpRotationRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4686,8 +4683,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Completes master IP rotation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">complete_ip_rotation</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CompleteIpRotationRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CompleteIpRotationRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4703,8 +4700,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Sets the size of a specific node pool.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_node_pool_size</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetNodePoolSizeRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetNodePoolSizeRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4720,8 +4717,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Enables/Disables Network Policy for a cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_network_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetNetworkPolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetNetworkPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4737,8 +4734,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Sets the maintenance policy for a cluster.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_maintenance_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SetMaintenancePolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SetMaintenancePolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Operation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4753,5 +4750,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

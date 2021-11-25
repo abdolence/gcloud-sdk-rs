@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["MatchType","The match type of a string filter"]]});

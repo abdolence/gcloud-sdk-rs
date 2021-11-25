@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AdGroupCriterionServiceClient","Service to manage ad group criteria."]]});

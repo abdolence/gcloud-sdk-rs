@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FileEncoding","The file encoding types."],["LanguageOptions","The language specific settings for the translation task."],["TokenType","The special token data type."]]});

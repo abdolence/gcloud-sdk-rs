@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.ads.googleads.v7.common.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.ads.googleads.v7.common.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.ads.googleads.v7.common.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.ads.googleads.v7.common.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -5078,8 +5076,7 @@
 <span id="5076">5076</span>
 <span id="5077">5077</span>
 <span id="5078">5078</span>
-</pre><pre class="rust">
-<span class="comment">// Proto file describing policy information.</span>
+</pre><pre class="rust"><code><span class="comment">// Proto file describing policy information.</span>
 
 <span class="doccomment">/// Key of the violation. The key is used for referring to a violation</span>
 <span class="doccomment">/// when filing an exemption request.</span>
@@ -5719,19 +5716,19 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Format</span> {
         <span class="doccomment">/// Video TrueView in-stream ad format.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">InStream</span>(<span class="kw">super</span><span class="ident">::VideoTrueViewInStreamAdInfo</span>),
+        <span class="ident">InStream</span>(<span class="ident"><span class="kw">super</span>::VideoTrueViewInStreamAdInfo</span>),
         <span class="doccomment">/// Video bumper in-stream ad format.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Bumper</span>(<span class="kw">super</span><span class="ident">::VideoBumperInStreamAdInfo</span>),
+        <span class="ident">Bumper</span>(<span class="ident"><span class="kw">super</span>::VideoBumperInStreamAdInfo</span>),
         <span class="doccomment">/// Video out-stream ad format.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">OutStream</span>(<span class="kw">super</span><span class="ident">::VideoOutstreamAdInfo</span>),
+        <span class="ident">OutStream</span>(<span class="ident"><span class="kw">super</span>::VideoOutstreamAdInfo</span>),
         <span class="doccomment">/// Video non-skippable in-stream ad format.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">NonSkippable</span>(<span class="kw">super</span><span class="ident">::VideoNonSkippableInStreamAdInfo</span>),
+        <span class="ident">NonSkippable</span>(<span class="ident"><span class="kw">super</span>::VideoNonSkippableInStreamAdInfo</span>),
         <span class="doccomment">/// Video TrueView discovery ad format.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">Discovery</span>(<span class="kw">super</span><span class="ident">::VideoTrueViewDiscoveryAdInfo</span>),
+        <span class="ident">Discovery</span>(<span class="ident"><span class="kw">super</span>::VideoTrueViewDiscoveryAdInfo</span>),
     }
 }
 <span class="doccomment">/// A video responsive ad.</span>
@@ -5772,7 +5769,7 @@
 <span class="doccomment">/// customers&#39; search terms, responsive search ads may improve your campaign&#39;s</span>
 <span class="doccomment">/// performance.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// More information at https://support.google.com/google-ads/answer/7684791</span>
+<span class="doccomment">/// More information at &lt;https://support.google.com/google-ads/answer/7684791&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResponsiveSearchAdInfo</span> {
     <span class="doccomment">/// List of text assets for headlines. When the ad serves the headlines will</span>
@@ -6062,13 +6059,13 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MediaAsset</span> {
         <span class="doccomment">/// A media bundle asset to be used in the ad. For information about the</span>
         <span class="doccomment">/// media bundle for HTML5_UPLOAD_AD see</span>
-        <span class="doccomment">/// https://support.google.com/google-ads/answer/1722096</span>
+        <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/1722096&gt;</span>
         <span class="doccomment">/// Media bundles that are part of dynamic product types use a special format</span>
         <span class="doccomment">/// that needs to be created through the Google Web Designer. See</span>
-        <span class="doccomment">/// https://support.google.com/webdesigner/answer/7543898 for more</span>
+        <span class="doccomment">/// &lt;https://support.google.com/webdesigner/answer/7543898&gt; for more</span>
         <span class="doccomment">/// information.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">MediaBundle</span>(<span class="kw">super</span><span class="ident">::AdMediaBundleAsset</span>),
+        <span class="ident">MediaBundle</span>(<span class="ident"><span class="kw">super</span>::AdMediaBundleAsset</span>),
     }
 }
 <span class="doccomment">/// Specification for various creative controls for a responsive display ad.</span>
@@ -6102,7 +6099,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PlacementInfo</span> {
     <span class="doccomment">/// URL of the placement.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// For example, &quot;http://www.domain.com&quot;.</span>
+    <span class="doccomment">/// For example, &quot;&lt;http://www.domain.com&quot;.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
@@ -6123,10 +6120,10 @@
     <span class="doccomment">/// corresponding platform.</span>
     <span class="doccomment">/// For iOS, this native identifier is the 9 digit string that appears at the</span>
     <span class="doccomment">/// end of an App Store URL (e.g., &quot;476943146&quot; for &quot;Flood-It! 2&quot; whose App</span>
-    <span class="doccomment">/// Store link is &quot;http://itunes.apple.com/us/app/flood-it!-2/id476943146&quot;).</span>
+    <span class="doccomment">/// Store link is &quot;&lt;http://itunes.apple.com/us/app/flood-it!-2/id476943146&quot;&gt;).</span>
     <span class="doccomment">/// For Android, this native identifier is the application&#39;s package name</span>
     <span class="doccomment">/// (e.g., &quot;com.labpixies.colordrips&quot; for &quot;Color Drips&quot; given Google Play link</span>
-    <span class="doccomment">/// &quot;https://play.google.com/store/apps/details?id=com.labpixies.colordrips&quot;).</span>
+    <span class="doccomment">/// &quot;&lt;https://play.google.com/store/apps/details?id=com.labpixies.colordrips&quot;&gt;).</span>
     <span class="doccomment">/// A well formed app id for Google Ads API would thus be &quot;1-476943146&quot; for iOS</span>
     <span class="doccomment">/// and &quot;2-com.labpixies.colordrips&quot; for Android.</span>
     <span class="doccomment">/// This field is required and must be set in CREATE operations.</span>
@@ -6202,46 +6199,46 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Dimension</span> {
         <span class="doccomment">/// Advertiser-specific hotel ID.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">HotelId</span>(<span class="kw">super</span><span class="ident">::HotelIdInfo</span>),
+        <span class="ident">HotelId</span>(<span class="ident"><span class="kw">super</span>::HotelIdInfo</span>),
         <span class="doccomment">/// Class of the hotel as a number of stars 1 to 5.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">HotelClass</span>(<span class="kw">super</span><span class="ident">::HotelClassInfo</span>),
+        <span class="ident">HotelClass</span>(<span class="ident"><span class="kw">super</span>::HotelClassInfo</span>),
         <span class="doccomment">/// Country or Region the hotel is located in.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">HotelCountryRegion</span>(<span class="kw">super</span><span class="ident">::HotelCountryRegionInfo</span>),
+        <span class="ident">HotelCountryRegion</span>(<span class="ident"><span class="kw">super</span>::HotelCountryRegionInfo</span>),
         <span class="doccomment">/// State the hotel is located in.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">HotelState</span>(<span class="kw">super</span><span class="ident">::HotelStateInfo</span>),
+        <span class="ident">HotelState</span>(<span class="ident"><span class="kw">super</span>::HotelStateInfo</span>),
         <span class="doccomment">/// City the hotel is located in.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">HotelCity</span>(<span class="kw">super</span><span class="ident">::HotelCityInfo</span>),
+        <span class="ident">HotelCity</span>(<span class="ident"><span class="kw">super</span>::HotelCityInfo</span>),
         <span class="doccomment">/// Bidding category of a product offer.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
-        <span class="ident">ProductBiddingCategory</span>(<span class="kw">super</span><span class="ident">::ProductBiddingCategoryInfo</span>),
+        <span class="ident">ProductBiddingCategory</span>(<span class="ident"><span class="kw">super</span>::ProductBiddingCategoryInfo</span>),
         <span class="doccomment">/// Brand of a product offer.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
-        <span class="ident">ProductBrand</span>(<span class="kw">super</span><span class="ident">::ProductBrandInfo</span>),
+        <span class="ident">ProductBrand</span>(<span class="ident"><span class="kw">super</span>::ProductBrandInfo</span>),
         <span class="doccomment">/// Locality of a product offer.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">ProductChannel</span>(<span class="kw">super</span><span class="ident">::ProductChannelInfo</span>),
+        <span class="ident">ProductChannel</span>(<span class="ident"><span class="kw">super</span>::ProductChannelInfo</span>),
         <span class="doccomment">/// Availability of a product offer.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">ProductChannelExclusivity</span>(<span class="kw">super</span><span class="ident">::ProductChannelExclusivityInfo</span>),
+        <span class="ident">ProductChannelExclusivity</span>(<span class="ident"><span class="kw">super</span>::ProductChannelExclusivityInfo</span>),
         <span class="doccomment">/// Condition of a product offer.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
-        <span class="ident">ProductCondition</span>(<span class="kw">super</span><span class="ident">::ProductConditionInfo</span>),
+        <span class="ident">ProductCondition</span>(<span class="ident"><span class="kw">super</span>::ProductConditionInfo</span>),
         <span class="doccomment">/// Custom attribute of a product offer.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>)]</span>
-        <span class="ident">ProductCustomAttribute</span>(<span class="kw">super</span><span class="ident">::ProductCustomAttributeInfo</span>),
+        <span class="ident">ProductCustomAttribute</span>(<span class="ident"><span class="kw">super</span>::ProductCustomAttributeInfo</span>),
         <span class="doccomment">/// Item id of a product offer.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
-        <span class="ident">ProductItemId</span>(<span class="kw">super</span><span class="ident">::ProductItemIdInfo</span>),
+        <span class="ident">ProductItemId</span>(<span class="ident"><span class="kw">super</span>::ProductItemIdInfo</span>),
         <span class="doccomment">/// Type of a product offer.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
-        <span class="ident">ProductType</span>(<span class="kw">super</span><span class="ident">::ProductTypeInfo</span>),
+        <span class="ident">ProductType</span>(<span class="ident"><span class="kw">super</span>::ProductTypeInfo</span>),
         <span class="doccomment">/// Unknown dimension. Set when no other listing dimension is set.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
-        <span class="ident">UnknownListingDimension</span>(<span class="kw">super</span><span class="ident">::UnknownListingDimensionInfo</span>),
+        <span class="ident">UnknownListingDimension</span>(<span class="ident"><span class="kw">super</span>::UnknownListingDimensionInfo</span>),
     }
 }
 <span class="doccomment">/// Advertiser-specific hotel ID.</span>
@@ -6285,7 +6282,7 @@
     <span class="doccomment">/// ID of the product bidding category.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This ID is equivalent to the google_product_category ID as described in</span>
-    <span class="doccomment">/// this article: https://support.google.com/merchants/answer/6324436</span>
+    <span class="doccomment">/// this article: &lt;https://support.google.com/merchants/answer/6324436&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Two-letter upper-case country code of the product bidding category. It must</span>
@@ -6957,7 +6954,7 @@
         <span class="doccomment">/// pre-vetted question fields. Minimum of 2 answers required and maximum of</span>
         <span class="doccomment">/// 12 allowed.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">SingleChoiceAnswers</span>(<span class="kw">super</span><span class="ident">::LeadFormSingleChoiceAnswers</span>),
+        <span class="ident">SingleChoiceAnswers</span>(<span class="ident"><span class="kw">super</span>::LeadFormSingleChoiceAnswers</span>),
     }
 }
 <span class="doccomment">/// Defines possible answers for a single choice question, usually presented as</span>
@@ -6983,7 +6980,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DeliveryDetails</span> {
         <span class="doccomment">/// Webhook method of delivery.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Webhook</span>(<span class="kw">super</span><span class="ident">::WebhookDelivery</span>),
+        <span class="ident">Webhook</span>(<span class="ident"><span class="kw">super</span>::WebhookDelivery</span>),
     }
 }
 <span class="doccomment">/// Google notifies the advertiser of leads by making HTTP calls to an</span>
@@ -7071,7 +7068,7 @@
         <span class="doccomment">/// Money amount off for discount in the promotion.</span>
         <span class="doccomment">/// Either this or percent_off is required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">MoneyAmountOff</span>(<span class="kw">super</span><span class="ident">::Money</span>),
+        <span class="ident">MoneyAmountOff</span>(<span class="ident"><span class="kw">super</span>::Money</span>),
     }
     <span class="doccomment">/// Promotion trigger. Can be by promotion code or promo by eligible order</span>
     <span class="doccomment">/// amount.</span>
@@ -7083,7 +7080,7 @@
         <span class="doccomment">/// The amount the total order needs to be for the user to be eligible for</span>
         <span class="doccomment">/// the promotion.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">OrdersOverAmount</span>(<span class="kw">super</span><span class="ident">::Money</span>),
+        <span class="ident">OrdersOverAmount</span>(<span class="ident"><span class="kw">super</span>::Money</span>),
     }
 }
 <span class="doccomment">/// A Callout asset.</span>
@@ -7112,7 +7109,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StructuredSnippetAsset</span> {
     <span class="doccomment">/// Required. The header of the snippet.</span>
     <span class="doccomment">/// This string should be one of the predefined values at</span>
-    <span class="doccomment">/// https://developers.google.com/google-ads/api/reference/data/structured-snippet-headers</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/google-ads/api/reference/data/structured-snippet-headers&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">header</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The values in the snippet.</span>
@@ -7275,7 +7272,7 @@
     <span class="doccomment">/// or the natural throttling spend amount.</span>
     <span class="doccomment">/// If not specified, the budget is used as the spend target.</span>
     <span class="doccomment">/// This field is deprecated and should no longer be used. See</span>
-    <span class="doccomment">/// https://ads-developers.googleblog.com/2020/05/reminder-about-sunset-creation-of.html</span>
+    <span class="doccomment">/// &lt;https://ads-developers.googleblog.com/2020/05/reminder-about-sunset-creation-of.html&gt;</span>
     <span class="doccomment">/// for details.</span>
     <span class="attribute">#[<span class="ident">deprecated</span>]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
@@ -7442,7 +7439,7 @@
 
 <span class="doccomment">/// Settings for the Display Campaign Optimizer, initially named &quot;Explorer&quot;.</span>
 <span class="doccomment">/// Learn more about</span>
-<span class="doccomment">/// [automatic targeting](https://support.google.com/google-ads/answer/190596).</span>
+<span class="doccomment">/// [automatic targeting](&lt;https://support.google.com/google-ads/answer/190596&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExplorerAutoOptimizerSetting</span> {
     <span class="doccomment">/// Indicates whether the optimizer is turned on.</span>
@@ -7735,7 +7732,7 @@
         <span class="doccomment">/// Money amount off for discount in the promotion.</span>
         <span class="doccomment">/// Either this or percent_off is required.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">MoneyAmountOff</span>(<span class="kw">super</span><span class="ident">::Money</span>),
+        <span class="ident">MoneyAmountOff</span>(<span class="ident"><span class="kw">super</span>::Money</span>),
     }
     <span class="doccomment">/// Promotion trigger. Can be by promotion code or promo by eligible order</span>
     <span class="doccomment">/// amount.</span>
@@ -7747,7 +7744,7 @@
         <span class="doccomment">/// The amount the total order needs to be for the user to be eligible for</span>
         <span class="doccomment">/// the promotion.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">OrdersOverAmount</span>(<span class="kw">super</span><span class="ident">::Money</span>),
+        <span class="ident">OrdersOverAmount</span>(<span class="ident"><span class="kw">super</span>::Money</span>),
     }
 }
 <span class="doccomment">/// Represents a structured snippet extension.</span>
@@ -7917,7 +7914,7 @@
 
 <span class="doccomment">/// Historical metrics specific to the targeting options selected.</span>
 <span class="doccomment">/// Targeting options include geographies, network, etc.</span>
-<span class="doccomment">/// Refer to https://support.google.com/google-ads/answer/3022575 for more</span>
+<span class="doccomment">/// Refer to &lt;https://support.google.com/google-ads/answer/3022575&gt; for more</span>
 <span class="doccomment">/// details.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">KeywordPlanHistoricalMetrics</span> {
@@ -8054,11 +8051,11 @@
     <span class="doccomment">/// 1. IDENTITY(true) or IDENTITY(false). All or no feed items served.</span>
     <span class="doccomment">/// 2. EQUALS(CONTEXT.DEVICE,&quot;Mobile&quot;)</span>
     <span class="doccomment">/// 3. IN(FEED_ITEM_ID,{1000001,1000002,1000003})</span>
-    <span class="doccomment">/// 4. CONTAINS_ANY(FeedAttribute[12345678,0],{&quot;Mars cruise&quot;,&quot;Venus cruise&quot;})</span>
+    <span class="doccomment">/// 4. CONTAINS_ANY(FeedAttribute\[12345678,0\],{&quot;Mars cruise&quot;,&quot;Venus cruise&quot;})</span>
     <span class="doccomment">/// 5. AND(IN(FEED_ITEM_ID,{10001,10002}),EQUALS(CONTEXT.DEVICE,&quot;Mobile&quot;))</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For more details, visit</span>
-    <span class="doccomment">/// https://developers.google.com/adwords/api/docs/guides/feed-matching-functions</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/adwords/api/docs/guides/feed-matching-functions&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that because multiple strings may represent the same underlying</span>
     <span class="doccomment">/// function (whitespace and single versus double quotation marks, for</span>
@@ -8132,7 +8129,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FunctionOperand</span> {
         <span class="doccomment">/// The matching function held in this operand.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">matching_function</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::MatchingFunction</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">matching_function</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::MatchingFunction</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// An operand in a function referring to a value in the request context.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -8208,7 +8205,7 @@
     <span class="doccomment">/// The value of all conversions. When this column is selected with date, the</span>
     <span class="doccomment">/// values in date column means the conversion date. Details for the</span>
     <span class="doccomment">/// by_conversion_date columns are available at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/9549009.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/9549009.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;240&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">all_conversions_value_by_conversion_date</span>: <span class="ident">f64</span>,
     <span class="doccomment">/// The total number of conversions. This includes all conversions regardless</span>
@@ -8219,7 +8216,7 @@
     <span class="doccomment">/// of the value of include_in_conversions_metric. When this column is selected</span>
     <span class="doccomment">/// with date, the values in date column means the conversion date. Details for</span>
     <span class="doccomment">/// the by_conversion_date columns are available at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/9549009.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/9549009.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;241&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">all_conversions_by_conversion_date</span>: <span class="ident">f64</span>,
     <span class="doccomment">/// The value of all conversions divided by the total cost of ad interactions</span>
@@ -8308,18 +8305,18 @@
     <span class="kw">pub</span> <span class="ident">clicks</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The number of times your ad or your site&#39;s listing in the unpaid</span>
     <span class="doccomment">/// results was clicked. See the help page at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/3097241 for details.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/3097241&gt; for details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;156&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">combined_clicks</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The number of times your ad or your site&#39;s listing in the unpaid</span>
     <span class="doccomment">/// results was clicked (combined_clicks) divided by combined_queries. See the</span>
-    <span class="doccomment">/// help page at https://support.google.com/google-ads/answer/3097241 for</span>
+    <span class="doccomment">/// help page at &lt;https://support.google.com/google-ads/answer/3097241&gt; for</span>
     <span class="doccomment">/// details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;157&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">combined_clicks_per_query</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The number of searches that returned pages from your site in the unpaid</span>
     <span class="doccomment">/// results or showed one of your text ads. See the help page at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/3097241 for details.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/3097241&gt; for details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;158&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">combined_queries</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The estimated percent of times that your ad was eligible to show</span>
@@ -8371,7 +8368,7 @@
     <span class="doccomment">/// conversions. When this column is selected with date, the values in date</span>
     <span class="doccomment">/// column means the conversion date. Details for the by_conversion_date</span>
     <span class="doccomment">/// columns are available at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/9549009.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/9549009.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;242&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">conversions_value_by_conversion_date</span>: <span class="ident">f64</span>,
     <span class="doccomment">/// The value of conversions divided by the cost of ad interactions. This only</span>
@@ -8399,7 +8396,7 @@
     <span class="doccomment">/// conversions. When this column is selected with date, the values in date</span>
     <span class="doccomment">/// column means the conversion date. Details for the by_conversion_date</span>
     <span class="doccomment">/// columns are available at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/9549009.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/9549009.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;243&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">conversions_by_conversion_date</span>: <span class="ident">f64</span>,
     <span class="doccomment">/// The sum of your cost-per-click (CPC) and cost-per-thousand impressions</span>
@@ -8570,29 +8567,29 @@
     <span class="kw">pub</span> <span class="ident">mobile_friendly_clicks_percentage</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The number of times someone clicked your site&#39;s listing in the unpaid</span>
     <span class="doccomment">/// results for a particular query. See the help page at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/3097241 for details.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/3097241&gt; for details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;230&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">organic_clicks</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The number of times someone clicked your site&#39;s listing in the unpaid</span>
     <span class="doccomment">/// results (organic_clicks) divided by the total number of searches that</span>
     <span class="doccomment">/// returned pages from your site (organic_queries). See the help page at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/3097241 for details.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/3097241&gt; for details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;231&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">organic_clicks_per_query</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The number of listings for your site in the unpaid search results. See the</span>
-    <span class="doccomment">/// help page at https://support.google.com/google-ads/answer/3097241 for</span>
+    <span class="doccomment">/// help page at &lt;https://support.google.com/google-ads/answer/3097241&gt; for</span>
     <span class="doccomment">/// details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;232&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">organic_impressions</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The number of times a page from your site was listed in the unpaid search</span>
     <span class="doccomment">/// results (organic_impressions) divided by the number of searches returning</span>
     <span class="doccomment">/// your site&#39;s listing in the unpaid results (organic_queries). See the help</span>
-    <span class="doccomment">/// page at https://support.google.com/google-ads/answer/3097241 for details.</span>
+    <span class="doccomment">/// page at &lt;https://support.google.com/google-ads/answer/3097241&gt; for details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;233&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">organic_impressions_per_query</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The total number of searches that returned your site&#39;s listing in the</span>
     <span class="doccomment">/// unpaid results. See the help page at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/3097241 for details.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/3097241&gt; for details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;234&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">organic_queries</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Percentage of first-time sessions (from people who had never visited your</span>
@@ -8616,7 +8613,7 @@
     <span class="kw">pub</span> <span class="ident">relative_ctr</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The percentage of the customer&#39;s Shopping or Search ad impressions that are</span>
     <span class="doccomment">/// shown in the most prominent Shopping position. See</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/7501826</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/7501826&gt;</span>
     <span class="doccomment">/// for details. Any value below 0.1 is reported as 0.0999.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;136&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">search_absolute_top_impression_share</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
@@ -8701,7 +8698,7 @@
     <span class="doccomment">/// The value of all conversions divided by the number of all conversions. When</span>
     <span class="doccomment">/// this column is selected with date, the values in date column means the</span>
     <span class="doccomment">/// conversion date. Details for the by_conversion_date columns are available</span>
-    <span class="doccomment">/// at https://support.google.com/google-ads/answer/9549009.</span>
+    <span class="doccomment">/// at &lt;https://support.google.com/google-ads/answer/9549009.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;244&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">value_per_all_conversions_by_conversion_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The value of conversions divided by the number of conversions. This only</span>
@@ -8716,7 +8713,7 @@
     <span class="doccomment">/// will optimize for these conversions. When this column is selected with</span>
     <span class="doccomment">/// date, the values in date column means the conversion date. Details for the</span>
     <span class="doccomment">/// by_conversion_date columns are available at</span>
-    <span class="doccomment">/// https://support.google.com/google-ads/answer/9549009.</span>
+    <span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/9549009.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;245&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">value_per_conversions_by_conversion_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">f64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The value of current model attributed conversions divided by the number of</span>
@@ -8818,14 +8815,14 @@
         <span class="ident">ThirdPartyUserId</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// Address information.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">AddressInfo</span>(<span class="kw">super</span><span class="ident">::OfflineUserAddressInfo</span>),
+        <span class="ident">AddressInfo</span>(<span class="ident"><span class="kw">super</span>::OfflineUserAddressInfo</span>),
     }
 }
 <span class="doccomment">/// Attribute of the store sales transaction.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TransactionAttribute</span> {
     <span class="doccomment">/// Timestamp when transaction occurred. Required.</span>
-    <span class="doccomment">/// The format is &quot;YYYY-MM-DD HH:MM:SS[+/-HH:MM]&quot;, where [+/-HH:MM] is an</span>
+    <span class="doccomment">/// The format is &quot;YYYY-MM-DD HH:MM:SS\[+/-HH:MM\]&quot;, where \[+/-HH:MM\] is an</span>
     <span class="doccomment">/// optional timezone offset from UTC. If the offset is absent, the API will</span>
     <span class="doccomment">/// use the account&#39;s timezone as default.</span>
     <span class="doccomment">/// Examples: &quot;2018-03-05 09:15:00&quot; or &quot;2018-02-01 14:34:30+03:00&quot;</span>
@@ -8858,7 +8855,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StoreAttribute</span> {
     <span class="doccomment">/// Store code from</span>
-    <span class="doccomment">/// https://support.google.com/business/answer/3370250#storecode</span>
+    <span class="doccomment">/// &lt;https://support.google.com/business/answer/3370250#storecode&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">store_code</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
@@ -9589,7 +9586,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PercentCpcBidSimulationPoint</span> {
     <span class="doccomment">/// The simulated percent CPC upon which projected metrics are based. Percent</span>
     <span class="doccomment">/// CPC expressed as fraction of the advertised price for some good or service.</span>
-    <span class="doccomment">/// The value stored here is 1,000,000 * [fraction].</span>
+    <span class="doccomment">/// The value stored here is 1,000,000 * \[fraction\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">percent_cpc_bid_micros</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">i64</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Projected number of biddable conversions.</span>
@@ -9714,7 +9711,7 @@
 
 <span class="doccomment">/// Settings for the targeting-related features, at the campaign and ad group</span>
 <span class="doccomment">/// levels. For more details about the targeting setting, visit</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/7365594</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/7365594&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TargetingSetting</span> {
     <span class="doccomment">/// The per-targeting-dimension setting to restrict the reach of your campaign</span>
@@ -9777,7 +9774,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextLabel</span> {
     <span class="doccomment">/// Background color of the label in RGB format. This string must match the</span>
-    <span class="doccomment">/// regular expression &#39;^\#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$&#39;.</span>
+    <span class="doccomment">/// regular expression &#39;^\#(\[a-fA-F0-9]{6}|[a-fA-F0-9\]{3})$&#39;.</span>
     <span class="doccomment">/// Note: The background color may not be visible for manager accounts.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">background_color</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -9821,10 +9818,10 @@
     <span class="doccomment">/// was collected to the Google Ads API.</span>
     <span class="doccomment">/// For iOS, the ID string is the 9 digit string that appears at the end of an</span>
     <span class="doccomment">/// App Store URL (e.g., &quot;476943146&quot; for &quot;Flood-It! 2&quot; whose App Store link is</span>
-    <span class="doccomment">/// http://itunes.apple.com/us/app/flood-it!-2/id476943146).</span>
+    <span class="doccomment">/// &lt;http://itunes.apple.com/us/app/flood-it!-2/id476943146&gt;).</span>
     <span class="doccomment">/// For Android, the ID string is the application&#39;s package name</span>
     <span class="doccomment">/// (e.g., &quot;com.labpixies.colordrips&quot; for &quot;Color Drips&quot; given Google Play link</span>
-    <span class="doccomment">/// https://play.google.com/store/apps/details?id=com.labpixies.colordrips).</span>
+    <span class="doccomment">/// &lt;https://play.google.com/store/apps/details?id=com.labpixies.colordrips&gt;).</span>
     <span class="doccomment">/// Required when creating CrmBasedUserList for uploading mobile advertising</span>
     <span class="doccomment">/// IDs.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
@@ -9898,13 +9895,13 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">RuleItem</span> {
         <span class="doccomment">/// An atomic rule item composed of a number operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">NumberRuleItem</span>(<span class="kw">super</span><span class="ident">::UserListNumberRuleItemInfo</span>),
+        <span class="ident">NumberRuleItem</span>(<span class="ident"><span class="kw">super</span>::UserListNumberRuleItemInfo</span>),
         <span class="doccomment">/// An atomic rule item composed of a string operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">StringRuleItem</span>(<span class="kw">super</span><span class="ident">::UserListStringRuleItemInfo</span>),
+        <span class="ident">StringRuleItem</span>(<span class="ident"><span class="kw">super</span>::UserListStringRuleItemInfo</span>),
         <span class="doccomment">/// An atomic rule item composed of a date operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">DateRuleItem</span>(<span class="kw">super</span><span class="ident">::UserListDateRuleItemInfo</span>),
+        <span class="ident">DateRuleItem</span>(<span class="ident"><span class="kw">super</span>::UserListDateRuleItemInfo</span>),
     }
 }
 <span class="doccomment">/// A rule item composed of a date operation.</span>
@@ -10053,18 +10050,18 @@
         <span class="doccomment">/// There are two operators: AND, where the left and right operands have to</span>
         <span class="doccomment">/// be true; AND_NOT where left operand is true but right operand is false.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">CombinedRuleUserList</span>(<span class="kw">super</span><span class="ident">::CombinedRuleUserListInfo</span>),
+        <span class="ident">CombinedRuleUserList</span>(<span class="ident"><span class="kw">super</span>::CombinedRuleUserListInfo</span>),
         <span class="doccomment">/// Visitors of a page during specific dates. The visiting periods are</span>
         <span class="doccomment">/// defined as follows:</span>
         <span class="doccomment">/// Between start_date (inclusive) and end_date (inclusive);</span>
         <span class="doccomment">/// Before end_date (exclusive) with start_date = 2000-01-01;</span>
         <span class="doccomment">/// After start_date (exclusive) with end_date = 2037-12-30.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">DateSpecificRuleUserList</span>(<span class="kw">super</span><span class="ident">::DateSpecificRuleUserListInfo</span>),
+        <span class="ident">DateSpecificRuleUserList</span>(<span class="ident"><span class="kw">super</span>::DateSpecificRuleUserListInfo</span>),
         <span class="doccomment">/// Visitors of a page. The page visit is defined by one boolean rule</span>
         <span class="doccomment">/// expression.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">ExpressionRuleUserList</span>(<span class="kw">super</span><span class="ident">::ExpressionRuleUserListInfo</span>),
+        <span class="ident">ExpressionRuleUserList</span>(<span class="ident"><span class="kw">super</span>::ExpressionRuleUserListInfo</span>),
     }
 }
 <span class="doccomment">/// Represents a user list that is a custom combination of user lists.</span>
@@ -10157,5 +10154,7 @@
         <span class="ident">StringValue</span>(<span class="ident">::prost::alloc::string::String</span>),
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

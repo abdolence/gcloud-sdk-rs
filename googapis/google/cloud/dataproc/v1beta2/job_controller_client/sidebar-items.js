@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["JobControllerClient","The JobController provides methods to manage jobs."]]});

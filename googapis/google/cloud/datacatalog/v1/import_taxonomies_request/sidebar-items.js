@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Source","Source taxonomies to be imported."]]});
+initSidebarItems({"enum":[["Source","Source taxonomies to import."]]});

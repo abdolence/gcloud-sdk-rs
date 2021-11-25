@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.logging.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.logging.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.logging.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.logging.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2395,26 +2393,25 @@
 <span id="2393">2393</span>
 <span id="2394">2394</span>
 <span id="2395">2395</span>
-</pre><pre class="rust">
-<span class="doccomment">/// An individual entry in a log.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// An individual entry in a log.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LogEntry</span> {
     <span class="doccomment">/// Required. The resource name of the log to which this log entry belongs:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/logs/[LOG_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/logs/[LOG_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/logs/[LOG_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/logs/[LOG_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/logs/[LOG_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/logs/[LOG_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/logs/[LOG_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A project number may be used in place of PROJECT_ID. The project number is</span>
     <span class="doccomment">/// translated to its corresponding PROJECT_ID internally and the `log_name`</span>
     <span class="doccomment">/// field will contain PROJECT_ID in queries and exports.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `[LOG_ID]` must be URL-encoded within `log_name`. Example:</span>
+    <span class="doccomment">/// `\[LOG_ID\]` must be URL-encoded within `log_name`. Example:</span>
     <span class="doccomment">/// `&quot;organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity&quot;`.</span>
-    <span class="doccomment">/// `[LOG_ID]` must be less than 512 characters long and can only include the</span>
+    <span class="doccomment">/// `\[LOG_ID\]` must be less than 512 characters long and can only include the</span>
     <span class="doccomment">/// following characters: upper and lower case alphanumeric characters,</span>
     <span class="doccomment">/// forward-slash, underscore, hyphen, and period.</span>
     <span class="doccomment">///</span>
@@ -2431,7 +2428,7 @@
     <span class="doccomment">/// the monitored resource designating the particular database that reported</span>
     <span class="doccomment">/// the error.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">resource</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::api::MonitoredResource</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">resource</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::api::MonitoredResource</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. The time the event described by the log entry occurred. This time is used</span>
     <span class="doccomment">/// to compute the log entry&#39;s age and to enforce the logs retention period.</span>
     <span class="doccomment">/// If this field is omitted in a new log entry, then Logging assigns it the</span>
@@ -2440,7 +2437,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Incoming log entries must have timestamps that don&#39;t exceed the</span>
     <span class="doccomment">/// [logs retention</span>
-    <span class="doccomment">/// period](https://cloud.google.com/logging/quotas#logs_retention_periods) in</span>
+    <span class="doccomment">/// period](&lt;https://cloud.google.com/logging/quotas#logs_retention_periods&gt;) in</span>
     <span class="doccomment">/// the past, and that don&#39;t exceed 24 hours in the future. Log entries outside</span>
     <span class="doccomment">/// those time boundaries aren&#39;t ingested by Logging.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
@@ -2654,23 +2651,23 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The export destination:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;storage.googleapis.com/[GCS_BUCKET]&quot;</span>
-    <span class="doccomment">///     &quot;bigquery.googleapis.com/projects/[PROJECT_ID]/datasets/[DATASET]&quot;</span>
-    <span class="doccomment">///     &quot;pubsub.googleapis.com/projects/[PROJECT_ID]/topics/[TOPIC_ID]&quot;</span>
+    <span class="doccomment">///     &quot;storage.googleapis.com/\[GCS_BUCKET\]&quot;</span>
+    <span class="doccomment">///     &quot;bigquery.googleapis.com/projects/\[PROJECT_ID]/datasets/[DATASET\]&quot;</span>
+    <span class="doccomment">///     &quot;pubsub.googleapis.com/projects/\[PROJECT_ID]/topics/[TOPIC_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The sink&#39;s `writer_identity`, set when the sink is created, must</span>
     <span class="doccomment">/// have permission to write to the destination or else the log</span>
     <span class="doccomment">/// entries are not exported. For more information, see</span>
     <span class="doccomment">/// [Exporting Logs with</span>
-    <span class="doccomment">/// Sinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).</span>
+    <span class="doccomment">/// Sinks](&lt;https://cloud.google.com/logging/docs/api/tasks/exporting-logs&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">destination</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. An [advanced logs</span>
-    <span class="doccomment">/// filter](https://cloud.google.com/logging/docs/view/advanced-queries). The</span>
+    <span class="doccomment">/// filter](&lt;https://cloud.google.com/logging/docs/view/advanced-queries&gt;). The</span>
     <span class="doccomment">/// only exported log entries are those that are in the resource owning the</span>
     <span class="doccomment">/// sink and that match the filter. For example:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     logName=&quot;projects/[PROJECT_ID]/logs/[LOG_ID]&quot; AND severity&gt;=ERROR</span>
+    <span class="doccomment">///     logName=&quot;projects/\[PROJECT_ID]/logs/[LOG_ID\]&quot; AND severity&gt;=ERROR</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. A description of this sink.</span>
@@ -2692,14 +2689,14 @@
     <span class="kw">pub</span> <span class="ident">output_version_format</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Output only. An IAM identity&amp;mdash;a service account or group&amp;mdash;under which Logging</span>
     <span class="doccomment">/// writes the exported log entries to the sink&#39;s destination. This field is</span>
-    <span class="doccomment">/// set by [sinks.create][google.logging.v2.ConfigServiceV2.CreateSink] and</span>
-    <span class="doccomment">/// [sinks.update][google.logging.v2.ConfigServiceV2.UpdateSink] based on the</span>
+    <span class="doccomment">/// set by \[sinks.create][google.logging.v2.ConfigServiceV2.CreateSink\] and</span>
+    <span class="doccomment">/// \[sinks.update][google.logging.v2.ConfigServiceV2.UpdateSink\] based on the</span>
     <span class="doccomment">/// value of `unique_writer_identity` in those methods.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Until you grant this identity write-access to the destination, log entry</span>
     <span class="doccomment">/// exports from this sink will fail. For more information,</span>
     <span class="doccomment">/// see [Granting Access for a</span>
-    <span class="doccomment">/// Resource](https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource).</span>
+    <span class="doccomment">/// Resource](&lt;https://cloud.google.com/iam/docs/granting-roles-to-service-accounts#granting_access_to_a_service_account_for_a_resource&gt;).</span>
     <span class="doccomment">/// Consult the destination service&#39;s documentation to determine the</span>
     <span class="doccomment">/// appropriate IAM roles to assign to the identity.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
@@ -2751,18 +2748,18 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Options</span> {
         <span class="doccomment">/// Optional. Options that affect sinks exporting data to BigQuery.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
-        <span class="ident">BigqueryOptions</span>(<span class="kw">super</span><span class="ident">::BigQueryOptions</span>),
+        <span class="ident">BigqueryOptions</span>(<span class="ident"><span class="kw">super</span>::BigQueryOptions</span>),
     }
 }
 <span class="doccomment">/// Options that change functionality of a sink exporting data to BigQuery.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BigQueryOptions</span> {
     <span class="doccomment">/// Optional. Whether to use [BigQuery&#39;s partition</span>
-    <span class="doccomment">/// tables](https://cloud.google.com/bigquery/docs/partitioned-tables). By</span>
+    <span class="doccomment">/// tables](&lt;https://cloud.google.com/bigquery/docs/partitioned-tables&gt;). By</span>
     <span class="doccomment">/// default, Logging creates dated tables based on the log entries&#39; timestamps,</span>
     <span class="doccomment">/// e.g. syslog_20170523. With partitioned tables the date suffix is no longer</span>
     <span class="doccomment">/// present and [special query</span>
-    <span class="doccomment">/// syntax](https://cloud.google.com/bigquery/docs/querying-partitioned-tables)</span>
+    <span class="doccomment">/// syntax](&lt;https://cloud.google.com/bigquery/docs/querying-partitioned-tables&gt;)</span>
     <span class="doccomment">/// has to be used instead. In both cases, tables are sharded based on UTC</span>
     <span class="doccomment">/// timezone.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -2781,13 +2778,13 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListBucketsRequest</span> {
     <span class="doccomment">/// Required. The parent resource whose buckets are to be listed:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/locations/[LOCATION_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/locations/[LOCATION_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note: The locations portion of the resource must be specified, but</span>
-    <span class="doccomment">/// supplying the character `-` in place of [LOCATION_ID] will return all</span>
+    <span class="doccomment">/// supplying the character `-` in place of \[LOCATION_ID\] will return all</span>
     <span class="doccomment">/// buckets.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2820,7 +2817,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateBucketRequest</span> {
     <span class="doccomment">/// Required. The resource in which to create the bucket:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;projects/my-logging-project/locations/global&quot;`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -2841,10 +2838,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateBucketRequest</span> {
     <span class="doccomment">/// Required. The full resource name of the bucket to update.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">/// `&quot;projects/my-project-id/locations/my-location/buckets/my-bucket-id&quot;`. Also</span>
@@ -2860,7 +2857,7 @@
     <span class="doccomment">/// mask. `name` and output only fields cannot be updated.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For a detailed `FieldMask` definition, see</span>
-    <span class="doccomment">/// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `updateMask=retention_days`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
@@ -2871,10 +2868,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetBucketRequest</span> {
     <span class="doccomment">/// Required. The resource name of the bucket:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">/// `&quot;projects/my-project-id/locations/my-location/buckets/my-bucket-id&quot;`.</span>
@@ -2886,10 +2883,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteBucketRequest</span> {
     <span class="doccomment">/// Required. The full resource name of the bucket to delete.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">/// `&quot;projects/my-project-id/locations/my-location/buckets/my-bucket-id&quot;`.</span>
@@ -2901,10 +2898,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UndeleteBucketRequest</span> {
     <span class="doccomment">/// Required. The full resource name of the bucket to undelete.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">/// `&quot;projects/my-project-id/locations/my-location/buckets/my-bucket-id&quot;`.</span>
@@ -2916,7 +2913,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListViewsRequest</span> {
     <span class="doccomment">/// Required. The bucket whose views are to be listed:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. If present, then retrieve the next batch of results from the</span>
@@ -2948,7 +2945,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateViewRequest</span> {
     <span class="doccomment">/// Required. The bucket in which to create the view</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">/// `&quot;projects/my-logging-project/locations/my-location/buckets/my-bucket&quot;`</span>
@@ -2966,7 +2963,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateViewRequest</span> {
     <span class="doccomment">/// Required. The full resource name of the view to update</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">///   `&quot;projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id&quot;`.</span>
@@ -2980,7 +2977,7 @@
     <span class="doccomment">/// in the update mask. `name` and output only fields cannot be updated.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For a detailed `FieldMask` definition, see</span>
-    <span class="doccomment">/// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `updateMask=filter`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
@@ -2991,7 +2988,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetViewRequest</span> {
     <span class="doccomment">/// Required. The resource name of the policy:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">/// `&quot;projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id&quot;`.</span>
@@ -3003,7 +3000,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteViewRequest</span> {
     <span class="doccomment">/// Required. The full resource name of the view to delete:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example:</span>
     <span class="doccomment">///    `&quot;projects/my-project-id/locations/my-location/buckets/my-bucket-id/views/my-view-id&quot;`.</span>
@@ -3015,10 +3012,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListSinksRequest</span> {
     <span class="doccomment">/// Required. The parent resource whose sinks are to be listed:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. If present, then retrieve the next batch of results from the</span>
@@ -3050,10 +3047,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetSinkRequest</span> {
     <span class="doccomment">/// Required. The resource name of the sink:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/sinks/[SINK_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/sinks/[SINK_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/sinks/[SINK_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/sinks/[SINK_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/sinks/[SINK_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/sinks/[SINK_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;projects/my-project-id/sinks/my-sink-id&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -3064,10 +3061,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateSinkRequest</span> {
     <span class="doccomment">/// Required. The resource in which to create the sink:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Examples: `&quot;projects/my-logging-project&quot;`, `&quot;organizations/123456789&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -3086,7 +3083,7 @@
     <span class="doccomment">/// If this field is set to true, or if the sink is owned by a non-project</span>
     <span class="doccomment">/// resource such as an organization, then the value of `writer_identity` will</span>
     <span class="doccomment">/// be a unique service account used only for exports from the new sink. For</span>
-    <span class="doccomment">/// more information, see `writer_identity` in [LogSink][google.logging.v2.LogSink].</span>
+    <span class="doccomment">/// more information, see `writer_identity` in \[LogSink][google.logging.v2.LogSink\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">unique_writer_identity</span>: <span class="ident">bool</span>,
 }
@@ -3096,10 +3093,10 @@
     <span class="doccomment">/// Required. The full resource name of the sink to update, including the parent</span>
     <span class="doccomment">/// resource and the sink identifier:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/sinks/[SINK_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/sinks/[SINK_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/sinks/[SINK_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/sinks/[SINK_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/sinks/[SINK_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/sinks/[SINK_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;projects/my-project-id/sinks/my-sink-id&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -3108,7 +3105,7 @@
     <span class="doccomment">/// of `sink_name`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">sink</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">LogSink</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Optional. See [sinks.create][google.logging.v2.ConfigServiceV2.CreateSink]</span>
+    <span class="doccomment">/// Optional. See \[sinks.create][google.logging.v2.ConfigServiceV2.CreateSink\]</span>
     <span class="doccomment">/// for a description of this field. When updating a sink, the effect of this</span>
     <span class="doccomment">/// field on the value of `writer_identity` in the updated sink depends on both</span>
     <span class="doccomment">/// the old and new values of this field:</span>
@@ -3132,7 +3129,7 @@
     <span class="doccomment">/// empty updateMask will be an error.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For a detailed `FieldMask` definition, see</span>
-    <span class="doccomment">/// https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `updateMask=filter`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
@@ -3144,10 +3141,10 @@
     <span class="doccomment">/// Required. The full resource name of the sink to delete, including the parent</span>
     <span class="doccomment">/// resource and the sink identifier:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/sinks/[SINK_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/sinks/[SINK_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/sinks/[SINK_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/sinks/[SINK_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/sinks/[SINK_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/sinks/[SINK_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/sinks/[SINK_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/sinks/[SINK_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;projects/my-project-id/sinks/my-sink-id&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -3171,9 +3168,9 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. An [advanced logs</span>
-    <span class="doccomment">/// filter](https://cloud.google.com/logging/docs/view/advanced-queries) that</span>
+    <span class="doccomment">/// filter](&lt;https://cloud.google.com/logging/docs/view/advanced-queries&gt;) that</span>
     <span class="doccomment">/// matches the log entries to be excluded. By using the [sample</span>
-    <span class="doccomment">/// function](https://cloud.google.com/logging/docs/view/advanced-queries#sample),</span>
+    <span class="doccomment">/// function](&lt;https://cloud.google.com/logging/docs/view/advanced-queries#sample&gt;),</span>
     <span class="doccomment">/// you can exclude less than 100% of the matching log entries.</span>
     <span class="doccomment">/// For example, the following query matches 99% of low-severity log</span>
     <span class="doccomment">/// entries from Google Cloud Storage buckets:</span>
@@ -3183,7 +3180,7 @@
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. If set to True, then this exclusion is disabled and it does not</span>
     <span class="doccomment">/// exclude any log entries. You can [update an</span>
-    <span class="doccomment">/// exclusion][google.logging.v2.ConfigServiceV2.UpdateExclusion] to change the</span>
+    <span class="doccomment">/// exclusion]\[google.logging.v2.ConfigServiceV2.UpdateExclusion\] to change the</span>
     <span class="doccomment">/// value of this field.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">disabled</span>: <span class="ident">bool</span>,
@@ -3203,10 +3200,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListExclusionsRequest</span> {
     <span class="doccomment">/// Required. The parent resource whose exclusions are to be listed.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. If present, then retrieve the next batch of results from the</span>
@@ -3238,10 +3235,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetExclusionRequest</span> {
     <span class="doccomment">/// Required. The resource name of an existing exclusion:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;projects/my-project-id/exclusions/my-exclusion-id&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -3252,10 +3249,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateExclusionRequest</span> {
     <span class="doccomment">/// Required. The parent resource in which to create the exclusion:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Examples: `&quot;projects/my-logging-project&quot;`, `&quot;organizations/123456789&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -3270,10 +3267,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateExclusionRequest</span> {
     <span class="doccomment">/// Required. The resource name of the exclusion to update:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;projects/my-project-id/exclusions/my-exclusion-id&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -3284,7 +3281,7 @@
     <span class="kw">pub</span> <span class="ident">exclusion</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">LogExclusion</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Required. A non-empty list of fields to change in the existing exclusion. New values</span>
     <span class="doccomment">/// for the fields are taken from the corresponding fields in the</span>
-    <span class="doccomment">/// [LogExclusion][google.logging.v2.LogExclusion] included in this request. Fields not mentioned in</span>
+    <span class="doccomment">/// \[LogExclusion][google.logging.v2.LogExclusion\] included in this request. Fields not mentioned in</span>
     <span class="doccomment">/// `update_mask` are not changed and are ignored in the request.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For example, to change the filter and description of an exclusion,</span>
@@ -3297,29 +3294,29 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteExclusionRequest</span> {
     <span class="doccomment">/// Required. The resource name of an existing exclusion to delete:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/exclusions/[EXCLUSION_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/exclusions/[EXCLUSION_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;projects/my-project-id/exclusions/my-exclusion-id&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// The parameters to</span>
-<span class="doccomment">/// [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings].</span>
+<span class="doccomment">/// \[GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [Enabling CMEK for Logs</span>
-<span class="doccomment">/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for</span>
+<span class="doccomment">/// Router](&lt;https://cloud.google.com/logging/docs/routing/managed-encryption&gt;) for</span>
 <span class="doccomment">/// more information.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetCmekSettingsRequest</span> {
     <span class="doccomment">/// Required. The resource for which to retrieve CMEK settings.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/cmekSettings&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/cmekSettings&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/cmekSettings&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]/cmekSettings&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]/cmekSettings&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]/cmekSettings&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]/cmekSettings&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;organizations/12345/cmekSettings&quot;`.</span>
     <span class="doccomment">///</span>
@@ -3330,19 +3327,19 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// The parameters to</span>
-<span class="doccomment">/// [UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings].</span>
+<span class="doccomment">/// \[UpdateCmekSettings][google.logging.v2.ConfigServiceV2.UpdateCmekSettings\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [Enabling CMEK for Logs</span>
-<span class="doccomment">/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for</span>
+<span class="doccomment">/// Router](&lt;https://cloud.google.com/logging/docs/routing/managed-encryption&gt;) for</span>
 <span class="doccomment">/// more information.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateCmekSettingsRequest</span> {
     <span class="doccomment">/// Required. The resource name for the CMEK settings to update.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/cmekSettings&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/cmekSettings&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/cmekSettings&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/cmekSettings&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]/cmekSettings&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]/cmekSettings&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]/cmekSettings&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]/cmekSettings&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;organizations/12345/cmekSettings&quot;`.</span>
     <span class="doccomment">///</span>
@@ -3354,7 +3351,7 @@
     <span class="doccomment">/// Required. The CMEK settings to update.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [Enabling CMEK for Logs</span>
-    <span class="doccomment">/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption)</span>
+    <span class="doccomment">/// Router](&lt;https://cloud.google.com/logging/docs/routing/managed-encryption&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">cmek_settings</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">CmekSettings</span><span class="op">&gt;</span>,
@@ -3362,7 +3359,7 @@
     <span class="doccomment">/// be updated. A field will be overwritten if and only if it is in the update</span>
     <span class="doccomment">/// mask. Output only fields cannot be updated.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See [FieldMask][google.protobuf.FieldMask] for more information.</span>
+    <span class="doccomment">/// See \[FieldMask][google.protobuf.FieldMask\] for more information.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example: `&quot;updateMask=kmsKeyName&quot;`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
@@ -3376,7 +3373,7 @@
 <span class="doccomment">/// GCP organization.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [Enabling CMEK for Logs</span>
-<span class="doccomment">/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption) for</span>
+<span class="doccomment">/// Router](&lt;https://cloud.google.com/logging/docs/routing/managed-encryption&gt;) for</span>
 <span class="doccomment">/// more information.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CmekSettings</span> {
@@ -3386,7 +3383,7 @@
     <span class="doccomment">/// The resource name for the configured Cloud KMS key.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// KMS key name format:</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION]/keyRings/[KEYRING]/cryptoKeys/[KEY\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For example:</span>
     <span class="doccomment">///     `&quot;projects/my-project-id/locations/my-region/keyRings/key-ring-name/cryptoKeys/key-name&quot;`</span>
@@ -3406,7 +3403,7 @@
     <span class="doccomment">/// To disable CMEK for the Logs Router, set this field to an empty string.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [Enabling CMEK for Logs</span>
-    <span class="doccomment">/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption)</span>
+    <span class="doccomment">/// Router](&lt;https://cloud.google.com/logging/docs/routing/managed-encryption&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">kms_key_name</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3416,11 +3413,11 @@
     <span class="doccomment">/// Before enabling CMEK for Logs Router, you must first assign the role</span>
     <span class="doccomment">/// `roles/cloudkms.cryptoKeyEncrypterDecrypter` to the service account that</span>
     <span class="doccomment">/// the Logs Router will use to access your Cloud KMS key. Use</span>
-    <span class="doccomment">/// [GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings] to</span>
+    <span class="doccomment">/// \[GetCmekSettings][google.logging.v2.ConfigServiceV2.GetCmekSettings\] to</span>
     <span class="doccomment">/// obtain the service account ID.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [Enabling CMEK for Logs</span>
-    <span class="doccomment">/// Router](https://cloud.google.com/logging/docs/routing/managed-encryption)</span>
+    <span class="doccomment">/// Router](&lt;https://cloud.google.com/logging/docs/routing/managed-encryption&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_account_id</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3449,7 +3446,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ConfigServiceV2Client</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -3462,7 +3459,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ConfigServiceV2Client</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -3490,8 +3487,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists buckets.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_buckets</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBucketsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBucketsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBucketsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBucketsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3507,8 +3504,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a bucket.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_bucket</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetBucketRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogBucket</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetBucketRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogBucket</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3525,8 +3522,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; been created, the region cannot be changed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_bucket</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateBucketRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogBucket</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateBucketRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogBucket</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3551,8 +3548,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; A buckets region may not be modified after it is created.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_bucket</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateBucketRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogBucket</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateBucketRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogBucket</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3571,7 +3568,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; deleted.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_bucket</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteBucketRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteBucketRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3589,7 +3586,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the grace period of 7 days.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">undelete_bucket</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UndeleteBucketRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UndeleteBucketRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3606,8 +3603,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists views on a bucket.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_views</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListViewsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListViewsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListViewsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListViewsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3623,8 +3620,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a view.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_view</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetViewRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogView</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetViewRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogView</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3640,8 +3637,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; 50 views.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_view</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateViewRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogView</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateViewRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogView</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3658,8 +3655,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; view with values from the new view: `filter`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_view</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateViewRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogView</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateViewRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogView</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3675,7 +3672,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a view from a bucket.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_view</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteViewRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteViewRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3692,8 +3689,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists sinks.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_sinks</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListSinksRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListSinksResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListSinksRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListSinksResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3709,8 +3706,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a sink.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_sink</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetSinkRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogSink</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetSinkRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogSink</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3728,8 +3725,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; export log entries only from the resource owning the sink.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_sink</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateSinkRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogSink</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateSinkRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogSink</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3749,8 +3746,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; `unique_writer_identity` field.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_sink</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateSinkRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogSink</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateSinkRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogSink</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3767,7 +3764,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; service account is also deleted.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_sink</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteSinkRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteSinkRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3784,8 +3781,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists all the exclusions in a parent resource.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_exclusions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListExclusionsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListExclusionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListExclusionsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListExclusionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3801,8 +3798,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the description of an exclusion.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_exclusion</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetExclusionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogExclusion</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetExclusionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogExclusion</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3820,8 +3817,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; You can have up to 10 exclusions in a resource.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_exclusion</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateExclusionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogExclusion</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateExclusionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogExclusion</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3837,8 +3834,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Changes one or more properties of an existing exclusion.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_exclusion</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateExclusionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogExclusion</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateExclusionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogExclusion</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3854,7 +3851,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes an exclusion.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_exclusion</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteExclusionRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteExclusionRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3879,8 +3876,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; for more information.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_cmek_settings</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetCmekSettingsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CmekSettings</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetCmekSettingsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CmekSettings</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3910,8 +3907,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; for more information.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_cmek_settings</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateCmekSettingsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CmekSettings</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateCmekSettingsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CmekSettings</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3931,16 +3928,16 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteLogRequest</span> {
     <span class="doccomment">/// Required. The resource name of the log to delete:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/logs/[LOG_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/logs/[LOG_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/logs/[LOG_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/logs/[LOG_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/logs/[LOG_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/logs/[LOG_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/logs/[LOG_ID\]&quot;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `[LOG_ID]` must be URL-encoded. For example,</span>
+    <span class="doccomment">/// `\[LOG_ID\]` must be URL-encoded. For example,</span>
     <span class="doccomment">/// `&quot;projects/my-project-id/logs/syslog&quot;`,</span>
     <span class="doccomment">/// `&quot;organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity&quot;`.</span>
     <span class="doccomment">/// For more information about log names, see</span>
-    <span class="doccomment">/// [LogEntry][google.logging.v2.LogEntry].</span>
+    <span class="doccomment">/// \[LogEntry][google.logging.v2.LogEntry\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">log_name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -3950,12 +3947,12 @@
     <span class="doccomment">/// Optional. A default log resource name that is assigned to all log entries</span>
     <span class="doccomment">/// in `entries` that do not specify a value for `log_name`:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/logs/[LOG_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]/logs/[LOG_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/logs/[LOG_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/logs/[LOG_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/logs/[LOG_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID]/logs/[LOG_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/logs/[LOG_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/logs/[LOG_ID\]&quot;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// `[LOG_ID]` must be URL-encoded. For example:</span>
+    <span class="doccomment">/// `\[LOG_ID\]` must be URL-encoded. For example:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     &quot;projects/my-project-id/logs/syslog&quot;</span>
     <span class="doccomment">///     &quot;organizations/1234567890/logs/cloudresourcemanager.googleapis.com%2Factivity&quot;</span>
@@ -3973,13 +3970,13 @@
     <span class="doccomment">///       &quot;labels&quot;: {</span>
     <span class="doccomment">///         &quot;zone&quot;: &quot;us-central1-a&quot;, &quot;instance_id&quot;: &quot;00000000000000000000&quot; }}</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See [LogEntry][google.logging.v2.LogEntry].</span>
+    <span class="doccomment">/// See \[LogEntry][google.logging.v2.LogEntry\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">resource</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::api::MonitoredResource</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">resource</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::api::MonitoredResource</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. Default labels that are added to the `labels` field of all log</span>
     <span class="doccomment">/// entries in `entries`. If a log entry already has a label with the same key</span>
     <span class="doccomment">/// as a label in this parameter, then the log entry&#39;s label is not changed.</span>
-    <span class="doccomment">/// See [LogEntry][google.logging.v2.LogEntry].</span>
+    <span class="doccomment">/// See \[LogEntry][google.logging.v2.LogEntry\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -3988,7 +3985,7 @@
     <span class="doccomment">/// `log_name`, `resource`, and `labels` fields are copied into those log</span>
     <span class="doccomment">/// entries in this list that do not include values for their corresponding</span>
     <span class="doccomment">/// fields. For more information, see the</span>
-    <span class="doccomment">/// [LogEntry][google.logging.v2.LogEntry] type.</span>
+    <span class="doccomment">/// \[LogEntry][google.logging.v2.LogEntry\] type.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the `timestamp` or `insert_id` fields are missing in log entries, then</span>
     <span class="doccomment">/// this method supplies the current time or a unique identifier, respectively.</span>
@@ -3997,14 +3994,14 @@
     <span class="doccomment">/// the entries later in the list. See the `entries.list` method.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Log entries with timestamps that are more than the</span>
-    <span class="doccomment">/// [logs retention period](https://cloud.google.com/logging/quota-policy) in</span>
+    <span class="doccomment">/// [logs retention period](&lt;https://cloud.google.com/logging/quota-policy&gt;) in</span>
     <span class="doccomment">/// the past or more than 24 hours in the future will not be available when</span>
     <span class="doccomment">/// calling `entries.list`. However, those log entries can still be [exported</span>
     <span class="doccomment">/// with</span>
-    <span class="doccomment">/// LogSinks](https://cloud.google.com/logging/docs/api/tasks/exporting-logs).</span>
+    <span class="doccomment">/// LogSinks](&lt;https://cloud.google.com/logging/docs/api/tasks/exporting-logs&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// To improve throughput and to avoid exceeding the</span>
-    <span class="doccomment">/// [quota limit](https://cloud.google.com/logging/quota-policy) for calls to</span>
+    <span class="doccomment">/// [quota limit](&lt;https://cloud.google.com/logging/quota-policy&gt;) for calls to</span>
     <span class="doccomment">/// `entries.write`, you should try to include several log entries in this</span>
     <span class="doccomment">/// list, rather than calling this method for each individual log entry.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
@@ -4035,7 +4032,7 @@
     <span class="doccomment">/// Failed requests for which no entries are written will not include</span>
     <span class="doccomment">/// per-entry errors.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;int32, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">log_entry_errors</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">i32</span>, <span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">log_entry_errors</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">i32</span>, <span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// The parameters to `ListLogEntries`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -4043,22 +4040,22 @@
     <span class="doccomment">/// Required. Names of one or more parent resources from which to</span>
     <span class="doccomment">/// retrieve log entries:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// May alternatively be one or more views</span>
-    <span class="doccomment">///   projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]</span>
-    <span class="doccomment">///   organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]</span>
-    <span class="doccomment">///   billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]</span>
-    <span class="doccomment">///   folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]</span>
+    <span class="doccomment">///   projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]</span>
+    <span class="doccomment">///   organization/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]</span>
+    <span class="doccomment">///   billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]</span>
+    <span class="doccomment">///   folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Projects listed in the `project_ids` field are added to this list.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">resource_names</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. A filter that chooses which log entries to return.  See [Advanced</span>
-    <span class="doccomment">/// Logs Queries](https://cloud.google.com/logging/docs/view/advanced-queries).</span>
+    <span class="doccomment">/// Logs Queries](&lt;https://cloud.google.com/logging/docs/view/advanced-queries&gt;).</span>
     <span class="doccomment">/// Only log entries that match the filter are returned.  An empty filter</span>
     <span class="doccomment">/// matches all log entries in the resources listed in `resource_names`.</span>
     <span class="doccomment">/// Referencing a parent resource that is not listed in `resource_names` will</span>
@@ -4129,7 +4126,7 @@
     <span class="doccomment">/// A list of resource descriptors.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">resource_descriptors</span>:
-        <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::api::MonitoredResourceDescriptor</span><span class="op">&gt;</span>,
+        <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::api::MonitoredResourceDescriptor</span><span class="op">&gt;</span>,
     <span class="doccomment">/// If there might be more results than those appearing in this response, then</span>
     <span class="doccomment">/// `nextPageToken` is included.  To get the next set of results, call this</span>
     <span class="doccomment">/// method again using the value of `nextPageToken` as `pageToken`.</span>
@@ -4141,10 +4138,10 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListLogsRequest</span> {
     <span class="doccomment">/// Required. The resource name that owns the logs:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. The maximum number of results to return from this request.</span>
@@ -4159,16 +4156,16 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. The resource name that owns the logs:</span>
-    <span class="doccomment">///   projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]</span>
-    <span class="doccomment">///   organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]</span>
-    <span class="doccomment">///   billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]</span>
-    <span class="doccomment">///   folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]</span>
+    <span class="doccomment">///   projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]</span>
+    <span class="doccomment">///   organization/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]</span>
+    <span class="doccomment">///   billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]</span>
+    <span class="doccomment">///   folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// To support legacy queries, it could also be:</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">resource_names</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
@@ -4191,20 +4188,20 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TailLogEntriesRequest</span> {
     <span class="doccomment">/// Required. Name of a parent resource from which to retrieve log entries:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organizations/[ORGANIZATION_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organizations/\[ORGANIZATION_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// May alternatively be one or more views:</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]&quot;</span>
-    <span class="doccomment">///     &quot;organization/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]&quot;</span>
-    <span class="doccomment">///     &quot;billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]&quot;</span>
-    <span class="doccomment">///     &quot;folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;organization/\[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;billingAccounts/\[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]&quot;</span>
+    <span class="doccomment">///     &quot;folders/\[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID\]&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">resource_names</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. A filter that chooses which log entries to return.  See [Advanced</span>
-    <span class="doccomment">/// Logs Filters](https://cloud.google.com/logging/docs/view/advanced_filters).</span>
+    <span class="doccomment">/// Logs Filters](&lt;https://cloud.google.com/logging/docs/view/advanced_filters&gt;).</span>
     <span class="doccomment">/// Only log entries that match the filter are returned.  An empty filter</span>
     <span class="doccomment">/// matches all log entries in the resources listed in `resource_names`.</span>
     <span class="doccomment">/// Referencing a parent resource that is not in `resource_names` will cause</span>
@@ -4260,7 +4257,7 @@
             <span class="doccomment">/// Indicates suppression occurred due to relevant entries being</span>
             <span class="doccomment">/// received in excess of rate limits. For quotas and limits, see</span>
             <span class="doccomment">/// [Logging API quotas and</span>
-            <span class="doccomment">/// limits](https://cloud.google.com/logging/quotas#api-limits).</span>
+            <span class="doccomment">/// limits](&lt;https://cloud.google.com/logging/quotas#api-limits&gt;).</span>
             <span class="ident">RateLimit</span> <span class="op">=</span> <span class="number">1</span>,
             <span class="doccomment">/// Indicates suppression occurred due to the client not consuming</span>
             <span class="doccomment">/// responses quickly enough.</span>
@@ -4280,7 +4277,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">LoggingServiceV2Client</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -4293,7 +4290,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">LoggingServiceV2Client</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -4324,7 +4321,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; before the operation will be deleted.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_log</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteLogRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteLogRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4347,8 +4344,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; folders)&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">write_log_entries</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::WriteLogEntriesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::WriteLogEntriesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::WriteLogEntriesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::WriteLogEntriesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4367,8 +4364,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Logs](https://cloud.google.com/logging/docs/export).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_log_entries</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListLogEntriesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListLogEntriesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListLogEntriesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListLogEntriesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4384,8 +4381,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists the descriptors for monitored resource types used by Logging.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_monitored_resource_descriptors</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListMonitoredResourceDescriptorsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListMonitoredResourceDescriptorsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListMonitoredResourceDescriptorsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListMonitoredResourceDescriptorsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4403,8 +4400,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Only logs that have entries are listed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_logs</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListLogsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListLogsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListLogsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListLogsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4421,9 +4418,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; terminated, it will continue reading logs.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">tail_log_entries</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::TailLogEntriesRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::TailLogEntriesRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TailLogEntriesResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TailLogEntriesResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -4460,8 +4457,8 @@
     <span class="doccomment">/// name pieces, and it cannot be the first character of the name.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The metric identifier in this field must not be</span>
-    <span class="doccomment">/// [URL-encoded](https://en.wikipedia.org/wiki/Percent-encoding).</span>
-    <span class="doccomment">/// However, when the metric identifier appears as the `[METRIC_ID]` part of a</span>
+    <span class="doccomment">/// \[URL-encoded\](&lt;https://en.wikipedia.org/wiki/Percent-encoding&gt;).</span>
+    <span class="doccomment">/// However, when the metric identifier appears as the `\[METRIC_ID\]` part of a</span>
     <span class="doccomment">/// `metric_name` API parameter, then the metric identifier must be</span>
     <span class="doccomment">/// URL-encoded. Example: `&quot;projects/my-project/metrics/nginx%2Frequests&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -4471,7 +4468,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. An [advanced logs</span>
-    <span class="doccomment">/// filter](https://cloud.google.com/logging/docs/view/advanced_filters) which</span>
+    <span class="doccomment">/// filter](&lt;https://cloud.google.com/logging/docs/view/advanced_filters&gt;) which</span>
     <span class="doccomment">/// is used to match log entries. Example:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///     &quot;resource.type=gae_app AND severity&gt;=ERROR&quot;</span>
@@ -4501,7 +4498,7 @@
     <span class="doccomment">/// `metric_descriptor`, but existing labels cannot be modified except for</span>
     <span class="doccomment">/// their description.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">metric_descriptor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::api::MetricDescriptor</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">metric_descriptor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::api::MetricDescriptor</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. A `value_extractor` is required when using a distribution</span>
     <span class="doccomment">/// logs-based metric to extract the values to record from a log entry.</span>
     <span class="doccomment">/// Two functions are supported for value extraction: `EXTRACT(field)` or</span>
@@ -4509,7 +4506,7 @@
     <span class="doccomment">///   1. field: The name of the log entry field from which the value is to be</span>
     <span class="doccomment">///      extracted.</span>
     <span class="doccomment">///   2. regex: A regular expression using the Google RE2 syntax</span>
-    <span class="doccomment">///      (https://github.com/google/re2/wiki/Syntax) with a single capture</span>
+    <span class="doccomment">///      (&lt;https://github.com/google/re2/wiki/Syntax&gt;) with a single capture</span>
     <span class="doccomment">///      group to extract data from the specified log entry field. The value</span>
     <span class="doccomment">///      of the field is converted to a string before applying the regex.</span>
     <span class="doccomment">///      It is an error to specify a regex that does not include exactly one</span>
@@ -4544,7 +4541,7 @@
     <span class="doccomment">/// using a DISTRIBUTION value type and it describes the bucket boundaries</span>
     <span class="doccomment">/// used to create a histogram of the extracted values.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">bucket_options</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::api::distribution::BucketOptions</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">bucket_options</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::api::distribution::BucketOptions</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. The creation timestamp of the metric.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This field may not be present for older metrics.</span>
@@ -4578,7 +4575,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListLogMetricsRequest</span> {
     <span class="doccomment">/// Required. The name of the project containing the metrics:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. If present, then retrieve the next batch of results from the</span>
@@ -4610,7 +4607,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetLogMetricRequest</span> {
     <span class="doccomment">/// Required. The resource name of the desired metric:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/metrics/[METRIC_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/metrics/[METRIC_ID\]&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">metric_name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -4619,7 +4616,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateLogMetricRequest</span> {
     <span class="doccomment">/// Required. The resource name of the project in which to create the metric:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The new metric must be provided in the request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -4634,11 +4631,11 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateLogMetricRequest</span> {
     <span class="doccomment">/// Required. The resource name of the metric to update:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/metrics/[METRIC_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/metrics/[METRIC_ID\]&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The updated metric must be provided in the request and it&#39;s</span>
-    <span class="doccomment">/// `name` field must be the same as `[METRIC_ID]` If the metric</span>
-    <span class="doccomment">/// does not exist in `[PROJECT_ID]`, then a new metric is created.</span>
+    <span class="doccomment">/// `name` field must be the same as `\[METRIC_ID\]` If the metric</span>
+    <span class="doccomment">/// does not exist in `\[PROJECT_ID\]`, then a new metric is created.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">metric_name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The updated metric.</span>
@@ -4650,7 +4647,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteLogMetricRequest</span> {
     <span class="doccomment">/// Required. The resource name of the metric to delete:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">///     &quot;projects/[PROJECT_ID]/metrics/[METRIC_ID]&quot;</span>
+    <span class="doccomment">///     &quot;projects/\[PROJECT_ID]/metrics/[METRIC_ID\]&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">metric_name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -4666,7 +4663,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">MetricsServiceV2Client</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -4679,7 +4676,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MetricsServiceV2Client</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -4707,8 +4704,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists logs-based metrics.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_log_metrics</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListLogMetricsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListLogMetricsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListLogMetricsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListLogMetricsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4724,8 +4721,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a logs-based metric.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_log_metric</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetLogMetricRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogMetric</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetLogMetricRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogMetric</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4741,8 +4738,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a logs-based metric.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_log_metric</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateLogMetricRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogMetric</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateLogMetricRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogMetric</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4758,8 +4755,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates or updates a logs-based metric.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_log_metric</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateLogMetricRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LogMetric</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateLogMetricRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LogMetric</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4775,7 +4772,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a logs-based metric.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_log_metric</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteLogMetricRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteLogMetricRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4791,5 +4788,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

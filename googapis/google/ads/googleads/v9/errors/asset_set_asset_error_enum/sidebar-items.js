@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AssetSetAssetError","Enum describing possible asset set asset errors."]]});

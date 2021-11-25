@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ReadOption",""]],"struct":[["EntityTypeSpec","Selects Features of an EntityType to read values of and specifies read settings."],["PassThroughField","Describe pass-through fields in read_instance source."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ComplianceClient","This service is used to test that GAPICs can transcode proto3 requests to REST format correctly for various types of HTTP annotations……"]]});

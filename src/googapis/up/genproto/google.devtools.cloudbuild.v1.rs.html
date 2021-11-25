@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.devtools.cloudbuild.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.devtools.cloudbuild.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.devtools.cloudbuild.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.devtools.cloudbuild.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2104,8 +2102,143 @@
 <span id="2102">2102</span>
 <span id="2103">2103</span>
 <span id="2104">2104</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Specifies a build to retry.</span>
+<span id="2105">2105</span>
+<span id="2106">2106</span>
+<span id="2107">2107</span>
+<span id="2108">2108</span>
+<span id="2109">2109</span>
+<span id="2110">2110</span>
+<span id="2111">2111</span>
+<span id="2112">2112</span>
+<span id="2113">2113</span>
+<span id="2114">2114</span>
+<span id="2115">2115</span>
+<span id="2116">2116</span>
+<span id="2117">2117</span>
+<span id="2118">2118</span>
+<span id="2119">2119</span>
+<span id="2120">2120</span>
+<span id="2121">2121</span>
+<span id="2122">2122</span>
+<span id="2123">2123</span>
+<span id="2124">2124</span>
+<span id="2125">2125</span>
+<span id="2126">2126</span>
+<span id="2127">2127</span>
+<span id="2128">2128</span>
+<span id="2129">2129</span>
+<span id="2130">2130</span>
+<span id="2131">2131</span>
+<span id="2132">2132</span>
+<span id="2133">2133</span>
+<span id="2134">2134</span>
+<span id="2135">2135</span>
+<span id="2136">2136</span>
+<span id="2137">2137</span>
+<span id="2138">2138</span>
+<span id="2139">2139</span>
+<span id="2140">2140</span>
+<span id="2141">2141</span>
+<span id="2142">2142</span>
+<span id="2143">2143</span>
+<span id="2144">2144</span>
+<span id="2145">2145</span>
+<span id="2146">2146</span>
+<span id="2147">2147</span>
+<span id="2148">2148</span>
+<span id="2149">2149</span>
+<span id="2150">2150</span>
+<span id="2151">2151</span>
+<span id="2152">2152</span>
+<span id="2153">2153</span>
+<span id="2154">2154</span>
+<span id="2155">2155</span>
+<span id="2156">2156</span>
+<span id="2157">2157</span>
+<span id="2158">2158</span>
+<span id="2159">2159</span>
+<span id="2160">2160</span>
+<span id="2161">2161</span>
+<span id="2162">2162</span>
+<span id="2163">2163</span>
+<span id="2164">2164</span>
+<span id="2165">2165</span>
+<span id="2166">2166</span>
+<span id="2167">2167</span>
+<span id="2168">2168</span>
+<span id="2169">2169</span>
+<span id="2170">2170</span>
+<span id="2171">2171</span>
+<span id="2172">2172</span>
+<span id="2173">2173</span>
+<span id="2174">2174</span>
+<span id="2175">2175</span>
+<span id="2176">2176</span>
+<span id="2177">2177</span>
+<span id="2178">2178</span>
+<span id="2179">2179</span>
+<span id="2180">2180</span>
+<span id="2181">2181</span>
+<span id="2182">2182</span>
+<span id="2183">2183</span>
+<span id="2184">2184</span>
+<span id="2185">2185</span>
+<span id="2186">2186</span>
+<span id="2187">2187</span>
+<span id="2188">2188</span>
+<span id="2189">2189</span>
+<span id="2190">2190</span>
+<span id="2191">2191</span>
+<span id="2192">2192</span>
+<span id="2193">2193</span>
+<span id="2194">2194</span>
+<span id="2195">2195</span>
+<span id="2196">2196</span>
+<span id="2197">2197</span>
+<span id="2198">2198</span>
+<span id="2199">2199</span>
+<span id="2200">2200</span>
+<span id="2201">2201</span>
+<span id="2202">2202</span>
+<span id="2203">2203</span>
+<span id="2204">2204</span>
+<span id="2205">2205</span>
+<span id="2206">2206</span>
+<span id="2207">2207</span>
+<span id="2208">2208</span>
+<span id="2209">2209</span>
+<span id="2210">2210</span>
+<span id="2211">2211</span>
+<span id="2212">2212</span>
+<span id="2213">2213</span>
+<span id="2214">2214</span>
+<span id="2215">2215</span>
+<span id="2216">2216</span>
+<span id="2217">2217</span>
+<span id="2218">2218</span>
+<span id="2219">2219</span>
+<span id="2220">2220</span>
+<span id="2221">2221</span>
+<span id="2222">2222</span>
+<span id="2223">2223</span>
+<span id="2224">2224</span>
+<span id="2225">2225</span>
+<span id="2226">2226</span>
+<span id="2227">2227</span>
+<span id="2228">2228</span>
+<span id="2229">2229</span>
+<span id="2230">2230</span>
+<span id="2231">2231</span>
+<span id="2232">2232</span>
+<span id="2233">2233</span>
+<span id="2234">2234</span>
+<span id="2235">2235</span>
+<span id="2236">2236</span>
+<span id="2237">2237</span>
+<span id="2238">2238</span>
+<span id="2239">2239</span>
+<span id="2240">2240</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Specifies a build to retry.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RetryBuildRequest</span> {
     <span class="doccomment">/// The name of the `Build` to retry.</span>
@@ -2141,7 +2274,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StorageSource</span> {
     <span class="doccomment">/// Google Cloud Storage bucket containing the source (see</span>
     <span class="doccomment">/// [Bucket Name</span>
-    <span class="doccomment">/// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).</span>
+    <span class="doccomment">/// Requirements](&lt;https://cloud.google.com/storage/docs/bucket-naming#requirements&gt;)).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">bucket</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Google Cloud Storage object containing the source.</span>
@@ -2194,13 +2327,13 @@
         <span class="doccomment">/// Regex matching branches to build.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The syntax of the regular expressions accepted is the syntax accepted by</span>
-        <span class="doccomment">/// RE2 and described at https://github.com/google/re2/wiki/Syntax</span>
+        <span class="doccomment">/// RE2 and described at &lt;https://github.com/google/re2/wiki/Syntax&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="ident">BranchName</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// Regex matching tags to build.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The syntax of the regular expressions accepted is the syntax accepted by</span>
-        <span class="doccomment">/// RE2 and described at https://github.com/google/re2/wiki/Syntax</span>
+        <span class="doccomment">/// RE2 and described at &lt;https://github.com/google/re2/wiki/Syntax&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
         <span class="ident">TagName</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// Explicit commit SHA to build.</span>
@@ -2210,12 +2343,12 @@
 }
 <span class="doccomment">/// Location of the source manifest in Google Cloud Storage.</span>
 <span class="doccomment">/// This feature is in Preview; see description</span>
-<span class="doccomment">/// [here](https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher).</span>
+<span class="doccomment">/// \[here\](&lt;https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StorageSourceManifest</span> {
     <span class="doccomment">/// Google Cloud Storage bucket containing the source manifest (see [Bucket</span>
     <span class="doccomment">/// Name</span>
-    <span class="doccomment">/// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).</span>
+    <span class="doccomment">/// Requirements](&lt;https://cloud.google.com/storage/docs/bucket-naming#requirements&gt;)).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">bucket</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Google Cloud Storage object containing the source manifest.</span>
@@ -2242,16 +2375,16 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
         <span class="doccomment">/// If provided, get the source from this location in Google Cloud Storage.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">StorageSource</span>(<span class="kw">super</span><span class="ident">::StorageSource</span>),
+        <span class="ident">StorageSource</span>(<span class="ident"><span class="kw">super</span>::StorageSource</span>),
         <span class="doccomment">/// If provided, get the source from this location in a Cloud Source</span>
         <span class="doccomment">/// Repository.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">RepoSource</span>(<span class="kw">super</span><span class="ident">::RepoSource</span>),
+        <span class="ident">RepoSource</span>(<span class="ident"><span class="kw">super</span>::RepoSource</span>),
         <span class="doccomment">/// If provided, get the source from this manifest in Google Cloud Storage.</span>
         <span class="doccomment">/// This feature is in Preview; see description</span>
-        <span class="doccomment">/// [here](https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher).</span>
+        <span class="doccomment">/// \[here\](&lt;https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher&gt;).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">StorageSourceManifest</span>(<span class="kw">super</span><span class="ident">::StorageSourceManifest</span>),
+        <span class="ident">StorageSourceManifest</span>(<span class="ident"><span class="kw">super</span>::StorageSourceManifest</span>),
     }
 }
 <span class="doccomment">/// An image built by the pipeline.</span>
@@ -2280,7 +2413,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// The Docker daemon&#39;s cache will already have the latest versions of all of</span>
     <span class="doccomment">/// the officially supported build steps</span>
-    <span class="doccomment">/// ([https://github.com/GoogleCloudPlatform/cloud-builders](https://github.com/GoogleCloudPlatform/cloud-builders)).</span>
+    <span class="doccomment">/// (\[&lt;https://github.com/GoogleCloudPlatform/cloud-builders\](https://github.com/GoogleCloudPlatform/cloud-builders&gt;)).</span>
     <span class="doccomment">/// The Docker daemon will also have cached many of the layers for some popular</span>
     <span class="doccomment">/// images, like &quot;ubuntu&quot;, &quot;debian&quot;, but they will be refreshed at the time you</span>
     <span class="doccomment">/// attempt to use them.</span>
@@ -2363,6 +2496,11 @@
     <span class="doccomment">/// as the build progresses.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;build::Status&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// A shell script to be executed in the step.</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// When script is provided, the user cannot specify the entrypoint or args.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;19&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">script</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Volume describes a Docker container volume which is mounted into build steps</span>
 <span class="doccomment">/// in order to persist files across build step execution.</span>
@@ -2400,7 +2538,7 @@
     <span class="doccomment">/// List of build step outputs, produced by builder images, in the order</span>
     <span class="doccomment">/// corresponding to build step indices.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [Cloud Builders](https://cloud.google.com/cloud-build/docs/cloud-builders)</span>
+    <span class="doccomment">/// [Cloud Builders](&lt;https://cloud.google.com/cloud-build/docs/cloud-builders&gt;)</span>
     <span class="doccomment">/// can produce this output by writing to `$BUILDER_OUTPUT/output`.</span>
     <span class="doccomment">/// Only the first 4KB of data is stored.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
@@ -2514,7 +2652,7 @@
     <span class="kw">pub</span> <span class="ident">artifacts</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Artifacts</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Google Cloud Storage bucket where logs should be written (see</span>
     <span class="doccomment">/// [Bucket Name</span>
-    <span class="doccomment">/// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).</span>
+    <span class="doccomment">/// Requirements](&lt;https://cloud.google.com/storage/docs/bucket-naming#requirements&gt;)).</span>
     <span class="doccomment">/// Logs file names will be of the format `${logs_bucket}/log-${build_id}.txt`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;19&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">logs_bucket</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2542,20 +2680,25 @@
     <span class="doccomment">/// Note: Secret Manager is the recommended technique</span>
     <span class="doccomment">/// for managing sensitive data with Cloud Build. Use `available_secrets` to</span>
     <span class="doccomment">/// configure builds to access secrets from Secret Manager. For instructions,</span>
-    <span class="doccomment">/// see: https://cloud.google.com/cloud-build/docs/securing-builds/use-secrets</span>
+    <span class="doccomment">/// see: &lt;https://cloud.google.com/cloud-build/docs/securing-builds/use-secrets&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">secrets</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Secret</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. Stores timing information for phases of the build. Valid keys</span>
     <span class="doccomment">/// are:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * BUILD: time to execute all build steps</span>
+    <span class="doccomment">/// * BUILD: time to execute all build steps.</span>
     <span class="doccomment">/// * PUSH: time to push all specified images.</span>
     <span class="doccomment">/// * FETCHSOURCE: time to fetch source.</span>
+    <span class="doccomment">/// * SETUPBUILD: time to set up build.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the build does not specify source or images,</span>
     <span class="doccomment">/// these keys will not be included.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;33&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">timing</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">TimeSpan</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. Describes this build&#39;s approval configuration, status,</span>
+    <span class="doccomment">/// and result.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;44&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">approval</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">BuildApproval</span><span class="op">&gt;</span>,
     <span class="doccomment">/// IAM service account whose credentials will be used at build runtime.</span>
     <span class="doccomment">/// Must be of the format `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.</span>
     <span class="doccomment">/// ACCOUNT can be email address or uniqueId of the service account.</span>
@@ -2644,6 +2787,9 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Status</span> {
         <span class="doccomment">/// Status of the build is unknown.</span>
         <span class="ident">Unknown</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Build has been created and is pending execution and queuing. It has not</span>
+        <span class="doccomment">/// been queued.</span>
+        <span class="ident">Pending</span> <span class="op">=</span> <span class="number">10</span>,
         <span class="doccomment">/// Build or step is queued; work has not yet begun.</span>
         <span class="ident">Queued</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// Build or step is being executed.</span>
@@ -2699,7 +2845,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ArtifactObjects</span> {
         <span class="doccomment">/// Cloud Storage bucket and optional object path, in the form</span>
         <span class="doccomment">/// &quot;gs://bucket/path/to/somewhere/&quot;. (see [Bucket Name</span>
-        <span class="doccomment">/// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).</span>
+        <span class="doccomment">/// Requirements](&lt;https://cloud.google.com/storage/docs/bucket-naming#requirements&gt;)).</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Files in the workspace matching any path pattern will be uploaded to</span>
         <span class="doccomment">/// Cloud Storage with this location as a prefix.</span>
@@ -2710,7 +2856,7 @@
         <span class="kw">pub</span> <span class="ident">paths</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Output only. Stores timing information for pushing all artifact objects.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">timing</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TimeSpan</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">timing</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TimeSpan</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// Start and end times for a build execution phase.</span>
@@ -2838,7 +2984,7 @@
 <span class="doccomment">/// values with the Cloud KMS key to use to decrypt the value.</span>
 <span class="doccomment">/// Note: Use `kmsKeyName` with  `available_secrets` instead of using</span>
 <span class="doccomment">/// `kmsKeyName` with `secret`. For instructions see:</span>
-<span class="doccomment">/// https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-credentials.</span>
+<span class="doccomment">/// &lt;https://cloud.google.com/cloud-build/docs/securing-builds/use-encrypted-credentials.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Secret</span> {
     <span class="doccomment">/// Cloud KMS key name to use to decrypt these envs.</span>
@@ -2903,7 +3049,7 @@
     <span class="doccomment">/// In this case, the token should be discarded, and pagination should be</span>
     <span class="doccomment">/// restarted from the first page of results.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See https://google.aip.dev/158 for more.</span>
+    <span class="doccomment">/// See &lt;https://google.aip.dev/158&gt; for more.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The raw filter text to constrain the results.</span>
@@ -2934,6 +3080,97 @@
     <span class="doccomment">/// Required. ID of the build.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Request to approve or reject a pending build.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApproveBuildRequest</span> {
+    <span class="doccomment">/// Required. Name of the target build.</span>
+    <span class="doccomment">/// For example: &quot;projects/{$project_id}/builds/{$build_id}&quot;</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Approval decision and metadata.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">approval_result</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ApprovalResult</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// BuildApproval describes a build&#39;s approval configuration, state, and</span>
+<span class="doccomment">/// result.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BuildApproval</span> {
+    <span class="doccomment">/// Output only. The state of this build&#39;s approval.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;build_approval::State&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">state</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Output only. Configuration for manual approval of this build.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ApprovalConfig</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. Result of manual approval for this Build.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">result</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ApprovalResult</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `BuildApproval`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">build_approval</span> {
+    <span class="doccomment">/// Specifies the current state of a build&#39;s approval.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">State</span> {
+        <span class="doccomment">/// Default enum type. This should not be used.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Build approval is pending.</span>
+        <span class="ident">Pending</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Build approval has been approved.</span>
+        <span class="ident">Approved</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// Build approval has been rejected.</span>
+        <span class="ident">Rejected</span> <span class="op">=</span> <span class="number">3</span>,
+        <span class="doccomment">/// Build was cancelled while it was still pending approval.</span>
+        <span class="ident">Cancelled</span> <span class="op">=</span> <span class="number">5</span>,
+    }
+}
+<span class="doccomment">/// ApprovalConfig describes configuration for manual approval of a build.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApprovalConfig</span> {
+    <span class="doccomment">/// Whether or not approval is needed. If this is set on a build, it will</span>
+    <span class="doccomment">/// become pending when created, and will need to be explicitly approved</span>
+    <span class="doccomment">/// to start.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">approval_required</span>: <span class="ident">bool</span>,
+}
+<span class="doccomment">/// ApprovalResult describes the decision and associated metadata of a manual</span>
+<span class="doccomment">/// approval of a build.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApprovalResult</span> {
+    <span class="doccomment">/// Output only. Email of the user that called the ApproveBuild API to</span>
+    <span class="doccomment">/// approve or reject a build at the time that the API was called.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">approver_account</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Output only. The time when the approval decision was made.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">approval_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Required. The decision of this manual approval.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;approval_result::Decision&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">decision</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Optional. An optional comment for this manual approval result.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">comment</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Optional. An optional URL tied to this manual approval result. This field</span>
+    <span class="doccomment">/// is essentially the same as comment, except that it will be rendered by the</span>
+    <span class="doccomment">/// UI differently. An example use case is a link to an external job that</span>
+    <span class="doccomment">/// approved this Build.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `ApprovalResult`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">approval_result</span> {
+    <span class="doccomment">/// Specifies whether or not this manual approval result is to approve</span>
+    <span class="doccomment">/// or reject a build.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Decision</span> {
+        <span class="doccomment">/// Default enum type. This should not be used.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Build is approved.</span>
+        <span class="ident">Approved</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Build is rejected.</span>
+        <span class="ident">Rejected</span> <span class="op">=</span> <span class="number">2</span>,
+    }
 }
 <span class="doccomment">/// Configuration for an automated build in response to source repository</span>
 <span class="doccomment">/// changes.</span>
@@ -2991,12 +3228,12 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">disabled</span>: <span class="ident">bool</span>,
     <span class="doccomment">/// Substitutions for Build resource. The keys must match the following</span>
-    <span class="doccomment">/// regular expression: `^_[A-Z0-9_]+$`.</span>
+    <span class="doccomment">/// regular expression: `^_\[A-Z0-9_\]+$`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">substitutions</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// ignored_files and included_files are file glob matches using</span>
-    <span class="doccomment">/// https://golang.org/pkg/path/filepath/#Match extended with support for &quot;**&quot;.</span>
+    <span class="doccomment">/// &lt;https://golang.org/pkg/path/filepath/#Match&gt; extended with support for &quot;**&quot;.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If ignored_files and changed files are both empty, then they are</span>
     <span class="doccomment">/// not used to determine whether or not to trigger a build.</span>
@@ -3019,6 +3256,13 @@
     <span class="doccomment">/// Optional. A Common Expression Language string.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;30&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The service account used for all user-controlled operations including</span>
+    <span class="doccomment">/// UpdateBuildTrigger, RunBuildTrigger, CreateBuild, and CancelBuild.</span>
+    <span class="doccomment">/// If no service account is set, then the standard Cloud Build service account</span>
+    <span class="doccomment">/// (\[PROJECT_NUM\]@system.gserviceaccount.com) will be used instead.</span>
+    <span class="doccomment">/// Format: `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT_ID_OR_EMAIL}`</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;33&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">service_account</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Template describing the Build request to make when the trigger is matched.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;build_trigger::BuildTemplate&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;18, 4, 8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">build_template</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">build_trigger::BuildTemplate</span><span class="op">&gt;</span>,
@@ -3041,7 +3285,7 @@
         <span class="ident">Autodetect</span>(<span class="ident">bool</span>),
         <span class="doccomment">/// Contents of the build template.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Build</span>(<span class="kw">super</span><span class="ident">::Build</span>),
+        <span class="ident">Build</span>(<span class="ident"><span class="kw">super</span>::Build</span>),
         <span class="doccomment">/// Path, from the source root, to the build configuration file</span>
         <span class="doccomment">/// (i.e. cloudbuild.yaml).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
@@ -3059,12 +3303,12 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">installation_id</span>: <span class="ident">i64</span>,
     <span class="doccomment">/// Owner of the repository. For example: The owner for</span>
-    <span class="doccomment">/// https://github.com/googlecloudplatform/cloud-builders is</span>
+    <span class="doccomment">/// &lt;https://github.com/googlecloudplatform/cloud-builders&gt; is</span>
     <span class="doccomment">/// &quot;googlecloudplatform&quot;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">owner</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Name of the repository. For example: The name for</span>
-    <span class="doccomment">/// https://github.com/googlecloudplatform/cloud-builders is &quot;cloud-builders&quot;.</span>
+    <span class="doccomment">/// &lt;https://github.com/googlecloudplatform/cloud-builders&gt; is &quot;cloud-builders&quot;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Filter describing the types of events to trigger a build.</span>
@@ -3080,10 +3324,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Event</span> {
         <span class="doccomment">/// filter to match changes in pull requests.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">PullRequest</span>(<span class="kw">super</span><span class="ident">::PullRequestFilter</span>),
+        <span class="ident">PullRequest</span>(<span class="ident"><span class="kw">super</span>::PullRequestFilter</span>),
         <span class="doccomment">/// filter to match changes in refs like branches, tags.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Push</span>(<span class="kw">super</span><span class="ident">::PushFilter</span>),
+        <span class="ident">Push</span>(<span class="ident"><span class="kw">super</span>::PushFilter</span>),
     }
 }
 <span class="doccomment">/// PubsubConfig describes the configuration of a trigger that</span>
@@ -3197,7 +3441,7 @@
         <span class="doccomment">/// Regex of branches to match.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The syntax of the regular expressions accepted is the syntax accepted by</span>
-        <span class="doccomment">/// RE2 and described at https://github.com/google/re2/wiki/Syntax</span>
+        <span class="doccomment">/// RE2 and described at &lt;https://github.com/google/re2/wiki/Syntax&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">Branch</span>(<span class="ident">::prost::alloc::string::String</span>),
     }
@@ -3223,13 +3467,13 @@
         <span class="doccomment">/// Regexes matching branches to build.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The syntax of the regular expressions accepted is the syntax accepted by</span>
-        <span class="doccomment">/// RE2 and described at https://github.com/google/re2/wiki/Syntax</span>
+        <span class="doccomment">/// RE2 and described at &lt;https://github.com/google/re2/wiki/Syntax&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">Branch</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// Regexes matching tags to build.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The syntax of the regular expressions accepted is the syntax accepted by</span>
-        <span class="doccomment">/// RE2 and described at https://github.com/google/re2/wiki/Syntax</span>
+        <span class="doccomment">/// RE2 and described at &lt;https://github.com/google/re2/wiki/Syntax&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="ident">Tag</span>(<span class="ident">::prost::alloc::string::String</span>),
     }
@@ -3361,7 +3605,7 @@
     <span class="doccomment">/// Optional. Specification for execution on a `WorkerPool`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [running builds in a private</span>
-    <span class="doccomment">/// pool](https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool)</span>
+    <span class="doccomment">/// pool](&lt;https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;19&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">pool</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">build_options::PoolOption</span><span class="op">&gt;</span>,
@@ -3400,7 +3644,7 @@
     <span class="doccomment">/// Details about how a build should be executed on a `WorkerPool`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See [running builds in a private</span>
-    <span class="doccomment">/// pool](https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool)</span>
+    <span class="doccomment">/// pool](&lt;https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool&gt;)</span>
     <span class="doccomment">/// for more information.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PoolOption</span> {
@@ -3423,7 +3667,7 @@
     }
     <span class="doccomment">/// Supported Compute Engine machine types.</span>
     <span class="doccomment">/// For more information, see [Machine</span>
-    <span class="doccomment">/// types](https://cloud.google.com/compute/docs/machine-types).</span>
+    <span class="doccomment">/// types](&lt;https://cloud.google.com/compute/docs/machine-types&gt;).</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">MachineType</span> {
@@ -3481,7 +3725,7 @@
         <span class="prelude-val">None</span> <span class="op">=</span> <span class="number">4</span>,
     }
 }
-<span class="doccomment">/// ReceiveTriggerWebhookRequest [Experimental] is the request object accepted by</span>
+<span class="doccomment">/// ReceiveTriggerWebhookRequest \[Experimental\] is the request object accepted by</span>
 <span class="doccomment">/// the ReceiveTriggerWebhook method.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReceiveTriggerWebhookRequest</span> {
@@ -3491,7 +3735,7 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// HTTP request body.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">body</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::api::HttpBody</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">body</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::api::HttpBody</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Project in which the specified trigger lives</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -3502,7 +3746,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">secret</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// ReceiveTriggerWebhookResponse [Experimental] is the response object for the</span>
+<span class="doccomment">/// ReceiveTriggerWebhookResponse \[Experimental\] is the response object for the</span>
 <span class="doccomment">/// ReceiveTriggerWebhook method.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReceiveTriggerWebhookResponse</span> {}
@@ -3518,7 +3762,7 @@
 <span class="doccomment">/// administer, including any on-prem resources connected to that VPC</span>
 <span class="doccomment">/// network. For an overview of private pools, see</span>
 <span class="doccomment">/// [Private pools</span>
-<span class="doccomment">/// overview](https://cloud.google.com/build/docs/private-pools/private-pools-overview).</span>
+<span class="doccomment">/// overview](&lt;https://cloud.google.com/build/docs/private-pools/private-pools-overview&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WorkerPool</span> {
     <span class="doccomment">/// Output only. The resource name of the `WorkerPool`, with format</span>
@@ -3535,7 +3779,7 @@
     <span class="doccomment">/// Output only. A unique identifier for the `WorkerPool`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">uid</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// User specified annotations. See https://google.aip.dev/128#annotations</span>
+    <span class="doccomment">/// User specified annotations. See &lt;https://google.aip.dev/128#annotations&gt;</span>
     <span class="doccomment">/// for more details such as format and size limitations.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">annotations</span>:
@@ -3586,7 +3830,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Config</span> {
         <span class="doccomment">/// Private Pool using a v1 configuration.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
-        <span class="ident">PrivatePoolV1Config</span>(<span class="kw">super</span><span class="ident">::PrivatePoolV1Config</span>),
+        <span class="ident">PrivatePoolV1Config</span>(<span class="ident"><span class="kw">super</span>::PrivatePoolV1Config</span>),
     }
 }
 <span class="doccomment">/// Configuration for a V1 `PrivatePool`.</span>
@@ -3607,13 +3851,13 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WorkerConfig</span> {
         <span class="doccomment">/// Machine type of a worker, such as `e2-medium`.</span>
         <span class="doccomment">/// See [Worker pool config</span>
-        <span class="doccomment">/// file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema).</span>
+        <span class="doccomment">/// file](&lt;https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema&gt;).</span>
         <span class="doccomment">/// If left blank, Cloud Build will use a sensible default.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">machine_type</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Size of the disk attached to the worker, in GB.</span>
         <span class="doccomment">/// See [Worker pool config</span>
-        <span class="doccomment">/// file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema).</span>
+        <span class="doccomment">/// file](&lt;https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema&gt;).</span>
         <span class="doccomment">/// Specify a value of up to 1000. If `0` is specified, Cloud Build will use</span>
         <span class="doccomment">/// a standard disk size.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -3629,7 +3873,7 @@
         <span class="doccomment">/// is a project number, such as `12345`, and `{network}` is the name of a</span>
         <span class="doccomment">/// VPC network in the project. See</span>
         <span class="doccomment">/// [Understanding network configuration</span>
-        <span class="doccomment">/// options](https://cloud.google.com/build/docs/private-pools/set-up-private-pool-environment)</span>
+        <span class="doccomment">/// options](&lt;https://cloud.google.com/build/docs/private-pools/set-up-private-pool-environment&gt;)</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">peered_network</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Option to configure network egress for the workers.</span>
@@ -3669,7 +3913,7 @@
     <span class="doccomment">/// the final component of the resource name.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This value should be 1-63 characters, and valid characters</span>
-    <span class="doccomment">/// are /[a-z][0-9]-/.</span>
+    <span class="doccomment">/// are /\[a-z][0-9\]-/.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">worker_pool_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// If set, validate the request and preview the response, but do not actually</span>
@@ -3815,7 +4059,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">CloudBuildClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -3828,7 +4072,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CloudBuildClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -3860,9 +4104,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; `SUCCESS` or `FAILURE`).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_build</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateBuildRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateBuildRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3883,8 +4127,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; `FAILURE`, or `WORKING`), and timing information.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_build</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetBuildRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Build</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetBuildRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Build</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3903,8 +4147,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; successfully or unsuccessfully.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_builds</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBuildsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBuildsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBuildsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBuildsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3920,8 +4164,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Cancels a build in progress.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">cancel_build</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CancelBuildRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Build</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CancelBuildRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Build</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3963,9 +4207,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; lifecycle management settings.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">retry_build</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RetryBuildRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RetryBuildRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3980,13 +4224,38 @@
             );
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Approves or rejects a pending build.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; If approved, the returned LRO will be analogous to the LRO returned from&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; a CreateBuild call.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; If rejected, the returned LRO will be immediately done.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">approve_build</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ApproveBuildRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Status</span>,
+        <span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.devtools.cloudbuild.v1.CloudBuild/ApproveBuild&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a new `BuildTrigger`.&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This API is experimental.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_build_trigger</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateBuildTriggerRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BuildTrigger</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateBuildTriggerRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BuildTrigger</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4004,8 +4273,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This API is experimental.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_build_trigger</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetBuildTriggerRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BuildTrigger</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetBuildTriggerRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BuildTrigger</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4023,8 +4292,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This API is experimental.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_build_triggers</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBuildTriggersRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListBuildTriggersResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBuildTriggersRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListBuildTriggersResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4042,7 +4311,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This API is experimental.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_build_trigger</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteBuildTriggerRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteBuildTriggerRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -4061,8 +4330,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This API is experimental.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_build_trigger</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateBuildTriggerRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BuildTrigger</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateBuildTriggerRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BuildTrigger</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4078,9 +4347,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Runs a `BuildTrigger` at a particular source revision.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run_build_trigger</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RunBuildTriggerRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RunBuildTriggerRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -4099,8 +4368,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; webhook request targeted at a specific trigger.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">receive_trigger_webhook</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReceiveTriggerWebhookRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReceiveTriggerWebhookResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReceiveTriggerWebhookRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReceiveTriggerWebhookResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4116,9 +4385,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a `WorkerPool`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_worker_pool</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateWorkerPoolRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateWorkerPoolRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -4136,8 +4405,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns details of a `WorkerPool`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_worker_pool</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetWorkerPoolRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::WorkerPool</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetWorkerPoolRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::WorkerPool</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4153,9 +4422,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a `WorkerPool`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_worker_pool</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteWorkerPoolRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteWorkerPoolRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -4173,9 +4442,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates a `WorkerPool`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_worker_pool</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateWorkerPoolRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateWorkerPoolRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -4193,8 +4462,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists `WorkerPool`s.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_worker_pools</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListWorkerPoolsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListWorkerPoolsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListWorkerPoolsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListWorkerPoolsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4209,5 +4478,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

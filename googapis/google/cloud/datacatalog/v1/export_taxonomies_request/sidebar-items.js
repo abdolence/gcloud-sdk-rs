@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Destination","Required. Taxonomies export destination."]]});
+initSidebarItems({"enum":[["Destination","Required. Export destination for taxonomies."]]});

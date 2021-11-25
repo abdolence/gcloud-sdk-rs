@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GoogleAdsServiceClient","Service to fetch data and metrics across resources."]]});

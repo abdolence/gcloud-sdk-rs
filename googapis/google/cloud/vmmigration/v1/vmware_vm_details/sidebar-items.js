@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BootOption","Possible values for vm boot option."],["PowerState","Possible values for the power state of the VM."]]});

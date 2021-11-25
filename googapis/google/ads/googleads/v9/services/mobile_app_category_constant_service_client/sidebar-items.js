@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MobileAppCategoryConstantServiceClient","Service to fetch mobile app category constants."]]});

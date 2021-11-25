@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["InstallationState","The state of the installed versions of Agones/Kubernetes. See also https://cloud.google.com/game-servers/docs/versions-and-upgrades."]]});

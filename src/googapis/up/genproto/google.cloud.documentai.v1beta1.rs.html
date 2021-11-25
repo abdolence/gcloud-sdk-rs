@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.documentai.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.documentai.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.documentai.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.documentai.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -839,8 +837,7 @@
 <span id="837">837</span>
 <span id="838">838</span>
 <span id="839">839</span>
-</pre><pre class="rust">
-<span class="doccomment">/// A vertex represents a 2D point in the image.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// A vertex represents a 2D point in the image.</span>
 <span class="doccomment">/// NOTE: the vertex coordinates are in the same scale as the original image.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Vertex</span> {
@@ -882,27 +879,27 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Document</span> {
     <span class="doccomment">/// An IANA published MIME type (also referred to as media type). For more</span>
     <span class="doccomment">/// information, see</span>
-    <span class="doccomment">/// https://www.iana.org/assignments/media-types/media-types.xhtml.</span>
+    <span class="doccomment">/// &lt;https://www.iana.org/assignments/media-types/media-types.xhtml.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">mime_type</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// UTF-8 encoded text in reading order from the document.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">text</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Styles for the</span>
-    <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text].</span>
+    <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">text_styles</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">document::Style</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Visual page layout for the</span>
-    <span class="doccomment">/// [Document][google.cloud.documentai.v1beta1.Document].</span>
+    <span class="doccomment">/// \[Document][google.cloud.documentai.v1beta1.Document\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">pages</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">document::Page</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A list of entities detected on</span>
-    <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text]. For</span>
+    <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\]. For</span>
     <span class="doccomment">/// document shards, entities in this list may cross shard boundaries.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">entities</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">document::Entity</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Relationship among</span>
-    <span class="doccomment">/// [Document.entities][google.cloud.documentai.v1beta1.Document.entities].</span>
+    <span class="doccomment">/// \[Document.entities][google.cloud.documentai.v1beta1.Document.entities\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">entity_relations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">document::EntityRelation</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Information about the sharding if this document is sharded part of a larger</span>
@@ -911,7 +908,7 @@
     <span class="kw">pub</span> <span class="ident">shard_info</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">document::ShardInfo</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Any error that occurred while processing this document.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Original source document from the user.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;document::Source&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">document::Source</span><span class="op">&gt;</span>,
@@ -930,7 +927,7 @@
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">shard_count</span>: <span class="ident">i64</span>,
         <span class="doccomment">/// The index of the first character in</span>
-        <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text] in the</span>
+        <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\] in the</span>
         <span class="doccomment">/// overall document global text.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">text_offset</span>: <span class="ident">i64</span>,
@@ -940,26 +937,26 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Style</span> {
         <span class="doccomment">/// Text anchor indexing into the</span>
-        <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text].</span>
+        <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">text_anchor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TextAnchor</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Text color.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">color</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Color</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">color</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Color</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Text background color.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">background_color</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Color</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">background_color</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Color</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Font weight. Possible values are normal, bold, bolder, and lighter.</span>
-        <span class="doccomment">/// https://www.w3schools.com/cssref/pr_font_weight.asp</span>
+        <span class="doccomment">/// &lt;https://www.w3schools.com/cssref/pr_font_weight.asp&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">font_weight</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Text style. Possible values are normal, italic, and oblique.</span>
-        <span class="doccomment">/// https://www.w3schools.com/cssref/pr_font_font-style.asp</span>
+        <span class="doccomment">/// &lt;https://www.w3schools.com/cssref/pr_font_font-style.asp&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">text_style</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Text decoration. Follows CSS standard.</span>
         <span class="doccomment">/// &lt;text-decoration-line&gt; &lt;text-decoration-color&gt; &lt;text-decoration-style&gt;</span>
-        <span class="doccomment">/// https://www.w3schools.com/cssref/pr_text_text-decoration.asp</span>
+        <span class="doccomment">/// &lt;https://www.w3schools.com/cssref/pr_text_text-decoration.asp&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">text_decoration</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Font size.</span>
@@ -979,20 +976,20 @@
             <span class="kw">pub</span> <span class="ident">unit</span>: <span class="ident">::prost::alloc::string::String</span>,
         }
     }
-    <span class="doccomment">/// A page in a [Document][google.cloud.documentai.v1beta1.Document].</span>
+    <span class="doccomment">/// A page in a \[Document][google.cloud.documentai.v1beta1.Document\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Page</span> {
         <span class="doccomment">/// 1-based index for current</span>
-        <span class="doccomment">/// [Page][google.cloud.documentai.v1beta1.Document.Page] in a parent</span>
-        <span class="doccomment">/// [Document][google.cloud.documentai.v1beta1.Document]. Useful when a page</span>
-        <span class="doccomment">/// is taken out of a [Document][google.cloud.documentai.v1beta1.Document]</span>
+        <span class="doccomment">/// \[Page][google.cloud.documentai.v1beta1.Document.Page\] in a parent</span>
+        <span class="doccomment">/// \[Document][google.cloud.documentai.v1beta1.Document\]. Useful when a page</span>
+        <span class="doccomment">/// is taken out of a \[Document][google.cloud.documentai.v1beta1.Document\]</span>
         <span class="doccomment">/// for individual processing.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">page_number</span>: <span class="ident">i32</span>,
         <span class="doccomment">/// Physical dimension of the page.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">dimension</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">page::Dimension</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for the</span>
+        <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the</span>
         <span class="doccomment">/// page.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">page::Layout</span><span class="op">&gt;</span>,
@@ -1045,22 +1042,22 @@
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Layout</span> {
             <span class="doccomment">/// Text anchor indexing into the</span>
-            <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text].</span>
+            <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">text_anchor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TextAnchor</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">text_anchor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TextAnchor</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Confidence of the current</span>
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] within</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] within</span>
             <span class="doccomment">/// context of the object this layout is for. e.g. confidence can be for a</span>
             <span class="doccomment">/// single token, a table, a visual element, etc. depending on context.</span>
             <span class="doccomment">/// Range [0, 1].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">confidence</span>: <span class="ident">f32</span>,
             <span class="doccomment">/// The bounding polygon for the</span>
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout].</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">bounding_poly</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::BoundingPoly</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">bounding_poly</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::BoundingPoly</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Detected orientation for the</span>
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout].</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;layout::Orientation&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">orientation</span>: <span class="ident">i32</span>,
         }
@@ -1091,8 +1088,8 @@
         <span class="doccomment">/// common line-spacing and orientation.</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Block</span> {
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for</span>
-            <span class="doccomment">/// [Block][google.cloud.documentai.v1beta1.Document.Page.Block].</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for</span>
+            <span class="doccomment">/// \[Block][google.cloud.documentai.v1beta1.Document.Page.Block\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Layout</span><span class="op">&gt;</span>,
             <span class="doccomment">/// A list of detected languages together with confidence.</span>
@@ -1102,8 +1099,8 @@
         <span class="doccomment">/// A collection of lines that a human would perceive as a paragraph.</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Paragraph</span> {
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for</span>
-            <span class="doccomment">/// [Paragraph][google.cloud.documentai.v1beta1.Document.Page.Paragraph].</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for</span>
+            <span class="doccomment">/// \[Paragraph][google.cloud.documentai.v1beta1.Document.Page.Paragraph\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Layout</span><span class="op">&gt;</span>,
             <span class="doccomment">/// A list of detected languages together with confidence.</span>
@@ -1114,8 +1111,8 @@
         <span class="doccomment">/// Does not cross column boundaries, can be horizontal, vertical, etc.</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Line</span> {
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for</span>
-            <span class="doccomment">/// [Line][google.cloud.documentai.v1beta1.Document.Page.Line].</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for</span>
+            <span class="doccomment">/// \[Line][google.cloud.documentai.v1beta1.Document.Page.Line\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Layout</span><span class="op">&gt;</span>,
             <span class="doccomment">/// A list of detected languages together with confidence.</span>
@@ -1125,12 +1122,12 @@
         <span class="doccomment">/// A detected token.</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Token</span> {
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for</span>
-            <span class="doccomment">/// [Token][google.cloud.documentai.v1beta1.Document.Page.Token].</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for</span>
+            <span class="doccomment">/// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Layout</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Detected break at the end of a</span>
-            <span class="doccomment">/// [Token][google.cloud.documentai.v1beta1.Document.Page.Token].</span>
+            <span class="doccomment">/// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">detected_break</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">token::DetectedBreak</span><span class="op">&gt;</span>,
             <span class="doccomment">/// A list of detected languages together with confidence.</span>
@@ -1140,7 +1137,7 @@
         <span class="doccomment">/// Nested message and enum types in `Token`.</span>
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">token</span> {
             <span class="doccomment">/// Detected break at the end of a</span>
-            <span class="doccomment">/// [Token][google.cloud.documentai.v1beta1.Document.Page.Token].</span>
+            <span class="doccomment">/// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].</span>
             <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
             <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DetectedBreak</span> {
                 <span class="doccomment">/// Detected break type.</span>
@@ -1170,12 +1167,12 @@
         <span class="doccomment">/// page.</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VisualElement</span> {
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for</span>
-            <span class="doccomment">/// [Token][google.cloud.documentai.v1beta1.Document.Page.Token].</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for</span>
+            <span class="doccomment">/// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Layout</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Type of the</span>
-            <span class="doccomment">/// [VisualElement][google.cloud.documentai.v1beta1.Document.Page.VisualElement].</span>
+            <span class="doccomment">/// \[VisualElement][google.cloud.documentai.v1beta1.Document.Page.VisualElement\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">::prost::alloc::string::String</span>,
             <span class="doccomment">/// A list of detected languages together with confidence.</span>
@@ -1185,8 +1182,8 @@
         <span class="doccomment">/// A table representation similar to HTML table structure.</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Table</span> {
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for</span>
-            <span class="doccomment">/// [Table][google.cloud.documentai.v1beta1.Document.Page.Table].</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for</span>
+            <span class="doccomment">/// \[Table][google.cloud.documentai.v1beta1.Document.Page.Table\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Layout</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Header rows of the table.</span>
@@ -1211,10 +1208,10 @@
             <span class="doccomment">/// A cell representation inside the table.</span>
             <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
             <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TableCell</span> {
-                <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for</span>
-                <span class="doccomment">/// [TableCell][google.cloud.documentai.v1beta1.Document.Page.Table.TableCell].</span>
+                <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for</span>
+                <span class="doccomment">/// \[TableCell][google.cloud.documentai.v1beta1.Document.Page.Table.TableCell\].</span>
                 <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-                <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Layout</span><span class="op">&gt;</span>,
+                <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Layout</span><span class="op">&gt;</span>,
                 <span class="doccomment">/// How many rows this cell spans.</span>
                 <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
                 <span class="kw">pub</span> <span class="ident">row_span</span>: <span class="ident">i32</span>,
@@ -1223,19 +1220,19 @@
                 <span class="kw">pub</span> <span class="ident">col_span</span>: <span class="ident">i32</span>,
                 <span class="doccomment">/// A list of detected languages together with confidence.</span>
                 <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-                <span class="kw">pub</span> <span class="ident">detected_languages</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DetectedLanguage</span><span class="op">&gt;</span>,
+                <span class="kw">pub</span> <span class="ident">detected_languages</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DetectedLanguage</span><span class="op">&gt;</span>,
             }
         }
         <span class="doccomment">/// A form field detected on the page.</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FormField</span> {
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for the</span>
-            <span class="doccomment">/// [FormField][google.cloud.documentai.v1beta1.Document.Page.FormField]</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the</span>
+            <span class="doccomment">/// \[FormField][google.cloud.documentai.v1beta1.Document.Page.FormField\]</span>
             <span class="doccomment">/// name. e.g. `Address`, `Email`, `Grand total`, `Phone number`, etc.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">field_name</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Layout</span><span class="op">&gt;</span>,
-            <span class="doccomment">/// [Layout][google.cloud.documentai.v1beta1.Document.Page.Layout] for the</span>
-            <span class="doccomment">/// [FormField][google.cloud.documentai.v1beta1.Document.Page.FormField]</span>
+            <span class="doccomment">/// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the</span>
+            <span class="doccomment">/// \[FormField][google.cloud.documentai.v1beta1.Document.Page.FormField\]</span>
             <span class="doccomment">/// value.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">field_value</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Layout</span><span class="op">&gt;</span>,
@@ -1251,7 +1248,7 @@
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DetectedLanguage</span> {
             <span class="doccomment">/// The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more</span>
             <span class="doccomment">/// information, see</span>
-            <span class="doccomment">/// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.</span>
+            <span class="doccomment">/// &lt;http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.&gt;</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
             <span class="doccomment">/// Confidence of detected language. Range [0, 1].</span>
@@ -1265,7 +1262,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Entity</span> {
         <span class="doccomment">/// Provenance of the entity.</span>
         <span class="doccomment">/// Text anchor indexing into the</span>
-        <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text].</span>
+        <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">text_anchor</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TextAnchor</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Entity type from a schema e.g. `Address`.</span>
@@ -1280,7 +1277,7 @@
         <span class="kw">pub</span> <span class="ident">mention_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
     <span class="doccomment">/// Relationship between</span>
-    <span class="doccomment">/// [Entities][google.cloud.documentai.v1beta1.Document.Entity].</span>
+    <span class="doccomment">/// \[Entities][google.cloud.documentai.v1beta1.Document.Entity\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EntityRelation</span> {
         <span class="doccomment">/// Subject entity mention_id.</span>
@@ -1294,31 +1291,31 @@
         <span class="kw">pub</span> <span class="ident">relation</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
     <span class="doccomment">/// Text reference indexing into the</span>
-    <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text].</span>
+    <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextAnchor</span> {
         <span class="doccomment">/// The text segments from the</span>
-        <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text].</span>
+        <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">text_segments</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">text_anchor::TextSegment</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Nested message and enum types in `TextAnchor`.</span>
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">text_anchor</span> {
         <span class="doccomment">/// A text segment in the</span>
-        <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text]. The</span>
+        <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\]. The</span>
         <span class="doccomment">/// indices may be out of bounds which indicate that the text extends into</span>
         <span class="doccomment">/// another document shard for large sharded documents. See</span>
-        <span class="doccomment">/// [ShardInfo.text_offset][google.cloud.documentai.v1beta1.Document.ShardInfo.text_offset]</span>
+        <span class="doccomment">/// \[ShardInfo.text_offset][google.cloud.documentai.v1beta1.Document.ShardInfo.text_offset\]</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextSegment</span> {
-            <span class="doccomment">/// [TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment]</span>
+            <span class="doccomment">/// \[TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment\]</span>
             <span class="doccomment">/// start UTF-8 char index in the</span>
-            <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text].</span>
+            <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">start_index</span>: <span class="ident">i64</span>,
-            <span class="doccomment">/// [TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment]</span>
+            <span class="doccomment">/// \[TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment\]</span>
             <span class="doccomment">/// half open end UTF-8 char index in the</span>
-            <span class="doccomment">/// [Document.text][google.cloud.documentai.v1beta1.Document.text].</span>
+            <span class="doccomment">/// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">end_index</span>: <span class="ident">i64</span>,
         }
@@ -1329,7 +1326,7 @@
         <span class="doccomment">/// Currently supports Google Cloud Storage URI of the form</span>
         <span class="doccomment">///    `gs://bucket_name/object_name`. Object versioning is not supported.</span>
         <span class="doccomment">///    See [Google Cloud Storage Request</span>
-        <span class="doccomment">///    URIs](https://cloud.google.com/storage/docs/reference-uris) for more</span>
+        <span class="doccomment">///    URIs](&lt;https://cloud.google.com/storage/docs/reference-uris&gt;) for more</span>
         <span class="doccomment">///    info.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="ident">Uri</span>(<span class="ident">::prost::alloc::string::String</span>),
@@ -1447,7 +1444,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_number</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Bounding box hint for a table on this page. The coordinates must be</span>
-    <span class="doccomment">/// normalized to [0,1] and the bounding box must be an axis-aligned rectangle.</span>
+    <span class="doccomment">/// normalized to \[0,1\] and the bounding box must be an axis-aligned rectangle.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">bounding_box</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">BoundingPoly</span><span class="op">&gt;</span>,
 }
@@ -1519,7 +1516,7 @@
         <span class="doccomment">/// The Google Cloud Storage location to read the input from. This must be a</span>
         <span class="doccomment">/// single file.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsSource</span>(<span class="kw">super</span><span class="ident">::GcsSource</span>),
+        <span class="ident">GcsSource</span>(<span class="ident"><span class="kw">super</span>::GcsSource</span>),
     }
 }
 <span class="doccomment">/// The desired output location and metadata.</span>
@@ -1533,7 +1530,7 @@
     <span class="doccomment">/// For example, for one pdf file with 100 pages, 100 parsed pages will be</span>
     <span class="doccomment">/// produced. If `pages_per_shard` = 20, then 5 Document shard JSON files each</span>
     <span class="doccomment">/// containing 20 parsed pages will be written under the prefix</span>
-    <span class="doccomment">/// [OutputConfig.gcs_destination.uri][] and suffix pages-x-to-y.json where</span>
+    <span class="doccomment">/// \[OutputConfig.gcs_destination.uri][\] and suffix pages-x-to-y.json where</span>
     <span class="doccomment">/// x and y are 1-indexed page numbers.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Example GCS outputs with 157 pages and pages_per_shard = 50:</span>
@@ -1555,7 +1552,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Destination</span> {
         <span class="doccomment">/// The Google Cloud Storage location to write the output to.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
     }
 }
 <span class="doccomment">/// The Google Cloud Storage location where the input file will be read from.</span>
@@ -1621,7 +1618,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DocumentUnderstandingServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1634,7 +1631,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DocumentUnderstandingServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -1662,9 +1659,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; LRO endpoint to batch process many documents.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_process_documents</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchProcessDocumentsRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchProcessDocumentsRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1679,5 +1676,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

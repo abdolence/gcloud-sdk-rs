@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Status","[Output Only] Status of the zone, either UP or DOWN."]]});

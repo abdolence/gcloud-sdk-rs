@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Queries","Required. The sequence of Hive queries to execute, specified as either an HCFS file URI or a list of queries."]]});

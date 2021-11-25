@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SitelinkPlaceholderField","Possible values for Sitelink placeholder fields."]]});

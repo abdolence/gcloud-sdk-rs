@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CustomerIdentity","Specifies the identity of the transfer customer. A customer’s cloud_identity_id or domain is required to look up the customer’s Cloud Identity. For Team customers, only the cloud_identity_id option is valid."]]});

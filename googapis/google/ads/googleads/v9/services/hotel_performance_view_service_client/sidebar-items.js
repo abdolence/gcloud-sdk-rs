@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["HotelPerformanceViewServiceClient","Service to manage Hotel Performance Views."]]});

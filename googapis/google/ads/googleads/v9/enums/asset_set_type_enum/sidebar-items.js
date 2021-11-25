@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AssetSetType","Possible types of an asset set."]]});

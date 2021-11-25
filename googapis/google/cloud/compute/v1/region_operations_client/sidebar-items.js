@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RegionOperationsClient","The RegionOperations API."]]});

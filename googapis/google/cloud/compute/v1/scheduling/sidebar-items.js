@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["OnHostMaintenance","Defines the maintenance behavior for this instance. For standard instances, the default behavior is MIGRATE. For preemptible instances, the default and only possible behavior is TERMINATE. For more information, see Setting Instance Scheduling Options."]]});

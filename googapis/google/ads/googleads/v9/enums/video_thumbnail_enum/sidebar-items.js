@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["VideoThumbnail","Enum listing the possible types of a video thumbnail."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ResourcePoliciesClient","The ResourcePolicies API."]]});

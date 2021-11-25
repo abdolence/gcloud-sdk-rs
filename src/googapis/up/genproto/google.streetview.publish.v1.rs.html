@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.streetview.publish.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.streetview.publish.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.streetview.publish.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.streetview.publish.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -772,27 +770,43 @@
 <span id="770">770</span>
 <span id="771">771</span>
 <span id="772">772</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Upload reference for media files.</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Upload reference for media files.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UploadRef</span> {
-    <span class="doccomment">/// Required. An upload reference should be unique for each user. It follows</span>
-    <span class="doccomment">/// the form:</span>
-    <span class="doccomment">/// &quot;https://streetviewpublish.googleapis.com/media/user/{account_id}/photo/{upload_reference}&quot;</span>
-    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">upload_url</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Required.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;upload_ref::FileSource&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">file_source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">upload_ref::FileSource</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Identifier for a [Photo][google.streetview.publish.v1.Photo].</span>
+<span class="doccomment">/// Nested message and enum types in `UploadRef`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">upload_ref</span> {
+    <span class="doccomment">/// Required.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">FileSource</span> {
+        <span class="doccomment">/// An upload reference should be unique for each user. It follows</span>
+        <span class="doccomment">/// the form:</span>
+        <span class="doccomment">/// &quot;&lt;https://streetviewpublish.googleapis.com/media/user/{account_id}/photo/{upload_reference}&quot;&gt;</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="ident">UploadUrl</span>(<span class="ident">::prost::alloc::string::String</span>),
+    }
+}
+<span class="doccomment">/// Identifier for a \[Photo][google.streetview.publish.v1.Photo\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PhotoId</span> {
-    <span class="doccomment">/// Required. A unique identifier for a photo.</span>
+    <span class="doccomment">/// A unique identifier for a photo.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Level information containing level number and its corresponding name.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Level</span> {
-    <span class="doccomment">/// Floor number, used for ordering. 0 indicates the ground level, 1 indicates</span>
+    <span class="doccomment">/// Optional. Floor number, used for ordering. 0 indicates the ground level, 1 indicates</span>
     <span class="doccomment">/// the first level above ground level, -1 indicates the first level under</span>
     <span class="doccomment">/// ground level. Non-integer values are OK.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -807,20 +821,22 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Pose</span> {
     <span class="doccomment">/// Latitude and longitude pair of the pose, as explained here:</span>
-    <span class="doccomment">/// https://cloud.google.com/datastore/docs/reference/rest/Shared.Types/LatLng</span>
-    <span class="doccomment">/// When creating a [Photo][google.streetview.publish.v1.Photo], if the</span>
+    <span class="doccomment">/// &lt;https://cloud.google.com/datastore/docs/reference/rest/Shared.Types/LatLng&gt;</span>
+    <span class="doccomment">/// When creating a \[Photo][google.streetview.publish.v1.Photo\], if the</span>
     <span class="doccomment">/// latitude and longitude pair are not provided, the geolocation from the</span>
     <span class="doccomment">/// exif header is used. A latitude and longitude pair not provided in the</span>
-    <span class="doccomment">/// photo or exif header causes the create photo process to fail.</span>
+    <span class="doccomment">/// photo or exif header causes the photo process to fail.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">lat_lng_pair</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::LatLng</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">lat_lng_pair</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::LatLng</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Altitude of the pose in meters above WGS84 ellipsoid.</span>
     <span class="doccomment">/// NaN indicates an unmeasured quantity.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">altitude</span>: <span class="ident">f64</span>,
+    <span class="doccomment">/// The following pose parameters pertain to the center of the photo. They</span>
+    <span class="doccomment">/// match &lt;https://developers.google.com/streetview/spherical-metadata.&gt;</span>
     <span class="doccomment">/// Compass heading, measured at the center of the photo in degrees clockwise</span>
-    <span class="doccomment">/// from North. Value must be &gt;=0 and &lt;360.</span>
-    <span class="doccomment">/// NaN indicates an unmeasured quantity.</span>
+    <span class="doccomment">/// from North. Value must be &gt;=0 and &lt;360. NaN indicates an unmeasured</span>
+    <span class="doccomment">/// quantity.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">heading</span>: <span class="ident">f64</span>,
     <span class="doccomment">/// Pitch, measured at the center of the photo in degrees. Value must be &gt;=-90</span>
@@ -840,7 +856,7 @@
     <span class="doccomment">/// The estimated horizontal accuracy of this pose in meters with 68%</span>
     <span class="doccomment">/// confidence (one standard deviation). For example, on Android, this value is</span>
     <span class="doccomment">/// available from this method:</span>
-    <span class="doccomment">/// https://developer.android.com/reference/android/location/Location#getAccuracy().</span>
+    <span class="doccomment">/// &lt;https://developer.android.com/reference/android/location/Location#getAccuracy(&gt;).</span>
     <span class="doccomment">/// Other platforms have different methods of obtaining similar accuracy</span>
     <span class="doccomment">/// estimations.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
@@ -850,13 +866,13 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Place</span> {
     <span class="doccomment">/// Place identifier, as described in</span>
-    <span class="doccomment">/// https://developers.google.com/places/place-id.</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/places/place-id.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">place_id</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Output-only. The name of the place, localized to the language_code.</span>
+    <span class="doccomment">/// Output only. The name of the place, localized to the language_code.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Output-only. The language_code that the name is localized with. This should</span>
+    <span class="doccomment">/// Output only. The language_code that the name is localized with. This should</span>
     <span class="doccomment">/// be the language_code specified in the request, but may be a fallback.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -872,20 +888,20 @@
 <span class="doccomment">/// Photo is used to store 360 photos along with photo metadata.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Photo</span> {
-    <span class="doccomment">/// Required when updating a photo. Output only when creating a photo.</span>
+    <span class="doccomment">/// Required. Output only. Required when updating a photo. Output only when creating a photo.</span>
     <span class="doccomment">/// Identifier for the photo, which is unique among all photos in</span>
     <span class="doccomment">/// Google.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">photo_id</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">PhotoId</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Required when creating a photo. Input only. The resource URL where the</span>
+    <span class="doccomment">/// Input only. Required when creating a photo. Input only. The resource URL where the</span>
     <span class="doccomment">/// photo bytes are uploaded to.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">upload_reference</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">UploadRef</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. The download URL for the photo bytes. This field is set only</span>
     <span class="doccomment">/// when</span>
-    <span class="doccomment">/// [GetPhotoRequest.view][google.streetview.publish.v1.GetPhotoRequest.view]</span>
+    <span class="doccomment">/// \[GetPhotoRequest.view][google.streetview.publish.v1.GetPhotoRequest.view\]</span>
     <span class="doccomment">/// is set to</span>
-    <span class="doccomment">/// [PhotoView.INCLUDE_DOWNLOAD_URL][google.streetview.publish.v1.PhotoView.INCLUDE_DOWNLOAD_URL].</span>
+    <span class="doccomment">/// \[PhotoView.INCLUDE_DOWNLOAD_URL][google.streetview.publish.v1.PhotoView.INCLUDE_DOWNLOAD_URL\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">download_url</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. The thumbnail URL for showing a preview of the given photo.</span>
@@ -894,19 +910,22 @@
     <span class="doccomment">/// Output only. The share link for the photo.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">share_link</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Pose of the photo.</span>
+    <span class="doccomment">/// Optional. Pose of the photo.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">pose</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Pose</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Connections to other photos. A connection represents the link from this</span>
+    <span class="doccomment">/// Optional. Connections to other photos. A connection represents the link from this</span>
     <span class="doccomment">/// photo to another photo.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">connections</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Connection</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Absolute time when the photo was captured.</span>
+    <span class="doccomment">/// Optional. Absolute time when the photo was captured.</span>
     <span class="doccomment">/// When the photo has no exif timestamp, this is used to set a timestamp in</span>
     <span class="doccomment">/// the photo metadata.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">capture_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Places where this photo belongs.</span>
+    <span class="doccomment">/// Output only. Time when the image was uploaded.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">upload_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Optional. Places where this photo belongs.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">places</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Place</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. View count of the photo.</span>
@@ -915,8 +934,7 @@
     <span class="doccomment">/// Output only. Status of rights transfer on this photo.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;photo::TransferStatus&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transfer_status</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// Output only. Status in Google Maps, whether this photo was published or</span>
-    <span class="doccomment">/// rejected.</span>
+    <span class="doccomment">/// Output only. Status in Google Maps, whether this photo was published or rejected.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;photo::MapsPublishStatus&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">maps_publish_status</span>: <span class="ident">i32</span>,
 }
@@ -957,14 +975,14 @@
         <span class="ident">RejectedUnknown</span> <span class="op">=</span> <span class="number">2</span>,
     }
 }
-<span class="doccomment">/// Request to create a [Photo][google.streetview.publish.v1.Photo].</span>
+<span class="doccomment">/// Request to create a \[Photo][google.streetview.publish.v1.Photo\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreatePhotoRequest</span> {
     <span class="doccomment">/// Required. Photo to create.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">photo</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Photo</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request to get a [Photo][google.streetview.publish.v1.Photo].</span>
+<span class="doccomment">/// Request to get a \[Photo][google.streetview.publish.v1.Photo\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// By default</span>
 <span class="doccomment">///</span>
@@ -975,22 +993,22 @@
 <span class="doccomment">/// * `view` controls if the download URL for the photo bytes is returned.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetPhotoRequest</span> {
-    <span class="doccomment">/// Required. ID of the [Photo][google.streetview.publish.v1.Photo].</span>
+    <span class="doccomment">/// Required. ID of the \[Photo][google.streetview.publish.v1.Photo\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">photo_id</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Specifies if a download URL for the photo bytes should be returned in the</span>
-    <span class="doccomment">/// [Photo][google.streetview.publish.v1.Photo] response.</span>
+    <span class="doccomment">/// Required. Specifies if a download URL for the photo bytes should be returned in the</span>
+    <span class="doccomment">/// \[Photo][google.streetview.publish.v1.Photo\] response.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;PhotoView&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">view</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more</span>
     <span class="doccomment">/// information, see</span>
-    <span class="doccomment">/// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.</span>
+    <span class="doccomment">/// &lt;http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.&gt;</span>
     <span class="doccomment">/// If language_code is unspecified, the user&#39;s language preference for Google</span>
     <span class="doccomment">/// services is used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request to get one or more [Photos][google.streetview.publish.v1.Photo].</span>
+<span class="doccomment">/// Request to get one or more \[Photos][google.streetview.publish.v1.Photo\].</span>
 <span class="doccomment">/// By default</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// * does not return the download URL for the photo bytes.</span>
@@ -1000,46 +1018,46 @@
 <span class="doccomment">/// * `view` controls if the download URL for the photo bytes is returned.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchGetPhotosRequest</span> {
-    <span class="doccomment">/// Required. IDs of the [Photos][google.streetview.publish.v1.Photo]. HTTP GET</span>
-    <span class="doccomment">/// requests require the following syntax for the URL query parameter:</span>
+    <span class="doccomment">/// Required. IDs of the \[Photos][google.streetview.publish.v1.Photo\]. For HTTP</span>
+    <span class="doccomment">/// GET requests, the URL query parameter should be</span>
     <span class="doccomment">/// `photoIds=&lt;id1&gt;&amp;photoIds=&lt;id2&gt;&amp;...`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">photo_ids</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Specifies if a download URL for the photo bytes should be returned in the</span>
+    <span class="doccomment">/// Required. Specifies if a download URL for the photo bytes should be returned in the</span>
     <span class="doccomment">/// Photo response.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;PhotoView&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">view</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more</span>
+    <span class="doccomment">/// Optional. The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more</span>
     <span class="doccomment">/// information, see</span>
-    <span class="doccomment">/// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.</span>
+    <span class="doccomment">/// &lt;http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.&gt;</span>
     <span class="doccomment">/// If language_code is unspecified, the user&#39;s language preference for Google</span>
     <span class="doccomment">/// services is used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response to batch get of [Photos][google.streetview.publish.v1.Photo].</span>
+<span class="doccomment">/// Response to batch get of \[Photos][google.streetview.publish.v1.Photo\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchGetPhotosResponse</span> {
     <span class="doccomment">/// List of results for each individual</span>
-    <span class="doccomment">/// [Photo][google.streetview.publish.v1.Photo] requested, in the same order as</span>
+    <span class="doccomment">/// \[Photo][google.streetview.publish.v1.Photo\] requested, in the same order as</span>
     <span class="doccomment">/// the requests in</span>
-    <span class="doccomment">/// [BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos].</span>
+    <span class="doccomment">/// \[BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">results</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">PhotoResponse</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Response payload for a single</span>
-<span class="doccomment">/// [Photo][google.streetview.publish.v1.Photo]</span>
+<span class="doccomment">/// \[Photo][google.streetview.publish.v1.Photo\]</span>
 <span class="doccomment">/// in batch operations including</span>
-<span class="doccomment">/// [BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos]</span>
+<span class="doccomment">/// \[BatchGetPhotos][google.streetview.publish.v1.StreetViewPublishService.BatchGetPhotos\]</span>
 <span class="doccomment">/// and</span>
-<span class="doccomment">/// [BatchUpdatePhotos][google.streetview.publish.v1.StreetViewPublishService.BatchUpdatePhotos].</span>
+<span class="doccomment">/// \[BatchUpdatePhotos][google.streetview.publish.v1.StreetViewPublishService.BatchUpdatePhotos\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PhotoResponse</span> {
     <span class="doccomment">/// The status for the operation to get or update a single photo in the batch</span>
     <span class="doccomment">/// request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// The [Photo][google.streetview.publish.v1.Photo] resource, if the request</span>
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The \[Photo][google.streetview.publish.v1.Photo\] resource, if the request</span>
     <span class="doccomment">/// was successful.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">photo</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Photo</span><span class="op">&gt;</span>,
@@ -1055,38 +1073,38 @@
 <span class="doccomment">/// * `view` controls if the download URL for the photo bytes is returned.</span>
 <span class="doccomment">/// * `pageSize` determines the maximum number of photos to return.</span>
 <span class="doccomment">/// * `pageToken` is the next page token value returned from a previous</span>
-<span class="doccomment">/// [ListPhotos][google.streetview.publish.v1.StreetViewPublishService.ListPhotos]</span>
+<span class="doccomment">/// \[ListPhotos][google.streetview.publish.v1.StreetViewPublishService.ListPhotos\]</span>
 <span class="doccomment">///     request, if any.</span>
 <span class="doccomment">/// * `filter` allows filtering by a given parameter. &#39;placeId&#39; is the only</span>
 <span class="doccomment">/// parameter supported at the moment.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListPhotosRequest</span> {
-    <span class="doccomment">/// Specifies if a download URL for the photos bytes should be returned in the</span>
+    <span class="doccomment">/// Required. Specifies if a download URL for the photos bytes should be returned in the</span>
     <span class="doccomment">/// Photos response.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;PhotoView&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">view</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// The maximum number of photos to return.</span>
+    <span class="doccomment">/// Optional. The maximum number of photos to return.</span>
     <span class="doccomment">/// `pageSize` must be non-negative. If `pageSize` is zero or is not provided,</span>
     <span class="doccomment">/// the default page size of 100 is used.</span>
     <span class="doccomment">/// The number of photos returned in the response may be less than `pageSize`</span>
     <span class="doccomment">/// if the number of photos that belong to the user is less than `pageSize`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// The</span>
-    <span class="doccomment">/// [nextPageToken][google.streetview.publish.v1.ListPhotosResponse.next_page_token]</span>
+    <span class="doccomment">/// Optional. The</span>
+    <span class="doccomment">/// \[nextPageToken][google.streetview.publish.v1.ListPhotosResponse.next_page_token\]</span>
     <span class="doccomment">/// value returned from a previous</span>
-    <span class="doccomment">/// [ListPhotos][google.streetview.publish.v1.StreetViewPublishService.ListPhotos]</span>
+    <span class="doccomment">/// \[ListPhotos][google.streetview.publish.v1.StreetViewPublishService.ListPhotos\]</span>
     <span class="doccomment">/// request, if any.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The filter expression. For example: `placeId=ChIJj61dQgK6j4AR4GeTYWZsKWw`.</span>
+    <span class="doccomment">/// Optional. The filter expression. For example: `placeId=ChIJj61dQgK6j4AR4GeTYWZsKWw`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// The only filter supported at the moment is `placeId`.</span>
+    <span class="doccomment">/// The filters supported at the moment are: `placeId`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more</span>
+    <span class="doccomment">/// Optional. The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more</span>
     <span class="doccomment">/// information, see</span>
-    <span class="doccomment">/// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.</span>
+    <span class="doccomment">/// &lt;http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.&gt;</span>
     <span class="doccomment">/// If language_code is unspecified, the user&#39;s language preference for Google</span>
     <span class="doccomment">/// services is used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
@@ -1096,7 +1114,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListPhotosResponse</span> {
     <span class="doccomment">/// List of photos. The</span>
-    <span class="doccomment">/// [pageSize][google.streetview.publish.v1.ListPhotosRequest.page_size] field</span>
+    <span class="doccomment">/// \[pageSize][google.streetview.publish.v1.ListPhotosRequest.page_size\] field</span>
     <span class="doccomment">/// in the request determines the number of items returned.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">photos</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Photo</span><span class="op">&gt;</span>,
@@ -1106,18 +1124,18 @@
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Request to update the metadata of a</span>
-<span class="doccomment">/// [Photo][google.streetview.publish.v1.Photo]. Updating the pixels of a photo</span>
+<span class="doccomment">/// \[Photo][google.streetview.publish.v1.Photo\]. Updating the pixels of a photo</span>
 <span class="doccomment">/// is not supported.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdatePhotoRequest</span> {
-    <span class="doccomment">/// Required. [Photo][google.streetview.publish.v1.Photo] object containing the</span>
+    <span class="doccomment">/// Required. \[Photo][google.streetview.publish.v1.Photo\] object containing the</span>
     <span class="doccomment">/// new metadata.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">photo</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Photo</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Mask that identifies fields on the photo metadata to update.</span>
-    <span class="doccomment">/// If not present, the old [Photo][google.streetview.publish.v1.Photo]</span>
+    <span class="doccomment">/// Required. Mask that identifies fields on the photo metadata to update.</span>
+    <span class="doccomment">/// If not present, the old \[Photo][google.streetview.publish.v1.Photo\]</span>
     <span class="doccomment">/// metadata is entirely replaced with the</span>
-    <span class="doccomment">/// new [Photo][google.streetview.publish.v1.Photo] metadata in this request.</span>
+    <span class="doccomment">/// new \[Photo][google.streetview.publish.v1.Photo\] metadata in this request.</span>
     <span class="doccomment">/// The update fails if invalid fields are specified. Multiple fields can be</span>
     <span class="doccomment">/// specified in a comma-delimited list.</span>
     <span class="doccomment">///</span>
@@ -1133,13 +1151,13 @@
     <span class="doccomment">/// * `places`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// &lt;aside class=&quot;note&quot;&gt;&lt;b&gt;Note:&lt;/b&gt;  When</span>
-    <span class="doccomment">/// [updateMask][google.streetview.publish.v1.UpdatePhotoRequest.update_mask]</span>
+    <span class="doccomment">/// &gt; Note: When</span>
+    <span class="doccomment">/// \[updateMask][google.streetview.publish.v1.UpdatePhotoRequest.update_mask\]</span>
     <span class="doccomment">/// contains repeated fields, the entire set of repeated values get replaced</span>
     <span class="doccomment">/// with the new contents. For example, if</span>
-    <span class="doccomment">/// [updateMask][google.streetview.publish.v1.UpdatePhotoRequest.update_mask]</span>
+    <span class="doccomment">/// \[updateMask][google.streetview.publish.v1.UpdatePhotoRequest.update_mask\]</span>
     <span class="doccomment">/// contains `connections` and `UpdatePhotoRequest.photo.connections` is empty,</span>
-    <span class="doccomment">/// all connections are removed.&lt;/aside&gt;</span>
+    <span class="doccomment">/// all connections are removed.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
 }
@@ -1148,51 +1166,51 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchUpdatePhotosRequest</span> {
     <span class="doccomment">/// Required. List of</span>
-    <span class="doccomment">/// [UpdatePhotoRequests][google.streetview.publish.v1.UpdatePhotoRequest].</span>
+    <span class="doccomment">/// \[UpdatePhotoRequests][google.streetview.publish.v1.UpdatePhotoRequest\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_photo_requests</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">UpdatePhotoRequest</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Response to batch update of metadata of one or more</span>
-<span class="doccomment">/// [Photos][google.streetview.publish.v1.Photo].</span>
+<span class="doccomment">/// \[Photos][google.streetview.publish.v1.Photo\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchUpdatePhotosResponse</span> {
     <span class="doccomment">/// List of results for each individual</span>
-    <span class="doccomment">/// [Photo][google.streetview.publish.v1.Photo] updated, in the same order as</span>
+    <span class="doccomment">/// \[Photo][google.streetview.publish.v1.Photo\] updated, in the same order as</span>
     <span class="doccomment">/// the request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">results</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">PhotoResponse</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request to delete a [Photo][google.streetview.publish.v1.Photo].</span>
+<span class="doccomment">/// Request to delete a \[Photo][google.streetview.publish.v1.Photo\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeletePhotoRequest</span> {
-    <span class="doccomment">/// Required. ID of the [Photo][google.streetview.publish.v1.Photo].</span>
+    <span class="doccomment">/// Required. ID of the \[Photo][google.streetview.publish.v1.Photo\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">photo_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request to delete multiple [Photos][google.streetview.publish.v1.Photo].</span>
+<span class="doccomment">/// Request to delete multiple \[Photos][google.streetview.publish.v1.Photo\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchDeletePhotosRequest</span> {
-    <span class="doccomment">/// Required. IDs of the [Photos][google.streetview.publish.v1.Photo]. HTTP</span>
+    <span class="doccomment">/// Required. IDs of the \[Photos][google.streetview.publish.v1.Photo\]. HTTP</span>
     <span class="doccomment">/// GET requests require the following syntax for the URL query parameter:</span>
     <span class="doccomment">/// `photoIds=&lt;id1&gt;&amp;photoIds=&lt;id2&gt;&amp;...`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">photo_ids</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Response to batch delete of one or more</span>
-<span class="doccomment">/// [Photos][google.streetview.publish.v1.Photo].</span>
+<span class="doccomment">/// \[Photos][google.streetview.publish.v1.Photo\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchDeletePhotosResponse</span> {
     <span class="doccomment">/// The status for the operation to delete a single</span>
-    <span class="doccomment">/// [Photo][google.streetview.publish.v1.Photo] in the batch request.</span>
+    <span class="doccomment">/// \[Photo][google.streetview.publish.v1.Photo\] in the batch request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Specifies which view of the [Photo][google.streetview.publish.v1.Photo]</span>
+<span class="doccomment">/// Specifies which view of the \[Photo][google.streetview.publish.v1.Photo\]</span>
 <span class="doccomment">/// to include in the response.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
 <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PhotoView</span> {
-    <span class="doccomment">/// Server reponses do not include the download URL for the photo bytes.</span>
+    <span class="doccomment">/// Server responses do not include the download URL for the photo bytes.</span>
     <span class="doccomment">/// The default value.</span>
     <span class="ident">Basic</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="doccomment">/// Server responses include the download URL for the photo bytes.</span>
@@ -1210,7 +1228,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">StreetViewPublishServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1223,7 +1241,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StreetViewPublishServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -1248,20 +1266,20 @@
             <span class="self">self</span>.<span class="ident">inner</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">accept_gzip</span>();
             <span class="self">self</span>
         }
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates an upload session to start uploading photo bytes. The method uses&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates an upload session to start uploading photo bytes.  The method uses&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the upload URL of the returned&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [UploadRef][google.streetview.publish.v1.UploadRef] to upload the bytes for&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the [Photo][google.streetview.publish.v1.Photo].&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; In addition to the photo requirements shown in&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; https://support.google.com/maps/answer/7012050?hl=en&amp;ref_topic=6275604,&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; https://support.google.com/maps/answer/7012050?ref_topic=6275604,&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the photo must meet the following requirements:&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * Photo Sphere XMP metadata must be included in the photo medadata. See&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * Photo Sphere XMP metadata must be included in the photo metadata. See&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; https://developers.google.com/streetview/spherical-metadata for the&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; required fields.&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * The pixel size of the photo must meet the size requirements listed in&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; https://support.google.com/maps/answer/7012050?hl=en&amp;ref_topic=6275604, and&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; https://support.google.com/maps/answer/7012050?ref_topic=6275604, and&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the photo must be a full 360 horizontally.&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; After the upload completes, the method uses&quot;</span>]</span>
@@ -1271,7 +1289,7 @@
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">start_upload</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
             <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span>()<span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UploadRef</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UploadRef</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1293,21 +1311,20 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Currently, the only way to set heading, pitch, and roll in CreatePhoto is&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; through the [Photo Sphere XMP&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; metadata](https://developers.google.com/streetview/spherical-metadata) in&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the photo bytes. CreatePhoto ignores the `pose.heading`, `pose.pitch`,&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the photo bytes. CreatePhoto ignores the  `pose.heading`, `pose.pitch`,&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; `pose.roll`, `pose.altitude`, and `pose.level` fields in Pose.&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This method returns the following error codes:&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] if&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the request is malformed or if the uploaded photo is not a 360 photo.&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the upload&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; reference does not exist.&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED]&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; if the account has reached the storage limit.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] if the request is malformed or if&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the uploaded photo is not a 360 photo.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the upload reference does not exist.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.RESOURCE_EXHAUSTED][google.rpc.Code.RESOURCE_EXHAUSTED] if the account has reached the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; storage limit.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_photo</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreatePhotoRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Photo</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreatePhotoRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Photo</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1325,18 +1342,16 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This method returns the following error codes:&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED] if&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the requesting user did not create the requested&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Photo][google.streetview.publish.v1.Photo].&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED] if the requesting user did not&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; create the requested [Photo][google.streetview.publish.v1.Photo].&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the requested&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Photo][google.streetview.publish.v1.Photo] does not exist.&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.UNAVAILABLE][google.rpc.Code.UNAVAILABLE] if the&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; requested [Photo][google.streetview.publish.v1.Photo] is still being&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; indexed.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.UNAVAILABLE][google.rpc.Code.UNAVAILABLE] if the requested&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Photo][google.streetview.publish.v1.Photo] is still being indexed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_photo</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetPhotoRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Photo</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetPhotoRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Photo</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1367,8 +1382,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; for specific failures that can occur per photo.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_get_photos</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchGetPhotosRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchGetPhotosResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchGetPhotosRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchGetPhotosResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1384,12 +1399,12 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists all the [Photos][google.streetview.publish.v1.Photo] that belong to&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the user.&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; &lt;aside class=\&quot;note\&quot;&gt;&lt;b&gt;Note:&lt;/b&gt; Recently created photos that are still&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; being indexed are not returned in the response.&lt;/aside&gt;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; &gt; Note: Recently created photos that are still&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; being indexed are not returned in the response.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_photos</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListPhotosRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListPhotosResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListPhotosRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListPhotosResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1413,19 +1428,16 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This method returns the following error codes:&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED] if&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the requesting user did not create the requested photo.&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] if&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the request is malformed.&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the requested&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; photo does not exist.&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.UNAVAILABLE][google.rpc.Code.UNAVAILABLE] if the&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; requested [Photo][google.streetview.publish.v1.Photo] is still being&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; indexed.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED] if the requesting user did not&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; create the requested photo.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] if the request is malformed.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the requested photo does not exist.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.UNAVAILABLE][google.rpc.Code.UNAVAILABLE] if the requested&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Photo][google.streetview.publish.v1.Photo] is still being indexed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_photo</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdatePhotoRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Photo</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdatePhotoRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Photo</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1467,14 +1479,14 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [BatchUpdatePhotosRequest][google.streetview.publish.v1.BatchUpdatePhotosRequest]&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; must not exceed 20.&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; &lt;aside class=\&quot;note\&quot;&gt;&lt;b&gt;Note:&lt;/b&gt; To update&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; &gt; Note: To update&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Pose.altitude][google.streetview.publish.v1.Pose.altitude],&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Pose.latLngPair][google.streetview.publish.v1.Pose.lat_lng_pair] has to be&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; filled as well. Otherwise, the request will fail.&lt;/aside&gt;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; filled as well. Otherwise, the request will fail.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_update_photos</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchUpdatePhotosRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchUpdatePhotosResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchUpdatePhotosRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchUpdatePhotosResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1491,13 +1503,12 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This method returns the following error codes:&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED] if&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the requesting user did not create the requested photo.&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the photo ID&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; does not exist.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.PERMISSION_DENIED][google.rpc.Code.PERMISSION_DENIED] if the requesting user did not&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; create the requested photo.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * [google.rpc.Code.NOT_FOUND][google.rpc.Code.NOT_FOUND] if the photo ID does not exist.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_photo</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeletePhotoRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeletePhotoRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -1516,7 +1527,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Note that if&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [BatchDeletePhotos][google.streetview.publish.v1.StreetViewPublishService.BatchDeletePhotos]&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; fails, either critical fields are missing or there was an authentication&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; fails, either critical fields are missing or there is an authentication&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; error. Even if&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [BatchDeletePhotos][google.streetview.publish.v1.StreetViewPublishService.BatchDeletePhotos]&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; succeeds, individual photos in the batch may have failures.&quot;</span>]</span>
@@ -1529,8 +1540,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; for specific failures that can occur per photo.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_delete_photos</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchDeletePhotosRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchDeletePhotosResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchDeletePhotosRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchDeletePhotosResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1545,5 +1556,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

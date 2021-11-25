@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Destination","The configuration specifying of BatchExplain job output. This can be used to generate the baseline of feature attribution scores."],["PredictionFormat","The storage format of the predictions generated BatchPrediction job."]]});

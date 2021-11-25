@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CampaignSimulationServiceClient","Service to fetch campaign  simulations."]]});

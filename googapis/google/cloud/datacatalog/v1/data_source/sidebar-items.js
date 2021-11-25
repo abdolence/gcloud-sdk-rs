@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Service","Service name where the data is stored."]]});
+initSidebarItems({"enum":[["Service","Name of a service that stores the data."]]});

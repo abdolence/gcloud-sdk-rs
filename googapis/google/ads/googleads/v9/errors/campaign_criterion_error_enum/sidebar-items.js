@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["CampaignCriterionError","Enum describing possible campaign criterion errors."]]});

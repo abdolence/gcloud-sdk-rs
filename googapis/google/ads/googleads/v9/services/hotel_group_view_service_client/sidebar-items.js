@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["HotelGroupViewServiceClient","Service to manage Hotel Group Views."]]});

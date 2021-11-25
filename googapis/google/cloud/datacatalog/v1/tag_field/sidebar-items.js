@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Kind","Required. The value of this field."]],"struct":[["EnumValue","Holds an enum value."]]});
+initSidebarItems({"enum":[["Kind","Required. The value of this field."]],"struct":[["EnumValue","An enum value."]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["Scope","The scope within the parent resource that this tag is attached to. If not provided, the tag is attached to the parent resource itself. Deleting the scope from the parent resource will delete all tags attached to that scope. These fields cannot be updated after creation."]]});
+initSidebarItems({"enum":[["Scope","The scope within the parent resource that this tag is attached to. If not provided, the tag is attached to the parent resource itself."]]});

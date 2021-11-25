@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["StreamingState","State of streaming operation that the channel is running."]],"struct":[["Output","Location of output file(s) in a Google Cloud Storage bucket."]]});

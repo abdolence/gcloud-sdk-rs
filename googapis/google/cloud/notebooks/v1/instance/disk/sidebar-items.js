@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GuestOsFeature","Guest OS features for boot disk."]]});

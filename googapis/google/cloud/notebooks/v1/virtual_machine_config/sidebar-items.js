@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["NicType","The type of vNIC driver. Default should be UNSPECIFIED_NIC_TYPE."]]});

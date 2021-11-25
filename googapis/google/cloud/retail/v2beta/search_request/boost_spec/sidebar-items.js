@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ConditionBoostSpec","Boost applies to products which match a condition."]]});

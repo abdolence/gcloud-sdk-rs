@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["UtilizationTargetType","Defines how target utilization value is expressed for a Stackdriver Monitoring metric. Either GAUGE, DELTA_PER_SECOND, or DELTA_PER_MINUTE."]]});

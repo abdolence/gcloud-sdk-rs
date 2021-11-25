@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.actions.sdk.v2.interactionmodel.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.sdk.v2.interactionmodel.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.actions.sdk.v2.interactionmodel.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.sdk.v2.interactionmodel.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -340,8 +338,7 @@
 <span id="338">338</span>
 <span id="339">339</span>
 <span id="340">340</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Entity sets describe the pre-defined set of entities that the values of</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Entity sets describe the pre-defined set of entities that the values of</span>
 <span class="doccomment">/// built-in intent parameters can come from. Entity sets can be referenced from</span>
 <span class="doccomment">/// entity_set in built-in intent parameters.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -358,7 +355,7 @@
         <span class="doccomment">/// Required. The ID of the entity.</span>
         <span class="doccomment">/// For a list of built-in-intent parameters and their supported entities,</span>
         <span class="doccomment">/// see</span>
-        <span class="doccomment">/// https://developers.google.com/assistant/conversational/build/built-in-intents</span>
+        <span class="doccomment">/// &lt;https://developers.google.com/assistant/conversational/build/built-in-intents&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
@@ -382,7 +379,7 @@
         <span class="doccomment">/// Inlined static prompt. Can contain references to string resources in</span>
         <span class="doccomment">/// bundles.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">StaticPrompt</span>(<span class="kw">super</span><span class="ident">::prompt::StaticPrompt</span>),
+        <span class="ident">StaticPrompt</span>(<span class="ident"><span class="kw">super</span>::prompt::StaticPrompt</span>),
         <span class="doccomment">/// Name of the static prompt to invoke.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="ident">StaticPromptName</span>(<span class="ident">::prost::alloc::string::String</span>),
@@ -443,7 +440,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IntentParameter</span> {
         <span class="doccomment">/// Required. Unique name of the intent parameter. Can be used in conditions and</span>
         <span class="doccomment">/// responses to reference intent parameters extracted by NLU with</span>
-        <span class="doccomment">/// $intent.params.[name].resolved</span>
+        <span class="doccomment">/// $intent.params.\[name\].resolved</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// The type of the intent parameter.</span>
@@ -478,7 +475,7 @@
             <span class="doccomment">/// Optional. Declares the data type of this parameter.</span>
             <span class="doccomment">/// This should not be set for built-in intents.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-            <span class="ident">Type</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::ClassReference</span>),
+            <span class="ident">Type</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::ClassReference</span>),
             <span class="doccomment">/// Optional. References to the sets of allowed entities for this intent parameter.</span>
             <span class="doccomment">/// Only valid for parameters of a built-in intent. These</span>
             <span class="doccomment">/// references point to entity sets in the &#39;custom/entitySets&#39; directory.</span>
@@ -589,34 +586,34 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PromptSettings</span> {
         <span class="doccomment">/// Prompt for the slot value itself. Example: &quot;What size did you want?&quot;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">initial_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">initial_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EventHandler</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Prompt to give when the user&#39;s input does not match the expected</span>
         <span class="doccomment">/// value type for the slot for the first time. Example: &quot;Sorry, I</span>
         <span class="doccomment">/// didn&#39;t get that.&quot;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">no_match_prompt1</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">no_match_prompt1</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EventHandler</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Prompt to give when the user&#39;s input does not match the expected</span>
         <span class="doccomment">/// value type for the slot for the second time. Example: &quot;Sorry, I</span>
         <span class="doccomment">/// didn&#39;t get that.&quot;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">no_match_prompt2</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">no_match_prompt2</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EventHandler</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Prompt to give when the user&#39;s input does not match the expected</span>
         <span class="doccomment">/// value type for the slot for the last time. Example: &quot;Sorry, I</span>
         <span class="doccomment">/// didn&#39;t get that.&quot;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">no_match_final_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">no_match_final_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EventHandler</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Prompt to give when the user does not provide an input for the first</span>
         <span class="doccomment">/// time. Example: &quot;Sorry, I didn&#39;t get that.&quot;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">no_input_prompt1</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">no_input_prompt1</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EventHandler</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Prompt to give when the user does not provide an input for the second</span>
         <span class="doccomment">/// time. Example: &quot;Sorry, I didn&#39;t get that.&quot;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">no_input_prompt2</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">no_input_prompt2</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EventHandler</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Prompt to give when the user does not provide an input for the last</span>
         <span class="doccomment">/// time. Example: &quot;Sorry, I didn&#39;t get that.&quot;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">no_input_final_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EventHandler</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">no_input_final_prompt</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EventHandler</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Message describing the commit behavior associated with the slot after it</span>
     <span class="doccomment">/// has been successfully filled.</span>
@@ -681,5 +678,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">on_slot_updated</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EventHandler</span><span class="op">&gt;</span>,
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

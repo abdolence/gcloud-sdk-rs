@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Pipeline","The ordering configuration of the `DeliveryPipeline`."]]});

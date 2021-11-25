@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RuntimeGuestOsFeature","Optional. A list of features to enable on the guest operating system. Applicable only for bootable images. Read Enabling guest operating system features to see a list of available options. Guest OS features for boot disk."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ApprovalState","Valid approval states of a `Rollout`."],["State","Valid states of a `Rollout`."]]});

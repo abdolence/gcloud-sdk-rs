@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["PriceRange","The price range of all [variant][google.cloud.retail.v2.Product.Type.VARIANT] [Product][google.cloud.retail.v2.Product] having the same [Product.primary_product_id][google.cloud.retail.v2.Product.primary_product_id]."]]});

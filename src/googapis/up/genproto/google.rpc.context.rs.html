@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.rpc.context.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.rpc.context.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.rpc.context.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.rpc.context.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -340,8 +338,7 @@
 <span id="338">338</span>
 <span id="339">339</span>
 <span id="340">340</span>
-</pre><pre class="rust">
-<span class="doccomment">/// This message defines the standard attribute vocabulary for Google APIs.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// This message defines the standard attribute vocabulary for Google APIs.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// An attribute is a piece of metadata that describes an activity on a network</span>
 <span class="doccomment">/// service. For example, the size of an HTTP request, or the status code of</span>
@@ -457,7 +454,7 @@
         <span class="doccomment">/// (`sub`) claims within a JWT. The issuer and subject should be `/`</span>
         <span class="doccomment">/// delimited, with `/` percent-encoded within the subject fragment. For</span>
         <span class="doccomment">/// Google accounts, the principal format is:</span>
-        <span class="doccomment">/// &quot;https://accounts.google.com/{id}&quot;</span>
+        <span class="doccomment">/// &quot;&lt;https://accounts.google.com/{id}&quot;&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">principal</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// The intended audience(s) for this authentication information. Reflects</span>
@@ -466,9 +463,9 @@
         <span class="doccomment">/// the following pieces of information:</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// *  The services intended to receive the credential. For example,</span>
-        <span class="doccomment">///    [&quot;https://pubsub.googleapis.com/&quot;, &quot;https://storage.googleapis.com/&quot;].</span>
+        <span class="doccomment">///    [&quot;&lt;https://pubsub.googleapis.com/&quot;,&gt; &quot;&lt;https://storage.googleapis.com/&quot;].&gt;</span>
         <span class="doccomment">/// *  A set of service-based scopes. For example,</span>
-        <span class="doccomment">///    [&quot;https://www.googleapis.com/auth/cloud-platform&quot;].</span>
+        <span class="doccomment">///    \[&quot;&lt;https://www.googleapis.com/auth/cloud-platform&quot;\].&gt;</span>
         <span class="doccomment">/// *  The client id of an app, such as the Firebase project id for JWTs</span>
         <span class="doccomment">///    from Firebase Auth.</span>
         <span class="doccomment">///</span>
@@ -552,7 +549,7 @@
         <span class="kw">pub</span> <span class="ident">size</span>: <span class="ident">i64</span>,
         <span class="doccomment">/// The network protocol used with the request, such as &quot;http/1.1&quot;,</span>
         <span class="doccomment">/// &quot;spdy/3&quot;, &quot;h2&quot;, &quot;h2c&quot;, &quot;webrtc&quot;, &quot;tcp&quot;, &quot;udp&quot;, &quot;quic&quot;. See</span>
-        <span class="doccomment">/// https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids</span>
+        <span class="doccomment">/// &lt;https://www.iana.org/assignments/tls-extensiontype-values/tls-extensiontype-values.xhtml#alpn-protocol-ids&gt;</span>
         <span class="doccomment">/// for details.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">protocol</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -613,9 +610,9 @@
         <span class="doccomment">///     `//pubsub.googleapis.com/projects/123/topics/news-feed`.</span>
         <span class="doccomment">/// *   URI often includes protocol and version information, so it can</span>
         <span class="doccomment">///     be used directly by applications. For example,</span>
-        <span class="doccomment">///     `https://pubsub.googleapis.com/v1/projects/123/topics/news-feed`.</span>
+        <span class="doccomment">///     `&lt;https://pubsub.googleapis.com/v1/projects/123/topics/news-feed`.&gt;</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// See https://cloud.google.com/apis/design/resource_names for details.</span>
+        <span class="doccomment">/// See &lt;https://cloud.google.com/apis/design/resource_names&gt; for details.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// The type of the resource. The syntax is platform-specific because</span>
@@ -642,7 +639,7 @@
         <span class="doccomment">/// may be set by external tools to store and retrieve arbitrary metadata.</span>
         <span class="doccomment">/// They are not queryable and should be preserved when modifying objects.</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// More info: https://kubernetes.io/docs/user-guide/annotations</span>
+        <span class="doccomment">/// More info: &lt;https://kubernetes.io/docs/user-guide/annotations&gt;</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">annotations</span>: <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span>
             <span class="ident">::prost::alloc::string::String</span>,
@@ -681,5 +678,7 @@
         <span class="kw">pub</span> <span class="ident">location</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

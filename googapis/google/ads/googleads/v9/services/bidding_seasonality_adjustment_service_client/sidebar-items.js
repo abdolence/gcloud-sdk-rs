@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BiddingSeasonalityAdjustmentServiceClient","Service to manage bidding seasonality adjustments."]]});

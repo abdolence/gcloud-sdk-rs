@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MerchantCenterFeed","Merchant ID and Feed Label from Google Merchant Center."]]});

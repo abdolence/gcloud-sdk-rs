@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","Cluster information of the registered cluster."]]});

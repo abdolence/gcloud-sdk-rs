@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ProximityRadiusUnits","The unit of radius distance in proximity (e.g. MILES)"]]});

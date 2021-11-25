@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BatchConfig","The application/framework-specific portion of the batch configuration."],["State","The batch state."]],"struct":[["StateHistory","Historical state information."]]});

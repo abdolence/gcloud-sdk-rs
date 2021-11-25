@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RegionNotificationEndpointsClient","The RegionNotificationEndpoints API."]]});

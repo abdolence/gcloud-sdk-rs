@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["BudgetOption","Smart Campaign budget option."],["Metrics","Performance metrics for a given budget option."]]});

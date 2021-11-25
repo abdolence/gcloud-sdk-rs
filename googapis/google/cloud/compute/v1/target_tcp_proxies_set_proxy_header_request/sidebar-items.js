@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ProxyHeader","The new type of proxy header to append before sending data to the backend. NONE or PROXY_V1 are allowed."]]});

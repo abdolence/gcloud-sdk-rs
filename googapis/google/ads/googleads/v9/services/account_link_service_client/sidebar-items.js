@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["AccountLinkServiceClient","This service allows management of links between Google Ads accounts and other accounts."]]});

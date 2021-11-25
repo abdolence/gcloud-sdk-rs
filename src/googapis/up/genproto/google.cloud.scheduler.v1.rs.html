@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.scheduler.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.scheduler.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.scheduler.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.scheduler.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -865,9 +863,8 @@
 <span id="863">863</span>
 <span id="864">864</span>
 <span id="865">865</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Http target. The job will be pushed to the job handler by means of</span>
-<span class="doccomment">/// an HTTP request via an [http_method][google.cloud.scheduler.v1.HttpTarget.http_method] such as HTTP</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Http target. The job will be pushed to the job handler by means of</span>
+<span class="doccomment">/// an HTTP request via an \[http_method][google.cloud.scheduler.v1.HttpTarget.http_method\] such as HTTP</span>
 <span class="doccomment">/// POST, HTTP GET, etc. The job is acknowledged by means of an HTTP</span>
 <span class="doccomment">/// response code in the range [200 - 299]. A failure to receive a response</span>
 <span class="doccomment">/// constitutes a failed execution. For a redirected request, the response</span>
@@ -875,9 +872,9 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HttpTarget</span> {
     <span class="doccomment">/// Required. The full URI path that the request will be sent to. This string</span>
-    <span class="doccomment">/// must begin with either &quot;http://&quot; or &quot;https://&quot;. Some examples of</span>
-    <span class="doccomment">/// valid values for [uri][google.cloud.scheduler.v1.HttpTarget.uri] are:</span>
-    <span class="doccomment">/// `http://acme.com` and `https://acme.com/sales:8080`. Cloud Scheduler will</span>
+    <span class="doccomment">/// must begin with either &quot;&lt;http://&quot;&gt; or &quot;&lt;https://&quot;.&gt; Some examples of</span>
+    <span class="doccomment">/// valid values for \[uri][google.cloud.scheduler.v1.HttpTarget.uri\] are:</span>
+    <span class="doccomment">/// `&lt;http://acme.com`&gt; and `&lt;https://acme.com/sales:8080`.&gt; Cloud Scheduler will</span>
     <span class="doccomment">/// encode some characters for safety and compatibility. The maximum allowed</span>
     <span class="doccomment">/// URL length is 2083 characters after encoding.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -893,7 +890,7 @@
     <span class="doccomment">/// headers will be ignored or replaced. A partial list of headers that</span>
     <span class="doccomment">/// will be ignored or replaced is below:</span>
     <span class="doccomment">/// - Host: This will be computed by Cloud Scheduler and derived from</span>
-    <span class="doccomment">/// [uri][google.cloud.scheduler.v1.HttpTarget.uri].</span>
+    <span class="doccomment">/// \[uri][google.cloud.scheduler.v1.HttpTarget.uri\].</span>
     <span class="doccomment">/// * `Content-Length`: This will be computed by Cloud Scheduler.</span>
     <span class="doccomment">/// * `User-Agent`: This will be set to `&quot;Google-Cloud-Scheduler&quot;`.</span>
     <span class="doccomment">/// * `X-Google-*`: Google internal use only.</span>
@@ -905,12 +902,12 @@
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// HTTP request body. A request body is allowed only if the HTTP</span>
     <span class="doccomment">/// method is POST, PUT, or PATCH. It is an error to set body on a job with an</span>
-    <span class="doccomment">/// incompatible [HttpMethod][google.cloud.scheduler.v1.HttpMethod].</span>
+    <span class="doccomment">/// incompatible \[HttpMethod][google.cloud.scheduler.v1.HttpMethod\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">body</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The mode for generating an `Authorization` header for HTTP requests.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If specified, all `Authorization` headers in the [HttpTarget.headers][google.cloud.scheduler.v1.HttpTarget.headers]</span>
+    <span class="doccomment">/// If specified, all `Authorization` headers in the \[HttpTarget.headers][google.cloud.scheduler.v1.HttpTarget.headers\]</span>
     <span class="doccomment">/// field will be overridden.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;http_target::AuthorizationHeader&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;5, 6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">authorization_header</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">http_target::AuthorizationHeader</span><span class="op">&gt;</span>,
@@ -919,21 +916,21 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">http_target</span> {
     <span class="doccomment">/// The mode for generating an `Authorization` header for HTTP requests.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If specified, all `Authorization` headers in the [HttpTarget.headers][google.cloud.scheduler.v1.HttpTarget.headers]</span>
+    <span class="doccomment">/// If specified, all `Authorization` headers in the \[HttpTarget.headers][google.cloud.scheduler.v1.HttpTarget.headers\]</span>
     <span class="doccomment">/// field will be overridden.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AuthorizationHeader</span> {
         <span class="doccomment">/// If specified, an</span>
-        <span class="doccomment">/// [OAuth token](https://developers.google.com/identity/protocols/OAuth2)</span>
+        <span class="doccomment">/// [OAuth token](&lt;https://developers.google.com/identity/protocols/OAuth2&gt;)</span>
         <span class="doccomment">/// will be generated and attached as an `Authorization` header in the HTTP</span>
         <span class="doccomment">/// request.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// This type of authorization should generally only be used when calling</span>
         <span class="doccomment">/// Google APIs hosted on *.googleapis.com.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">OauthToken</span>(<span class="kw">super</span><span class="ident">::OAuthToken</span>),
+        <span class="ident">OauthToken</span>(<span class="ident"><span class="kw">super</span>::OAuthToken</span>),
         <span class="doccomment">/// If specified, an</span>
-        <span class="doccomment">/// [OIDC](https://developers.google.com/identity/protocols/OpenIDConnect)</span>
+        <span class="doccomment">/// \[OIDC\](&lt;https://developers.google.com/identity/protocols/OpenIDConnect&gt;)</span>
         <span class="doccomment">/// token will be generated and attached as an `Authorization` header in the</span>
         <span class="doccomment">/// HTTP request.</span>
         <span class="doccomment">///</span>
@@ -941,11 +938,11 @@
         <span class="doccomment">/// calling Cloud Run, or endpoints where you intend to validate the token</span>
         <span class="doccomment">/// yourself.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">OidcToken</span>(<span class="kw">super</span><span class="ident">::OidcToken</span>),
+        <span class="ident">OidcToken</span>(<span class="ident"><span class="kw">super</span>::OidcToken</span>),
     }
 }
 <span class="doccomment">/// App Engine target. The job will be pushed to a job handler by means</span>
-<span class="doccomment">/// of an HTTP request via an [http_method][google.cloud.scheduler.v1.AppEngineHttpTarget.http_method] such</span>
+<span class="doccomment">/// of an HTTP request via an \[http_method][google.cloud.scheduler.v1.AppEngineHttpTarget.http_method\] such</span>
 <span class="doccomment">/// as HTTP POST, HTTP GET, etc. The job is acknowledged by means of an</span>
 <span class="doccomment">/// HTTP response code in the range [200 - 299]. Error 503 is</span>
 <span class="doccomment">/// considered an App Engine system error instead of an application</span>
@@ -978,13 +975,13 @@
     <span class="doccomment">/// Cloud Scheduler sets some headers to default values:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `User-Agent`: By default, this header is</span>
-    <span class="doccomment">///   `&quot;AppEngine-Google; (+http://code.google.com/appengine)&quot;`.</span>
+    <span class="doccomment">///   `&quot;AppEngine-Google; (+&lt;http://code.google.com/appengine&gt;)&quot;`.</span>
     <span class="doccomment">///   This header can be modified, but Cloud Scheduler will append</span>
-    <span class="doccomment">///   `&quot;AppEngine-Google; (+http://code.google.com/appengine)&quot;` to the</span>
+    <span class="doccomment">///   `&quot;AppEngine-Google; (+&lt;http://code.google.com/appengine&gt;)&quot;` to the</span>
     <span class="doccomment">///   modified `User-Agent`.</span>
     <span class="doccomment">/// * `X-CloudScheduler`: This header will be set to true.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If the job has an [body][google.cloud.scheduler.v1.AppEngineHttpTarget.body], Cloud Scheduler sets</span>
+    <span class="doccomment">/// If the job has an \[body][google.cloud.scheduler.v1.AppEngineHttpTarget.body\], Cloud Scheduler sets</span>
     <span class="doccomment">/// the following headers:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `Content-Type`: By default, the `Content-Type` header is set to</span>
@@ -1009,7 +1006,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// HTTP request body. A request body is allowed only if the HTTP method is</span>
     <span class="doccomment">/// POST or PUT. It will result in invalid argument error to set a body on a</span>
-    <span class="doccomment">/// job with an incompatible [HttpMethod][google.cloud.scheduler.v1.HttpMethod].</span>
+    <span class="doccomment">/// job with an incompatible \[HttpMethod][google.cloud.scheduler.v1.HttpMethod\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">body</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
@@ -1020,7 +1017,7 @@
     <span class="doccomment">/// Required. The name of the Cloud Pub/Sub topic to which messages will</span>
     <span class="doccomment">/// be published when a job is delivered. The topic name must be in the</span>
     <span class="doccomment">/// same format as required by PubSub&#39;s</span>
-    <span class="doccomment">/// [PublishRequest.name](https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#publishrequest),</span>
+    <span class="doccomment">/// \[PublishRequest.name\](&lt;https://cloud.google.com/pubsub/docs/reference/rpc/google.pubsub.v1#publishrequest&gt;),</span>
     <span class="doccomment">/// for example `projects/PROJECT_ID/topics/TOPIC_ID`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The topic must be in the same project as the Cloud Scheduler job.</span>
@@ -1044,13 +1041,13 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// For more information about services, versions, and instances see</span>
 <span class="doccomment">/// [An Overview of App</span>
-<span class="doccomment">/// Engine](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine),</span>
+<span class="doccomment">/// Engine](&lt;https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine&gt;),</span>
 <span class="doccomment">/// [Microservices Architecture on Google App</span>
-<span class="doccomment">/// Engine](https://cloud.google.com/appengine/docs/python/microservices-on-app-engine),</span>
+<span class="doccomment">/// Engine](&lt;https://cloud.google.com/appengine/docs/python/microservices-on-app-engine&gt;),</span>
 <span class="doccomment">/// [App Engine Standard request</span>
-<span class="doccomment">/// routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed),</span>
+<span class="doccomment">/// routing](&lt;https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed&gt;),</span>
 <span class="doccomment">/// and [App Engine Flex request</span>
-<span class="doccomment">/// routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).</span>
+<span class="doccomment">/// routing](&lt;https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AppEngineRouting</span> {
     <span class="doccomment">/// App service.</span>
@@ -1072,102 +1069,102 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// Requests can only be sent to a specific instance if</span>
     <span class="doccomment">/// [manual scaling is used in App Engine</span>
-    <span class="doccomment">/// Standard](https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes).</span>
+    <span class="doccomment">/// Standard](&lt;https://cloud.google.com/appengine/docs/python/an-overview-of-app-engine?hl=en_US#scaling_types_and_instance_classes&gt;).</span>
     <span class="doccomment">/// App Engine Flex does not support instances. For more information, see</span>
     <span class="doccomment">/// [App Engine Standard request</span>
-    <span class="doccomment">/// routing](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed)</span>
+    <span class="doccomment">/// routing](&lt;https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed&gt;)</span>
     <span class="doccomment">/// and [App Engine Flex request</span>
-    <span class="doccomment">/// routing](https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed).</span>
+    <span class="doccomment">/// routing](&lt;https://cloud.google.com/appengine/docs/flexible/python/how-requests-are-routed&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. The host that the job is sent to.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For more information about how App Engine requests are routed, see</span>
-    <span class="doccomment">/// [here](https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed).</span>
+    <span class="doccomment">/// \[here\](&lt;https://cloud.google.com/appengine/docs/standard/python/how-requests-are-routed&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The host is constructed as:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * `host = [application_domain_name]`&lt;/br&gt;</span>
-    <span class="doccomment">///   `| [service] + &#39;.&#39; + [application_domain_name]`&lt;/br&gt;</span>
-    <span class="doccomment">///   `| [version] + &#39;.&#39; + [application_domain_name]`&lt;/br&gt;</span>
-    <span class="doccomment">///   `| [version_dot_service]+ &#39;.&#39; + [application_domain_name]`&lt;/br&gt;</span>
-    <span class="doccomment">///   `| [instance] + &#39;.&#39; + [application_domain_name]`&lt;/br&gt;</span>
-    <span class="doccomment">///   `| [instance_dot_service] + &#39;.&#39; + [application_domain_name]`&lt;/br&gt;</span>
-    <span class="doccomment">///   `| [instance_dot_version] + &#39;.&#39; + [application_domain_name]`&lt;/br&gt;</span>
-    <span class="doccomment">///   `| [instance_dot_version_dot_service] + &#39;.&#39; + [application_domain_name]`</span>
+    <span class="doccomment">/// * `host = \[application_domain_name\]`&lt;/br&gt;</span>
+    <span class="doccomment">///   `| \[service\] + &#39;.&#39; + \[application_domain_name\]`&lt;/br&gt;</span>
+    <span class="doccomment">///   `| \[version\] + &#39;.&#39; + \[application_domain_name\]`&lt;/br&gt;</span>
+    <span class="doccomment">///   `| \[version_dot_service\]+ &#39;.&#39; + \[application_domain_name\]`&lt;/br&gt;</span>
+    <span class="doccomment">///   `| \[instance\] + &#39;.&#39; + \[application_domain_name\]`&lt;/br&gt;</span>
+    <span class="doccomment">///   `| \[instance_dot_service\] + &#39;.&#39; + \[application_domain_name\]`&lt;/br&gt;</span>
+    <span class="doccomment">///   `| \[instance_dot_version\] + &#39;.&#39; + \[application_domain_name\]`&lt;/br&gt;</span>
+    <span class="doccomment">///   `| \[instance_dot_version_dot_service\] + &#39;.&#39; + \[application_domain_name\]`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `application_domain_name` = The domain name of the app, for</span>
     <span class="doccomment">///   example &lt;app-id&gt;.appspot.com, which is associated with the</span>
     <span class="doccomment">///   job&#39;s project ID.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * `service =` [service][google.cloud.scheduler.v1.AppEngineRouting.service]</span>
+    <span class="doccomment">/// * `service =` \[service][google.cloud.scheduler.v1.AppEngineRouting.service\]</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * `version =` [version][google.cloud.scheduler.v1.AppEngineRouting.version]</span>
+    <span class="doccomment">/// * `version =` \[version][google.cloud.scheduler.v1.AppEngineRouting.version\]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `version_dot_service =`</span>
-    <span class="doccomment">///   [version][google.cloud.scheduler.v1.AppEngineRouting.version] `+ &#39;.&#39; +`</span>
-    <span class="doccomment">///   [service][google.cloud.scheduler.v1.AppEngineRouting.service]</span>
+    <span class="doccomment">///   \[version][google.cloud.scheduler.v1.AppEngineRouting.version\] `+ &#39;.&#39; +`</span>
+    <span class="doccomment">///   \[service][google.cloud.scheduler.v1.AppEngineRouting.service\]</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * `instance =` [instance][google.cloud.scheduler.v1.AppEngineRouting.instance]</span>
+    <span class="doccomment">/// * `instance =` \[instance][google.cloud.scheduler.v1.AppEngineRouting.instance\]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `instance_dot_service =`</span>
-    <span class="doccomment">///   [instance][google.cloud.scheduler.v1.AppEngineRouting.instance] `+ &#39;.&#39; +`</span>
-    <span class="doccomment">///   [service][google.cloud.scheduler.v1.AppEngineRouting.service]</span>
+    <span class="doccomment">///   \[instance][google.cloud.scheduler.v1.AppEngineRouting.instance\] `+ &#39;.&#39; +`</span>
+    <span class="doccomment">///   \[service][google.cloud.scheduler.v1.AppEngineRouting.service\]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `instance_dot_version =`</span>
-    <span class="doccomment">///   [instance][google.cloud.scheduler.v1.AppEngineRouting.instance] `+ &#39;.&#39; +`</span>
-    <span class="doccomment">///   [version][google.cloud.scheduler.v1.AppEngineRouting.version]</span>
+    <span class="doccomment">///   \[instance][google.cloud.scheduler.v1.AppEngineRouting.instance\] `+ &#39;.&#39; +`</span>
+    <span class="doccomment">///   \[version][google.cloud.scheduler.v1.AppEngineRouting.version\]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * `instance_dot_version_dot_service =`</span>
-    <span class="doccomment">///   [instance][google.cloud.scheduler.v1.AppEngineRouting.instance] `+ &#39;.&#39; +`</span>
-    <span class="doccomment">///   [version][google.cloud.scheduler.v1.AppEngineRouting.version] `+ &#39;.&#39; +`</span>
-    <span class="doccomment">///   [service][google.cloud.scheduler.v1.AppEngineRouting.service]</span>
+    <span class="doccomment">///   \[instance][google.cloud.scheduler.v1.AppEngineRouting.instance\] `+ &#39;.&#39; +`</span>
+    <span class="doccomment">///   \[version][google.cloud.scheduler.v1.AppEngineRouting.version\] `+ &#39;.&#39; +`</span>
+    <span class="doccomment">///   \[service][google.cloud.scheduler.v1.AppEngineRouting.service\]</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [service][google.cloud.scheduler.v1.AppEngineRouting.service] is empty, then the job will be sent</span>
+    <span class="doccomment">/// If \[service][google.cloud.scheduler.v1.AppEngineRouting.service\] is empty, then the job will be sent</span>
     <span class="doccomment">/// to the service which is the default service when the job is attempted.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [version][google.cloud.scheduler.v1.AppEngineRouting.version] is empty, then the job will be sent</span>
+    <span class="doccomment">/// If \[version][google.cloud.scheduler.v1.AppEngineRouting.version\] is empty, then the job will be sent</span>
     <span class="doccomment">/// to the version which is the default version when the job is attempted.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [instance][google.cloud.scheduler.v1.AppEngineRouting.instance] is empty, then the job will be</span>
+    <span class="doccomment">/// If \[instance][google.cloud.scheduler.v1.AppEngineRouting.instance\] is empty, then the job will be</span>
     <span class="doccomment">/// sent to an instance which is available when the job is attempted.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [service][google.cloud.scheduler.v1.AppEngineRouting.service],</span>
-    <span class="doccomment">/// [version][google.cloud.scheduler.v1.AppEngineRouting.version], or</span>
-    <span class="doccomment">/// [instance][google.cloud.scheduler.v1.AppEngineRouting.instance] is invalid, then the job will be sent</span>
+    <span class="doccomment">/// If \[service][google.cloud.scheduler.v1.AppEngineRouting.service\],</span>
+    <span class="doccomment">/// \[version][google.cloud.scheduler.v1.AppEngineRouting.version\], or</span>
+    <span class="doccomment">/// \[instance][google.cloud.scheduler.v1.AppEngineRouting.instance\] is invalid, then the job will be sent</span>
     <span class="doccomment">/// to the default version of the default service when the job is attempted.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">host</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Contains information needed for generating an</span>
-<span class="doccomment">/// [OAuth token](https://developers.google.com/identity/protocols/OAuth2).</span>
+<span class="doccomment">/// [OAuth token](&lt;https://developers.google.com/identity/protocols/OAuth2&gt;).</span>
 <span class="doccomment">/// This type of authorization should generally only be used when calling Google</span>
 <span class="doccomment">/// APIs hosted on *.googleapis.com.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OAuthToken</span> {
-    <span class="doccomment">/// [Service account email](https://cloud.google.com/iam/docs/service-accounts)</span>
+    <span class="doccomment">/// [Service account email](&lt;https://cloud.google.com/iam/docs/service-accounts&gt;)</span>
     <span class="doccomment">/// to be used for generating OAuth token.</span>
     <span class="doccomment">/// The service account must be within the same project as the job. The caller</span>
     <span class="doccomment">/// must have iam.serviceAccounts.actAs permission for the service account.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_account_email</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// OAuth scope to be used for generating OAuth access token.</span>
-    <span class="doccomment">/// If not specified, &quot;https://www.googleapis.com/auth/cloud-platform&quot;</span>
+    <span class="doccomment">/// If not specified, &quot;&lt;https://www.googleapis.com/auth/cloud-platform&quot;&gt;</span>
     <span class="doccomment">/// will be used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">scope</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Contains information needed for generating an</span>
 <span class="doccomment">/// [OpenID Connect</span>
-<span class="doccomment">/// token](https://developers.google.com/identity/protocols/OpenIDConnect).</span>
+<span class="doccomment">/// token](&lt;https://developers.google.com/identity/protocols/OpenIDConnect&gt;).</span>
 <span class="doccomment">/// This type of authorization can be used for many scenarios, including</span>
 <span class="doccomment">/// calling Cloud Run, or endpoints where you intend to validate the token</span>
 <span class="doccomment">/// yourself.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OidcToken</span> {
-    <span class="doccomment">/// [Service account email](https://cloud.google.com/iam/docs/service-accounts)</span>
+    <span class="doccomment">/// [Service account email](&lt;https://cloud.google.com/iam/docs/service-accounts&gt;)</span>
     <span class="doccomment">/// to be used for generating OIDC token.</span>
     <span class="doccomment">/// The service account must be within the same project as the job. The caller</span>
     <span class="doccomment">/// must have iam.serviceAccounts.actAs permission for the service account.</span>
@@ -1203,41 +1200,41 @@
 <span class="doccomment">/// The maximum allowed size for a job is 100KB.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Job</span> {
-    <span class="doccomment">/// Optionally caller-specified in [CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob], after</span>
+    <span class="doccomment">/// Optionally caller-specified in \[CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob\], after</span>
     <span class="doccomment">/// which it becomes output only.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The job name. For example:</span>
     <span class="doccomment">/// `projects/PROJECT_ID/locations/LOCATION_ID/jobs/JOB_ID`.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * `PROJECT_ID` can contain letters ([A-Za-z]), numbers ([0-9]),</span>
+    <span class="doccomment">/// * `PROJECT_ID` can contain letters (\[A-Za-z\]), numbers (\[0-9\]),</span>
     <span class="doccomment">///    hyphens (-), colons (:), or periods (.).</span>
     <span class="doccomment">///    For more information, see</span>
     <span class="doccomment">///    [Identifying</span>
-    <span class="doccomment">///    projects](https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects)</span>
+    <span class="doccomment">///    projects](&lt;https://cloud.google.com/resource-manager/docs/creating-managing-projects#identifying_projects&gt;)</span>
     <span class="doccomment">/// * `LOCATION_ID` is the canonical ID for the job&#39;s location.</span>
     <span class="doccomment">///    The list of available locations can be obtained by calling</span>
-    <span class="doccomment">///    [ListLocations][google.cloud.location.Locations.ListLocations].</span>
-    <span class="doccomment">///    For more information, see https://cloud.google.com/about/locations/.</span>
-    <span class="doccomment">/// * `JOB_ID` can contain only letters ([A-Za-z]), numbers ([0-9]),</span>
+    <span class="doccomment">///    \[ListLocations][google.cloud.location.Locations.ListLocations\].</span>
+    <span class="doccomment">///    For more information, see &lt;https://cloud.google.com/about/locations/.&gt;</span>
+    <span class="doccomment">/// * `JOB_ID` can contain only letters (\[A-Za-z\]), numbers (\[0-9\]),</span>
     <span class="doccomment">///    hyphens (-), or underscores (_). The maximum length is 500 characters.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Optionally caller-specified in [CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob] or</span>
-    <span class="doccomment">/// [UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob].</span>
+    <span class="doccomment">/// Optionally caller-specified in \[CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob\] or</span>
+    <span class="doccomment">/// \[UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A human-readable description for the job. This string must not contain</span>
     <span class="doccomment">/// more than 500 characters.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Required, except when used with [UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob].</span>
+    <span class="doccomment">/// Required, except when used with \[UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Describes the schedule on which the job will be executed.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The schedule can be either of the following types:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [Crontab](http://en.wikipedia.org/wiki/Cron#Overview)</span>
+    <span class="doccomment">/// * \[Crontab\](&lt;http://en.wikipedia.org/wiki/Cron#Overview&gt;)</span>
     <span class="doccomment">/// * English-like</span>
-    <span class="doccomment">/// [schedule](https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules)</span>
+    <span class="doccomment">/// \[schedule\](&lt;https://cloud.google.com/scheduler/docs/configuring/cron-job-schedules&gt;)</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// As a general rule, execution `n + 1` of a job will not begin</span>
     <span class="doccomment">/// until execution `n` has finished. Cloud Scheduler will never</span>
@@ -1248,15 +1245,15 @@
     <span class="doccomment">/// A scheduled start time will be delayed if the previous</span>
     <span class="doccomment">/// execution has not ended when its scheduled time occurs.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// If [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count] &gt; 0 and a job attempt fails,</span>
-    <span class="doccomment">/// the job will be tried a total of [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count]</span>
+    <span class="doccomment">/// If \[retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count\] &gt; 0 and a job attempt fails,</span>
+    <span class="doccomment">/// the job will be tried a total of \[retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count\]</span>
     <span class="doccomment">/// times, with exponential backoff, until the next scheduled start</span>
     <span class="doccomment">/// time.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;20&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">schedule</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Specifies the time zone to be used in interpreting</span>
-    <span class="doccomment">/// [schedule][google.cloud.scheduler.v1.Job.schedule]. The value of this field must be a time</span>
-    <span class="doccomment">/// zone name from the [tz database](http://en.wikipedia.org/wiki/Tz_database).</span>
+    <span class="doccomment">/// \[schedule][google.cloud.scheduler.v1.Job.schedule\]. The value of this field must be a time</span>
+    <span class="doccomment">/// zone name from the [tz database](&lt;http://en.wikipedia.org/wiki/Tz_database&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note that some time zones include a provision for</span>
     <span class="doccomment">/// daylight savings time. The rules for daylight saving time are</span>
@@ -1273,7 +1270,7 @@
     <span class="kw">pub</span> <span class="ident">state</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Output only. The response from the target for the last attempted execution.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. The next time the job is scheduled. Note that this may be a</span>
     <span class="doccomment">/// retry of a previously failed attempt or the next execution time</span>
     <span class="doccomment">/// according to the schedule.</span>
@@ -1289,11 +1286,11 @@
     <span class="doccomment">/// this deadline then the request is cancelled and the attempt is marked as a</span>
     <span class="doccomment">/// `DEADLINE_EXCEEDED` failure. The failed attempt can be viewed in</span>
     <span class="doccomment">/// execution logs. Cloud Scheduler will retry the job according</span>
-    <span class="doccomment">/// to the [RetryConfig][google.cloud.scheduler.v1.RetryConfig].</span>
+    <span class="doccomment">/// to the \[RetryConfig][google.cloud.scheduler.v1.RetryConfig\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The allowed duration for this deadline is:</span>
-    <span class="doccomment">/// * For [HTTP targets][google.cloud.scheduler.v1.Job.http_target], between 15 seconds and 30 minutes.</span>
-    <span class="doccomment">/// * For [App Engine HTTP targets][google.cloud.scheduler.v1.Job.app_engine_http_target], between 15</span>
+    <span class="doccomment">/// * For [HTTP targets]\[google.cloud.scheduler.v1.Job.http_target\], between 15 seconds and 30 minutes.</span>
+    <span class="doccomment">/// * For [App Engine HTTP targets]\[google.cloud.scheduler.v1.Job.app_engine_http_target\], between 15</span>
     <span class="doccomment">///   seconds and 24 hours.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;22&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">attempt_deadline</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
@@ -1315,14 +1312,14 @@
         <span class="ident">Enabled</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// The job is paused by the user. It will not execute. A user can</span>
         <span class="doccomment">/// intentionally pause the job using</span>
-        <span class="doccomment">/// [PauseJobRequest][google.cloud.scheduler.v1.PauseJobRequest].</span>
+        <span class="doccomment">/// \[PauseJobRequest][google.cloud.scheduler.v1.PauseJobRequest\].</span>
         <span class="ident">Paused</span> <span class="op">=</span> <span class="number">2</span>,
         <span class="doccomment">/// The job is disabled by the system due to error. The user</span>
         <span class="doccomment">/// cannot directly set a job to be disabled.</span>
         <span class="ident">Disabled</span> <span class="op">=</span> <span class="number">3</span>,
-        <span class="doccomment">/// The job state resulting from a failed [CloudScheduler.UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob]</span>
+        <span class="doccomment">/// The job state resulting from a failed \[CloudScheduler.UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob\]</span>
         <span class="doccomment">/// operation. To recover a job from this state, retry</span>
-        <span class="doccomment">/// [CloudScheduler.UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob] until a successful response is received.</span>
+        <span class="doccomment">/// \[CloudScheduler.UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob\] until a successful response is received.</span>
         <span class="ident">UpdateFailed</span> <span class="op">=</span> <span class="number">4</span>,
     }
     <span class="doccomment">/// Required.</span>
@@ -1332,25 +1329,25 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Target</span> {
         <span class="doccomment">/// Pub/Sub target.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">PubsubTarget</span>(<span class="kw">super</span><span class="ident">::PubsubTarget</span>),
+        <span class="ident">PubsubTarget</span>(<span class="ident"><span class="kw">super</span>::PubsubTarget</span>),
         <span class="doccomment">/// App Engine HTTP target.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">AppEngineHttpTarget</span>(<span class="kw">super</span><span class="ident">::AppEngineHttpTarget</span>),
+        <span class="ident">AppEngineHttpTarget</span>(<span class="ident"><span class="kw">super</span>::AppEngineHttpTarget</span>),
         <span class="doccomment">/// HTTP target.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">HttpTarget</span>(<span class="kw">super</span><span class="ident">::HttpTarget</span>),
+        <span class="ident">HttpTarget</span>(<span class="ident"><span class="kw">super</span>::HttpTarget</span>),
     }
 }
 <span class="doccomment">/// Settings that determine the retry behavior.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// By default, if a job does not complete successfully (meaning that</span>
 <span class="doccomment">/// an acknowledgement is not received from the handler, then it will be retried</span>
-<span class="doccomment">/// with exponential backoff according to the settings in [RetryConfig][google.cloud.scheduler.v1.RetryConfig].</span>
+<span class="doccomment">/// with exponential backoff according to the settings in \[RetryConfig][google.cloud.scheduler.v1.RetryConfig\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RetryConfig</span> {
     <span class="doccomment">/// The number of attempts that the system will make to run a job using the</span>
     <span class="doccomment">/// exponential backoff procedure described by</span>
-    <span class="doccomment">/// [max_doublings][google.cloud.scheduler.v1.RetryConfig.max_doublings].</span>
+    <span class="doccomment">/// \[max_doublings][google.cloud.scheduler.v1.RetryConfig.max_doublings\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The default value of retry_count is zero.</span>
     <span class="doccomment">///</span>
@@ -1368,7 +1365,7 @@
     <span class="kw">pub</span> <span class="ident">retry_count</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// The time limit for retrying a failed job, measured from time when an</span>
     <span class="doccomment">/// execution was first attempted. If specified with</span>
-    <span class="doccomment">/// [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count], the job will be retried until both</span>
+    <span class="doccomment">/// \[retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count\], the job will be retried until both</span>
     <span class="doccomment">/// limits are reached.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The default value for max_retry_duration is zero, which means retry</span>
@@ -1390,26 +1387,26 @@
     <span class="doccomment">/// The time between retries will double `max_doublings` times.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// A job&#39;s retry interval starts at</span>
-    <span class="doccomment">/// [min_backoff_duration][google.cloud.scheduler.v1.RetryConfig.min_backoff_duration], then doubles</span>
+    <span class="doccomment">/// \[min_backoff_duration][google.cloud.scheduler.v1.RetryConfig.min_backoff_duration\], then doubles</span>
     <span class="doccomment">/// `max_doublings` times, then increases linearly, and finally</span>
     <span class="doccomment">/// retries retries at intervals of</span>
-    <span class="doccomment">/// [max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration] up to</span>
-    <span class="doccomment">/// [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count] times.</span>
+    <span class="doccomment">/// \[max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration\] up to</span>
+    <span class="doccomment">/// \[retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count\] times.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// For example, if [min_backoff_duration][google.cloud.scheduler.v1.RetryConfig.min_backoff_duration] is</span>
-    <span class="doccomment">/// 10s, [max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration] is 300s, and</span>
+    <span class="doccomment">/// For example, if \[min_backoff_duration][google.cloud.scheduler.v1.RetryConfig.min_backoff_duration\] is</span>
+    <span class="doccomment">/// 10s, \[max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration\] is 300s, and</span>
     <span class="doccomment">/// `max_doublings` is 3, then the a job will first be retried in 10s. The</span>
     <span class="doccomment">/// retry interval will double three times, and then increase linearly by</span>
     <span class="doccomment">/// 2^3 * 10s.  Finally, the job will retry at intervals of</span>
-    <span class="doccomment">/// [max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration] until the job has</span>
-    <span class="doccomment">/// been attempted [retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count] times. Thus, the</span>
+    <span class="doccomment">/// \[max_backoff_duration][google.cloud.scheduler.v1.RetryConfig.max_backoff_duration\] until the job has</span>
+    <span class="doccomment">/// been attempted \[retry_count][google.cloud.scheduler.v1.RetryConfig.retry_count\] times. Thus, the</span>
     <span class="doccomment">/// requests will retry at 10s, 20s, 40s, 80s, 160s, 240s, 300s, 300s, ....</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The default value of this field is 5.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">max_doublings</span>: <span class="ident">i32</span>,
 }
-<span class="doccomment">/// Request message for listing jobs using [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].</span>
+<span class="doccomment">/// Request message for listing jobs using \[ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListJobsRequest</span> {
     <span class="doccomment">/// Required. The location name. For example:</span>
@@ -1427,22 +1424,22 @@
     <span class="doccomment">/// A token identifying a page of results the server will return. To</span>
     <span class="doccomment">/// request the first page results, page_token must be empty. To</span>
     <span class="doccomment">/// request the next page of results, page_token must be the value of</span>
-    <span class="doccomment">/// [next_page_token][google.cloud.scheduler.v1.ListJobsResponse.next_page_token] returned from</span>
-    <span class="doccomment">/// the previous call to [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs]. It is an error to</span>
-    <span class="doccomment">/// switch the value of [filter][google.cloud.scheduler.v1.ListJobsRequest.filter] or</span>
-    <span class="doccomment">/// [order_by][google.cloud.scheduler.v1.ListJobsRequest.order_by] while iterating through pages.</span>
+    <span class="doccomment">/// \[next_page_token][google.cloud.scheduler.v1.ListJobsResponse.next_page_token\] returned from</span>
+    <span class="doccomment">/// the previous call to \[ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs\]. It is an error to</span>
+    <span class="doccomment">/// switch the value of \[filter][google.cloud.scheduler.v1.ListJobsRequest.filter\] or</span>
+    <span class="doccomment">/// \[order_by][google.cloud.scheduler.v1.ListJobsRequest.order_by\] while iterating through pages.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response message for listing jobs using [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs].</span>
+<span class="doccomment">/// Response message for listing jobs using \[ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListJobsResponse</span> {
     <span class="doccomment">/// The list of jobs.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">jobs</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Job</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A token to retrieve next page of results. Pass this value in the</span>
-    <span class="doccomment">/// [page_token][google.cloud.scheduler.v1.ListJobsRequest.page_token] field in the subsequent call to</span>
-    <span class="doccomment">/// [ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs] to retrieve the next page of results.</span>
+    <span class="doccomment">/// \[page_token][google.cloud.scheduler.v1.ListJobsRequest.page_token\] field in the subsequent call to</span>
+    <span class="doccomment">/// \[ListJobs][google.cloud.scheduler.v1.CloudScheduler.ListJobs\] to retrieve the next page of results.</span>
     <span class="doccomment">/// If this is empty it indicates that there are no more results</span>
     <span class="doccomment">/// through which to paginate.</span>
     <span class="doccomment">///</span>
@@ -1450,7 +1447,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [GetJob][google.cloud.scheduler.v1.CloudScheduler.GetJob].</span>
+<span class="doccomment">/// Request message for \[GetJob][google.cloud.scheduler.v1.CloudScheduler.GetJob\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetJobRequest</span> {
     <span class="doccomment">/// Required. The job name. For example:</span>
@@ -1458,7 +1455,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob].</span>
+<span class="doccomment">/// Request message for \[CreateJob][google.cloud.scheduler.v1.CloudScheduler.CreateJob\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateJobRequest</span> {
     <span class="doccomment">/// Required. The location name. For example:</span>
@@ -1466,17 +1463,17 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The job to add. The user can optionally specify a name for the</span>
-    <span class="doccomment">/// job in [name][google.cloud.scheduler.v1.Job.name]. [name][google.cloud.scheduler.v1.Job.name] cannot be the same as an</span>
+    <span class="doccomment">/// job in \[name][google.cloud.scheduler.v1.Job.name\]. \[name][google.cloud.scheduler.v1.Job.name\] cannot be the same as an</span>
     <span class="doccomment">/// existing job. If a name is not specified then the system will</span>
     <span class="doccomment">/// generate a random unique name that will be returned</span>
-    <span class="doccomment">/// ([name][google.cloud.scheduler.v1.Job.name]) in the response.</span>
+    <span class="doccomment">/// (\[name][google.cloud.scheduler.v1.Job.name\]) in the response.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">job</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Job</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob].</span>
+<span class="doccomment">/// Request message for \[UpdateJob][google.cloud.scheduler.v1.CloudScheduler.UpdateJob\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateJobRequest</span> {
-    <span class="doccomment">/// Required. The new job properties. [name][google.cloud.scheduler.v1.Job.name] must be specified.</span>
+    <span class="doccomment">/// Required. The new job properties. \[name][google.cloud.scheduler.v1.Job.name\] must be specified.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Output only fields cannot be modified using UpdateJob.</span>
     <span class="doccomment">/// Any value specified for an output only field will be ignored.</span>
@@ -1487,7 +1484,7 @@
     <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Request message for deleting a job using</span>
-<span class="doccomment">/// [DeleteJob][google.cloud.scheduler.v1.CloudScheduler.DeleteJob].</span>
+<span class="doccomment">/// \[DeleteJob][google.cloud.scheduler.v1.CloudScheduler.DeleteJob\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteJobRequest</span> {
     <span class="doccomment">/// Required. The job name. For example:</span>
@@ -1495,7 +1492,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [PauseJob][google.cloud.scheduler.v1.CloudScheduler.PauseJob].</span>
+<span class="doccomment">/// Request message for \[PauseJob][google.cloud.scheduler.v1.CloudScheduler.PauseJob\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PauseJobRequest</span> {
     <span class="doccomment">/// Required. The job name. For example:</span>
@@ -1503,7 +1500,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [ResumeJob][google.cloud.scheduler.v1.CloudScheduler.ResumeJob].</span>
+<span class="doccomment">/// Request message for \[ResumeJob][google.cloud.scheduler.v1.CloudScheduler.ResumeJob\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ResumeJobRequest</span> {
     <span class="doccomment">/// Required. The job name. For example:</span>
@@ -1512,7 +1509,7 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Request message for forcing a job to run now using</span>
-<span class="doccomment">/// [RunJob][google.cloud.scheduler.v1.CloudScheduler.RunJob].</span>
+<span class="doccomment">/// \[RunJob][google.cloud.scheduler.v1.CloudScheduler.RunJob\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunJobRequest</span> {
     <span class="doccomment">/// Required. The job name. For example:</span>
@@ -1533,7 +1530,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">CloudSchedulerClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1546,7 +1543,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CloudSchedulerClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -1574,8 +1571,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists jobs.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_jobs</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListJobsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListJobsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListJobsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListJobsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1591,8 +1588,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a job.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1608,8 +1605,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a job.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1633,8 +1630,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; until a successful response is received.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1650,7 +1647,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a job.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteJobRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteJobRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -1673,8 +1670,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; to be paused.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">pause_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PauseJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PauseJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1695,8 +1692,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [Job.State.PAUSED][google.cloud.scheduler.v1.Job.State.PAUSED] to be resumed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">resume_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ResumeJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ResumeJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1715,8 +1712,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; if the job is already running.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RunJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RunJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1731,5 +1728,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["State","State of the model."]]});
+initSidebarItems({"enum":[["State","State of the model."]],"struct":[["InputDataConfig","Configs for the input data used to create the issue model."]]});

@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.maps.routes.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.maps.routes.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.maps.routes.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.maps.routes.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1143,8 +1141,63 @@
 <span id="1141">1141</span>
 <span id="1142">1142</span>
 <span id="1143">1143</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Encapsulates an encoded polyline.</span>
+<span id="1144">1144</span>
+<span id="1145">1145</span>
+<span id="1146">1146</span>
+<span id="1147">1147</span>
+<span id="1148">1148</span>
+<span id="1149">1149</span>
+<span id="1150">1150</span>
+<span id="1151">1151</span>
+<span id="1152">1152</span>
+<span id="1153">1153</span>
+<span id="1154">1154</span>
+<span id="1155">1155</span>
+<span id="1156">1156</span>
+<span id="1157">1157</span>
+<span id="1158">1158</span>
+<span id="1159">1159</span>
+<span id="1160">1160</span>
+<span id="1161">1161</span>
+<span id="1162">1162</span>
+<span id="1163">1163</span>
+<span id="1164">1164</span>
+<span id="1165">1165</span>
+<span id="1166">1166</span>
+<span id="1167">1167</span>
+<span id="1168">1168</span>
+<span id="1169">1169</span>
+<span id="1170">1170</span>
+<span id="1171">1171</span>
+<span id="1172">1172</span>
+<span id="1173">1173</span>
+<span id="1174">1174</span>
+<span id="1175">1175</span>
+<span id="1176">1176</span>
+<span id="1177">1177</span>
+<span id="1178">1178</span>
+<span id="1179">1179</span>
+<span id="1180">1180</span>
+<span id="1181">1181</span>
+<span id="1182">1182</span>
+<span id="1183">1183</span>
+<span id="1184">1184</span>
+<span id="1185">1185</span>
+<span id="1186">1186</span>
+<span id="1187">1187</span>
+<span id="1188">1188</span>
+<span id="1189">1189</span>
+<span id="1190">1190</span>
+<span id="1191">1191</span>
+<span id="1192">1192</span>
+<span id="1193">1193</span>
+<span id="1194">1194</span>
+<span id="1195">1195</span>
+<span id="1196">1196</span>
+<span id="1197">1197</span>
+<span id="1198">1198</span>
+<span id="1199">1199</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Encapsulates an encoded polyline.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Polyline</span> {
     <span class="doccomment">/// Encapsulates the type of polyline. Defaults to encoded_polyline.</span>
@@ -1157,11 +1210,11 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">PolylineType</span> {
         <span class="doccomment">/// The string encoding of the polyline using the [polyline encoding</span>
-        <span class="doccomment">/// algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm)</span>
+        <span class="doccomment">/// algorithm](&lt;https://developers.google.com/maps/documentation/utilities/polylinealgorithm&gt;)</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="ident">EncodedPolyline</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// Specifies a polyline using the [GeoJSON LineString</span>
-        <span class="doccomment">/// format](https://tools.ietf.org/html/rfc7946#section-3.1.4)</span>
+        <span class="doccomment">/// format](&lt;https://tools.ietf.org/html/rfc7946#section-3.1.4&gt;)</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">GeoJsonLinestring</span>(<span class="ident">::prost_types::Struct</span>),
     }
@@ -1189,10 +1242,10 @@
     <span class="doccomment">/// No polyline type preference specified. Defaults to `ENCODED_POLYLINE`.</span>
     <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="doccomment">/// Specifies a polyline encoded using the [polyline encoding</span>
-    <span class="doccomment">/// algorithm](https://developers.google.com/maps/documentation/utilities/polylinealgorithm).</span>
+    <span class="doccomment">/// algorithm](&lt;https://developers.google.com/maps/documentation/utilities/polylinealgorithm&gt;).</span>
     <span class="ident">EncodedPolyline</span> <span class="op">=</span> <span class="number">1</span>,
     <span class="doccomment">/// Specifies a polyline using the [GeoJSON LineString</span>
-    <span class="doccomment">/// format](https://tools.ietf.org/html/rfc7946#section-3.1.4)</span>
+    <span class="doccomment">/// format](&lt;https://tools.ietf.org/html/rfc7946#section-3.1.4&gt;)</span>
     <span class="ident">GeoJsonLinestring</span> <span class="op">=</span> <span class="number">2</span>,
 }
 <span class="doccomment">/// List of toll passes around the world that we support.</span>
@@ -1202,41 +1255,48 @@
     <span class="doccomment">/// Not used. If this value is used, then the request fails.</span>
     <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="doccomment">/// Australia-wide toll pass.</span>
-    <span class="doccomment">/// See additional details at https://www.linkt.com.au/.</span>
+    <span class="doccomment">/// See additional details at &lt;https://www.linkt.com.au/.&gt;</span>
     <span class="ident">AuLinkt</span> <span class="op">=</span> <span class="number">2</span>,
-    <span class="doccomment">/// Argentina toll pass. See additional details at https://telepase.com.ar</span>
+    <span class="doccomment">/// Argentina toll pass. See additional details at &lt;https://telepase.com.ar&gt;</span>
     <span class="ident">ArTelepase</span> <span class="op">=</span> <span class="number">3</span>,
-    <span class="doccomment">/// Brazil toll pass. See additional details at https://conectcar.com.</span>
+    <span class="doccomment">/// Brazil toll pass. See additional details at &lt;https://conectcar.com.&gt;</span>
     <span class="ident">BrConectcar</span> <span class="op">=</span> <span class="number">7</span>,
-    <span class="doccomment">/// Brazil toll pass. See additional details at https://movemais.com.</span>
+    <span class="doccomment">/// Brazil toll pass. See additional details at &lt;https://movemais.com.&gt;</span>
     <span class="ident">BrMoveMais</span> <span class="op">=</span> <span class="number">8</span>,
-    <span class="doccomment">/// Brazil toll pass. See additional details at https://www.semparar.com.br.</span>
+    <span class="doccomment">/// Brazil toll pass. See additional details at &lt;https://www.semparar.com.br.&gt;</span>
     <span class="ident">BrSemParar</span> <span class="op">=</span> <span class="number">9</span>,
-    <span class="doccomment">/// Brazil toll pass. See additional details at https://taggy.com.br.</span>
+    <span class="doccomment">/// Brazil toll pass. See additional details at &lt;https://taggy.com.br.&gt;</span>
     <span class="ident">BrTaggy</span> <span class="op">=</span> <span class="number">10</span>,
     <span class="doccomment">/// Brazil toll pass. See additional details at</span>
-    <span class="doccomment">/// https://veloe.com.br/site/onde-usar.</span>
+    <span class="doccomment">/// &lt;https://veloe.com.br/site/onde-usar.&gt;</span>
     <span class="ident">BrVeloe</span> <span class="op">=</span> <span class="number">11</span>,
+    <span class="doccomment">/// Indonesia.</span>
+    <span class="doccomment">/// E-card provided by multiple banks used to pay for tolls. All e-cards</span>
+    <span class="doccomment">/// via banks are charged the same so only one enum value is needed. E.g.</span>
+    <span class="doccomment">/// Bank Mandiri &lt;https://www.bankmandiri.co.id/e-money&gt;</span>
+    <span class="doccomment">/// BCA &lt;https://www.bca.co.id/flazz&gt;</span>
+    <span class="doccomment">/// BNI &lt;https://www.bni.co.id/id-id/ebanking/tapcash&gt;</span>
+    <span class="ident">IdEToll</span> <span class="op">=</span> <span class="number">16</span>,
     <span class="doccomment">/// Mexico toll pass.</span>
     <span class="ident">MxTagIave</span> <span class="op">=</span> <span class="number">12</span>,
     <span class="doccomment">/// Mexico toll pass company. One of many operating in Mexico City. See</span>
-    <span class="doccomment">/// additional details at https://www.televia.com.mx.</span>
+    <span class="doccomment">/// additional details at &lt;https://www.televia.com.mx.&gt;</span>
     <span class="ident">MxTagTelevia</span> <span class="op">=</span> <span class="number">13</span>,
     <span class="doccomment">/// Mexico toll pass. See additional details at</span>
-    <span class="doccomment">/// https://www.viapass.com.mx/viapass/web_home.aspx.</span>
+    <span class="doccomment">/// &lt;https://www.viapass.com.mx/viapass/web_home.aspx.&gt;</span>
     <span class="ident">MxViapass</span> <span class="op">=</span> <span class="number">14</span>,
     <span class="doccomment">/// State pass of California, United States. Passes vary between Standard,</span>
     <span class="doccomment">/// Flex, and Clean Air. Flex and Clean Air have settings for carpool. See</span>
-    <span class="doccomment">/// additional details at https://www.bayareafastrak.org/en/home/index.shtml.</span>
+    <span class="doccomment">/// additional details at &lt;https://www.bayareafastrak.org/en/home/index.shtml.&gt;</span>
     <span class="ident">UsCaFastrak</span> <span class="op">=</span> <span class="number">4</span>,
     <span class="doccomment">/// State pass of Illinois, United States. See additional details at</span>
-    <span class="doccomment">/// https://www.illinoistollway.com/about-ipass.</span>
+    <span class="doccomment">/// &lt;https://www.illinoistollway.com/about-ipass.&gt;</span>
     <span class="ident">UsIlIpass</span> <span class="op">=</span> <span class="number">5</span>,
     <span class="doccomment">/// State pass of Massachusetts, United States. See additional details at</span>
-    <span class="doccomment">/// https://www.mass.gov/ezdrivema.</span>
+    <span class="doccomment">/// &lt;https://www.mass.gov/ezdrivema.&gt;</span>
     <span class="ident">UsMaEzpassma</span> <span class="op">=</span> <span class="number">6</span>,
     <span class="doccomment">/// State pass of New York, United States. See additional details at</span>
-    <span class="doccomment">/// https://www.e-zpassny.com.</span>
+    <span class="doccomment">/// &lt;https://www.e-zpassny.com.&gt;</span>
     <span class="ident">UsNyEzpassny</span> <span class="op">=</span> <span class="number">15</span>,
     <span class="doccomment">/// State pass of the Washington state, United States.</span>
     <span class="ident">UsWaGoodToGo</span> <span class="op">=</span> <span class="number">1</span>,
@@ -1296,7 +1356,7 @@
         <span class="doccomment">/// A point specified using geographic coordinates, including an optional</span>
         <span class="doccomment">/// heading.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Location</span>(<span class="kw">super</span><span class="ident">::Location</span>),
+        <span class="ident">Location</span>(<span class="ident"><span class="kw">super</span>::Location</span>),
         <span class="doccomment">/// The POI Place ID associated with the waypoint.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">PlaceId</span>(<span class="ident">::prost::alloc::string::String</span>),
@@ -1307,7 +1367,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Location</span> {
     <span class="doccomment">/// The waypoint&#39;s geographic coordinates.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">lat_lng</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::LatLng</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">lat_lng</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::LatLng</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The compass heading associated with the direction of the flow of traffic.</span>
     <span class="doccomment">/// This value is used to specify the side of the road to use for pickup and</span>
     <span class="doccomment">/// drop-off. Heading values can be from 0 to 360, where 0 specifies a heading</span>
@@ -1362,8 +1422,8 @@
     <span class="kw">pub</span> <span class="ident">route_modifiers</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">RouteModifiers</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more</span>
     <span class="doccomment">/// information, see</span>
-    <span class="doccomment">/// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. See</span>
-    <span class="doccomment">/// [Language Support](https://developers.google.com/maps/faq#languagesupport)</span>
+    <span class="doccomment">/// &lt;http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.&gt; See</span>
+    <span class="doccomment">/// [Language Support](&lt;https://developers.google.com/maps/faq#languagesupport&gt;)</span>
     <span class="doccomment">/// for the list of supported languages. When you don&#39;t provide this value, the</span>
     <span class="doccomment">/// display language is inferred from the location of the route request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
@@ -1400,11 +1460,13 @@
     <span class="doccomment">/// Applies only to the `WALK` travel mode.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">avoid_indoor</span>: <span class="ident">bool</span>,
-    <span class="doccomment">/// Optional. Specifies the vehicle information.</span>
+    <span class="doccomment">/// Specifies the vehicle information.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">vehicle_info</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">VehicleInfo</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Encapsulates information about toll passes.</span>
-    <span class="doccomment">/// TollPass is unset means no available pass.</span>
+    <span class="doccomment">/// If toll passes are provided, the API tries to return the pass price. If</span>
+    <span class="doccomment">/// toll passes are not provided, the API treats the toll pass as unknown and</span>
+    <span class="doccomment">/// tries to return the cash price.</span>
     <span class="doccomment">/// Applies only to the DRIVE and TWO_WHEELER travel modes.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;TollPass&quot;</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">toll_passes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
@@ -1483,11 +1545,9 @@
     <span class="kw">pub</span> <span class="ident">destination</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Waypoint</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. A set of waypoints along the route (excluding terminal points), for either</span>
     <span class="doccomment">/// stopping at or passing by. Up to 25 intermediate waypoints are supported.</span>
-    <span class="doccomment">/// Intermediates are not supported in ComputeCustomRoutes Alpha.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">intermediates</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Waypoint</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Optional. Specifies the mode of transportation. Only DRIVE is supported in</span>
-    <span class="doccomment">/// ComputeCustomRoutes Alpha.</span>
+    <span class="doccomment">/// Optional. Specifies the mode of transportation. Only DRIVE is supported now.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;RouteTravelMode&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">travel_mode</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. Specifies how to compute the route. The server attempts to use the selected</span>
@@ -1518,8 +1578,8 @@
     <span class="kw">pub</span> <span class="ident">route_objective</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">RouteObjective</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. The BCP-47 language code, such as &quot;en-US&quot; or &quot;sr-Latn&quot;. For more</span>
     <span class="doccomment">/// information, see</span>
-    <span class="doccomment">/// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. See</span>
-    <span class="doccomment">/// [Language Support](https://developers.google.com/maps/faq#languagesupport)</span>
+    <span class="doccomment">/// &lt;http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.&gt; See</span>
+    <span class="doccomment">/// [Language Support](&lt;https://developers.google.com/maps/faq#languagesupport&gt;)</span>
     <span class="doccomment">/// for the list of supported languages. When you don&#39;t provide this value, the</span>
     <span class="doccomment">/// display language is inferred from the location of the route request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
@@ -1611,7 +1671,7 @@
     <span class="kw">pub</span> <span class="ident">warnings</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The viewport bounding box of the polyline.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">viewport</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::geo</span>::<span class="ident">r#type</span><span class="ident">::Viewport</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">viewport</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::geo</span>::<span class="ident">r#type</span><span class="ident">::Viewport</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Additional information about the route.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">travel_advisory</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">RouteTravelAdvisory</span><span class="op">&gt;</span>,
@@ -1755,7 +1815,7 @@
     <span class="doccomment">/// this list may contain multiple items to reflect tolls in different</span>
     <span class="doccomment">/// currencies.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">estimated_price</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Money</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">estimated_price</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Money</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Encapsulates a segment of a `RouteLeg`. A step corresponds to a single</span>
 <span class="doccomment">/// navigation instruction. Route legs are made up of steps.</span>
@@ -1960,8 +2020,7 @@
     <span class="doccomment">/// the customer, it will fallback to another routing mode. In this case</span>
     <span class="doccomment">/// fallback_routing_mode and routing_mode_fallback_reason are used to</span>
     <span class="doccomment">/// communicate the fallback routing mode used, as well as the reason for</span>
-    <span class="doccomment">/// fallback. Fallback of routing_preference is not supported in</span>
-    <span class="doccomment">/// ComputeCustomRoutes Alpha.</span>
+    <span class="doccomment">/// fallback.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// 2. If it cannot compute a &#39;best&#39; route for the route objective specified by</span>
     <span class="doccomment">/// the customer, it might fallback to another objective.</span>
@@ -2085,7 +2144,7 @@
     <span class="kw">pub</span> <span class="ident">destination_index</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Error status code for this element.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Indicates whether the route was found or not. Independent of status.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;RouteMatrixElementCondition&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">condition</span>: <span class="ident">i32</span>,
@@ -2140,7 +2199,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">RoutesPreferredClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2153,7 +2212,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">RoutesPreferredClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2215,8 +2274,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; size, and thus higher network throughput.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">compute_routes</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ComputeRoutesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ComputeRoutesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ComputeRoutesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ComputeRoutesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2266,9 +2325,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; size, and thus higher network throughput.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">compute_route_matrix</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ComputeRouteMatrixRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ComputeRouteMatrixRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RouteMatrixElement</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RouteMatrixElement</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2285,7 +2344,59 @@
                 .<span class="ident">server_streaming</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>)
                 .<span class="kw">await</span>
         }
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Given a set of terminal and intermediate waypoints, and a route objective,&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; computes the best route for the route objective. Also returns fastest route&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; and shortest route as reference routes.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; **NOTE:** This method requires that you specify a response field mask in&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the input. You can provide the response field mask by using the URL&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; parameter `$fields` or `fields`, or by using the HTTP/gRPC header&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; `X-Goog-FieldMask` (see the [available URL parameters and&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; headers](https://cloud.google.com/apis/docs/system-parameters). The value&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; is a comma separated list of field paths. See this detailed documentation&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; about [how to construct the field&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; paths](https://github.com/protocolbuffers/protobuf/blob/master/src/google/protobuf/field_mask.proto).&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; For example, in this method:&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * Field mask of all available fields (for manual inspection):&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;   `X-Goog-FieldMask: *`&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * Field mask of route distances, durations, token and toll info:&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;   `X-Goog-FieldMask:&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;   routes.route.distanceMeters,routes.route.duration,routes.token,routes.route.travelAdvisory.tollInfo`&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Google discourages the use of the wildcard (`*`) response field mask, or&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; specifying the field mask at the top level (`routes`), because:&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * Selecting only the fields that you need helps our server save computation&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; cycles, allowing us to return the result to you with a lower latency.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * Selecting only the fields that you need in your production job ensures&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; stable latency performance. We might add more response fields in the&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; future, and those new fields might require extra computation time. If you&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; select all fields, or if you select all fields at the top level, then you&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; might experience performance degradation because any new field we add will&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; be automatically included in the response.&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * Selecting only the fields that you need results in a smaller response&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; size, and thus higher network throughput.&quot;</span>]</span>
+        <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">compute_custom_routes</span>(
+            <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ComputeCustomRoutesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ComputeCustomRoutesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
+                <span class="ident">tonic::Status::new</span>(
+                    <span class="ident">tonic::Code::Unknown</span>,
+                    <span class="macro">format!</span>(<span class="string">&quot;Service was not ready: {}&quot;</span>, <span class="ident">e</span>.<span class="ident">into</span>()),
+                )
+            })<span class="question-mark">?</span>;
+            <span class="kw">let</span> <span class="ident">codec</span> <span class="op">=</span> <span class="ident">tonic::codec::ProstCodec::default</span>();
+            <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">http::uri::PathAndQuery::from_static</span>(
+                <span class="string">&quot;/google.maps.routes.v1.RoutesPreferred/ComputeCustomRoutes&quot;</span>,
+            );
+            <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
+        }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ProductGroupViewServiceClient","Service to manage product group views."]]});

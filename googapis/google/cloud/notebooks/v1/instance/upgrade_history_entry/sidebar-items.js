@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Action","The definition of operations of this upgrade history entry."],["State","The definition of the states of this upgrade history entry."]]});

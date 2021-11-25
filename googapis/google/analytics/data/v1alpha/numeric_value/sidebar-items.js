@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["OneValue","One of a numeric value"]]});

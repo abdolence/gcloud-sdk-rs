@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["MachineTypesClient","The MachineTypes API."]]});

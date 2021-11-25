@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["HubServiceClient","Network Connectivity Center is a hub-and-spoke abstraction for network connectivity management in Google Cloud. It reduces operational complexity through a simple, centralized connectivity management model."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["AdType","The possible types of an ad."]]});

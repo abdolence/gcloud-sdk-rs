@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["PolicyTagManagerSerializationClient","Policy Tag Manager serialization API service allows clients to manipulate their policy tags and taxonomies in serialized format, where taxonomy is a hierarchical group of policy tags."]]});
+initSidebarItems({"struct":[["PolicyTagManagerSerializationClient","Policy Tag Manager Serialization API service allows you to manipulate your policy tags and taxonomies in a serialized format."]]});

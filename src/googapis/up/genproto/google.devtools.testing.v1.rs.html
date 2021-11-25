@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.devtools.testing.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.devtools.testing.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.devtools.testing.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.devtools.testing.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2059,8 +2057,7 @@
 <span id="2057">2057</span>
 <span id="2058">2058</span>
 <span id="2059">2059</span>
-</pre><pre class="rust">
-<span class="doccomment">/// TestMatrix captures all details about a test. It contains the environment</span>
+</pre><pre class="rust"><code><span class="doccomment">/// TestMatrix captures all details about a test. It contains the environment</span>
 <span class="doccomment">/// configuration, test specification, test executions and overall state and</span>
 <span class="doccomment">/// outcome.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -2184,29 +2181,29 @@
         <span class="doccomment">/// Test setup requirements for Android e.g. files to install, bootstrap</span>
         <span class="doccomment">/// scripts.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">TestSetup</span>(<span class="kw">super</span><span class="ident">::TestSetup</span>),
+        <span class="ident">TestSetup</span>(<span class="ident"><span class="kw">super</span>::TestSetup</span>),
         <span class="doccomment">/// Test setup requirements for iOS.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
-        <span class="ident">IosTestSetup</span>(<span class="kw">super</span><span class="ident">::IosTestSetup</span>),
+        <span class="ident">IosTestSetup</span>(<span class="ident"><span class="kw">super</span>::IosTestSetup</span>),
     }
     <span class="doccomment">/// Required. The type of test to run.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Test</span> {
         <span class="doccomment">/// An Android instrumentation test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">AndroidInstrumentationTest</span>(<span class="kw">super</span><span class="ident">::AndroidInstrumentationTest</span>),
+        <span class="ident">AndroidInstrumentationTest</span>(<span class="ident"><span class="kw">super</span>::AndroidInstrumentationTest</span>),
         <span class="doccomment">/// An Android robo test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">AndroidRoboTest</span>(<span class="kw">super</span><span class="ident">::AndroidRoboTest</span>),
+        <span class="ident">AndroidRoboTest</span>(<span class="ident"><span class="kw">super</span>::AndroidRoboTest</span>),
         <span class="doccomment">/// An Android Application with a Test Loop.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">AndroidTestLoop</span>(<span class="kw">super</span><span class="ident">::AndroidTestLoop</span>),
+        <span class="ident">AndroidTestLoop</span>(<span class="ident"><span class="kw">super</span>::AndroidTestLoop</span>),
         <span class="doccomment">/// An iOS XCTest, via an .xctestrun file.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
-        <span class="ident">IosXcTest</span>(<span class="kw">super</span><span class="ident">::IosXcTest</span>),
+        <span class="ident">IosXcTest</span>(<span class="ident"><span class="kw">super</span>::IosXcTest</span>),
         <span class="doccomment">/// An iOS application with a test loop.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
-        <span class="ident">IosTestLoop</span>(<span class="kw">super</span><span class="ident">::IosTestLoop</span>),
+        <span class="ident">IosTestLoop</span>(<span class="ident"><span class="kw">super</span>::IosTestLoop</span>),
     }
 }
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -2309,7 +2306,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AccountType</span> {
         <span class="doccomment">/// An automatic google login account.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GoogleAuto</span>(<span class="kw">super</span><span class="ident">::GoogleAuto</span>),
+        <span class="ident">GoogleAuto</span>(<span class="ident"><span class="kw">super</span>::GoogleAuto</span>),
     }
 }
 <span class="doccomment">/// Enables automatic Google account login.</span>
@@ -2334,7 +2331,7 @@
 }
 <span class="doccomment">/// An Android App Bundle file format, containing a BundleConfig.pb file,</span>
 <span class="doccomment">/// a base module directory, zero or more dynamic feature module directories.</span>
-<span class="doccomment">/// &lt;p&gt;See https://developer.android.com/guide/app-bundle/build for guidance on</span>
+<span class="doccomment">/// &lt;p&gt;See &lt;https://developer.android.com/guide/app-bundle/build&gt; for guidance on</span>
 <span class="doccomment">/// building App Bundles.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AppBundle</span> {
@@ -2349,7 +2346,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Bundle</span> {
         <span class="doccomment">/// .aab file representing the app bundle under test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">BundleLocation</span>(<span class="kw">super</span><span class="ident">::FileReference</span>),
+        <span class="ident">BundleLocation</span>(<span class="ident"><span class="kw">super</span>::FileReference</span>),
     }
 }
 <span class="doccomment">/// A single device file description.</span>
@@ -2366,10 +2363,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DeviceFile</span> {
         <span class="doccomment">/// A reference to an opaque binary blob file.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">ObbFile</span>(<span class="kw">super</span><span class="ident">::ObbFile</span>),
+        <span class="ident">ObbFile</span>(<span class="ident"><span class="kw">super</span>::ObbFile</span>),
         <span class="doccomment">/// A reference to a regular file.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">RegularFile</span>(<span class="kw">super</span><span class="ident">::RegularFile</span>),
+        <span class="ident">RegularFile</span>(<span class="ident"><span class="kw">super</span>::RegularFile</span>),
     }
 }
 <span class="doccomment">/// An opaque binary blob file to install on the device before the test starts.</span>
@@ -2377,7 +2374,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ObbFile</span> {
     <span class="doccomment">/// Required. OBB file name which must conform to the format as specified by</span>
     <span class="doccomment">/// Android</span>
-    <span class="doccomment">/// e.g. [main|patch].0300110.com.example.android.obb</span>
+    <span class="doccomment">/// e.g. \[main|patch\].0300110.com.example.android.obb</span>
     <span class="doccomment">/// which will be installed into</span>
     <span class="doccomment">///   \&lt;shared-storage\&gt;/Android/obb/\&lt;package-name\&gt;/</span>
     <span class="doccomment">/// on the device.</span>
@@ -2407,7 +2404,7 @@
     <span class="doccomment">/// storage path prefix for that device and copy the file there.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// &lt;p&gt; It is strongly advised to use the &lt;a href=</span>
-    <span class="doccomment">/// &quot;http://developer.android.com/reference/android/os/Environment.html&quot;&gt;</span>
+    <span class="doccomment">/// &quot;&lt;http://developer.android.com/reference/android/os/Environment.html&quot;&gt;&gt;</span>
     <span class="doccomment">/// Environment API&lt;/a&gt; in app and test code to access files on the device in a</span>
     <span class="doccomment">/// portable way.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -2463,10 +2460,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AppUnderTest</span> {
         <span class="doccomment">/// The APK for the application under test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">AppApk</span>(<span class="kw">super</span><span class="ident">::FileReference</span>),
+        <span class="ident">AppApk</span>(<span class="ident"><span class="kw">super</span>::FileReference</span>),
         <span class="doccomment">/// A multi-apk app bundle for the application under test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">AppBundle</span>(<span class="kw">super</span><span class="ident">::AppBundle</span>),
+        <span class="ident">AppBundle</span>(<span class="ident"><span class="kw">super</span>::AppBundle</span>),
     }
 }
 <span class="doccomment">/// A test of an iOS application that uses the XCTest framework.</span>
@@ -2526,7 +2523,7 @@
 <span class="doccomment">/// a test runner class, such as com.google.GoogleTestRunner, which can vary</span>
 <span class="doccomment">/// on the specific instrumentation framework chosen.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// See &lt;http://developer.android.com/tools/testing/testing_android.html&gt; for</span>
+<span class="doccomment">/// See &lt;&lt;http://developer.android.com/tools/testing/testing_android.html&gt;&gt; for</span>
 <span class="doccomment">/// more information on types of Android tests.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AndroidInstrumentationTest</span> {
@@ -2564,7 +2561,7 @@
     <span class="doccomment">///  - Logs are scoped per test</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// See</span>
-    <span class="doccomment">/// &lt;https://developer.android.com/training/testing/junit-runner.html#using-android-test-orchestrator&gt;</span>
+    <span class="doccomment">/// &lt;&lt;https://developer.android.com/training/testing/junit-runner.html#using-android-test-orchestrator&gt;&gt;</span>
     <span class="doccomment">/// for more information about Android Test Orchestrator.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// If not set, the test will be run without the orchestrator.</span>
@@ -2584,10 +2581,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AppUnderTest</span> {
         <span class="doccomment">/// The APK for the application under test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">AppApk</span>(<span class="kw">super</span><span class="ident">::FileReference</span>),
+        <span class="ident">AppApk</span>(<span class="ident"><span class="kw">super</span>::FileReference</span>),
         <span class="doccomment">/// A multi-apk app bundle for the application under test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">AppBundle</span>(<span class="kw">super</span><span class="ident">::AppBundle</span>),
+        <span class="ident">AppBundle</span>(<span class="ident"><span class="kw">super</span>::AppBundle</span>),
     }
 }
 <span class="doccomment">/// A test of an android application that explores the application on a virtual</span>
@@ -2639,10 +2636,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AppUnderTest</span> {
         <span class="doccomment">/// The APK for the application under test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">AppApk</span>(<span class="kw">super</span><span class="ident">::FileReference</span>),
+        <span class="ident">AppApk</span>(<span class="ident"><span class="kw">super</span>::FileReference</span>),
         <span class="doccomment">/// A multi-apk app bundle for the application under test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>)]</span>
-        <span class="ident">AppBundle</span>(<span class="kw">super</span><span class="ident">::AppBundle</span>),
+        <span class="ident">AppBundle</span>(<span class="ident"><span class="kw">super</span>::AppBundle</span>),
     }
 }
 <span class="doccomment">/// Directs Robo to interact with a specific UI element if it is encountered</span>
@@ -2655,7 +2652,7 @@
     <span class="doccomment">///    in xml: @string/foo</span>
     <span class="doccomment">/// Only the &quot;foo&quot; part is needed.</span>
     <span class="doccomment">/// Reference doc:</span>
-    <span class="doccomment">/// https://developer.android.com/guide/topics/resources/accessing-resources.html</span>
+    <span class="doccomment">/// &lt;https://developer.android.com/guide/topics/resources/accessing-resources.html&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">resource_name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The text that Robo is directed to set. If left empty, the directive will be</span>
@@ -2684,10 +2681,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">StartingIntent</span> {
         <span class="doccomment">/// An intent that starts the main launcher activity.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">LauncherActivity</span>(<span class="kw">super</span><span class="ident">::LauncherActivityIntent</span>),
+        <span class="ident">LauncherActivity</span>(<span class="ident"><span class="kw">super</span>::LauncherActivityIntent</span>),
         <span class="doccomment">/// An intent that starts an activity with specific details.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">StartActivity</span>(<span class="kw">super</span><span class="ident">::StartActivityIntent</span>),
+        <span class="ident">StartActivity</span>(<span class="ident"><span class="kw">super</span>::StartActivityIntent</span>),
     }
 }
 <span class="doccomment">/// Specifies an intent that starts the main launcher activity.</span>
@@ -2721,14 +2718,14 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EnvironmentMatrix</span> {
         <span class="doccomment">/// A matrix of Android devices.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">AndroidMatrix</span>(<span class="kw">super</span><span class="ident">::AndroidMatrix</span>),
+        <span class="ident">AndroidMatrix</span>(<span class="ident"><span class="kw">super</span>::AndroidMatrix</span>),
         <span class="doccomment">/// A list of Android devices; the test will be run only on the specified</span>
         <span class="doccomment">/// devices.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">AndroidDeviceList</span>(<span class="kw">super</span><span class="ident">::AndroidDeviceList</span>),
+        <span class="ident">AndroidDeviceList</span>(<span class="ident"><span class="kw">super</span>::AndroidDeviceList</span>),
         <span class="doccomment">/// A list of iOS devices.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">IosDeviceList</span>(<span class="kw">super</span><span class="ident">::IosDeviceList</span>),
+        <span class="ident">IosDeviceList</span>(<span class="ident"><span class="kw">super</span>::IosDeviceList</span>),
     }
 }
 <span class="doccomment">/// A list of Android device configurations in which the test is to be executed.</span>
@@ -2896,10 +2893,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Environment</span> {
         <span class="doccomment">/// An Android device which must be used with an Android test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">AndroidDevice</span>(<span class="kw">super</span><span class="ident">::AndroidDevice</span>),
+        <span class="ident">AndroidDevice</span>(<span class="ident"><span class="kw">super</span>::AndroidDevice</span>),
         <span class="doccomment">/// An iOS device which must be used with an iOS test.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">IosDevice</span>(<span class="kw">super</span><span class="ident">::IosDevice</span>),
+        <span class="ident">IosDevice</span>(<span class="ident"><span class="kw">super</span>::IosDevice</span>),
     }
 }
 <span class="doccomment">/// A single Android device.</span>
@@ -2996,11 +2993,11 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="prelude-ty">Option</span> {
         <span class="doccomment">/// Uniformly shards test cases given a total number of shards.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">UniformSharding</span>(<span class="kw">super</span><span class="ident">::UniformSharding</span>),
+        <span class="ident">UniformSharding</span>(<span class="ident"><span class="kw">super</span>::UniformSharding</span>),
         <span class="doccomment">/// Shards test cases into the specified groups of packages, classes, and/or</span>
         <span class="doccomment">/// methods.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">ManualSharding</span>(<span class="kw">super</span><span class="ident">::ManualSharding</span>),
+        <span class="ident">ManualSharding</span>(<span class="ident"><span class="kw">super</span>::ManualSharding</span>),
     }
 }
 <span class="doccomment">/// Uniformly shards test cases given a total number of shards.</span>
@@ -3151,7 +3148,7 @@
     <span class="ident">NoPackageName</span> <span class="op">=</span> <span class="number">5</span>,
     <span class="doccomment">/// The APK application ID (aka package name) is invalid.</span>
     <span class="doccomment">/// See also</span>
-    <span class="doccomment">/// https://developer.android.com/studio/build/application-id</span>
+    <span class="doccomment">/// &lt;https://developer.android.com/studio/build/application-id&gt;</span>
     <span class="ident">InvalidPackageName</span> <span class="op">=</span> <span class="number">31</span>,
     <span class="doccomment">/// The test package and app package are the same.</span>
     <span class="ident">TestSameAsApp</span> <span class="op">=</span> <span class="number">6</span>,
@@ -3226,7 +3223,7 @@
     <span class="ident">MalformedAppBundle</span> <span class="op">=</span> <span class="number">36</span>,
     <span class="doccomment">/// APK contains no code.</span>
     <span class="doccomment">/// See also</span>
-    <span class="doccomment">/// https://developer.android.com/guide/topics/manifest/application-element.html#code</span>
+    <span class="doccomment">/// &lt;https://developer.android.com/guide/topics/manifest/application-element.html#code&gt;</span>
     <span class="ident">NoCodeApk</span> <span class="op">=</span> <span class="number">23</span>,
     <span class="doccomment">/// Either the provided input APK path was malformed,</span>
     <span class="doccomment">/// the APK file does not exist, or the user does not have permission to</span>
@@ -3346,7 +3343,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">TestExecutionServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -3359,7 +3356,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestExecutionServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -3395,8 +3392,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;                      to use too many simultaneous devices.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_test_matrix</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateTestMatrixRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TestMatrix</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateTestMatrixRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TestMatrix</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3418,8 +3415,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; - NOT_FOUND - if the Test Matrix does not exist&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_test_matrix</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetTestMatrixRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TestMatrix</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetTestMatrixRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TestMatrix</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3443,8 +3440,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; - NOT_FOUND - if the Test Matrix does not exist&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">cancel_test_matrix</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CancelTestMatrixRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CancelTestMatrixResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CancelTestMatrixRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CancelTestMatrixResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3467,7 +3464,7 @@
     <span class="kw">pub</span> <span class="ident">apk_manifest</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ApkManifest</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// An Android app manifest. See</span>
-<span class="doccomment">/// http://developer.android.com/guide/topics/manifest/manifest-intro.html</span>
+<span class="doccomment">/// &lt;http://developer.android.com/guide/topics/manifest/manifest-intro.html&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApkManifest</span> {
     <span class="doccomment">/// Full Java-style package name for this application, e.g.</span>
@@ -3493,7 +3490,7 @@
     <span class="kw">pub</span> <span class="ident">uses_permission</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// The &lt;intent-filter&gt; section of an &lt;activity&gt; tag.</span>
-<span class="doccomment">/// https://developer.android.com/guide/topics/manifest/intent-filter-element.html</span>
+<span class="doccomment">/// &lt;https://developer.android.com/guide/topics/manifest/intent-filter-element.html&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IntentFilter</span> {
     <span class="doccomment">/// The android:name value of the &lt;action&gt; tag.</span>
@@ -3533,7 +3530,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">ApplicationDetailServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -3546,7 +3543,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ApplicationDetailServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -3574,8 +3571,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the details of an Android application APK.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_apk_details</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetApkDetailsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetApkDetailsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetApkDetailsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetApkDetailsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3601,7 +3598,7 @@
     <span class="kw">pub</span> <span class="ident">form</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// The date this block was added to Firebase Test Lab</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">added_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">added_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Request to list the currently supported values for an environment type.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -3653,19 +3650,19 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EnvironmentCatalog</span> {
         <span class="doccomment">/// Supported Android devices.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">AndroidDeviceCatalog</span>(<span class="kw">super</span><span class="ident">::AndroidDeviceCatalog</span>),
+        <span class="ident">AndroidDeviceCatalog</span>(<span class="ident"><span class="kw">super</span>::AndroidDeviceCatalog</span>),
         <span class="doccomment">/// Supported iOS devices.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">IosDeviceCatalog</span>(<span class="kw">super</span><span class="ident">::IosDeviceCatalog</span>),
+        <span class="ident">IosDeviceCatalog</span>(<span class="ident"><span class="kw">super</span>::IosDeviceCatalog</span>),
         <span class="doccomment">/// Supported network configurations.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">NetworkConfigurationCatalog</span>(<span class="kw">super</span><span class="ident">::NetworkConfigurationCatalog</span>),
+        <span class="ident">NetworkConfigurationCatalog</span>(<span class="ident"><span class="kw">super</span>::NetworkConfigurationCatalog</span>),
         <span class="doccomment">/// The software test environment provided by TestExecutionService.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">SoftwareCatalog</span>(<span class="kw">super</span><span class="ident">::ProvidedSoftwareCatalog</span>),
+        <span class="ident">SoftwareCatalog</span>(<span class="ident"><span class="kw">super</span>::ProvidedSoftwareCatalog</span>),
         <span class="doccomment">/// The IP blocks used by devices in the test environment.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">DeviceIpBlockCatalog</span>(<span class="kw">super</span><span class="ident">::DeviceIpBlockCatalog</span>),
+        <span class="ident">DeviceIpBlockCatalog</span>(<span class="ident"><span class="kw">super</span>::DeviceIpBlockCatalog</span>),
     }
 }
 <span class="doccomment">/// List of IP blocks used by the Firebase Test Lab</span>
@@ -3758,7 +3755,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">tags</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// URL of a thumbnail image (photo) of the device.</span>
-    <span class="doccomment">/// e.g. https://lh3.googleusercontent.com/90WcauuJiCYABEl8U0lcZeuS5STUbf2yW...</span>
+    <span class="doccomment">/// e.g. &lt;https://lh3.googleusercontent.com/90WcauuJiCYABEl8U0lcZeuS5STUbf2yW...&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;19&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">thumbnail_url</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -3783,7 +3780,7 @@
     <span class="kw">pub</span> <span class="ident">code_name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The date this Android version became available in the market.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">release_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">release_date</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Market share for this version.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">distribution</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Distribution</span><span class="op">&gt;</span>,
@@ -3850,7 +3847,7 @@
     <span class="kw">pub</span> <span class="ident">tags</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Device capabilities.</span>
     <span class="doccomment">/// Copied from</span>
-    <span class="doccomment">/// https://developer.apple.com/library/archive/documentation/DeviceInformation/Reference/iOSDeviceCompatibility/DeviceCompatibilityMatrix/DeviceCompatibilityMatrix.html</span>
+    <span class="doccomment">/// &lt;https://developer.apple.com/library/archive/documentation/DeviceInformation/Reference/iOSDeviceCompatibility/DeviceCompatibilityMatrix/DeviceCompatibilityMatrix.html&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">device_capabilities</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Screen size in the horizontal (X) dimension measured in pixels.</span>
@@ -3978,12 +3975,12 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ProvidedSoftwareCatalog</span> {
     <span class="doccomment">/// A string representing the current version of Android Test Orchestrator</span>
     <span class="doccomment">/// that is used in the environment. The package is available at</span>
-    <span class="doccomment">/// https://maven.google.com/web/index.html#com.android.support.test:orchestrator.</span>
+    <span class="doccomment">/// &lt;https://maven.google.com/web/index.html#com.android.support.test:orchestrator.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">orchestrator_version</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// A string representing the current version of AndroidX Test Orchestrator</span>
     <span class="doccomment">/// that is used in the environment. The package is available at</span>
-    <span class="doccomment">/// https://maven.google.com/web/index.html#androidx.test:orchestrator.</span>
+    <span class="doccomment">/// &lt;https://maven.google.com/web/index.html#androidx.test:orchestrator.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">androidx_orchestrator_version</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -4058,7 +4055,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">TestEnvironmentDiscoveryServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -4071,7 +4068,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TestEnvironmentDiscoveryServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -4105,8 +4102,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; - INTERNAL - if an internal error occurred&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_test_environment_catalog</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetTestEnvironmentCatalogRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TestEnvironmentCatalog</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetTestEnvironmentCatalogRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TestEnvironmentCatalog</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -4119,5 +4116,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

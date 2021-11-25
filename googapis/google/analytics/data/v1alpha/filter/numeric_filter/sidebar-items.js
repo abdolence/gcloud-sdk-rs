@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Operation","The operation applied to a numeric filter"]]});

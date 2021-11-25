@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["SearchServiceClient","Service for search."]]});

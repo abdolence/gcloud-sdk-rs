@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ArtifactRegistryClient","The Artifact Registry API service."]]});

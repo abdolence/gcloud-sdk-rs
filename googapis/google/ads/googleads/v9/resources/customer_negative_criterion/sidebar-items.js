@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Criterion","The customer negative criterion."]]});

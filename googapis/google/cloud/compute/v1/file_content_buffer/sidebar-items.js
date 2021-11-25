@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FileType","The file type of source file."]]});

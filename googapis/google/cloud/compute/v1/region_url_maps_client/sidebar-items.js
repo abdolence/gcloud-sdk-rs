@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["RegionUrlMapsClient","The RegionUrlMaps API."]]});

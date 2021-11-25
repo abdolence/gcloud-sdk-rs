@@ -1,0 +1,1138 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.gkebackup.logging.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.gkebackup.logging.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+<span id="145">145</span>
+<span id="146">146</span>
+<span id="147">147</span>
+<span id="148">148</span>
+<span id="149">149</span>
+<span id="150">150</span>
+<span id="151">151</span>
+<span id="152">152</span>
+<span id="153">153</span>
+<span id="154">154</span>
+<span id="155">155</span>
+<span id="156">156</span>
+<span id="157">157</span>
+<span id="158">158</span>
+<span id="159">159</span>
+<span id="160">160</span>
+<span id="161">161</span>
+<span id="162">162</span>
+<span id="163">163</span>
+<span id="164">164</span>
+<span id="165">165</span>
+<span id="166">166</span>
+<span id="167">167</span>
+<span id="168">168</span>
+<span id="169">169</span>
+<span id="170">170</span>
+<span id="171">171</span>
+<span id="172">172</span>
+<span id="173">173</span>
+<span id="174">174</span>
+<span id="175">175</span>
+<span id="176">176</span>
+<span id="177">177</span>
+<span id="178">178</span>
+<span id="179">179</span>
+<span id="180">180</span>
+<span id="181">181</span>
+<span id="182">182</span>
+<span id="183">183</span>
+<span id="184">184</span>
+<span id="185">185</span>
+<span id="186">186</span>
+<span id="187">187</span>
+<span id="188">188</span>
+<span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
+<span id="203">203</span>
+<span id="204">204</span>
+<span id="205">205</span>
+<span id="206">206</span>
+<span id="207">207</span>
+<span id="208">208</span>
+<span id="209">209</span>
+<span id="210">210</span>
+<span id="211">211</span>
+<span id="212">212</span>
+<span id="213">213</span>
+<span id="214">214</span>
+<span id="215">215</span>
+<span id="216">216</span>
+<span id="217">217</span>
+<span id="218">218</span>
+<span id="219">219</span>
+<span id="220">220</span>
+<span id="221">221</span>
+<span id="222">222</span>
+<span id="223">223</span>
+<span id="224">224</span>
+<span id="225">225</span>
+<span id="226">226</span>
+<span id="227">227</span>
+<span id="228">228</span>
+<span id="229">229</span>
+<span id="230">230</span>
+<span id="231">231</span>
+<span id="232">232</span>
+<span id="233">233</span>
+<span id="234">234</span>
+<span id="235">235</span>
+<span id="236">236</span>
+<span id="237">237</span>
+<span id="238">238</span>
+<span id="239">239</span>
+<span id="240">240</span>
+<span id="241">241</span>
+<span id="242">242</span>
+<span id="243">243</span>
+<span id="244">244</span>
+<span id="245">245</span>
+<span id="246">246</span>
+<span id="247">247</span>
+<span id="248">248</span>
+<span id="249">249</span>
+<span id="250">250</span>
+<span id="251">251</span>
+<span id="252">252</span>
+<span id="253">253</span>
+<span id="254">254</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+<span id="274">274</span>
+<span id="275">275</span>
+<span id="276">276</span>
+<span id="277">277</span>
+<span id="278">278</span>
+<span id="279">279</span>
+<span id="280">280</span>
+<span id="281">281</span>
+<span id="282">282</span>
+<span id="283">283</span>
+<span id="284">284</span>
+<span id="285">285</span>
+<span id="286">286</span>
+<span id="287">287</span>
+<span id="288">288</span>
+<span id="289">289</span>
+<span id="290">290</span>
+<span id="291">291</span>
+<span id="292">292</span>
+<span id="293">293</span>
+<span id="294">294</span>
+<span id="295">295</span>
+<span id="296">296</span>
+<span id="297">297</span>
+<span id="298">298</span>
+<span id="299">299</span>
+<span id="300">300</span>
+<span id="301">301</span>
+<span id="302">302</span>
+<span id="303">303</span>
+<span id="304">304</span>
+<span id="305">305</span>
+<span id="306">306</span>
+<span id="307">307</span>
+<span id="308">308</span>
+<span id="309">309</span>
+<span id="310">310</span>
+<span id="311">311</span>
+<span id="312">312</span>
+<span id="313">313</span>
+<span id="314">314</span>
+<span id="315">315</span>
+<span id="316">316</span>
+<span id="317">317</span>
+<span id="318">318</span>
+<span id="319">319</span>
+<span id="320">320</span>
+<span id="321">321</span>
+<span id="322">322</span>
+<span id="323">323</span>
+<span id="324">324</span>
+<span id="325">325</span>
+<span id="326">326</span>
+<span id="327">327</span>
+<span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
+<span id="332">332</span>
+<span id="333">333</span>
+<span id="334">334</span>
+<span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
+<span id="341">341</span>
+<span id="342">342</span>
+<span id="343">343</span>
+<span id="344">344</span>
+<span id="345">345</span>
+<span id="346">346</span>
+<span id="347">347</span>
+<span id="348">348</span>
+<span id="349">349</span>
+<span id="350">350</span>
+<span id="351">351</span>
+<span id="352">352</span>
+<span id="353">353</span>
+<span id="354">354</span>
+<span id="355">355</span>
+<span id="356">356</span>
+<span id="357">357</span>
+<span id="358">358</span>
+<span id="359">359</span>
+<span id="360">360</span>
+<span id="361">361</span>
+<span id="362">362</span>
+<span id="363">363</span>
+<span id="364">364</span>
+<span id="365">365</span>
+<span id="366">366</span>
+<span id="367">367</span>
+<span id="368">368</span>
+<span id="369">369</span>
+<span id="370">370</span>
+<span id="371">371</span>
+<span id="372">372</span>
+<span id="373">373</span>
+<span id="374">374</span>
+<span id="375">375</span>
+<span id="376">376</span>
+<span id="377">377</span>
+<span id="378">378</span>
+<span id="379">379</span>
+<span id="380">380</span>
+<span id="381">381</span>
+<span id="382">382</span>
+<span id="383">383</span>
+<span id="384">384</span>
+<span id="385">385</span>
+<span id="386">386</span>
+<span id="387">387</span>
+<span id="388">388</span>
+<span id="389">389</span>
+<span id="390">390</span>
+<span id="391">391</span>
+<span id="392">392</span>
+<span id="393">393</span>
+<span id="394">394</span>
+<span id="395">395</span>
+<span id="396">396</span>
+<span id="397">397</span>
+<span id="398">398</span>
+<span id="399">399</span>
+<span id="400">400</span>
+<span id="401">401</span>
+<span id="402">402</span>
+<span id="403">403</span>
+<span id="404">404</span>
+<span id="405">405</span>
+<span id="406">406</span>
+<span id="407">407</span>
+<span id="408">408</span>
+<span id="409">409</span>
+<span id="410">410</span>
+<span id="411">411</span>
+<span id="412">412</span>
+<span id="413">413</span>
+<span id="414">414</span>
+<span id="415">415</span>
+<span id="416">416</span>
+<span id="417">417</span>
+<span id="418">418</span>
+<span id="419">419</span>
+<span id="420">420</span>
+<span id="421">421</span>
+<span id="422">422</span>
+<span id="423">423</span>
+<span id="424">424</span>
+<span id="425">425</span>
+<span id="426">426</span>
+<span id="427">427</span>
+<span id="428">428</span>
+<span id="429">429</span>
+<span id="430">430</span>
+<span id="431">431</span>
+<span id="432">432</span>
+<span id="433">433</span>
+<span id="434">434</span>
+<span id="435">435</span>
+<span id="436">436</span>
+<span id="437">437</span>
+<span id="438">438</span>
+<span id="439">439</span>
+<span id="440">440</span>
+<span id="441">441</span>
+<span id="442">442</span>
+<span id="443">443</span>
+<span id="444">444</span>
+<span id="445">445</span>
+<span id="446">446</span>
+<span id="447">447</span>
+<span id="448">448</span>
+<span id="449">449</span>
+<span id="450">450</span>
+<span id="451">451</span>
+<span id="452">452</span>
+<span id="453">453</span>
+<span id="454">454</span>
+<span id="455">455</span>
+<span id="456">456</span>
+<span id="457">457</span>
+<span id="458">458</span>
+<span id="459">459</span>
+<span id="460">460</span>
+<span id="461">461</span>
+<span id="462">462</span>
+<span id="463">463</span>
+<span id="464">464</span>
+<span id="465">465</span>
+<span id="466">466</span>
+<span id="467">467</span>
+<span id="468">468</span>
+<span id="469">469</span>
+<span id="470">470</span>
+<span id="471">471</span>
+<span id="472">472</span>
+<span id="473">473</span>
+<span id="474">474</span>
+<span id="475">475</span>
+<span id="476">476</span>
+<span id="477">477</span>
+<span id="478">478</span>
+<span id="479">479</span>
+<span id="480">480</span>
+<span id="481">481</span>
+<span id="482">482</span>
+<span id="483">483</span>
+<span id="484">484</span>
+<span id="485">485</span>
+<span id="486">486</span>
+<span id="487">487</span>
+<span id="488">488</span>
+<span id="489">489</span>
+<span id="490">490</span>
+<span id="491">491</span>
+<span id="492">492</span>
+<span id="493">493</span>
+<span id="494">494</span>
+<span id="495">495</span>
+<span id="496">496</span>
+<span id="497">497</span>
+<span id="498">498</span>
+<span id="499">499</span>
+<span id="500">500</span>
+<span id="501">501</span>
+<span id="502">502</span>
+<span id="503">503</span>
+<span id="504">504</span>
+<span id="505">505</span>
+<span id="506">506</span>
+<span id="507">507</span>
+<span id="508">508</span>
+<span id="509">509</span>
+<span id="510">510</span>
+<span id="511">511</span>
+<span id="512">512</span>
+<span id="513">513</span>
+<span id="514">514</span>
+<span id="515">515</span>
+<span id="516">516</span>
+<span id="517">517</span>
+<span id="518">518</span>
+<span id="519">519</span>
+<span id="520">520</span>
+<span id="521">521</span>
+<span id="522">522</span>
+<span id="523">523</span>
+<span id="524">524</span>
+<span id="525">525</span>
+<span id="526">526</span>
+<span id="527">527</span>
+<span id="528">528</span>
+<span id="529">529</span>
+<span id="530">530</span>
+<span id="531">531</span>
+<span id="532">532</span>
+<span id="533">533</span>
+<span id="534">534</span>
+<span id="535">535</span>
+<span id="536">536</span>
+<span id="537">537</span>
+<span id="538">538</span>
+<span id="539">539</span>
+<span id="540">540</span>
+<span id="541">541</span>
+<span id="542">542</span>
+<span id="543">543</span>
+<span id="544">544</span>
+<span id="545">545</span>
+<span id="546">546</span>
+<span id="547">547</span>
+<span id="548">548</span>
+<span id="549">549</span>
+<span id="550">550</span>
+<span id="551">551</span>
+<span id="552">552</span>
+<span id="553">553</span>
+<span id="554">554</span>
+<span id="555">555</span>
+<span id="556">556</span>
+<span id="557">557</span>
+<span id="558">558</span>
+<span id="559">559</span>
+<span id="560">560</span>
+<span id="561">561</span>
+<span id="562">562</span>
+<span id="563">563</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Backup as stored in Platform log. It&#39;s used to log the details of</span>
+<span class="doccomment">/// a createBackup/updateBackup request, so only fields that can be taken</span>
+<span class="doccomment">/// from API calls are included here.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LoggedBackup</span> {
+    <span class="doccomment">/// A set of custom labels supplied by user.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">labels</span>:
+        <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// delete_lock_days specifies the number of days from the create_time of this</span>
+    <span class="doccomment">/// Backup before which deletion will be blocked.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">delete_lock_days</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// retain_days specifies the desired number of days from the create_time of</span>
+    <span class="doccomment">/// this Backup after which it will be automatically deleted.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">retain_days</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// User specified descriptive string for this Backup.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Current state of the Backup</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;logged_backup::State&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">state</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Human-readable description of why the backup is in the current `state`.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">state_reason</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `LoggedBackup`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">logged_backup</span> {
+    <span class="doccomment">/// State</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">State</span> {
+        <span class="doccomment">/// The Backup resource is in the process of being created.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// The Backup resource has been created and the associated BackupJob</span>
+        <span class="doccomment">/// Kubernetes resource has been injected into the source cluster.</span>
+        <span class="ident">Creating</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// The gkebackup agent in the cluster has begun executing the backup</span>
+        <span class="doccomment">/// operation.</span>
+        <span class="ident">InProgress</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// The backup operation has completed successfully.</span>
+        <span class="ident">Succeeded</span> <span class="op">=</span> <span class="number">3</span>,
+        <span class="doccomment">/// The backup operation has failed.</span>
+        <span class="ident">Failed</span> <span class="op">=</span> <span class="number">4</span>,
+        <span class="doccomment">/// This Backup resource (and its associated artifacts) is in the process</span>
+        <span class="doccomment">/// of being deleted.</span>
+        <span class="ident">Deleting</span> <span class="op">=</span> <span class="number">5</span>,
+    }
+}
+<span class="doccomment">/// Namespaces, list of namespaces</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Namespaces</span> {
+    <span class="doccomment">/// namespaces</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">namespaces</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// NamespacedName</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NamespacedName</span> {
+    <span class="doccomment">/// the namespace of the resource in Kubernetes</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">namespace</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// the name of the resource in Kubernetes</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// NamespacedNames</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NamespacedNames</span> {
+    <span class="doccomment">/// a list of namespaced names in Kubernetes</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">namespaced_names</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">NamespacedName</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Encryption key.</span>
+<span class="doccomment">/// This only contains the key metadata, and no key material.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EncryptionKey</span> {
+    <span class="doccomment">/// Google KMS encryption key in the format:</span>
+    <span class="doccomment">/// projects/&lt;project&gt;/locations/&lt;location&gt;/keyRings/&lt;key-ring&gt;/cryptoKeys/&lt;key&gt;</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">gcp_kms_encryption_key</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// BackupPlan as stored in Platform log. It&#39;s used to log the details of</span>
+<span class="doccomment">/// a createBackupPlan/updateBackupPlan request, so only fields that can be taken</span>
+<span class="doccomment">/// from user input are included here.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LoggedBackupPlan</span> {
+    <span class="doccomment">/// User specified descriptive string for this BackupPlan.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// GCP resource name of the source cluster for this BackupPlan.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">cluster</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// RetentionPolicy governs lifecycle of Backups created under this plan.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">retention_policy</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">logged_backup_plan::RetentionPolicy</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A set of custom labels supplied by user.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">labels</span>:
+        <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Defines scheduled Backup creation under this BackupPlan.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">backup_schedule</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">logged_backup_plan::Schedule</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A flag indicates whether the plan has been deactivated.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">deactivated</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Defines backup configuration of this BackupPlan.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">backup_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">logged_backup_plan::BackupConfig</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `LoggedBackupPlan`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">logged_backup_plan</span> {
+    <span class="doccomment">/// RentionPolicy is an inner message type to define:</span>
+    <span class="doccomment">/// 1. When to automatically delete Backups created under this BackupPlan</span>
+    <span class="doccomment">/// 2. A plan level minimum Backup retain days which blocks deletion</span>
+    <span class="doccomment">/// 3. Lock to disallow any policy updates</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RetentionPolicy</span> {
+        <span class="doccomment">/// Number of days during which deletion of a Backup created under this</span>
+        <span class="doccomment">/// BackupPlan will be blocked.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">backup_delete_lock_days</span>: <span class="ident">i32</span>,
+        <span class="doccomment">/// Number of days after which the service will delete a Backup.</span>
+        <span class="doccomment">/// If specified, a Backup created under this BackupPlan will be</span>
+        <span class="doccomment">/// automatically deleted after its age reaches create_time +</span>
+        <span class="doccomment">/// backup_retain_days.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">backup_retain_days</span>: <span class="ident">i32</span>,
+        <span class="doccomment">/// A flag denotes that the retention policy of this BackupPlan is locked.</span>
+        <span class="doccomment">/// If set to True, no further update is allowed on this policy, including</span>
+        <span class="doccomment">/// the &#39;locked&#39; field itself.</span>
+        <span class="doccomment">/// Default to False.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">locked</span>: <span class="ident">bool</span>,
+    }
+    <span class="doccomment">/// Schedule, an inner message type defines a cron schedule.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Schedule</span> {
+        <span class="doccomment">/// A cron style string schedule on which an operation will be executed.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">cron_schedule</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// A flag to toggle scheduled operation.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">paused</span>: <span class="ident">bool</span>,
+    }
+    <span class="doccomment">/// BackupConfig, an inner message type defines the configuration of creating</span>
+    <span class="doccomment">/// a backup from this BackupPlan</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BackupConfig</span> {
+        <span class="doccomment">/// A boolean flag specifies whether volume data should be backed up</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">include_volume_data</span>: <span class="ident">bool</span>,
+        <span class="doccomment">/// A boolean flag specifies whether secrets should be backed up</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">include_secrets</span>: <span class="ident">bool</span>,
+        <span class="doccomment">/// Custom encryption key. For preview, support GCP KMS only.</span>
+        <span class="doccomment">/// This only contains the key metadata, and no key material.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">encryption_key</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EncryptionKey</span><span class="op">&gt;</span>,
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;backup_config::BackupScope&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2, 3&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">backup_scope</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">backup_config::BackupScope</span><span class="op">&gt;</span>,
+    }
+    <span class="doccomment">/// Nested message and enum types in `BackupConfig`.</span>
+    <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">backup_config</span> {
+        <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+        <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">BackupScope</span> {
+            <span class="doccomment">/// If set to true, backup whole cluster</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+            <span class="ident">AllNamespaces</span>(<span class="ident">bool</span>),
+            <span class="doccomment">/// If set, backup the list of namespaces</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+            <span class="ident">SelectedNamespaces</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::Namespaces</span>),
+            <span class="doccomment">/// If set, backup the list of applications</span>
+            <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+            <span class="ident">SelectedApplications</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::NamespacedNames</span>),
+        }
+    }
+}
+<span class="doccomment">/// Restore as stored in Platform log. It&#39;s used to log the update details of a</span>
+<span class="doccomment">/// updateRestore request, so only mutable and non-output_only fields are</span>
+<span class="doccomment">/// included here..</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LoggedRestore</span> {
+    <span class="doccomment">/// Full name of the Backup resource this Restore resource used to restore</span>
+    <span class="doccomment">/// from. Format: projects/*/locations/*/backupPlans/*/backups/*.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">backup</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// GCP Labels.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">labels</span>:
+        <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// User specified descriptive string for this Restore.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The current state of the Restore.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;logged_restore::State&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">state</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Human-readable description of why the Restore is in its current state.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">state_reason</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `LoggedRestore`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">logged_restore</span> {
+    <span class="doccomment">/// Possible values for state of the Restore.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">State</span> {
+        <span class="doccomment">/// The Restore resource is in the process of being created.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// The Restore resource has been created and the associated RestoreJob</span>
+        <span class="doccomment">/// Kubernetes resource has been injected into target cluster.</span>
+        <span class="ident">Creating</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// The gkebackup agent in the cluster has begun executing the restore</span>
+        <span class="doccomment">/// operation.</span>
+        <span class="ident">InProgress</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// The restore operation has completed successfully. Restored workloads may</span>
+        <span class="doccomment">/// not yet be operational.</span>
+        <span class="ident">Succeeded</span> <span class="op">=</span> <span class="number">3</span>,
+        <span class="doccomment">/// The restore operation has failed.</span>
+        <span class="ident">Failed</span> <span class="op">=</span> <span class="number">4</span>,
+        <span class="doccomment">/// This Restore resource is in the process of being deleted.</span>
+        <span class="ident">Deleting</span> <span class="op">=</span> <span class="number">5</span>,
+    }
+}
+<span class="doccomment">/// RestorePlan as stored in Platform log. It&#39;s used to log the details of</span>
+<span class="doccomment">/// a createRestorePlan/updateRestorePlan request, so only fields that can be</span>
+<span class="doccomment">/// taken from user input are included here.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LoggedRestorePlan</span> {
+    <span class="doccomment">/// User specified descriptive string for this RestorePlan.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The BackupPlan from which Backups may be used as the source</span>
+    <span class="doccomment">/// for Restores created via this RestorePlan.</span>
+    <span class="doccomment">/// Format: projects/*/locations/*/backupPlans/*.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">backup_plan</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// The target cluster into which Restores created via this RestorePlan</span>
+    <span class="doccomment">/// will restore data. NOTE: the cluster&#39;s region must be the same as the</span>
+    <span class="doccomment">/// RestorePlan.</span>
+    <span class="doccomment">/// Possible formats:</span>
+    <span class="doccomment">///   1. projects/*/locations/*/clusters/*</span>
+    <span class="doccomment">///   2. projects/*/zones/*/clusters/*</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">cluster</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Configuration of Restores created via this RestorePlan.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">restore_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">RestoreConfig</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A set of custom labels supplied by user.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">labels</span>:
+        <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Configuration of a restore.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RestoreConfig</span> {
+    <span class="doccomment">/// Specifies the mechanism to be used to restore volume data.</span>
+    <span class="doccomment">/// Default: VOLUME_DATA_RESTORE_POLICY_UNSPECIFIED (will be treated as</span>
+    <span class="doccomment">/// NO_VOLUME_DATA_RESTORATION).</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;restore_config::VolumeDataRestorePolicy&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">volume_data_restore_policy</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Defines the behavior for handling the situation where cluster-scoped</span>
+    <span class="doccomment">/// resources being restored already exist in the target cluster. This MUST be</span>
+    <span class="doccomment">/// set to a value other than CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED if</span>
+    <span class="doccomment">/// cluster_resource_restore_scope is not empty.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(
+        <span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;restore_config::ClusterResourceConflictPolicy&quot;</span>,
+        <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>
+    )]</span>
+    <span class="kw">pub</span> <span class="ident">cluster_resource_conflict_policy</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Defines the behavior for handling the situation where sets of namespaced</span>
+    <span class="doccomment">/// resources being restored already exist in the target cluster. This MUST be</span>
+    <span class="doccomment">/// set to a value other than NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED if</span>
+    <span class="doccomment">/// any namespaced restoration is configured via</span>
+    <span class="doccomment">/// namespaced_resource_restore_scope .</span>
+    <span class="attribute">#[<span class="ident">prost</span>(
+        <span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;restore_config::NamespacedResourceRestoreMode&quot;</span>,
+        <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>
+    )]</span>
+    <span class="kw">pub</span> <span class="ident">namespaced_resource_restore_mode</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Identifies the cluster-scoped resources to restore from the Backup.</span>
+    <span class="doccomment">/// Not specifying it means NO cluster resource will be restored.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">cluster_resource_restore_scope</span>:
+        <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">restore_config::ClusterResourceRestoreScope</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// A list of transformation rules to be applied against Kubernetes resources</span>
+    <span class="doccomment">/// as they are selected for restoration from a Backup. Rules are executed in</span>
+    <span class="doccomment">/// order defined - this order matters, as changes made by a rule may impact</span>
+    <span class="doccomment">/// the filtering logic of subsequent rules. An empty list means no</span>
+    <span class="doccomment">/// substitution will occur.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">substitution_rules</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">restore_config::SubstitutionRule</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Specifies the namespaced resources to restore from the Backup.</span>
+    <span class="doccomment">/// Only one of the entries may be specified. If not specified, NO namespaced</span>
+    <span class="doccomment">/// resources will be restored.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(
+        <span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;restore_config::NamespacedResourceRestoreScope&quot;</span>,
+        <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;5, 6, 7&quot;</span>
+    )]</span>
+    <span class="kw">pub</span> <span class="ident">namespaced_resource_restore_scope</span>:
+        <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">restore_config::NamespacedResourceRestoreScope</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// Nested message and enum types in `RestoreConfig`.</span>
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">restore_config</span> {
+    <span class="doccomment">/// This is a direct map to the Kubernetes GroupKind type</span>
+    <span class="doccomment">/// \[GroupKind\](&lt;https://godoc.org/k8s.io/apimachinery/pkg/runtime/schema#GroupKind&gt;)</span>
+    <span class="doccomment">/// and is used for identifying specific &quot;types&quot; of resources to restore.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GroupKind</span> {
+        <span class="doccomment">/// API group string of a Kubernetes resource, e.g.</span>
+        <span class="doccomment">/// &quot;apiextensions.k8s.io&quot;, &quot;storage.k8s.io&quot;, etc.</span>
+        <span class="doccomment">/// Note: use empty string for core API group</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">resource_group</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// Kind of a Kubernetes resource, e.g.</span>
+        <span class="doccomment">/// &quot;CustomResourceDefinition&quot;, &quot;StorageClass&quot;, etc.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">resource_kind</span>: <span class="ident">::prost::alloc::string::String</span>,
+    }
+    <span class="doccomment">/// Identifies the cluster-scoped resources to restore from the Backup.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ClusterResourceRestoreScope</span> {
+        <span class="doccomment">/// A list of &quot;types&quot; of cluster-scoped resources to be restored from the</span>
+        <span class="doccomment">/// Backup.  An empty list means that NO cluster-scoped resources will be</span>
+        <span class="doccomment">/// restored. Note that Namespaces and PersistentVolume restoration is</span>
+        <span class="doccomment">/// handled separately and is not governed by this field.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">selected_group_kinds</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">GroupKind</span><span class="op">&gt;</span>,
+    }
+    <span class="doccomment">/// A transformation rule to be applied against Kubernetes resources as they</span>
+    <span class="doccomment">/// are selected for restoration from a Backup. A rule contains both filtering</span>
+    <span class="doccomment">/// logic (which resources are subject to substitution) and substitution logic.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SubstitutionRule</span> {
+        <span class="doccomment">/// (Filtering parameter) Any resource subject to substitution must be</span>
+        <span class="doccomment">/// contained within one of the listed Kubernetes Namespace in the Backup.</span>
+        <span class="doccomment">/// If this field is not provided, no namespace filtering will be performed</span>
+        <span class="doccomment">/// (all resources in all Namespaces, including all cluster-scoped resources,</span>
+        <span class="doccomment">/// will be candidates for substitution).</span>
+        <span class="doccomment">/// To mix cluster-scoped and namespaced resources in the same rule, use an</span>
+        <span class="doccomment">/// empty string (&quot;&quot;) as one of the target namespaces.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">target_namespaces</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// (Filtering parameter) Any resource subject to substitution must belong to</span>
+        <span class="doccomment">/// one of the listed &quot;types&quot;.</span>
+        <span class="doccomment">/// If this field is not provided, no type filtering will be performed (all</span>
+        <span class="doccomment">/// resources of all types matching previous filtering parameters will be</span>
+        <span class="doccomment">/// candidates for substitution).</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">target_group_kinds</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">GroupKind</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// This is a \[JSONPath\]</span>
+        <span class="doccomment">/// ([&lt;https://kubernetes.io/docs/reference/kubectl/jsonpath/&gt;)</span>
+        <span class="doccomment">/// expression that matches specific fields of candidate</span>
+        <span class="doccomment">/// resources and it operates as both a filtering parameter (resources that</span>
+        <span class="doccomment">/// are not matched with this expression will not be candidates for</span>
+        <span class="doccomment">/// substitution) as well as a field identifier (identifies exactly which</span>
+        <span class="doccomment">/// fields out of the candidate resources will be modified).</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">target_json_path</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// (Filtering parameter) This is a [regular expression]</span>
+        <span class="doccomment">/// (&lt;https://en.wikipedia.org/wiki/Regular_expression&gt;)</span>
+        <span class="doccomment">/// that is compared against the fields matched by the target_json_path</span>
+        <span class="doccomment">/// expression (and must also have passed the previous filters).</span>
+        <span class="doccomment">/// Substitution will not be performed against fields whose</span>
+        <span class="doccomment">/// value does not match this expression. If this field is NOT specified,</span>
+        <span class="doccomment">/// then ALL fields matched by the target_json_path expression will undergo</span>
+        <span class="doccomment">/// substitution. Note that an empty (e.g., &quot;&quot;, rather than unspecified)</span>
+        <span class="doccomment">/// value for for this field will only match empty fields.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">original_value_pattern</span>: <span class="ident">::prost::alloc::string::String</span>,
+        <span class="doccomment">/// This is the new value to set for any fields that pass the filtering and</span>
+        <span class="doccomment">/// selection criteria. To remove a value from a Kubernetes resource, either</span>
+        <span class="doccomment">/// leave this field unspecified, or set it to the empty string (&quot;&quot;).</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">new_value</span>: <span class="ident">::prost::alloc::string::String</span>,
+    }
+    <span class="doccomment">/// Defines how volume data should be restored</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">VolumeDataRestorePolicy</span> {
+        <span class="doccomment">/// unspecified, default value</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// For each PVC to be restored, will create a new underlying volume (and PV)</span>
+        <span class="doccomment">/// from the corresponding VolumeBackup contained within the Backup.</span>
+        <span class="ident">RestoreVolumeDataFromBackup</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// For each PVC to be restored, attempt to reuse the original PV contained</span>
+        <span class="doccomment">/// in the Backup (with its original underlying volume).  Note that option</span>
+        <span class="doccomment">/// is likely only usable when restoring a workload to its original cluster.</span>
+        <span class="ident">ReuseVolumeHandleFromBackup</span> <span class="op">=</span> <span class="number">2</span>,
+        <span class="doccomment">/// For each PVC to be restored, PVCs will be created without any particular</span>
+        <span class="doccomment">/// action to restore data.  In this case, the normal Kubernetes provisioning</span>
+        <span class="doccomment">/// logic would kick in, and this would likely result in either dynamically</span>
+        <span class="doccomment">/// provisioning blank PVs or binding to statically provisioned PVs.</span>
+        <span class="ident">NoVolumeDataRestoration</span> <span class="op">=</span> <span class="number">3</span>,
+    }
+    <span class="doccomment">/// Defines the behavior for handling the situation where cluster-scoped</span>
+    <span class="doccomment">/// resources being restored already exist in the target cluster.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ClusterResourceConflictPolicy</span> {
+        <span class="doccomment">/// Unspecified. Only allowed if no cluster-scoped resources will be</span>
+        <span class="doccomment">/// restored.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// Do not attempt to restore the conflicting resource.</span>
+        <span class="ident">UseExistingVersion</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// Delete the existing version before re-creating it from the Backup.</span>
+        <span class="doccomment">/// Note that this is a dangerous option which could cause unintentional</span>
+        <span class="doccomment">/// data loss if used inappropriately - for example, deleting a CRD will</span>
+        <span class="doccomment">/// cause Kubernetes to delete all CRs of that type.</span>
+        <span class="ident">UseBackupVersion</span> <span class="op">=</span> <span class="number">2</span>,
+    }
+    <span class="doccomment">/// Defines the behavior for handling the situation where sets of namespaced</span>
+    <span class="doccomment">/// resources being restored already exist in the target cluster.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">NamespacedResourceRestoreMode</span> {
+        <span class="doccomment">/// Unspecified. Only allowed if no namespaced resources will be restored.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// When conflicting top-level resources (either Namespaces or</span>
+        <span class="doccomment">/// ProtectedApplications, depending upon the scope) are encountered, this</span>
+        <span class="doccomment">/// will first trigger a delete of the conflicting resource AND ALL OF ITS</span>
+        <span class="doccomment">/// REFERENCED RESOURCES (e.g., all resources in the Namespace or all</span>
+        <span class="doccomment">/// resources referenced by the ProtectedApplication) before restoring the</span>
+        <span class="doccomment">/// resources from the Backup. This mode should only be used when you are</span>
+        <span class="doccomment">/// intending to revert some portion of a cluster to an earlier state.</span>
+        <span class="ident">DeleteAndRestore</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// If conflicting top-level resources (either Namespaces or</span>
+        <span class="doccomment">/// ProtectedApplications, depending upon the scope) are encountered at the</span>
+        <span class="doccomment">/// beginning of a restore process, the Restore will fail.  If a conflict</span>
+        <span class="doccomment">/// occurs during the restore process itself (e.g., because an out of band</span>
+        <span class="doccomment">/// process creates conflicting resources), a conflict will be reported.</span>
+        <span class="ident">FailOnConflict</span> <span class="op">=</span> <span class="number">2</span>,
+    }
+    <span class="doccomment">/// Specifies the namespaced resources to restore from the Backup.</span>
+    <span class="doccomment">/// Only one of the entries may be specified. If not specified, NO namespaced</span>
+    <span class="doccomment">/// resources will be restored.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">NamespacedResourceRestoreScope</span> {
+        <span class="doccomment">/// Restore all namespaced resources in the Backup if set to &quot;True&quot;.</span>
+        <span class="doccomment">/// Specifying this field to &quot;False&quot; is an error.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+        <span class="ident">AllNamespaces</span>(<span class="ident">bool</span>),
+        <span class="doccomment">/// A list of selected Namespaces to restore from the Backup. The listed</span>
+        <span class="doccomment">/// Namespaces and all resources contained in them will be restored.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+        <span class="ident">SelectedNamespaces</span>(<span class="ident"><span class="kw">super</span>::Namespaces</span>),
+        <span class="doccomment">/// A list of selected ProtectedApplications to restore. The listed</span>
+        <span class="doccomment">/// ProtectedApplications and all the resources to which they refer will be</span>
+        <span class="doccomment">/// restored.</span>
+        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
+        <span class="ident">SelectedApplications</span>(<span class="ident"><span class="kw">super</span>::NamespacedNames</span>),
+    }
+}
+<span class="doccomment">/// use case 1</span>
+<span class="doccomment">/// A log entry when modification(creation, update, deletion) is made to a</span>
+<span class="doccomment">/// BackupPlan</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BackupPlanChange</span> {
+    <span class="doccomment">/// The full name of the old BackupPlan resource that is being modified.</span>
+    <span class="doccomment">/// Empty for creation.</span>
+    <span class="doccomment">/// Format: projects/{project}/locations/{location}/backupPlans/{backup_plan}</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">backup_plan</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Type of the change is being made.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;ChangeType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">change_type</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Modification details.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The input BackupPlan resource with the updated fields populated to update</span>
+    <span class="doccomment">/// the source BackupPlan to.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">input_backup_plan</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">LoggedBackupPlan</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The error code and message.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// use case 2</span>
+<span class="doccomment">/// A log entry when modification(creation, update, deletion) is made to a</span>
+<span class="doccomment">/// Backup</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BackupChange</span> {
+    <span class="doccomment">/// The full name of the Backup resource that is being modified.</span>
+    <span class="doccomment">/// Format:</span>
+    <span class="doccomment">/// projects/{project}/locations/{location}/backupPlans/{backup_plan}/backups/{backup}</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">backup</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Type of the change is being made.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;ChangeType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">change_type</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Whether the change is made manually or automatically.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">scheduled</span>: <span class="ident">bool</span>,
+    <span class="doccomment">/// Modification details.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The input Backup resource with the updated fields populated to update</span>
+    <span class="doccomment">/// the source Backup to, or the backup created automatically from retention</span>
+    <span class="doccomment">/// policy.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">input_backup</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">LoggedBackup</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The error code and message.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// use case 3</span>
+<span class="doccomment">/// A log entry when modification(creation, update, deletion) is made to a</span>
+<span class="doccomment">/// restorePlan.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RestorePlanChange</span> {
+    <span class="doccomment">/// The full name of the RestorePlan resource that is being modified.</span>
+    <span class="doccomment">/// Empty for creation.</span>
+    <span class="doccomment">/// Format: projects/*/locations/*/restorePlans/*</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">restore_plan</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Type of the change is being made.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;ChangeType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">change_type</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Modification details.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The input RestorePlan resource with the updated fields populated to update</span>
+    <span class="doccomment">/// the source RestorePlan to.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">input_restore_plan</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">LoggedRestorePlan</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The error code and message.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// use case 4</span>
+<span class="doccomment">/// A log entry when modification(creation, update, deletion) is made to a</span>
+<span class="doccomment">/// restore.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RestoreChange</span> {
+    <span class="doccomment">/// The full name of the Restore resource that is being modified.</span>
+    <span class="doccomment">/// Empty for creation.</span>
+    <span class="doccomment">/// Format: projects/*/locations/*/restorePlans/*/restores/*</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">restore</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Type of the change is being made.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;ChangeType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">change_type</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Modification details.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The input Restore resource with the updated fields populated to update</span>
+    <span class="doccomment">/// the source Restore to.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">input_restore</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">LoggedRestore</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// The error code and message.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
+}
+<span class="doccomment">/// The type of changes this log is about.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+<span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ChangeType</span> {
+    <span class="doccomment">/// Default value, not specified.</span>
+    <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="doccomment">/// The resource is created.</span>
+    <span class="ident">Creation</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="doccomment">/// The resource is updated.</span>
+    <span class="ident">Update</span> <span class="op">=</span> <span class="number">2</span>,
+    <span class="doccomment">/// The resource is deleted.</span>
+    <span class="ident">Deletion</span> <span class="op">=</span> <span class="number">3</span>,
+}
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

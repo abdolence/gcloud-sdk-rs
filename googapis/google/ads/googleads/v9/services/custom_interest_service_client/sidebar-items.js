@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CustomInterestServiceClient","Service to manage custom interests."]]});

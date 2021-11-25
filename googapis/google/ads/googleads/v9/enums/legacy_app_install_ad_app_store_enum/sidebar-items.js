@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["LegacyAppInstallAdAppStore","App store type in a legacy app install ad."]]});

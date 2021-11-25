@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["SqlActivationPolicy","Specifies when the instance is activated."]]});

@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["InvalidReason","LINT.IfChange Enum that represents the types of invalid token reasons."]]});
+initSidebarItems({"enum":[["InvalidReason","Enum that represents the types of invalid token reasons."]]});

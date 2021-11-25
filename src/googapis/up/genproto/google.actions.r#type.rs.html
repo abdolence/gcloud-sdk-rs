@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.actions.r#type.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.r#type.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.actions.r#type.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.r#type.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
 <span id="2"> 2</span>
 <span id="3"> 3</span>
 <span id="4"> 4</span>
@@ -97,8 +95,7 @@
 <span id="95">95</span>
 <span id="96">96</span>
 <span id="97">97</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Represents a range based on whole or partial calendar dates, e.g. the</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Represents a range based on whole or partial calendar dates, e.g. the</span>
 <span class="doccomment">/// duration of a hotel reservation or the Common Era. This can represent:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// * A range between full dates, e.g. the duration of a hotel reservation</span>
@@ -107,7 +104,7 @@
 <span class="doccomment">/// * A range beginning in a year, e.g. the Common Era</span>
 <span class="doccomment">/// * A range ending on a specific date, e.g. the period of time before an event</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// While [google.type.Date][google.type.Date] allows zero years, DateRange does not. Year must</span>
+<span class="doccomment">/// While \[google.type.Date][google.type.Date\] allows zero years, DateRange does not. Year must</span>
 <span class="doccomment">/// always be non-zero.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// End cannot be chronologically before start. For example, if start has year</span>
@@ -141,18 +138,18 @@
 <span class="doccomment">///    December 31, 2000. And the date December 31, 2001 is within the date range</span>
 <span class="doccomment">///    with start equal to the year 2000 and end equal to the year 2001.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// The semantics of start and end are the same as those of [google.type.Date][google.type.Date],</span>
+<span class="doccomment">/// The semantics of start and end are the same as those of \[google.type.Date][google.type.Date\],</span>
 <span class="doccomment">/// except that year must always be non-zero in DateRange.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DateRange</span> {
     <span class="doccomment">/// Date at which the date range begins. If unset, the date range has no</span>
     <span class="doccomment">/// beginning bound.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">start</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">start</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Date at which the date range ends. If unset, the date range has no ending</span>
     <span class="doccomment">/// bound.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">end</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">end</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Date</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Represents a date and time range. This can represent:</span>
 <span class="doccomment">///</span>
@@ -170,7 +167,7 @@
 <span class="doccomment">/// When considering whether a DateTime falls within a DateTimeRange, the start</span>
 <span class="doccomment">/// of the range is inclusive and the end is exclusive.</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// While [google.type.DateTime][google.type.DateTime] allows zero years, DateTimeRange does not.</span>
+<span class="doccomment">/// While \[google.type.DateTime][google.type.DateTime\] allows zero years, DateTimeRange does not.</span>
 <span class="doccomment">/// Year must always be non-zero.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When both start and end are set, either both or neither must have a</span>
@@ -183,17 +180,19 @@
 <span class="doccomment">/// equal to end. When start and end are equal, the range is empty.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The semantics of start and end are the same as those of</span>
-<span class="doccomment">/// [google.type.DateTime][google.type.DateTime].</span>
+<span class="doccomment">/// \[google.type.DateTime][google.type.DateTime\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DateTimeRange</span> {
     <span class="doccomment">/// DateTime at which the date range begins. If unset, the range has no</span>
     <span class="doccomment">/// beginning bound.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">start</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::DateTime</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">start</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::DateTime</span><span class="op">&gt;</span>,
     <span class="doccomment">/// DateTime at which the date range ends. If unset, the range has no ending</span>
     <span class="doccomment">/// bound.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">end</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::DateTime</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">end</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::DateTime</span><span class="op">&gt;</span>,
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

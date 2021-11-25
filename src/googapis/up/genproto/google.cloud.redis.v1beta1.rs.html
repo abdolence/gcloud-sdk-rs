@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.redis.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.redis.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.redis.v1beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.redis.v1beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -688,7 +686,78 @@
 <span id="686">686</span>
 <span id="687">687</span>
 <span id="688">688</span>
-</pre><pre class="rust">
+<span id="689">689</span>
+<span id="690">690</span>
+<span id="691">691</span>
+<span id="692">692</span>
+<span id="693">693</span>
+<span id="694">694</span>
+<span id="695">695</span>
+<span id="696">696</span>
+<span id="697">697</span>
+<span id="698">698</span>
+<span id="699">699</span>
+<span id="700">700</span>
+<span id="701">701</span>
+<span id="702">702</span>
+<span id="703">703</span>
+<span id="704">704</span>
+<span id="705">705</span>
+<span id="706">706</span>
+<span id="707">707</span>
+<span id="708">708</span>
+<span id="709">709</span>
+<span id="710">710</span>
+<span id="711">711</span>
+<span id="712">712</span>
+<span id="713">713</span>
+<span id="714">714</span>
+<span id="715">715</span>
+<span id="716">716</span>
+<span id="717">717</span>
+<span id="718">718</span>
+<span id="719">719</span>
+<span id="720">720</span>
+<span id="721">721</span>
+<span id="722">722</span>
+<span id="723">723</span>
+<span id="724">724</span>
+<span id="725">725</span>
+<span id="726">726</span>
+<span id="727">727</span>
+<span id="728">728</span>
+<span id="729">729</span>
+<span id="730">730</span>
+<span id="731">731</span>
+<span id="732">732</span>
+<span id="733">733</span>
+<span id="734">734</span>
+<span id="735">735</span>
+<span id="736">736</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Node specific properties.</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NodeInfo</span> {
+    <span class="doccomment">/// Output only. Node identifying string. e.g. &#39;node-0&#39;, &#39;node-1&#39;</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">id</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Output only. Location of the node.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">zone</span>: <span class="ident">::prost::alloc::string::String</span>,
+}
 <span class="doccomment">/// A Google Cloud Redis instance.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Instance</span> {
@@ -699,8 +768,10 @@
     <span class="doccomment">/// Note: Redis instances are managed and addressed at regional level so</span>
     <span class="doccomment">/// location_id here refers to a GCP region; however, users may choose which</span>
     <span class="doccomment">/// specific zone (or collection of zones for cross-zone instances) an instance</span>
-    <span class="doccomment">/// should be provisioned in. Refer to [location_id][google.cloud.redis.v1beta1.Instance.location_id] and</span>
-    <span class="doccomment">/// [alternative_location_id][google.cloud.redis.v1beta1.Instance.alternative_location_id] fields for more details.</span>
+    <span class="doccomment">/// should be provisioned in. Refer to</span>
+    <span class="doccomment">/// \[location_id][google.cloud.redis.v1beta1.Instance.location_id\] and</span>
+    <span class="doccomment">/// \[alternative_location_id][google.cloud.redis.v1beta1.Instance.alternative_location_id\]</span>
+    <span class="doccomment">/// fields for more details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// An arbitrary and optional user-provided name for the instance.</span>
@@ -711,15 +782,17 @@
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. The zone where the instance will be provisioned. If not provided,</span>
-    <span class="doccomment">/// the service will choose a zone for the instance. For STANDARD_HA tier,</span>
-    <span class="doccomment">/// instances will be created across two zones for protection against zonal</span>
-    <span class="doccomment">/// failures. If [alternative_location_id][google.cloud.redis.v1beta1.Instance.alternative_location_id] is also provided, it must be</span>
-    <span class="doccomment">/// different from [location_id][google.cloud.redis.v1beta1.Instance.location_id].</span>
+    <span class="doccomment">/// the service will choose a zone from the specified region for the instance.</span>
+    <span class="doccomment">/// For standard tier, additional nodes will be added across multiple zones for</span>
+    <span class="doccomment">/// protection against zonal failures. If specified, at least one node will be</span>
+    <span class="doccomment">/// provisioned in this zone.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">location_id</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Optional. Only applicable to STANDARD_HA tier which protects the instance</span>
-    <span class="doccomment">/// against zonal failures by provisioning it across two zones. If provided, it</span>
-    <span class="doccomment">/// must be a different zone from the one provided in [location_id][google.cloud.redis.v1beta1.Instance.location_id].</span>
+    <span class="doccomment">/// Optional. If specified, at least one node will be provisioned in this zone</span>
+    <span class="doccomment">/// in addition to the zone specified in location_id. Only applicable to</span>
+    <span class="doccomment">/// standard tier. If provided, it must be a different zone from the one</span>
+    <span class="doccomment">/// provided in \[location_id\]. Additional nodes beyond the first 2 will be</span>
+    <span class="doccomment">/// placed in zones selected by the service.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">alternative_location_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. The version of Redis software.</span>
@@ -729,26 +802,29 @@
     <span class="doccomment">///  *   `REDIS_3_2` for Redis 3.2 compatibility</span>
     <span class="doccomment">///  *   `REDIS_4_0` for Redis 4.0 compatibility (default)</span>
     <span class="doccomment">///  *   `REDIS_5_0` for Redis 5.0 compatibility</span>
+    <span class="doccomment">///  *   `REDIS_6_X` for Redis 6.x compatibility</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">redis_version</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Optional. The CIDR range of internal addresses that are reserved for this</span>
-    <span class="doccomment">/// instance. If not provided, the service will choose an unused /29 block,</span>
-    <span class="doccomment">/// for example, 10.0.0.0/29 or 192.168.0.0/29. Ranges must be unique</span>
-    <span class="doccomment">/// and non-overlapping with existing subnets in an authorized network.</span>
+    <span class="doccomment">/// Optional. For DIRECT_PEERING mode, the CIDR range of internal addresses</span>
+    <span class="doccomment">/// that are reserved for this instance. Range must</span>
+    <span class="doccomment">/// be unique and non-overlapping with existing subnets in an authorized</span>
+    <span class="doccomment">/// network. For PRIVATE_SERVICE_ACCESS mode, the name of one allocated IP</span>
+    <span class="doccomment">/// address ranges associated with this private service access connection.</span>
+    <span class="doccomment">/// If not provided, the service will choose an unused /29 block, for</span>
+    <span class="doccomment">/// example, 10.0.0.0/29 or 192.168.0.0/29. For READ_REPLICAS_ENABLED</span>
+    <span class="doccomment">/// the default block size is /28.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">reserved_ip_range</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. Hostname or IP address of the exposed Redis endpoint used by</span>
-    <span class="doccomment">/// clients to connect to the service.</span>
+    <span class="doccomment">///  clients to connect to the service.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">host</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. The port number of the exposed Redis endpoint.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">port</span>: <span class="ident">i32</span>,
-    <span class="doccomment">/// Output only. The current zone where the Redis endpoint is placed. For Basic</span>
-    <span class="doccomment">/// Tier instances, this will always be the same as the [location_id][google.cloud.redis.v1beta1.Instance.location_id]</span>
-    <span class="doccomment">/// provided by the user at creation time. For Standard Tier instances,</span>
-    <span class="doccomment">/// this can be either [location_id][google.cloud.redis.v1beta1.Instance.location_id] or [alternative_location_id][google.cloud.redis.v1beta1.Instance.alternative_location_id] and can</span>
-    <span class="doccomment">/// change after a failover event.</span>
+    <span class="doccomment">/// Output only. The current zone where the Redis primary node is located. In</span>
+    <span class="doccomment">/// basic tier, this will always be the same as \[location_id\]. In</span>
+    <span class="doccomment">/// standard tier, this can be the zone of any node in the instance.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">current_location_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. The time the instance was created.</span>
@@ -762,7 +838,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">status_message</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. Redis configuration parameters, according to</span>
-    <span class="doccomment">/// http://redis.io/topics/config. Currently, the only supported parameters</span>
+    <span class="doccomment">/// &lt;http://redis.io/topics/config.&gt; Currently, the only supported parameters</span>
     <span class="doccomment">/// are:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///  Redis version 3.2 and newer:</span>
@@ -791,7 +867,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;18&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">memory_size_gb</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. The full name of the Google Compute Engine</span>
-    <span class="doccomment">/// [network](https://cloud.google.com/vpc/docs/vpc) to which the</span>
+    <span class="doccomment">/// \[network\](&lt;https://cloud.google.com/vpc/docs/vpc&gt;) to which the</span>
     <span class="doccomment">/// instance is connected. If left unspecified, the `default` network</span>
     <span class="doccomment">/// will be used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;20&quot;</span>)]</span>
@@ -803,11 +879,31 @@
     <span class="doccomment">/// operation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;21&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">persistence_iam_identity</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Optional. The connect mode of Redis instance.</span>
-    <span class="doccomment">/// If not provided, default one will be used.</span>
-    <span class="doccomment">/// Current default: DIRECT_PEERING.</span>
+    <span class="doccomment">/// Optional. The network connect mode of the Redis instance.</span>
+    <span class="doccomment">/// If not provided, the connect mode defaults to DIRECT_PEERING.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;instance::ConnectMode&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;22&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">connect_mode</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Optional. The number of replica nodes. Valid range for standard tier</span>
+    <span class="doccomment">/// is \[1-5\] and defaults to 1. Valid value for basic tier is 0 and defaults</span>
+    <span class="doccomment">/// to 0.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;31&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">replica_count</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Output only. Info per node.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;32&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">nodes</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">NodeInfo</span><span class="op">&gt;</span>,
+    <span class="doccomment">/// Output only. Hostname or IP address of the exposed readonly Redis</span>
+    <span class="doccomment">/// endpoint. Standard tier only. Targets all healthy replica nodes in</span>
+    <span class="doccomment">/// instance. Replication is asynchronous and replica nodes will exhibit some</span>
+    <span class="doccomment">/// lag behind the primary. Write requests must target &#39;host&#39;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;33&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">read_endpoint</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// Output only. The port number of the exposed readonly redis</span>
+    <span class="doccomment">/// endpoint. Standard tier only. Write requests should target &#39;port&#39;.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;34&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">read_endpoint_port</span>: <span class="ident">i32</span>,
+    <span class="doccomment">/// Optional. Read replica mode.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;instance::ReadReplicasMode&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;35&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">read_replicas_mode</span>: <span class="ident">i32</span>,
 }
 <span class="doccomment">/// Nested message and enum types in `Instance`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">instance</span> {
@@ -853,14 +949,30 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ConnectMode</span> {
         <span class="doccomment">/// Not set.</span>
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
-        <span class="doccomment">/// Connect via directly peering with memorystore redis hosted service.</span>
+        <span class="doccomment">/// Connect via direct peering to the Memorystore for Redis hosted service.</span>
         <span class="ident">DirectPeering</span> <span class="op">=</span> <span class="number">1</span>,
-        <span class="doccomment">/// Connect with google via private service access and share connection</span>
-        <span class="doccomment">/// across google managed services.</span>
+        <span class="doccomment">/// Connect your Memorystore for Redis instance using Private Service</span>
+        <span class="doccomment">/// Access. Private services access provides an IP address range for multiple</span>
+        <span class="doccomment">/// Google Cloud services, including Memorystore.</span>
         <span class="ident">PrivateServiceAccess</span> <span class="op">=</span> <span class="number">2</span>,
     }
+    <span class="doccomment">/// Read replicas mode.</span>
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
+    <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ReadReplicasMode</span> {
+        <span class="doccomment">/// If not set, Memorystore for Redis backend will pick the mode based on</span>
+        <span class="doccomment">/// other fields in the request.</span>
+        <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
+        <span class="doccomment">/// If disabled, read endpoint will not be provided and the instance cannot</span>
+        <span class="doccomment">/// scale up or down the number of replicas.</span>
+        <span class="ident">ReadReplicasDisabled</span> <span class="op">=</span> <span class="number">1</span>,
+        <span class="doccomment">/// If enabled, read endpoint will be provided and the instance can scale</span>
+        <span class="doccomment">/// up and down the number of replicas.</span>
+        <span class="ident">ReadReplicasEnabled</span> <span class="op">=</span> <span class="number">2</span>,
+    }
 }
-<span class="doccomment">/// Request for [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances].</span>
+<span class="doccomment">/// Request for</span>
+<span class="doccomment">/// \[ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListInstancesRequest</span> {
     <span class="doccomment">/// Required. The resource name of the instance location using the form:</span>
@@ -873,16 +985,18 @@
     <span class="doccomment">/// If not specified, a default value of 1000 will be used by the service.</span>
     <span class="doccomment">/// Regardless of the page_size value, the response may include a partial list</span>
     <span class="doccomment">/// and a caller should only rely on response&#39;s</span>
-    <span class="doccomment">/// [`next_page_token`][google.cloud.redis.v1beta1.ListInstancesResponse.next_page_token]</span>
+    <span class="doccomment">/// \[`next_page_token`][google.cloud.redis.v1beta1.ListInstancesResponse.next_page_token\]</span>
     <span class="doccomment">/// to determine if there are more instances left to be queried.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// The `next_page_token` value returned from a previous</span>
-    <span class="doccomment">/// [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances] request, if any.</span>
+    <span class="doccomment">/// \[ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances\]</span>
+    <span class="doccomment">/// request, if any.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response for [ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances].</span>
+<span class="doccomment">/// Response for</span>
+<span class="doccomment">/// \[ListInstances][google.cloud.redis.v1beta1.CloudRedis.ListInstances\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListInstancesResponse</span> {
     <span class="doccomment">/// A list of Redis instances in the project in the specified location,</span>
@@ -890,11 +1004,12 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// If the `location_id` in the parent field of the request is &quot;-&quot;, all regions</span>
     <span class="doccomment">/// available to the project are queried, and the results aggregated.</span>
-    <span class="doccomment">/// If in such an aggregated query a location is unavailable, a dummy Redis</span>
-    <span class="doccomment">/// entry is included in the response with the `name` field set to a value of</span>
-    <span class="doccomment">/// the form `projects/{project_id}/locations/{location_id}/instances/`- and</span>
-    <span class="doccomment">/// the `status` field set to ERROR and `status_message` field set to &quot;location</span>
-    <span class="doccomment">/// not available for ListInstances&quot;.</span>
+    <span class="doccomment">/// If in such an aggregated query a location is unavailable, a placeholder</span>
+    <span class="doccomment">/// Redis entry is included in the response with the `name` field set to a</span>
+    <span class="doccomment">/// value of the form</span>
+    <span class="doccomment">/// `projects/{project_id}/locations/{location_id}/instances/`- and the</span>
+    <span class="doccomment">/// `status` field set to ERROR and `status_message` field set to &quot;location not</span>
+    <span class="doccomment">/// available for ListInstances&quot;.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instances</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Instance</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Token to retrieve the next page of results, or empty if there are no more</span>
@@ -905,7 +1020,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">unreachable</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request for [GetInstance][google.cloud.redis.v1beta1.CloudRedis.GetInstance].</span>
+<span class="doccomment">/// Request for \[GetInstance][google.cloud.redis.v1beta1.CloudRedis.GetInstance\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetInstanceRequest</span> {
     <span class="doccomment">/// Required. Redis instance resource name using the form:</span>
@@ -914,7 +1029,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request for [CreateInstance][google.cloud.redis.v1beta1.CloudRedis.CreateInstance].</span>
+<span class="doccomment">/// Request for</span>
+<span class="doccomment">/// \[CreateInstance][google.cloud.redis.v1beta1.CloudRedis.CreateInstance\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateInstanceRequest</span> {
     <span class="doccomment">/// Required. The resource name of the instance location using the form:</span>
@@ -932,21 +1048,23 @@
     <span class="doccomment">/// * Must be unique within the customer project / location</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance_id</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Required. A Redis [Instance] resource</span>
+    <span class="doccomment">/// Required. A Redis \[Instance\] resource</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Instance</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request for [UpdateInstance][google.cloud.redis.v1beta1.CloudRedis.UpdateInstance].</span>
+<span class="doccomment">/// Request for</span>
+<span class="doccomment">/// \[UpdateInstance][google.cloud.redis.v1beta1.CloudRedis.UpdateInstance\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateInstanceRequest</span> {
     <span class="doccomment">/// Required. Mask of fields to update. At least one path must be supplied in</span>
     <span class="doccomment">/// this field. The elements of the repeated paths field may only include these</span>
-    <span class="doccomment">/// fields from [Instance][google.cloud.redis.v1beta1.Instance]:</span>
+    <span class="doccomment">/// fields from \[Instance][google.cloud.redis.v1beta1.Instance\]:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///  *   `displayName`</span>
     <span class="doccomment">///  *   `labels`</span>
     <span class="doccomment">///  *   `memorySizeGb`</span>
     <span class="doccomment">///  *   `redisConfig`</span>
+    <span class="doccomment">///  *   `replica_count`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Required. Update description.</span>
@@ -954,7 +1072,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">instance</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Instance</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request for [UpgradeInstance][google.cloud.redis.v1beta1.CloudRedis.UpgradeInstance].</span>
+<span class="doccomment">/// Request for</span>
+<span class="doccomment">/// \[UpgradeInstance][google.cloud.redis.v1beta1.CloudRedis.UpgradeInstance\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpgradeInstanceRequest</span> {
     <span class="doccomment">/// Required. Redis instance resource name using the form:</span>
@@ -966,7 +1085,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">redis_version</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request for [DeleteInstance][google.cloud.redis.v1beta1.CloudRedis.DeleteInstance].</span>
+<span class="doccomment">/// Request for</span>
+<span class="doccomment">/// \[DeleteInstance][google.cloud.redis.v1beta1.CloudRedis.DeleteInstance\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteInstanceRequest</span> {
     <span class="doccomment">/// Required. Redis instance resource name using the form:</span>
@@ -996,10 +1116,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
         <span class="doccomment">/// Google Cloud Storage location where input content is located.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsSource</span>(<span class="kw">super</span><span class="ident">::GcsSource</span>),
+        <span class="ident">GcsSource</span>(<span class="ident"><span class="kw">super</span>::GcsSource</span>),
     }
 }
-<span class="doccomment">/// Request for [Import][google.cloud.redis.v1beta1.CloudRedis.ImportInstance].</span>
+<span class="doccomment">/// Request for \[Import][google.cloud.redis.v1beta1.CloudRedis.ImportInstance\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImportInstanceRequest</span> {
     <span class="doccomment">/// Required. Redis instance resource name using the form:</span>
@@ -1033,10 +1153,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Destination</span> {
         <span class="doccomment">/// Google Cloud Storage destination for output content.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
     }
 }
-<span class="doccomment">/// Request for [Export][google.cloud.redis.v1beta1.CloudRedis.ExportInstance].</span>
+<span class="doccomment">/// Request for \[Export][google.cloud.redis.v1beta1.CloudRedis.ExportInstance\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportInstanceRequest</span> {
     <span class="doccomment">/// Required. Redis instance resource name using the form:</span>
@@ -1048,7 +1168,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">output_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">OutputConfig</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request for [Failover][google.cloud.redis.v1beta1.CloudRedis.FailoverInstance].</span>
+<span class="doccomment">/// Request for</span>
+<span class="doccomment">/// \[Failover][google.cloud.redis.v1beta1.CloudRedis.FailoverInstance\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FailoverInstanceRequest</span> {
     <span class="doccomment">/// Required. Redis instance resource name using the form:</span>
@@ -1075,7 +1196,7 @@
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// Instance failover will be protected with data loss control. More</span>
         <span class="doccomment">/// specifically, the failover will only be performed if the current</span>
-        <span class="doccomment">/// replication offset diff between master and replica is under a certain</span>
+        <span class="doccomment">/// replication offset diff between primary and replica is under a certain</span>
         <span class="doccomment">/// threshold.</span>
         <span class="ident">LimitedDataLoss</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// Instance failover will be performed without data loss control.</span>
@@ -1116,7 +1237,7 @@
     <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * As such, Redis instances are resources of the form:&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;   `/projects/{project_id}/locations/{location_id}/instances/{instance_id}`&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
-    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Note that location_id must be refering to a GCP `region`; for example:&quot;</span>]</span>
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Note that location_id must be referring to a GCP `region`; for example:&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * `projects/redpepper-1290/locations/us-central1/instances/my-redis`&quot;</span>]</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Clone</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CloudRedisClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> {
@@ -1125,7 +1246,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">CloudRedisClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1138,7 +1259,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CloudRedisClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -1174,8 +1295,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; available to the project are queried, and the results are aggregated.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_instances</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListInstancesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListInstancesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListInstancesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListInstancesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1191,8 +1312,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the details of a specific Redis instance.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_instance</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetInstanceRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Instance</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetInstanceRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Instance</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1212,16 +1333,16 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; The creation is executed asynchronously and callers may check the returned&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; operation to track its progress. Once the operation is completed the Redis&quot;</span>]</span>
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; instance will be fully functional. Completed longrunning.Operation will&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; instance will be fully functional. The completed longrunning.Operation will&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; contain the new instance object in the response field.&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; The returned operation is automatically deleted after a few hours, so there&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; is no need to call DeleteOperation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_instance</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateInstanceRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateInstanceRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1243,9 +1364,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; after a few hours, so there is no need to call DeleteOperation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_instance</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateInstanceRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateInstanceRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1264,9 +1385,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; request.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">upgrade_instance</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpgradeInstanceRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpgradeInstanceRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1291,9 +1412,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; there is no need to call DeleteOperation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import_instance</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ImportInstanceRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ImportInstanceRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1316,9 +1437,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; there is no need to call DeleteOperation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">export_instance</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ExportInstanceRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ExportInstanceRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1333,13 +1454,13 @@
             );
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">unary</span>(<span class="ident">request</span>.<span class="ident">into_request</span>(), <span class="ident">path</span>, <span class="ident">codec</span>).<span class="kw">await</span>
         }
-        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Initiates a failover of the master node to current replica node for a&quot;</span>]</span>
+        <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Initiates a failover of the primary node to current replica node for a&quot;</span>]</span>
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; specific STANDARD tier Cloud Memorystore for Redis instance.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">failover_instance</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::FailoverInstanceRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::FailoverInstanceRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1358,9 +1479,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; deleted.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_instance</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteInstanceRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteInstanceRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -1377,5 +1498,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

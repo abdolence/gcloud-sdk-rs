@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TargetGrpcProxiesClient","The TargetGrpcProxies API."]]});

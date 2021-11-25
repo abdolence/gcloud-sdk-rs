@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.identity.accesscontextmanager.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.identity.accesscontextmanager.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.identity.accesscontextmanager.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.identity.accesscontextmanager.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1752,8 +1750,7 @@
 <span id="1750">1750</span>
 <span id="1751">1751</span>
 <span id="1752">1752</span>
-</pre><pre class="rust">
-<span class="doccomment">/// An `AccessLevel` is a label that can be applied to requests to Google Cloud</span>
+</pre><pre class="rust"><code><span class="doccomment">/// An `AccessLevel` is a label that can be applied to requests to Google Cloud</span>
 <span class="doccomment">/// services, along with a list of requirements necessary for the label to be</span>
 <span class="doccomment">/// applied.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -1787,10 +1784,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Level</span> {
         <span class="doccomment">/// A `BasicLevel` composed of `Conditions`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Basic</span>(<span class="kw">super</span><span class="ident">::BasicLevel</span>),
+        <span class="ident">Basic</span>(<span class="ident"><span class="kw">super</span>::BasicLevel</span>),
         <span class="doccomment">/// A `CustomLevel` written in the Common Expression Language.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Custom</span>(<span class="kw">super</span><span class="ident">::CustomLevel</span>),
+        <span class="ident">Custom</span>(<span class="ident"><span class="kw">super</span>::CustomLevel</span>),
     }
 }
 <span class="doccomment">/// `BasicLevel` is an `AccessLevel` using a set of recommended features.</span>
@@ -1868,12 +1865,12 @@
 }
 <span class="doccomment">/// `CustomLevel` is an `AccessLevel` using the Cloud Common Expression Language</span>
 <span class="doccomment">/// to represent the necessary conditions for the level to apply to a request.</span>
-<span class="doccomment">/// See CEL spec at: https://github.com/google/cel-spec</span>
+<span class="doccomment">/// See CEL spec at: &lt;https://github.com/google/cel-spec&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CustomLevel</span> {
     <span class="doccomment">/// Required. A Cloud CEL expression evaluating to a boolean.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">expr</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Expr</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">expr</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Expr</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// `DevicePolicy` specifies device specific restrictions necessary to acquire a</span>
 <span class="doccomment">/// given access level. A `DevicePolicy` specifies requirements for requests from</span>
@@ -2082,23 +2079,23 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">vpc_accessible_services</span>:
         <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">service_perimeter_config::VpcAccessibleServices</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// List of [IngressPolicies]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
-    <span class="doccomment">/// to apply to the perimeter. A perimeter may have multiple [IngressPolicies]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy],</span>
+    <span class="doccomment">/// List of \[IngressPolicies\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
+    <span class="doccomment">/// to apply to the perimeter. A perimeter may have multiple \[IngressPolicies\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\],</span>
     <span class="doccomment">/// each of which is evaluated separately. Access is granted if any [Ingress</span>
     <span class="doccomment">/// Policy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
     <span class="doccomment">/// grants it. Must be empty for a perimeter bridge.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">ingress_policies</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">service_perimeter_config::IngressPolicy</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// List of [EgressPolicies]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
-    <span class="doccomment">/// to apply to the perimeter. A perimeter may have multiple [EgressPolicies]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy],</span>
+    <span class="doccomment">/// List of \[EgressPolicies\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
+    <span class="doccomment">/// to apply to the perimeter. A perimeter may have multiple \[EgressPolicies\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\],</span>
     <span class="doccomment">/// each of which is evaluated separately. Access is granted if any</span>
-    <span class="doccomment">/// [EgressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
+    <span class="doccomment">/// \[EgressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
     <span class="doccomment">/// grants it. Must be empty for a perimeter bridge.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">egress_policies</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">service_perimeter_config::EgressPolicy</span><span class="op">&gt;</span>,
@@ -2120,8 +2117,8 @@
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">allowed_services</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     }
-    <span class="doccomment">/// An allowed method or permission of a service specified in [ApiOperation]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation].</span>
+    <span class="doccomment">/// An allowed method or permission of a service specified in \[ApiOperation\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MethodSelector</span> {
         <span class="doccomment">/// The API method name or Cloud IAM permission name to allow.</span>
@@ -2134,15 +2131,15 @@
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Kind</span> {
             <span class="doccomment">/// Value for `method` should be a valid method name for the corresponding</span>
-            <span class="doccomment">/// `service_name` in [ApiOperation]</span>
-            <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation].</span>
+            <span class="doccomment">/// `service_name` in \[ApiOperation\]</span>
+            <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\].</span>
             <span class="doccomment">/// If `*` used as value for `method`, then ALL methods and permissions are</span>
             <span class="doccomment">/// allowed.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="ident">Method</span>(<span class="ident">::prost::alloc::string::String</span>),
             <span class="doccomment">/// Value for `permission` should be a valid Cloud IAM permission for the</span>
-            <span class="doccomment">/// corresponding `service_name` in [ApiOperation]</span>
-            <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation].</span>
+            <span class="doccomment">/// corresponding `service_name` in \[ApiOperation\]</span>
+            <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\].</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
             <span class="ident">Permission</span>(<span class="ident">::prost::alloc::string::String</span>),
         }
@@ -2150,59 +2147,59 @@
     <span class="doccomment">/// Identification for an API Operation.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ApiOperation</span> {
-        <span class="doccomment">/// The name of the API whose methods or permissions the [IngressPolicy]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
-        <span class="doccomment">/// or [EgressPolicy]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
-        <span class="doccomment">/// want to allow. A single [ApiOperation]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]</span>
+        <span class="doccomment">/// The name of the API whose methods or permissions the \[IngressPolicy\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
+        <span class="doccomment">/// or \[EgressPolicy\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
+        <span class="doccomment">/// want to allow. A single \[ApiOperation\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\]</span>
         <span class="doccomment">/// with `service_name` field set to `*` will allow all methods AND</span>
         <span class="doccomment">/// permissions for all services.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">service_name</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// API methods or permissions to allow. Method or permission must belong to</span>
-        <span class="doccomment">/// the service specified by `service_name` field. A single [MethodSelector]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.MethodSelector]</span>
+        <span class="doccomment">/// the service specified by `service_name` field. A single \[MethodSelector\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.MethodSelector\]</span>
         <span class="doccomment">/// entry with `*` specified for the `method` field will allow all methods</span>
         <span class="doccomment">/// AND permissions for the service specified in `service_name`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">method_selectors</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">MethodSelector</span><span class="op">&gt;</span>,
     }
-    <span class="doccomment">/// The source that [IngressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+    <span class="doccomment">/// The source that \[IngressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
     <span class="doccomment">/// authorizes access from.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IngressSource</span> {
-        <span class="doccomment">/// Allowed ingress source. It can be one of [AccessLevel]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] or Google</span>
+        <span class="doccomment">/// Allowed ingress source. It can be one of \[AccessLevel\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] or Google</span>
         <span class="doccomment">/// Cloud resource.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;ingress_source::Source&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1, 2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">source</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ingress_source::Source</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Nested message and enum types in `IngressSource`.</span>
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ingress_source</span> {
-        <span class="doccomment">/// Allowed ingress source. It can be one of [AccessLevel]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] or Google</span>
+        <span class="doccomment">/// Allowed ingress source. It can be one of \[AccessLevel\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] or Google</span>
         <span class="doccomment">/// Cloud resource.</span>
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
-            <span class="doccomment">/// An [AccessLevel]</span>
-            <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] resource</span>
-            <span class="doccomment">/// name that allow resources within the [ServicePerimeters]</span>
-            <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] to be</span>
-            <span class="doccomment">/// accessed from the internet. [AccessLevels]</span>
-            <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] listed must</span>
-            <span class="doccomment">/// be in the same policy as this [ServicePerimeter]</span>
-            <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter].</span>
-            <span class="doccomment">/// Referencing a nonexistent [AccessLevel]</span>
-            <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] will cause</span>
-            <span class="doccomment">/// an error. If no [AccessLevel]</span>
-            <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] names are</span>
+            <span class="doccomment">/// An \[AccessLevel\]</span>
+            <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] resource</span>
+            <span class="doccomment">/// name that allow resources within the \[ServicePerimeters\]</span>
+            <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] to be</span>
+            <span class="doccomment">/// accessed from the internet. \[AccessLevels\]</span>
+            <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] listed must</span>
+            <span class="doccomment">/// be in the same policy as this \[ServicePerimeter\]</span>
+            <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\].</span>
+            <span class="doccomment">/// Referencing a nonexistent \[AccessLevel\]</span>
+            <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] will cause</span>
+            <span class="doccomment">/// an error. If no \[AccessLevel\]</span>
+            <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] names are</span>
             <span class="doccomment">/// listed, resources within the perimeter can only be accessed via Google</span>
             <span class="doccomment">/// Cloud calls with request origins within the perimeter. Example:</span>
             <span class="doccomment">/// `accessPolicies/MY_POLICY/accessLevels/MY_LEVEL`. If a single `*` is</span>
-            <span class="doccomment">/// specified for `access_level`, then all [IngressSources]</span>
-            <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressSource]</span>
+            <span class="doccomment">/// specified for `access_level`, then all \[IngressSources\]</span>
+            <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressSource\]</span>
             <span class="doccomment">/// will be allowed.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="ident">AccessLevel</span>(<span class="ident">::prost::alloc::string::String</span>),
@@ -2217,18 +2214,18 @@
             <span class="ident">Resource</span>(<span class="ident">::prost::alloc::string::String</span>),
         }
     }
-    <span class="doccomment">/// Defines the conditions under which an [EgressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
+    <span class="doccomment">/// Defines the conditions under which an \[EgressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
     <span class="doccomment">/// matches a request. Conditions are based on information about the</span>
-    <span class="doccomment">/// [ApiOperation]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]</span>
+    <span class="doccomment">/// \[ApiOperation\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\]</span>
     <span class="doccomment">/// intended to be performed on the `resources` specified. Note that if the</span>
-    <span class="doccomment">/// destination of the request is also protected by a [ServicePerimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter], then that</span>
-    <span class="doccomment">/// [ServicePerimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] must have</span>
-    <span class="doccomment">/// an [IngressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+    <span class="doccomment">/// destination of the request is also protected by a \[ServicePerimeter\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\], then that</span>
+    <span class="doccomment">/// \[ServicePerimeter\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] must have</span>
+    <span class="doccomment">/// an \[IngressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
     <span class="doccomment">/// which allows access in order for this request to succeed. The request must</span>
     <span class="doccomment">/// match `operations` AND `resources` fields in order to be allowed egress out</span>
     <span class="doccomment">/// of the perimeter.</span>
@@ -2236,32 +2233,32 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EgressTo</span> {
         <span class="doccomment">/// A list of resources, currently only projects in the form</span>
         <span class="doccomment">/// `projects/&lt;projectnumber&gt;`, that are allowed to be accessed by sources</span>
-        <span class="doccomment">/// defined in the corresponding [EgressFrom]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom].</span>
+        <span class="doccomment">/// defined in the corresponding \[EgressFrom\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom\].</span>
         <span class="doccomment">/// A request matches if it contains a resource in this list.  If `*` is</span>
-        <span class="doccomment">/// specified for `resources`, then this [EgressTo]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo]</span>
+        <span class="doccomment">/// specified for `resources`, then this \[EgressTo\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo\]</span>
         <span class="doccomment">/// rule will authorize access to all resources outside the perimeter.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">resources</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// A list of [ApiOperations]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]</span>
+        <span class="doccomment">/// A list of \[ApiOperations\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\]</span>
         <span class="doccomment">/// allowed to be performed by the sources specified in the corresponding</span>
-        <span class="doccomment">/// [EgressFrom]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom].</span>
+        <span class="doccomment">/// \[EgressFrom\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom\].</span>
         <span class="doccomment">/// A request matches if it uses an operation/service in this list.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">operations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ApiOperation</span><span class="op">&gt;</span>,
     }
-    <span class="doccomment">/// Defines the conditions under which an [IngressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+    <span class="doccomment">/// Defines the conditions under which an \[IngressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
     <span class="doccomment">/// matches a request. Conditions are based on information about the source of</span>
     <span class="doccomment">/// the request. The request must satisfy what is defined in `sources` AND</span>
     <span class="doccomment">/// identity related fields in order to match.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IngressFrom</span> {
-        <span class="doccomment">/// Sources that this [IngressPolicy]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+        <span class="doccomment">/// Sources that this \[IngressPolicy\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
         <span class="doccomment">/// authorizes access from.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">sources</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">IngressSource</span><span class="op">&gt;</span>,
@@ -2276,51 +2273,51 @@
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;IdentityType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">identity_type</span>: <span class="ident">i32</span>,
     }
-    <span class="doccomment">/// Defines the conditions under which an [IngressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+    <span class="doccomment">/// Defines the conditions under which an \[IngressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
     <span class="doccomment">/// matches a request. Conditions are based on information about the</span>
-    <span class="doccomment">/// [ApiOperation]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]</span>
+    <span class="doccomment">/// \[ApiOperation\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\]</span>
     <span class="doccomment">/// intended to be performed on the target resource of the request. The request</span>
     <span class="doccomment">/// must satisfy what is defined in `operations` AND `resources` in order to</span>
     <span class="doccomment">/// match.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IngressTo</span> {
-        <span class="doccomment">/// A list of [ApiOperations]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]</span>
+        <span class="doccomment">/// A list of \[ApiOperations\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\]</span>
         <span class="doccomment">/// allowed to be performed by the sources specified in corresponding</span>
-        <span class="doccomment">/// [IngressFrom]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom]</span>
-        <span class="doccomment">/// in this [ServicePerimeter]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter].</span>
+        <span class="doccomment">/// \[IngressFrom\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom\]</span>
+        <span class="doccomment">/// in this \[ServicePerimeter\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">operations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ApiOperation</span><span class="op">&gt;</span>,
         <span class="doccomment">/// A list of resources, currently only projects in the form</span>
-        <span class="doccomment">/// `projects/&lt;projectnumber&gt;`, protected by this [ServicePerimeter]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] that are</span>
+        <span class="doccomment">/// `projects/&lt;projectnumber&gt;`, protected by this \[ServicePerimeter\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] that are</span>
         <span class="doccomment">/// allowed to be accessed by sources defined in the corresponding</span>
-        <span class="doccomment">/// [IngressFrom]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom].</span>
+        <span class="doccomment">/// \[IngressFrom\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom\].</span>
         <span class="doccomment">/// If a single `*` is specified, then access to all resources inside the</span>
         <span class="doccomment">/// perimeter are allowed.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">resources</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     }
-    <span class="doccomment">/// Policy for ingress into [ServicePerimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter].</span>
+    <span class="doccomment">/// Policy for ingress into \[ServicePerimeter\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\].</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [IngressPolicies]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+    <span class="doccomment">/// \[IngressPolicies\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
     <span class="doccomment">/// match requests based on `ingress_from` and `ingress_to` stanzas.  For an</span>
     <span class="doccomment">/// ingress policy to match, both the `ingress_from` and `ingress_to` stanzas</span>
-    <span class="doccomment">/// must be matched. If an [IngressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+    <span class="doccomment">/// must be matched. If an \[IngressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
     <span class="doccomment">/// matches a request, the request is allowed through the perimeter boundary</span>
     <span class="doccomment">/// from outside the perimeter.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// For example, access from the internet can be allowed either</span>
-    <span class="doccomment">/// based on an [AccessLevel]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] or, for traffic</span>
+    <span class="doccomment">/// based on an \[AccessLevel\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] or, for traffic</span>
     <span class="doccomment">/// hosted on Google Cloud, the project of the source network. For access from</span>
     <span class="doccomment">/// private networks, using the project of the hosting network is required.</span>
     <span class="doccomment">///</span>
@@ -2329,76 +2326,76 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IngressPolicy</span> {
         <span class="doccomment">/// Defines the conditions on the source of a request causing this</span>
-        <span class="doccomment">/// [IngressPolicy]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+        <span class="doccomment">/// \[IngressPolicy\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
         <span class="doccomment">/// to apply.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">ingress_from</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">IngressFrom</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Defines the conditions on the [ApiOperation]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]</span>
-        <span class="doccomment">/// and request destination that cause this [IngressPolicy]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+        <span class="doccomment">/// Defines the conditions on the \[ApiOperation\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\]</span>
+        <span class="doccomment">/// and request destination that cause this \[IngressPolicy\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
         <span class="doccomment">/// to apply.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">ingress_to</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">IngressTo</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Policy for egress from perimeter.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [EgressPolicies]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
+    <span class="doccomment">/// \[EgressPolicies\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
     <span class="doccomment">/// match requests based on `egress_from` and `egress_to` stanzas.  For an</span>
-    <span class="doccomment">/// [EgressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
+    <span class="doccomment">/// \[EgressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
     <span class="doccomment">/// to match, both `egress_from` and `egress_to` stanzas must be matched. If an</span>
-    <span class="doccomment">/// [EgressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
-    <span class="doccomment">/// matches a request, the request is allowed to span the [ServicePerimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] boundary.</span>
-    <span class="doccomment">/// For example, an [EgressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
-    <span class="doccomment">/// can be used to allow VMs on networks within the [ServicePerimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] to access a</span>
+    <span class="doccomment">/// \[EgressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
+    <span class="doccomment">/// matches a request, the request is allowed to span the \[ServicePerimeter\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] boundary.</span>
+    <span class="doccomment">/// For example, an \[EgressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
+    <span class="doccomment">/// can be used to allow VMs on networks within the \[ServicePerimeter\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] to access a</span>
     <span class="doccomment">/// defined set of projects outside the perimeter in certain contexts (e.g. to</span>
     <span class="doccomment">/// read data from a Cloud Storage bucket or query against a BigQuery dataset).</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [EgressPolicies]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
+    <span class="doccomment">/// \[EgressPolicies\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
     <span class="doccomment">/// are concerned with the *resources* that a request relates as well as the</span>
     <span class="doccomment">/// API services and API actions being used.  They do not related to the</span>
     <span class="doccomment">/// direction of data movement.  More detailed documentation for this concept</span>
-    <span class="doccomment">/// can be found in the descriptions of [EgressFrom]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom]</span>
-    <span class="doccomment">/// and [EgressTo]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo].</span>
+    <span class="doccomment">/// can be found in the descriptions of \[EgressFrom\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom\]</span>
+    <span class="doccomment">/// and \[EgressTo\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressTo\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EgressPolicy</span> {
-        <span class="doccomment">/// Defines conditions on the source of a request causing this [EgressPolicy]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
+        <span class="doccomment">/// Defines conditions on the source of a request causing this \[EgressPolicy\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
         <span class="doccomment">/// to apply.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">egress_from</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EgressFrom</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Defines the conditions on the [ApiOperation]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation]</span>
-        <span class="doccomment">/// and destination resources that cause this [EgressPolicy]</span>
-        <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
+        <span class="doccomment">/// Defines the conditions on the \[ApiOperation\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.ApiOperation\]</span>
+        <span class="doccomment">/// and destination resources that cause this \[EgressPolicy\]</span>
+        <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
         <span class="doccomment">/// to apply.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">egress_to</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">EgressTo</span><span class="op">&gt;</span>,
     }
-    <span class="doccomment">/// Defines the conditions under which an [EgressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy]</span>
+    <span class="doccomment">/// Defines the conditions under which an \[EgressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressPolicy\]</span>
     <span class="doccomment">/// matches a request. Conditions based on information about the source of the</span>
     <span class="doccomment">/// request. Note that if the destination of the request is also protected by a</span>
-    <span class="doccomment">/// [ServicePerimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter], then that</span>
-    <span class="doccomment">/// [ServicePerimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] must have</span>
-    <span class="doccomment">/// an [IngressPolicy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy]</span>
+    <span class="doccomment">/// \[ServicePerimeter\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\], then that</span>
+    <span class="doccomment">/// \[ServicePerimeter\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] must have</span>
+    <span class="doccomment">/// an \[IngressPolicy\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressPolicy\]</span>
     <span class="doccomment">/// which allows access in order for this request to succeed.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EgressFrom</span> {
-        <span class="doccomment">/// A list of identities that are allowed access through this [EgressPolicy].</span>
+        <span class="doccomment">/// A list of identities that are allowed access through this \[EgressPolicy\].</span>
         <span class="doccomment">/// Should be in the format of email address. The email address should</span>
         <span class="doccomment">/// represent individual user or service account only.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -2410,10 +2407,10 @@
         <span class="kw">pub</span> <span class="ident">identity_type</span>: <span class="ident">i32</span>,
     }
     <span class="doccomment">/// Specifies the types of identities that are allowed access in either</span>
-    <span class="doccomment">/// [IngressFrom]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom]</span>
-    <span class="doccomment">/// or [EgressFrom]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom]</span>
+    <span class="doccomment">/// \[IngressFrom\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.IngressFrom\]</span>
+    <span class="doccomment">/// or \[EgressFrom\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeterConfig.EgressFrom\]</span>
     <span class="doccomment">/// rules.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
@@ -2434,14 +2431,14 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GcpUserAccessBinding</span> {
     <span class="doccomment">/// Immutable. Assigned by the server during creation. The last segment has an arbitrary</span>
     <span class="doccomment">/// length and has only URI unreserved characters (as defined by</span>
-    <span class="doccomment">/// [RFC 3986 Section 2.3](https://tools.ietf.org/html/rfc3986#section-2.3)).</span>
+    <span class="doccomment">/// [RFC 3986 Section 2.3](&lt;https://tools.ietf.org/html/rfc3986#section-2.3&gt;)).</span>
     <span class="doccomment">/// Should not be specified by the client during creation.</span>
     <span class="doccomment">/// Example: &quot;organizations/256/gcpUserAccessBindings/b3-BhcX_Ud5N&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. Immutable. Google Group id whose members are subject to this binding&#39;s restrictions.</span>
     <span class="doccomment">/// See &quot;id&quot; in the [G Suite Directory API&#39;s Groups resource]</span>
-    <span class="doccomment">/// (https://developers.google.com/admin-sdk/directory/v1/reference/groups#resource).</span>
+    <span class="doccomment">/// (&lt;https://developers.google.com/admin-sdk/directory/v1/reference/groups#resource&gt;).</span>
     <span class="doccomment">/// If a group&#39;s email address/alias is changed, this resource will continue</span>
     <span class="doccomment">/// to point at the changed group. This field does not accept group email</span>
     <span class="doccomment">/// addresses or aliases.</span>
@@ -2516,19 +2513,19 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListAccessLevelsRequest</span> {
     <span class="doccomment">/// Required. Resource name for the access policy to list [Access Levels]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] from.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] from.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format:</span>
     <span class="doccomment">/// `accessPolicies/{policy_id}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Number of [Access Levels]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] to include in</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] to include in</span>
     <span class="doccomment">/// the list. Default 100.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Next page token for the next batch of [Access Level]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] instances.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] instances.</span>
     <span class="doccomment">/// Defaults to the first page of results.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2542,7 +2539,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListAccessLevelsResponse</span> {
     <span class="doccomment">/// List of the [Access Level]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] instances.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] instances.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">access_levels</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">AccessLevel</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The pagination token to retrieve the next page of results. If the value is</span>
@@ -2554,7 +2551,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetAccessLevelRequest</span> {
     <span class="doccomment">/// Required. Resource name for the [Access Level]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel].</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format:</span>
     <span class="doccomment">/// `accessPolicies/{policy_id}/accessLevels/{access_level_id}`</span>
@@ -2562,10 +2559,10 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Whether to return `BasicLevels` in the Cloud Common Expression</span>
     <span class="doccomment">/// Language rather than as `BasicLevels`. Defaults to AS_DEFINED, where</span>
-    <span class="doccomment">/// [Access Levels] [google.identity.accesscontextmanager.v1.AccessLevel]</span>
+    <span class="doccomment">/// [Access Levels] \[google.identity.accesscontextmanager.v1.AccessLevel\]</span>
     <span class="doccomment">/// are returned as `BasicLevels` or `CustomLevels` based on how they were</span>
     <span class="doccomment">/// created. If set to CEL, all [Access Levels]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] are returned as</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] are returned as</span>
     <span class="doccomment">/// `CustomLevels`. In the CEL case, `BasicLevels` are translated to equivalent</span>
     <span class="doccomment">/// `CustomLevels`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;LevelFormat&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -2575,15 +2572,15 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateAccessLevelRequest</span> {
     <span class="doccomment">/// Required. Resource name for the access policy which owns this [Access</span>
-    <span class="doccomment">/// Level] [google.identity.accesscontextmanager.v1.AccessLevel].</span>
+    <span class="doccomment">/// Level] \[google.identity.accesscontextmanager.v1.AccessLevel\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format: `accessPolicies/{policy_id}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The [Access Level]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] to create.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] to create.</span>
     <span class="doccomment">/// Syntactic correctness of the [Access Level]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] is a</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] is a</span>
     <span class="doccomment">/// precondition for creation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">access_level</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">AccessLevel</span><span class="op">&gt;</span>,
@@ -2592,9 +2589,9 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateAccessLevelRequest</span> {
     <span class="doccomment">/// Required. The updated [Access Level]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel]. Syntactic</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\]. Syntactic</span>
     <span class="doccomment">/// correctness of the [Access Level]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] is a</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] is a</span>
     <span class="doccomment">/// precondition for creation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">access_level</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">AccessLevel</span><span class="op">&gt;</span>,
@@ -2606,7 +2603,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteAccessLevelRequest</span> {
     <span class="doccomment">/// Required. Resource name for the [Access Level]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel].</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format:</span>
     <span class="doccomment">/// `accessPolicies/{policy_id}/accessLevels/{access_level_id}`</span>
@@ -2619,21 +2616,21 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReplaceAccessLevelsRequest</span> {
     <span class="doccomment">/// Required. Resource name for the access policy which owns these</span>
     <span class="doccomment">/// [Access Levels]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel].</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format: `accessPolicies/{policy_id}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The desired [Access Levels]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] that should</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] that should</span>
     <span class="doccomment">/// replace all existing [Access Levels]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] in the</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] in the</span>
     <span class="doccomment">/// [Access Policy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessPolicy].</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessPolicy\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">access_levels</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">AccessLevel</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. The etag for the version of the [Access Policy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessPolicy] that this</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessPolicy\] that this</span>
     <span class="doccomment">/// replace operation is to be performed on. If, at the time of replace, the</span>
     <span class="doccomment">/// etag for the Access Policy stored in Access Context Manager is different</span>
     <span class="doccomment">/// from the specified etag, then the replace operation will not be performed</span>
@@ -2647,7 +2644,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReplaceAccessLevelsResponse</span> {
     <span class="doccomment">/// List of the [Access Level]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessLevel] instances.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessLevel\] instances.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">access_levels</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">AccessLevel</span><span class="op">&gt;</span>,
 }
@@ -2655,19 +2652,19 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListServicePerimetersRequest</span> {
     <span class="doccomment">/// Required. Resource name for the access policy to list [Service Perimeters]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] from.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] from.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format:</span>
     <span class="doccomment">/// `accessPolicies/{policy_id}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Number of [Service Perimeters]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] to include</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] to include</span>
     <span class="doccomment">/// in the list. Default 100.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Next page token for the next batch of [Service Perimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] instances.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] instances.</span>
     <span class="doccomment">/// Defaults to the first page of results.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -2676,7 +2673,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListServicePerimetersResponse</span> {
     <span class="doccomment">/// List of the [Service Perimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] instances.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] instances.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_perimeters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ServicePerimeter</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The pagination token to retrieve the next page of results. If the value is</span>
@@ -2688,7 +2685,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetServicePerimeterRequest</span> {
     <span class="doccomment">/// Required. Resource name for the [Service Perimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter].</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format:</span>
     <span class="doccomment">/// `accessPolicies/{policy_id}/servicePerimeters/{service_perimeters_id}`</span>
@@ -2699,15 +2696,15 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateServicePerimeterRequest</span> {
     <span class="doccomment">/// Required. Resource name for the access policy which owns this [Service</span>
-    <span class="doccomment">/// Perimeter] [google.identity.accesscontextmanager.v1.ServicePerimeter].</span>
+    <span class="doccomment">/// Perimeter] \[google.identity.accesscontextmanager.v1.ServicePerimeter\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format: `accessPolicies/{policy_id}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The [Service Perimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] to create.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] to create.</span>
     <span class="doccomment">/// Syntactic correctness of the [Service Perimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] is a</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] is a</span>
     <span class="doccomment">/// precondition for creation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_perimeter</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ServicePerimeter</span><span class="op">&gt;</span>,
@@ -2727,7 +2724,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteServicePerimeterRequest</span> {
     <span class="doccomment">/// Required. Resource name for the [Service Perimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter].</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format:</span>
     <span class="doccomment">/// `accessPolicies/{policy_id}/servicePerimeters/{service_perimeter_id}`</span>
@@ -2740,21 +2737,21 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReplaceServicePerimetersRequest</span> {
     <span class="doccomment">/// Required. Resource name for the access policy which owns these</span>
     <span class="doccomment">/// [Service Perimeters]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter].</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format: `accessPolicies/{policy_id}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The desired [Service Perimeters]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] that should</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] that should</span>
     <span class="doccomment">/// replace all existing [Service Perimeters]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] in the</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] in the</span>
     <span class="doccomment">/// [Access Policy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessPolicy].</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessPolicy\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_perimeters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ServicePerimeter</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. The etag for the version of the [Access Policy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessPolicy] that this</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessPolicy\] that this</span>
     <span class="doccomment">/// replace operation is to be performed on. If, at the time of replace, the</span>
     <span class="doccomment">/// etag for the Access Policy stored in Access Context Manager is different</span>
     <span class="doccomment">/// from the specified etag, then the replace operation will not be performed</span>
@@ -2768,26 +2765,26 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReplaceServicePerimetersResponse</span> {
     <span class="doccomment">/// List of the [Service Perimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] instances.</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] instances.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_perimeters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ServicePerimeter</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// A request to commit dry-run specs in all [Service Perimeters]</span>
-<span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] belonging to</span>
-<span class="doccomment">/// an [Access Policy][google.identity.accesscontextmanager.v1.AccessPolicy].</span>
+<span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] belonging to</span>
+<span class="doccomment">/// an [Access Policy]\[google.identity.accesscontextmanager.v1.AccessPolicy\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommitServicePerimetersRequest</span> {
     <span class="doccomment">/// Required. Resource name for the parent [Access Policy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessPolicy] which owns all</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessPolicy\] which owns all</span>
     <span class="doccomment">/// [Service Perimeters]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] in scope for</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] in scope for</span>
     <span class="doccomment">/// the commit operation.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Format: `accessPolicies/{policy_id}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. The etag for the version of the [Access Policy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1alpha.AccessPolicy] that this</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1alpha.AccessPolicy\] that this</span>
     <span class="doccomment">/// commit operation is to be performed on. If, at the time of commit, the</span>
     <span class="doccomment">/// etag for the Access Policy stored in Access Context Manager is different</span>
     <span class="doccomment">/// from the specified etag, then the commit operation will not be performed</span>
@@ -2801,14 +2798,14 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommitServicePerimetersResponse</span> {
     <span class="doccomment">/// List of all the [Service Perimeter]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ServicePerimeter] instances in</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ServicePerimeter\] instances in</span>
     <span class="doccomment">/// the [Access Policy]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessPolicy].</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessPolicy\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">service_perimeters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ServicePerimeter</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request of [ListGcpUserAccessBindings]</span>
-<span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessContextManager.ListGcpUserAccessBindings].</span>
+<span class="doccomment">/// Request of \[ListGcpUserAccessBindings\]</span>
+<span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessContextManager.ListGcpUserAccessBindings\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListGcpUserAccessBindingsRequest</span> {
     <span class="doccomment">/// Required. Example: &quot;organizations/256&quot;</span>
@@ -2819,50 +2816,50 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional. If left blank, returns the first page. To enumerate all items, use the</span>
-    <span class="doccomment">/// [next_page_token]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.ListGcpUserAccessBindingsResponse.next_page_token]</span>
+    <span class="doccomment">/// \[next_page_token\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.ListGcpUserAccessBindingsResponse.next_page_token\]</span>
     <span class="doccomment">/// from your previous list operation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response of [ListGcpUserAccessBindings]</span>
-<span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessContextManager.ListGcpUserAccessBindings].</span>
+<span class="doccomment">/// Response of \[ListGcpUserAccessBindings\]</span>
+<span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessContextManager.ListGcpUserAccessBindings\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListGcpUserAccessBindingsResponse</span> {
-    <span class="doccomment">/// [GcpUserAccessBinding]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.GcpUserAccessBinding]</span>
+    <span class="doccomment">/// \[GcpUserAccessBinding\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.GcpUserAccessBinding\]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">gcp_user_access_bindings</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">GcpUserAccessBinding</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Token to get the next page of items. If blank, there are no more items.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request of [GetGcpUserAccessBinding]</span>
-<span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessContextManager.GetGcpUserAccessBinding].</span>
+<span class="doccomment">/// Request of \[GetGcpUserAccessBinding\]</span>
+<span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessContextManager.GetGcpUserAccessBinding\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetGcpUserAccessBindingRequest</span> {
     <span class="doccomment">/// Required. Example: &quot;organizations/256/gcpUserAccessBindings/b3-BhcX_Ud5N&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request of [CreateGcpUserAccessBinding]</span>
-<span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessContextManager.CreateGcpUserAccessBinding].</span>
+<span class="doccomment">/// Request of \[CreateGcpUserAccessBinding\]</span>
+<span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessContextManager.CreateGcpUserAccessBinding\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateGcpUserAccessBindingRequest</span> {
     <span class="doccomment">/// Required. Example: &quot;organizations/256&quot;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">parent</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Required. [GcpUserAccessBinding]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.GcpUserAccessBinding]</span>
+    <span class="doccomment">/// Required. \[GcpUserAccessBinding\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.GcpUserAccessBinding\]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">gcp_user_access_binding</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">GcpUserAccessBinding</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request of [UpdateGcpUserAccessBinding]</span>
-<span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessContextManager.UpdateGcpUserAccessBinding].</span>
+<span class="doccomment">/// Request of \[UpdateGcpUserAccessBinding\]</span>
+<span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessContextManager.UpdateGcpUserAccessBinding\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateGcpUserAccessBindingRequest</span> {
-    <span class="doccomment">/// Required. [GcpUserAccessBinding]</span>
-    <span class="doccomment">/// [google.identity.accesscontextmanager.v1.GcpUserAccessBinding]</span>
+    <span class="doccomment">/// Required. \[GcpUserAccessBinding\]</span>
+    <span class="doccomment">/// \[google.identity.accesscontextmanager.v1.GcpUserAccessBinding\]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">gcp_user_access_binding</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">GcpUserAccessBinding</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Required. Only the fields specified in this mask are updated. Because name and</span>
@@ -2874,8 +2871,8 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request of [DeleteGcpUserAccessBinding]</span>
-<span class="doccomment">/// [google.identity.accesscontextmanager.v1.AccessContextManager.DeleteGcpUserAccessBinding].</span>
+<span class="doccomment">/// Request of \[DeleteGcpUserAccessBinding\]</span>
+<span class="doccomment">/// \[google.identity.accesscontextmanager.v1.AccessContextManager.DeleteGcpUserAccessBinding\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteGcpUserAccessBindingRequest</span> {
     <span class="doccomment">/// Required. Example: &quot;organizations/256/gcpUserAccessBindings/b3-BhcX_Ud5N&quot;</span>
@@ -2925,7 +2922,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AccessContextManagerClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2938,7 +2935,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AccessContextManagerClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2968,8 +2965,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; container.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_access_policies</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAccessPoliciesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAccessPoliciesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAccessPoliciesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAccessPoliciesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2986,8 +2983,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [google.identity.accesscontextmanager.v1.AccessPolicy] by name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_access_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetAccessPolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AccessPolicy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetAccessPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AccessPolicy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3007,9 +3004,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; BadRequest proto.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_access_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AccessPolicy</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AccessPolicy</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3033,9 +3030,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; returned in `metadata` as a BadRequest proto.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_access_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateAccessPolicyRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateAccessPolicyRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3057,9 +3054,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; has been removed from long-lasting storage.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_access_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteAccessPolicyRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteAccessPolicyRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3079,8 +3076,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; policy.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_access_levels</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAccessLevelsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListAccessLevelsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAccessLevelsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListAccessLevelsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3098,8 +3095,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_access_level</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetAccessLevelRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AccessLevel</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetAccessLevelRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AccessLevel</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3121,9 +3118,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; errors will result in an error response for the first error encountered.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_access_level</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateAccessLevelRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateAccessLevelRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3148,9 +3145,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; errors will result in an error response for the first error encountered.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_access_level</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateAccessLevelRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateAccessLevelRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3173,9 +3170,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; from long-lasting storage.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_access_level</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteAccessLevelRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteAccessLevelRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3209,9 +3206,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; error.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">replace_access_levels</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReplaceAccessLevelsRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReplaceAccessLevelsRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3231,8 +3228,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; access policy.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_service_perimeters</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListServicePerimetersRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListServicePerimetersResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListServicePerimetersRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListServicePerimetersResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3248,8 +3245,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_service_perimeter</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetServicePerimeterRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServicePerimeter</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetServicePerimeterRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServicePerimeter</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3272,9 +3269,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; errors will result in an error response for the first error encountered.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_service_perimeter</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateServicePerimeterRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateServicePerimeterRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3297,9 +3294,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; errors will result in an error response for the first error encountered.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_service_perimeter</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateServicePerimeterRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateServicePerimeterRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3320,9 +3317,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; removed from long-lasting storage.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_service_perimeter</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteServicePerimeterRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteServicePerimeterRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3350,9 +3347,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; ReplaceServicePerimetersResponse.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">replace_service_perimeters</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReplaceServicePerimetersRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReplaceServicePerimetersRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3382,9 +3379,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; be cleared after a successful commit operation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">commit_service_perimeters</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CommitServicePerimetersRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CommitServicePerimetersRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3402,8 +3399,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Google Cloud organization.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_gcp_user_access_bindings</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListGcpUserAccessBindingsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListGcpUserAccessBindingsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListGcpUserAccessBindingsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListGcpUserAccessBindingsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3420,8 +3417,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; the given name.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_gcp_user_access_binding</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetGcpUserAccessBindingRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GcpUserAccessBinding</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetGcpUserAccessBindingRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GcpUserAccessBinding</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3444,9 +3441,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; time.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_gcp_user_access_binding</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateGcpUserAccessBindingRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateGcpUserAccessBindingRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3466,9 +3463,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; more time.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_gcp_user_access_binding</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateGcpUserAccessBindingRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateGcpUserAccessBindingRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3488,9 +3485,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; more time.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_gcp_user_access_binding</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteGcpUserAccessBindingRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteGcpUserAccessBindingRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3505,5 +3502,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

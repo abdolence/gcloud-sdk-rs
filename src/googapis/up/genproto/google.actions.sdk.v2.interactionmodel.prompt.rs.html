@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.actions.sdk.v2.interactionmodel.prompt.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.sdk.v2.interactionmodel.prompt.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.actions.sdk.v2.interactionmodel.prompt.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.actions.sdk.v2.interactionmodel.prompt.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -592,8 +590,7 @@
 <span id="590">590</span>
 <span id="591">591</span>
 <span id="592">592</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Represents a Interactive Canvas response to be sent to the user.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Represents a Interactive Canvas response to be sent to the user.</span>
 <span class="doccomment">/// This can be used in conjunction with the `first_simple` field in the</span>
 <span class="doccomment">/// containing prompt to speak to the user in addition to displaying a</span>
 <span class="doccomment">/// interactive canvas response.</span>
@@ -627,7 +624,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StaticImagePrompt</span> {
     <span class="doccomment">/// Required. The source url of the image. Images can be JPG, PNG and GIF (animated and</span>
-    <span class="doccomment">/// non-animated). For example,`https://www.agentx.com/logo.png`.</span>
+    <span class="doccomment">/// non-animated). For example,`&lt;https://www.agentx.com/logo.png`.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">url</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. A text description of the image to be used for accessibility, e.g. screen</span>
@@ -748,10 +745,10 @@
         <span class="kw">pub</span> <span class="ident">footer</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Image for the collection item.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::StaticImagePrompt</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::StaticImagePrompt</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Required. URI to open if the item selected.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">open_uri_action</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::OpenUrl</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">open_uri_action</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::OpenUrl</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// A card for presenting a collection of options to select from.</span>
@@ -790,7 +787,7 @@
         <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Optional. Item image.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::StaticImagePrompt</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::StaticImagePrompt</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// A card for presenting a list of options to select from.</span>
@@ -825,7 +822,7 @@
         <span class="kw">pub</span> <span class="ident">description</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Optional. Item image.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::StaticImagePrompt</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">image</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::StaticImagePrompt</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// Contains information about the media, such as name, description, url, etc.</span>
@@ -922,11 +919,11 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Image</span> {
         <span class="doccomment">/// A large image, such as the cover of the album, etc.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Large</span>(<span class="kw">super</span><span class="ident">::StaticImagePrompt</span>),
+        <span class="ident">Large</span>(<span class="ident"><span class="kw">super</span>::StaticImagePrompt</span>),
         <span class="doccomment">/// A small image icon displayed on the right from the title.</span>
         <span class="doccomment">/// It&#39;s resized to 36x36 dp.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Icon</span>(<span class="kw">super</span><span class="ident">::StaticImagePrompt</span>),
+        <span class="ident">Icon</span>(<span class="ident"><span class="kw">super</span>::StaticImagePrompt</span>),
     }
 }
 <span class="doccomment">/// A table card for displaying a table of text.</span>
@@ -1015,25 +1012,25 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Content</span> {
         <span class="doccomment">/// A basic card.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Card</span>(<span class="kw">super</span><span class="ident">::StaticCardPrompt</span>),
+        <span class="ident">Card</span>(<span class="ident"><span class="kw">super</span>::StaticCardPrompt</span>),
         <span class="doccomment">/// An image.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Image</span>(<span class="kw">super</span><span class="ident">::StaticImagePrompt</span>),
+        <span class="ident">Image</span>(<span class="ident"><span class="kw">super</span>::StaticImagePrompt</span>),
         <span class="doccomment">/// Table card.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Table</span>(<span class="kw">super</span><span class="ident">::StaticTablePrompt</span>),
+        <span class="ident">Table</span>(<span class="ident"><span class="kw">super</span>::StaticTablePrompt</span>),
         <span class="doccomment">/// Response indicating a set of media to be played.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Media</span>(<span class="kw">super</span><span class="ident">::StaticMediaPrompt</span>),
+        <span class="ident">Media</span>(<span class="ident"><span class="kw">super</span>::StaticMediaPrompt</span>),
         <span class="doccomment">/// A card for presenting a list of options to select from.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">List</span>(<span class="kw">super</span><span class="ident">::StaticListPrompt</span>),
+        <span class="ident">List</span>(<span class="ident"><span class="kw">super</span>::StaticListPrompt</span>),
         <span class="doccomment">/// A card presenting a list of options to select from.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">Collection</span>(<span class="kw">super</span><span class="ident">::StaticCollectionPrompt</span>),
+        <span class="ident">Collection</span>(<span class="ident"><span class="kw">super</span>::StaticCollectionPrompt</span>),
         <span class="doccomment">/// A card presenting a collection of web pages to open.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">CollectionBrowse</span>(<span class="kw">super</span><span class="ident">::StaticCollectionBrowsePrompt</span>),
+        <span class="ident">CollectionBrowse</span>(<span class="ident"><span class="kw">super</span>::StaticCollectionBrowsePrompt</span>),
     }
 }
 <span class="doccomment">/// Represents a simple prompt to be send to a user.</span>
@@ -1141,25 +1138,25 @@
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StaticPromptResponse</span> {
             <span class="doccomment">/// Optional. The first voice and text-only response.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">first_simple</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::StaticSimplePrompt</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">first_simple</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::StaticSimplePrompt</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Optional. A content like a card, list or media to display to the user.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">content</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::StaticContentPrompt</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">content</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::StaticContentPrompt</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Optional. The last voice and text-only response.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">last_simple</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::StaticSimplePrompt</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">last_simple</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::StaticSimplePrompt</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Optional. Suggestions to be displayed to the user which will always</span>
             <span class="doccomment">/// appear at the end of the response. If the `append` field in the</span>
             <span class="doccomment">/// containing prompt is `true` the titles defined in this field will be</span>
             <span class="doccomment">/// added to titles defined in any previously defined suggestions prompts</span>
             <span class="doccomment">/// and duplicate values will be removed.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">suggestions</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::Suggestion</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">suggestions</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::Suggestion</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Optional. An additional suggestion chip that can link out to the associated app</span>
             <span class="doccomment">/// or site.</span>
             <span class="doccomment">/// The chip will be rendered with the title &quot;Open &lt;name&gt;&quot;. Max 20 chars.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">link</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::StaticLinkPrompt</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">link</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::StaticLinkPrompt</span><span class="op">&gt;</span>,
             <span class="doccomment">/// Optional. Mode for how this messages should be merged with previously defined</span>
             <span class="doccomment">/// messages.</span>
             <span class="doccomment">/// `true` will clear all previously defined messages (first and last</span>
@@ -1174,7 +1171,7 @@
             <span class="kw">pub</span> <span class="ident">r#override</span>: <span class="ident">bool</span>,
             <span class="doccomment">/// A response to be used for interactive canvas experience.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-            <span class="kw">pub</span> <span class="ident">canvas</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span><span class="ident">::StaticCanvasPrompt</span><span class="op">&gt;</span>,
+            <span class="kw">pub</span> <span class="ident">canvas</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::StaticCanvasPrompt</span><span class="op">&gt;</span>,
         }
     }
     <span class="doccomment">/// Defines the criteria for whether a prompt matches a request.</span>
@@ -1182,8 +1179,10 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Selector</span> {
         <span class="doccomment">/// The set of required surface capabilities.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">surface_capabilities</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SurfaceCapabilities</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">surface_capabilities</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SurfaceCapabilities</span><span class="op">&gt;</span>,
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LicenseCodesClient","The LicenseCodes API."]]});

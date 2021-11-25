@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["VersionConfig","Configuration for the version."]]});
+initSidebarItems({"struct":[["TestCasesConfig","The configuration for continuous tests."],["VersionConfig","Configuration for the version."]]});

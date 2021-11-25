@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["LocationViewServiceClient","Service to fetch location views."]]});

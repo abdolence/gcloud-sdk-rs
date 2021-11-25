@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["PolicyApprovalStatus","The possible policy approval statuses. When there are several approval statuses available the most severe one will be used. The order of severity is DISAPPROVED, AREA_OF_INTEREST_ONLY, APPROVED_LIMITED and APPROVED."]]});

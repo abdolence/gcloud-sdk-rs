@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["TargetVpnGatewaysClient","The TargetVpnGateways API."]]});

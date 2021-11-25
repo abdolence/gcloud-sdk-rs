@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ConversionCustomVariableError","Enum describing possible conversion custom variable errors."]]});

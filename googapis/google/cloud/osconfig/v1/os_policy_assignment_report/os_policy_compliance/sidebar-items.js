@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ComplianceState","Possible compliance states for an os policy."]],"mod":[["os_policy_resource_compliance","Nested message and enum types in `OSPolicyResourceCompliance`."]],"struct":[["OsPolicyResourceCompliance","Compliance data for an OS policy resource."]]});

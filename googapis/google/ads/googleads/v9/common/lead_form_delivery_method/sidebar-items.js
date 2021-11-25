@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["DeliveryDetails","Various subtypes of delivery."]]});

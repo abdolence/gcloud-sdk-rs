@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["DatasetServiceClient",""]]});
+initSidebarItems({"struct":[["DatasetServiceClient","The service that handles the CRUD of Vertex AI Dataset and its child resources."]]});

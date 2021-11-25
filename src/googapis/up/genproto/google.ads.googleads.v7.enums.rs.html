@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.ads.googleads.v7.enums.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.ads.googleads.v7.enums.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.ads.googleads.v7.enums.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.ads.googleads.v7.enums.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -8430,8 +8428,7 @@
 <span id="8428">8428</span>
 <span id="8429">8429</span>
 <span id="8430">8430</span>
-</pre><pre class="rust">
-<span class="comment">// Proto file describing policy topic entry types.</span>
+</pre><pre class="rust"><code><span class="comment">// Proto file describing policy topic entry types.</span>
 
 <span class="doccomment">/// Container for enum describing possible policy topic entry types.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -8720,7 +8717,7 @@
 
 <span class="doccomment">/// Container for display upload product types. Product types that have the word</span>
 <span class="doccomment">/// &quot;DYNAMIC&quot; in them must be associated with a campaign that has a dynamic</span>
-<span class="doccomment">/// remarketing feed. See https://support.google.com/google-ads/answer/6053288</span>
+<span class="doccomment">/// remarketing feed. See &lt;https://support.google.com/google-ads/answer/6053288&gt;</span>
 <span class="doccomment">/// for more info about dynamic remarketing. Other product types are regarded</span>
 <span class="doccomment">/// as &quot;static&quot; and do not have this requirement.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -9743,7 +9740,7 @@
 
 <span class="doccomment">/// Container for enum describing a promotion extension occasion.</span>
 <span class="doccomment">/// For more information about the occasions please check:</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/7367521</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/7367521&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PromotionExtensionOccasionEnum</span> {}
 <span class="doccomment">/// Nested message and enum types in `PromotionExtensionOccasionEnum`.</span>
@@ -11116,7 +11113,7 @@
         <span class="doccomment">/// like having a public rate available. UI treatment will strikethrough the</span>
         <span class="doccomment">/// public rate and indicate that a discount is available to the user. For</span>
         <span class="doccomment">/// more on Qualified Rates, visit</span>
-        <span class="doccomment">/// https://developers.google.com/hotels/hotel-ads/dev-guide/qualified-rates</span>
+        <span class="doccomment">/// &lt;https://developers.google.com/hotels/hotel-ads/dev-guide/qualified-rates&gt;</span>
         <span class="ident">QualifiedRate</span> <span class="op">=</span> <span class="number">4</span>,
         <span class="doccomment">/// Rates available to users that satisfy some eligibility criteria. e.g.</span>
         <span class="doccomment">/// all signed-in users, 20% of mobile users, all mobile users in Canada,</span>
@@ -12659,7 +12656,7 @@
         <span class="ident">Daily</span> <span class="op">=</span> <span class="number">2</span>,
         <span class="doccomment">/// Custom budget, added back in V5.</span>
         <span class="doccomment">/// Custom bugdet can be used with total_amount to specify lifetime budget</span>
-        <span class="doccomment">/// limit. See: https://support.google.com/google-ads/answer/6385083 for more</span>
+        <span class="doccomment">/// limit. See: &lt;https://support.google.com/google-ads/answer/6385083&gt; for more</span>
         <span class="doccomment">/// info.</span>
         <span class="ident">CustomPeriod</span> <span class="op">=</span> <span class="number">5</span>,
     }
@@ -12702,17 +12699,17 @@
         <span class="ident">Unknown</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// Budget type for standard Google Ads usage.</span>
         <span class="doccomment">/// Caps daily spend at two times the specified budget amount.</span>
-        <span class="doccomment">/// Full details: https://support.google.com/google-ads/answer/6385083</span>
+        <span class="doccomment">/// Full details: &lt;https://support.google.com/google-ads/answer/6385083&gt;</span>
         <span class="ident">Standard</span> <span class="op">=</span> <span class="number">2</span>,
         <span class="doccomment">/// Budget type for Hotels Ads commission program.</span>
-        <span class="doccomment">/// Full details: https://support.google.com/google-ads/answer/9243945</span>
+        <span class="doccomment">/// Full details: &lt;https://support.google.com/google-ads/answer/9243945&gt;</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// This type is only supported by campaigns with</span>
         <span class="doccomment">/// AdvertisingChannelType.HOTEL, BiddingStrategyType.COMMISSION and</span>
         <span class="doccomment">/// PaymentMode.CONVERSION_VALUE.</span>
         <span class="ident">HotelAdsCommission</span> <span class="op">=</span> <span class="number">3</span>,
         <span class="doccomment">/// Budget type with a fixed cost-per-acquisition (conversion).</span>
-        <span class="doccomment">/// Full details: https://support.google.com/google-ads/answer/7528254</span>
+        <span class="doccomment">/// Full details: &lt;https://support.google.com/google-ads/answer/7528254&gt;</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// This type is only supported by campaigns with</span>
         <span class="doccomment">/// AdvertisingChannelType.DISPLAY (excluding</span>
@@ -13227,7 +13224,7 @@
 <span class="doccomment">/// Nested message and enum types in `ConversionActionCountingTypeEnum`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">conversion_action_counting_type_enum</span> {
     <span class="doccomment">/// Indicates how conversions for this action will be counted. For more</span>
-    <span class="doccomment">/// information, see https://support.google.com/google-ads/answer/3438531.</span>
+    <span class="doccomment">/// information, see &lt;https://support.google.com/google-ads/answer/3438531.&gt;</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ConversionActionCountingType</span> {
@@ -13672,7 +13669,7 @@
 
 <span class="doccomment">/// Values for Custom placeholder fields.</span>
 <span class="doccomment">/// For more information about dynamic remarketing feeds, see</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/6053288.</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/6053288.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CustomPlaceholderFieldEnum</span> {}
 <span class="doccomment">/// Nested message and enum types in `CustomPlaceholderFieldEnum`.</span>
@@ -13914,7 +13911,7 @@
 
 <span class="doccomment">/// Values for Education placeholder fields.</span>
 <span class="doccomment">/// For more information about dynamic remarketing feeds, see</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/6053288.</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/6053288.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">EducationPlaceholderFieldEnum</span> {}
 <span class="doccomment">/// Nested message and enum types in `EducationPlaceholderFieldEnum`.</span>
@@ -14405,7 +14402,7 @@
 
 <span class="doccomment">/// Values for Flight placeholder fields.</span>
 <span class="doccomment">/// For more information about dynamic remarketing feeds, see</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/6053288.</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/6053288.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FlightPlaceholderFieldEnum</span> {}
 <span class="doccomment">/// Nested message and enum types in `FlightPlaceholderFieldEnum`.</span>
@@ -14659,7 +14656,7 @@
 
 <span class="doccomment">/// Values for Hotel placeholder fields.</span>
 <span class="doccomment">/// For more information about dynamic remarketing feeds, see</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/6053288.</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/6053288.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">HotelPlaceholderFieldEnum</span> {}
 <span class="doccomment">/// Nested message and enum types in `HotelPlaceholderFieldEnum`.</span>
@@ -14776,7 +14773,7 @@
 
 <span class="doccomment">/// Values for Job placeholder fields.</span>
 <span class="doccomment">/// For more information about dynamic remarketing feeds, see</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/6053288.</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/6053288.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">JobPlaceholderFieldEnum</span> {}
 <span class="doccomment">/// Nested message and enum types in `JobPlaceholderFieldEnum`.</span>
@@ -14954,7 +14951,7 @@
 
 <span class="doccomment">/// Values for Local placeholder fields.</span>
 <span class="doccomment">/// For more information about dynamic remarketing feeds, see</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/6053288.</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/6053288.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LocalPlaceholderFieldEnum</span> {}
 <span class="doccomment">/// Nested message and enum types in `LocalPlaceholderFieldEnum`.</span>
@@ -15841,7 +15838,7 @@
 
 <span class="doccomment">/// Values for Real Estate placeholder fields.</span>
 <span class="doccomment">/// For more information about dynamic remarketing feeds, see</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/6053288.</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/6053288.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RealEstatePlaceholderFieldEnum</span> {}
 <span class="doccomment">/// Nested message and enum types in `RealEstatePlaceholderFieldEnum`.</span>
@@ -16442,7 +16439,7 @@
         <span class="doccomment">/// Data Type: STRING. The category of snippet of your products/services.</span>
         <span class="doccomment">/// Must match exactly one of the predefined structured snippets headers.</span>
         <span class="doccomment">/// For a list, visit</span>
-        <span class="doccomment">/// https://developers.google.com/adwords/api/docs/appendix/structured-snippet-headers</span>
+        <span class="doccomment">/// &lt;https://developers.google.com/adwords/api/docs/appendix/structured-snippet-headers&gt;</span>
         <span class="ident">Header</span> <span class="op">=</span> <span class="number">2</span>,
         <span class="doccomment">/// Data Type: STRING_LIST. Text values that describe your products/services.</span>
         <span class="doccomment">/// All text must be family safe. Special or non-ASCII characters are not</span>
@@ -16545,7 +16542,7 @@
 
 <span class="doccomment">/// Values for Travel placeholder fields.</span>
 <span class="doccomment">/// For more information about dynamic remarketing feeds, see</span>
-<span class="doccomment">/// https://support.google.com/google-ads/answer/6053288.</span>
+<span class="doccomment">/// &lt;https://support.google.com/google-ads/answer/6053288.&gt;</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TravelPlaceholderFieldEnum</span> {}
 <span class="doccomment">/// Nested message and enum types in `TravelPlaceholderFieldEnum`.</span>
@@ -16861,5 +16858,7 @@
         <span class="ident">PrescriptionVaccineWebsiteEs</span> <span class="op">=</span> <span class="number">13</span>,
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

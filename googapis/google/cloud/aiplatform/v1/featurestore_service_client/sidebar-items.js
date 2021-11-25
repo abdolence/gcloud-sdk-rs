@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FeaturestoreServiceClient","The service that handles CRUD and List for resources for Featurestore."]]});

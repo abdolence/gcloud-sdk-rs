@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["GlobalPublicDelegatedPrefixesClient","The GlobalPublicDelegatedPrefixes API."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","[Output Only] The type of the firewall policy."]]});

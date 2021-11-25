@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["dashboard",""],["v3",""]]});
+initSidebarItems({"mod":[["dashboard",""],["metricsscope",""],["v3",""]]});

@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.automl.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.automl.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.automl.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.automl.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -3722,8 +3720,8 @@
 <span id="3720">3720</span>
 <span id="3721">3721</span>
 <span id="3722">3722</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Contains annotation details specific to classification.</span>
+<span id="3723">3723</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Contains annotation details specific to classification.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ClassificationAnnotation</span> {
     <span class="doccomment">/// Output only. A confidence estimate between 0.0 and 1.0. A higher value</span>
@@ -3813,7 +3811,7 @@
         <span class="doccomment">/// for each example.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">false_positive_rate_at1</span>: <span class="ident">f32</span>,
-        <span class="doccomment">/// Output only. The harmonic mean of [recall_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1] and [precision_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1].</span>
+        <span class="doccomment">/// Output only. The harmonic mean of \[recall_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.recall_at1\] and \[precision_at1][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfidenceMetricsEntry.precision_at1\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">f1_score_at1</span>: <span class="ident">f32</span>,
         <span class="doccomment">/// Output only. The number of model created labels that match a ground truth</span>
@@ -3839,24 +3837,24 @@
         <span class="doccomment">/// Output only. IDs of the annotation specs used in the confusion matrix.</span>
         <span class="doccomment">/// For Tables CLASSIFICATION</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// [prediction_type][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]</span>
-        <span class="doccomment">/// only list of [annotation_spec_display_name-s][] is populated.</span>
+        <span class="doccomment">/// \[prediction_type][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type\]</span>
+        <span class="doccomment">/// only list of \[annotation_spec_display_name-s][\] is populated.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">annotation_spec_id</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Output only. Display name of the annotation specs used in the confusion</span>
         <span class="doccomment">/// matrix, as they were at the moment of the evaluation. For Tables</span>
         <span class="doccomment">/// CLASSIFICATION</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type],</span>
+        <span class="doccomment">/// \[prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type\],</span>
         <span class="doccomment">/// distinct values of the target column at the moment of the model</span>
         <span class="doccomment">/// evaluation are populated here.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Output only. Rows in the confusion matrix. The number of rows is equal to</span>
         <span class="doccomment">/// the size of `annotation_spec_id`.</span>
-        <span class="doccomment">/// `row[i].example_count[j]` is the number of examples that have ground</span>
-        <span class="doccomment">/// truth of the `annotation_spec_id[i]` and are predicted as</span>
-        <span class="doccomment">/// `annotation_spec_id[j]` by the model being evaluated.</span>
+        <span class="doccomment">/// `row\[i].example_count[j\]` is the number of examples that have ground</span>
+        <span class="doccomment">/// truth of the `annotation_spec_id\[i\]` and are predicted as</span>
+        <span class="doccomment">/// `annotation_spec_id\[j\]` by the model being evaluated.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">row</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">confusion_matrix::Row</span><span class="op">&gt;</span>,
     }
@@ -3868,7 +3866,7 @@
             <span class="doccomment">/// Output only. Value of the specific cell in the confusion matrix.</span>
             <span class="doccomment">/// The number of values each row has (i.e. the length of the row) is equal</span>
             <span class="doccomment">/// to the length of the `annotation_spec_id` field or, if that one is not</span>
-            <span class="doccomment">/// populated, length of the [display_name][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.display_name] field.</span>
+            <span class="doccomment">/// populated, length of the \[display_name][google.cloud.automl.v1.ClassificationEvaluationMetrics.ConfusionMatrix.display_name\] field.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
             <span class="kw">pub</span> <span class="ident">example_count</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span>,
         }
@@ -4012,7 +4010,7 @@
         <span class="doccomment">/// An entity annotation will set this, which is the part of the original</span>
         <span class="doccomment">/// text to which the annotation pertains.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">TextSegment</span>(<span class="kw">super</span><span class="ident">::TextSegment</span>),
+        <span class="ident">TextSegment</span>(<span class="ident"><span class="kw">super</span>::TextSegment</span>),
     }
 }
 <span class="doccomment">/// Model evaluation metrics for text extraction problems.</span>
@@ -4052,7 +4050,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextSentimentAnnotation</span> {
     <span class="doccomment">/// Output only. The sentiment with the semantic, as given to the</span>
-    <span class="doccomment">/// [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData] when populating the dataset from which the model used</span>
+    <span class="doccomment">/// \[AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData\] when populating the dataset from which the model used</span>
     <span class="doccomment">/// for the prediction had been trained.</span>
     <span class="doccomment">/// The sentiment values are between 0 and</span>
     <span class="doccomment">/// Dataset.text_sentiment_dataset_metadata.sentiment_max (inclusive),</span>
@@ -4101,11 +4099,11 @@
     <span class="kw">pub</span> <span class="ident">confusion_matrix</span>:
         <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">classification_evaluation_metrics::ConfusionMatrix</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Input configuration for [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData] action.</span>
+<span class="doccomment">/// Input configuration for \[AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData\] action.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The format of input depends on dataset_metadata the Dataset into which</span>
 <span class="doccomment">/// the import is happening has. As input source the</span>
-<span class="doccomment">/// [gcs_source][google.cloud.automl.v1.InputConfig.gcs_source]</span>
+<span class="doccomment">/// \[gcs_source][google.cloud.automl.v1.InputConfig.gcs_source\]</span>
 <span class="doccomment">/// is expected, unless specified otherwise. Additionally any input .CSV file</span>
 <span class="doccomment">/// by itself must be 100MB or smaller, unless specified otherwise.</span>
 <span class="doccomment">/// If an &quot;example&quot; file (that is, image, video etc.) with identical content</span>
@@ -4123,7 +4121,7 @@
 <span class="doccomment">/// &lt;div class=&quot;ds-selector-tabs&quot;&gt;&lt;section&gt;&lt;h5&gt;Classification&lt;/h5&gt;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [Preparing your training</span>
-<span class="doccomment">/// data](https://cloud.google.com/vision/automl/docs/prepare) for more</span>
+<span class="doccomment">/// data](&lt;https://cloud.google.com/vision/automl/docs/prepare&gt;) for more</span>
 <span class="doccomment">/// information.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// CSV file(s) with each line in format:</span>
@@ -4159,12 +4157,12 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// &lt;/section&gt;&lt;section&gt;&lt;h5&gt;Object Detection&lt;/h5&gt;</span>
 <span class="doccomment">/// See [Preparing your training</span>
-<span class="doccomment">/// data](https://cloud.google.com/vision/automl/object-detection/docs/prepare)</span>
+<span class="doccomment">/// data](&lt;https://cloud.google.com/vision/automl/object-detection/docs/prepare&gt;)</span>
 <span class="doccomment">/// for more information.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// A CSV file(s) with each line in format:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     ML_USE,GCS_FILE_PATH,[LABEL],(BOUNDING_BOX | ,,,,,,,)</span>
+<span class="doccomment">///     ML_USE,GCS_FILE_PATH,\[LABEL\],(BOUNDING_BOX | ,,,,,,,)</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// *   `ML_USE` - Identifies the data set that the current row (file) applies</span>
 <span class="doccomment">/// to.</span>
@@ -4205,7 +4203,7 @@
 <span class="doccomment">/// &lt;div class=&quot;ds-selector-tabs&quot;&gt;&lt;section&gt;&lt;h5&gt;Classification&lt;/h5&gt;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [Preparing your training</span>
-<span class="doccomment">/// data](https://cloud.google.com/video-intelligence/automl/docs/prepare) for</span>
+<span class="doccomment">/// data](&lt;https://cloud.google.com/video-intelligence/automl/docs/prepare&gt;) for</span>
 <span class="doccomment">/// more information.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// CSV file(s) with each line in format:</span>
@@ -4260,7 +4258,7 @@
 <span class="doccomment">/// `GCS_FILE_PATH` is the path to another .csv file that describes training</span>
 <span class="doccomment">/// example for a given `ML_USE`, using the following row format:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">///     GCS_FILE_PATH,LABEL,[INSTANCE_ID],TIMESTAMP,BOUNDING_BOX</span>
+<span class="doccomment">///     GCS_FILE_PATH,LABEL,\[INSTANCE_ID\],TIMESTAMP,BOUNDING_BOX</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// or</span>
 <span class="doccomment">///</span>
@@ -4279,7 +4277,7 @@
 <span class="doccomment">/// to be exhaustively labeled and no more than 500 `BOUNDING_BOX`-es per</span>
 <span class="doccomment">/// frame are allowed. If a whole video is unknown, then it should be</span>
 <span class="doccomment">/// mentioned just once with &quot;,,,,,,,,,,&quot; in place of `LABEL,</span>
-<span class="doccomment">/// [INSTANCE_ID],TIMESTAMP,BOUNDING_BOX`.</span>
+<span class="doccomment">/// \[INSTANCE_ID\],TIMESTAMP,BOUNDING_BOX`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Sample top level CSV file:</span>
 <span class="doccomment">///</span>
@@ -4339,8 +4337,8 @@
 <span class="doccomment">/// **In-line JSONL files**</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// In-line .JSONL files contain, per line, a JSON document that wraps a</span>
-<span class="doccomment">/// [`text_snippet`][google.cloud.automl.v1.TextSnippet] field followed by</span>
-<span class="doccomment">/// one or more [`annotations`][google.cloud.automl.v1.AnnotationPayload]</span>
+<span class="doccomment">/// \[`text_snippet`][google.cloud.automl.v1.TextSnippet\] field followed by</span>
+<span class="doccomment">/// one or more \[`annotations`][google.cloud.automl.v1.AnnotationPayload\]</span>
 <span class="doccomment">/// fields, which have `display_name` and `text_extraction` fields to describe</span>
 <span class="doccomment">/// the entity from the text snippet. Multiple JSON documents can be separated</span>
 <span class="doccomment">/// using line breaks (\n).</span>
@@ -4489,7 +4487,7 @@
 <span class="doccomment">/// &lt;/section&gt;&lt;section&gt;&lt;h5&gt;Classification&lt;/h5&gt;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [Preparing your training</span>
-<span class="doccomment">/// data](https://cloud.google.com/natural-language/automl/docs/prepare) for more</span>
+<span class="doccomment">/// data](&lt;https://cloud.google.com/natural-language/automl/docs/prepare&gt;) for more</span>
 <span class="doccomment">/// information.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// One or more CSV file(s) with each line in the following format:</span>
@@ -4536,7 +4534,7 @@
 <span class="doccomment">/// &lt;/section&gt;&lt;section&gt;&lt;h5&gt;Sentiment Analysis&lt;/h5&gt;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [Preparing your training</span>
-<span class="doccomment">/// data](https://cloud.google.com/natural-language/automl/docs/prepare) for more</span>
+<span class="doccomment">/// data](&lt;https://cloud.google.com/natural-language/automl/docs/prepare&gt;) for more</span>
 <span class="doccomment">/// information.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// CSV file(s) with each line in format:</span>
@@ -4599,16 +4597,16 @@
 <span class="doccomment">/// class=&quot;selected&quot;&gt;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [Preparing your training</span>
-<span class="doccomment">/// data](https://cloud.google.com/automl-tables/docs/prepare) for more</span>
+<span class="doccomment">/// data](&lt;https://cloud.google.com/automl-tables/docs/prepare&gt;) for more</span>
 <span class="doccomment">/// information.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// You can use either</span>
-<span class="doccomment">/// [gcs_source][google.cloud.automl.v1.InputConfig.gcs_source] or</span>
-<span class="doccomment">/// [bigquery_source][google.cloud.automl.v1.InputConfig.bigquery_source].</span>
+<span class="doccomment">/// \[gcs_source][google.cloud.automl.v1.InputConfig.gcs_source\] or</span>
+<span class="doccomment">/// \[bigquery_source][google.cloud.automl.v1.InputConfig.bigquery_source\].</span>
 <span class="doccomment">/// All input is concatenated into a</span>
 <span class="doccomment">/// single</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [primary_table_spec_id][google.cloud.automl.v1.TablesDatasetMetadata.primary_table_spec_id]</span>
+<span class="doccomment">/// \[primary_table_spec_id][google.cloud.automl.v1.TablesDatasetMetadata.primary_table_spec_id\]</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// **For gcs_source:**</span>
 <span class="doccomment">///</span>
@@ -4625,9 +4623,9 @@
 <span class="doccomment">/// &lt;pre&gt;</span>
 <span class="doccomment">/// &quot;Id&quot;,&quot;First Name&quot;,&quot;Last Name&quot;,&quot;Dob&quot;,&quot;Addresses&quot;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// &quot;1&quot;,&quot;John&quot;,&quot;Doe&quot;,&quot;1968-01-22&quot;,&quot;[{&quot;status&quot;:&quot;current&quot;,&quot;address&quot;:&quot;123_First_Avenue&quot;,&quot;city&quot;:&quot;Seattle&quot;,&quot;state&quot;:&quot;WA&quot;,&quot;zip&quot;:&quot;11111&quot;,&quot;numberOfYears&quot;:&quot;1&quot;},{&quot;status&quot;:&quot;previous&quot;,&quot;address&quot;:&quot;456_Main_Street&quot;,&quot;city&quot;:&quot;Portland&quot;,&quot;state&quot;:&quot;OR&quot;,&quot;zip&quot;:&quot;22222&quot;,&quot;numberOfYears&quot;:&quot;5&quot;}]&quot;</span>
+<span class="doccomment">/// &quot;1&quot;,&quot;John&quot;,&quot;Doe&quot;,&quot;1968-01-22&quot;,&quot;\[{&quot;status&quot;:&quot;current&quot;,&quot;address&quot;:&quot;123_First_Avenue&quot;,&quot;city&quot;:&quot;Seattle&quot;,&quot;state&quot;:&quot;WA&quot;,&quot;zip&quot;:&quot;11111&quot;,&quot;numberOfYears&quot;:&quot;1&quot;},{&quot;status&quot;:&quot;previous&quot;,&quot;address&quot;:&quot;456_Main_Street&quot;,&quot;city&quot;:&quot;Portland&quot;,&quot;state&quot;:&quot;OR&quot;,&quot;zip&quot;:&quot;22222&quot;,&quot;numberOfYears&quot;:&quot;5&quot;}\]&quot;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// &quot;2&quot;,&quot;Jane&quot;,&quot;Doe&quot;,&quot;1980-10-16&quot;,&quot;[{&quot;status&quot;:&quot;current&quot;,&quot;address&quot;:&quot;789_Any_Avenue&quot;,&quot;city&quot;:&quot;Albany&quot;,&quot;state&quot;:&quot;NY&quot;,&quot;zip&quot;:&quot;33333&quot;,&quot;numberOfYears&quot;:&quot;2&quot;},{&quot;status&quot;:&quot;previous&quot;,&quot;address&quot;:&quot;321_Main_Street&quot;,&quot;city&quot;:&quot;Hoboken&quot;,&quot;state&quot;:&quot;NJ&quot;,&quot;zip&quot;:&quot;44444&quot;,&quot;numberOfYears&quot;:&quot;3&quot;}]}</span>
+<span class="doccomment">/// &quot;2&quot;,&quot;Jane&quot;,&quot;Doe&quot;,&quot;1980-10-16&quot;,&quot;\[{&quot;status&quot;:&quot;current&quot;,&quot;address&quot;:&quot;789_Any_Avenue&quot;,&quot;city&quot;:&quot;Albany&quot;,&quot;state&quot;:&quot;NY&quot;,&quot;zip&quot;:&quot;33333&quot;,&quot;numberOfYears&quot;:&quot;2&quot;},{&quot;status&quot;:&quot;previous&quot;,&quot;address&quot;:&quot;321_Main_Street&quot;,&quot;city&quot;:&quot;Hoboken&quot;,&quot;state&quot;:&quot;NJ&quot;,&quot;zip&quot;:&quot;44444&quot;,&quot;numberOfYears&quot;:&quot;3&quot;}\]}</span>
 <span class="doccomment">/// &lt;/pre&gt;</span>
 <span class="doccomment">/// **For bigquery_source:**</span>
 <span class="doccomment">///</span>
@@ -4742,17 +4740,17 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
         <span class="doccomment">/// The Google Cloud Storage location for the input content.</span>
-        <span class="doccomment">/// For [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData], `gcs_source` points to a CSV file with</span>
-        <span class="doccomment">/// a structure described in [InputConfig][google.cloud.automl.v1.InputConfig].</span>
+        <span class="doccomment">/// For \[AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData\], `gcs_source` points to a CSV file with</span>
+        <span class="doccomment">/// a structure described in \[InputConfig][google.cloud.automl.v1.InputConfig\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsSource</span>(<span class="kw">super</span><span class="ident">::GcsSource</span>),
+        <span class="ident">GcsSource</span>(<span class="ident"><span class="kw">super</span>::GcsSource</span>),
     }
 }
 <span class="doccomment">/// Input configuration for BatchPredict Action.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The format of input depends on the ML problem of the model used for</span>
 <span class="doccomment">/// prediction. As input source the</span>
-<span class="doccomment">/// [gcs_source][google.cloud.automl.v1.InputConfig.gcs_source]</span>
+<span class="doccomment">/// \[gcs_source][google.cloud.automl.v1.InputConfig.gcs_source\]</span>
 <span class="doccomment">/// is expected, unless specified otherwise.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The formats are represented in EBNF with commas being literal and with</span>
@@ -4873,7 +4871,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// One or more JSONL (JSON Lines) files that either provide inline text or</span>
 <span class="doccomment">/// documents. You can only use one format, either inline text or documents,</span>
-<span class="doccomment">/// for a single call to [AutoMl.BatchPredict].</span>
+<span class="doccomment">/// for a single call to \[AutoMl.BatchPredict\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Each JSONL file contains a per line a proto that</span>
 <span class="doccomment">/// wraps a temporary user-assigned TextSnippet ID (string up to 2000</span>
@@ -4946,13 +4944,13 @@
 <span class="doccomment">/// class=&quot;selected&quot;&gt;</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// See [Preparing your training</span>
-<span class="doccomment">/// data](https://cloud.google.com/automl-tables/docs/predict-batch) for more</span>
+<span class="doccomment">/// data](&lt;https://cloud.google.com/automl-tables/docs/predict-batch&gt;) for more</span>
 <span class="doccomment">/// information.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// You can use either</span>
-<span class="doccomment">/// [gcs_source][google.cloud.automl.v1.BatchPredictInputConfig.gcs_source]</span>
+<span class="doccomment">/// \[gcs_source][google.cloud.automl.v1.BatchPredictInputConfig.gcs_source\]</span>
 <span class="doccomment">/// or</span>
-<span class="doccomment">/// [bigquery_source][BatchPredictInputConfig.bigquery_source].</span>
+<span class="doccomment">/// \[bigquery_source][BatchPredictInputConfig.bigquery_source\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// **For gcs_source:**</span>
 <span class="doccomment">///</span>
@@ -4964,8 +4962,8 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The column names must contain the model&#39;s</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [input_feature_column_specs&#39;][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs]</span>
-<span class="doccomment">/// [display_name-s][google.cloud.automl.v1.ColumnSpec.display_name]</span>
+<span class="doccomment">/// \[input_feature_column_specs&#39;][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs\]</span>
+<span class="doccomment">/// \[display_name-s][google.cloud.automl.v1.ColumnSpec.display_name\]</span>
 <span class="doccomment">/// (order doesn&#39;t matter). The columns corresponding to the model&#39;s</span>
 <span class="doccomment">/// input feature column specs must contain values compatible with the</span>
 <span class="doccomment">/// column spec&#39;s data types. Prediction on all the rows, i.e. the CSV</span>
@@ -4976,9 +4974,9 @@
 <span class="doccomment">/// &lt;pre&gt;</span>
 <span class="doccomment">/// &quot;First Name&quot;,&quot;Last Name&quot;,&quot;Dob&quot;,&quot;Addresses&quot;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// &quot;John&quot;,&quot;Doe&quot;,&quot;1968-01-22&quot;,&quot;[{&quot;status&quot;:&quot;current&quot;,&quot;address&quot;:&quot;123_First_Avenue&quot;,&quot;city&quot;:&quot;Seattle&quot;,&quot;state&quot;:&quot;WA&quot;,&quot;zip&quot;:&quot;11111&quot;,&quot;numberOfYears&quot;:&quot;1&quot;},{&quot;status&quot;:&quot;previous&quot;,&quot;address&quot;:&quot;456_Main_Street&quot;,&quot;city&quot;:&quot;Portland&quot;,&quot;state&quot;:&quot;OR&quot;,&quot;zip&quot;:&quot;22222&quot;,&quot;numberOfYears&quot;:&quot;5&quot;}]&quot;</span>
+<span class="doccomment">/// &quot;John&quot;,&quot;Doe&quot;,&quot;1968-01-22&quot;,&quot;\[{&quot;status&quot;:&quot;current&quot;,&quot;address&quot;:&quot;123_First_Avenue&quot;,&quot;city&quot;:&quot;Seattle&quot;,&quot;state&quot;:&quot;WA&quot;,&quot;zip&quot;:&quot;11111&quot;,&quot;numberOfYears&quot;:&quot;1&quot;},{&quot;status&quot;:&quot;previous&quot;,&quot;address&quot;:&quot;456_Main_Street&quot;,&quot;city&quot;:&quot;Portland&quot;,&quot;state&quot;:&quot;OR&quot;,&quot;zip&quot;:&quot;22222&quot;,&quot;numberOfYears&quot;:&quot;5&quot;}\]&quot;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// &quot;Jane&quot;,&quot;Doe&quot;,&quot;1980-10-16&quot;,&quot;[{&quot;status&quot;:&quot;current&quot;,&quot;address&quot;:&quot;789_Any_Avenue&quot;,&quot;city&quot;:&quot;Albany&quot;,&quot;state&quot;:&quot;NY&quot;,&quot;zip&quot;:&quot;33333&quot;,&quot;numberOfYears&quot;:&quot;2&quot;},{&quot;status&quot;:&quot;previous&quot;,&quot;address&quot;:&quot;321_Main_Street&quot;,&quot;city&quot;:&quot;Hoboken&quot;,&quot;state&quot;:&quot;NJ&quot;,&quot;zip&quot;:&quot;44444&quot;,&quot;numberOfYears&quot;:&quot;3&quot;}]}</span>
+<span class="doccomment">/// &quot;Jane&quot;,&quot;Doe&quot;,&quot;1980-10-16&quot;,&quot;\[{&quot;status&quot;:&quot;current&quot;,&quot;address&quot;:&quot;789_Any_Avenue&quot;,&quot;city&quot;:&quot;Albany&quot;,&quot;state&quot;:&quot;NY&quot;,&quot;zip&quot;:&quot;33333&quot;,&quot;numberOfYears&quot;:&quot;2&quot;},{&quot;status&quot;:&quot;previous&quot;,&quot;address&quot;:&quot;321_Main_Street&quot;,&quot;city&quot;:&quot;Hoboken&quot;,&quot;state&quot;:&quot;NJ&quot;,&quot;zip&quot;:&quot;44444&quot;,&quot;numberOfYears&quot;:&quot;3&quot;}\]}</span>
 <span class="doccomment">/// &lt;/pre&gt;</span>
 <span class="doccomment">/// **For bigquery_source:**</span>
 <span class="doccomment">///</span>
@@ -4987,8 +4985,8 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// The column names must contain the model&#39;s</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [input_feature_column_specs&#39;][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs]</span>
-<span class="doccomment">/// [display_name-s][google.cloud.automl.v1.ColumnSpec.display_name]</span>
+<span class="doccomment">/// \[input_feature_column_specs&#39;][google.cloud.automl.v1.TablesModelMetadata.input_feature_column_specs\]</span>
+<span class="doccomment">/// \[display_name-s][google.cloud.automl.v1.ColumnSpec.display_name\]</span>
 <span class="doccomment">/// (order doesn&#39;t matter). The columns corresponding to the model&#39;s</span>
 <span class="doccomment">/// input feature column specs must contain values compatible with the</span>
 <span class="doccomment">/// column spec&#39;s data types. Prediction on all the rows of the table</span>
@@ -5039,10 +5037,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Source</span> {
         <span class="doccomment">/// Required. The Google Cloud Storage location for the input content.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsSource</span>(<span class="kw">super</span><span class="ident">::GcsSource</span>),
+        <span class="ident">GcsSource</span>(<span class="ident"><span class="kw">super</span>::GcsSource</span>),
     }
 }
-<span class="doccomment">/// Input configuration of a [Document][google.cloud.automl.v1.Document].</span>
+<span class="doccomment">/// Input configuration of a \[Document][google.cloud.automl.v1.Document\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DocumentInputConfig</span> {
     <span class="doccomment">/// The Google Cloud Storage location of the document file. Only a single path</span>
@@ -5067,14 +5065,14 @@
 <span class="doccomment">///         Storage or BigQuery.</span>
 <span class="doccomment">///         Google Cloud Storage case:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [gcs_destination][google.cloud.automl.v1p1beta.OutputConfig.gcs_destination]</span>
+<span class="doccomment">/// \[gcs_destination][google.cloud.automl.v1p1beta.OutputConfig.gcs_destination\]</span>
 <span class="doccomment">///           must be set. Exported are CSV file(s) `tables_1.csv`,</span>
 <span class="doccomment">///           `tables_2.csv`,...,`tables_N.csv` with each having as header line</span>
 <span class="doccomment">///           the table&#39;s column names, and all other lines contain values for</span>
 <span class="doccomment">///           the header columns.</span>
 <span class="doccomment">///         BigQuery case:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]</span>
+<span class="doccomment">/// \[bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination\]</span>
 <span class="doccomment">///           pointing to a BigQuery project must be set. In the given project a</span>
 <span class="doccomment">///           new dataset will be created with name</span>
 <span class="doccomment">///</span>
@@ -5103,14 +5101,14 @@
         <span class="doccomment">/// timestamp is in YYYY-MM-DDThh:mm:ss.sssZ ISO-8601 format. All export</span>
         <span class="doccomment">/// output will be written into that directory.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
     }
 }
 <span class="doccomment">/// Output configuration for BatchPredict Action.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// As destination the</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [gcs_destination][google.cloud.automl.v1.BatchPredictOutputConfig.gcs_destination]</span>
+<span class="doccomment">/// \[gcs_destination][google.cloud.automl.v1.BatchPredictOutputConfig.gcs_destination\]</span>
 <span class="doccomment">/// must be set unless specified otherwise for a domain. If gcs_destination is</span>
 <span class="doccomment">/// set then in the given directory a new directory is created. Its name</span>
 <span class="doccomment">/// will be</span>
@@ -5136,7 +5134,7 @@
 <span class="doccomment">///         that wraps the same &quot;ID&quot; : &quot;&lt;id_value&gt;&quot; but here followed by</span>
 <span class="doccomment">///         exactly one</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`google.rpc.Status`](https:</span>
+<span class="doccomment">/// \[`google.rpc.Status`\](https:</span>
 <span class="doccomment">/// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)</span>
 <span class="doccomment">///         containing only `code` and `message`fields.</span>
 <span class="doccomment">///</span>
@@ -5158,7 +5156,7 @@
 <span class="doccomment">///         that wraps the same &quot;ID&quot; : &quot;&lt;id_value&gt;&quot; but here followed by</span>
 <span class="doccomment">///         exactly one</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`google.rpc.Status`](https:</span>
+<span class="doccomment">/// \[`google.rpc.Status`\](https:</span>
 <span class="doccomment">/// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)</span>
 <span class="doccomment">///         containing only `code` and `message`fields.</span>
 <span class="doccomment">///  *  For Video Classification:</span>
@@ -5186,7 +5184,7 @@
 <span class="doccomment">///         video_classification field set, and will be sorted by</span>
 <span class="doccomment">///         video_classification.type field (note that the returned types are</span>
 <span class="doccomment">///         governed by `classifaction_types` parameter in</span>
-<span class="doccomment">///         [PredictService.BatchPredictRequest.params][]).</span>
+<span class="doccomment">///         \[PredictService.BatchPredictRequest.params][\]).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///  *  For Video Object Tracking:</span>
 <span class="doccomment">///         In the created directory a video_object_tracking.csv file will be</span>
@@ -5233,7 +5231,7 @@
 <span class="doccomment">///         failed predictions). These files will have a JSON representation of a</span>
 <span class="doccomment">///         proto that wraps input file followed by exactly one</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`google.rpc.Status`](https:</span>
+<span class="doccomment">/// \[`google.rpc.Status`\](https:</span>
 <span class="doccomment">/// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)</span>
 <span class="doccomment">///         containing only `code` and `message`.</span>
 <span class="doccomment">///</span>
@@ -5257,7 +5255,7 @@
 <span class="doccomment">///         failed predictions). These files will have a JSON representation of a</span>
 <span class="doccomment">///         proto that wraps input file followed by exactly one</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`google.rpc.Status`](https:</span>
+<span class="doccomment">/// \[`google.rpc.Status`\](https:</span>
 <span class="doccomment">/// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)</span>
 <span class="doccomment">///         containing only `code` and `message`.</span>
 <span class="doccomment">///</span>
@@ -5293,17 +5291,17 @@
 <span class="doccomment">///         or the document proto (in case of document) but here followed by</span>
 <span class="doccomment">///         exactly one</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`google.rpc.Status`](https:</span>
+<span class="doccomment">/// \[`google.rpc.Status`\](https:</span>
 <span class="doccomment">/// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)</span>
 <span class="doccomment">///         containing only `code` and `message`.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">///  *  For Tables:</span>
 <span class="doccomment">///         Output depends on whether</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [gcs_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.gcs_destination]</span>
+<span class="doccomment">/// \[gcs_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.gcs_destination\]</span>
 <span class="doccomment">///         or</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [bigquery_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.bigquery_destination]</span>
+<span class="doccomment">/// \[bigquery_destination][google.cloud.automl.v1p1beta.BatchPredictOutputConfig.bigquery_destination\]</span>
 <span class="doccomment">///         is set (either is allowed).</span>
 <span class="doccomment">///         Google Cloud Storage case:</span>
 <span class="doccomment">///           In the created directory files `tables_1.csv`, `tables_2.csv`,...,</span>
@@ -5311,32 +5309,32 @@
 <span class="doccomment">///           the total number of the successfully predicted rows.</span>
 <span class="doccomment">///           For all CLASSIFICATION</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:</span>
+<span class="doccomment">/// \[prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type\]:</span>
 <span class="doccomment">///             Each .csv file will contain a header, listing all columns&#39;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]</span>
+<span class="doccomment">/// \[display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]</span>
 <span class="doccomment">///             given on input followed by M target column names in the format of</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// &quot;&lt;[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]</span>
+<span class="doccomment">/// &quot;&lt;\[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec\]</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]&gt;_&lt;target</span>
+<span class="doccomment">/// \[display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]&gt;_&lt;target</span>
 <span class="doccomment">///             value&gt;_score&quot; where M is the number of distinct target values,</span>
 <span class="doccomment">///             i.e. number of distinct values in the target column of the table</span>
 <span class="doccomment">///             used to train the model. Subsequent lines will contain the</span>
 <span class="doccomment">///             respective values of successfully predicted rows, with the last,</span>
 <span class="doccomment">///             i.e. the target, columns having the corresponding prediction</span>
-<span class="doccomment">///             [scores][google.cloud.automl.v1p1beta.TablesAnnotation.score].</span>
+<span class="doccomment">///             \[scores][google.cloud.automl.v1p1beta.TablesAnnotation.score\].</span>
 <span class="doccomment">///           For REGRESSION and FORECASTING</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type]:</span>
+<span class="doccomment">/// \[prediction_type-s][google.cloud.automl.v1p1beta.TablesModelMetadata.prediction_type\]:</span>
 <span class="doccomment">///             Each .csv file will contain a header, listing all columns&#39;</span>
-<span class="doccomment">///             [display_name-s][google.cloud.automl.v1p1beta.display_name]</span>
+<span class="doccomment">///             \[display_name-s][google.cloud.automl.v1p1beta.display_name\]</span>
 <span class="doccomment">///             given on input followed by the predicted target column with name</span>
 <span class="doccomment">///             in the format of</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// &quot;predicted_&lt;[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]</span>
+<span class="doccomment">/// &quot;predicted_&lt;\[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec\]</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]&gt;&quot;</span>
+<span class="doccomment">/// \[display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]&gt;&quot;</span>
 <span class="doccomment">///             Subsequent lines will contain the respective values of</span>
 <span class="doccomment">///             successfully predicted rows, with the last, i.e. the target,</span>
 <span class="doccomment">///             column having the predicted target value.</span>
@@ -5346,13 +5344,13 @@
 <span class="doccomment">///             will have analogous format as `tables_*.csv`, but always with a</span>
 <span class="doccomment">///             single target column having</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`google.rpc.Status`](https:</span>
+<span class="doccomment">/// \[`google.rpc.Status`\](https:</span>
 <span class="doccomment">/// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)</span>
 <span class="doccomment">///             represented as a JSON string, and containing only `code` and</span>
 <span class="doccomment">///             `message`.</span>
 <span class="doccomment">///         BigQuery case:</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination]</span>
+<span class="doccomment">/// \[bigquery_destination][google.cloud.automl.v1p1beta.OutputConfig.bigquery_destination\]</span>
 <span class="doccomment">///           pointing to a BigQuery project must be set. In the given project a</span>
 <span class="doccomment">///           new dataset will be created with name</span>
 <span class="doccomment">///           `prediction_&lt;model-display-name&gt;_&lt;timestamp-of-prediction-call&gt;`</span>
@@ -5363,29 +5361,29 @@
 <span class="doccomment">///           two tables will be created, `predictions`, and `errors`.</span>
 <span class="doccomment">///           The `predictions` table&#39;s column names will be the input columns&#39;</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name]</span>
+<span class="doccomment">/// \[display_name-s][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]</span>
 <span class="doccomment">///           followed by the target column with name in the format of</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// &quot;predicted_&lt;[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]</span>
+<span class="doccomment">/// &quot;predicted_&lt;\[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec\]</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]&gt;&quot;</span>
+<span class="doccomment">/// \[display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]&gt;&quot;</span>
 <span class="doccomment">///           The input feature columns will contain the respective values of</span>
 <span class="doccomment">///           successfully predicted rows, with the target column having an</span>
 <span class="doccomment">///           ARRAY of</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [AnnotationPayloads][google.cloud.automl.v1p1beta.AnnotationPayload],</span>
+<span class="doccomment">/// \[AnnotationPayloads][google.cloud.automl.v1p1beta.AnnotationPayload\],</span>
 <span class="doccomment">///           represented as STRUCT-s, containing</span>
-<span class="doccomment">///           [TablesAnnotation][google.cloud.automl.v1p1beta.TablesAnnotation].</span>
+<span class="doccomment">///           \[TablesAnnotation][google.cloud.automl.v1p1beta.TablesAnnotation\].</span>
 <span class="doccomment">///           The `errors` table contains rows for which the prediction has</span>
 <span class="doccomment">///           failed, it has analogous input columns while the target column name</span>
 <span class="doccomment">///           is in the format of</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// &quot;errors_&lt;[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec]</span>
+<span class="doccomment">/// &quot;errors_&lt;\[target_column_specs][google.cloud.automl.v1p1beta.TablesModelMetadata.target_column_spec\]</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name]&gt;&quot;,</span>
+<span class="doccomment">/// \[display_name][google.cloud.automl.v1p1beta.ColumnSpec.display_name\]&gt;&quot;,</span>
 <span class="doccomment">///           and as a value has</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// [`google.rpc.Status`](https:</span>
+<span class="doccomment">/// \[`google.rpc.Status`\](https:</span>
 <span class="doccomment">/// //github.com/googleapis/googleapis/blob/master/google/rpc/status.proto)</span>
 <span class="doccomment">///           represented as a STRUCT, and containing only `code` and `message`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -5402,7 +5400,7 @@
         <span class="doccomment">/// Required. The Google Cloud Storage location of the directory where the output is to</span>
         <span class="doccomment">/// be written to.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
     }
 }
 <span class="doccomment">/// Output configuration for ModelExport Action.</span>
@@ -5428,10 +5426,10 @@
     <span class="doccomment">/// Formats description:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// * tflite - Used for Android mobile devices.</span>
-    <span class="doccomment">/// * edgetpu_tflite - Used for [Edge TPU](https://cloud.google.com/edge-tpu/)</span>
+    <span class="doccomment">/// * edgetpu_tflite - Used for [Edge TPU](&lt;https://cloud.google.com/edge-tpu/&gt;)</span>
     <span class="doccomment">///                    devices.</span>
     <span class="doccomment">/// * tf_saved_model - A tensorflow model in SavedModel format.</span>
-    <span class="doccomment">/// * tf_js - A [TensorFlow.js](https://www.tensorflow.org/js) model that can</span>
+    <span class="doccomment">/// * tf_js - A \[TensorFlow.js\](&lt;https://www.tensorflow.org/js&gt;) model that can</span>
     <span class="doccomment">///           be used in the browser and in Node.js using JavaScript.</span>
     <span class="doccomment">/// * docker - Used for Docker containers. Use the params field to customize</span>
     <span class="doccomment">///            the container. The container is verified to work correctly on</span>
@@ -5472,7 +5470,7 @@
         <span class="doccomment">///  will be created. Inside the model and any of its supporting files</span>
         <span class="doccomment">///  will be written.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">GcsDestination</span>(<span class="kw">super</span><span class="ident">::GcsDestination</span>),
+        <span class="ident">GcsDestination</span>(<span class="ident"><span class="kw">super</span>::GcsDestination</span>),
     }
 }
 <span class="doccomment">/// The Google Cloud Storage location for the input content.</span>
@@ -5504,14 +5502,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">thumbnail_uri</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Input only. The data representing the image.</span>
-    <span class="doccomment">/// For Predict calls [image_bytes][google.cloud.automl.v1.Image.image_bytes] must be set .</span>
+    <span class="doccomment">/// For Predict calls \[image_bytes][google.cloud.automl.v1.Image.image_bytes\] must be set .</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;image::Data&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">data</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">image::Data</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Nested message and enum types in `Image`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">image</span> {
     <span class="doccomment">/// Input only. The data representing the image.</span>
-    <span class="doccomment">/// For Predict calls [image_bytes][google.cloud.automl.v1.Image.image_bytes] must be set .</span>
+    <span class="doccomment">/// For Predict calls \[image_bytes][google.cloud.automl.v1.Image.image_bytes\] must be set .</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Data</span> {
         <span class="doccomment">/// Image content represented as a stream of bytes.</span>
@@ -5528,9 +5526,9 @@
     <span class="doccomment">/// characters long.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">content</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Optional. The format of [content][google.cloud.automl.v1.TextSnippet.content]. Currently the only two allowed</span>
+    <span class="doccomment">/// Optional. The format of \[content][google.cloud.automl.v1.TextSnippet.content\]. Currently the only two allowed</span>
     <span class="doccomment">/// values are &quot;text/html&quot; and &quot;text/plain&quot;. If left blank, the format is</span>
-    <span class="doccomment">/// automatically determined from the type of the uploaded [content][google.cloud.automl.v1.TextSnippet.content].</span>
+    <span class="doccomment">/// automatically determined from the type of the uploaded \[content][google.cloud.automl.v1.TextSnippet.content\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">mime_type</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. HTTP URI where you can download the content.</span>
@@ -5576,7 +5574,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">document_text</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TextSnippet</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Describes the layout of the document.</span>
-    <span class="doccomment">/// Sorted by [page_number][].</span>
+    <span class="doccomment">/// Sorted by \[page_number][\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">layout</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">document::Layout</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The dimensions of the page in the document.</span>
@@ -5588,29 +5586,29 @@
 }
 <span class="doccomment">/// Nested message and enum types in `Document`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">document</span> {
-    <span class="doccomment">/// Describes the layout information of a [text_segment][google.cloud.automl.v1.Document.Layout.text_segment] in the document.</span>
+    <span class="doccomment">/// Describes the layout information of a \[text_segment][google.cloud.automl.v1.Document.Layout.text_segment\] in the document.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Layout</span> {
         <span class="doccomment">/// Text Segment that represents a segment in</span>
-        <span class="doccomment">/// [document_text][google.cloud.automl.v1p1beta.Document.document_text].</span>
+        <span class="doccomment">/// \[document_text][google.cloud.automl.v1p1beta.Document.document_text\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">text_segment</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TextSegment</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// Page number of the [text_segment][google.cloud.automl.v1.Document.Layout.text_segment] in the original document, starts</span>
+        <span class="kw">pub</span> <span class="ident">text_segment</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TextSegment</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// Page number of the \[text_segment][google.cloud.automl.v1.Document.Layout.text_segment\] in the original document, starts</span>
         <span class="doccomment">/// from 1.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">page_number</span>: <span class="ident">i32</span>,
-        <span class="doccomment">/// The position of the [text_segment][google.cloud.automl.v1.Document.Layout.text_segment] in the page.</span>
+        <span class="doccomment">/// The position of the \[text_segment][google.cloud.automl.v1.Document.Layout.text_segment\] in the page.</span>
         <span class="doccomment">/// Contains exactly 4</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// [normalized_vertices][google.cloud.automl.v1p1beta.BoundingPoly.normalized_vertices]</span>
+        <span class="doccomment">/// \[normalized_vertices][google.cloud.automl.v1p1beta.BoundingPoly.normalized_vertices\]</span>
         <span class="doccomment">/// and they are connected by edges in the order provided, which will</span>
         <span class="doccomment">/// represent a rectangle parallel to the frame. The</span>
-        <span class="doccomment">/// [NormalizedVertex-s][google.cloud.automl.v1p1beta.NormalizedVertex] are</span>
+        <span class="doccomment">/// \[NormalizedVertex-s][google.cloud.automl.v1p1beta.NormalizedVertex\] are</span>
         <span class="doccomment">/// relative to the page.</span>
         <span class="doccomment">/// Coordinates are based on top-left as point (0,0).</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">bounding_poly</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BoundingPoly</span><span class="op">&gt;</span>,
-        <span class="doccomment">/// The type of the [text_segment][google.cloud.automl.v1.Document.Layout.text_segment] in document.</span>
+        <span class="kw">pub</span> <span class="ident">bounding_poly</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BoundingPoly</span><span class="op">&gt;</span>,
+        <span class="doccomment">/// The type of the \[text_segment][google.cloud.automl.v1.Document.Layout.text_segment\] in document.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;layout::TextSegmentType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">text_segment_type</span>: <span class="ident">i32</span>,
     }
@@ -5669,13 +5667,13 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Payload</span> {
         <span class="doccomment">/// Example image.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Image</span>(<span class="kw">super</span><span class="ident">::Image</span>),
+        <span class="ident">Image</span>(<span class="ident"><span class="kw">super</span>::Image</span>),
         <span class="doccomment">/// Example text.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">TextSnippet</span>(<span class="kw">super</span><span class="ident">::TextSnippet</span>),
+        <span class="ident">TextSnippet</span>(<span class="ident"><span class="kw">super</span>::TextSnippet</span>),
         <span class="doccomment">/// Example document.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Document</span>(<span class="kw">super</span><span class="ident">::Document</span>),
+        <span class="ident">Document</span>(<span class="ident"><span class="kw">super</span>::Document</span>),
     }
 }
 <span class="doccomment">/// Dataset metadata that is specific to translation.</span>
@@ -5732,7 +5730,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">annotation_spec_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. The value of</span>
-    <span class="doccomment">/// [display_name][google.cloud.automl.v1.AnnotationSpec.display_name]</span>
+    <span class="doccomment">/// \[display_name][google.cloud.automl.v1.AnnotationSpec.display_name\]</span>
     <span class="doccomment">/// when the model was trained. Because this field returns a value at model</span>
     <span class="doccomment">/// training time, for different models trained using the same dataset, the</span>
     <span class="doccomment">/// returned value could be different as model owner could update the</span>
@@ -5752,19 +5750,19 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Detail</span> {
         <span class="doccomment">/// Annotation details for translation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Translation</span>(<span class="kw">super</span><span class="ident">::TranslationAnnotation</span>),
+        <span class="ident">Translation</span>(<span class="ident"><span class="kw">super</span>::TranslationAnnotation</span>),
         <span class="doccomment">/// Annotation details for content or image classification.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Classification</span>(<span class="kw">super</span><span class="ident">::ClassificationAnnotation</span>),
+        <span class="ident">Classification</span>(<span class="ident"><span class="kw">super</span>::ClassificationAnnotation</span>),
         <span class="doccomment">/// Annotation details for image object detection.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">ImageObjectDetection</span>(<span class="kw">super</span><span class="ident">::ImageObjectDetectionAnnotation</span>),
+        <span class="ident">ImageObjectDetection</span>(<span class="ident"><span class="kw">super</span>::ImageObjectDetectionAnnotation</span>),
         <span class="doccomment">/// Annotation details for text extraction.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">TextExtraction</span>(<span class="kw">super</span><span class="ident">::TextExtractionAnnotation</span>),
+        <span class="ident">TextExtraction</span>(<span class="ident"><span class="kw">super</span>::TextExtractionAnnotation</span>),
         <span class="doccomment">/// Annotation details for text sentiment.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">TextSentiment</span>(<span class="kw">super</span><span class="ident">::TextSentimentAnnotation</span>),
+        <span class="ident">TextSentiment</span>(<span class="ident"><span class="kw">super</span>::TextSentimentAnnotation</span>),
     }
 }
 <span class="doccomment">/// A definition of an annotation spec.</span>
@@ -5777,7 +5775,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The name of the annotation spec to show in the interface. The name can be</span>
-    <span class="doccomment">/// up to 32 characters long and must match the regexp `[a-zA-Z0-9_]+`.</span>
+    <span class="doccomment">/// up to 32 characters long and must match the regexp `\[a-zA-Z0-9_\]+`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">display_name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. The number of examples in the parent dataset</span>
@@ -5835,31 +5833,31 @@
     <span class="doccomment">///               This is the default value.</span>
     <span class="doccomment">/// *   `mobile-low-latency-1` - A model that, in addition to providing</span>
     <span class="doccomment">///               prediction via AutoML API, can also be exported (see</span>
-    <span class="doccomment">///               [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device</span>
+    <span class="doccomment">///               \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device</span>
     <span class="doccomment">///               with TensorFlow afterwards. Expected to have low latency, but</span>
     <span class="doccomment">///               may have lower prediction quality than other models.</span>
     <span class="doccomment">/// *   `mobile-versatile-1` - A model that, in addition to providing</span>
     <span class="doccomment">///               prediction via AutoML API, can also be exported (see</span>
-    <span class="doccomment">///               [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device</span>
+    <span class="doccomment">///               \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device</span>
     <span class="doccomment">///               with TensorFlow afterwards.</span>
     <span class="doccomment">/// *   `mobile-high-accuracy-1` - A model that, in addition to providing</span>
     <span class="doccomment">///               prediction via AutoML API, can also be exported (see</span>
-    <span class="doccomment">///               [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device</span>
+    <span class="doccomment">///               \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device</span>
     <span class="doccomment">///               with TensorFlow afterwards.  Expected to have a higher</span>
     <span class="doccomment">///               latency, but should also have a higher prediction quality</span>
     <span class="doccomment">///               than other models.</span>
     <span class="doccomment">/// *   `mobile-core-ml-low-latency-1` - A model that, in addition to providing</span>
     <span class="doccomment">///               prediction via AutoML API, can also be exported (see</span>
-    <span class="doccomment">///               [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with Core</span>
+    <span class="doccomment">///               \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile device with Core</span>
     <span class="doccomment">///               ML afterwards. Expected to have low latency, but may have</span>
     <span class="doccomment">///               lower prediction quality than other models.</span>
     <span class="doccomment">/// *   `mobile-core-ml-versatile-1` - A model that, in addition to providing</span>
     <span class="doccomment">///               prediction via AutoML API, can also be exported (see</span>
-    <span class="doccomment">///               [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with Core</span>
+    <span class="doccomment">///               \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile device with Core</span>
     <span class="doccomment">///               ML afterwards.</span>
     <span class="doccomment">/// *   `mobile-core-ml-high-accuracy-1` - A model that, in addition to</span>
     <span class="doccomment">///               providing prediction via AutoML API, can also be exported</span>
-    <span class="doccomment">///               (see [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile device with</span>
+    <span class="doccomment">///               (see \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile device with</span>
     <span class="doccomment">///               Core ML afterwards.  Expected to have a higher latency, but</span>
     <span class="doccomment">///               should also have a higher prediction quality than other</span>
     <span class="doccomment">///               models.</span>
@@ -5888,16 +5886,16 @@
     <span class="doccomment">///               have lower prediction quality than other models.</span>
     <span class="doccomment">/// *   `mobile-low-latency-1` - A model that, in addition to providing</span>
     <span class="doccomment">///               prediction via AutoML API, can also be exported (see</span>
-    <span class="doccomment">///               [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device</span>
+    <span class="doccomment">///               \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device</span>
     <span class="doccomment">///               with TensorFlow afterwards. Expected to have low latency, but</span>
     <span class="doccomment">///               may have lower prediction quality than other models.</span>
     <span class="doccomment">/// *   `mobile-versatile-1` - A model that, in addition to providing</span>
     <span class="doccomment">///               prediction via AutoML API, can also be exported (see</span>
-    <span class="doccomment">///               [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device</span>
+    <span class="doccomment">///               \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device</span>
     <span class="doccomment">///               with TensorFlow afterwards.</span>
     <span class="doccomment">/// *   `mobile-high-accuracy-1` - A model that, in addition to providing</span>
     <span class="doccomment">///               prediction via AutoML API, can also be exported (see</span>
-    <span class="doccomment">///               [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel]) and used on a mobile or edge device</span>
+    <span class="doccomment">///               \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\]) and used on a mobile or edge device</span>
     <span class="doccomment">///               with TensorFlow afterwards.  Expected to have a higher</span>
     <span class="doccomment">///               latency, but should also have a higher prediction quality</span>
     <span class="doccomment">///               than other models.</span>
@@ -5946,7 +5944,7 @@
     <span class="doccomment">/// abstraction of a machine resource, which can handle online prediction QPS</span>
     <span class="doccomment">/// as given in the model&#39;s</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [node_qps][google.cloud.automl.v1.ImageClassificationModelMetadata.node_qps].</span>
+    <span class="doccomment">/// \[node_qps][google.cloud.automl.v1.ImageClassificationModelMetadata.node_qps\].</span>
     <span class="doccomment">/// Must be between 1 and 100, inclusive on both ends.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">node_count</span>: <span class="ident">i64</span>,
@@ -5958,7 +5956,7 @@
     <span class="doccomment">/// abstraction of a machine resource, which can handle online prediction QPS</span>
     <span class="doccomment">/// as given in the model&#39;s</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [qps_per_node][google.cloud.automl.v1.ImageObjectDetectionModelMetadata.qps_per_node].</span>
+    <span class="doccomment">/// \[qps_per_node][google.cloud.automl.v1.ImageObjectDetectionModelMetadata.qps_per_node\].</span>
     <span class="doccomment">/// Must be between 1 and 100, inclusive on both ends.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">node_count</span>: <span class="ident">i64</span>,
@@ -6033,7 +6031,7 @@
     <span class="doccomment">/// characters, underscores and dashes. International characters are allowed.</span>
     <span class="doccomment">/// Label values are optional. Label keys must start with a letter.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See https://goo.gl/xmQnxf for more information on and examples of labels.</span>
+    <span class="doccomment">/// See &lt;https://goo.gl/xmQnxf&gt; for more information on and examples of labels.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;39&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -6050,22 +6048,22 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">DatasetMetadata</span> {
         <span class="doccomment">/// Metadata for a dataset used for translation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;23&quot;</span>)]</span>
-        <span class="ident">TranslationDatasetMetadata</span>(<span class="kw">super</span><span class="ident">::TranslationDatasetMetadata</span>),
+        <span class="ident">TranslationDatasetMetadata</span>(<span class="ident"><span class="kw">super</span>::TranslationDatasetMetadata</span>),
         <span class="doccomment">/// Metadata for a dataset used for image classification.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;24&quot;</span>)]</span>
-        <span class="ident">ImageClassificationDatasetMetadata</span>(<span class="kw">super</span><span class="ident">::ImageClassificationDatasetMetadata</span>),
+        <span class="ident">ImageClassificationDatasetMetadata</span>(<span class="ident"><span class="kw">super</span>::ImageClassificationDatasetMetadata</span>),
         <span class="doccomment">/// Metadata for a dataset used for text classification.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;25&quot;</span>)]</span>
-        <span class="ident">TextClassificationDatasetMetadata</span>(<span class="kw">super</span><span class="ident">::TextClassificationDatasetMetadata</span>),
+        <span class="ident">TextClassificationDatasetMetadata</span>(<span class="ident"><span class="kw">super</span>::TextClassificationDatasetMetadata</span>),
         <span class="doccomment">/// Metadata for a dataset used for image object detection.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;26&quot;</span>)]</span>
-        <span class="ident">ImageObjectDetectionDatasetMetadata</span>(<span class="kw">super</span><span class="ident">::ImageObjectDetectionDatasetMetadata</span>),
+        <span class="ident">ImageObjectDetectionDatasetMetadata</span>(<span class="ident"><span class="kw">super</span>::ImageObjectDetectionDatasetMetadata</span>),
         <span class="doccomment">/// Metadata for a dataset used for text extraction.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;28&quot;</span>)]</span>
-        <span class="ident">TextExtractionDatasetMetadata</span>(<span class="kw">super</span><span class="ident">::TextExtractionDatasetMetadata</span>),
+        <span class="ident">TextExtractionDatasetMetadata</span>(<span class="ident"><span class="kw">super</span>::TextExtractionDatasetMetadata</span>),
         <span class="doccomment">/// Metadata for a dataset used for text sentiment.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;30&quot;</span>)]</span>
-        <span class="ident">TextSentimentDatasetMetadata</span>(<span class="kw">super</span><span class="ident">::TextSentimentDatasetMetadata</span>),
+        <span class="ident">TextSentimentDatasetMetadata</span>(<span class="ident"><span class="kw">super</span>::TextSentimentDatasetMetadata</span>),
     }
 }
 <span class="doccomment">/// API proto representing a trained machine learning model.</span>
@@ -6106,7 +6104,7 @@
     <span class="doccomment">/// characters, underscores and dashes. International characters are allowed.</span>
     <span class="doccomment">/// Label values are optional. Label keys must start with a letter.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// See https://goo.gl/xmQnxf for more information on and examples of labels.</span>
+    <span class="doccomment">/// See &lt;https://goo.gl/xmQnxf&gt; for more information on and examples of labels.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;34&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -6136,22 +6134,22 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ModelMetadata</span> {
         <span class="doccomment">/// Metadata for translation models.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
-        <span class="ident">TranslationModelMetadata</span>(<span class="kw">super</span><span class="ident">::TranslationModelMetadata</span>),
+        <span class="ident">TranslationModelMetadata</span>(<span class="ident"><span class="kw">super</span>::TranslationModelMetadata</span>),
         <span class="doccomment">/// Metadata for image classification models.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
-        <span class="ident">ImageClassificationModelMetadata</span>(<span class="kw">super</span><span class="ident">::ImageClassificationModelMetadata</span>),
+        <span class="ident">ImageClassificationModelMetadata</span>(<span class="ident"><span class="kw">super</span>::ImageClassificationModelMetadata</span>),
         <span class="doccomment">/// Metadata for text classification models.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
-        <span class="ident">TextClassificationModelMetadata</span>(<span class="kw">super</span><span class="ident">::TextClassificationModelMetadata</span>),
+        <span class="ident">TextClassificationModelMetadata</span>(<span class="ident"><span class="kw">super</span>::TextClassificationModelMetadata</span>),
         <span class="doccomment">/// Metadata for image object detection models.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;20&quot;</span>)]</span>
-        <span class="ident">ImageObjectDetectionModelMetadata</span>(<span class="kw">super</span><span class="ident">::ImageObjectDetectionModelMetadata</span>),
+        <span class="ident">ImageObjectDetectionModelMetadata</span>(<span class="ident"><span class="kw">super</span>::ImageObjectDetectionModelMetadata</span>),
         <span class="doccomment">/// Metadata for text extraction models.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;19&quot;</span>)]</span>
-        <span class="ident">TextExtractionModelMetadata</span>(<span class="kw">super</span><span class="ident">::TextExtractionModelMetadata</span>),
+        <span class="ident">TextExtractionModelMetadata</span>(<span class="ident"><span class="kw">super</span>::TextExtractionModelMetadata</span>),
         <span class="doccomment">/// Metadata for text sentiment models.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;22&quot;</span>)]</span>
-        <span class="ident">TextSentimentModelMetadata</span>(<span class="kw">super</span><span class="ident">::TextSentimentModelMetadata</span>),
+        <span class="ident">TextSentimentModelMetadata</span>(<span class="ident"><span class="kw">super</span>::TextSentimentModelMetadata</span>),
     }
 }
 <span class="doccomment">/// Evaluation results of a model.</span>
@@ -6168,20 +6166,20 @@
     <span class="doccomment">/// For Tables annotation specs in the dataset do not exist and this ID is</span>
     <span class="doccomment">/// always not set, but for CLASSIFICATION</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type]</span>
+    <span class="doccomment">/// \[prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type\]</span>
     <span class="doccomment">/// the</span>
-    <span class="doccomment">/// [display_name][google.cloud.automl.v1.ModelEvaluation.display_name]</span>
+    <span class="doccomment">/// \[display_name][google.cloud.automl.v1.ModelEvaluation.display_name\]</span>
     <span class="doccomment">/// field is used.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">annotation_spec_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Output only. The value of</span>
-    <span class="doccomment">/// [display_name][google.cloud.automl.v1.AnnotationSpec.display_name]</span>
+    <span class="doccomment">/// \[display_name][google.cloud.automl.v1.AnnotationSpec.display_name\]</span>
     <span class="doccomment">/// at the moment when the model was trained. Because this field returns a</span>
     <span class="doccomment">/// value at model training time, for different models trained from the same</span>
     <span class="doccomment">/// dataset, the values may differ, since display names could had been changed</span>
     <span class="doccomment">/// between the two model&#39;s trainings. For Tables CLASSIFICATION</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type]</span>
+    <span class="doccomment">/// \[prediction_type-s][google.cloud.automl.v1.TablesModelMetadata.prediction_type\]</span>
     <span class="doccomment">/// distinct values of the target column at the moment of the model evaluation</span>
     <span class="doccomment">/// are populated here.</span>
     <span class="doccomment">/// The display_name is empty for the overall model evaluation.</span>
@@ -6198,7 +6196,7 @@
     <span class="doccomment">/// Otherwise, this is the count of examples that according to the ground</span>
     <span class="doccomment">/// truth were annotated by the</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [annotation_spec_id][google.cloud.automl.v1.ModelEvaluation.annotation_spec_id].</span>
+    <span class="doccomment">/// \[annotation_spec_id][google.cloud.automl.v1.ModelEvaluation.annotation_spec_id\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">evaluated_example_count</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Output only. Problem type specific evaluation metrics.</span>
@@ -6215,19 +6213,19 @@
         <span class="doccomment">/// Tables problem is considered a classification when the target column</span>
         <span class="doccomment">/// is CATEGORY DataType.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">ClassificationEvaluationMetrics</span>(<span class="kw">super</span><span class="ident">::ClassificationEvaluationMetrics</span>),
+        <span class="ident">ClassificationEvaluationMetrics</span>(<span class="ident"><span class="kw">super</span>::ClassificationEvaluationMetrics</span>),
         <span class="doccomment">/// Model evaluation metrics for translation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">TranslationEvaluationMetrics</span>(<span class="kw">super</span><span class="ident">::TranslationEvaluationMetrics</span>),
+        <span class="ident">TranslationEvaluationMetrics</span>(<span class="ident"><span class="kw">super</span>::TranslationEvaluationMetrics</span>),
         <span class="doccomment">/// Model evaluation metrics for image object detection.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;12&quot;</span>)]</span>
-        <span class="ident">ImageObjectDetectionEvaluationMetrics</span>(<span class="kw">super</span><span class="ident">::ImageObjectDetectionEvaluationMetrics</span>),
+        <span class="ident">ImageObjectDetectionEvaluationMetrics</span>(<span class="ident"><span class="kw">super</span>::ImageObjectDetectionEvaluationMetrics</span>),
         <span class="doccomment">/// Evaluation metrics for text sentiment models.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
-        <span class="ident">TextSentimentEvaluationMetrics</span>(<span class="kw">super</span><span class="ident">::TextSentimentEvaluationMetrics</span>),
+        <span class="ident">TextSentimentEvaluationMetrics</span>(<span class="ident"><span class="kw">super</span>::TextSentimentEvaluationMetrics</span>),
         <span class="doccomment">/// Evaluation metrics for text extraction models.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
-        <span class="ident">TextExtractionEvaluationMetrics</span>(<span class="kw">super</span><span class="ident">::TextExtractionEvaluationMetrics</span>),
+        <span class="ident">TextExtractionEvaluationMetrics</span>(<span class="ident"><span class="kw">super</span>::TextExtractionEvaluationMetrics</span>),
     }
 }
 <span class="doccomment">/// Metadata used across all long running operations returned by AutoML API.</span>
@@ -6242,7 +6240,7 @@
     <span class="doccomment">/// This field should never exceed 20 entries.</span>
     <span class="doccomment">/// Status details field will contain standard GCP error details.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">partial_failures</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Output only. Time when the operation was created.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">create_time</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Timestamp</span><span class="op">&gt;</span>,
@@ -6265,31 +6263,31 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Details</span> {
         <span class="doccomment">/// Details of a Delete operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">DeleteDetails</span>(<span class="kw">super</span><span class="ident">::DeleteOperationMetadata</span>),
+        <span class="ident">DeleteDetails</span>(<span class="ident"><span class="kw">super</span>::DeleteOperationMetadata</span>),
         <span class="doccomment">/// Details of a DeployModel operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;24&quot;</span>)]</span>
-        <span class="ident">DeployModelDetails</span>(<span class="kw">super</span><span class="ident">::DeployModelOperationMetadata</span>),
+        <span class="ident">DeployModelDetails</span>(<span class="ident"><span class="kw">super</span>::DeployModelOperationMetadata</span>),
         <span class="doccomment">/// Details of an UndeployModel operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;25&quot;</span>)]</span>
-        <span class="ident">UndeployModelDetails</span>(<span class="kw">super</span><span class="ident">::UndeployModelOperationMetadata</span>),
+        <span class="ident">UndeployModelDetails</span>(<span class="ident"><span class="kw">super</span>::UndeployModelOperationMetadata</span>),
         <span class="doccomment">/// Details of CreateModel operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
-        <span class="ident">CreateModelDetails</span>(<span class="kw">super</span><span class="ident">::CreateModelOperationMetadata</span>),
+        <span class="ident">CreateModelDetails</span>(<span class="ident"><span class="kw">super</span>::CreateModelOperationMetadata</span>),
         <span class="doccomment">/// Details of CreateDataset operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;30&quot;</span>)]</span>
-        <span class="ident">CreateDatasetDetails</span>(<span class="kw">super</span><span class="ident">::CreateDatasetOperationMetadata</span>),
+        <span class="ident">CreateDatasetDetails</span>(<span class="ident"><span class="kw">super</span>::CreateDatasetOperationMetadata</span>),
         <span class="doccomment">/// Details of ImportData operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
-        <span class="ident">ImportDataDetails</span>(<span class="kw">super</span><span class="ident">::ImportDataOperationMetadata</span>),
+        <span class="ident">ImportDataDetails</span>(<span class="ident"><span class="kw">super</span>::ImportDataOperationMetadata</span>),
         <span class="doccomment">/// Details of BatchPredict operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>)]</span>
-        <span class="ident">BatchPredictDetails</span>(<span class="kw">super</span><span class="ident">::BatchPredictOperationMetadata</span>),
+        <span class="ident">BatchPredictDetails</span>(<span class="ident"><span class="kw">super</span>::BatchPredictOperationMetadata</span>),
         <span class="doccomment">/// Details of ExportData operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;21&quot;</span>)]</span>
-        <span class="ident">ExportDataDetails</span>(<span class="kw">super</span><span class="ident">::ExportDataOperationMetadata</span>),
+        <span class="ident">ExportDataDetails</span>(<span class="ident"><span class="kw">super</span>::ExportDataOperationMetadata</span>),
         <span class="doccomment">/// Details of ExportModel operation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;22&quot;</span>)]</span>
-        <span class="ident">ExportModelDetails</span>(<span class="kw">super</span><span class="ident">::ExportModelOperationMetadata</span>),
+        <span class="ident">ExportModelDetails</span>(<span class="ident"><span class="kw">super</span>::ExportModelOperationMetadata</span>),
     }
 }
 <span class="doccomment">/// Details of operations that perform deletes of any entities.</span>
@@ -6321,7 +6319,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">export_data_operation_metadata</span> {
     <span class="doccomment">/// Further describes this export data&#39;s output.</span>
     <span class="doccomment">/// Supplements</span>
-    <span class="doccomment">/// [OutputConfig][google.cloud.automl.v1.OutputConfig].</span>
+    <span class="doccomment">/// \[OutputConfig][google.cloud.automl.v1.OutputConfig\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportDataOutputInfo</span> {
         <span class="doccomment">/// The output location to which the exported data is written.</span>
@@ -6357,7 +6355,7 @@
     <span class="doccomment">/// Further describes this batch predict&#39;s output.</span>
     <span class="doccomment">/// Supplements</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [BatchPredictOutputConfig][google.cloud.automl.v1.BatchPredictOutputConfig].</span>
+    <span class="doccomment">/// \[BatchPredictOutputConfig][google.cloud.automl.v1.BatchPredictOutputConfig\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchPredictOutputInfo</span> {
         <span class="doccomment">/// The output location into which prediction output is written.</span>
@@ -6388,7 +6386,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">export_model_operation_metadata</span> {
     <span class="doccomment">/// Further describes the output of model export.</span>
     <span class="doccomment">/// Supplements</span>
-    <span class="doccomment">/// [ModelExportOutputConfig][google.cloud.automl.v1.ModelExportOutputConfig].</span>
+    <span class="doccomment">/// \[ModelExportOutputConfig][google.cloud.automl.v1.ModelExportOutputConfig\].</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportModelOutputInfo</span> {
         <span class="doccomment">/// The full path of the Google Cloud Storage directory created, into which</span>
@@ -6397,7 +6395,7 @@
         <span class="kw">pub</span> <span class="ident">gcs_output_directory</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
 }
-<span class="doccomment">/// Request message for [PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict].</span>
+<span class="doccomment">/// Request message for \[PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PredictRequest</span> {
     <span class="doccomment">/// Required. Name of the model requested to serve the prediction.</span>
@@ -6434,15 +6432,15 @@
     <span class="doccomment">/// `feature_importance`</span>
     <span class="doccomment">/// : (boolean) Whether</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// [feature_importance][google.cloud.automl.v1.TablesModelColumnInfo.feature_importance]</span>
+    <span class="doccomment">/// \[feature_importance][google.cloud.automl.v1.TablesModelColumnInfo.feature_importance\]</span>
     <span class="doccomment">///   is populated in the returned list of</span>
-    <span class="doccomment">///   [TablesAnnotation][google.cloud.automl.v1.TablesAnnotation]</span>
+    <span class="doccomment">///   \[TablesAnnotation][google.cloud.automl.v1.TablesAnnotation\]</span>
     <span class="doccomment">///   objects. The default is false.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, string&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">params</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Response message for [PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict].</span>
+<span class="doccomment">/// Response message for \[PredictionService.Predict][google.cloud.automl.v1.PredictionService.Predict\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PredictResponse</span> {
     <span class="doccomment">/// Prediction result.</span>
@@ -6456,7 +6454,7 @@
     <span class="doccomment">/// For AutoML Natural Language (Classification, Entity Extraction, and</span>
     <span class="doccomment">/// Sentiment Analysis), if the input is a document, the recognized text is</span>
     <span class="doccomment">/// returned in the</span>
-    <span class="doccomment">/// [document_text][google.cloud.automl.v1.Document.document_text]</span>
+    <span class="doccomment">/// \[document_text][google.cloud.automl.v1.Document.document_text\]</span>
     <span class="doccomment">/// property.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">preprocessed_input</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ExamplePayload</span><span class="op">&gt;</span>,
@@ -6482,7 +6480,7 @@
     <span class="kw">pub</span> <span class="ident">metadata</span>:
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].</span>
+<span class="doccomment">/// Request message for \[PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchPredictRequest</span> {
     <span class="doccomment">/// Required. Name of the model requested to serve the batch prediction.</span>
@@ -6584,8 +6582,8 @@
         <span class="ident">::std::collections::HashMap</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span>, <span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Result of the Batch Predict. This message is returned in</span>
-<span class="doccomment">/// [response][google.longrunning.Operation.response] of the operation returned</span>
-<span class="doccomment">/// by the [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].</span>
+<span class="doccomment">/// \[response][google.longrunning.Operation.response\] of the operation returned</span>
+<span class="doccomment">/// by the \[PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BatchPredictResult</span> {
     <span class="doccomment">/// Additional domain-specific prediction response metadata.</span>
@@ -6618,7 +6616,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">PredictionServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -6631,7 +6629,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PredictionServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -6694,8 +6692,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;   `prediction_type`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">predict</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PredictRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PredictResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PredictRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PredictResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -6725,9 +6723,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; * AutoML Tables&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">batch_predict</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BatchPredictRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BatchPredictRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -6744,7 +6742,7 @@
         }
     }
 }
-<span class="doccomment">/// Request message for [AutoMl.CreateDataset][google.cloud.automl.v1.AutoMl.CreateDataset].</span>
+<span class="doccomment">/// Request message for \[AutoMl.CreateDataset][google.cloud.automl.v1.AutoMl.CreateDataset\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateDatasetRequest</span> {
     <span class="doccomment">/// Required. The resource name of the project to create the dataset for.</span>
@@ -6754,14 +6752,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">dataset</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Dataset</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.GetDataset][google.cloud.automl.v1.AutoMl.GetDataset].</span>
+<span class="doccomment">/// Request message for \[AutoMl.GetDataset][google.cloud.automl.v1.AutoMl.GetDataset\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetDatasetRequest</span> {
     <span class="doccomment">/// Required. The resource name of the dataset to retrieve.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets].</span>
+<span class="doccomment">/// Request message for \[AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDatasetsRequest</span> {
     <span class="doccomment">/// Required. The resource name of the project from which to list datasets.</span>
@@ -6770,10 +6768,11 @@
     <span class="doccomment">/// An expression for filtering the results of the request.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///   * `dataset_metadata` - for existence of the case (e.g.</span>
-    <span class="doccomment">///             image_classification_dataset_metadata:*). Some examples of using the filter are:</span>
+    <span class="doccomment">///             `image_classification_dataset_metadata:*`). Some examples of</span>
+    <span class="doccomment">///             using the filter are:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///   * `translation_dataset_metadata:*` --&gt; The dataset has</span>
-    <span class="doccomment">///                                          translation_dataset_metadata.</span>
+    <span class="doccomment">///                                          `translation_dataset_metadata`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Requested page size. Server may return fewer results than requested.</span>
@@ -6782,23 +6781,23 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// A token identifying a page of results for the server to return</span>
     <span class="doccomment">/// Typically obtained via</span>
-    <span class="doccomment">/// [ListDatasetsResponse.next_page_token][google.cloud.automl.v1.ListDatasetsResponse.next_page_token] of the previous</span>
-    <span class="doccomment">/// [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets] call.</span>
+    <span class="doccomment">/// \[ListDatasetsResponse.next_page_token][google.cloud.automl.v1.ListDatasetsResponse.next_page_token\] of the previous</span>
+    <span class="doccomment">/// \[AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets\] call.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response message for [AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets].</span>
+<span class="doccomment">/// Response message for \[AutoMl.ListDatasets][google.cloud.automl.v1.AutoMl.ListDatasets\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListDatasetsResponse</span> {
     <span class="doccomment">/// The datasets read.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">datasets</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Dataset</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A token to retrieve next page of results.</span>
-    <span class="doccomment">/// Pass to [ListDatasetsRequest.page_token][google.cloud.automl.v1.ListDatasetsRequest.page_token] to obtain that page.</span>
+    <span class="doccomment">/// Pass to \[ListDatasetsRequest.page_token][google.cloud.automl.v1.ListDatasetsRequest.page_token\] to obtain that page.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.UpdateDataset][google.cloud.automl.v1.AutoMl.UpdateDataset]</span>
+<span class="doccomment">/// Request message for \[AutoMl.UpdateDataset][google.cloud.automl.v1.AutoMl.UpdateDataset\]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateDatasetRequest</span> {
     <span class="doccomment">/// Required. The dataset which replaces the resource on the server.</span>
@@ -6808,14 +6807,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.DeleteDataset][google.cloud.automl.v1.AutoMl.DeleteDataset].</span>
+<span class="doccomment">/// Request message for \[AutoMl.DeleteDataset][google.cloud.automl.v1.AutoMl.DeleteDataset\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteDatasetRequest</span> {
     <span class="doccomment">/// Required. The resource name of the dataset to delete.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData].</span>
+<span class="doccomment">/// Request message for \[AutoMl.ImportData][google.cloud.automl.v1.AutoMl.ImportData\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ImportDataRequest</span> {
     <span class="doccomment">/// Required. Dataset name. Dataset must already exist. All imported</span>
@@ -6827,7 +6826,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">input_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">InputConfig</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.ExportData][google.cloud.automl.v1.AutoMl.ExportData].</span>
+<span class="doccomment">/// Request message for \[AutoMl.ExportData][google.cloud.automl.v1.AutoMl.ExportData\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ExportDataRequest</span> {
     <span class="doccomment">/// Required. The resource name of the dataset.</span>
@@ -6837,14 +6836,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">output_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">OutputConfig</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.GetAnnotationSpec][google.cloud.automl.v1.AutoMl.GetAnnotationSpec].</span>
+<span class="doccomment">/// Request message for \[AutoMl.GetAnnotationSpec][google.cloud.automl.v1.AutoMl.GetAnnotationSpec\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetAnnotationSpecRequest</span> {
     <span class="doccomment">/// Required. The resource name of the annotation spec to retrieve.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.CreateModel][google.cloud.automl.v1.AutoMl.CreateModel].</span>
+<span class="doccomment">/// Request message for \[AutoMl.CreateModel][google.cloud.automl.v1.AutoMl.CreateModel\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateModelRequest</span> {
     <span class="doccomment">/// Required. Resource name of the parent project where the model is being created.</span>
@@ -6854,14 +6853,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">model</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Model</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.GetModel][google.cloud.automl.v1.AutoMl.GetModel].</span>
+<span class="doccomment">/// Request message for \[AutoMl.GetModel][google.cloud.automl.v1.AutoMl.GetModel\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetModelRequest</span> {
     <span class="doccomment">/// Required. Resource name of the model.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels].</span>
+<span class="doccomment">/// Request message for \[AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListModelsRequest</span> {
     <span class="doccomment">/// Required. Resource name of the project, from which to list the models.</span>
@@ -6870,11 +6869,11 @@
     <span class="doccomment">/// An expression for filtering the results of the request.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///   * `model_metadata` - for existence of the case (e.g.</span>
-    <span class="doccomment">///             video_classification_model_metadata:*).</span>
+    <span class="doccomment">///             `video_classification_model_metadata:*`).</span>
     <span class="doccomment">///   * `dataset_id` - for = or !=. Some examples of using the filter are:</span>
     <span class="doccomment">///</span>
     <span class="doccomment">///   * `image_classification_model_metadata:*` --&gt; The model has</span>
-    <span class="doccomment">///                                        image_classification_model_metadata.</span>
+    <span class="doccomment">///                                      `image_classification_model_metadata`.</span>
     <span class="doccomment">///   * `dataset_id=5` --&gt; The model was created from a dataset with ID 5.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -6883,30 +6882,30 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// A token identifying a page of results for the server to return</span>
     <span class="doccomment">/// Typically obtained via</span>
-    <span class="doccomment">/// [ListModelsResponse.next_page_token][google.cloud.automl.v1.ListModelsResponse.next_page_token] of the previous</span>
-    <span class="doccomment">/// [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels] call.</span>
+    <span class="doccomment">/// \[ListModelsResponse.next_page_token][google.cloud.automl.v1.ListModelsResponse.next_page_token\] of the previous</span>
+    <span class="doccomment">/// \[AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels\] call.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response message for [AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels].</span>
+<span class="doccomment">/// Response message for \[AutoMl.ListModels][google.cloud.automl.v1.AutoMl.ListModels\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListModelsResponse</span> {
     <span class="doccomment">/// List of models in the requested page.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">model</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Model</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A token to retrieve next page of results.</span>
-    <span class="doccomment">/// Pass to [ListModelsRequest.page_token][google.cloud.automl.v1.ListModelsRequest.page_token] to obtain that page.</span>
+    <span class="doccomment">/// Pass to \[ListModelsRequest.page_token][google.cloud.automl.v1.ListModelsRequest.page_token\] to obtain that page.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.DeleteModel][google.cloud.automl.v1.AutoMl.DeleteModel].</span>
+<span class="doccomment">/// Request message for \[AutoMl.DeleteModel][google.cloud.automl.v1.AutoMl.DeleteModel\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteModelRequest</span> {
     <span class="doccomment">/// Required. Resource name of the model being deleted.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.UpdateModel][google.cloud.automl.v1.AutoMl.UpdateModel]</span>
+<span class="doccomment">/// Request message for \[AutoMl.UpdateModel][google.cloud.automl.v1.AutoMl.UpdateModel\]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateModelRequest</span> {
     <span class="doccomment">/// Required. The model which replaces the resource on the server.</span>
@@ -6916,7 +6915,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">update_mask</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::FieldMask</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel].</span>
+<span class="doccomment">/// Request message for \[AutoMl.DeployModel][google.cloud.automl.v1.AutoMl.DeployModel\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeployModelRequest</span> {
     <span class="doccomment">/// Required. Resource name of the model to deploy.</span>
@@ -6935,23 +6934,23 @@
         <span class="doccomment">/// Model deployment metadata specific to Image Object Detection.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">ImageObjectDetectionModelDeploymentMetadata</span>(
-            <span class="kw">super</span><span class="ident">::ImageObjectDetectionModelDeploymentMetadata</span>,
+            <span class="ident"><span class="kw">super</span>::ImageObjectDetectionModelDeploymentMetadata</span>,
         ),
         <span class="doccomment">/// Model deployment metadata specific to Image Classification.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
         <span class="ident">ImageClassificationModelDeploymentMetadata</span>(
-            <span class="kw">super</span><span class="ident">::ImageClassificationModelDeploymentMetadata</span>,
+            <span class="ident"><span class="kw">super</span>::ImageClassificationModelDeploymentMetadata</span>,
         ),
     }
 }
-<span class="doccomment">/// Request message for [AutoMl.UndeployModel][google.cloud.automl.v1.AutoMl.UndeployModel].</span>
+<span class="doccomment">/// Request message for \[AutoMl.UndeployModel][google.cloud.automl.v1.AutoMl.UndeployModel\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UndeployModelRequest</span> {
     <span class="doccomment">/// Required. Resource name of the model to undeploy.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel].</span>
+<span class="doccomment">/// Request message for \[AutoMl.ExportModel][google.cloud.automl.v1.AutoMl.ExportModel\].</span>
 <span class="doccomment">/// Models need to be enabled for exporting, otherwise an error code will be</span>
 <span class="doccomment">/// returned.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -6963,14 +6962,14 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">output_config</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">ModelExportOutputConfig</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.GetModelEvaluation][google.cloud.automl.v1.AutoMl.GetModelEvaluation].</span>
+<span class="doccomment">/// Request message for \[AutoMl.GetModelEvaluation][google.cloud.automl.v1.AutoMl.GetModelEvaluation\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetModelEvaluationRequest</span> {
     <span class="doccomment">/// Required. Resource name for the model evaluation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Request message for [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations].</span>
+<span class="doccomment">/// Request message for \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListModelEvaluationsRequest</span> {
     <span class="doccomment">/// Required. Resource name of the model to list the model evaluations for.</span>
@@ -6996,20 +6995,20 @@
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// A token identifying a page of results for the server to return.</span>
     <span class="doccomment">/// Typically obtained via</span>
-    <span class="doccomment">/// [ListModelEvaluationsResponse.next_page_token][google.cloud.automl.v1.ListModelEvaluationsResponse.next_page_token] of the previous</span>
-    <span class="doccomment">/// [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations] call.</span>
+    <span class="doccomment">/// \[ListModelEvaluationsResponse.next_page_token][google.cloud.automl.v1.ListModelEvaluationsResponse.next_page_token\] of the previous</span>
+    <span class="doccomment">/// \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\] call.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
-<span class="doccomment">/// Response message for [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations].</span>
+<span class="doccomment">/// Response message for \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListModelEvaluationsResponse</span> {
     <span class="doccomment">/// List of model evaluations in the requested page.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">model_evaluation</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ModelEvaluation</span><span class="op">&gt;</span>,
     <span class="doccomment">/// A token to retrieve next page of results.</span>
-    <span class="doccomment">/// Pass to the [ListModelEvaluationsRequest.page_token][google.cloud.automl.v1.ListModelEvaluationsRequest.page_token] field of a new</span>
-    <span class="doccomment">/// [AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations] request to obtain that page.</span>
+    <span class="doccomment">/// Pass to the \[ListModelEvaluationsRequest.page_token][google.cloud.automl.v1.ListModelEvaluationsRequest.page_token\] field of a new</span>
+    <span class="doccomment">/// \[AutoMl.ListModelEvaluations][google.cloud.automl.v1.AutoMl.ListModelEvaluations\] request to obtain that page.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -7038,7 +7037,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">AutoMlClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -7051,7 +7050,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AutoMlClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -7079,9 +7078,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a dataset.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_dataset</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateDatasetRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateDatasetRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -7099,8 +7098,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a dataset.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_dataset</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetDatasetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Dataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetDatasetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Dataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -7115,8 +7114,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists datasets in a project.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_datasets</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDatasetsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListDatasetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDatasetsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListDatasetsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -7131,8 +7130,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates a dataset.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_dataset</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateDatasetRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Dataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateDatasetRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Dataset</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -7152,9 +7151,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [metadata][google.longrunning.Operation.metadata] field.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_dataset</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteDatasetRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteDatasetRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -7180,9 +7179,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [response][google.longrunning.Operation.response] field when it completes.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">import_data</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ImportDataRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ImportDataRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -7201,9 +7200,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [response][google.longrunning.Operation.response] field when it completes.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">export_data</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ExportDataRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ExportDataRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -7220,8 +7219,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets an annotation spec.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_annotation_spec</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetAnnotationSpecRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AnnotationSpec</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetAnnotationSpecRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AnnotationSpec</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -7241,9 +7240,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; a global evaluation, and one evaluation for each annotation spec.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_model</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateModelRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateModelRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -7260,8 +7259,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a model.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_model</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetModelRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Model</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetModelRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Model</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -7276,8 +7275,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists models.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_models</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListModelsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListModelsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListModelsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListModelsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -7296,9 +7295,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [metadata][google.longrunning.Operation.metadata] field.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_model</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteModelRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteModelRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -7315,8 +7314,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates a model.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_model</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateModelRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Model</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateModelRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Model</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -7342,9 +7341,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [response][google.longrunning.Operation.response] field when it completes.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">deploy_model</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeployModelRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeployModelRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -7367,9 +7366,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [response][google.longrunning.Operation.response] field when it completes.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">undeploy_model</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UndeployModelRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UndeployModelRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -7393,9 +7392,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [response][google.longrunning.Operation.response] field when it completes.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">export_model</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ExportModelRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ExportModelRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -7412,8 +7411,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a model evaluation.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_model_evaluation</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetModelEvaluationRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ModelEvaluation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetModelEvaluationRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ModelEvaluation</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -7429,8 +7428,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists model evaluations.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_model_evaluations</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListModelEvaluationsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListModelEvaluationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListModelEvaluationsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListModelEvaluationsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -7445,5 +7444,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

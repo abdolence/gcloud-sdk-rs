@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.assistant.embedded.v1alpha2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.assistant.embedded.v1alpha2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.assistant.embedded.v1alpha2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.assistant.embedded.v1alpha2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -554,8 +552,7 @@
 <span id="552">552</span>
 <span id="553">553</span>
 <span id="554">554</span>
-</pre><pre class="rust">
-<span class="doccomment">/// The top-level message sent by the client. Clients must send at least two, and</span>
+</pre><pre class="rust"><code><span class="doccomment">/// The top-level message sent by the client. Clients must send at least two, and</span>
 <span class="doccomment">/// typically numerous `AssistRequest` messages. The first message must</span>
 <span class="doccomment">/// contain a `config` message and must not contain `audio_in` data. All</span>
 <span class="doccomment">/// subsequent messages must contain `audio_in` data and must not contain a</span>
@@ -575,7 +572,7 @@
         <span class="doccomment">/// specifies how to process the request.</span>
         <span class="doccomment">/// The first `AssistRequest` message must contain a `config` message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Config</span>(<span class="kw">super</span><span class="ident">::AssistConfig</span>),
+        <span class="ident">Config</span>(<span class="ident"><span class="kw">super</span>::AssistConfig</span>),
         <span class="doccomment">/// The audio data to be recognized. Sequential chunks of audio data are sent</span>
         <span class="doccomment">/// in sequential `AssistRequest` messages. The first `AssistRequest`</span>
         <span class="doccomment">/// message must not contain `audio_in` data and all subsequent</span>
@@ -645,7 +642,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DebugInfo</span> {
     <span class="doccomment">/// The original JSON response from an Action-on-Google agent to Google server.</span>
     <span class="doccomment">/// See</span>
-    <span class="doccomment">/// https://developers.google.com/actions/reference/rest/Shared.Types/AppResponse.</span>
+    <span class="doccomment">/// &lt;https://developers.google.com/actions/reference/rest/Shared.Types/AppResponse.&gt;</span>
     <span class="doccomment">/// It will only be populated if the request maker owns the AoG project and the</span>
     <span class="doccomment">/// AoG project is in preview mode.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -678,10 +675,10 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Type</span> {
         <span class="doccomment">/// Specifies how to process the subsequent incoming audio. Required if</span>
-        <span class="doccomment">/// [AssistRequest.audio_in][google.assistant.embedded.v1alpha2.AssistRequest.audio_in]</span>
+        <span class="doccomment">/// \[AssistRequest.audio_in][google.assistant.embedded.v1alpha2.AssistRequest.audio_in\]</span>
         <span class="doccomment">/// bytes will be provided in subsequent requests.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">AudioInConfig</span>(<span class="kw">super</span><span class="ident">::AudioInConfig</span>),
+        <span class="ident">AudioInConfig</span>(<span class="ident"><span class="kw">super</span>::AudioInConfig</span>),
         <span class="doccomment">/// The text input to be sent to the Assistant. This can be populated from a</span>
         <span class="doccomment">/// text interface if audio input is not available.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
@@ -691,7 +688,7 @@
 <span class="doccomment">/// Specifies how to process the `audio_in` data that will be provided in</span>
 <span class="doccomment">/// subsequent requests. For recommended settings, see the Google Assistant SDK</span>
 <span class="doccomment">/// [best</span>
-<span class="doccomment">/// practices](https://developers.google.com/assistant/sdk/guides/service/python/best-practices/audio).</span>
+<span class="doccomment">/// practices](&lt;https://developers.google.com/assistant/sdk/guides/service/python/best-practices/audio&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioInConfig</span> {
     <span class="doccomment">/// *Required* Encoding of audio data sent in all `audio_in` messages.</span>
@@ -712,12 +709,12 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Encoding</span> {
-        <span class="doccomment">/// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].</span>
+        <span class="doccomment">/// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].</span>
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// Uncompressed 16-bit signed little-endian samples (Linear PCM).</span>
         <span class="doccomment">/// This encoding includes no header, only the raw audio bytes.</span>
         <span class="ident">Linear16</span> <span class="op">=</span> <span class="number">1</span>,
-        <span class="doccomment">/// [`FLAC`](https://xiph.org/flac/documentation.html) (Free Lossless Audio</span>
+        <span class="doccomment">/// \[`FLAC`\](&lt;https://xiph.org/flac/documentation.html&gt;) (Free Lossless Audio</span>
         <span class="doccomment">/// Codec) is the recommended encoding because it is</span>
         <span class="doccomment">/// lossless--therefore recognition is not compromised--and</span>
         <span class="doccomment">/// requires only about half the bandwidth of `LINEAR16`. This encoding</span>
@@ -751,7 +748,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Encoding</span> {
-        <span class="doccomment">/// Not specified. Will return result [google.rpc.Code.INVALID_ARGUMENT][].</span>
+        <span class="doccomment">/// Not specified. Will return result \[google.rpc.Code.INVALID_ARGUMENT][\].</span>
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// Uncompressed 16-bit signed little-endian samples (Linear PCM).</span>
         <span class="ident">Linear16</span> <span class="op">=</span> <span class="number">1</span>,
@@ -794,7 +791,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DialogStateIn</span> {
     <span class="doccomment">/// *Required* This field must always be set to the</span>
-    <span class="doccomment">/// [DialogStateOut.conversation_state][google.assistant.embedded.v1alpha2.DialogStateOut.conversation_state]</span>
+    <span class="doccomment">/// \[DialogStateOut.conversation_state][google.assistant.embedded.v1alpha2.DialogStateOut.conversation_state\]</span>
     <span class="doccomment">/// value that was returned in the prior `Assist` RPC. It should only be</span>
     <span class="doccomment">/// omitted (field not set) if there was no prior `Assist` RPC because this is</span>
     <span class="doccomment">/// the first `Assist` RPC made by this device after it was first setup and/or</span>
@@ -802,12 +799,12 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">conversation_state</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="doccomment">/// *Required* Language of the request in</span>
-    <span class="doccomment">/// [IETF BCP 47 syntax](https://tools.ietf.org/html/bcp47) (for example,</span>
+    <span class="doccomment">/// [IETF BCP 47 syntax](&lt;https://tools.ietf.org/html/bcp47&gt;) (for example,</span>
     <span class="doccomment">/// &quot;en-US&quot;). See [Language</span>
-    <span class="doccomment">/// Support](https://developers.google.com/assistant/sdk/reference/rpc/languages)</span>
+    <span class="doccomment">/// Support](&lt;https://developers.google.com/assistant/sdk/reference/rpc/languages&gt;)</span>
     <span class="doccomment">/// for more information. If you have selected a language for this `device_id`</span>
     <span class="doccomment">/// using the</span>
-    <span class="doccomment">/// [Settings](https://developers.google.com/assistant/sdk/reference/assistant-app/assistant-settings)</span>
+    <span class="doccomment">/// \[Settings\](&lt;https://developers.google.com/assistant/sdk/reference/assistant-app/assistant-settings&gt;)</span>
     <span class="doccomment">/// menu in your phone&#39;s Google Assistant app, that selection will override</span>
     <span class="doccomment">/// this value.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -827,11 +824,11 @@
 <span class="doccomment">/// See also:</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// *   [Register a Device - REST</span>
-<span class="doccomment">/// API](https://developers.google.com/assistant/sdk/reference/device-registration/register-device-manual)</span>
+<span class="doccomment">/// API](&lt;https://developers.google.com/assistant/sdk/reference/device-registration/register-device-manual&gt;)</span>
 <span class="doccomment">/// *   [Device Model and Instance</span>
-<span class="doccomment">/// Schemas](https://developers.google.com/assistant/sdk/reference/device-registration/model-and-instance-schemas)</span>
+<span class="doccomment">/// Schemas](&lt;https://developers.google.com/assistant/sdk/reference/device-registration/model-and-instance-schemas&gt;)</span>
 <span class="doccomment">/// *   [Device</span>
-<span class="doccomment">/// Proto](https://developers.google.com/assistant/sdk/reference/rpc/google.assistant.devices.v1alpha2#device)</span>
+<span class="doccomment">/// Proto](&lt;https://developers.google.com/assistant/sdk/reference/rpc/google.assistant.devices.v1alpha2#device&gt;)</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeviceConfig</span> {
     <span class="doccomment">/// *Required* Unique identifier for the device. The id length must be 128</span>
@@ -895,7 +892,7 @@
     <span class="doccomment">/// JSON containing the device command response generated from the triggered</span>
     <span class="doccomment">/// Device Action grammar. The format is given by the</span>
     <span class="doccomment">/// `action.devices.EXECUTE` intent for a given</span>
-    <span class="doccomment">/// [trait](https://developers.google.com/assistant/sdk/reference/traits/).</span>
+    <span class="doccomment">/// \[trait\](&lt;https://developers.google.com/assistant/sdk/reference/traits/&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">device_request_json</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -924,7 +921,7 @@
     <span class="kw">pub</span> <span class="ident">supplemental_display_text</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// *Output-only* State information for the subsequent `Assist` RPC. This</span>
     <span class="doccomment">/// value should be saved in the client and returned in the</span>
-    <span class="doccomment">/// [`DialogStateIn.conversation_state`](#dialogstatein) field with the next</span>
+    <span class="doccomment">/// \[`DialogStateIn.conversation_state`\](#dialogstatein) field with the next</span>
     <span class="doccomment">/// `Assist` RPC. (The client does not need to interpret or otherwise use this</span>
     <span class="doccomment">/// value.) This information should be saved across device reboots. However,</span>
     <span class="doccomment">/// this value should be cleared (not saved in the client) during a</span>
@@ -992,7 +989,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Type</span> {
         <span class="doccomment">/// Latitude and longitude of device.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">Coordinates</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::LatLng</span>),
+        <span class="ident">Coordinates</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::LatLng</span>),
     }
 }
 <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">r&quot; Generated client implementations.&quot;</span>]</span>
@@ -1007,7 +1004,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">EmbeddedAssistantClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1020,7 +1017,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EmbeddedAssistantClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -1090,8 +1087,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; of audio.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">assist</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::AssistRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AssistResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::AssistRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AssistResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -1109,5 +1106,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

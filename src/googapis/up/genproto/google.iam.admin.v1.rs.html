@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.iam.admin.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.iam.admin.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.iam.admin.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.iam.admin.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1758,8 +1756,7 @@
 <span id="1756">1756</span>
 <span id="1757">1757</span>
 <span id="1758">1758</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Audit log information specific to Cloud IAM admin APIs. This message is</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Audit log information specific to Cloud IAM admin APIs. This message is</span>
 <span class="doccomment">/// serialized as an `Any` type in the `ServiceData` message of an</span>
 <span class="doccomment">/// `AuditLog` message.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -1787,7 +1784,7 @@
 <span class="doccomment">/// A service account is an account for an application or a virtual machine (VM)</span>
 <span class="doccomment">/// instance, not a person. You can use a service account to call Google APIs. To</span>
 <span class="doccomment">/// learn more, read the [overview of service</span>
-<span class="doccomment">/// accounts](https://cloud.google.com/iam/help/service-accounts/overview).</span>
+<span class="doccomment">/// accounts](&lt;https://cloud.google.com/iam/help/service-accounts/overview&gt;).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// When you create a service account, you specify the project ID that owns the</span>
 <span class="doccomment">/// service account, as well as a name that must be unique within the project.</span>
@@ -1859,10 +1856,10 @@
     <span class="doccomment">/// Required. The account id that is used to generate the service account</span>
     <span class="doccomment">/// email address and a stable unique id. It is unique within a project,</span>
     <span class="doccomment">/// must be 6-30 characters long, and match the regular expression</span>
-    <span class="doccomment">/// `[a-z]([-a-z0-9]*[a-z0-9])` to comply with RFC1035.</span>
+    <span class="doccomment">/// `\[a-z]([-a-z0-9]*[a-z0-9\])` to comply with RFC1035.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">account_id</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The [ServiceAccount][google.iam.admin.v1.ServiceAccount] resource to</span>
+    <span class="doccomment">/// The \[ServiceAccount][google.iam.admin.v1.ServiceAccount\] resource to</span>
     <span class="doccomment">/// create. Currently, only the following values are user assignable:</span>
     <span class="doccomment">/// `display_name` and `description`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
@@ -1877,14 +1874,14 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional limit on the number of service accounts to include in the</span>
     <span class="doccomment">/// response. Further accounts can subsequently be obtained by including the</span>
-    <span class="doccomment">/// [ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token]</span>
+    <span class="doccomment">/// \[ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\]</span>
     <span class="doccomment">/// in a subsequent request.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The default is 20, and the maximum is 100.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_size</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Optional pagination token returned in an earlier</span>
-    <span class="doccomment">/// [ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token].</span>
+    <span class="doccomment">/// \[ListServiceAccountsResponse.next_page_token][google.iam.admin.v1.ListServiceAccountsResponse.next_page_token\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -1895,7 +1892,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">accounts</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">ServiceAccount</span><span class="op">&gt;</span>,
     <span class="doccomment">/// To retrieve the next page of results, set</span>
-    <span class="doccomment">/// [ListServiceAccountsRequest.page_token][google.iam.admin.v1.ListServiceAccountsRequest.page_token]</span>
+    <span class="doccomment">/// \[ListServiceAccountsRequest.page_token][google.iam.admin.v1.ListServiceAccountsRequest.page_token\]</span>
     <span class="doccomment">/// to this value.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">next_page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1923,7 +1920,7 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// The request for</span>
-<span class="doccomment">/// [PatchServiceAccount][google.iam.admin.v1.PatchServiceAccount].</span>
+<span class="doccomment">/// \[PatchServiceAccount][google.iam.admin.v1.PatchServiceAccount\].</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// You can patch only the `display_name` and `description` fields. You must use</span>
 <span class="doccomment">/// the `update_mask` field to specify which of these fields you want to patch.</span>
@@ -2154,13 +2151,13 @@
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Deprecated. [Migrate to Service Account Credentials</span>
-<span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+<span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The service account sign blob request.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SignBlobRequest</span> {
     <span class="doccomment">/// Required. Deprecated. [Migrate to Service Account Credentials</span>
-    <span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+    <span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The resource name of the service account in the following format:</span>
     <span class="doccomment">/// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.</span>
@@ -2171,7 +2168,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. Deprecated. [Migrate to Service Account Credentials</span>
-    <span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+    <span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The bytes to sign.</span>
     <span class="attribute">#[<span class="ident">deprecated</span>]</span>
@@ -2179,20 +2176,20 @@
     <span class="kw">pub</span> <span class="ident">bytes_to_sign</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Deprecated. [Migrate to Service Account Credentials</span>
-<span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+<span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The service account sign blob response.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SignBlobResponse</span> {
     <span class="doccomment">/// Deprecated. [Migrate to Service Account Credentials</span>
-    <span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+    <span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The id of the key used to sign the blob.</span>
     <span class="attribute">#[<span class="ident">deprecated</span>]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">key_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Deprecated. [Migrate to Service Account Credentials</span>
-    <span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+    <span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The signed blob.</span>
     <span class="attribute">#[<span class="ident">deprecated</span>]</span>
@@ -2200,13 +2197,13 @@
     <span class="kw">pub</span> <span class="ident">signature</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Deprecated. [Migrate to Service Account Credentials</span>
-<span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+<span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The service account sign JWT request.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SignJwtRequest</span> {
     <span class="doccomment">/// Required. Deprecated. [Migrate to Service Account Credentials</span>
-    <span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+    <span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The resource name of the service account in the following format:</span>
     <span class="doccomment">/// `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.</span>
@@ -2217,7 +2214,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. Deprecated. [Migrate to Service Account Credentials</span>
-    <span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+    <span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The JWT payload to sign. Must be a serialized JSON object that contains a</span>
     <span class="doccomment">/// JWT Claims Set. For example: `{&quot;sub&quot;: &quot;user@example.com&quot;, &quot;iat&quot;: 313435}`</span>
@@ -2234,20 +2231,20 @@
     <span class="kw">pub</span> <span class="ident">payload</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
 <span class="doccomment">/// Deprecated. [Migrate to Service Account Credentials</span>
-<span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+<span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// The service account sign JWT response.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SignJwtResponse</span> {
     <span class="doccomment">/// Deprecated. [Migrate to Service Account Credentials</span>
-    <span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+    <span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The id of the key used to sign the JWT.</span>
     <span class="attribute">#[<span class="ident">deprecated</span>]</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">key_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Deprecated. [Migrate to Service Account Credentials</span>
-    <span class="doccomment">/// API](https://cloud.google.com/iam/help/credentials/migrate-api).</span>
+    <span class="doccomment">/// API](&lt;https://cloud.google.com/iam/help/credentials/migrate-api&gt;).</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// The signed JWT.</span>
     <span class="attribute">#[<span class="ident">deprecated</span>]</span>
@@ -2350,28 +2347,28 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListRolesRequest</span> {
     <span class="doccomment">/// The `parent` parameter&#39;s value depends on the target resource for the</span>
     <span class="doccomment">/// request, namely</span>
-    <span class="doccomment">/// [`roles`](/iam/reference/rest/v1/roles),</span>
-    <span class="doccomment">/// [`projects`](/iam/reference/rest/v1/projects.roles), or</span>
-    <span class="doccomment">/// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each</span>
+    <span class="doccomment">/// \[`roles`\](/iam/reference/rest/v1/roles),</span>
+    <span class="doccomment">/// \[`projects`\](/iam/reference/rest/v1/projects.roles), or</span>
+    <span class="doccomment">/// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each</span>
     <span class="doccomment">/// resource type&#39;s `parent` value format is described below:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`roles.list()`](/iam/reference/rest/v1/roles/list): An empty string.</span>
+    <span class="doccomment">/// * \[`roles.list()`\](/iam/reference/rest/v1/roles/list): An empty string.</span>
     <span class="doccomment">///   This method doesn&#39;t require a resource; it simply returns all</span>
     <span class="doccomment">///   [predefined roles](/iam/docs/understanding-roles#predefined_roles) in</span>
     <span class="doccomment">///   Cloud IAM. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/roles`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/roles`&gt;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`projects.roles.list()`](/iam/reference/rest/v1/projects.roles/list):</span>
+    <span class="doccomment">/// * \[`projects.roles.list()`\](/iam/reference/rest/v1/projects.roles/list):</span>
     <span class="doccomment">///   `projects/{PROJECT_ID}`. This method lists all project-level</span>
     <span class="doccomment">///   [custom roles](/iam/docs/understanding-custom-roles).</span>
     <span class="doccomment">///   Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`&gt;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`organizations.roles.list()`](/iam/reference/rest/v1/organizations.roles/list):</span>
+    <span class="doccomment">/// * \[`organizations.roles.list()`\](/iam/reference/rest/v1/organizations.roles/list):</span>
     <span class="doccomment">///   `organizations/{ORGANIZATION_ID}`. This method lists all</span>
     <span class="doccomment">///   organization-level [custom roles](/iam/docs/understanding-custom-roles).</span>
     <span class="doccomment">///   Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note: Wildcard (*) values are invalid; you must specify a complete project</span>
     <span class="doccomment">/// ID or organization ID.</span>
@@ -2411,28 +2408,28 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GetRoleRequest</span> {
     <span class="doccomment">/// The `name` parameter&#39;s value depends on the target resource for the</span>
     <span class="doccomment">/// request, namely</span>
-    <span class="doccomment">/// [`roles`](/iam/reference/rest/v1/roles),</span>
-    <span class="doccomment">/// [`projects`](/iam/reference/rest/v1/projects.roles), or</span>
-    <span class="doccomment">/// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each</span>
+    <span class="doccomment">/// \[`roles`\](/iam/reference/rest/v1/roles),</span>
+    <span class="doccomment">/// \[`projects`\](/iam/reference/rest/v1/projects.roles), or</span>
+    <span class="doccomment">/// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each</span>
     <span class="doccomment">/// resource type&#39;s `name` value format is described below:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`roles.get()`](/iam/reference/rest/v1/roles/get): `roles/{ROLE_NAME}`.</span>
+    <span class="doccomment">/// * \[`roles.get()`\](/iam/reference/rest/v1/roles/get): `roles/{ROLE_NAME}`.</span>
     <span class="doccomment">///   This method returns results from all</span>
     <span class="doccomment">///   [predefined roles](/iam/docs/understanding-roles#predefined_roles) in</span>
     <span class="doccomment">///   Cloud IAM. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/roles/{ROLE_NAME}`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/roles/{ROLE_NAME}`&gt;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`projects.roles.get()`](/iam/reference/rest/v1/projects.roles/get):</span>
+    <span class="doccomment">/// * \[`projects.roles.get()`\](/iam/reference/rest/v1/projects.roles/get):</span>
     <span class="doccomment">///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method returns only</span>
     <span class="doccomment">///   [custom roles](/iam/docs/understanding-custom-roles) that have been</span>
     <span class="doccomment">///   created at the project level. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`&gt;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`organizations.roles.get()`](/iam/reference/rest/v1/organizations.roles/get):</span>
+    <span class="doccomment">/// * \[`organizations.roles.get()`\](/iam/reference/rest/v1/organizations.roles/get):</span>
     <span class="doccomment">///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method</span>
     <span class="doccomment">///   returns only [custom roles](/iam/docs/understanding-custom-roles) that</span>
     <span class="doccomment">///   have been created at the organization level. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note: Wildcard (*) values are invalid; you must specify a complete project</span>
     <span class="doccomment">/// ID or organization ID.</span>
@@ -2444,21 +2441,21 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CreateRoleRequest</span> {
     <span class="doccomment">/// The `parent` parameter&#39;s value depends on the target resource for the</span>
     <span class="doccomment">/// request, namely</span>
-    <span class="doccomment">/// [`projects`](/iam/reference/rest/v1/projects.roles) or</span>
-    <span class="doccomment">/// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each</span>
+    <span class="doccomment">/// \[`projects`\](/iam/reference/rest/v1/projects.roles) or</span>
+    <span class="doccomment">/// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each</span>
     <span class="doccomment">/// resource type&#39;s `parent` value format is described below:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`projects.roles.create()`](/iam/reference/rest/v1/projects.roles/create):</span>
+    <span class="doccomment">/// * \[`projects.roles.create()`\](/iam/reference/rest/v1/projects.roles/create):</span>
     <span class="doccomment">///   `projects/{PROJECT_ID}`. This method creates project-level</span>
     <span class="doccomment">///   [custom roles](/iam/docs/understanding-custom-roles).</span>
     <span class="doccomment">///   Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles`&gt;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`organizations.roles.create()`](/iam/reference/rest/v1/organizations.roles/create):</span>
+    <span class="doccomment">/// * \[`organizations.roles.create()`\](/iam/reference/rest/v1/organizations.roles/create):</span>
     <span class="doccomment">///   `organizations/{ORGANIZATION_ID}`. This method creates organization-level</span>
     <span class="doccomment">///   [custom roles](/iam/docs/understanding-custom-roles). Example request</span>
     <span class="doccomment">///   URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles`&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note: Wildcard (*) values are invalid; you must specify a complete project</span>
     <span class="doccomment">/// ID or organization ID.</span>
@@ -2480,21 +2477,21 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UpdateRoleRequest</span> {
     <span class="doccomment">/// The `name` parameter&#39;s value depends on the target resource for the</span>
     <span class="doccomment">/// request, namely</span>
-    <span class="doccomment">/// [`projects`](/iam/reference/rest/v1/projects.roles) or</span>
-    <span class="doccomment">/// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each</span>
+    <span class="doccomment">/// \[`projects`\](/iam/reference/rest/v1/projects.roles) or</span>
+    <span class="doccomment">/// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each</span>
     <span class="doccomment">/// resource type&#39;s `name` value format is described below:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`projects.roles.patch()`](/iam/reference/rest/v1/projects.roles/patch):</span>
+    <span class="doccomment">/// * \[`projects.roles.patch()`\](/iam/reference/rest/v1/projects.roles/patch):</span>
     <span class="doccomment">///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method updates only</span>
     <span class="doccomment">///   [custom roles](/iam/docs/understanding-custom-roles) that have been</span>
     <span class="doccomment">///   created at the project level. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`&gt;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`organizations.roles.patch()`](/iam/reference/rest/v1/organizations.roles/patch):</span>
+    <span class="doccomment">/// * \[`organizations.roles.patch()`\](/iam/reference/rest/v1/organizations.roles/patch):</span>
     <span class="doccomment">///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method</span>
     <span class="doccomment">///   updates only [custom roles](/iam/docs/understanding-custom-roles) that</span>
     <span class="doccomment">///   have been created at the organization level. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note: Wildcard (*) values are invalid; you must specify a complete project</span>
     <span class="doccomment">/// ID or organization ID.</span>
@@ -2512,21 +2509,21 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteRoleRequest</span> {
     <span class="doccomment">/// The `name` parameter&#39;s value depends on the target resource for the</span>
     <span class="doccomment">/// request, namely</span>
-    <span class="doccomment">/// [`projects`](/iam/reference/rest/v1/projects.roles) or</span>
-    <span class="doccomment">/// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each</span>
+    <span class="doccomment">/// \[`projects`\](/iam/reference/rest/v1/projects.roles) or</span>
+    <span class="doccomment">/// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each</span>
     <span class="doccomment">/// resource type&#39;s `name` value format is described below:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`projects.roles.delete()`](/iam/reference/rest/v1/projects.roles/delete):</span>
+    <span class="doccomment">/// * \[`projects.roles.delete()`\](/iam/reference/rest/v1/projects.roles/delete):</span>
     <span class="doccomment">///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method deletes only</span>
     <span class="doccomment">///   [custom roles](/iam/docs/understanding-custom-roles) that have been</span>
     <span class="doccomment">///   created at the project level. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`&gt;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`organizations.roles.delete()`](/iam/reference/rest/v1/organizations.roles/delete):</span>
+    <span class="doccomment">/// * \[`organizations.roles.delete()`\](/iam/reference/rest/v1/organizations.roles/delete):</span>
     <span class="doccomment">///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method</span>
     <span class="doccomment">///   deletes only [custom roles](/iam/docs/understanding-custom-roles) that</span>
     <span class="doccomment">///   have been created at the organization level. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note: Wildcard (*) values are invalid; you must specify a complete project</span>
     <span class="doccomment">/// ID or organization ID.</span>
@@ -2541,21 +2538,21 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UndeleteRoleRequest</span> {
     <span class="doccomment">/// The `name` parameter&#39;s value depends on the target resource for the</span>
     <span class="doccomment">/// request, namely</span>
-    <span class="doccomment">/// [`projects`](/iam/reference/rest/v1/projects.roles) or</span>
-    <span class="doccomment">/// [`organizations`](/iam/reference/rest/v1/organizations.roles). Each</span>
+    <span class="doccomment">/// \[`projects`\](/iam/reference/rest/v1/projects.roles) or</span>
+    <span class="doccomment">/// \[`organizations`\](/iam/reference/rest/v1/organizations.roles). Each</span>
     <span class="doccomment">/// resource type&#39;s `name` value format is described below:</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`projects.roles.undelete()`](/iam/reference/rest/v1/projects.roles/undelete):</span>
+    <span class="doccomment">/// * \[`projects.roles.undelete()`\](/iam/reference/rest/v1/projects.roles/undelete):</span>
     <span class="doccomment">///   `projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`. This method undeletes</span>
     <span class="doccomment">///   only [custom roles](/iam/docs/understanding-custom-roles) that have been</span>
     <span class="doccomment">///   created at the project level. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/projects/{PROJECT_ID}/roles/{CUSTOM_ROLE_ID}`&gt;</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// * [`organizations.roles.undelete()`](/iam/reference/rest/v1/organizations.roles/undelete):</span>
+    <span class="doccomment">/// * \[`organizations.roles.undelete()`\](/iam/reference/rest/v1/organizations.roles/undelete):</span>
     <span class="doccomment">///   `organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`. This method</span>
     <span class="doccomment">///   undeletes only [custom roles](/iam/docs/understanding-custom-roles) that</span>
     <span class="doccomment">///   have been created at the organization level. Example request URL:</span>
-    <span class="doccomment">///   `https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`</span>
+    <span class="doccomment">///   `&lt;https://iam.googleapis.com/v1/organizations/{ORGANIZATION_ID}/roles/{CUSTOM_ROLE_ID}`&gt;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Note: Wildcard (*) values are invalid; you must specify a complete project</span>
     <span class="doccomment">/// ID or organization ID.</span>
@@ -2707,9 +2704,9 @@
     <span class="doccomment">/// Required. The Cloud IAM object to be linted.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">LintObject</span> {
-        <span class="doccomment">/// [google.iam.v1.Binding.condition] [google.iam.v1.Binding.condition] object to be linted.</span>
+        <span class="doccomment">/// \[google.iam.v1.Binding.condition\] \[google.iam.v1.Binding.condition\] object to be linted.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Condition</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::Expr</span>),
+        <span class="ident">Condition</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::Expr</span>),
     }
 }
 <span class="doccomment">/// Structured response of a single validation unit.</span>
@@ -2816,7 +2813,7 @@
     <span class="ident">TypeUnspecified</span> <span class="op">=</span> <span class="number">0</span>,
     <span class="doccomment">/// PKCS12 format.</span>
     <span class="doccomment">/// The password for the PKCS12 file is `notasecret`.</span>
-    <span class="doccomment">/// For more information, see https://tools.ietf.org/html/rfc7292.</span>
+    <span class="doccomment">/// For more information, see &lt;https://tools.ietf.org/html/rfc7292.&gt;</span>
     <span class="ident">TypePkcs12File</span> <span class="op">=</span> <span class="number">1</span>,
     <span class="doccomment">/// Google Credentials File format.</span>
     <span class="ident">TypeGoogleCredentialsFile</span> <span class="op">=</span> <span class="number">2</span>,
@@ -2883,7 +2880,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">IamClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2893,7 +2890,7 @@
         }
         <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_interceptor</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span>(<span class="ident">inner</span>: <span class="ident">T</span>, <span class="ident">interceptor</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">IamClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2921,8 +2918,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists every [ServiceAccount][google.iam.admin.v1.ServiceAccount] that belongs to a specific project.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_service_accounts</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListServiceAccountsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListServiceAccountsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListServiceAccountsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListServiceAccountsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2938,8 +2935,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a [ServiceAccount][google.iam.admin.v1.ServiceAccount].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_service_account</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetServiceAccountRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServiceAccount</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetServiceAccountRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServiceAccount</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2954,8 +2951,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a [ServiceAccount][google.iam.admin.v1.ServiceAccount].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_service_account</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateServiceAccountRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServiceAccount</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateServiceAccountRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServiceAccount</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2976,8 +2973,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; You can update only the `display_name` and `description` fields.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_service_account</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServiceAccount</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServiceAccount</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServiceAccount</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServiceAccount</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2993,8 +2990,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Patches a [ServiceAccount][google.iam.admin.v1.ServiceAccount].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">patch_service_account</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::PatchServiceAccountRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServiceAccount</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::PatchServiceAccountRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServiceAccount</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3024,7 +3021,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; service account.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_service_account</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteServiceAccountRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteServiceAccountRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3048,8 +3045,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; that has been permanently removed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">undelete_service_account</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UndeleteServiceAccountRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UndeleteServiceAccountResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UndeleteServiceAccountRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UndeleteServiceAccountResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3072,7 +3069,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; method to enable the service account.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">enable_service_account</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::EnableServiceAccountRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::EnableServiceAccountRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3104,7 +3101,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; with [DeleteServiceAccount][google.iam.admin.v1.IAM.DeleteServiceAccount].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">disable_service_account</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DisableServiceAccountRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DisableServiceAccountRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3121,8 +3118,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists every [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey] for a service account.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_service_account_keys</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListServiceAccountKeysRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListServiceAccountKeysResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListServiceAccountKeysRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListServiceAccountKeysResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3138,8 +3135,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets a [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_service_account_key</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetServiceAccountKeyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServiceAccountKey</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetServiceAccountKeyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServiceAccountKey</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3155,8 +3152,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_service_account_key</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateServiceAccountKeyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServiceAccountKey</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateServiceAccountKeyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServiceAccountKey</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3172,8 +3169,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a [ServiceAccountKey][google.iam.admin.v1.ServiceAccountKey], using a public key that you provide.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">upload_service_account_key</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UploadServiceAccountKeyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ServiceAccountKey</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UploadServiceAccountKeyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ServiceAccountKey</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3191,7 +3188,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; account key.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_service_account_key</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteServiceAccountKeyRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteServiceAccountKeyRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3215,8 +3212,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Signs a blob using the system-managed private key for a [ServiceAccount][google.iam.admin.v1.ServiceAccount].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">sign_blob</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SignBlobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SignBlobResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SignBlobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SignBlobResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3238,8 +3235,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [ServiceAccount][google.iam.admin.v1.ServiceAccount].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">sign_jwt</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SignJwtRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SignJwtResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SignJwtRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SignJwtResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3262,8 +3259,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; method.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_iam_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::v1::GetIamPolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::v1::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::v1::GetIamPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::v1::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3294,8 +3291,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; resources](https://cloud.google.com/iam/help/service-accounts/granting-access-to-service-accounts).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">set_iam_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::v1::SetIamPolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::v1::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::v1::SetIamPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::v1::Policy</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3311,9 +3308,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; [ServiceAccount][google.iam.admin.v1.ServiceAccount].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">test_iam_permissions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::v1::TestIamPermissionsRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::v1::TestIamPermissionsRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::v1::TestIamPermissionsResponse</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::v1::TestIamPermissionsResponse</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -3332,8 +3329,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; role.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">query_grantable_roles</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryGrantableRolesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryGrantableRolesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryGrantableRolesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryGrantableRolesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3350,8 +3347,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; that is defined for an organization or project.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_roles</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListRolesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListRolesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListRolesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListRolesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3365,8 +3362,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Gets the definition of a [Role][google.iam.admin.v1.Role].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_role</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetRoleRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetRoleRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3380,8 +3377,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a new custom [Role][google.iam.admin.v1.Role].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_role</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateRoleRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateRoleRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3395,8 +3392,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Updates the definition of a custom [Role][google.iam.admin.v1.Role].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">update_role</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UpdateRoleRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UpdateRoleRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3426,8 +3423,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; permanently removed.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_role</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteRoleRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteRoleRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3441,8 +3438,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Undeletes a custom [Role][google.iam.admin.v1.Role].&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">undelete_role</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::UndeleteRoleRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::UndeleteRoleRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Role</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3459,8 +3456,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; resource.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">query_testable_permissions</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryTestablePermissionsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryTestablePermissionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryTestablePermissionsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryTestablePermissionsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3481,8 +3478,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; documentation](https://cloud.google.com/logging/docs/audit).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">query_auditable_services</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryAuditableServicesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::QueryAuditableServicesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryAuditableServicesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::QueryAuditableServicesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3503,8 +3500,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; even if the linter detects an issue in the IAM policy.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">lint_policy</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LintPolicyRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LintPolicyResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LintPolicyRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LintPolicyResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3517,5 +3514,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

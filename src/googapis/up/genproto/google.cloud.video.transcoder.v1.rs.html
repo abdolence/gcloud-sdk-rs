@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.video.transcoder.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.video.transcoder.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.video.transcoder.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.video.transcoder.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1464,57 +1462,11 @@
 <span id="1462">1462</span>
 <span id="1463">1463</span>
 <span id="1464">1464</span>
-<span id="1465">1465</span>
-<span id="1466">1466</span>
-<span id="1467">1467</span>
-<span id="1468">1468</span>
-<span id="1469">1469</span>
-<span id="1470">1470</span>
-<span id="1471">1471</span>
-<span id="1472">1472</span>
-<span id="1473">1473</span>
-<span id="1474">1474</span>
-<span id="1475">1475</span>
-<span id="1476">1476</span>
-<span id="1477">1477</span>
-<span id="1478">1478</span>
-<span id="1479">1479</span>
-<span id="1480">1480</span>
-<span id="1481">1481</span>
-<span id="1482">1482</span>
-<span id="1483">1483</span>
-<span id="1484">1484</span>
-<span id="1485">1485</span>
-<span id="1486">1486</span>
-<span id="1487">1487</span>
-<span id="1488">1488</span>
-<span id="1489">1489</span>
-<span id="1490">1490</span>
-<span id="1491">1491</span>
-<span id="1492">1492</span>
-<span id="1493">1493</span>
-<span id="1494">1494</span>
-<span id="1495">1495</span>
-<span id="1496">1496</span>
-<span id="1497">1497</span>
-<span id="1498">1498</span>
-<span id="1499">1499</span>
-<span id="1500">1500</span>
-<span id="1501">1501</span>
-<span id="1502">1502</span>
-<span id="1503">1503</span>
-<span id="1504">1504</span>
-<span id="1505">1505</span>
-<span id="1506">1506</span>
-<span id="1507">1507</span>
-<span id="1508">1508</span>
-<span id="1509">1509</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Transcoding job resource.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Transcoding job resource.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Job</span> {
     <span class="doccomment">/// The resource name of the job.</span>
-    <span class="doccomment">/// Format: `projects/{project}/locations/{location}/jobs/{job}`</span>
+    <span class="doccomment">/// Format: `projects/{project_number}/locations/{location}/jobs/{job}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Input only. Specify the `input_uri` to populate empty `uri` fields in each element of</span>
@@ -1548,7 +1500,7 @@
     <span class="doccomment">/// Output only. An error object that describes the reason for the failure.</span>
     <span class="doccomment">/// This property is always present when `state` is `FAILED`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;17&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Specify the `job_config` for the transcoding job. If you don&#39;t specify the</span>
     <span class="doccomment">/// `job_config`, the API selects `templateId`; this template ID is set to</span>
     <span class="doccomment">/// `preset/web-hd` by default. When you use a `template_id` to create a job,</span>
@@ -1592,7 +1544,7 @@
         <span class="ident">TemplateId</span>(<span class="ident">::prost::alloc::string::String</span>),
         <span class="doccomment">/// The configuration for this job.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Config</span>(<span class="kw">super</span><span class="ident">::JobConfig</span>),
+        <span class="ident">Config</span>(<span class="ident"><span class="kw">super</span>::JobConfig</span>),
     }
 }
 <span class="doccomment">/// Transcoding job template resource.</span>
@@ -1600,7 +1552,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">JobTemplate</span> {
     <span class="doccomment">/// The resource name of the job template.</span>
     <span class="doccomment">/// Format:</span>
-    <span class="doccomment">/// `projects/{project}/locations/{location}/jobTemplates/{job_template}`</span>
+    <span class="doccomment">/// `projects/{project_number}/locations/{location}/jobTemplates/{job_template}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The configuration for this template.</span>
@@ -1715,56 +1667,54 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ElementaryStream</span> {
         <span class="doccomment">/// Encoding of a video stream.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">VideoStream</span>(<span class="kw">super</span><span class="ident">::VideoStream</span>),
+        <span class="ident">VideoStream</span>(<span class="ident"><span class="kw">super</span>::VideoStream</span>),
         <span class="doccomment">/// Encoding of an audio stream.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">AudioStream</span>(<span class="kw">super</span><span class="ident">::AudioStream</span>),
+        <span class="ident">AudioStream</span>(<span class="ident"><span class="kw">super</span>::AudioStream</span>),
         <span class="doccomment">/// Encoding of a text stream. For example, closed captions or subtitles.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">TextStream</span>(<span class="kw">super</span><span class="ident">::TextStream</span>),
+        <span class="ident">TextStream</span>(<span class="ident"><span class="kw">super</span>::TextStream</span>),
     }
 }
 <span class="doccomment">/// Multiplexing settings for output stream.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MuxStream</span> {
     <span class="doccomment">/// A unique key for this multiplexed stream. HLS media manifests will be</span>
-    <span class="doccomment">/// named `MuxStream.key` with the `&quot;.m3u8&quot;` extension suffix.</span>
+    <span class="doccomment">/// named `MuxStream.key` with the `.m3u8` extension suffix.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The name of the generated file. The default is `MuxStream.key` with the</span>
     <span class="doccomment">/// extension suffix corresponding to the `MuxStream.container`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Individual segments also have an incremental 10-digit zero-padded suffix</span>
-    <span class="doccomment">/// starting from 0 before the extension, such as `&quot;mux_stream0000000123.ts&quot;`.</span>
+    <span class="doccomment">/// starting from 0 before the extension, such as `mux_stream0000000123.ts`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">file_name</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// The container format. The default is `&quot;mp4&quot;`</span>
+    <span class="doccomment">/// The container format. The default is `mp4`</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Supported container formats:</span>
-    <span class="doccomment">/// - &#39;ts&#39;</span>
-    <span class="doccomment">/// - &#39;fmp4&#39;- the corresponding file extension is `&quot;.m4s&quot;`</span>
-    <span class="doccomment">/// - &#39;mp4&#39;</span>
-    <span class="doccomment">/// - &#39;vtt&#39;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - `ts`</span>
+    <span class="doccomment">/// - `fmp4`- the corresponding file extension is `.m4s`</span>
+    <span class="doccomment">/// - `mp4`</span>
+    <span class="doccomment">/// - `vtt`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">container</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// List of `ElementaryStream.key`s multiplexed in this stream.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">elementary_streams</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Segment settings for `&quot;ts&quot;`, `&quot;fmp4&quot;` and `&quot;vtt&quot;`.</span>
+    <span class="doccomment">/// Segment settings for `ts`, `fmp4` and `vtt`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">segment_settings</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">SegmentSettings</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Encryption settings.</span>
-    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">encryption</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Encryption</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Manifest configuration.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Manifest</span> {
-    <span class="doccomment">/// The name of the generated file. The default is `&quot;manifest&quot;` with the</span>
+    <span class="doccomment">/// The name of the generated file. The default is `manifest` with the</span>
     <span class="doccomment">/// extension suffix corresponding to the `Manifest.type`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">file_name</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Required. Type of the manifest, can be &quot;HLS&quot; or &quot;DASH&quot;.</span>
+    <span class="doccomment">/// Required. Type of the manifest, can be `HLS` or `DASH`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">enumeration</span> <span class="op">=</span> <span class="string">&quot;manifest::ManifestType&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">r#type</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Required. List of user given `MuxStream.key`s that should appear in this manifest.</span>
@@ -1777,15 +1727,15 @@
 }
 <span class="doccomment">/// Nested message and enum types in `Manifest`.</span>
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">manifest</span> {
-    <span class="doccomment">/// The manifest type can be either `&quot;HLS&quot;` or `&quot;DASH&quot;`.</span>
+    <span class="doccomment">/// The manifest type can be either `HLS` or `DASH`.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">Copy</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>, <span class="ident">Hash</span>, <span class="ident">PartialOrd</span>, <span class="ident">Ord</span>, <span class="ident">::prost::Enumeration</span>)]</span>
     <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">i32</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ManifestType</span> {
         <span class="doccomment">/// The manifest type is not specified.</span>
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
-        <span class="doccomment">/// Create `&quot;HLS&quot;` manifest. The corresponding file extension is `&quot;.m3u8&quot;`.</span>
+        <span class="doccomment">/// Create `HLS` manifest. The corresponding file extension is `.m3u8`.</span>
         <span class="ident">Hls</span> <span class="op">=</span> <span class="number">1</span>,
-        <span class="doccomment">/// Create `&quot;DASH&quot;` manifest. The corresponding file extension is `&quot;.mpd&quot;`.</span>
+        <span class="doccomment">/// Create `DASH` manifest. The corresponding file extension is `.mpd`.</span>
         <span class="ident">Dash</span> <span class="op">=</span> <span class="number">2</span>,
     }
 }
@@ -1800,27 +1750,28 @@
 <span class="doccomment">/// Sprite sheet configuration.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SpriteSheet</span> {
-    <span class="doccomment">/// Format type. The default is `&quot;jpeg&quot;`.</span>
+    <span class="doccomment">/// Format type. The default is `jpeg`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Supported formats:</span>
-    <span class="doccomment">/// - &#39;jpeg&#39;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - `jpeg`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">format</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. File name prefix for the generated sprite sheets.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Each sprite sheet has an incremental 10-digit zero-padded suffix starting</span>
-    <span class="doccomment">/// from 0 before the extension, such as `&quot;sprite_sheet0000000123.jpeg&quot;`.</span>
+    <span class="doccomment">/// from 0 before the extension, such as `sprite_sheet0000000123.jpeg`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">file_prefix</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The width of sprite in pixels. Must be an even integer. To preserve the</span>
-    <span class="doccomment">/// source aspect ratio, set the [SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels] field or</span>
-    <span class="doccomment">/// the [SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels] field, but not both (the API will</span>
+    <span class="doccomment">/// source aspect ratio, set the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\] field or</span>
+    <span class="doccomment">/// the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\] field, but not both (the API will</span>
     <span class="doccomment">/// automatically calculate the missing field).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">sprite_width_pixels</span>: <span class="ident">i32</span>,
     <span class="doccomment">/// Required. The height of sprite in pixels. Must be an even integer. To preserve the</span>
-    <span class="doccomment">/// source aspect ratio, set the [SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels] field or</span>
-    <span class="doccomment">/// the [SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels] field, but not both (the API will</span>
+    <span class="doccomment">/// source aspect ratio, set the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\] field or</span>
+    <span class="doccomment">/// the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\] field, but not both (the API will</span>
     <span class="doccomment">/// automatically calculate the missing field).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">sprite_height_pixels</span>: <span class="ident">i32</span>,
@@ -1967,13 +1918,13 @@
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">AnimationType</span> {
             <span class="doccomment">/// Display static overlay object.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-            <span class="ident">AnimationStatic</span>(<span class="kw">super</span><span class="ident">::AnimationStatic</span>),
+            <span class="ident">AnimationStatic</span>(<span class="ident"><span class="kw">super</span>::AnimationStatic</span>),
             <span class="doccomment">/// Display overlay object with fade animation.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-            <span class="ident">AnimationFade</span>(<span class="kw">super</span><span class="ident">::AnimationFade</span>),
+            <span class="ident">AnimationFade</span>(<span class="ident"><span class="kw">super</span>::AnimationFade</span>),
             <span class="doccomment">/// End previous animation.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-            <span class="ident">AnimationEnd</span>(<span class="kw">super</span><span class="ident">::AnimationEnd</span>),
+            <span class="ident">AnimationEnd</span>(<span class="ident"><span class="kw">super</span>::AnimationEnd</span>),
         }
     }
     <span class="doccomment">/// Fade type for the overlay: `FADE_IN` or `FADE_OUT`.</span>
@@ -2038,11 +1989,12 @@
         <span class="doccomment">/// the value, the smoother the image. 0 is no denoising. The default is 0.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">strength</span>: <span class="ident">f64</span>,
-        <span class="doccomment">/// Set the denoiser mode. The default is `&quot;standard&quot;`.</span>
+        <span class="doccomment">/// Set the denoiser mode. The default is `standard`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Supported denoiser modes:</span>
-        <span class="doccomment">/// - &#39;standard&#39;</span>
-        <span class="doccomment">/// - &#39;grain&#39;</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// - `standard`</span>
+        <span class="doccomment">/// - `grain`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">tune</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
@@ -2143,33 +2095,35 @@
         <span class="doccomment">/// input frame rate. The API will generate an output FPS that is divisible</span>
         <span class="doccomment">/// by the input FPS, and smaller or equal to the target FPS. See</span>
         <span class="doccomment">/// [Calculating frame</span>
-        <span class="doccomment">/// rate](https://cloud.google.com/transcoder/docs/concepts/frame-rate) for</span>
+        <span class="doccomment">/// rate](&lt;https://cloud.google.com/transcoder/docs/concepts/frame-rate&gt;) for</span>
         <span class="doccomment">/// more information.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">frame_rate</span>: <span class="ident">f64</span>,
-        <span class="doccomment">/// Required. The video bitrate in bits per second. Must be between 1 and</span>
-        <span class="doccomment">/// 1,000,000,000.</span>
+        <span class="doccomment">/// Required. The video bitrate in bits per second. The minimum value is 1,000.</span>
+        <span class="doccomment">/// The maximum value is 800,000,000.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">bitrate_bps</span>: <span class="ident">i32</span>,
-        <span class="doccomment">/// Pixel format to use. The default is `&quot;yuv420p&quot;`.</span>
+        <span class="doccomment">/// Pixel format to use. The default is `yuv420p`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Supported pixel formats:</span>
-        <span class="doccomment">/// - &#39;yuv420p&#39; pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv422p&#39; pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv444p&#39; pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv420p10&#39; 10-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv422p10&#39; 10-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv444p10&#39; 10-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv420p12&#39; 12-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv422p12&#39; 12-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv444p12&#39; 12-bit HDR pixel format.</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// - `yuv420p` pixel format</span>
+        <span class="doccomment">/// - `yuv422p` pixel format</span>
+        <span class="doccomment">/// - `yuv444p` pixel format</span>
+        <span class="doccomment">/// - `yuv420p10` 10-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv422p10` 10-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv444p10` 10-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv420p12` 12-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv422p12` 12-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv444p12` 12-bit HDR pixel format</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">pixel_format</span>: <span class="ident">::prost::alloc::string::String</span>,
-        <span class="doccomment">/// Specify the `rate_control_mode`. The default is `&quot;vbr&quot;`.</span>
+        <span class="doccomment">/// Specify the `rate_control_mode`. The default is `vbr`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Supported rate control modes:</span>
-        <span class="doccomment">/// - &#39;vbr&#39; - variable bitrate</span>
-        <span class="doccomment">/// - &#39;crf&#39; - constant rate factor</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// - `vbr` - variable bitrate</span>
+        <span class="doccomment">/// - `crf` - constant rate factor</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">rate_control_mode</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Target CRF level. Must be between 10 and 36, where 10 is the highest</span>
@@ -2181,7 +2135,7 @@
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">allow_open_gop</span>: <span class="ident">bool</span>,
         <span class="doccomment">/// Use two-pass encoding strategy to achieve better video quality.</span>
-        <span class="doccomment">/// `VideoStream.rate_control_mode` must be `&quot;vbr&quot;`. The default is `false`.</span>
+        <span class="doccomment">/// `VideoStream.rate_control_mode` must be `vbr`. The default is `false`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">enable_two_pass</span>: <span class="ident">bool</span>,
         <span class="doccomment">/// Size of the Video Buffering Verifier (VBV) buffer in bits. Must be</span>
@@ -2193,11 +2147,12 @@
         <span class="doccomment">/// `VideoStream.vbv_size_bits`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;13&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">vbv_fullness_bits</span>: <span class="ident">i32</span>,
-        <span class="doccomment">/// The entropy coder to use. The default is `&quot;cabac&quot;`.</span>
+        <span class="doccomment">/// The entropy coder to use. The default is `cabac`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Supported entropy coders:</span>
-        <span class="doccomment">/// - &#39;cavlc&#39;</span>
-        <span class="doccomment">/// - &#39;cabac&#39;</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// - `cavlc`</span>
+        <span class="doccomment">/// - `cabac`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;14&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">entropy_coder</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Allow B-pyramid for reference frame selection. This may not be supported</span>
@@ -2222,23 +2177,23 @@
         <span class="doccomment">/// *   `high` (default)</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The available options are</span>
-        <span class="doccomment">/// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.264#Profile){:</span>
-        <span class="doccomment">/// class=&quot;external&quot; }. Note that certain values for this field may cause the</span>
+        <span class="doccomment">/// \[FFmpeg-compatible\](&lt;https://trac.ffmpeg.org/wiki/Encode/H.264#Tune&gt;).</span>
+        <span class="doccomment">/// Note that certain values for this field may cause the</span>
         <span class="doccomment">/// transcoder to override other fields you set in the `H264CodecSettings`</span>
         <span class="doccomment">/// message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;18&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">profile</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Enforces the specified codec tune. The available options are</span>
-        <span class="doccomment">/// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.264#Tune){:</span>
-        <span class="doccomment">/// class=&quot;external&quot; }. Note that certain values for this field may cause the</span>
+        <span class="doccomment">/// \[FFmpeg-compatible\](&lt;https://trac.ffmpeg.org/wiki/Encode/H.264#Tune&gt;).</span>
+        <span class="doccomment">/// Note that certain values for this field may cause the</span>
         <span class="doccomment">/// transcoder to override other fields you set in the `H264CodecSettings`</span>
         <span class="doccomment">/// message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;19&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">tune</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Enforces the specified codec preset. The default is `veryfast`. The</span>
         <span class="doccomment">/// available options are</span>
-        <span class="doccomment">/// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.264#Preset){:</span>
-        <span class="doccomment">/// class=&quot;external&quot; }. Note that certain values for this field may cause the</span>
+        <span class="doccomment">/// \[FFmpeg-compatible\](&lt;https://trac.ffmpeg.org/wiki/Encode/H.264#Preset&gt;).</span>
+        <span class="doccomment">/// Note that certain values for this field may cause the</span>
         <span class="doccomment">/// transcoder to override other fields you set in the `H264CodecSettings`</span>
         <span class="doccomment">/// message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;20&quot;</span>)]</span>
@@ -2257,9 +2212,9 @@
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
             <span class="ident">GopFrameCount</span>(<span class="ident">i32</span>),
             <span class="doccomment">/// Select the GOP size based on the specified duration. The default is</span>
-            <span class="doccomment">/// `&quot;3s&quot;`. Note that `gopDuration` must be less than or equal to</span>
-            <span class="doccomment">/// [`segmentDuration`](#SegmentSettings), and</span>
-            <span class="doccomment">/// [`segmentDuration`](#SegmentSettings) must be divisible by</span>
+            <span class="doccomment">/// `3s`. Note that `gopDuration` must be less than or equal to</span>
+            <span class="doccomment">/// \[`segmentDuration`\](#SegmentSettings), and</span>
+            <span class="doccomment">/// \[`segmentDuration`\](#SegmentSettings) must be divisible by</span>
             <span class="doccomment">/// `gopDuration`.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
             <span class="ident">GopDuration</span>(<span class="ident">::prost_types::Duration</span>),
@@ -2283,33 +2238,35 @@
         <span class="doccomment">/// input frame rate. The API will generate an output FPS that is divisible</span>
         <span class="doccomment">/// by the input FPS, and smaller or equal to the target FPS. See</span>
         <span class="doccomment">/// [Calculating frame</span>
-        <span class="doccomment">/// rate](https://cloud.google.com/transcoder/docs/concepts/frame-rate) for</span>
+        <span class="doccomment">/// rate](&lt;https://cloud.google.com/transcoder/docs/concepts/frame-rate&gt;) for</span>
         <span class="doccomment">/// more information.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">frame_rate</span>: <span class="ident">f64</span>,
-        <span class="doccomment">/// Required. The video bitrate in bits per second. Must be between 1 and</span>
-        <span class="doccomment">/// 1,000,000,000.</span>
+        <span class="doccomment">/// Required. The video bitrate in bits per second. The minimum value is 1,000.</span>
+        <span class="doccomment">/// The maximum value is 800,000,000.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">bitrate_bps</span>: <span class="ident">i32</span>,
-        <span class="doccomment">/// Pixel format to use. The default is `&quot;yuv420p&quot;`.</span>
+        <span class="doccomment">/// Pixel format to use. The default is `yuv420p`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Supported pixel formats:</span>
-        <span class="doccomment">/// - &#39;yuv420p&#39; pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv422p&#39; pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv444p&#39; pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv420p10&#39; 10-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv422p10&#39; 10-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv444p10&#39; 10-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv420p12&#39; 12-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv422p12&#39; 12-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv444p12&#39; 12-bit HDR pixel format.</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// - `yuv420p` pixel format</span>
+        <span class="doccomment">/// - `yuv422p` pixel format</span>
+        <span class="doccomment">/// - `yuv444p` pixel format</span>
+        <span class="doccomment">/// - `yuv420p10` 10-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv422p10` 10-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv444p10` 10-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv420p12` 12-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv422p12` 12-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv444p12` 12-bit HDR pixel format</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">pixel_format</span>: <span class="ident">::prost::alloc::string::String</span>,
-        <span class="doccomment">/// Specify the `rate_control_mode`. The default is `&quot;vbr&quot;`.</span>
+        <span class="doccomment">/// Specify the `rate_control_mode`. The default is `vbr`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Supported rate control modes:</span>
-        <span class="doccomment">/// - &#39;vbr&#39; - variable bitrate</span>
-        <span class="doccomment">/// - &#39;crf&#39; - constant rate factor</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// - `vbr` - variable bitrate</span>
+        <span class="doccomment">/// - `crf` - constant rate factor</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">rate_control_mode</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Target CRF level. Must be between 10 and 36, where 10 is the highest</span>
@@ -2321,7 +2278,7 @@
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">allow_open_gop</span>: <span class="ident">bool</span>,
         <span class="doccomment">/// Use two-pass encoding strategy to achieve better video quality.</span>
-        <span class="doccomment">/// `VideoStream.rate_control_mode` must be `&quot;vbr&quot;`. The default is `false`.</span>
+        <span class="doccomment">/// `VideoStream.rate_control_mode` must be `vbr`. The default is `false`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;11&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">enable_two_pass</span>: <span class="ident">bool</span>,
         <span class="doccomment">/// Size of the Video Buffering Verifier (VBV) buffer in bits. Must be</span>
@@ -2350,45 +2307,43 @@
         <span class="doccomment">/// Enforces the specified codec profile. The following profiles are</span>
         <span class="doccomment">/// supported:</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// 8bit profiles</span>
-        <span class="doccomment">/// *   `main` (default)</span>
-        <span class="doccomment">/// *   `main-intra`</span>
-        <span class="doccomment">/// *   `mainstillpicture`</span>
-        <span class="doccomment">///</span>
-        <span class="doccomment">/// 10bit profiles</span>
-        <span class="doccomment">/// *   `main10` (default)</span>
-        <span class="doccomment">/// *   `main10-intra`</span>
-        <span class="doccomment">/// *   `main422-10`</span>
-        <span class="doccomment">/// *   `main422-10-intra`</span>
-        <span class="doccomment">/// *   `main444-10`</span>
-        <span class="doccomment">/// *   `main444-10-intra`</span>
-        <span class="doccomment">///</span>
-        <span class="doccomment">/// 12bit profiles</span>
-        <span class="doccomment">/// *   `main12` (default)</span>
-        <span class="doccomment">/// *   `main12-intra`</span>
-        <span class="doccomment">/// *   `main422-12`</span>
-        <span class="doccomment">/// *   `main422-12-intra`</span>
-        <span class="doccomment">/// *   `main444-12`</span>
-        <span class="doccomment">/// *   `main444-12-intra`</span>
+        <span class="doccomment">/// *   8-bit profiles</span>
+        <span class="doccomment">///     *   `main` (default)</span>
+        <span class="doccomment">///     *   `main-intra`</span>
+        <span class="doccomment">///     *   `mainstillpicture`</span>
+        <span class="doccomment">/// *   10-bit profiles</span>
+        <span class="doccomment">///     *   `main10` (default)</span>
+        <span class="doccomment">///     *   `main10-intra`</span>
+        <span class="doccomment">///     *   `main422-10`</span>
+        <span class="doccomment">///     *   `main422-10-intra`</span>
+        <span class="doccomment">///     *   `main444-10`</span>
+        <span class="doccomment">///     *   `main444-10-intra`</span>
+        <span class="doccomment">/// *   12-bit profiles</span>
+        <span class="doccomment">///     *   `main12` (default)</span>
+        <span class="doccomment">///     *   `main12-intra`</span>
+        <span class="doccomment">///     *   `main422-12`</span>
+        <span class="doccomment">///     *   `main422-12-intra`</span>
+        <span class="doccomment">///     *   `main444-12`</span>
+        <span class="doccomment">///     *   `main444-12-intra`</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The available options are</span>
-        <span class="doccomment">/// [FFmpeg-compatible](https://x265.readthedocs.io/){:</span>
-        <span class="doccomment">/// class=&quot;external&quot; }. Note that certain values for this field may cause the</span>
+        <span class="doccomment">/// \[FFmpeg-compatible\](&lt;https://x265.readthedocs.io/&gt;).</span>
+        <span class="doccomment">/// Note that certain values for this field may cause the</span>
         <span class="doccomment">/// transcoder to override other fields you set in the `H265CodecSettings`</span>
         <span class="doccomment">/// message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;17&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">profile</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Enforces the specified codec tune. The available options are</span>
-        <span class="doccomment">/// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.265){:</span>
-        <span class="doccomment">/// class=&quot;external&quot; }. Note that certain values for this field may cause the</span>
+        <span class="doccomment">/// \[FFmpeg-compatible\](&lt;https://trac.ffmpeg.org/wiki/Encode/H.265&gt;).</span>
+        <span class="doccomment">/// Note that certain values for this field may cause the</span>
         <span class="doccomment">/// transcoder to override other fields you set in the `H265CodecSettings`</span>
         <span class="doccomment">/// message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;18&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">tune</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Enforces the specified codec preset. The default is `veryfast`. The</span>
         <span class="doccomment">/// available options are</span>
-        <span class="doccomment">/// [FFmpeg-compatible](https://trac.ffmpeg.org/wiki/Encode/H.265){:</span>
-        <span class="doccomment">/// class=&quot;external&quot; }. Note that certain values for this field may cause the</span>
+        <span class="doccomment">/// \[FFmpeg-compatible\](&lt;https://trac.ffmpeg.org/wiki/Encode/H.265&gt;).</span>
+        <span class="doccomment">/// Note that certain values for this field may cause the</span>
         <span class="doccomment">/// transcoder to override other fields you set in the `H265CodecSettings`</span>
         <span class="doccomment">/// message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;19&quot;</span>)]</span>
@@ -2407,9 +2362,9 @@
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
             <span class="ident">GopFrameCount</span>(<span class="ident">i32</span>),
             <span class="doccomment">/// Select the GOP size based on the specified duration. The default is</span>
-            <span class="doccomment">/// `&quot;3s&quot;`. Note that `gopDuration` must be less than or equal to</span>
-            <span class="doccomment">/// [`segmentDuration`](#SegmentSettings), and</span>
-            <span class="doccomment">/// [`segmentDuration`](#SegmentSettings) must be divisible by</span>
+            <span class="doccomment">/// `3s`. Note that `gopDuration` must be less than or equal to</span>
+            <span class="doccomment">/// \[`segmentDuration`\](#SegmentSettings), and</span>
+            <span class="doccomment">/// \[`segmentDuration`\](#SegmentSettings) must be divisible by</span>
             <span class="doccomment">/// `gopDuration`.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
             <span class="ident">GopDuration</span>(<span class="ident">::prost_types::Duration</span>),
@@ -2433,33 +2388,35 @@
         <span class="doccomment">/// input frame rate. The API will generate an output FPS that is divisible</span>
         <span class="doccomment">/// by the input FPS, and smaller or equal to the target FPS. See</span>
         <span class="doccomment">/// [Calculating frame</span>
-        <span class="doccomment">/// rate](https://cloud.google.com/transcoder/docs/concepts/frame-rate) for</span>
+        <span class="doccomment">/// rate](&lt;https://cloud.google.com/transcoder/docs/concepts/frame-rate&gt;) for</span>
         <span class="doccomment">/// more information.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">double</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">frame_rate</span>: <span class="ident">f64</span>,
-        <span class="doccomment">/// Required. The video bitrate in bits per second. Must be between 1 and</span>
-        <span class="doccomment">/// 1,000,000,000.</span>
+        <span class="doccomment">/// Required. The video bitrate in bits per second. The minimum value is 1,000.</span>
+        <span class="doccomment">/// The maximum value is 480,000,000.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">bitrate_bps</span>: <span class="ident">i32</span>,
-        <span class="doccomment">/// Pixel format to use. The default is `&quot;yuv420p&quot;`.</span>
+        <span class="doccomment">/// Pixel format to use. The default is `yuv420p`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Supported pixel formats:</span>
-        <span class="doccomment">/// - &#39;yuv420p&#39; pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv422p&#39; pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv444p&#39; pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv420p10&#39; 10-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv422p10&#39; 10-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv444p10&#39; 10-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv420p12&#39; 12-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv422p12&#39; 12-bit HDR pixel format.</span>
-        <span class="doccomment">/// - &#39;yuv444p12&#39; 12-bit HDR pixel format.</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// - `yuv420p` pixel format</span>
+        <span class="doccomment">/// - `yuv422p` pixel format</span>
+        <span class="doccomment">/// - `yuv444p` pixel format</span>
+        <span class="doccomment">/// - `yuv420p10` 10-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv422p10` 10-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv444p10` 10-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv420p12` 12-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv422p12` 12-bit HDR pixel format</span>
+        <span class="doccomment">/// - `yuv444p12` 12-bit HDR pixel format</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">pixel_format</span>: <span class="ident">::prost::alloc::string::String</span>,
-        <span class="doccomment">/// Specify the `rate_control_mode`. The default is `&quot;vbr&quot;`.</span>
+        <span class="doccomment">/// Specify the `rate_control_mode`. The default is `vbr`.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Supported rate control modes:</span>
-        <span class="doccomment">/// - &#39;vbr&#39; - variable bitrate</span>
-        <span class="doccomment">/// - &#39;crf&#39; - constant rate factor</span>
+        <span class="doccomment">///</span>
+        <span class="doccomment">/// - `vbr` - variable bitrate</span>
+        <span class="doccomment">/// - `crf` - constant rate factor</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">rate_control_mode</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// Target CRF level. Must be between 10 and 36, where 10 is the highest</span>
@@ -2475,8 +2432,8 @@
         <span class="doccomment">/// *   `profile3`</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// The available options are</span>
-        <span class="doccomment">/// [WebM-compatible](https://www.webmproject.org/vp9/profiles/){:</span>
-        <span class="doccomment">/// class=&quot;external&quot; }. Note that certain values for this field may cause the</span>
+        <span class="doccomment">/// \[WebM-compatible\](&lt;https://www.webmproject.org/vp9/profiles/&gt;).</span>
+        <span class="doccomment">/// Note that certain values for this field may cause the</span>
         <span class="doccomment">/// transcoder to override other fields you set in the `Vp9CodecSettings`</span>
         <span class="doccomment">/// message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
@@ -2495,9 +2452,9 @@
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
             <span class="ident">GopFrameCount</span>(<span class="ident">i32</span>),
             <span class="doccomment">/// Select the GOP size based on the specified duration. The default is</span>
-            <span class="doccomment">/// `&quot;3s&quot;`. Note that `gopDuration` must be less than or equal to</span>
-            <span class="doccomment">/// [`segmentDuration`](#SegmentSettings), and</span>
-            <span class="doccomment">/// [`segmentDuration`](#SegmentSettings) must be divisible by</span>
+            <span class="doccomment">/// `3s`. Note that `gopDuration` must be less than or equal to</span>
+            <span class="doccomment">/// \[`segmentDuration`\](#SegmentSettings), and</span>
+            <span class="doccomment">/// \[`segmentDuration`\](#SegmentSettings) must be divisible by</span>
             <span class="doccomment">/// `gopDuration`.</span>
             <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
             <span class="ident">GopDuration</span>(<span class="ident">::prost_types::Duration</span>),
@@ -2520,15 +2477,16 @@
 <span class="doccomment">/// Audio stream resource.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AudioStream</span> {
-    <span class="doccomment">/// The codec for this audio stream. The default is `&quot;aac&quot;`.</span>
+    <span class="doccomment">/// The codec for this audio stream. The default is `aac`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Supported audio codecs:</span>
-    <span class="doccomment">/// - &#39;aac&#39;</span>
-    <span class="doccomment">/// - &#39;aac-he&#39;</span>
-    <span class="doccomment">/// - &#39;aac-he-v2&#39;</span>
-    <span class="doccomment">/// - &#39;mp3&#39;</span>
-    <span class="doccomment">/// - &#39;ac3&#39;</span>
-    <span class="doccomment">/// - &#39;eac3&#39;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - `aac`</span>
+    <span class="doccomment">/// - `aac-he`</span>
+    <span class="doccomment">/// - `aac-he-v2`</span>
+    <span class="doccomment">/// - `mp3`</span>
+    <span class="doccomment">/// - `ac3`</span>
+    <span class="doccomment">/// - `eac3`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">codec</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. Audio bitrate in bits per second. Must be between 1 and 10,000,000.</span>
@@ -2542,12 +2500,13 @@
     <span class="doccomment">/// supported by the specified format. The default is `[&quot;fl&quot;, &quot;fr&quot;]`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Supported channel names:</span>
-    <span class="doccomment">/// - &#39;fl&#39; - Front left channel</span>
-    <span class="doccomment">/// - &#39;fr&#39; - Front right channel</span>
-    <span class="doccomment">/// - &#39;sl&#39; - Side left channel</span>
-    <span class="doccomment">/// - &#39;sr&#39; - Side right channel</span>
-    <span class="doccomment">/// - &#39;fc&#39; - Front center channel</span>
-    <span class="doccomment">/// - &#39;lfe&#39; - Low frequency</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - `fl` - Front left channel</span>
+    <span class="doccomment">/// - `fr` - Front right channel</span>
+    <span class="doccomment">/// - `sl` - Side left channel</span>
+    <span class="doccomment">/// - `sr` - Side right channel</span>
+    <span class="doccomment">/// - `fc` - Front center channel</span>
+    <span class="doccomment">/// - `lfe` - Low frequency</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">channel_layout</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The mapping for the `Job.edit_list` atoms with audio `EditAtom.inputs`.</span>
@@ -2587,14 +2546,15 @@
 <span class="doccomment">/// Encoding of a text stream. For example, closed captions or subtitles.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TextStream</span> {
-    <span class="doccomment">/// The codec for this text stream. The default is `&quot;webvtt&quot;`.</span>
+    <span class="doccomment">/// The codec for this text stream. The default is `webvtt`.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Supported text codecs:</span>
-    <span class="doccomment">/// - &#39;srt&#39;</span>
-    <span class="doccomment">/// - &#39;ttml&#39;</span>
-    <span class="doccomment">/// - &#39;cea608&#39;</span>
-    <span class="doccomment">/// - &#39;cea708&#39;</span>
-    <span class="doccomment">/// - &#39;webvtt&#39;</span>
+    <span class="doccomment">///</span>
+    <span class="doccomment">/// - `srt`</span>
+    <span class="doccomment">/// - `ttml`</span>
+    <span class="doccomment">/// - `cea608`</span>
+    <span class="doccomment">/// - `cea708`</span>
+    <span class="doccomment">/// - `webvtt`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">codec</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The mapping for the `Job.edit_list` atoms with text `EditAtom.inputs`.</span>
@@ -2618,79 +2578,18 @@
         <span class="kw">pub</span> <span class="ident">input_track</span>: <span class="ident">i32</span>,
     }
 }
-<span class="doccomment">/// Segment settings for `&quot;ts&quot;`, `&quot;fmp4&quot;` and `&quot;vtt&quot;`.</span>
+<span class="doccomment">/// Segment settings for `ts`, `fmp4` and `vtt`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SegmentSettings</span> {
-    <span class="doccomment">/// Duration of the segments in seconds. The default is `&quot;6.0s&quot;`. Note that</span>
+    <span class="doccomment">/// Duration of the segments in seconds. The default is `6.0s`. Note that</span>
     <span class="doccomment">/// `segmentDuration` must be greater than or equal to</span>
-    <span class="doccomment">/// [`gopDuration`](#videostream), and `segmentDuration` must be divisible by</span>
-    <span class="doccomment">/// [`gopDuration`](#videostream).</span>
+    <span class="doccomment">/// \[`gopDuration`\](#videostream), and `segmentDuration` must be divisible by</span>
+    <span class="doccomment">/// \[`gopDuration`\](#videostream).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">segment_duration</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost_types::Duration</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Required. Create an individual segment file. The default is `false`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">individual_segments</span>: <span class="ident">bool</span>,
-}
-<span class="doccomment">/// Encryption settings.</span>
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Encryption</span> {
-    <span class="doccomment">/// Required. 128 bit encryption key represented as lowercase hexadecimal digits.</span>
-    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">key</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Required. 128 bit Initialization Vector (IV) represented as lowercase hexadecimal</span>
-    <span class="doccomment">/// digits.</span>
-    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">iv</span>: <span class="ident">::prost::alloc::string::String</span>,
-    <span class="doccomment">/// Encryption mode can be either `aes` or `cenc`.</span>
-    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">oneof</span> <span class="op">=</span> <span class="string">&quot;encryption::EncryptionMode&quot;</span>, <span class="ident">tags</span> <span class="op">=</span> <span class="string">&quot;3, 4, 5&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">encryption_mode</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">encryption::EncryptionMode</span><span class="op">&gt;</span>,
-}
-<span class="doccomment">/// Nested message and enum types in `Encryption`.</span>
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">encryption</span> {
-    <span class="doccomment">/// Configuration for AES-128 encryption.</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Aes128Encryption</span> {
-        <span class="doccomment">/// Required. URI of the key delivery service. This URI is inserted into the M3U8</span>
-        <span class="doccomment">/// header.</span>
-        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">key_uri</span>: <span class="ident">::prost::alloc::string::String</span>,
-    }
-    <span class="doccomment">/// Configuration for SAMPLE-AES encryption.</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SampleAesEncryption</span> {
-        <span class="doccomment">/// Required. URI of the key delivery service. This URI is inserted into the M3U8</span>
-        <span class="doccomment">/// header.</span>
-        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">key_uri</span>: <span class="ident">::prost::alloc::string::String</span>,
-    }
-    <span class="doccomment">/// Configuration for MPEG Common Encryption (MPEG-CENC).</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MpegCommonEncryption</span> {
-        <span class="doccomment">/// Required. 128 bit Key ID represented as lowercase hexadecimal digits for use with</span>
-        <span class="doccomment">/// common encryption.</span>
-        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">key_id</span>: <span class="ident">::prost::alloc::string::String</span>,
-        <span class="doccomment">/// Required. Specify the encryption scheme.</span>
-        <span class="doccomment">///</span>
-        <span class="doccomment">/// Supported encryption schemes:</span>
-        <span class="doccomment">/// - &#39;cenc&#39;</span>
-        <span class="doccomment">/// - &#39;cbcs&#39;</span>
-        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">scheme</span>: <span class="ident">::prost::alloc::string::String</span>,
-    }
-    <span class="doccomment">/// Encryption mode can be either `aes` or `cenc`.</span>
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Oneof</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">EncryptionMode</span> {
-        <span class="doccomment">/// Configuration for AES-128 encryption.</span>
-        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Aes128</span>(<span class="ident">Aes128Encryption</span>),
-        <span class="doccomment">/// Configuration for SAMPLE-AES encryption.</span>
-        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">SampleAes</span>(<span class="ident">SampleAesEncryption</span>),
-        <span class="doccomment">/// Configuration for MPEG Common Encryption (MPEG-CENC).</span>
-        <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">MpegCenc</span>(<span class="ident">MpegCommonEncryption</span>),
-    }
 }
 <span class="doccomment">/// Request message for `TranscoderService.CreateJob`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -2718,11 +2617,11 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The filter expression, following the syntax outlined in</span>
-    <span class="doccomment">/// https://google.aip.dev/160.</span>
+    <span class="doccomment">/// &lt;https://google.aip.dev/160.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// One or more fields to compare and use to sort the output.</span>
-    <span class="doccomment">/// See https://google.aip.dev/132#ordering.</span>
+    <span class="doccomment">/// See &lt;https://google.aip.dev/132#ordering.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">order_by</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -2741,6 +2640,10 @@
     <span class="doccomment">/// Format: `projects/{project}/locations/{location}/jobs/{job}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// If set to true, and the job is not found, the request will succeed but no</span>
+    <span class="doccomment">/// action will be taken on the server.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">allow_missing</span>: <span class="ident">bool</span>,
 }
 <span class="doccomment">/// Response message for `TranscoderService.ListJobs`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -2769,7 +2672,7 @@
     <span class="doccomment">/// of the job template&#39;s resource name.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// This value should be 4-63 characters, and valid characters must match the</span>
-    <span class="doccomment">/// regular expression `[a-zA-Z][a-zA-Z0-9_-]*`.</span>
+    <span class="doccomment">/// regular expression `\[a-zA-Z][a-zA-Z0-9_-\]*`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">job_template_id</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -2788,11 +2691,11 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">page_token</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The filter expression, following the syntax outlined in</span>
-    <span class="doccomment">/// https://google.aip.dev/160.</span>
+    <span class="doccomment">/// &lt;https://google.aip.dev/160.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">filter</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// One or more fields to compare and use to sort the output.</span>
-    <span class="doccomment">/// See https://google.aip.dev/132#ordering.</span>
+    <span class="doccomment">/// See &lt;https://google.aip.dev/132#ordering.&gt;</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">order_by</span>: <span class="ident">::prost::alloc::string::String</span>,
 }
@@ -2812,6 +2715,10 @@
     <span class="doccomment">/// `projects/{project}/locations/{location}/jobTemplates/{job_template}`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">name</span>: <span class="ident">::prost::alloc::string::String</span>,
+    <span class="doccomment">/// If set to true, and the job template is not found, the request will succeed</span>
+    <span class="doccomment">/// but no action will be taken on the server.</span>
+    <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="ident">allow_missing</span>: <span class="ident">bool</span>,
 }
 <span class="doccomment">/// Response message for `TranscoderService.ListJobTemplates`.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
@@ -2843,7 +2750,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">TranscoderServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2856,7 +2763,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">TranscoderServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2884,8 +2791,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a job in the specified region.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2901,8 +2808,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists jobs in the specified region.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_jobs</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListJobsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListJobsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListJobsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListJobsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2918,8 +2825,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns the job data.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetJobRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetJobRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Job</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2935,7 +2842,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a job.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_job</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteJobRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteJobRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -2952,8 +2859,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Creates a job template in the specified region.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">create_job_template</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CreateJobTemplateRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::JobTemplate</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CreateJobTemplateRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::JobTemplate</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2969,8 +2876,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Lists job templates in the specified region.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">list_job_templates</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListJobTemplatesRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ListJobTemplatesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListJobTemplatesRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ListJobTemplatesResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2986,8 +2893,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Returns the job template data.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">get_job_template</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::GetJobTemplateRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::JobTemplate</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::GetJobTemplateRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::JobTemplate</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -3003,7 +2910,7 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Deletes a job template.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">delete_job_template</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::DeleteJobTemplateRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::DeleteJobTemplateRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -3019,5 +2926,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

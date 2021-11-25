@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["WorkflowTemplateServiceClient","The API interface for managing Workflow Templates in the Dataproc API."]]});

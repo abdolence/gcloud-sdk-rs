@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["BiddingSource","Indicates where a bid or target is defined. For example, an ad group criterion may define a cpc bid directly, or it can inherit its cpc bid from the ad group."]]});

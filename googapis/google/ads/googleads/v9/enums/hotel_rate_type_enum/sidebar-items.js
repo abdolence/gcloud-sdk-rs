@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["HotelRateType","Enum describing possible hotel rate types."]]});

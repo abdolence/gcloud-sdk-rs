@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","[Output Only] The current state of a scaling schedule."]]});

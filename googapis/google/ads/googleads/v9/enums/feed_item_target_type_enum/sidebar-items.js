@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["FeedItemTargetType","Possible type of a feed item target."]]});

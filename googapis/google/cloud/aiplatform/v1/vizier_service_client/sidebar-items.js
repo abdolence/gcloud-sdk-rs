@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["VizierServiceClient","Vertex Vizier API."]]});

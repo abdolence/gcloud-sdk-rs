@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.datastore.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.datastore.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.datastore.v1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.datastore.v1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1048,8 +1046,7 @@
 <span id="1046">1046</span>
 <span id="1047">1047</span>
 <span id="1048">1048</span>
-</pre><pre class="rust">
-<span class="doccomment">/// A partition ID identifies a grouping of entities. The grouping is always</span>
+</pre><pre class="rust"><code><span class="doccomment">/// A partition ID identifies a grouping of entities. The grouping is always</span>
 <span class="doccomment">/// by project and namespace, however the namespace ID may be empty.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// A partition ID contains several dimensions:</span>
@@ -1059,7 +1056,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// - May be `&quot;&quot;`.</span>
 <span class="doccomment">/// - Must be valid UTF-8 bytes.</span>
-<span class="doccomment">/// - Must have values that match regex `[A-Za-z\d\.\-_]{1,100}`</span>
+<span class="doccomment">/// - Must have values that match regex `\[A-Za-z\d\.\-_\]{1,100}`</span>
 <span class="doccomment">/// If the value of any dimension matches regex `__.*__`, the partition is</span>
 <span class="doccomment">/// reserved/read-only.</span>
 <span class="doccomment">/// A reserved/read-only partition ID is forbidden in certain documented</span>
@@ -1196,7 +1193,7 @@
         <span class="ident">TimestampValue</span>(<span class="ident">::prost_types::Timestamp</span>),
         <span class="doccomment">/// A key value.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">KeyValue</span>(<span class="kw">super</span><span class="ident">::Key</span>),
+        <span class="ident">KeyValue</span>(<span class="ident"><span class="kw">super</span>::Key</span>),
         <span class="doccomment">/// A UTF-8 encoded string value.</span>
         <span class="doccomment">/// When `exclude_from_indexes` is false (it is indexed), may have at most</span>
         <span class="doccomment">/// 1500 bytes. Otherwise, may be set to at most 1,000,000 bytes.</span>
@@ -1210,20 +1207,20 @@
         <span class="ident">BlobValue</span>(<span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
         <span class="doccomment">/// A geo point value representing a point on the surface of Earth.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">GeoPointValue</span>(<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="ident">r#type</span><span class="ident">::LatLng</span>),
+        <span class="ident">GeoPointValue</span>(<span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span></span>::<span class="ident">r#type</span><span class="ident">::LatLng</span>),
         <span class="doccomment">/// An entity value.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// - May have no key.</span>
         <span class="doccomment">/// - May have a key with an incomplete key path.</span>
         <span class="doccomment">/// - May have a reserved/read-only key.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">EntityValue</span>(<span class="kw">super</span><span class="ident">::Entity</span>),
+        <span class="ident">EntityValue</span>(<span class="ident"><span class="kw">super</span>::Entity</span>),
         <span class="doccomment">/// An array value.</span>
         <span class="doccomment">/// Cannot contain another array value.</span>
         <span class="doccomment">/// A `Value` instance that sets field `array_value` must not set fields</span>
         <span class="doccomment">/// `meaning` or `exclude_from_indexes`.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-        <span class="ident">ArrayValue</span>(<span class="kw">super</span><span class="ident">::ArrayValue</span>),
+        <span class="ident">ArrayValue</span>(<span class="ident"><span class="kw">super</span>::ArrayValue</span>),
     }
 }
 <span class="doccomment">/// A Datastore data object.</span>
@@ -1259,10 +1256,10 @@
     <span class="doccomment">/// The version of the entity, a strictly positive number that monotonically</span>
     <span class="doccomment">/// increases with changes to the entity.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// This field is set for [`FULL`][google.datastore.v1.EntityResult.ResultType.FULL] entity</span>
+    <span class="doccomment">/// This field is set for \[`FULL`][google.datastore.v1.EntityResult.ResultType.FULL\] entity</span>
     <span class="doccomment">/// results.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// For [missing][google.datastore.v1.LookupResponse.missing] entities in `LookupResponse`, this</span>
+    <span class="doccomment">/// For \[missing][google.datastore.v1.LookupResponse.missing\] entities in `LookupResponse`, this</span>
     <span class="doccomment">/// is the version of the snapshot that was used to look up the entity, and it</span>
     <span class="doccomment">/// is always set except for eventually consistent reads.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
@@ -1316,13 +1313,13 @@
     <span class="doccomment">/// A starting point for the query results. Query cursors are</span>
     <span class="doccomment">/// returned in query result batches and</span>
     <span class="doccomment">/// [can only be used to continue the same</span>
-    <span class="doccomment">/// query](https://cloud.google.com/datastore/docs/concepts/queries#cursors_limits_and_offsets).</span>
+    <span class="doccomment">/// query](&lt;https://cloud.google.com/datastore/docs/concepts/queries#cursors_limits_and_offsets&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">start_cursor</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="doccomment">/// An ending point for the query results. Query cursors are</span>
     <span class="doccomment">/// returned in query result batches and</span>
     <span class="doccomment">/// [can only be used to limit the same</span>
-    <span class="doccomment">/// query](https://cloud.google.com/datastore/docs/concepts/queries#cursors_limits_and_offsets).</span>
+    <span class="doccomment">/// query](&lt;https://cloud.google.com/datastore/docs/concepts/queries#cursors_limits_and_offsets&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">end_cursor</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
     <span class="doccomment">/// The number of results to skip. Applies before limit, but after all other</span>
@@ -1396,10 +1393,10 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">FilterType</span> {
         <span class="doccomment">/// A composite filter.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">CompositeFilter</span>(<span class="kw">super</span><span class="ident">::CompositeFilter</span>),
+        <span class="ident">CompositeFilter</span>(<span class="ident"><span class="kw">super</span>::CompositeFilter</span>),
         <span class="doccomment">/// A filter on a property.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">PropertyFilter</span>(<span class="kw">super</span><span class="ident">::PropertyFilter</span>),
+        <span class="ident">PropertyFilter</span>(<span class="ident"><span class="kw">super</span>::PropertyFilter</span>),
     }
 }
 <span class="doccomment">/// A filter that merges multiple other filters using the given operator.</span>
@@ -1461,11 +1458,11 @@
     }
 }
 <span class="doccomment">/// A [GQL</span>
-<span class="doccomment">/// query](https://cloud.google.com/datastore/docs/apis/gql/gql_reference).</span>
+<span class="doccomment">/// query](&lt;https://cloud.google.com/datastore/docs/apis/gql/gql_reference&gt;).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GqlQuery</span> {
     <span class="doccomment">/// A string of the format described</span>
-    <span class="doccomment">/// [here](https://cloud.google.com/datastore/docs/apis/gql/gql_reference).</span>
+    <span class="doccomment">/// \[here\](&lt;https://cloud.google.com/datastore/docs/apis/gql/gql_reference&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">query_string</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// When false, the query string must not contain any literals and instead must</span>
@@ -1477,7 +1474,7 @@
     <span class="doccomment">/// For each non-reserved named binding site in the query string, there must be</span>
     <span class="doccomment">/// a named parameter with that name, but not necessarily the inverse.</span>
     <span class="doccomment">///</span>
-    <span class="doccomment">/// Key must match regex `[A-Za-z_$][A-Za-z_$0-9]*`, must not match regex</span>
+    <span class="doccomment">/// Key must match regex `\[A-Za-z_$][A-Za-z_$0-9\]*`, must not match regex</span>
     <span class="doccomment">/// `__.*__`, and must not be `&quot;&quot;`.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">map</span> <span class="op">=</span> <span class="string">&quot;string, message&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">named_bindings</span>:
@@ -1504,7 +1501,7 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">ParameterType</span> {
         <span class="doccomment">/// A value parameter.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">Value</span>(<span class="kw">super</span><span class="ident">::Value</span>),
+        <span class="ident">Value</span>(<span class="ident"><span class="kw">super</span>::Value</span>),
         <span class="doccomment">/// A query cursor. Query cursors are returned in query</span>
         <span class="doccomment">/// result batches.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
@@ -1564,7 +1561,7 @@
         <span class="ident">NoMoreResults</span> <span class="op">=</span> <span class="number">3</span>,
     }
 }
-<span class="doccomment">/// The request for [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].</span>
+<span class="doccomment">/// The request for \[Datastore.Lookup][google.datastore.v1.Datastore.Lookup\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LookupRequest</span> {
     <span class="doccomment">/// Required. The ID of the project against which to make the request.</span>
@@ -1577,7 +1574,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">keys</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Key</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response for [Datastore.Lookup][google.datastore.v1.Datastore.Lookup].</span>
+<span class="doccomment">/// The response for \[Datastore.Lookup][google.datastore.v1.Datastore.Lookup\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LookupResponse</span> {
     <span class="doccomment">/// Entities found as `ResultType.FULL` entities. The order of results in this</span>
@@ -1596,7 +1593,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">deferred</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Key</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].</span>
+<span class="doccomment">/// The request for \[Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunQueryRequest</span> {
     <span class="doccomment">/// Required. The ID of the project against which to make the request.</span>
@@ -1622,13 +1619,13 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">QueryType</span> {
         <span class="doccomment">/// The query to run.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Query</span>(<span class="kw">super</span><span class="ident">::Query</span>),
+        <span class="ident">Query</span>(<span class="ident"><span class="kw">super</span>::Query</span>),
         <span class="doccomment">/// The GQL query to run.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">GqlQuery</span>(<span class="kw">super</span><span class="ident">::GqlQuery</span>),
+        <span class="ident">GqlQuery</span>(<span class="ident"><span class="kw">super</span>::GqlQuery</span>),
     }
 }
-<span class="doccomment">/// The response for [Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery].</span>
+<span class="doccomment">/// The response for \[Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RunQueryResponse</span> {
     <span class="doccomment">/// A batch of query results (always present).</span>
@@ -1638,7 +1635,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">query</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">Query</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].</span>
+<span class="doccomment">/// The request for \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BeginTransactionRequest</span> {
     <span class="doccomment">/// Required. The ID of the project against which to make the request.</span>
@@ -1648,29 +1645,29 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;10&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction_options</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">TransactionOptions</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response for [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].</span>
+<span class="doccomment">/// The response for \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">BeginTransactionResponse</span> {
     <span class="doccomment">/// The transaction identifier (always present).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].</span>
+<span class="doccomment">/// The request for \[Datastore.Rollback][google.datastore.v1.Datastore.Rollback\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RollbackRequest</span> {
     <span class="doccomment">/// Required. The ID of the project against which to make the request.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">project_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Required. The transaction identifier, returned by a call to</span>
-    <span class="doccomment">/// [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].</span>
+    <span class="doccomment">/// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">transaction</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response for [Datastore.Rollback][google.datastore.v1.Datastore.Rollback].</span>
+<span class="doccomment">/// The response for \[Datastore.Rollback][google.datastore.v1.Datastore.Rollback\].</span>
 <span class="doccomment">/// (an empty message).</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RollbackResponse</span> {}
-<span class="doccomment">/// The request for [Datastore.Commit][google.datastore.v1.Datastore.Commit].</span>
+<span class="doccomment">/// The request for \[Datastore.Commit][google.datastore.v1.Datastore.Commit\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommitRequest</span> {
     <span class="doccomment">/// Required. The ID of the project against which to make the request.</span>
@@ -1708,7 +1705,7 @@
         <span class="ident">Unspecified</span> <span class="op">=</span> <span class="number">0</span>,
         <span class="doccomment">/// Transactional: The mutations are either all applied, or none are applied.</span>
         <span class="doccomment">/// Learn about transactions</span>
-        <span class="doccomment">/// [here](https://cloud.google.com/datastore/docs/concepts/transactions).</span>
+        <span class="doccomment">/// \[here\](&lt;https://cloud.google.com/datastore/docs/concepts/transactions&gt;).</span>
         <span class="ident">Transactional</span> <span class="op">=</span> <span class="number">1</span>,
         <span class="doccomment">/// Non-transactional: The mutations may not apply as all or none.</span>
         <span class="ident">NonTransactional</span> <span class="op">=</span> <span class="number">2</span>,
@@ -1718,12 +1715,12 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">TransactionSelector</span> {
         <span class="doccomment">/// The identifier of the transaction associated with the commit. A</span>
         <span class="doccomment">/// transaction identifier is returned by a call to</span>
-        <span class="doccomment">/// [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].</span>
+        <span class="doccomment">/// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="ident">Transaction</span>(<span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
     }
 }
-<span class="doccomment">/// The response for [Datastore.Commit][google.datastore.v1.Datastore.Commit].</span>
+<span class="doccomment">/// The response for \[Datastore.Commit][google.datastore.v1.Datastore.Commit\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">CommitResponse</span> {
     <span class="doccomment">/// The result of performing the mutations.</span>
@@ -1735,7 +1732,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int32</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">index_updates</span>: <span class="ident">i32</span>,
 }
-<span class="doccomment">/// The request for [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].</span>
+<span class="doccomment">/// The request for \[Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AllocateIdsRequest</span> {
     <span class="doccomment">/// Required. The ID of the project against which to make the request.</span>
@@ -1746,7 +1743,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">keys</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Key</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response for [Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds].</span>
+<span class="doccomment">/// The response for \[Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AllocateIdsResponse</span> {
     <span class="doccomment">/// The keys specified in the request (in the same order), each with</span>
@@ -1754,7 +1751,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">keys</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Key</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The request for [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].</span>
+<span class="doccomment">/// The request for \[Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReserveIdsRequest</span> {
     <span class="doccomment">/// Required. The ID of the project against which to make the request.</span>
@@ -1768,7 +1765,7 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">keys</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">Key</span><span class="op">&gt;</span>,
 }
-<span class="doccomment">/// The response for [Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds].</span>
+<span class="doccomment">/// The response for \[Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds\].</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReserveIdsResponse</span> {}
 <span class="doccomment">/// A mutation to apply to an entity.</span>
@@ -1805,19 +1802,19 @@
         <span class="doccomment">/// The entity to insert. The entity must not already exist.</span>
         <span class="doccomment">/// The entity key&#39;s final path element may be incomplete.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">Insert</span>(<span class="kw">super</span><span class="ident">::Entity</span>),
+        <span class="ident">Insert</span>(<span class="ident"><span class="kw">super</span>::Entity</span>),
         <span class="doccomment">/// The entity to update. The entity must already exist.</span>
         <span class="doccomment">/// Must have a complete key path.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">Update</span>(<span class="kw">super</span><span class="ident">::Entity</span>),
+        <span class="ident">Update</span>(<span class="ident"><span class="kw">super</span>::Entity</span>),
         <span class="doccomment">/// The entity to upsert. The entity may or may not already exist.</span>
         <span class="doccomment">/// The entity key&#39;s final path element may be incomplete.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;6&quot;</span>)]</span>
-        <span class="ident">Upsert</span>(<span class="kw">super</span><span class="ident">::Entity</span>),
+        <span class="ident">Upsert</span>(<span class="ident"><span class="kw">super</span>::Entity</span>),
         <span class="doccomment">/// The key of the entity to delete. The entity may or may not already exist.</span>
         <span class="doccomment">/// Must have a complete key path and must not be reserved/read-only.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">Delete</span>(<span class="kw">super</span><span class="ident">::Key</span>),
+        <span class="ident">Delete</span>(<span class="ident"><span class="kw">super</span>::Key</span>),
     }
     <span class="doccomment">/// When set, the server will detect whether or not this mutation conflicts</span>
     <span class="doccomment">/// with the current version of the entity on the server. Conflicting mutations</span>
@@ -1882,7 +1879,7 @@
         <span class="ident">ReadConsistency</span>(<span class="ident">i32</span>),
         <span class="doccomment">/// The identifier of the transaction in which to read. A</span>
         <span class="doccomment">/// transaction identifier is returned by a call to</span>
-        <span class="doccomment">/// [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].</span>
+        <span class="doccomment">/// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="ident">Transaction</span>(<span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
     }
@@ -1890,8 +1887,8 @@
 <span class="doccomment">/// Options for beginning a new transaction.</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// Transactions can be created explicitly with calls to</span>
-<span class="doccomment">/// [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction] or implicitly by setting</span>
-<span class="doccomment">/// [ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction] in read requests.</span>
+<span class="doccomment">/// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\] or implicitly by setting</span>
+<span class="doccomment">/// \[ReadOptions.new_transaction][google.datastore.v1.ReadOptions.new_transaction\] in read requests.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TransactionOptions</span> {
     <span class="doccomment">/// The `mode` of the transaction, indicating whether write operations are</span>
@@ -1941,7 +1938,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">DatastoreClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1954,7 +1951,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DatastoreClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -1982,8 +1979,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Looks up entities by key.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">lookup</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LookupRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::LookupResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LookupRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::LookupResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -1998,8 +1995,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Queries for entities.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">run_query</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RunQueryRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RunQueryResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RunQueryRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RunQueryResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2014,8 +2011,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Begins a new transaction.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">begin_transaction</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BeginTransactionRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::BeginTransactionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BeginTransactionRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::BeginTransactionResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2032,8 +2029,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; entities.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">commit</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CommitRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CommitResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CommitRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CommitResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2048,8 +2045,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Rolls back a transaction.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">rollback</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RollbackRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RollbackResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RollbackRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RollbackResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2065,8 +2062,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; before it is inserted.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">allocate_ids</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AllocateIdsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AllocateIdsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AllocateIdsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AllocateIdsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2082,8 +2079,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Datastore.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">reserve_ids</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReserveIdsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReserveIdsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReserveIdsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReserveIdsResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2097,5 +2094,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

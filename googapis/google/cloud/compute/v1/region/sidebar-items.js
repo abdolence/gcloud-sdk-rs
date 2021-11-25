@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Status","[Output Only] Status of the region, either UP or DOWN."]]});

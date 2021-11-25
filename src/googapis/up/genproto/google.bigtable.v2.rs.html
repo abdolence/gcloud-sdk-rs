@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.bigtable.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.bigtable.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.bigtable.v2.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.bigtable.v2.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1071,8 +1069,7 @@
 <span id="1069">1069</span>
 <span id="1070">1070</span>
 <span id="1071">1071</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Specifies the complete (requested) contents of a single row of a table.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Specifies the complete (requested) contents of a single row of a table.</span>
 <span class="doccomment">/// Rows which exceed 256MiB in size cannot be read in full.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Row</span> {
@@ -1093,7 +1090,7 @@
     <span class="doccomment">/// The unique key which identifies this family within its row. This is the</span>
     <span class="doccomment">/// same key that&#39;s used to identify the family in, for example, a RowFilter</span>
     <span class="doccomment">/// which sets its &quot;family_name_regex_filter&quot; field.</span>
-    <span class="doccomment">/// Must match `[-_.a-zA-Z0-9]+`, except that AggregatingRowProcessors may</span>
+    <span class="doccomment">/// Must match `\[-_.a-zA-Z0-9\]+`, except that AggregatingRowProcessors may</span>
     <span class="doccomment">/// produce cells in a sentinel family with an empty name.</span>
     <span class="doccomment">/// Must be no greater than 64 characters in length.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
@@ -1133,7 +1130,7 @@
     <span class="doccomment">/// length.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bytes</span> <span class="op">=</span> <span class="string">&quot;vec&quot;</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">value</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Labels applied to the cell by a [RowFilter][google.bigtable.v2.RowFilter].</span>
+    <span class="doccomment">/// Labels applied to the cell by a \[RowFilter][google.bigtable.v2.RowFilter\].</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">labels</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
@@ -1289,10 +1286,10 @@
 <span class="doccomment">/// * True filters alter the input row by excluding some of its cells wholesale</span>
 <span class="doccomment">/// from the output row. An example of a true filter is the `value_regex_filter`,</span>
 <span class="doccomment">/// which excludes cells whose values don&#39;t match the specified pattern. All</span>
-<span class="doccomment">/// regex true filters use RE2 syntax (https://github.com/google/re2/wiki/Syntax)</span>
+<span class="doccomment">/// regex true filters use RE2 syntax (&lt;https://github.com/google/re2/wiki/Syntax&gt;)</span>
 <span class="doccomment">/// in raw byte mode (RE2::Latin1), and are evaluated as full matches. An</span>
 <span class="doccomment">/// important point to keep in mind is that `RE2(.)` is equivalent by default to</span>
-<span class="doccomment">/// `RE2([^\n])`, meaning that it does not match newlines. When attempting to</span>
+<span class="doccomment">/// `RE2(\[^\n\])`, meaning that it does not match newlines. When attempting to</span>
 <span class="doccomment">/// match an arbitrary byte, you should therefore use the escape sequence `\C`,</span>
 <span class="doccomment">/// which may need to be further escaped as `\\C` in your client language.</span>
 <span class="doccomment">///</span>
@@ -1326,7 +1323,7 @@
         <span class="doccomment">/// in row -&gt; f(0) -&gt; intermediate row -&gt; f(1) -&gt; ... -&gt; f(N) -&gt; out row</span>
         <span class="doccomment">/// The full chain is executed atomically.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">filters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RowFilter</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">filters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RowFilter</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// A RowFilter which sends each row to each of several component</span>
     <span class="doccomment">/// RowFilters and interleaves the results.</span>
@@ -1358,7 +1355,7 @@
         <span class="doccomment">///</span>
         <span class="doccomment">/// All interleaved filters are executed atomically.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">filters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RowFilter</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">filters</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RowFilter</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// A RowFilter which evaluates one of two possible RowFilters, depending on</span>
     <span class="doccomment">/// whether or not a predicate RowFilter outputs any cells from the input row.</span>
@@ -1372,16 +1369,16 @@
         <span class="doccomment">/// If `predicate_filter` outputs any cells, then `true_filter` will be</span>
         <span class="doccomment">/// evaluated on the input row. Otherwise, `false_filter` will be evaluated.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">predicate_filter</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RowFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">predicate_filter</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RowFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="doccomment">/// The filter to apply to the input row if `predicate_filter` returns any</span>
         <span class="doccomment">/// results. If not provided, no results will be returned in the true case.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">true_filter</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RowFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">true_filter</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RowFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
         <span class="doccomment">/// The filter to apply to the input row if `predicate_filter` does not</span>
         <span class="doccomment">/// return any results. If not provided, no results will be returned in the</span>
         <span class="doccomment">/// false case.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">boxed</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">false_filter</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::RowFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">false_filter</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">::prost::alloc::boxed::Box</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::RowFilter</span><span class="op">&gt;</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// Which of the possible RowFilter types to apply. If none are set, this</span>
     <span class="doccomment">/// RowFilter returns all cells in the input row.</span>
@@ -1426,13 +1423,13 @@
         <span class="doccomment">///               |                          |</span>
         <span class="doccomment">///             All()                    Label(foo)</span>
         <span class="doccomment">///               |                          |</span>
-        <span class="doccomment">///            A,A,1,w              A,A,1,w,labels:[foo]</span>
-        <span class="doccomment">///            A,B,2,x              A,B,2,x,labels:[foo]</span>
+        <span class="doccomment">///            A,A,1,w              A,A,1,w,labels:\[foo\]</span>
+        <span class="doccomment">///            A,B,2,x              A,B,2,x,labels:\[foo\]</span>
         <span class="doccomment">///               |                          |</span>
         <span class="doccomment">///               |                        Sink() --------------+</span>
         <span class="doccomment">///               |                          |                  |</span>
-        <span class="doccomment">///               +------------+      x------+          A,A,1,w,labels:[foo]</span>
-        <span class="doccomment">///                            |                        A,B,2,x,labels:[foo]</span>
+        <span class="doccomment">///               +------------+      x------+          A,A,1,w,labels:\[foo\]</span>
+        <span class="doccomment">///                            |                        A,B,2,x,labels:\[foo\]</span>
         <span class="doccomment">///                         A,A,1,w                             |</span>
         <span class="doccomment">///                         A,B,2,x                             |</span>
         <span class="doccomment">///                            |                                |</span>
@@ -1442,14 +1439,14 @@
         <span class="doccomment">///                            |                                |</span>
         <span class="doccomment">///                            +--------------------------------+</span>
         <span class="doccomment">///                            |</span>
-        <span class="doccomment">///                         A,A,1,w,labels:[foo]</span>
-        <span class="doccomment">///                         A,B,2,x,labels:[foo]  // could be switched</span>
+        <span class="doccomment">///                         A,A,1,w,labels:\[foo\]</span>
+        <span class="doccomment">///                         A,B,2,x,labels:\[foo\]  // could be switched</span>
         <span class="doccomment">///                         A,B,2,x               // could be switched</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Despite being excluded by the qualifier filter, a copy of every cell</span>
         <span class="doccomment">/// that reaches the sink is present in the final result.</span>
         <span class="doccomment">///</span>
-        <span class="doccomment">/// As with an [Interleave][google.bigtable.v2.RowFilter.Interleave],</span>
+        <span class="doccomment">/// As with an \[Interleave][google.bigtable.v2.RowFilter.Interleave\],</span>
         <span class="doccomment">/// duplicate cells are possible, and appear in an unspecified mutual order.</span>
         <span class="doccomment">/// In this case we have a duplicate with column &quot;A:B&quot; and timestamp 2,</span>
         <span class="doccomment">/// because one copy passed through the all filter while the other was</span>
@@ -1457,7 +1454,7 @@
         <span class="doccomment">/// while the other does not.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Cannot be used within the `predicate_filter`, `true_filter`, or</span>
-        <span class="doccomment">/// `false_filter` of a [Condition][google.bigtable.v2.RowFilter.Condition].</span>
+        <span class="doccomment">/// `false_filter` of a \[Condition][google.bigtable.v2.RowFilter.Condition\].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">bool</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;16&quot;</span>)]</span>
         <span class="ident">Sink</span>(<span class="ident">bool</span>),
         <span class="doccomment">/// Matches all cells, regardless of input. Functionally equivalent to</span>
@@ -1499,10 +1496,10 @@
         <span class="ident">ColumnQualifierRegexFilter</span>(<span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
         <span class="doccomment">/// Matches only cells from columns within the given range.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;7&quot;</span>)]</span>
-        <span class="ident">ColumnRangeFilter</span>(<span class="kw">super</span><span class="ident">::ColumnRange</span>),
+        <span class="ident">ColumnRangeFilter</span>(<span class="ident"><span class="kw">super</span>::ColumnRange</span>),
         <span class="doccomment">/// Matches only cells with timestamps within the given range.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;8&quot;</span>)]</span>
-        <span class="ident">TimestampRangeFilter</span>(<span class="kw">super</span><span class="ident">::TimestampRange</span>),
+        <span class="ident">TimestampRangeFilter</span>(<span class="ident"><span class="kw">super</span>::TimestampRange</span>),
         <span class="doccomment">/// Matches only cells with values that satisfy the given regular expression.</span>
         <span class="doccomment">/// Note that, since cell values can contain arbitrary bytes, the `\C` escape</span>
         <span class="doccomment">/// sequence must be used if a true wildcard is desired. The `.` character</span>
@@ -1512,7 +1509,7 @@
         <span class="ident">ValueRegexFilter</span>(<span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>),
         <span class="doccomment">/// Matches only cells with values that fall within the given range.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;15&quot;</span>)]</span>
-        <span class="ident">ValueRangeFilter</span>(<span class="kw">super</span><span class="ident">::ValueRange</span>),
+        <span class="ident">ValueRangeFilter</span>(<span class="ident"><span class="kw">super</span>::ValueRange</span>),
         <span class="doccomment">/// Skips the first N cells of each row, matching all subsequent cells.</span>
         <span class="doccomment">/// If duplicate cells are present, as is possible when using an Interleave,</span>
         <span class="doccomment">/// each copy of the cell is counted separately.</span>
@@ -1539,7 +1536,7 @@
         <span class="doccomment">/// the filter.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Values must be at most 15 characters in length, and match the RE2</span>
-        <span class="doccomment">/// pattern `[a-z0-9\\-]+`</span>
+        <span class="doccomment">/// pattern `\[a-z0-9\\-\]+`</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// Due to a technical limitation, it is not currently possible to apply</span>
         <span class="doccomment">/// multiple labels to a cell. As a result, a Chain may have no more than</span>
@@ -1564,7 +1561,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SetCell</span> {
         <span class="doccomment">/// The name of the family into which new data should be written.</span>
-        <span class="doccomment">/// Must match `[-_.a-zA-Z0-9]+`</span>
+        <span class="doccomment">/// Must match `\[-_.a-zA-Z0-9\]+`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">family_name</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// The qualifier of the column into which new data should be written.</span>
@@ -1587,7 +1584,7 @@
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteFromColumn</span> {
         <span class="doccomment">/// The name of the family from which cells should be deleted.</span>
-        <span class="doccomment">/// Must match `[-_.a-zA-Z0-9]+`</span>
+        <span class="doccomment">/// Must match `\[-_.a-zA-Z0-9\]+`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">family_name</span>: <span class="ident">::prost::alloc::string::String</span>,
         <span class="doccomment">/// The qualifier of the column from which cells should be deleted.</span>
@@ -1596,13 +1593,13 @@
         <span class="kw">pub</span> <span class="ident">column_qualifier</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>,
         <span class="doccomment">/// The range of timestamps within which cells should be deleted.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">time_range</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::TimestampRange</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">time_range</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::TimestampRange</span><span class="op">&gt;</span>,
     }
     <span class="doccomment">/// A Mutation which deletes all cells from the specified column family.</span>
     <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">DeleteFromFamily</span> {
         <span class="doccomment">/// The name of the family from which cells should be deleted.</span>
-        <span class="doccomment">/// Must match `[-_.a-zA-Z0-9]+`</span>
+        <span class="doccomment">/// Must match `\[-_.a-zA-Z0-9\]+`</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">family_name</span>: <span class="ident">::prost::alloc::string::String</span>,
     }
@@ -1631,7 +1628,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ReadModifyWriteRule</span> {
     <span class="doccomment">/// The name of the family to which the read/modify/write should be applied.</span>
-    <span class="doccomment">/// Must match `[-_.a-zA-Z0-9]+`</span>
+    <span class="doccomment">/// Must match `\[-_.a-zA-Z0-9\]+`</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">family_name</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// The qualifier of the column to which the read/modify/write should be</span>
@@ -1741,7 +1738,7 @@
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">int64</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">timestamp_micros</span>: <span class="ident">i64</span>,
         <span class="doccomment">/// Labels applied to the cell by a</span>
-        <span class="doccomment">/// [RowFilter][google.bigtable.v2.RowFilter].  Labels are only set</span>
+        <span class="doccomment">/// \[RowFilter][google.bigtable.v2.RowFilter\].  Labels are only set</span>
         <span class="doccomment">/// on the first CellChunk per cell.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">labels</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
@@ -1865,7 +1862,7 @@
         <span class="doccomment">/// later ones.</span>
         <span class="doccomment">/// You must specify at least one mutation.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">mutations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Mutation</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">mutations</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Mutation</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// Response message for BigtableService.MutateRows.</span>
@@ -1889,7 +1886,7 @@
         <span class="doccomment">/// for one Entry to fail due to an error with another Entry. In the event</span>
         <span class="doccomment">/// that this occurs, the same error will be reported for both entries.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">status</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     }
 }
 <span class="doccomment">/// Request message for Bigtable.CheckAndMutateRow.</span>
@@ -1978,7 +1975,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">BigtableClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -1991,7 +1988,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">BigtableClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2023,8 +2020,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; ReadRowsResponse documentation for details.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">read_rows</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadRowsRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadRowsResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadRowsRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadRowsResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>
         {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
@@ -2045,9 +2042,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; mapreduces.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">sample_row_keys</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SampleRowKeysRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SampleRowKeysRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::SampleRowKeysResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::SampleRowKeysResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2067,8 +2064,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; unchanged unless explicitly changed by `mutation`.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">mutate_row</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::MutateRowRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::MutateRowResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::MutateRowRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::MutateRowResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2085,9 +2082,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; atomically.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">mutate_rows</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::MutateRowsRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::MutateRowsRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::MutateRowsResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::MutateRowsResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2106,8 +2103,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; Mutates a row atomically based on the output of a predicate Reader filter.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">check_and_mutate_row</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CheckAndMutateRowRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::CheckAndMutateRowResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CheckAndMutateRowRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::CheckAndMutateRowResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2127,8 +2124,8 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; time. The method returns the new contents of all modified cells.&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">read_modify_write_row</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadModifyWriteRowRequest</span><span class="op">&gt;</span>,
-        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::ReadModifyWriteRowResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadModifyWriteRowRequest</span><span class="op">&gt;</span>,
+        ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::ReadModifyWriteRowResponse</span><span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
                 <span class="ident">tonic::Status::new</span>(
                     <span class="ident">tonic::Code::Unknown</span>,
@@ -2143,5 +2140,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

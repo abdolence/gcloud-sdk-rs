@@ -1,1 +1,1 @@
-initSidebarItems({"enum":[["State","Possible states of a cluster."]],"struct":[["EncryptionConfig","Cloud Key Management Service (Cloud KMS) settings for a CMEK-protected cluster."]]});
+initSidebarItems({"enum":[["Config",""],["State","Possible states of a cluster."]],"struct":[["ClusterAutoscalingConfig","Autoscaling config for a cluster."],["ClusterConfig","Configuration for a cluster."],["EncryptionConfig","Cloud Key Management Service (Cloud KMS) settings for a CMEK-protected cluster."]]});

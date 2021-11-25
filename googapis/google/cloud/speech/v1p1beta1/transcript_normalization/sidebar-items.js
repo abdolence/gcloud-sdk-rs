@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Entry","A single replacement configuration."]]});

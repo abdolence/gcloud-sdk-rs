@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Type","(Optional) Specifies the type of SSL certificate, either “SELF_MANAGED” or “MANAGED”. If not specified, the certificate is self-managed and the fields certificate and private_key are used."]]});

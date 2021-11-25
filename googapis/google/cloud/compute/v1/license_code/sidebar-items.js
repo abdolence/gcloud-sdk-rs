@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["State","[Output Only] Current state of this License Code."]]});

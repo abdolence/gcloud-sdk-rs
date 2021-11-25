@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["Placement","Required. Specifies where workflow executes; either on a managed cluster or an existing cluster chosen by labels."]]});

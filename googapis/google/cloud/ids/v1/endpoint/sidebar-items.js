@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["Severity","Threat severity levels."],["State","Endpoint state"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["FieldPathElement","A part of a field path."]]});

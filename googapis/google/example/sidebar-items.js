@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["endpointsapis",""],["library",""]]});
+initSidebarItems({"mod":[["endpointsapis",""],["library",""],["showcase",""]]});

@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/../genproto/google.cloud.videointelligence.v1p3beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.videointelligence.v1p3beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings"></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img src="../../../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;..&#x2F;genproto&#x2F;google.cloud.videointelligence.v1p3beta1.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>google.cloud.videointelligence.v1p3beta1.rs - source</title><link rel="stylesheet" type="text/css" href="../../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../../../storage.js"></script><script src="../../../../crates.js"></script><noscript><link rel="stylesheet" href="../../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -1230,17 +1228,16 @@
 <span id="1228">1228</span>
 <span id="1229">1229</span>
 <span id="1230">1230</span>
-</pre><pre class="rust">
-<span class="doccomment">/// Video annotation request.</span>
+</pre><pre class="rust"><code><span class="doccomment">/// Video annotation request.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">AnnotateVideoRequest</span> {
     <span class="doccomment">/// Input video location. Currently, only</span>
-    <span class="doccomment">/// [Cloud Storage](https://cloud.google.com/storage/) URIs are</span>
+    <span class="doccomment">/// [Cloud Storage](&lt;https://cloud.google.com/storage/&gt;) URIs are</span>
     <span class="doccomment">/// supported. URIs must be specified in the following format:</span>
     <span class="doccomment">/// `gs://bucket-id/object-id` (other URI formats return</span>
-    <span class="doccomment">/// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For</span>
+    <span class="doccomment">/// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For</span>
     <span class="doccomment">/// more information, see [Request</span>
-    <span class="doccomment">/// URIs](https://cloud.google.com/storage/docs/request-endpoints). To identify</span>
+    <span class="doccomment">/// URIs](&lt;https://cloud.google.com/storage/docs/request-endpoints&gt;). To identify</span>
     <span class="doccomment">/// multiple videos, a video URI may include wildcards in the `object-id`.</span>
     <span class="doccomment">/// Supported wildcards: &#39;*&#39; to match 0 or more characters;</span>
     <span class="doccomment">/// &#39;?&#39; to match 1 character. If unset, the input video should be embedded</span>
@@ -1259,12 +1256,12 @@
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">video_context</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">VideoContext</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Optional. Location where the output (in JSON format) should be stored.</span>
-    <span class="doccomment">/// Currently, only [Cloud Storage](https://cloud.google.com/storage/)</span>
+    <span class="doccomment">/// Currently, only [Cloud Storage](&lt;https://cloud.google.com/storage/&gt;)</span>
     <span class="doccomment">/// URIs are supported. These must be specified in the following format:</span>
     <span class="doccomment">/// `gs://bucket-id/object-id` (other URI formats return</span>
-    <span class="doccomment">/// [google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT]). For</span>
+    <span class="doccomment">/// \[google.rpc.Code.INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]). For</span>
     <span class="doccomment">/// more information, see [Request</span>
-    <span class="doccomment">/// URIs](https://cloud.google.com/storage/docs/request-endpoints).</span>
+    <span class="doccomment">/// URIs](&lt;https://cloud.google.com/storage/docs/request-endpoints&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">output_uri</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Optional. Cloud region where annotation should take place. Supported cloud</span>
@@ -1457,7 +1454,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Entity</span> {
     <span class="doccomment">/// Opaque entity ID. Some IDs may be available in</span>
     <span class="doccomment">/// [Google Knowledge Graph Search</span>
-    <span class="doccomment">/// API](https://developers.google.com/knowledge-graph/).</span>
+    <span class="doccomment">/// API](&lt;https://developers.google.com/knowledge-graph/&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">entity_id</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Textual description, e.g., `Fixed-gear bicycle`.</span>
@@ -1609,7 +1606,7 @@
     <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RecognizedCelebrity</span> {
         <span class="doccomment">/// The recognized celebrity.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">celebrity</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::Celebrity</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">celebrity</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::Celebrity</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Recognition confidence. Range [0, 1].</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">float</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
         <span class="kw">pub</span> <span class="ident">confidence</span>: <span class="ident">f32</span>,
@@ -1659,7 +1656,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VideoAnnotationResults</span> {
     <span class="doccomment">/// Video file location in</span>
-    <span class="doccomment">/// [Cloud Storage](https://cloud.google.com/storage/).</span>
+    <span class="doccomment">/// [Cloud Storage](&lt;https://cloud.google.com/storage/&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">input_uri</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Video segment on which the annotation is run.</span>
@@ -1724,7 +1721,7 @@
     <span class="doccomment">/// If set, indicates an error. Note that for a single `AnnotateVideoRequest`</span>
     <span class="doccomment">/// some videos may succeed and some may fail.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;9&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// Video annotation response. Included in the `response`</span>
 <span class="doccomment">/// field of the `Operation` returned by the `GetOperation`</span>
@@ -1739,7 +1736,7 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VideoAnnotationProgress</span> {
     <span class="doccomment">/// Video file location in</span>
-    <span class="doccomment">/// [Cloud Storage](https://cloud.google.com/storage/).</span>
+    <span class="doccomment">/// [Cloud Storage](&lt;https://cloud.google.com/storage/&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">input_uri</span>: <span class="ident">::prost::alloc::string::String</span>,
     <span class="doccomment">/// Approximate percentage processed thus far. Guaranteed to be</span>
@@ -1774,9 +1771,9 @@
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SpeechTranscriptionConfig</span> {
     <span class="doccomment">/// Required. *Required* The language of the supplied audio as a</span>
-    <span class="doccomment">/// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.</span>
+    <span class="doccomment">/// \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;) language tag.</span>
     <span class="doccomment">/// Example: &quot;en-US&quot;.</span>
-    <span class="doccomment">/// See [Language Support](https://cloud.google.com/speech/docs/languages)</span>
+    <span class="doccomment">/// See [Language Support](&lt;https://cloud.google.com/speech/docs/languages&gt;)</span>
     <span class="doccomment">/// for a list of the currently supported language codes.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">language_code</span>: <span class="ident">::prost::alloc::string::String</span>,
@@ -1837,7 +1834,7 @@
     <span class="doccomment">/// to improve the accuracy for specific words and phrases, for example, if</span>
     <span class="doccomment">/// specific commands are typically spoken by the user. This can also be used</span>
     <span class="doccomment">/// to add additional words to the vocabulary of the recognizer. See</span>
-    <span class="doccomment">/// [usage limits](https://cloud.google.com/speech/limits#content).</span>
+    <span class="doccomment">/// [usage limits](&lt;https://cloud.google.com/speech/limits#content&gt;).</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">phrases</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">::prost::alloc::string::String</span><span class="op">&gt;</span>,
 }
@@ -1850,7 +1847,7 @@
     <span class="doccomment">/// ranked by the recognizer.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">repeated</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">alternatives</span>: <span class="ident">::prost::alloc::vec::Vec</span><span class="op">&lt;</span><span class="ident">SpeechRecognitionAlternative</span><span class="op">&gt;</span>,
-    <span class="doccomment">/// Output only. The [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt)</span>
+    <span class="doccomment">/// Output only. The \[BCP-47\](&lt;https://www.rfc-editor.org/rfc/bcp/bcp47.txt&gt;)</span>
     <span class="doccomment">/// language tag of the language in this result. This language code was</span>
     <span class="doccomment">/// detected to have the most likelihood of being spoken in the audio.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">string</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
@@ -2024,7 +2021,7 @@
         <span class="doccomment">/// Non-streaming batch mode ONLY.</span>
         <span class="doccomment">/// Each object track corresponds to one video segment where it appears.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">Segment</span>(<span class="kw">super</span><span class="ident">::VideoSegment</span>),
+        <span class="ident">Segment</span>(<span class="ident"><span class="kw">super</span>::VideoSegment</span>),
         <span class="doccomment">/// Streaming mode ONLY.</span>
         <span class="doccomment">/// In streaming mode, we do not know the end time of a tracked object</span>
         <span class="doccomment">/// before it is completed. Hence, there is no VideoSegment info returned.</span>
@@ -2076,7 +2073,7 @@
         <span class="doccomment">/// request. The first `AnnotateStreamingVideoRequest` message must only</span>
         <span class="doccomment">/// contain a `video_config` message.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-        <span class="ident">VideoConfig</span>(<span class="kw">super</span><span class="ident">::StreamingVideoConfig</span>),
+        <span class="ident">VideoConfig</span>(<span class="ident"><span class="kw">super</span>::StreamingVideoConfig</span>),
         <span class="doccomment">/// The video data to be annotated. Chunks of video data are sequentially</span>
         <span class="doccomment">/// sent in `StreamingAnnotateVideoRequest` messages. Except the initial</span>
         <span class="doccomment">/// `StreamingAnnotateVideoRequest` message containing only</span>
@@ -2112,25 +2109,25 @@
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">StreamingConfig</span> {
         <span class="doccomment">/// Config for STREAMING_SHOT_CHANGE_DETECTION.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
-        <span class="ident">ShotChangeDetectionConfig</span>(<span class="kw">super</span><span class="ident">::StreamingShotChangeDetectionConfig</span>),
+        <span class="ident">ShotChangeDetectionConfig</span>(<span class="ident"><span class="kw">super</span>::StreamingShotChangeDetectionConfig</span>),
         <span class="doccomment">/// Config for STREAMING_LABEL_DETECTION.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;3&quot;</span>)]</span>
-        <span class="ident">LabelDetectionConfig</span>(<span class="kw">super</span><span class="ident">::StreamingLabelDetectionConfig</span>),
+        <span class="ident">LabelDetectionConfig</span>(<span class="ident"><span class="kw">super</span>::StreamingLabelDetectionConfig</span>),
         <span class="doccomment">/// Config for STREAMING_EXPLICIT_CONTENT_DETECTION.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;4&quot;</span>)]</span>
-        <span class="ident">ExplicitContentDetectionConfig</span>(<span class="kw">super</span><span class="ident">::StreamingExplicitContentDetectionConfig</span>),
+        <span class="ident">ExplicitContentDetectionConfig</span>(<span class="ident"><span class="kw">super</span>::StreamingExplicitContentDetectionConfig</span>),
         <span class="doccomment">/// Config for STREAMING_OBJECT_TRACKING.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;5&quot;</span>)]</span>
-        <span class="ident">ObjectTrackingConfig</span>(<span class="kw">super</span><span class="ident">::StreamingObjectTrackingConfig</span>),
+        <span class="ident">ObjectTrackingConfig</span>(<span class="ident"><span class="kw">super</span>::StreamingObjectTrackingConfig</span>),
         <span class="doccomment">/// Config for STREAMING_AUTOML_ACTION_RECOGNITION.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;23&quot;</span>)]</span>
-        <span class="ident">AutomlActionRecognitionConfig</span>(<span class="kw">super</span><span class="ident">::StreamingAutomlActionRecognitionConfig</span>),
+        <span class="ident">AutomlActionRecognitionConfig</span>(<span class="ident"><span class="kw">super</span>::StreamingAutomlActionRecognitionConfig</span>),
         <span class="doccomment">/// Config for STREAMING_AUTOML_CLASSIFICATION.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;21&quot;</span>)]</span>
-        <span class="ident">AutomlClassificationConfig</span>(<span class="kw">super</span><span class="ident">::StreamingAutomlClassificationConfig</span>),
+        <span class="ident">AutomlClassificationConfig</span>(<span class="ident"><span class="kw">super</span>::StreamingAutomlClassificationConfig</span>),
         <span class="doccomment">/// Config for STREAMING_AUTOML_OBJECT_TRACKING.</span>
         <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;22&quot;</span>)]</span>
-        <span class="ident">AutomlObjectTrackingConfig</span>(<span class="kw">super</span><span class="ident">::StreamingAutomlObjectTrackingConfig</span>),
+        <span class="ident">AutomlObjectTrackingConfig</span>(<span class="ident"><span class="kw">super</span>::StreamingAutomlObjectTrackingConfig</span>),
     }
 }
 <span class="doccomment">/// `StreamingAnnotateVideoResponse` is the only message returned to the client</span>
@@ -2138,10 +2135,10 @@
 <span class="doccomment">/// `StreamingAnnotateVideoResponse` messages are streamed back to the client.</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Clone</span>, <span class="ident">PartialEq</span>, <span class="ident">::prost::Message</span>)]</span>
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">StreamingAnnotateVideoResponse</span> {
-    <span class="doccomment">/// If set, returns a [google.rpc.Status][google.rpc.Status] message that</span>
+    <span class="doccomment">/// If set, returns a \[google.rpc.Status][google.rpc.Status\] message that</span>
     <span class="doccomment">/// specifies the error for the operation.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;1&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::rpc::Status</span><span class="op">&gt;</span>,
+    <span class="kw">pub</span> <span class="ident">error</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::rpc::Status</span><span class="op">&gt;</span>,
     <span class="doccomment">/// Streaming annotation results.</span>
     <span class="attribute">#[<span class="ident">prost</span>(<span class="ident">message</span>, <span class="ident">optional</span>, <span class="ident">tag</span> <span class="op">=</span> <span class="string">&quot;2&quot;</span>)]</span>
     <span class="kw">pub</span> <span class="ident">annotation_results</span>: <span class="ident">::core::option::Option</span><span class="op">&lt;</span><span class="ident">StreamingVideoAnnotationResults</span><span class="op">&gt;</span>,
@@ -2321,7 +2318,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">VideoIntelligenceServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2334,7 +2331,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">VideoIntelligenceServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2365,9 +2362,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; `Operation.response` contains `AnnotateVideoResponse` (results).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">annotate_video</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::AnnotateVideoRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoRequest</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::AnnotateVideoRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span><span class="ident">::longrunning::Operation</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::<span class="kw">super</span>::longrunning::Operation</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2396,7 +2393,7 @@
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="ident">StreamingVideoIntelligenceServiceClient</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>
     <span class="kw">where</span>
         <span class="ident">T</span>: <span class="ident">tonic::client::GrpcService</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
-        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        <span class="ident">T::ResponseBody</span>: <span class="ident">Body</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
         <span class="ident">T::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span>,
         <span class="op">&lt;</span><span class="ident">T::ResponseBody</span> <span class="kw">as</span> <span class="ident">Body</span><span class="op">&gt;</span><span class="ident">::Error</span>: <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">StdError</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Send</span>,
     {
@@ -2409,7 +2406,7 @@
             <span class="ident">interceptor</span>: <span class="ident">F</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">StreamingVideoIntelligenceServiceClient</span><span class="op">&lt;</span><span class="ident">InterceptedService</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span><span class="op">&gt;</span>
         <span class="kw">where</span>
-            <span class="ident">F</span>: <span class="ident">FnMut</span>(<span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">tonic::Request</span><span class="op">&lt;</span>()<span class="op">&gt;</span>, <span class="ident">tonic::Status</span><span class="op">&gt;</span>,
+            <span class="ident">F</span>: <span class="ident">tonic::service::Interceptor</span>,
             <span class="ident">T</span>: <span class="ident">tonic::codegen::Service</span><span class="op">&lt;</span>
                 <span class="ident">http::Request</span><span class="op">&lt;</span><span class="ident">tonic::body::BoxBody</span><span class="op">&gt;</span>,
                 <span class="ident">Response</span> <span class="op">=</span> <span class="ident">http::Response</span><span class="op">&lt;</span>
@@ -2442,9 +2439,9 @@
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot; This method is only available via the gRPC API (not REST).&quot;</span>]</span>
         <span class="kw">pub</span> <span class="kw">async</span> <span class="kw">fn</span> <span class="ident">streaming_annotate_video</span>(
             <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>,
-            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="kw">super</span><span class="ident">::StreamingAnnotateVideoRequest</span><span class="op">&gt;</span>,
+            <span class="ident">request</span>: <span class="kw">impl</span> <span class="ident">tonic::IntoStreamingRequest</span><span class="op">&lt;</span><span class="ident">Message</span> <span class="op">=</span> <span class="ident"><span class="kw">super</span>::StreamingAnnotateVideoRequest</span><span class="op">&gt;</span>,
         ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>
-            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="kw">super</span><span class="ident">::StreamingAnnotateVideoResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
+            <span class="ident">tonic::Response</span><span class="op">&lt;</span><span class="ident">tonic::codec::Streaming</span><span class="op">&lt;</span><span class="ident"><span class="kw">super</span>::StreamingAnnotateVideoResponse</span><span class="op">&gt;</span><span class="op">&gt;</span>,
             <span class="ident">tonic::Status</span>,
         <span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">inner</span>.<span class="ident">ready</span>().<span class="kw">await</span>.<span class="ident">map_err</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> {
@@ -2461,5 +2458,7 @@
         }
     }
 }
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div><script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../../../" data-current-crate="googapis" data-search-index-js="../../../../search-index.js" data-search-js="../../../../search.js"></div>
+    <script src="../../../../main.js"></script><script src="../../../../source-script.js"></script><script src="../../../../source-files.js"></script>
+</body></html>

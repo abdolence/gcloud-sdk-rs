@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["WebpageConditionOperator","The webpage condition operator in webpage criterion."]]});

@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis/src/googapis.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>googapis.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings"></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="alternate icon" type="image/png" href="../../favicon-16x16.png">
-<link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img src="../../brush.svg" width="18" height="18" alt="Pick another theme!"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img src="../../wheel.svg" width="18" height="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `googapis&#x2F;src&#x2F;googapis.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>googapis.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../googapis/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">   1</span>
 <span id="2">   2</span>
 <span id="3">   3</span>
 <span id="4">   4</span>
@@ -2788,8 +2786,222 @@
 <span id="2786">2786</span>
 <span id="2787">2787</span>
 <span id="2788">2788</span>
-</pre><pre class="rust">
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ccc</span> {
+<span id="2789">2789</span>
+<span id="2790">2790</span>
+<span id="2791">2791</span>
+<span id="2792">2792</span>
+<span id="2793">2793</span>
+<span id="2794">2794</span>
+<span id="2795">2795</span>
+<span id="2796">2796</span>
+<span id="2797">2797</span>
+<span id="2798">2798</span>
+<span id="2799">2799</span>
+<span id="2800">2800</span>
+<span id="2801">2801</span>
+<span id="2802">2802</span>
+<span id="2803">2803</span>
+<span id="2804">2804</span>
+<span id="2805">2805</span>
+<span id="2806">2806</span>
+<span id="2807">2807</span>
+<span id="2808">2808</span>
+<span id="2809">2809</span>
+<span id="2810">2810</span>
+<span id="2811">2811</span>
+<span id="2812">2812</span>
+<span id="2813">2813</span>
+<span id="2814">2814</span>
+<span id="2815">2815</span>
+<span id="2816">2816</span>
+<span id="2817">2817</span>
+<span id="2818">2818</span>
+<span id="2819">2819</span>
+<span id="2820">2820</span>
+<span id="2821">2821</span>
+<span id="2822">2822</span>
+<span id="2823">2823</span>
+<span id="2824">2824</span>
+<span id="2825">2825</span>
+<span id="2826">2826</span>
+<span id="2827">2827</span>
+<span id="2828">2828</span>
+<span id="2829">2829</span>
+<span id="2830">2830</span>
+<span id="2831">2831</span>
+<span id="2832">2832</span>
+<span id="2833">2833</span>
+<span id="2834">2834</span>
+<span id="2835">2835</span>
+<span id="2836">2836</span>
+<span id="2837">2837</span>
+<span id="2838">2838</span>
+<span id="2839">2839</span>
+<span id="2840">2840</span>
+<span id="2841">2841</span>
+<span id="2842">2842</span>
+<span id="2843">2843</span>
+<span id="2844">2844</span>
+<span id="2845">2845</span>
+<span id="2846">2846</span>
+<span id="2847">2847</span>
+<span id="2848">2848</span>
+<span id="2849">2849</span>
+<span id="2850">2850</span>
+<span id="2851">2851</span>
+<span id="2852">2852</span>
+<span id="2853">2853</span>
+<span id="2854">2854</span>
+<span id="2855">2855</span>
+<span id="2856">2856</span>
+<span id="2857">2857</span>
+<span id="2858">2858</span>
+<span id="2859">2859</span>
+<span id="2860">2860</span>
+<span id="2861">2861</span>
+<span id="2862">2862</span>
+<span id="2863">2863</span>
+<span id="2864">2864</span>
+<span id="2865">2865</span>
+<span id="2866">2866</span>
+<span id="2867">2867</span>
+<span id="2868">2868</span>
+<span id="2869">2869</span>
+<span id="2870">2870</span>
+<span id="2871">2871</span>
+<span id="2872">2872</span>
+<span id="2873">2873</span>
+<span id="2874">2874</span>
+<span id="2875">2875</span>
+<span id="2876">2876</span>
+<span id="2877">2877</span>
+<span id="2878">2878</span>
+<span id="2879">2879</span>
+<span id="2880">2880</span>
+<span id="2881">2881</span>
+<span id="2882">2882</span>
+<span id="2883">2883</span>
+<span id="2884">2884</span>
+<span id="2885">2885</span>
+<span id="2886">2886</span>
+<span id="2887">2887</span>
+<span id="2888">2888</span>
+<span id="2889">2889</span>
+<span id="2890">2890</span>
+<span id="2891">2891</span>
+<span id="2892">2892</span>
+<span id="2893">2893</span>
+<span id="2894">2894</span>
+<span id="2895">2895</span>
+<span id="2896">2896</span>
+<span id="2897">2897</span>
+<span id="2898">2898</span>
+<span id="2899">2899</span>
+<span id="2900">2900</span>
+<span id="2901">2901</span>
+<span id="2902">2902</span>
+<span id="2903">2903</span>
+<span id="2904">2904</span>
+<span id="2905">2905</span>
+<span id="2906">2906</span>
+<span id="2907">2907</span>
+<span id="2908">2908</span>
+<span id="2909">2909</span>
+<span id="2910">2910</span>
+<span id="2911">2911</span>
+<span id="2912">2912</span>
+<span id="2913">2913</span>
+<span id="2914">2914</span>
+<span id="2915">2915</span>
+<span id="2916">2916</span>
+<span id="2917">2917</span>
+<span id="2918">2918</span>
+<span id="2919">2919</span>
+<span id="2920">2920</span>
+<span id="2921">2921</span>
+<span id="2922">2922</span>
+<span id="2923">2923</span>
+<span id="2924">2924</span>
+<span id="2925">2925</span>
+<span id="2926">2926</span>
+<span id="2927">2927</span>
+<span id="2928">2928</span>
+<span id="2929">2929</span>
+<span id="2930">2930</span>
+<span id="2931">2931</span>
+<span id="2932">2932</span>
+<span id="2933">2933</span>
+<span id="2934">2934</span>
+<span id="2935">2935</span>
+<span id="2936">2936</span>
+<span id="2937">2937</span>
+<span id="2938">2938</span>
+<span id="2939">2939</span>
+<span id="2940">2940</span>
+<span id="2941">2941</span>
+<span id="2942">2942</span>
+<span id="2943">2943</span>
+<span id="2944">2944</span>
+<span id="2945">2945</span>
+<span id="2946">2946</span>
+<span id="2947">2947</span>
+<span id="2948">2948</span>
+<span id="2949">2949</span>
+<span id="2950">2950</span>
+<span id="2951">2951</span>
+<span id="2952">2952</span>
+<span id="2953">2953</span>
+<span id="2954">2954</span>
+<span id="2955">2955</span>
+<span id="2956">2956</span>
+<span id="2957">2957</span>
+<span id="2958">2958</span>
+<span id="2959">2959</span>
+<span id="2960">2960</span>
+<span id="2961">2961</span>
+<span id="2962">2962</span>
+<span id="2963">2963</span>
+<span id="2964">2964</span>
+<span id="2965">2965</span>
+<span id="2966">2966</span>
+<span id="2967">2967</span>
+<span id="2968">2968</span>
+<span id="2969">2969</span>
+<span id="2970">2970</span>
+<span id="2971">2971</span>
+<span id="2972">2972</span>
+<span id="2973">2973</span>
+<span id="2974">2974</span>
+<span id="2975">2975</span>
+<span id="2976">2976</span>
+<span id="2977">2977</span>
+<span id="2978">2978</span>
+<span id="2979">2979</span>
+<span id="2980">2980</span>
+<span id="2981">2981</span>
+<span id="2982">2982</span>
+<span id="2983">2983</span>
+<span id="2984">2984</span>
+<span id="2985">2985</span>
+<span id="2986">2986</span>
+<span id="2987">2987</span>
+<span id="2988">2988</span>
+<span id="2989">2989</span>
+<span id="2990">2990</span>
+<span id="2991">2991</span>
+<span id="2992">2992</span>
+<span id="2993">2993</span>
+<span id="2994">2994</span>
+<span id="2995">2995</span>
+<span id="2996">2996</span>
+<span id="2997">2997</span>
+<span id="2998">2998</span>
+<span id="2999">2999</span>
+<span id="3000">3000</span>
+<span id="3001">3001</span>
+<span id="3002">3002</span>
+<span id="3003">3003</span>
+</pre><pre class="rust"><code><span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ccc</span> {
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">hosted</span> {
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">marketplace</span> {
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v2</span> {
@@ -2850,46 +3062,6 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">googleads</span> {
-            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v6</span> {
-                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">common</span> {
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-common&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-errors&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-resources&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-services&quot;</span>,
-                    ))]</span>
-                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v6.common&quot;</span>);
-                }
-                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">enums</span> {
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-common&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-enums&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-errors&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-resources&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-services&quot;</span>,
-                    ))]</span>
-                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v6.enums&quot;</span>);
-                }
-                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">errors</span> {
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-errors&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-resources&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-services&quot;</span>,
-                    ))]</span>
-                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v6.errors&quot;</span>);
-                }
-                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">resources</span> {
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-resources&quot;</span>,
-                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-services&quot;</span>,
-                    ))]</span>
-                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v6.resources&quot;</span>);
-                }
-                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">services</span> {
-                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-services&quot;</span>,))]</span>
-                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v6.services&quot;</span>);
-                }
-            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v7</span> {
                 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">common</span> {
                     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
@@ -2970,6 +3142,46 @@
                     <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v8.services&quot;</span>);
                 }
             }
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v9</span> {
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">common</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-common&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-errors&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-resources&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-services&quot;</span>,
+                    ))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v9.common&quot;</span>);
+                }
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">enums</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-common&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-enums&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-errors&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-resources&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-services&quot;</span>,
+                    ))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v9.enums&quot;</span>);
+                }
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">errors</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-errors&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-resources&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-services&quot;</span>,
+                    ))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v9.errors&quot;</span>);
+                }
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">resources</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-resources&quot;</span>,
+                        <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-services&quot;</span>,
+                    ))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v9.resources&quot;</span>);
+                }
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">services</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-services&quot;</span>,))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.ads.googleads.v9.services&quot;</span>);
+                }
+            }
         }
     }
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">analytics</span> {
@@ -2980,10 +3192,6 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">data</span> {
-            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1alpha</span> {
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-analytics-data-v1alpha&quot;</span>,))]</span>
-                <span class="macro">include_proto!</span>(<span class="string">&quot;google.analytics.data.v1alpha&quot;</span>);
-            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-analytics-data-v1beta&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.analytics.data.v1beta&quot;</span>);
@@ -2998,11 +3206,6 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-actions-sdk-v2-interactionmodel-prompt&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-actions-sdk-v2-interactionmodel-type&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-admob-v1&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-common&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-enums&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-errors&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-resources&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-services&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v7-common&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v7-enums&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v7-errors&quot;</span>,
@@ -3013,10 +3216,15 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v8-errors&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v8-resources&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v8-services&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-common&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-enums&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-errors&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-resources&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-services&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-analytics-admin-v1alpha&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-analytics-data-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-analytics-data-v1beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-expr-conformance-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-servicecontrol-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-servicemanagement-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-serviceusage-v1&quot;</span>,
@@ -3059,13 +3267,17 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p4beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p5beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p7beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-assuredworkloads-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-assuredworkloads-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-audit&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-automl-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-automl-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-connection-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-connection-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-datatransfer-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-logging-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-migration-tasks-assessment-v2alpha&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-migration-tasks-translation-v2alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-migration-v2alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-reservation-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-reservation-v1beta1&quot;</span>,
@@ -3076,11 +3288,14 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-billing-budgets-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-billing-budgets-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-billing-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-binaryauthorization-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-binaryauthorization-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-channel-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-clouddms-logging-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-clouddms-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-common&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-compute-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-compute-v1small&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-contactcenterinsights-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datacatalog-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datacatalog-v1beta1&quot;</span>,
@@ -3088,9 +3303,9 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datafusion-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datalabeling-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataproc-v1&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataproc-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataqna-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datastream-v1alpha1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-deploy-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-cx-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-cx-v3beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-v2&quot;</span>,
@@ -3099,6 +3314,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta3&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1alpha2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-essentialcontacts-v1&quot;</span>,
@@ -3106,6 +3322,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-filestore-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-filestore-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-functions-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gaming-allocationendpoint-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gaming-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gaming-v1beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkeconnect-gateway-v1&quot;</span>,
@@ -3129,6 +3346,9 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gsuiteaddons-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-iap-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-iap-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-identitytoolkit-v2&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-ids-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-integrations-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-iot-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-kms-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-language-v1&quot;</span>,
@@ -3146,11 +3366,13 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-metastore-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-metastore-v1beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-ml-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkconnectivity-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkconnectivity-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkmanagement-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkmanagement-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networksecurity-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkservices-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-notebooks-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-notebooks-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-orchestration-airflow-service-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-orchestration-airflow-service-v1beta1&quot;</span>,
@@ -3201,6 +3423,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-shell-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-speech-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-speech-v1p1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-sql-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-sql-v1beta4&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-support-common&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-support-v1alpha1&quot;</span>,
@@ -3212,8 +3435,10 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-texttospeech-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-texttospeech-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tpu-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tpu-v2alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-translation-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-translation-v3beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-video-livestream-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-video-transcoder-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-video-transcoder-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-videointelligence-v1&quot;</span>,
@@ -3226,6 +3451,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p2beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p3beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p4beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vmmigration-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vpcaccess-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-webrisk-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-webrisk-v1beta1&quot;</span>,
@@ -3244,6 +3470,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-datastore-admin-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-datastore-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-datastore-v1beta3&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-artifactregistry-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-artifactregistry-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-build-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-cloudbuild-v1&quot;</span>,
@@ -3261,6 +3488,10 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-testing-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-endpointsapis-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-library-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta2&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-firebase-fcm-connection-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-firestore-admin-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-firestore-admin-v1beta1&quot;</span>,
@@ -3288,6 +3519,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-maps-routes-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-maps-routes-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-monitoring-dashboard-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-monitoring-metricsscope-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-monitoring-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-partner-aistreams-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-privacy-dlp-v2&quot;</span>,
@@ -3306,8 +3538,17 @@
         ))]</span>
         <span class="macro">include_proto!</span>(<span class="string">&quot;google.api&quot;</span>);
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">expr</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">conformance</span> {
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1alpha1</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-expr-conformance-v1alpha1&quot;</span>,))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.api.expr.conformance.v1alpha1&quot;</span>);
+                }
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1alpha1</span> {
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-expr-v1alpha1&quot;</span>,))]</span>
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+                    <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-expr-conformance-v1alpha1&quot;</span>,
+                    <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-expr-v1alpha1&quot;</span>,
+                ))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.api.expr.v1alpha1&quot;</span>);
             }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta1</span> {
@@ -3476,7 +3717,11 @@
         }
     }
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">cloud</span> {
-        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud&quot;</span>,))]</span>
+        <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-compute-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-compute-v1small&quot;</span>,
+        ))]</span>
         <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud&quot;</span>);
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">accessapproval</span> {
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
@@ -3608,6 +3853,10 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">assuredworkloads</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-assuredworkloads-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.assuredworkloads.v1&quot;</span>);
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-assuredworkloads-v1beta1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.assuredworkloads.v1beta1&quot;</span>);
@@ -3651,6 +3900,28 @@
                 }
             }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">migration</span> {
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tasks</span> {
+                    <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">assessment</span> {
+                        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v2alpha</span> {
+                            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+                                <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-migration-tasks-assessment-v2alpha&quot;</span>,
+                            ))]</span>
+                            <span class="macro">include_proto!</span>(
+                                <span class="string">&quot;google.cloud.bigquery.migration.tasks.assessment.v2alpha&quot;</span>
+                            );
+                        }
+                    }
+                    <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">translation</span> {
+                        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v2alpha</span> {
+                            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+                                <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-migration-tasks-translation-v2alpha&quot;</span>,
+                            ))]</span>
+                            <span class="macro">include_proto!</span>(
+                                <span class="string">&quot;google.cloud.bigquery.migration.tasks.translation.v2alpha&quot;</span>
+                            );
+                        }
+                    }
+                }
                 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v2alpha</span> {
                     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-migration-v2alpha&quot;</span>,))]</span>
                     <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.bigquery.migration.v2alpha&quot;</span>);
@@ -3702,6 +3973,10 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">binaryauthorization</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-binaryauthorization-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.binaryauthorization.v1&quot;</span>);
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-binaryauthorization-v1beta1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.binaryauthorization.v1beta1&quot;</span>);
@@ -3726,8 +4001,18 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">common</span> {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-common&quot;</span>,))]</span>
+            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-common&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-filestore-v1&quot;</span>,))]</span>
             <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.common&quot;</span>);
+        }
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">compute</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-compute-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.compute.v1&quot;</span>);
+            }
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1small</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-compute-v1small&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.compute.v1small&quot;</span>);
+            }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">contactcenterinsights</span> {
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
@@ -3770,10 +4055,6 @@
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataproc-v1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.dataproc.v1&quot;</span>);
             }
-            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta2</span> {
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataproc-v1beta2&quot;</span>,))]</span>
-                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.dataproc.v1beta2&quot;</span>);
-            }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">dataqna</span> {
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1alpha</span> {
@@ -3785,6 +4066,12 @@
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1alpha1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datastream-v1alpha1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.datastream.v1alpha1&quot;</span>);
+            }
+        }
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">deploy</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-deploy-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.deploy.v1&quot;</span>);
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">dialogflow</span> {
@@ -3826,6 +4113,10 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">domains</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.domains.v1&quot;</span>);
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1alpha2</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1alpha2&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.domains.v1alpha2&quot;</span>);
@@ -3864,6 +4155,12 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">gaming</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">allocationendpoint</span> {
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1alpha</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gaming-allocationendpoint-v1alpha&quot;</span>,))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.gaming.allocationendpoint.v1alpha&quot;</span>);
+                }
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gaming-v1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.gaming.v1&quot;</span>);
@@ -3871,6 +4168,14 @@
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gaming-v1beta&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.gaming.v1beta&quot;</span>);
+            }
+        }
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">gkebackup</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">logging</span> {
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkebackup-logging-v1&quot;</span>,))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.gkebackup.logging.v1&quot;</span>);
+                }
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">gkeconnect</span> {
@@ -3992,6 +4297,12 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">gsuiteaddons</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">logging</span> {
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gsuiteaddons-logging-v1&quot;</span>,))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.gsuiteaddons.logging.v1&quot;</span>);
+                }
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gsuiteaddons-v1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.gsuiteaddons.v1&quot;</span>);
@@ -4005,6 +4316,24 @@
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-iap-v1beta1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.iap.v1beta1&quot;</span>);
+            }
+        }
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">identitytoolkit</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v2</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-identitytoolkit-v2&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.identitytoolkit.v2&quot;</span>);
+            }
+        }
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">ids</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-ids-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.ids.v1&quot;</span>);
+            }
+        }
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">integrations</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1alpha</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-integrations-v1alpha&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.integrations.v1alpha&quot;</span>);
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">iot</span> {
@@ -4100,6 +4429,10 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">networkconnectivity</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkconnectivity-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.networkconnectivity.v1&quot;</span>);
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1alpha1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkconnectivity-v1alpha1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.networkconnectivity.v1alpha1&quot;</span>);
@@ -4128,6 +4461,10 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">notebooks</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-notebooks-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.notebooks.v1&quot;</span>);
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-notebooks-v1beta1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.notebooks.v1beta1&quot;</span>);
@@ -4426,6 +4763,10 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sql</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-sql-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.sql.v1&quot;</span>);
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta4</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-sql-v1beta4&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.sql.v1beta4&quot;</span>);
@@ -4483,6 +4824,10 @@
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tpu-v1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.tpu.v1&quot;</span>);
             }
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v2alpha1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tpu-v2alpha1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.tpu.v2alpha1&quot;</span>);
+            }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">translation</span> {
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v3</span> {
@@ -4495,6 +4840,12 @@
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">video</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">livestream</span> {
+                <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-video-livestream-v1&quot;</span>,))]</span>
+                    <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.video.livestream.v1&quot;</span>);
+                }
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">transcoder</span> {
                 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
                     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-video-transcoder-v1&quot;</span>,))]</span>
@@ -4548,6 +4899,12 @@
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1p4beta1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p4beta1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.vision.v1p4beta1&quot;</span>);
+            }
+        }
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">vmmigration</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vmmigration-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.cloud.vmmigration.v1&quot;</span>);
             }
         }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">vpcaccess</span> {
@@ -4647,6 +5004,10 @@
     }
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">devtools</span> {
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">artifactregistry</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-artifactregistry-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.devtools.artifactregistry.v1&quot;</span>);
+            }
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta2</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-artifactregistry-v1beta2&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.devtools.artifactregistry.v1beta2&quot;</span>);
@@ -4747,6 +5108,24 @@
             <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-library-v1&quot;</span>,))]</span>
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.example.library.v1&quot;</span>);
+            }
+        }
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">showcase</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.example.showcase.v1&quot;</span>);
+            }
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.example.showcase.v1beta1&quot;</span>);
+            }
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta2</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta2&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.example.showcase.v1beta2&quot;</span>);
+            }
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1beta3</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta3&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.example.showcase.v1beta3&quot;</span>);
             }
         }
     }
@@ -4852,6 +5231,7 @@
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p4beta1&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p5beta1&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p7beta1&quot;</span>,
+                <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-audit&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-connection-v1&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-connection-v1beta1&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-logging-v1&quot;</span>,
@@ -4876,6 +5256,7 @@
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tasks-v2&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tasks-v2beta2&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tasks-v2beta3&quot;</span>,
+                <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-artifactregistry-v1&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-artifactregistry-v1beta2&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-containeranalysis-v1&quot;</span>,
                 <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-containeranalysis-v1beta1&quot;</span>,
@@ -4940,9 +5321,9 @@
     }
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">longrunning</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-services&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v7-services&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v8-services&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-services&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-servicemanagement-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-serviceusage-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-serviceusage-v1beta1&quot;</span>,
@@ -4957,6 +5338,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p2beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p4beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p7beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-assuredworkloads-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-assuredworkloads-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-automl-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-automl-v1beta1&quot;</span>,
@@ -4967,8 +5349,8 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datafusion-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datalabeling-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataproc-v1&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataproc-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datastream-v1alpha1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-deploy-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-cx-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-cx-v3beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-v2&quot;</span>,
@@ -4977,6 +5359,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta3&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1alpha2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-eventarc-v1&quot;</span>,
@@ -4990,6 +5373,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkehub-v1alpha2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkehub-v1beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkehub-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-ids-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-lifesciences-v2beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-managedidentities-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-managedidentities-v1beta1&quot;</span>,
@@ -4999,14 +5383,17 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-metastore-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-metastore-v1beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-ml-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkconnectivity-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkconnectivity-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkmanagement-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkmanagement-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networksecurity-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkservices-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-notebooks-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-notebooks-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-orchestration-airflow-service-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-orchestration-airflow-service-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-osconfig-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-osconfig-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-privatecatalog-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-pubsublite-v1&quot;</span>,
@@ -5030,8 +5417,10 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-talent-v4&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-talent-v4beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tpu-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tpu-v2alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-translation-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-translation-v3beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-video-livestream-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-videointelligence-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-videointelligence-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-videointelligence-v1p1beta1&quot;</span>,
@@ -5041,6 +5430,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p2beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p3beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p4beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vmmigration-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vpcaccess-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-workflows-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-workflows-v1beta&quot;</span>,
@@ -5048,6 +5438,10 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-datastore-admin-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-artifactregistry-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-cloudbuild-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta2&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-firestore-admin-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-firestore-admin-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-firestore-admin-v1beta2&quot;</span>,
@@ -5056,10 +5450,13 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-iam-v1beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-identity-accesscontextmanager-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-longrunning&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-monitoring-metricsscope-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-monitoring-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-partner-aistreams-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-spanner-admin-database-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-spanner-admin-instance-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-storagetransfer-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-streetview-publish-v1&quot;</span>,
         ))]</span>
         <span class="macro">include_proto!</span>(<span class="string">&quot;google.longrunning&quot;</span>);
     }
@@ -5111,9 +5508,23 @@
                 <span class="macro">include_proto!</span>(<span class="string">&quot;google.monitoring.dashboard.v1&quot;</span>);
             }
         }
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">metricsscope</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-monitoring-metricsscope-v1&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.monitoring.metricsscope.v1&quot;</span>);
+            }
+        }
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v3</span> {
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-monitoring-v3&quot;</span>,))]</span>
             <span class="macro">include_proto!</span>(<span class="string">&quot;google.monitoring.v3&quot;</span>);
+        }
+    }
+    <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">networking</span> {
+        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">trafficdirector</span> {
+            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">r#type</span> {
+                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-networking-trafficdirector-type&quot;</span>,))]</span>
+                <span class="macro">include_proto!</span>(<span class="string">&quot;google.networking.trafficdirector.r#type&quot;</span>);
+            }
         }
     }
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">partner</span> {
@@ -5158,6 +5569,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p4beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p5beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p7beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-audit&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-connection-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-connection-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-logging-v1&quot;</span>,
@@ -5168,6 +5580,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datacatalog-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datacatalog-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datafusion-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-deploy-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-cx-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-cx-v3beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-v2&quot;</span>,
@@ -5176,6 +5589,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta3&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1alpha2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-functions-v1&quot;</span>,
@@ -5190,6 +5604,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-orgpolicy-v2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-osconfig-agentendpoint-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-osconfig-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-osconfig-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-osconfig-v1beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-policytroubleshooter-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-recommendationengine-v1beta1&quot;</span>,
@@ -5199,7 +5614,9 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-recommender-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-resourcemanager-v2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-resourcemanager-v3&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-retail-v2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-retail-v2alpha&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-retail-v2beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-secretmanager-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-secrets-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-security-privateca-v1&quot;</span>,
@@ -5218,8 +5635,10 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p2beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p3beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p4beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-container-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-datastore-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-datastore-v1beta3&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-artifactregistry-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-artifactregistry-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-containeranalysis-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-containeranalysis-v1beta1&quot;</span>,
@@ -5257,9 +5676,10 @@
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">rpc</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-actions-sdk-v2&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v6-services&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v7-services&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v8-services&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-ads-googleads-v9-services&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-expr-conformance-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-expr-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-expr-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-api-servicecontrol-v1&quot;</span>,
@@ -5283,6 +5703,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p2beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p4beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-asset-v1p7beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-assuredworkloads-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-assuredworkloads-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-audit&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-automl-v1&quot;</span>,
@@ -5292,6 +5713,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-migration-v2alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-reservation-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-reservation-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-storage-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-bigquery-storage-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-channel-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-clouddms-logging-v1&quot;</span>,
@@ -5301,9 +5723,9 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datafusion-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datalabeling-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataproc-v1&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataproc-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dataqna-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-datastream-v1alpha1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-deploy-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-cx-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-cx-v3beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-dialogflow-v2&quot;</span>,
@@ -5312,6 +5734,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-documentai-v1beta3&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1alpha2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-domains-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-eventarc-v1&quot;</span>,
@@ -5320,11 +5743,14 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-functions-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gaming-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gaming-v1beta&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkebackup-logging-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkehub-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkehub-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkehub-v1alpha2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkehub-v1beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gkehub-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-gsuiteaddons-logging-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-ids-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-iot-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-lifesciences-v2beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-managedidentities-v1&quot;</span>,
@@ -5337,14 +5763,17 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-metastore-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-metastore-v1beta&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-ml-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkconnectivity-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkconnectivity-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkmanagement-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkmanagement-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networksecurity-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-networkservices-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-notebooks-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-notebooks-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-orchestration-airflow-service-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-orchestration-airflow-service-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-osconfig-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-osconfig-v1alpha&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-privatecatalog-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-pubsublite-v1&quot;</span>,
@@ -5374,8 +5803,10 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tasks-v2beta2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tasks-v2beta3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tpu-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-tpu-v2alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-translation-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-translation-v3beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-video-livestream-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-video-transcoder-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-videointelligence-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-videointelligence-v1beta2&quot;</span>,
@@ -5387,6 +5818,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p2beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p3beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vision-v1p4beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vmmigration-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-vpcaccess-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-workflows-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-workflows-v1beta&quot;</span>,
@@ -5398,6 +5830,10 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-cloudbuild-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-cloudtrace-v2&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-remoteworkers-v1test2&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta1&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta2&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-example-showcase-v1beta3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-firestore-admin-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-firestore-admin-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-firestore-admin-v1beta2&quot;</span>,
@@ -5411,6 +5847,7 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-longrunning&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-maps-routes-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-maps-routes-v1alpha&quot;</span>,
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-monitoring-metricsscope-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-monitoring-v3&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-partner-aistreams-v1alpha1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-privacy-dlp-v2&quot;</span>,
@@ -5423,7 +5860,6 @@
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;grafeas-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;grafeas-v1beta1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;grafeas-v1beta1-discovery&quot;</span>,
-            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;storage-clouddms-logging-v1&quot;</span>,
         ))]</span>
         <span class="macro">include_proto!</span>(<span class="string">&quot;google.rpc&quot;</span>);
         <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">context</span> {
@@ -5495,6 +5931,7 @@
 <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">grafeas</span> {
     <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
+            <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-cloud-binaryauthorization-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;google-devtools-containeranalysis-v1&quot;</span>,
             <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;grafeas-v1&quot;</span>,
         ))]</span>
@@ -5567,15 +6004,7 @@
         }
     }
 }
-<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">storage</span> {
-    <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">clouddms</span> {
-        <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">logging</span> {
-            <span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">v1</span> {
-                <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;storage-clouddms-logging-v1&quot;</span>,))]</span>
-                <span class="macro">include_proto!</span>(<span class="string">&quot;storage.clouddms.logging.v1&quot;</span>);
-            }
-        }
-    }
-}
-</pre></div>
-</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="googapis" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div><script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script></body></html>
+</code></pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="googapis" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

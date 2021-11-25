@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ExternalVpnGatewaysClient","The ExternalVpnGateways API."]]});
