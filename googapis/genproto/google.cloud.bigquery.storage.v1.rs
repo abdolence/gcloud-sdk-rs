@@ -20,6 +20,31 @@ pub struct ArrowRecordBatch {
     #[prost(int64, tag = "2")]
     pub row_count: i64,
 }
+/// Contains options specific to Arrow Serialization.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ArrowSerializationOptions {
+    /// The compression codec to use for Arrow buffers in serialized record
+    /// batches.
+    #[prost(
+        enumeration = "arrow_serialization_options::CompressionCodec",
+        tag = "2"
+    )]
+    pub buffer_compression: i32,
+}
+/// Nested message and enum types in `ArrowSerializationOptions`.
+pub mod arrow_serialization_options {
+    /// Compression codec's supported by Arrow.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum CompressionCodec {
+        /// If unspecified no compression will be used.
+        CompressionUnspecified = 0,
+        /// LZ4 Frame (https://github.com/lz4/lz4/blob/dev/doc/lz4_Frame_format.md)
+        Lz4Frame = 1,
+        /// Zstandard compression.
+        Zstd = 2,
+    }
+}
 /// Avro schema.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroSchema {
@@ -103,8 +128,25 @@ pub mod read_session {
         ///           "nullable_field is not NULL"
         ///           "st_equals(geo_field, st_geofromtext("POINT(2, 2)"))"
         ///           "numeric_field BETWEEN 1.0 AND 5.0"
+        ///
+        /// Restricted to a maximum length for 1 MB.
         #[prost(string, tag = "2")]
         pub row_restriction: ::prost::alloc::string::String,
+        #[prost(
+            oneof = "table_read_options::OutputFormatSerializationOptions",
+            tags = "3"
+        )]
+        pub output_format_serialization_options:
+            ::core::option::Option<table_read_options::OutputFormatSerializationOptions>,
+    }
+    /// Nested message and enum types in `TableReadOptions`.
+    pub mod table_read_options {
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum OutputFormatSerializationOptions {
+            /// Optional. Options specific to the Apache Arrow output format.
+            #[prost(message, tag = "3")]
+            ArrowSerializationOptions(super::super::ArrowSerializationOptions),
+        }
     }
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
@@ -230,6 +272,13 @@ pub struct ReadRowsResponse {
     /// Row data is returned in format specified during session creation.
     #[prost(oneof = "read_rows_response::Rows", tags = "3, 4")]
     pub rows: ::core::option::Option<read_rows_response::Rows>,
+    /// The schema for the read. If read_options.selected_fields is set, the
+    /// schema may be different from the table schema as it will only contain
+    /// the selected fields. This schema is equivelant to the one returned by
+    /// CreateSession. This field is only populated in the first ReadRowsResponse
+    /// RPC.
+    #[prost(oneof = "read_rows_response::Schema", tags = "7, 8")]
+    pub schema: ::core::option::Option<read_rows_response::Schema>,
 }
 /// Nested message and enum types in `ReadRowsResponse`.
 pub mod read_rows_response {
@@ -242,6 +291,20 @@ pub mod read_rows_response {
         /// Serialized row data in Arrow RecordBatch format.
         #[prost(message, tag = "4")]
         ArrowRecordBatch(super::ArrowRecordBatch),
+    }
+    /// The schema for the read. If read_options.selected_fields is set, the
+    /// schema may be different from the table schema as it will only contain
+    /// the selected fields. This schema is equivelant to the one returned by
+    /// CreateSession. This field is only populated in the first ReadRowsResponse
+    /// RPC.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Schema {
+        /// Output only. Avro schema.
+        #[prost(message, tag = "7")]
+        AvroSchema(super::AvroSchema),
+        /// Output only. Arrow schema.
+        #[prost(message, tag = "8")]
+        ArrowSchema(super::ArrowSchema),
     }
 }
 /// Request message for `SplitReadStream`.
@@ -275,28 +338,55 @@ pub struct SplitReadStreamResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod big_query_read_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " BigQuery Read API."]
     #[doc = ""]
     #[doc = " The Read API can be used to read data from BigQuery."]
+    #[derive(Debug, Clone)]
     pub struct BigQueryReadClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> BigQueryReadClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> BigQueryReadClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            BigQueryReadClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a new read session. A read session divides the contents of a"]
         #[doc = " BigQuery table into one or more streams, which can then be used to read"]
@@ -386,18 +476,6 @@ pub mod big_query_read_client {
                 "/google.cloud.bigquery.storage.v1.BigQueryRead/SplitReadStream",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for BigQueryReadClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for BigQueryReadClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "BigQueryReadClient {{ ... }}")
         }
     }
 }

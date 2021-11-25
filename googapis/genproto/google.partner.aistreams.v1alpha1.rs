@@ -15,8 +15,8 @@ pub struct Cluster {
     #[prost(map = "string, string", tag = "4")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Output only. The certificate for creating the secure connection between the client and
-    /// the AI Streams data plane.
+    /// Output only. The certificate for creating the secure connection between the
+    /// client and the AI Streams data plane.
     #[prost(string, tag = "5")]
     pub certificate: ::prost::alloc::string::String,
     /// Output only. The endpoint of the data plane cluster.
@@ -78,10 +78,10 @@ pub struct CreateClusterRequest {
     /// Required. The cluster resource to create.
     #[prost(message, optional, tag = "3")]
     pub cluster: ::core::option::Option<Cluster>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -107,10 +107,10 @@ pub struct UpdateClusterRequest {
     /// Required. The Cluster resource to update.
     #[prost(message, optional, tag = "2")]
     pub cluster: ::core::option::Option<Cluster>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -129,10 +129,10 @@ pub struct DeleteClusterRequest {
     /// Required. The name of cluster to delete.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and the
     /// request times out. If you make the request again with the same request ID,
@@ -218,10 +218,10 @@ pub struct CreateStreamRequest {
     /// Required. The stream to create.
     #[prost(message, optional, tag = "3")]
     pub stream: ::core::option::Option<Stream>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
     /// For example, consider a situation where you make an initial request and t
     /// he request times out. If you make the request again with the same request
@@ -247,10 +247,10 @@ pub struct UpdateStreamRequest {
     /// Required. The stream resource to update.
     #[prost(message, optional, tag = "2")]
     pub stream: ::core::option::Option<Stream>,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes since the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes since the first request.
     ///
     /// For example, consider a situation where you make an initial request and t
     /// he request times out. If you make the request again with the same request
@@ -269,10 +269,10 @@ pub struct DeleteStreamRequest {
     /// Required. The name of the stream.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. An optional request ID to identify requests. Specify a unique request ID
-    /// so that if you must retry your request, the server will know to ignore
-    /// the request if it has already been completed. The server will guarantee
-    /// that for at least 60 minutes after the first request.
+    /// Optional. An optional request ID to identify requests. Specify a unique
+    /// request ID so that if you must retry your request, the server will know to
+    /// ignore the request if it has already been completed. The server will
+    /// guarantee that for at least 60 minutes after the first request.
     ///
     /// For example, consider a situation where you make an initial request and t
     /// he request times out. If you make the request again with the same request
@@ -305,8 +305,9 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have [Operation.error][] value with a [google.rpc.Status.code][google.rpc.Status.code] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have [Operation.error][] value with a
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -315,26 +316,53 @@ pub struct OperationMetadata {
 }
 #[doc = r" Generated client implementations."]
 pub mod ai_streams_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " AIStreams service."]
+    #[derive(Debug, Clone)]
     pub struct AiStreamsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> AiStreamsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AiStreamsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            AiStreamsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists Clusters in a given project and location."]
         pub async fn list_clusters(
@@ -523,18 +551,6 @@ pub mod ai_streams_client {
                 "/google.partner.aistreams.v1alpha1.AIStreams/DeleteStream",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AiStreamsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AiStreamsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AiStreamsClient {{ ... }}")
         }
     }
 }

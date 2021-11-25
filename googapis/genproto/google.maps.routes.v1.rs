@@ -55,13 +55,45 @@ pub enum PolylineEncoding {
 pub enum TollPass {
     /// Not used. If this value is used, then the request fails.
     Unspecified = 0,
-    /// State pass of the Washington state, United States.
-    UsWaGoodToGo = 1,
     /// Australia-wide toll pass.
     /// See additional details at https://www.linkt.com.au/.
     AuLinkt = 2,
     /// Argentina toll pass. See additional details at https://telepase.com.ar
     ArTelepase = 3,
+    /// Brazil toll pass. See additional details at https://conectcar.com.
+    BrConectcar = 7,
+    /// Brazil toll pass. See additional details at https://movemais.com.
+    BrMoveMais = 8,
+    /// Brazil toll pass. See additional details at https://www.semparar.com.br.
+    BrSemParar = 9,
+    /// Brazil toll pass. See additional details at https://taggy.com.br.
+    BrTaggy = 10,
+    /// Brazil toll pass. See additional details at
+    /// https://veloe.com.br/site/onde-usar.
+    BrVeloe = 11,
+    /// Mexico toll pass.
+    MxTagIave = 12,
+    /// Mexico toll pass company. One of many operating in Mexico City. See
+    /// additional details at https://www.televia.com.mx.
+    MxTagTelevia = 13,
+    /// Mexico toll pass. See additional details at
+    /// https://www.viapass.com.mx/viapass/web_home.aspx.
+    MxViapass = 14,
+    /// State pass of California, United States. Passes vary between Standard,
+    /// Flex, and Clean Air. Flex and Clean Air have settings for carpool. See
+    /// additional details at https://www.bayareafastrak.org/en/home/index.shtml.
+    UsCaFastrak = 4,
+    /// State pass of Illinois, United States. See additional details at
+    /// https://www.illinoistollway.com/about-ipass.
+    UsIlIpass = 5,
+    /// State pass of Massachusetts, United States. See additional details at
+    /// https://www.mass.gov/ezdrivema.
+    UsMaEzpassma = 6,
+    /// State pass of New York, United States. See additional details at
+    /// https://www.e-zpassny.com.
+    UsNyEzpassny = 15,
+    /// State pass of the Washington state, United States.
+    UsWaGoodToGo = 1,
 }
 /// A set of values describing the vehicle's emission type.
 /// Applies only to the DRIVE travel mode.
@@ -294,102 +326,105 @@ pub enum Units {
     /// Imperial (English) units of measure.
     Imperial = 2,
 }
-/// ComputeRouteMatrix request message
+/// ComputeCustomRoutes request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ComputeRouteMatrixRequest {
-    /// Required. Array of origins, which determines the rows of the response matrix.
-    /// Several size restrictions apply to the cardinality of origins and
-    /// destinations:
-    ///
-    /// * The number of elements (origins × destinations) must be no greater than
-    /// 625 in any case.
-    /// * The number of elements (origins × destinations) must be no greater than
-    /// 100 if routing_preference is set to `TRAFFIC_AWARE_OPTIMAL`.
-    /// * The number of waypoints (origins + destinations) specified as `place_id`
-    /// must be no greater than 50.
-    #[prost(message, repeated, tag = "1")]
-    pub origins: ::prost::alloc::vec::Vec<RouteMatrixOrigin>,
-    /// Required. Array of destinations, which determines the columns of the response matrix.
-    #[prost(message, repeated, tag = "2")]
-    pub destinations: ::prost::alloc::vec::Vec<RouteMatrixDestination>,
-    /// Optional. Specifies the mode of transportation.
-    #[prost(enumeration = "RouteTravelMode", tag = "3")]
+pub struct ComputeCustomRoutesRequest {
+    /// Required. Origin waypoint.
+    #[prost(message, optional, tag = "1")]
+    pub origin: ::core::option::Option<Waypoint>,
+    /// Required. Destination waypoint.
+    #[prost(message, optional, tag = "2")]
+    pub destination: ::core::option::Option<Waypoint>,
+    /// Optional. A set of waypoints along the route (excluding terminal points), for either
+    /// stopping at or passing by. Up to 25 intermediate waypoints are supported.
+    /// Intermediates are not supported in ComputeCustomRoutes Alpha.
+    #[prost(message, repeated, tag = "3")]
+    pub intermediates: ::prost::alloc::vec::Vec<Waypoint>,
+    /// Optional. Specifies the mode of transportation. Only DRIVE is supported in
+    /// ComputeCustomRoutes Alpha.
+    #[prost(enumeration = "RouteTravelMode", tag = "4")]
     pub travel_mode: i32,
     /// Optional. Specifies how to compute the route. The server attempts to use the selected
     /// routing preference to compute the route. If the routing preference results
-    /// in an error or an extra long latency, an error is returned. In the future,
-    /// we might implement a fallback mechanism to use a different option when the
-    /// preferred option does not give a valid result. You can specify this option
-    /// only when the `travel_mode` is `DRIVE` or `TWO_WHEELER`, otherwise the
-    /// request fails.
-    #[prost(enumeration = "RoutingPreference", tag = "4")]
+    /// in an error or an extra long latency, then an error is returned. In the
+    /// future, we might implement a fallback mechanism to use a different option
+    /// when the preferred option does not give a valid result. You can specify
+    /// this option only when the `travel_mode` is `DRIVE` or `TWO_WHEELER`,
+    /// otherwise the request fails.
+    #[prost(enumeration = "RoutingPreference", tag = "5")]
     pub routing_preference: i32,
-    /// Optional. The departure time. If you don't set this value, this defaults to the time
-    /// that you made the request. If you set this value to a time that has already
-    /// occurred, the request fails.
-    #[prost(message, optional, tag = "5")]
+    /// Optional. Specifies your preference for the quality of the polyline.
+    #[prost(enumeration = "PolylineQuality", tag = "6")]
+    pub polyline_quality: i32,
+    /// Optional. Specifies the preferred encoding for the polyline.
+    #[prost(enumeration = "PolylineEncoding", tag = "13")]
+    pub polyline_encoding: i32,
+    /// Optional. The departure time. If you don't set this value, then this value
+    /// defaults to the time that you made the request. If you set this value to a
+    /// time that has already occurred, then the request fails.
+    #[prost(message, optional, tag = "7")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// A single origin for ComputeRouteMatrixRequest
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RouteMatrixOrigin {
-    /// Required. Origin waypoint
-    #[prost(message, optional, tag = "1")]
-    pub waypoint: ::core::option::Option<Waypoint>,
-    /// Optional. Modifiers for every route that takes this as the origin
-    #[prost(message, optional, tag = "2")]
+    /// Optional. A set of conditions to satisfy that affect the way routes are calculated.
+    #[prost(message, optional, tag = "11")]
     pub route_modifiers: ::core::option::Option<RouteModifiers>,
+    /// Required. A route objective to optimize for.
+    #[prost(message, optional, tag = "12")]
+    pub route_objective: ::core::option::Option<RouteObjective>,
+    /// Optional. The BCP-47 language code, such as "en-US" or "sr-Latn". For more
+    /// information, see
+    /// http://www.unicode.org/reports/tr35/#Unicode_locale_identifier. See
+    /// [Language Support](https://developers.google.com/maps/faq#languagesupport)
+    /// for the list of supported languages. When you don't provide this value, the
+    /// display language is inferred from the location of the route request.
+    #[prost(string, tag = "9")]
+    pub language_code: ::prost::alloc::string::String,
+    /// Optional. Specifies the units of measure for the display fields. This includes the
+    /// `instruction` field in `NavigationInstruction`. The units of measure used
+    /// for the route, leg, step distance, and duration are not affected by this
+    /// value. If you don't provide this value, then the display units are inferred
+    /// from the location of the request.
+    #[prost(enumeration = "Units", tag = "10")]
+    pub units: i32,
 }
-/// A single destination for ComputeRouteMatrixRequest
+/// Encapsulates an objective to optimize for by ComputeCustomRoutes.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RouteMatrixDestination {
-    /// Required. Destination waypoint
-    #[prost(message, optional, tag = "1")]
-    pub waypoint: ::core::option::Option<Waypoint>,
+pub struct RouteObjective {
+    /// The route objective.
+    #[prost(oneof = "route_objective::Objective", tags = "1")]
+    pub objective: ::core::option::Option<route_objective::Objective>,
 }
-/// Information related to how and why a fallback result was used. If this field
-/// is set, then it means the server used a different routing mode from your
-/// preferred mode as fallback.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FallbackInfo {
-    /// Routing mode used for the response. If fallback was triggered, the mode
-    /// may be different from routing preference set in the original client
-    /// request.
-    #[prost(enumeration = "FallbackRoutingMode", tag = "1")]
-    pub routing_mode: i32,
-    /// The reason why fallback response was used instead of the original response.
-    /// This field is only populated when the fallback mode is triggered and the
-    /// fallback response is returned.
-    #[prost(enumeration = "FallbackReason", tag = "2")]
-    pub reason: i32,
-}
-/// Reasons for using fallback response.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum FallbackReason {
-    /// No fallback reason specified.
-    Unspecified = 0,
-    /// A server error happened while calculating routes with your preferred
-    /// routing mode, but we were able to return a result calculated by an
-    /// alternative mode.
-    ServerError = 1,
-    /// We were not able to finish the calculation with your preferred routing mode
-    /// on time, but we were able to return a result calculated by an alternative
-    /// mode.
-    LatencyExceeded = 2,
-}
-/// Actual routing mode used for returned fallback response.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum FallbackRoutingMode {
-    /// Not used.
-    Unspecified = 0,
-    /// Indicates the "TRAFFIC_UNAWARE" routing mode was used to compute the
-    /// response.
-    FallbackTrafficUnaware = 1,
-    /// Indicates the "TRAFFIC_AWARE" routing mode was used to compute the
-    /// response.
-    FallbackTrafficAware = 2,
+/// Nested message and enum types in `RouteObjective`.
+pub mod route_objective {
+    /// Encapsulates a RateCard route objective.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RateCard {
+        /// Optional. Cost per minute.
+        #[prost(message, optional, tag = "2")]
+        pub cost_per_minute: ::core::option::Option<rate_card::MonetaryCost>,
+        /// Optional. Cost per kilometer.
+        #[prost(message, optional, tag = "3")]
+        pub cost_per_km: ::core::option::Option<rate_card::MonetaryCost>,
+        /// Optional. Whether to include toll cost in the overall cost.
+        #[prost(bool, tag = "4")]
+        pub include_tolls: bool,
+    }
+    /// Nested message and enum types in `RateCard`.
+    pub mod rate_card {
+        /// Encapsulates the cost used in the rate card.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MonetaryCost {
+            /// Required. The cost value in local currency inferred from the request.
+            #[prost(double, tag = "1")]
+            pub value: f64,
+        }
+    }
+    /// The route objective.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Objective {
+        /// The RateCard objective.
+        #[prost(message, tag = "1")]
+        RateCard(RateCard),
+    }
 }
 /// Encapsulates a route, which consists of a series of connected road segments
 /// that join beginning, ending, and intermediate waypoints.
@@ -694,6 +729,187 @@ pub enum Maneuver {
     /// Turn right at the roundabout.
     RoundaboutRight = 18,
 }
+/// Encapsulates a custom route computed based on the route objective specified
+/// by the customer. CustomRoute contains a route and a route token, which can be
+/// passed to NavSDK to reconstruct the custom route for turn by turn navigation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomRoute {
+    /// The route considered 'best' for the input route objective.
+    #[prost(message, optional, tag = "11")]
+    pub route: ::core::option::Option<Route>,
+    /// Web-safe base64 encoded route token that can be passed to NavSDK, which
+    /// allows NavSDK to reconstruct the route during navigation, and in the event
+    /// of rerouting honor the original intention when RoutesPreferred
+    /// ComputeCustomRoutes is called. Customers should treat this token as an
+    /// opaque blob.
+    #[prost(string, tag = "12")]
+    pub token: ::prost::alloc::string::String,
+}
+/// Information related to how and why a fallback result was used. If this field
+/// is set, then it means the server used a different routing mode from your
+/// preferred mode as fallback.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FallbackInfo {
+    /// Routing mode used for the response. If fallback was triggered, the mode
+    /// may be different from routing preference set in the original client
+    /// request.
+    #[prost(enumeration = "FallbackRoutingMode", tag = "1")]
+    pub routing_mode: i32,
+    /// The reason why fallback response was used instead of the original response.
+    /// This field is only populated when the fallback mode is triggered and the
+    /// fallback response is returned.
+    #[prost(enumeration = "FallbackReason", tag = "2")]
+    pub reason: i32,
+}
+/// Reasons for using fallback response.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FallbackReason {
+    /// No fallback reason specified.
+    Unspecified = 0,
+    /// A server error happened while calculating routes with your preferred
+    /// routing mode, but we were able to return a result calculated by an
+    /// alternative mode.
+    ServerError = 1,
+    /// We were not able to finish the calculation with your preferred routing mode
+    /// on time, but we were able to return a result calculated by an alternative
+    /// mode.
+    LatencyExceeded = 2,
+}
+/// Actual routing mode used for returned fallback response.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum FallbackRoutingMode {
+    /// Not used.
+    Unspecified = 0,
+    /// Indicates the "TRAFFIC_UNAWARE" routing mode was used to compute the
+    /// response.
+    FallbackTrafficUnaware = 1,
+    /// Indicates the "TRAFFIC_AWARE" routing mode was used to compute the
+    /// response.
+    FallbackTrafficAware = 2,
+}
+/// ComputeCustomRoutes response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeCustomRoutesResponse {
+    /// The ‘best’ routes for the input route objective.
+    #[prost(message, repeated, tag = "7")]
+    pub routes: ::prost::alloc::vec::Vec<CustomRoute>,
+    /// The fastest reference route.
+    #[prost(message, optional, tag = "5")]
+    pub fastest_route: ::core::option::Option<CustomRoute>,
+    /// The shortest reference route.
+    #[prost(message, optional, tag = "6")]
+    pub shortest_route: ::core::option::Option<CustomRoute>,
+    /// Fallback info for custom routes.
+    #[prost(message, optional, tag = "8")]
+    pub fallback_info: ::core::option::Option<compute_custom_routes_response::FallbackInfo>,
+}
+/// Nested message and enum types in `ComputeCustomRoutesResponse`.
+pub mod compute_custom_routes_response {
+    /// Encapsulates fallback info for ComputeCustomRoutes. ComputeCustomRoutes
+    /// performs two types of fallbacks:
+    ///
+    /// 1. If it cannot compute the route using the routing_preference requested by
+    /// the customer, it will fallback to another routing mode. In this case
+    /// fallback_routing_mode and routing_mode_fallback_reason are used to
+    /// communicate the fallback routing mode used, as well as the reason for
+    /// fallback. Fallback of routing_preference is not supported in
+    /// ComputeCustomRoutes Alpha.
+    ///
+    /// 2. If it cannot compute a 'best' route for the route objective specified by
+    /// the customer, it might fallback to another objective.
+    /// fallback_route_objective is used to communicate the fallback route
+    /// objective.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FallbackInfo {
+        /// Routing mode used for the response. If fallback was triggered, the mode
+        /// may be different from routing preference set in the original client
+        /// request.
+        #[prost(enumeration = "super::FallbackRoutingMode", tag = "1")]
+        pub routing_mode: i32,
+        /// The reason why fallback response was used instead of the original
+        /// response.
+        /// This field is only populated when the fallback mode is triggered and
+        /// the fallback response is returned.
+        #[prost(enumeration = "super::FallbackReason", tag = "2")]
+        pub routing_mode_reason: i32,
+        /// The route objective used for the response. If fallback was triggered, the
+        /// objective may be different from the route objective provided in the
+        /// original client request.
+        #[prost(enumeration = "fallback_info::FallbackRouteObjective", tag = "3")]
+        pub route_objective: i32,
+    }
+    /// Nested message and enum types in `FallbackInfo`.
+    pub mod fallback_info {
+        /// RouteObjective used for the response.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum FallbackRouteObjective {
+            /// Fallback route objective unspecified.
+            Unspecified = 0,
+            /// If customer requests RateCard and sets include_tolls to true, and
+            /// Google does not have toll price data for the route, the API falls back
+            /// to RateCard without considering toll price.
+            FallbackRatecardWithoutTollPriceData = 1,
+        }
+    }
+}
+/// ComputeRouteMatrix request message
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComputeRouteMatrixRequest {
+    /// Required. Array of origins, which determines the rows of the response matrix.
+    /// Several size restrictions apply to the cardinality of origins and
+    /// destinations:
+    ///
+    /// * The number of elements (origins × destinations) must be no greater than
+    /// 625 in any case.
+    /// * The number of elements (origins × destinations) must be no greater than
+    /// 100 if routing_preference is set to `TRAFFIC_AWARE_OPTIMAL`.
+    /// * The number of waypoints (origins + destinations) specified as `place_id`
+    /// must be no greater than 50.
+    #[prost(message, repeated, tag = "1")]
+    pub origins: ::prost::alloc::vec::Vec<RouteMatrixOrigin>,
+    /// Required. Array of destinations, which determines the columns of the response matrix.
+    #[prost(message, repeated, tag = "2")]
+    pub destinations: ::prost::alloc::vec::Vec<RouteMatrixDestination>,
+    /// Optional. Specifies the mode of transportation.
+    #[prost(enumeration = "RouteTravelMode", tag = "3")]
+    pub travel_mode: i32,
+    /// Optional. Specifies how to compute the route. The server attempts to use the selected
+    /// routing preference to compute the route. If the routing preference results
+    /// in an error or an extra long latency, an error is returned. In the future,
+    /// we might implement a fallback mechanism to use a different option when the
+    /// preferred option does not give a valid result. You can specify this option
+    /// only when the `travel_mode` is `DRIVE` or `TWO_WHEELER`, otherwise the
+    /// request fails.
+    #[prost(enumeration = "RoutingPreference", tag = "4")]
+    pub routing_preference: i32,
+    /// Optional. The departure time. If you don't set this value, this defaults to the time
+    /// that you made the request. If you set this value to a time that has already
+    /// occurred, the request fails.
+    #[prost(message, optional, tag = "5")]
+    pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// A single origin for ComputeRouteMatrixRequest
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RouteMatrixOrigin {
+    /// Required. Origin waypoint
+    #[prost(message, optional, tag = "1")]
+    pub waypoint: ::core::option::Option<Waypoint>,
+    /// Optional. Modifiers for every route that takes this as the origin
+    #[prost(message, optional, tag = "2")]
+    pub route_modifiers: ::core::option::Option<RouteModifiers>,
+}
+/// A single destination for ComputeRouteMatrixRequest
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RouteMatrixDestination {
+    /// Required. Destination waypoint
+    #[prost(message, optional, tag = "1")]
+    pub waypoint: ::core::option::Option<Waypoint>,
+}
 /// ComputeRoutes the response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRoutesResponse {
@@ -768,26 +984,53 @@ pub enum RouteMatrixElementCondition {
 }
 #[doc = r" Generated client implementations."]
 pub mod routes_preferred_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The Routes Preferred API."]
+    #[derive(Debug, Clone)]
     pub struct RoutesPreferredClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> RoutesPreferredClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> RoutesPreferredClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            RoutesPreferredClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns the primary route along with optional alternate routes, given a set"]
         #[doc = " of terminal and intermediate waypoints."]
@@ -895,18 +1138,6 @@ pub mod routes_preferred_client {
             self.inner
                 .server_streaming(request.into_request(), path, codec)
                 .await
-        }
-    }
-    impl<T: Clone> Clone for RoutesPreferredClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for RoutesPreferredClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "RoutesPreferredClient {{ ... }}")
         }
     }
 }

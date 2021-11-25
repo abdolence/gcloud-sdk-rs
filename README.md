@@ -1,7 +1,7 @@
 # googapis
 
 [![ci](https://github.com/mechiru/googapis/workflows/ci/badge.svg)](https://github.com/mechiru/googapis/actions?query=workflow:ci)
-[![Rust Documentation](https://docs.rs/googapis/badge.svg)](https://docs.rs/googapis)
+[![Rust Documentation](https://docs.rs/googapis/badge.svg)](https://mechiru.github.io/googapis/googapis/index.html)
 [![Latest Version](https://img.shields.io/crates/v/googapis.svg)](https://crates.io/crates/googapis)
 
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
@@ -57,6 +57,8 @@ The list of available features can be found [here](./googapis/Cargo.toml#L22-L31
 | 0.2.x    | 0.2.x | 0.2.x       |
 | 0.3.x    | 0.3.x | 0.3.x       |
 | 0.4.x    | 0.4.x | 0.4.x       |
+| 0.5.x    | 0.5.x | 0.5.x       |
+| 0.6.x    | 0.6.x | 0.6.x       |
 
 ## Example
 The complete code can be found [here](./examples/spanner-admin).
@@ -64,12 +66,12 @@ The complete code can be found [here](./examples/spanner-admin).
 Cargo.toml:
 ```toml
 [dependencies]
-googapis = { version = "0.4", features = ["google-spanner-admin-database-v1"] }
-gouth = { version = "0.1" }
-tonic = { version = "0.4", features = ["tls"] }
-prost = "0.7"
-prost-types = "0.7"
-tokio = { version = "1.1", features = ["rt-multi-thread", "time", "fs", "macros"] }
+googapis = { version = "0.6", features = ["google-spanner-admin-database-v1"] }
+gouth = { version = "0.2" }
+tonic = { version = "0.6", features = ["tls"] }
+prost = "0.9"
+prost-types = "0.9"
+tokio = { version = "1.13", features = ["rt-multi-thread", "time", "fs", "macros"] }
 ```
 
 main.rs:

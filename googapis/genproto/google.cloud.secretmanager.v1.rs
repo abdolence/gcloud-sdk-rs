@@ -34,6 +34,13 @@ pub struct Secret {
     /// control plane operations are called on the secret or its versions.
     #[prost(message, repeated, tag = "5")]
     pub topics: ::prost::alloc::vec::Vec<Topic>,
+    /// Optional. Etag of the currently stored [Secret][google.cloud.secretmanager.v1.Secret].
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. Rotation policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. May be excluded if there is no
+    /// rotation policy.
+    #[prost(message, optional, tag = "9")]
+    pub rotation: ::core::option::Option<Rotation>,
     /// Expiration policy attached to the [Secret][google.cloud.secretmanager.v1.Secret]. If specified the [Secret][google.cloud.secretmanager.v1.Secret]
     /// and all [SecretVersions][google.cloud.secretmanager.v1.SecretVersion] will be automatically deleted at
     /// expiration. Expired secrets are irreversibly deleted.
@@ -90,6 +97,9 @@ pub struct SecretVersion {
     /// The replication status of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(message, optional, tag = "5")]
     pub replication_status: ::core::option::Option<ReplicationStatus>,
+    /// Output only. Etag of the currently stored [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    #[prost(string, tag = "6")]
+    pub etag: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `SecretVersion`.
 pub mod secret_version {
@@ -278,6 +288,27 @@ pub struct Topic {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// The rotation time and period for a [Secret][google.cloud.secretmanager.v1.Secret]. At next_rotation_time, Secret
+/// Manager will send a Pub/Sub notification to the topics configured on the
+/// Secret. [Secret.topics][google.cloud.secretmanager.v1.Secret.topics] must be set to configure rotation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Rotation {
+    /// Optional. Timestamp in UTC at which the [Secret][google.cloud.secretmanager.v1.Secret] is scheduled to rotate. Cannot be
+    /// set to less than 300s (5 min) in the future and at most 3153600000s (100
+    /// years).
+    ///
+    /// [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time] MUST  be set if [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period] is set.
+    #[prost(message, optional, tag = "1")]
+    pub next_rotation_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Input only. The Duration between rotation notifications. Must be in seconds
+    /// and at least 3600s (1h) and at most 3153600000s (100 years).
+    ///
+    /// If [rotation_period][google.cloud.secretmanager.v1.Rotation.rotation_period] is set, [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time] must be set.
+    /// [next_rotation_time][google.cloud.secretmanager.v1.Rotation.next_rotation_time] will be advanced by this period when the service
+    /// automatically sends rotation notifications.
+    #[prost(message, optional, tag = "2")]
+    pub rotation_period: ::core::option::Option<::prost_types::Duration>,
+}
 /// A secret payload resource in the Secret Manager API. This contains the
 /// sensitive secret payload that is associated with a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -302,6 +333,13 @@ pub struct ListSecretsRequest {
     /// [ListSecretsResponse.next_page_token][google.cloud.secretmanager.v1.ListSecretsResponse.next_page_token].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter string, adhering to the rules in
+    /// [List-operation
+    /// filtering](https://cloud.google.com/secret-manager/docs/filtering). List
+    /// only secrets matching the filter. If filter is empty, all secrets are
+    /// listed.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for [SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -371,6 +409,13 @@ pub struct ListSecretVersionsRequest {
     /// ListSecretVersionsResponse.next_page_token][].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// Optional. Filter string, adhering to the rules in
+    /// [List-operation
+    /// filtering](https://cloud.google.com/secret-manager/docs/filtering). List
+    /// only secret versions matching the filter. If filter is empty, all secret
+    /// versions are listed.
+    #[prost(string, tag = "4")]
+    pub filter: ::prost::alloc::string::String,
 }
 /// Response message for [SecretManagerService.ListSecretVersions][google.cloud.secretmanager.v1.SecretManagerService.ListSecretVersions].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -392,8 +437,9 @@ pub struct ListSecretVersionsResponse {
 pub struct GetSecretVersionRequest {
     /// Required. The resource name of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the format
     /// `projects/*/secrets/*/versions/*`.
-    /// `projects/*/secrets/*/versions/latest` is an alias to the `latest`
-    /// [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
+    ///
+    /// `projects/*/secrets/*/versions/latest` is an alias to the most recently
+    /// created [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -412,6 +458,9 @@ pub struct UpdateSecretRequest {
 pub struct AccessSecretVersionRequest {
     /// Required. The resource name of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion] in the format
     /// `projects/*/secrets/*/versions/*`.
+    ///
+    /// `projects/*/secrets/*/versions/latest` is an alias to the most recently
+    /// created [SecretVersion][google.cloud.secretmanager.v1.SecretVersion].
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -433,6 +482,11 @@ pub struct DeleteSecretRequest {
     /// `projects/*/secrets/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Etag of the [Secret][google.cloud.secretmanager.v1.Secret]. The request succeeds if it matches
+    /// the etag of the currently stored secret object. If the etag is omitted,
+    /// the request succeeds.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request message for [SecretManagerService.DisableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DisableSecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -441,6 +495,11 @@ pub struct DisableSecretVersionRequest {
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Etag of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. The request succeeds if it matches
+    /// the etag of the currently stored secret version object. If the etag is
+    /// omitted, the request succeeds.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request message for [SecretManagerService.EnableSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.EnableSecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -449,6 +508,11 @@ pub struct EnableSecretVersionRequest {
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Etag of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. The request succeeds if it matches
+    /// the etag of the currently stored secret version object. If the etag is
+    /// omitted, the request succeeds.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
 }
 /// Request message for [SecretManagerService.DestroySecretVersion][google.cloud.secretmanager.v1.SecretManagerService.DestroySecretVersion].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -457,10 +521,15 @@ pub struct DestroySecretVersionRequest {
     /// `projects/*/secrets/*/versions/*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. Etag of the [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. The request succeeds if it matches
+    /// the etag of the currently stored secret version object. If the etag is
+    /// omitted, the request succeeds.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod secret_manager_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Secret Manager Service"]
     #[doc = ""]
@@ -469,23 +538,50 @@ pub mod secret_manager_service_client {
     #[doc = ""]
     #[doc = " * [Secret][google.cloud.secretmanager.v1.Secret]"]
     #[doc = " * [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]"]
+    #[derive(Debug, Clone)]
     pub struct SecretManagerServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> SecretManagerServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SecretManagerServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SecretManagerServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists [Secrets][google.cloud.secretmanager.v1.Secret]."]
         pub async fn list_secrets(
@@ -610,8 +706,8 @@ pub mod secret_manager_service_client {
         }
         #[doc = " Gets metadata for a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]."]
         #[doc = ""]
-        #[doc = " `projects/*/secrets/*/versions/latest` is an alias to the `latest`"]
-        #[doc = " [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]."]
+        #[doc = " `projects/*/secrets/*/versions/latest` is an alias to the most recently"]
+        #[doc = " created [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]."]
         pub async fn get_secret_version(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSecretVersionRequest>,
@@ -630,8 +726,8 @@ pub mod secret_manager_service_client {
         }
         #[doc = " Accesses a [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]. This call returns the secret data."]
         #[doc = ""]
-        #[doc = " `projects/*/secrets/*/versions/latest` is an alias to the `latest`"]
-        #[doc = " [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]."]
+        #[doc = " `projects/*/secrets/*/versions/latest` is an alias to the most recently"]
+        #[doc = " created [SecretVersion][google.cloud.secretmanager.v1.SecretVersion]."]
         pub async fn access_secret_version(
             &mut self,
             request: impl tonic::IntoRequest<super::AccessSecretVersionRequest>,
@@ -777,18 +873,6 @@ pub mod secret_manager_service_client {
                 "/google.cloud.secretmanager.v1.SecretManagerService/TestIamPermissions",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for SecretManagerServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for SecretManagerServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "SecretManagerServiceClient {{ ... }}")
         }
     }
 }

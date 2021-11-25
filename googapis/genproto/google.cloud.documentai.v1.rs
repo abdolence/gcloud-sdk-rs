@@ -5,7 +5,7 @@ pub struct Vertex {
     /// X coordinate.
     #[prost(int32, tag = "1")]
     pub x: i32,
-    /// Y coordinate.
+    /// Y coordinate (starts from the top of the image).
     #[prost(int32, tag = "2")]
     pub y: i32,
 }
@@ -17,7 +17,7 @@ pub struct NormalizedVertex {
     /// X coordinate.
     #[prost(float, tag = "1")]
     pub x: f32,
-    /// Y coordinate.
+    /// Y coordinate (starts from the top of the image).
     #[prost(float, tag = "2")]
     pub y: f32,
 }
@@ -191,6 +191,9 @@ pub mod document {
         /// A list of visually detected form fields on the page.
         #[prost(message, repeated, tag = "11")]
         pub form_fields: ::prost::alloc::vec::Vec<page::FormField>,
+        /// The history of this page.
+        #[prost(message, optional, tag = "16")]
+        pub provenance: ::core::option::Option<Provenance>,
     }
     /// Nested message and enum types in `Page`.
     pub mod page {
@@ -448,6 +451,9 @@ pub mod document {
             /// - "filled_checkbox"
             #[prost(string, tag = "5")]
             pub value_type: ::prost::alloc::string::String,
+            /// The history of this annotation.
+            #[prost(message, optional, tag = "8")]
+            pub provenance: ::core::option::Option<super::Provenance>,
         }
         /// Detected language for a structural component.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -611,6 +617,8 @@ pub mod document {
         pub struct PageRef {
             /// Required. Index into the [Document.pages][google.cloud.documentai.v1.Document.pages] element, for example using
             /// [Document.pages][page_refs.page] to locate the related page element.
+            /// This field is skipped when its value is the default 0. See
+            /// https://developers.google.com/protocol-buffers/docs/proto3#json.
             #[prost(int64, tag = "1")]
             pub page: i64,
             /// Optional. The type of the layout element that is being referenced if any.
@@ -623,6 +631,9 @@ pub mod document {
             /// Optional. Identifies the bounding polygon of a layout element on the page.
             #[prost(message, optional, tag = "4")]
             pub bounding_poly: ::core::option::Option<super::super::BoundingPoly>,
+            /// Optional. Confidence of detected page element, if applicable. Range [0, 1].
+            #[prost(float, tag = "5")]
+            pub confidence: f32,
         }
         /// Nested message and enum types in `PageRef`.
         pub mod page_ref {
@@ -660,6 +671,7 @@ pub mod document {
         pub revision: i32,
         /// The Id of this operation.  Needs to be unique within the scope of the
         /// revision.
+        #[deprecated]
         #[prost(int32, tag = "2")]
         pub id: i32,
         /// References to the original elements that are replaced.
@@ -679,7 +691,12 @@ pub mod document {
             /// The index of the [Document.revisions] identifying the parent revision.
             #[prost(int32, tag = "1")]
             pub revision: i32,
+            /// The index of the parent revisions corresponding collection of items
+            /// (eg. list of entities, properties within entities, etc.)
+            #[prost(int32, tag = "3")]
+            pub index: i32,
             /// The id of the parent provenance.
+            #[deprecated]
             #[prost(int32, tag = "2")]
             pub id: i32,
         }
@@ -867,6 +884,42 @@ pub mod document_output_config {
         GcsOutputConfig(GcsOutputConfig),
     }
 }
+/// The common metadata for long running operations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CommonOperationMetadata {
+    /// The state of the operation.
+    #[prost(enumeration = "common_operation_metadata::State", tag = "1")]
+    pub state: i32,
+    /// A message providing more details about the current state of processing.
+    #[prost(string, tag = "2")]
+    pub state_message: ::prost::alloc::string::String,
+    /// The creation time of the operation.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The last update time of the operation.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `CommonOperationMetadata`.
+pub mod common_operation_metadata {
+    /// State of the longrunning operation.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// Unspecified state.
+        Unspecified = 0,
+        /// Operation is still running.
+        Running = 1,
+        /// Operation is being cancelled.
+        Cancelling = 2,
+        /// Operation succeeded.
+        Succeeded = 3,
+        /// Operation failed.
+        Failed = 4,
+        /// Operation is cancelled.
+        Cancelled = 5,
+    }
+}
 /// Request message for the process document method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessRequest {
@@ -1032,12 +1085,28 @@ pub struct ReviewDocumentRequest {
     /// reviewed with.
     #[prost(string, tag = "1")]
     pub human_review_config: ::prost::alloc::string::String,
+    /// Whether the validation should be performed on the ad-hoc review request.
+    #[prost(bool, tag = "3")]
+    pub enable_schema_validation: bool,
+    /// The priority of the human review task.
+    #[prost(enumeration = "review_document_request::Priority", tag = "5")]
+    pub priority: i32,
     /// The document payload.
     #[prost(oneof = "review_document_request::Source", tags = "4")]
     pub source: ::core::option::Option<review_document_request::Source>,
 }
 /// Nested message and enum types in `ReviewDocumentRequest`.
 pub mod review_document_request {
+    /// The priority level of the human review task.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Priority {
+        /// The default priority level.
+        Default = 0,
+        /// The urgent priority level. The labeling manager should allocate labeler
+        /// resource to the urgent task queue to respect this priority level.
+        Urgent = 1,
+    }
     /// The document payload.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Source {
@@ -1060,67 +1129,58 @@ pub struct ReviewDocumentOperationMetadata {
     #[prost(message, optional, tag = "5")]
     pub common_metadata: ::core::option::Option<CommonOperationMetadata>,
 }
-/// The common metadata for long running operations.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CommonOperationMetadata {
-    /// The state of the operation.
-    #[prost(enumeration = "common_operation_metadata::State", tag = "1")]
-    pub state: i32,
-    /// A message providing more details about the current state of processing.
-    #[prost(string, tag = "2")]
-    pub state_message: ::prost::alloc::string::String,
-    /// The creation time of the operation.
-    #[prost(message, optional, tag = "3")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The last update time of the operation.
-    #[prost(message, optional, tag = "4")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Nested message and enum types in `CommonOperationMetadata`.
-pub mod common_operation_metadata {
-    /// State of the longrunning operation.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum State {
-        /// Unspecified state.
-        Unspecified = 0,
-        /// Operation is still running.
-        Running = 1,
-        /// Operation is being cancelled.
-        Cancelling = 2,
-        /// Operation succeeded.
-        Succeeded = 3,
-        /// Operation failed.
-        Failed = 4,
-        /// Operation is cancelled.
-        Cancelled = 5,
-    }
-}
 #[doc = r" Generated client implementations."]
 pub mod document_processor_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service to call Cloud DocumentAI to process documents according to the"]
     #[doc = " processor's definition. Processors are built using state-of-the-art Google"]
     #[doc = " AI such as natural language, computer vision, and translation to extract"]
     #[doc = " structured information from unstructured or semi-structured documents."]
+    #[derive(Debug, Clone)]
     pub struct DocumentProcessorServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> DocumentProcessorServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> DocumentProcessorServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            DocumentProcessorServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Processes a single document."]
         pub async fn process_document(
@@ -1180,18 +1240,6 @@ pub mod document_processor_service_client {
                 "/google.cloud.documentai.v1.DocumentProcessorService/ReviewDocument",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for DocumentProcessorServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for DocumentProcessorServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "DocumentProcessorServiceClient {{ ... }}")
         }
     }
 }

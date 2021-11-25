@@ -349,25 +349,65 @@ pub mod structured_query {
         pub enum Operator {
             /// Unspecified. This value must not be used.
             Unspecified = 0,
-            /// Less than. Requires that the field come first in `order_by`.
+            /// The given `field` is less than the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * That `field` come first in `order_by`.
             LessThan = 1,
-            /// Less than or equal. Requires that the field come first in `order_by`.
+            /// The given `field` is less than or equal to the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * That `field` come first in `order_by`.
             LessThanOrEqual = 2,
-            /// Greater than. Requires that the field come first in `order_by`.
+            /// The given `field` is greater than the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * That `field` come first in `order_by`.
             GreaterThan = 3,
-            /// Greater than or equal. Requires that the field come first in
-            /// `order_by`.
+            /// The given `field` is greater than or equal to the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * That `field` come first in `order_by`.
             GreaterThanOrEqual = 4,
-            /// Equal.
+            /// The given `field` is equal to the given `value`.
             Equal = 5,
-            /// Contains. Requires that the field is an array.
+            /// The given `field` is not equal to the given `value`.
+            ///
+            /// Requires:
+            ///
+            /// * No other `NOT_EQUAL`, `NOT_IN`, `IS_NOT_NULL`, or `IS_NOT_NAN`.
+            /// * That `field` comes first in the `order_by`.
+            NotEqual = 6,
+            /// The given `field` is an array that contains the given `value`.
             ArrayContains = 7,
-            /// In. Requires that `value` is a non-empty ArrayValue with at most 10
-            /// values.
+            /// The given `field` is equal to at least one value in the given array.
+            ///
+            /// Requires:
+            ///
+            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
             In = 8,
-            /// Contains any. Requires that the field is an array and
-            /// `value` is a non-empty ArrayValue with at most 10 values.
+            /// The given `field` is an array that contains any of the values in the
+            /// given array.
+            ///
+            /// Requires:
+            ///
+            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+            /// * No other `IN` or `ARRAY_CONTAINS_ANY` or `NOT_IN`.
             ArrayContainsAny = 9,
+            /// The value of the `field` is not in the given array.
+            ///
+            /// Requires:
+            ///
+            /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+            /// * No other `IN`, `ARRAY_CONTAINS_ANY`, `NOT_IN`, `NOT_EQUAL`,
+            ///   `IS_NOT_NULL`, or `IS_NOT_NAN`.
+            /// * That `field` comes first in the `order_by`.
+            NotIn = 10,
         }
     }
     /// A filter with a single operand.
@@ -390,10 +430,24 @@ pub mod structured_query {
         pub enum Operator {
             /// Unspecified. This value must not be used.
             Unspecified = 0,
-            /// Test if a field is equal to NaN.
+            /// The given `field` is equal to `NaN`.
             IsNan = 2,
-            /// Test if an expression evaluates to Null.
+            /// The given `field` is equal to `NULL`.
             IsNull = 3,
+            /// The given `field` is not equal to `NaN`.
+            ///
+            /// Requires:
+            ///
+            /// * No other `NOT_EQUAL`, `NOT_IN`, `IS_NOT_NULL`, or `IS_NOT_NAN`.
+            /// * That `field` comes first in the `order_by`.
+            IsNotNan = 4,
+            /// The given `field` is not equal to `NULL`.
+            ///
+            /// Requires:
+            ///
+            /// * A single `NOT_EQUAL`, `NOT_IN`, `IS_NOT_NULL`, or `IS_NOT_NAN`.
+            /// * That `field` comes first in the `order_by`.
+            IsNotNull = 5,
         }
         /// The argument to the filter.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -402,6 +456,12 @@ pub mod structured_query {
             #[prost(message, tag = "2")]
             Field(super::FieldReference),
         }
+    }
+    /// A reference to a field, such as `max(messages.time) as max_time`.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FieldReference {
+        #[prost(string, tag = "2")]
+        pub field_path: ::prost::alloc::string::String,
     }
     /// An order on a field.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -412,12 +472,6 @@ pub mod structured_query {
         /// The direction to order by. Defaults to `ASCENDING`.
         #[prost(enumeration = "Direction", tag = "2")]
         pub direction: i32,
-    }
-    /// A reference to a field, such as `max(messages.time) as max_time`.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct FieldReference {
-        #[prost(string, tag = "2")]
-        pub field_path: ::prost::alloc::string::String,
     }
     /// The projection of document's fields to return.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -470,6 +524,13 @@ pub struct Write {
     /// The field paths in this mask must not contain a reserved field name.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<DocumentMask>,
+    /// The transforms to perform after update.
+    ///
+    /// This field can be set only when the operation is `update`. If present, this
+    /// write is equivalent to performing `update` and `transform` to the same
+    /// document atomically and in order.
+    #[prost(message, repeated, tag = "7")]
+    pub update_transforms: ::prost::alloc::vec::Vec<document_transform::FieldTransform>,
     /// An optional precondition on the document.
     ///
     /// The write will fail if this is set and not met by the target document.
@@ -492,9 +553,6 @@ pub mod write {
         #[prost(string, tag = "2")]
         Delete(::prost::alloc::string::String),
         /// Applies a transformation to a document.
-        /// At most one `transform` per document is allowed in a given request.
-        /// An `update` cannot follow a `transform` on the same document in a given
-        /// request.
         #[prost(message, tag = "6")]
         Transform(super::DocumentTransform),
     }
@@ -535,7 +593,8 @@ pub mod document_transform {
             /// Unspecified. This value must not be used.
             Unspecified = 0,
             /// The time at which the server processed the request, with millisecond
-            /// precision.
+            /// precision. If used on multiple fields (same or different documents) in
+            /// a transaction, all the fields will get the same server timestamp.
             RequestTime = 1,
         }
         /// The transformation to apply on the field.
@@ -733,7 +792,7 @@ pub mod get_document_request {
         #[prost(bytes, tag = "3")]
         Transaction(::prost::alloc::vec::Vec<u8>),
         /// Reads the version of the document at the given time.
-        /// This may not be older than 60 seconds.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "5")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -792,7 +851,7 @@ pub mod list_documents_request {
         #[prost(bytes, tag = "8")]
         Transaction(::prost::alloc::vec::Vec<u8>),
         /// Reads documents as they were at the given time.
-        /// This may not be older than 60 seconds.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "10")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -916,7 +975,7 @@ pub mod batch_get_documents_request {
         #[prost(message, tag = "5")]
         NewTransaction(super::TransactionOptions),
         /// Reads documents as they were at the given time.
-        /// This may not be older than 60 seconds.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "7")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -999,7 +1058,8 @@ pub struct CommitResponse {
     /// request.
     #[prost(message, repeated, tag = "1")]
     pub write_results: ::prost::alloc::vec::Vec<WriteResult>,
-    /// The time at which the commit occurred.
+    /// The time at which the commit occurred. Any read with an equal or greater
+    /// `read_time` is guaranteed to see the effects of the commit.
     #[prost(message, optional, tag = "2")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -1056,7 +1116,7 @@ pub mod run_query_request {
         #[prost(message, tag = "6")]
         NewTransaction(super::TransactionOptions),
         /// Reads documents as they were at the given time.
-        /// This may not be older than 60 seconds.
+        /// This may not be older than 270 seconds.
         #[prost(message, tag = "7")]
         ReadTime(::prost_types::Timestamp),
     }
@@ -1087,6 +1147,94 @@ pub struct RunQueryResponse {
     /// the last response and the current response.
     #[prost(int32, tag = "4")]
     pub skipped_results: i32,
+}
+/// The request for [Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartitionQueryRequest {
+    /// Required. The parent resource name. In the format:
+    /// `projects/{project_id}/databases/{database_id}/documents`.
+    /// Document resource names are not supported; only database resource names
+    /// can be specified.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The desired maximum number of partition points.
+    /// The partitions may be returned across multiple pages of results.
+    /// The number must be positive. The actual number of partitions
+    /// returned may be fewer.
+    ///
+    /// For example, this may be set to one fewer than the number of parallel
+    /// queries to be run, or in running a data pipeline job, one fewer than the
+    /// number of workers or compute instances available.
+    #[prost(int64, tag = "3")]
+    pub partition_count: i64,
+    /// The `next_page_token` value returned from a previous call to
+    /// PartitionQuery that may be used to get an additional set of results.
+    /// There are no ordering guarantees between sets of results. Thus, using
+    /// multiple sets of results will require merging the different result sets.
+    ///
+    /// For example, two subsequent calls using a page_token may return:
+    ///
+    ///  * cursor B, cursor M, cursor Q
+    ///  * cursor A, cursor U, cursor W
+    ///
+    /// To obtain a complete result set ordered with respect to the results of the
+    /// query supplied to PartitionQuery, the results sets should be merged:
+    /// cursor A, cursor B, cursor M, cursor Q, cursor U, cursor W
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+    /// The maximum number of partitions to return in this call, subject to
+    /// `partition_count`.
+    ///
+    /// For example, if `partition_count` = 10 and `page_size` = 8, the first call
+    /// to PartitionQuery will return up to 8 partitions and a `next_page_token`
+    /// if more results exist. A second call to PartitionQuery will return up to
+    /// 2 partitions, to complete the total of 10 specified in `partition_count`.
+    #[prost(int32, tag = "5")]
+    pub page_size: i32,
+    /// The query to partition.
+    #[prost(oneof = "partition_query_request::QueryType", tags = "2")]
+    pub query_type: ::core::option::Option<partition_query_request::QueryType>,
+}
+/// Nested message and enum types in `PartitionQueryRequest`.
+pub mod partition_query_request {
+    /// The query to partition.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum QueryType {
+        /// A structured query.
+        /// Query must specify collection with all descendants and be ordered by name
+        /// ascending. Other filters, order bys, limits, offsets, and start/end
+        /// cursors are not supported.
+        #[prost(message, tag = "2")]
+        StructuredQuery(super::StructuredQuery),
+    }
+}
+/// The response for [Firestore.PartitionQuery][google.firestore.v1beta1.Firestore.PartitionQuery].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PartitionQueryResponse {
+    /// Partition results.
+    /// Each partition is a split point that can be used by RunQuery as a starting
+    /// or end point for the query results. The RunQuery requests must be made with
+    /// the same query supplied to this PartitionQuery request. The partition
+    /// cursors will be ordered according to same ordering as the results of the
+    /// query supplied to PartitionQuery.
+    ///
+    /// For example, if a PartitionQuery request returns partition cursors A and B,
+    /// running the following three queries will return the entire result set of
+    /// the original query:
+    ///
+    ///  * query, end_at A
+    ///  * query, start_at A, end_at B
+    ///  * query, start_at B
+    ///
+    /// An empty result may indicate that the query has too few results to be
+    /// partitioned.
+    #[prost(message, repeated, tag = "1")]
+    pub partitions: ::prost::alloc::vec::Vec<Cursor>,
+    /// A page token that may be used to request an additional set of results, up
+    /// to the number specified by `partition_count` in the PartitionQuery request.
+    /// If blank, there are no more results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for [Firestore.Write][google.firestore.v1beta1.Firestore.Write].
 ///
@@ -1158,7 +1306,8 @@ pub struct WriteResponse {
     /// request.
     #[prost(message, repeated, tag = "3")]
     pub write_results: ::prost::alloc::vec::Vec<WriteResult>,
-    /// The time at which the commit occurred.
+    /// The time at which the commit occurred. Any read with an equal or greater
+    /// `read_time` is guaranteed to see the effects of the write.
     #[prost(message, optional, tag = "4")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -1400,43 +1549,97 @@ pub struct ListCollectionIdsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// The request for [Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchWriteRequest {
+    /// Required. The database name. In the format:
+    /// `projects/{project_id}/databases/{database_id}`.
+    #[prost(string, tag = "1")]
+    pub database: ::prost::alloc::string::String,
+    /// The writes to apply.
+    ///
+    /// Method does not apply writes atomically and does not guarantee ordering.
+    /// Each write succeeds or fails independently. You cannot write to the same
+    /// document more than once per request.
+    #[prost(message, repeated, tag = "2")]
+    pub writes: ::prost::alloc::vec::Vec<Write>,
+    /// Labels associated with this batch write.
+    #[prost(map = "string, string", tag = "3")]
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+}
+/// The response from [Firestore.BatchWrite][google.firestore.v1beta1.Firestore.BatchWrite].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchWriteResponse {
+    /// The result of applying the writes.
+    ///
+    /// This i-th write result corresponds to the i-th write in the
+    /// request.
+    #[prost(message, repeated, tag = "1")]
+    pub write_results: ::prost::alloc::vec::Vec<WriteResult>,
+    /// The status of applying the writes.
+    ///
+    /// This i-th write status corresponds to the i-th write in the
+    /// request.
+    #[prost(message, repeated, tag = "2")]
+    pub status: ::prost::alloc::vec::Vec<super::super::rpc::Status>,
+}
 #[doc = r" Generated client implementations."]
 pub mod firestore_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The Cloud Firestore service."]
     #[doc = ""]
-    #[doc = " This service exposes several types of comparable timestamps:"]
-    #[doc = ""]
-    #[doc = " *    `create_time` - The time at which a document was created. Changes only"]
-    #[doc = "      when a document is deleted, then re-created. Increases in a strict"]
-    #[doc = "       monotonic fashion."]
-    #[doc = " *    `update_time` - The time at which a document was last updated. Changes"]
-    #[doc = "      every time a document is modified. Does not change when a write results"]
-    #[doc = "      in no modifications. Increases in a strict monotonic fashion."]
-    #[doc = " *    `read_time` - The time at which a particular state was observed. Used"]
-    #[doc = "      to denote a consistent snapshot of the database or the time at which a"]
-    #[doc = "      Document was observed to not exist."]
-    #[doc = " *    `commit_time` - The time at which the writes in a transaction were"]
-    #[doc = "      committed. Any read with an equal or greater `read_time` is guaranteed"]
-    #[doc = "      to see the effects of the transaction."]
+    #[doc = " Cloud Firestore is a fast, fully managed, serverless, cloud-native NoSQL"]
+    #[doc = " document database that simplifies storing, syncing, and querying data for"]
+    #[doc = " your mobile, web, and IoT apps at global scale. Its client libraries provide"]
+    #[doc = " live synchronization and offline support, while its security features and"]
+    #[doc = " integrations with Firebase and Google Cloud Platform (GCP) accelerate"]
+    #[doc = " building truly serverless apps."]
+    #[derive(Debug, Clone)]
     pub struct FirestoreClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> FirestoreClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> FirestoreClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            FirestoreClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Gets a single document."]
         pub async fn get_document(
@@ -1469,23 +1672,6 @@ pub mod firestore_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1beta1.Firestore/ListDocuments",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates a new document."]
-        pub async fn create_document(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateDocumentRequest>,
-        ) -> Result<tonic::Response<super::Document>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.firestore.v1beta1.Firestore/CreateDocument",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -1618,6 +1804,25 @@ pub mod firestore_client {
                 .server_streaming(request.into_request(), path, codec)
                 .await
         }
+        #[doc = " Partitions a query by returning partition cursors that can be used to run"]
+        #[doc = " the query in parallel. The returned partition cursors are split points that"]
+        #[doc = " can be used by RunQuery as starting/end points for the query results."]
+        pub async fn partition_query(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PartitionQueryRequest>,
+        ) -> Result<tonic::Response<super::PartitionQueryResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.v1beta1.Firestore/PartitionQuery",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Streams batches of document updates and deletes, in order."]
         pub async fn write(
             &mut self,
@@ -1673,17 +1878,47 @@ pub mod firestore_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T: Clone> Clone for FirestoreClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
+        #[doc = " Applies a batch of write operations."]
+        #[doc = ""]
+        #[doc = " The BatchWrite method does not apply the write operations atomically"]
+        #[doc = " and can apply them out of order. Method does not allow more than one write"]
+        #[doc = " per document. Each write succeeds or fails independently. See the"]
+        #[doc = " [BatchWriteResponse][google.firestore.v1beta1.BatchWriteResponse] for the success status of each write."]
+        #[doc = ""]
+        #[doc = " If you require an atomically applied set of writes, use"]
+        #[doc = " [Commit][google.firestore.v1beta1.Firestore.Commit] instead."]
+        pub async fn batch_write(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchWriteRequest>,
+        ) -> Result<tonic::Response<super::BatchWriteResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.v1beta1.Firestore/BatchWrite",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-    impl<T> std::fmt::Debug for FirestoreClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "FirestoreClient {{ ... }}")
+        #[doc = " Creates a new document."]
+        pub async fn create_document(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDocumentRequest>,
+        ) -> Result<tonic::Response<super::Document>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.v1beta1.Firestore/CreateDocument",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }

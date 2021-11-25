@@ -294,7 +294,7 @@ pub struct RecognitionConfig {
     /// Speech adaptation configuration improves the accuracy of speech
     /// recognition. When speech adaptation is set it supersedes the
     /// `speech_contexts` field. For more information, see the [speech
-    /// adaptation](https://cloud.google.com/speech-to-text/docs/context-strength)
+    /// adaptation](https://cloud.google.com/speech-to-text/docs/adaptation)
     /// documentation.
     #[prost(message, optional, tag = "20")]
     pub adaptation: ::core::option::Option<SpeechAdaptation>,
@@ -302,7 +302,7 @@ pub struct RecognitionConfig {
     /// A means to provide context to assist the speech recognition. For more
     /// information, see
     /// [speech
-    /// adaptation](https://cloud.google.com/speech-to-text/docs/context-strength).
+    /// adaptation](https://cloud.google.com/speech-to-text/docs/adaptation).
     #[prost(message, repeated, tag = "6")]
     pub speech_contexts: ::prost::alloc::vec::Vec<SpeechContext>,
     /// If `true`, the top result includes a list of words and
@@ -322,6 +322,22 @@ pub struct RecognitionConfig {
     /// The default 'false' value does not add punctuation to result hypotheses.
     #[prost(bool, tag = "11")]
     pub enable_automatic_punctuation: bool,
+    /// The spoken punctuation behavior for the call
+    /// If not set, uses default behavior based on model of choice
+    /// e.g. command_and_search will enable spoken punctuation by default
+    /// If 'true', replaces spoken punctuation with the corresponding symbols in
+    /// the request. For example, "how are you question mark" becomes "how are
+    /// you?". See https://cloud.google.com/speech-to-text/docs/spoken-punctuation
+    /// for support. If 'false', spoken punctuation is not replaced.
+    #[prost(message, optional, tag = "22")]
+    pub enable_spoken_punctuation: ::core::option::Option<bool>,
+    /// The spoken emoji behavior for the call
+    /// If not set, uses default behavior based on model of choice
+    /// If 'true', adds spoken emoji formatting for the request. This will replace
+    /// spoken emojis with the corresponding Unicode symbols in the final
+    /// transcript. If 'false', spoken emojis are not replaced.
+    #[prost(message, optional, tag = "23")]
+    pub enable_spoken_emojis: ::core::option::Option<bool>,
     /// If 'true', enables speaker detection for each recognized word in
     /// the top alternative of the recognition result using a speaker_tag provided
     /// in the WordInfo.
@@ -368,7 +384,7 @@ pub struct RecognitionConfig {
     ///   </tr>
     ///   <tr>
     ///     <td><code>video</code></td>
-    ///     <td>Best for audio that originated from from video or includes multiple
+    ///     <td>Best for audio that originated from video or includes multiple
     ///         speakers. Ideally the audio is recorded at a 16khz or greater
     ///         sampling rate. This is a premium model that costs more than the
     ///         standard rate.</td>
@@ -460,6 +476,11 @@ pub mod recognition_config {
         /// kbps). When using this encoding, `sample_rate_hertz` has to match the
         /// sample rate of the file being used.
         Mp3 = 8,
+        /// Opus encoded audio frames in WebM container
+        /// ([OggOpus](https://wiki.xiph.org/OggOpus)). This is a Beta features and
+        /// only available in v1p1beta1. `sample_rate_hertz` must be one of 8000,
+        /// 12000, 16000, 24000, or 48000.
+        WebmOpus = 9,
     }
 }
 /// Config to enable speaker diarization.
@@ -677,6 +698,9 @@ pub struct RecognizeResponse {
     /// sequential portions of audio.
     #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
+    /// When available, billed audio seconds for the corresponding request.
+    #[prost(message, optional, tag = "3")]
+    pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// The only message returned to the client by the `LongRunningRecognize` method.
 /// It contains the result as zero or more sequential `SpeechRecognitionResult`
@@ -689,6 +713,9 @@ pub struct LongRunningRecognizeResponse {
     /// sequential portions of audio.
     #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
+    /// When available, billed audio seconds for the corresponding request.
+    #[prost(message, optional, tag = "3")]
+    pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
     /// Original output config if present in the request.
     #[prost(message, optional, tag = "6")]
     pub output_config: ::core::option::Option<TranscriptOutputConfig>,
@@ -725,8 +752,8 @@ pub struct LongRunningRecognizeMetadata {
 /// audio, and `single_utterance` is set to false, then no messages are streamed
 /// back to the client.
 ///
-/// Here's an example of a series of ten `StreamingRecognizeResponse`s that might
-/// be returned while processing audio:
+/// Here's an example of a series of `StreamingRecognizeResponse`s that might be
+/// returned while processing audio:
 ///
 /// 1. results { alternatives { transcript: "tube" } stability: 0.01 }
 ///
@@ -786,6 +813,10 @@ pub struct StreamingRecognizeResponse {
         tag = "4"
     )]
     pub speech_event_type: i32,
+    /// When available, billed audio seconds for the stream.
+    /// Set only if this is the last response in the stream.
+    #[prost(message, optional, tag = "5")]
+    pub total_billed_time: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `StreamingRecognizeResponse`.
 pub mod streaming_recognize_response {
@@ -926,26 +957,53 @@ pub struct WordInfo {
 }
 #[doc = r" Generated client implementations."]
 pub mod speech_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service that implements Google Cloud Speech API."]
+    #[derive(Debug, Clone)]
     pub struct SpeechClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> SpeechClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SpeechClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SpeechClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Performs synchronous speech recognition: receive results after all audio"]
         #[doc = " has been sent and processed."]
@@ -1014,18 +1072,6 @@ pub mod speech_client {
                 .await
         }
     }
-    impl<T: Clone> Clone for SpeechClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for SpeechClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "SpeechClient {{ ... }}")
-        }
-    }
 }
 /// Message sent by the client for the `CreatePhraseSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1035,7 +1081,7 @@ pub struct CreatePhraseSetRequest {
     /// {api_version}/projects/{project}/locations/{location}/phraseSets
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The ID to use for the phrase set, which will become the final
+    /// Required. The ID to use for the phrase set, which will become the final
     /// component of the phrase set's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
@@ -1119,7 +1165,7 @@ pub struct CreateCustomClassRequest {
     /// {api_version}/projects/{project}/locations/{location}/customClasses
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The ID to use for the custom class, which will become the final
+    /// Required. The ID to use for the custom class, which will become the final
     /// component of the custom class' resource name.
     ///
     /// This value should be 4-63 characters, and valid characters
@@ -1197,26 +1243,53 @@ pub struct DeleteCustomClassRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod adaptation_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service that implements Google Cloud Speech Adaptation API."]
+    #[derive(Debug, Clone)]
     pub struct AdaptationClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> AdaptationClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> AdaptationClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            AdaptationClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Create a set of phrase hints. Each item in the set can be a single word or"]
         #[doc = " a multi-word phrase. The items in the PhraseSet are favored by the"]
@@ -1389,18 +1462,6 @@ pub mod adaptation_client {
                 "/google.cloud.speech.v1p1beta1.Adaptation/DeleteCustomClass",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for AdaptationClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for AdaptationClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "AdaptationClient {{ ... }}")
         }
     }
 }

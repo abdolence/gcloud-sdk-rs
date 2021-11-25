@@ -1,0 +1,30 @@
+name: doc
+
+on:
+  push:
+    tags:
+    - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        override: true
+        profile: minimal
+        components: rustfmt
+    - run: cargo xtask gen
+    - run: cargo build -v
+    - run: cargo test -v
+    - run: cargo doc -v --no-deps --all-features -p googapis
+    - uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./target/doc/

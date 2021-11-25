@@ -89,10 +89,12 @@ pub struct Instance {
     /// Cloud Storage path (`gs://path-to-file/file-name`).
     #[prost(string, tag = "4")]
     pub post_startup_script: ::prost::alloc::string::String,
-    /// Output only. The proxy endpoint that is used to access the Jupyter notebook.
+    /// Output only. The proxy endpoint that is used to access the Jupyter
+    /// notebook.
     #[prost(string, tag = "5")]
     pub proxy_uri: ::prost::alloc::string::String,
-    /// Input only. The owner of this instance after creation. Format: `alias@example.com`
+    /// Input only. The owner of this instance after creation. Format:
+    /// `alias@example.com`
     ///
     /// Currently supports one owner only. If not specified, all of the service
     /// account users of your VM instance's service account can use
@@ -109,7 +111,8 @@ pub struct Instance {
     /// is used.
     #[prost(string, tag = "7")]
     pub service_account: ::prost::alloc::string::String,
-    /// Required. The [Compute Engine machine type](https://cloud.google.com/compute/docs/machine-types) of this
+    /// Required. The [Compute Engine machine
+    /// type](https://cloud.google.com/compute/docs/machine-types) of this
     /// instance.
     #[prost(string, tag = "8")]
     pub machine_type: ::prost::alloc::string::String,
@@ -132,37 +135,39 @@ pub struct Instance {
     /// If not specified, we'll automatically choose from official GPU drivers.
     #[prost(string, tag = "12")]
     pub custom_gpu_driver_path: ::prost::alloc::string::String,
-    /// Input only. The type of the boot disk attached to this instance, defaults to
-    /// standard persistent disk (`PD_STANDARD`).
+    /// Input only. The type of the boot disk attached to this instance, defaults
+    /// to standard persistent disk (`PD_STANDARD`).
     #[prost(enumeration = "instance::DiskType", tag = "13")]
     pub boot_disk_type: i32,
-    /// Input only. The size of the boot disk in GB attached to this instance, up to a maximum
-    /// of 64000&nbsp;GB (64&nbsp;TB). The minimum recommended value is
-    /// 100&nbsp;GB. If not specified, this defaults to 100.
+    /// Input only. The size of the boot disk in GB attached to this instance, up
+    /// to a maximum of 64000&nbsp;GB (64&nbsp;TB). The minimum recommended value
+    /// is 100&nbsp;GB. If not specified, this defaults to 100.
     #[prost(int64, tag = "14")]
     pub boot_disk_size_gb: i64,
-    /// Input only. The type of the data disk attached to this instance, defaults to
-    /// standard persistent disk (`PD_STANDARD`).
+    /// Input only. The type of the data disk attached to this instance, defaults
+    /// to standard persistent disk (`PD_STANDARD`).
     #[prost(enumeration = "instance::DiskType", tag = "25")]
     pub data_disk_type: i32,
-    /// Input only. The size of the data disk in GB attached to this instance, up to a maximum
-    /// of 64000&nbsp;GB (64&nbsp;TB). You can choose the size of the data disk
-    /// based on how big your notebooks and data are. If not specified, this
-    /// defaults to 100.
+    /// Input only. The size of the data disk in GB attached to this instance, up
+    /// to a maximum of 64000&nbsp;GB (64&nbsp;TB). You can choose the size of the
+    /// data disk based on how big your notebooks and data are. If not specified,
+    /// this defaults to 100.
     #[prost(int64, tag = "26")]
     pub data_disk_size_gb: i64,
-    /// Input only. If true, the data disk will not be auto deleted when deleting the instance.
+    /// Input only. If true, the data disk will not be auto deleted when deleting
+    /// the instance.
     #[prost(bool, tag = "27")]
     pub no_remove_data_disk: bool,
-    /// Input only. Disk encryption method used on the boot and data disks, defaults to GMEK.
+    /// Input only. Disk encryption method used on the boot and data disks,
+    /// defaults to GMEK.
     #[prost(enumeration = "instance::DiskEncryption", tag = "15")]
     pub disk_encryption: i32,
-    /// Input only. The KMS key used to encrypt the disks, only applicable if disk_encryption
-    /// is CMEK.
-    /// Format:
+    /// Input only. The KMS key used to encrypt the disks, only applicable if
+    /// disk_encryption is CMEK. Format:
     /// `projects/{project_id}/locations/{location}/keyRings/{key_ring_id}/cryptoKeys/{key_id}`
     ///
-    /// Learn more about [using your own encryption keys]( https://cloud.google.com/kms/docs/quickstart).
+    /// Learn more about [using your own encryption keys](
+    /// https://cloud.google.com/kms/docs/quickstart).
     #[prost(string, tag = "16")]
     pub kms_key: ::prost::alloc::string::String,
     /// If true, no public IP will be assigned to this instance.
@@ -325,7 +330,8 @@ pub struct OperationMetadata {
     /// Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have [Operation.error][] value with a
-    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to `Code.CANCELLED`.
+    /// [google.rpc.Status.code][google.rpc.Status.code] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag = "6")]
     pub requested_cancellation: bool,
     /// API version used to start the operation.
@@ -412,10 +418,10 @@ pub struct SetInstanceAcceleratorRequest {
     /// Required. Type of this accelerator.
     #[prost(enumeration = "instance::AcceleratorType", tag = "2")]
     pub r#type: i32,
-    /// Required. Count of cores of this accelerator. Note that not all combinations
-    /// of `type` and `core_count` are valid. Check [GPUs on
-    /// Compute Engine](https://cloud.google.com/compute/docs/gpus/#gpus-list) to
-    /// find a valid combination. TPUs are not supported.
+    /// Required. Count of cores of this accelerator. Note that not all
+    /// combinations of `type` and `core_count` are valid. Check [GPUs on Compute
+    /// Engine](https://cloud.google.com/compute/docs/gpus/#gpus-list) to find a
+    /// valid combination. TPUs are not supported.
     #[prost(int64, tag = "3")]
     pub core_count: i64,
 }
@@ -577,10 +583,10 @@ pub struct CreateEnvironmentRequest {
     /// Required. Format: `projects/{project_id}/locations/{location}`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// Required. User-defined unique ID of this environment. The `environment_id` must
-    /// be 1 to 63 characters long and contain only lowercase letters,
-    /// numeric characters, and dashes. The first character must be a lowercase
-    /// letter and the last character cannot be a dash.
+    /// Required. User-defined unique ID of this environment. The `environment_id`
+    /// must be 1 to 63 characters long and contain only lowercase letters, numeric
+    /// characters, and dashes. The first character must be a lowercase letter and
+    /// the last character cannot be a dash.
     #[prost(string, tag = "2")]
     pub environment_id: ::prost::alloc::string::String,
     /// Required. The environment to be created.
@@ -597,26 +603,53 @@ pub struct DeleteEnvironmentRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod notebook_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " API v1beta1 service for Cloud AI Platform Notebooks."]
+    #[derive(Debug, Clone)]
     pub struct NotebookServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> NotebookServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> NotebookServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            NotebookServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists instances in a given project and location."]
         pub async fn list_instances(
@@ -989,18 +1022,6 @@ pub mod notebook_service_client {
                 "/google.cloud.notebooks.v1beta1.NotebookService/DeleteEnvironment",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for NotebookServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for NotebookServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "NotebookServiceClient {{ ... }}")
         }
     }
 }

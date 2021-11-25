@@ -9,31 +9,52 @@ pub struct TranslateSpeechConfig {
     ///
     ///   Uncompressed 16-bit signed little-endian samples (Linear PCM).
     ///
+    /// - `flac`
     ///
+    ///   `flac` (Free Lossless Audio Codec) is the recommended encoding
+    ///   because it is lossless--therefore recognition is not compromised--and
+    ///   requires only about half the bandwidth of `linear16`.
+    ///
+    /// - `mulaw`
+    ///
+    ///   8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
+    ///
+    /// - `amr`
+    ///
+    ///   Adaptive Multi-Rate Narrowband codec. `sample_rate_hertz` must be 8000.
+    ///
+    /// - `amr-wb`
+    ///
+    ///   Adaptive Multi-Rate Wideband codec. `sample_rate_hertz` must be 16000.
+    ///
+    /// - `ogg-opus`
+    ///
+    ///   Opus encoded audio frames in [Ogg](https://wikipedia.org/wiki/Ogg)
+    ///   container. `sample_rate_hertz` must be one of 8000, 12000, 16000, 24000,
+    ///   or 48000.
+    ///
+    /// - `mp3`
+    ///
+    ///   MP3 audio. Support all standard MP3 bitrates (which range from 32-320
+    ///   kbps). When using this encoding, `sample_rate_hertz` has to match the
+    ///   sample rate of the file being used.
     #[prost(string, tag = "1")]
     pub audio_encoding: ::prost::alloc::string::String,
     /// Required. Source language code (BCP-47) of the input audio.
     #[prost(string, tag = "2")]
     pub source_language_code: ::prost::alloc::string::String,
-    /// Optional. A list of up to 3 additional language codes (BCP-47), listing possible
-    /// alternative languages of the supplied audio. If alternative source
-    /// languages are listed, speech translation result will translate in the most
-    /// likely language detected including the main source_language_code. The
-    /// translated result will include the language code of the language detected
-    /// in the audio.
-    #[prost(string, repeated, tag = "6")]
-    pub alternative_source_language_codes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Required. Target language code (BCP-47) of the output.
     #[prost(string, tag = "3")]
     pub target_language_code: ::prost::alloc::string::String,
     /// Optional. Sample rate in Hertz of the audio data. Valid values are:
     /// 8000-48000. 16000 is optimal. For best results, set the sampling rate of
     /// the audio source to 16000 Hz. If that's not possible, use the native sample
-    /// rate of the audio source (instead of re-sampling). This field can only be
-    /// omitted for `FLAC` and `WAV` audio files.
+    /// rate of the audio source (instead of re-sampling).
     #[prost(int32, tag = "4")]
     pub sample_rate_hertz: i32,
-    /// Optional.
+    /// Optional. `google-provided-model/video` and
+    /// `google-provided-model/enhanced-phone-call` are premium models.
+    /// `google-provided-model/phone-call` is not premium model.
     #[prost(string, tag = "5")]
     pub model: ::prost::alloc::string::String,
 }
@@ -101,16 +122,7 @@ pub mod streaming_translate_speech_request {
 /// that is currently being processed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechResult {
-    /// Output only. The debug only recognition result in original language. This field is debug
-    /// only and will be set to empty string if not available.
-    /// This is implementation detail and will not be backward compatible.
-    ///
-    /// Still need to decide whether to expose this field by default.
-    #[prost(string, tag = "3")]
-    pub recognition_result: ::prost::alloc::string::String,
     /// Translation result.
-    ///
-    /// Use oneof field to reserve for future tts result.
     #[prost(oneof = "streaming_translate_speech_result::Result", tags = "1")]
     pub result: ::core::option::Option<streaming_translate_speech_result::Result>,
 }
@@ -130,15 +142,8 @@ pub mod streaming_translate_speech_result {
         /// corresponding audio.
         #[prost(bool, tag = "2")]
         pub is_final: bool,
-        /// Output only. The source language code (BCP-47) detected in the audio. Speech
-        /// translation result will translate in the most likely language detected
-        /// including the alternative source languages and main source_language_code.
-        #[prost(string, tag = "3")]
-        pub detected_source_language_code: ::prost::alloc::string::String,
     }
     /// Translation result.
-    ///
-    /// Use oneof field to reserve for future tts result.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Result {
         /// Text translation result.
@@ -188,26 +193,53 @@ pub mod streaming_translate_speech_response {
 }
 #[doc = r" Generated client implementations."]
 pub mod speech_translation_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Provides translation from/to media types."]
+    #[derive(Debug, Clone)]
     pub struct SpeechTranslationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> SpeechTranslationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SpeechTranslationServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SpeechTranslationServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Performs bidirectional streaming speech translation: receive results while"]
         #[doc = " sending audio. This method is only available via the gRPC API (not REST)."]
@@ -229,18 +261,6 @@ pub mod speech_translation_service_client {
             self.inner
                 .streaming(request.into_streaming_request(), path, codec)
                 .await
-        }
-    }
-    impl<T: Clone> Clone for SpeechTranslationServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for SpeechTranslationServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "SpeechTranslationServiceClient {{ ... }}")
         }
     }
 }

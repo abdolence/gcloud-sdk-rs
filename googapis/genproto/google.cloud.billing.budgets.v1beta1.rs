@@ -1,8 +1,8 @@
 /// A budget is a plan that describes what you expect to spend on Cloud
 /// projects, plus the rules to execute as spend is tracked against that plan,
 /// (for example, send an alert when 90% of the target spend is met).
-/// Currently all plans are monthly budgets so the usage period(s) tracked are
-/// implied (calendar months of usage back-to-back).
+/// The budget time period is configurable, with options such as month (default),
+/// quarter, year, or custom time period.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Budget {
     /// Output only. Resource name of the budget.
@@ -14,8 +14,9 @@ pub struct Budget {
     /// Validation: <= 60 chars.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. Filters that define which resources are used to compute
-    /// the actual spend against the budget.
+    /// Optional. Filters that define which resources are used to compute the
+    /// actual spend against the budget amount, such as projects, services, and the
+    /// budget's time period, as well as other filters.
     #[prost(message, optional, tag = "3")]
     pub budget_filter: ::core::option::Option<Filter>,
     /// Required. Budgeted amount.
@@ -50,20 +51,28 @@ pub mod budget_amount {
         /// A specified amount to use as the budget.
         /// `currency_code` is optional. If specified when creating a budget, it must
         /// match the currency of the billing account. If specified when updating a
-        /// budget, it must match the existing budget currency_code.
+        /// budget, it must match the currency_code of the existing budget.
         /// The `currency_code` is provided on output.
         #[prost(message, tag = "1")]
         SpecifiedAmount(super::super::super::super::super::r#type::Money),
         /// Use the last period's actual spend as the budget for the present period.
+        /// LastPeriodAmount can only be set when the budget's time period is a
+        /// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].
+        /// It cannot be set in combination with
+        /// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
         #[prost(message, tag = "2")]
         LastPeriodAmount(super::LastPeriodAmount),
     }
 }
-/// Describes a budget amount targeted to last period's spend.
-/// At this time, the amount is automatically 100% of last period's spend;
-/// that is, there are no other options yet.
-/// Future configuration will be described here (for example, configuring a
-/// percentage of last period's spend).
+/// Describes a budget amount targeted to the last
+/// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period]
+/// spend. At this time, the amount is automatically 100% of the last calendar
+/// period's spend; that is, there are no other options yet.
+/// Future configuration options will be described here (for example, configuring
+/// a percentage of last period's spend).
+/// LastPeriodAmount cannot be set for a budget configured with
+/// a
+/// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LastPeriodAmount {}
 /// ThresholdRule contains a definition of a threshold which triggers
@@ -97,6 +106,10 @@ pub mod threshold_rule {
         CurrentSpend = 1,
         /// Use forecasted spend for the period as the basis for comparison against
         /// the threshold.
+        /// FORECASTED_SPEND can only be set when the budget's time period is a
+        /// [Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period].
+        /// It cannot be set in combination with
+        /// [Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period].
         ForecastedSpend = 2,
     }
 }
@@ -108,12 +121,12 @@ pub struct AllUpdatesRule {
     /// be published, in the form `projects/{project_id}/topics/{topic_id}`.
     /// Updates are sent at regular intervals to the topic. The topic needs to be
     /// created before the budget is created; see
-    /// https://cloud.google.com/billing/docs/how-to/budgets#manage-notifications
+    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
     /// for more details.
     /// Caller is expected to have
     /// `pubsub.topics.setIamPolicy` permission on the topic when it's set for a
     /// budget, otherwise, the API call will fail with PERMISSION_DENIED. See
-    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications
+    /// https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#permissions_required_for_this_task
     /// for more details on Pub/Sub roles and permissions.
     #[prost(string, tag = "1")]
     pub pubsub_topic: ::prost::alloc::string::String,
@@ -156,13 +169,12 @@ pub struct Filter {
     /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
     /// is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be
     /// subtracted from gross cost to determine the spend for threshold
-    /// calculations.
+    /// calculations. See [a list of acceptable credit type
+    /// values](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
     ///
     /// If
     /// [Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment]
-    /// is **not** INCLUDE_SPECIFIED_CREDITS, this field must be empty. See [a list
-    /// of acceptable credit type
-    /// values](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
+    /// is **not** INCLUDE_SPECIFIED_CREDITS, this field must be empty.
     #[prost(string, repeated, tag = "7")]
     pub credit_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If not set, default behavior is `INCLUDE_ALL_CREDITS`.
@@ -191,11 +203,19 @@ pub struct Filter {
     #[prost(map = "string, message", tag = "6")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::ListValue>,
+    /// Multiple options to choose the budget's time period, specifying that only
+    /// usage that occurs during this time period should be included in the budget.
+    /// If not set, the `usage_period` defaults to CalendarPeriod.MONTH.
+    #[prost(oneof = "filter::UsagePeriod", tags = "8, 9")]
+    pub usage_period: ::core::option::Option<filter::UsagePeriod>,
 }
 /// Nested message and enum types in `Filter`.
 pub mod filter {
-    /// Specifies how credits should be treated when determining spend for
-    /// threshold calculations.
+    /// Specifies how credits are applied when determining the spend for
+    /// threshold calculations. Budgets track the total cost minus any applicable
+    /// selected credits.
+    /// [See the documentation for a list of credit
+    /// types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum CreditTypesTreatment {
@@ -206,10 +226,59 @@ pub mod filter {
         /// All types of credit are added to the net cost to determine the spend for
         /// threshold calculations.
         ExcludeAllCredits = 2,
-        /// Credit types specified in the credit_types field are subtracted from the
+        /// [Credit
+        /// types](https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type)
+        /// specified in the credit_types field are subtracted from the
         /// gross cost to determine the spend for threshold calculations.
         IncludeSpecifiedCredits = 3,
     }
+    /// Multiple options to choose the budget's time period, specifying that only
+    /// usage that occurs during this time period should be included in the budget.
+    /// If not set, the `usage_period` defaults to CalendarPeriod.MONTH.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum UsagePeriod {
+        /// Optional. Specifies to track usage for recurring calendar period.
+        /// For example, assume that CalendarPeriod.QUARTER is set. The budget will
+        /// track usage from April 1 to June 30, when the current calendar month is
+        /// April, May, June. After that, it will track usage from July 1 to
+        /// September 30 when the current calendar month is July, August, September,
+        /// so on.
+        #[prost(enumeration = "super::CalendarPeriod", tag = "8")]
+        CalendarPeriod(i32),
+        /// Optional. Specifies to track usage from any start date (required) to any
+        /// end date (optional). This time period is static, it does not recur.
+        #[prost(message, tag = "9")]
+        CustomPeriod(super::CustomPeriod),
+    }
+}
+/// All date times begin at 12 AM US and Canadian Pacific Time (UTC-8).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomPeriod {
+    /// Required. The start date must be after January 1, 2017.
+    #[prost(message, optional, tag = "1")]
+    pub start_date: ::core::option::Option<super::super::super::super::r#type::Date>,
+    /// Optional. The end date of the time period. Budgets with elapsed end date
+    /// won't be processed. If unset, specifies to track all usage incurred since
+    /// the start_date.
+    #[prost(message, optional, tag = "2")]
+    pub end_date: ::core::option::Option<super::super::super::super::r#type::Date>,
+}
+/// A `CalendarPeriod` represents the abstract concept of a time period that
+/// has a canonical start. Grammatically, "the start of the current
+/// `CalendarPeriod`". All calendar times begin at 12 AM US and Canadian
+/// Pacific Time (UTC-8).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CalendarPeriod {
+    Unspecified = 0,
+    /// A month. Month starts on the first day of each month, such as January 1,
+    /// February 1, March 1, and so on.
+    Month = 1,
+    /// A quarter. Quarters start on dates January 1, April 1, July 1, and October
+    /// 1 of each year.
+    Quarter = 2,
+    /// A year. Year starts on January 1.
+    Year = 3,
 }
 /// Request for CreateBudget
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -284,27 +353,54 @@ pub struct DeleteBudgetRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod budget_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " BudgetService stores Cloud Billing budgets, which define a"]
     #[doc = " budget plan and rules to execute as we track spend against that plan."]
+    #[derive(Debug, Clone)]
     pub struct BudgetServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> BudgetServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> BudgetServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            BudgetServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a new budget. See"]
         #[doc = " <a href=\"https://cloud.google.com/billing/quotas\">Quotas and limits</a>"]
@@ -406,18 +502,6 @@ pub mod budget_service_client {
                 "/google.cloud.billing.budgets.v1beta1.BudgetService/DeleteBudget",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for BudgetServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for BudgetServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "BudgetServiceClient {{ ... }}")
         }
     }
 }

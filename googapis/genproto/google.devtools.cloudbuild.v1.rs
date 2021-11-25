@@ -15,6 +15,10 @@ pub struct RetryBuildRequest {
 /// Specifies a build trigger to run and the source to use.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunBuildTriggerRequest {
+    /// The name of the `Trigger` to run.
+    /// Format: `projects/{project}/locations/{location}/triggers/{trigger}`
+    #[prost(string, tag = "4")]
+    pub name: ::prost::alloc::string::String,
     /// Required. ID of the project.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
@@ -97,11 +101,31 @@ pub mod repo_source {
         CommitSha(::prost::alloc::string::String),
     }
 }
+/// Location of the source manifest in Google Cloud Storage.
+/// This feature is in Preview; see description
+/// [here](https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StorageSourceManifest {
+    /// Google Cloud Storage bucket containing the source manifest (see [Bucket
+    /// Name
+    /// Requirements](https://cloud.google.com/storage/docs/bucket-naming#requirements)).
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Google Cloud Storage object containing the source manifest.
+    ///
+    /// This object must be a JSON file.
+    #[prost(string, tag = "2")]
+    pub object: ::prost::alloc::string::String,
+    /// Google Cloud Storage generation for the object. If the generation is
+    /// omitted, the latest generation will be used.
+    #[prost(int64, tag = "3")]
+    pub generation: i64,
+}
 /// Location of the source in a supported storage service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Source {
     /// Location of source.
-    #[prost(oneof = "source::Source", tags = "2, 3")]
+    #[prost(oneof = "source::Source", tags = "2, 3, 8")]
     pub source: ::core::option::Option<source::Source>,
 }
 /// Nested message and enum types in `Source`.
@@ -116,6 +140,11 @@ pub mod source {
         /// Repository.
         #[prost(message, tag = "3")]
         RepoSource(super::RepoSource),
+        /// If provided, get the source from this manifest in Google Cloud Storage.
+        /// This feature is in Preview; see description
+        /// [here](https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/gcs-fetcher).
+        #[prost(message, tag = "8")]
+        StorageSourceManifest(super::StorageSourceManifest),
     }
 }
 /// An image built by the pipeline.
@@ -424,15 +453,84 @@ pub struct Build {
     /// Must be of the format `projects/{PROJECT_ID}/serviceAccounts/{ACCOUNT}`.
     /// ACCOUNT can be email address or uniqueId of the service account.
     ///
-    /// This field is in beta.
     #[prost(string, tag = "42")]
     pub service_account: ::prost::alloc::string::String,
     /// Secrets and secret environment variables.
     #[prost(message, optional, tag = "47")]
     pub available_secrets: ::core::option::Option<Secrets>,
+    /// Output only. Non-fatal problems encountered during the execution of the
+    /// build.
+    #[prost(message, repeated, tag = "49")]
+    pub warnings: ::prost::alloc::vec::Vec<build::Warning>,
+    /// Output only. Contains information about the build when status=FAILURE.
+    #[prost(message, optional, tag = "51")]
+    pub failure_info: ::core::option::Option<build::FailureInfo>,
 }
 /// Nested message and enum types in `Build`.
 pub mod build {
+    /// A non-fatal problem encountered during the execution of the build.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Warning {
+        /// Explanation of the warning generated.
+        #[prost(string, tag = "1")]
+        pub text: ::prost::alloc::string::String,
+        /// The priority for this warning.
+        #[prost(enumeration = "warning::Priority", tag = "2")]
+        pub priority: i32,
+    }
+    /// Nested message and enum types in `Warning`.
+    pub mod warning {
+        /// The relative importance of this warning.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum Priority {
+            /// Should not be used.
+            Unspecified = 0,
+            /// e.g. deprecation warnings and alternative feature highlights.
+            Info = 1,
+            /// e.g. automated detection of possible issues with the build.
+            Warning = 2,
+            /// e.g. alerts that a feature used in the build is pending removal
+            Alert = 3,
+        }
+    }
+    /// A fatal problem encountered during the execution of the build.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FailureInfo {
+        /// The name of the failure.
+        #[prost(enumeration = "failure_info::FailureType", tag = "1")]
+        pub r#type: i32,
+        /// Explains the failure issue in more detail using hard-coded text.
+        #[prost(string, tag = "2")]
+        pub detail: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `FailureInfo`.
+    pub mod failure_info {
+        /// The name of a fatal problem encountered during the execution of the
+        /// build.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum FailureType {
+            /// Type unspecified
+            Unspecified = 0,
+            /// Unable to push the image to the repository.
+            PushFailed = 1,
+            /// Final image not found.
+            PushImageNotFound = 2,
+            /// Unauthorized push of the final image.
+            PushNotAuthorized = 3,
+            /// Backend logging failures. Should retry.
+            LoggingFailure = 4,
+            /// A build step has failed.
+            UserBuildStep = 5,
+            /// The source fetching has failed.
+            FetchSourceFailed = 6,
+        }
+    }
     /// Possible status of a build or build step.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -537,6 +635,11 @@ pub struct SourceProvenance {
     /// revisions resolved.
     #[prost(message, optional, tag = "6")]
     pub resolved_repo_source: ::core::option::Option<RepoSource>,
+    /// A copy of the build's `source.storage_source_manifest`, if exists, with any
+    /// revisions resolved.
+    /// This feature is in Preview.
+    #[prost(message, optional, tag = "9")]
+    pub resolved_storage_source_manifest: ::core::option::Option<StorageSourceManifest>,
     /// Output only. Hash(es) of the build source, which can be used to verify that
     /// the original source integrity was maintained in the build. Note that
     /// `FileHashes` will only be populated if `BuildOptions` has requested a
@@ -729,6 +832,11 @@ pub struct CancelBuildRequest {
 /// changes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BuildTrigger {
+    /// The `Trigger` name with format:
+    /// `projects/{project}/locations/{location}/triggers/{trigger}`, where
+    /// {trigger} is a unique identifier generated by the service.
+    #[prost(string, tag = "34")]
+    pub resource_name: ::prost::alloc::string::String,
     /// Output only. Unique identifier of the trigger.
     #[prost(string, tag = "1")]
     pub id: ::prost::alloc::string::String,
@@ -761,6 +869,14 @@ pub struct BuildTrigger {
     /// Mutually exclusive with `trigger_template`.
     #[prost(message, optional, tag = "13")]
     pub github: ::core::option::Option<GitHubEventsConfig>,
+    /// PubsubConfig describes the configuration of a trigger that
+    /// creates a build whenever a Pub/Sub message is published.
+    #[prost(message, optional, tag = "29")]
+    pub pubsub_config: ::core::option::Option<PubsubConfig>,
+    /// WebhookConfig describes the configuration of a trigger that
+    /// creates a build whenever a webhook is sent to a trigger's webhook URL.
+    #[prost(message, optional, tag = "31")]
+    pub webhook_config: ::core::option::Option<WebhookConfig>,
     /// Output only. Time when the trigger was created.
     #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -793,8 +909,11 @@ pub struct BuildTrigger {
     /// then we do not trigger a build.
     #[prost(string, repeated, tag = "16")]
     pub included_files: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. A Common Expression Language string.
+    #[prost(string, tag = "30")]
+    pub filter: ::prost::alloc::string::String,
     /// Template describing the Build request to make when the trigger is matched.
-    #[prost(oneof = "build_trigger::BuildTemplate", tags = "4, 8")]
+    #[prost(oneof = "build_trigger::BuildTemplate", tags = "18, 4, 8")]
     pub build_template: ::core::option::Option<build_trigger::BuildTemplate>,
 }
 /// Nested message and enum types in `BuildTrigger`.
@@ -802,6 +921,17 @@ pub mod build_trigger {
     /// Template describing the Build request to make when the trigger is matched.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BuildTemplate {
+        /// Autodetect build configuration.  The following precedence is used (case
+        /// insensitive):
+        ///
+        /// 1. cloudbuild.yaml
+        /// 2. cloudbuild.yml
+        /// 3. cloudbuild.json
+        /// 4. Dockerfile
+        ///
+        /// Currently only available for GitHub App Triggers.
+        #[prost(bool, tag = "18")]
+        Autodetect(bool),
         /// Contents of the build template.
         #[prost(message, tag = "4")]
         Build(super::Build),
@@ -847,6 +977,79 @@ pub mod git_hub_events_config {
         /// filter to match changes in refs like branches, tags.
         #[prost(message, tag = "5")]
         Push(super::PushFilter),
+    }
+}
+/// PubsubConfig describes the configuration of a trigger that
+/// creates a build whenever a Pub/Sub message is published.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PubsubConfig {
+    /// Output only. Name of the subscription. Format is
+    /// `projects/{project}/subscriptions/{subscription}`.
+    #[prost(string, tag = "1")]
+    pub subscription: ::prost::alloc::string::String,
+    /// The name of the topic from which this subscription is receiving messages.
+    /// Format is `projects/{project}/topics/{topic}`.
+    #[prost(string, tag = "2")]
+    pub topic: ::prost::alloc::string::String,
+    /// Service account that will make the push request.
+    #[prost(string, tag = "3")]
+    pub service_account_email: ::prost::alloc::string::String,
+    /// Potential issues with the underlying Pub/Sub subscription configuration.
+    /// Only populated on get requests.
+    #[prost(enumeration = "pubsub_config::State", tag = "4")]
+    pub state: i32,
+}
+/// Nested message and enum types in `PubsubConfig`.
+pub mod pubsub_config {
+    /// Enumerates potential issues with the underlying Pub/Sub subscription
+    /// configuration.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The subscription configuration has not been checked.
+        Unspecified = 0,
+        /// The Pub/Sub subscription is properly configured.
+        Ok = 1,
+        /// The subscription has been deleted.
+        SubscriptionDeleted = 2,
+        /// The topic has been deleted.
+        TopicDeleted = 3,
+        /// Some of the subscription's field are misconfigured.
+        SubscriptionMisconfigured = 4,
+    }
+}
+/// WebhookConfig describes the configuration of a trigger that
+/// creates a build whenever a webhook is sent to a trigger's webhook URL.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WebhookConfig {
+    /// Potential issues with the underlying Pub/Sub subscription configuration.
+    /// Only populated on get requests.
+    #[prost(enumeration = "webhook_config::State", tag = "4")]
+    pub state: i32,
+    /// Auth method specifies how the webhook authenticates with GCP.
+    #[prost(oneof = "webhook_config::AuthMethod", tags = "3")]
+    pub auth_method: ::core::option::Option<webhook_config::AuthMethod>,
+}
+/// Nested message and enum types in `WebhookConfig`.
+pub mod webhook_config {
+    /// Enumerates potential issues with the Secret Manager secret provided by the
+    /// user.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The webhook auth configuration not been checked.
+        Unspecified = 0,
+        /// The auth configuration is properly setup.
+        Ok = 1,
+        /// The secret provided in auth_method has been deleted.
+        SecretDeleted = 2,
+    }
+    /// Auth method specifies how the webhook authenticates with GCP.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum AuthMethod {
+        /// Required. Resource name for the secret required as a URL parameter.
+        #[prost(string, tag = "3")]
+        Secret(::prost::alloc::string::String),
     }
 }
 /// PullRequestFilter contains filter properties for matching GitHub Pull
@@ -927,6 +1130,10 @@ pub mod push_filter {
 /// Request to create a new `BuildTrigger`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateBuildTriggerRequest {
+    /// The parent resource where this trigger will be created.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "3")]
+    pub parent: ::prost::alloc::string::String,
     /// Required. ID of the project for which to configure automatic builds.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
@@ -937,6 +1144,10 @@ pub struct CreateBuildTriggerRequest {
 /// Returns the `BuildTrigger` with the specified ID.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetBuildTriggerRequest {
+    /// The name of the `Trigger` to retrieve.
+    /// Format: `projects/{project}/locations/{location}/triggers/{trigger}`
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
     /// Required. ID of the project that owns the trigger.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
@@ -947,6 +1158,10 @@ pub struct GetBuildTriggerRequest {
 /// Request to list existing `BuildTriggers`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBuildTriggersRequest {
+    /// The parent of the collection of `Triggers`.
+    /// Format: `projects/{project}/locations/{location}`
+    #[prost(string, tag = "4")]
+    pub parent: ::prost::alloc::string::String,
     /// Required. ID of the project for which to list BuildTriggers.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
@@ -970,6 +1185,10 @@ pub struct ListBuildTriggersResponse {
 /// Request to delete a `BuildTrigger`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteBuildTriggerRequest {
+    /// The name of the `Trigger` to delete.
+    /// Format: `projects/{project}/locations/{location}/triggers/{trigger}`
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
     /// Required. ID of the project that owns the trigger.
     #[prost(string, tag = "1")]
     pub project_id: ::prost::alloc::string::String,
@@ -1028,12 +1247,17 @@ pub struct BuildOptions {
     /// Storage.
     #[prost(enumeration = "build_options::LogStreamingOption", tag = "5")]
     pub log_streaming_option: i32,
-    /// Option to specify a `WorkerPool` for the build.
-    /// Format: projects/{project}/locations/{location}/workerPools/{workerPool}
-    ///
-    /// This field is experimental.
+    /// This field deprecated; please use `pool.name` instead.
+    #[deprecated]
     #[prost(string, tag = "7")]
     pub worker_pool: ::prost::alloc::string::String,
+    /// Optional. Specification for execution on a `WorkerPool`.
+    ///
+    /// See [running builds in a private
+    /// pool](https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool)
+    /// for more information.
+    #[prost(message, optional, tag = "19")]
+    pub pool: ::core::option::Option<build_options::PoolOption>,
     /// Option to specify the logging mode, which determines if and where build
     /// logs are stored.
     #[prost(enumeration = "build_options::LoggingMode", tag = "11")]
@@ -1066,6 +1290,21 @@ pub struct BuildOptions {
 }
 /// Nested message and enum types in `BuildOptions`.
 pub mod build_options {
+    /// Details about how a build should be executed on a `WorkerPool`.
+    ///
+    /// See [running builds in a private
+    /// pool](https://cloud.google.com/build/docs/private-pools/run-builds-in-private-pool)
+    /// for more information.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PoolOption {
+        /// The `WorkerPool` resource to execute the build on.
+        /// You must have `cloudbuild.workerpools.use` on the project hosting the
+        /// WorkerPool.
+        ///
+        /// Format projects/{project}/locations/{location}/workerPools/{workerPoolId}
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+    }
     /// Specifies the manner in which the build should be verified, if at all.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -1139,6 +1378,10 @@ pub mod build_options {
 /// the ReceiveTriggerWebhook method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceiveTriggerWebhookRequest {
+    /// The name of the `ReceiveTriggerWebhook` to retrieve.
+    /// Format: `projects/{project}/locations/{location}/triggers/{trigger}`
+    #[prost(string, tag = "5")]
+    pub name: ::prost::alloc::string::String,
     /// HTTP request body.
     #[prost(message, optional, tag = "1")]
     pub body: ::core::option::Option<super::super::super::api::HttpBody>,
@@ -1156,77 +1399,71 @@ pub struct ReceiveTriggerWebhookRequest {
 /// ReceiveTriggerWebhook method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReceiveTriggerWebhookResponse {}
-/// Configuration for a WorkerPool to run the builds.
+/// Configuration for a `WorkerPool`.
 ///
-/// Workers are machines that Cloud Build uses to run your builds. By default,
-/// all workers run in a project owned by Cloud Build. To have full control over
-/// the workers that execute your builds -- such as enabling them to access
-/// private resources on your private network -- you can request Cloud Build to
-/// run the workers in your own project by creating a custom workers pool.
+/// Cloud Build owns and maintains a pool of workers for general use and have no
+/// access to a project's private network. By default, builds submitted to
+/// Cloud Build will use a worker from this pool.
+///
+/// If your build needs access to resources on a private network,
+/// create and use a `WorkerPool` to run your builds. Private `WorkerPool`s give
+/// your builds access to any single VPC network that you
+/// administer, including any on-prem resources connected to that VPC
+/// network. For an overview of private pools, see
+/// [Private pools
+/// overview](https://cloud.google.com/build/docs/private-pools/private-pools-overview).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkerPool {
-    /// User-defined name of the `WorkerPool`.
-    #[prost(string, tag = "14")]
+    /// Output only. The resource name of the `WorkerPool`, with format
+    /// `projects/{project}/locations/{location}/workerPools/{worker_pool}`.
+    /// The value of `{worker_pool}` is provided by `worker_pool_id` in
+    /// `CreateWorkerPool` request and the value of `{location}` is determined by
+    /// the endpoint accessed.
+    #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// The project ID of the GCP project for which the `WorkerPool` is created.
+    /// A user-specified, human-readable name for the `WorkerPool`. If provided,
+    /// this value must be 1-63 characters.
     #[prost(string, tag = "2")]
-    pub project_id: ::prost::alloc::string::String,
-    /// Output only. The service account used to manage the `WorkerPool`. The
-    /// service account must have the Compute Instance Admin (Beta) permission at
-    /// the project level.
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. A unique identifier for the `WorkerPool`.
     #[prost(string, tag = "3")]
-    pub service_account_email: ::prost::alloc::string::String,
-    /// Total number of workers to be created across all requested regions.
-    #[prost(int64, tag = "4")]
-    pub worker_count: i64,
-    /// Configuration to be used for a creating workers in the `WorkerPool`.
-    #[prost(message, optional, tag = "16")]
-    pub worker_config: ::core::option::Option<WorkerConfig>,
-    /// List of regions to create the `WorkerPool`. Regions can't be empty.
-    /// If Cloud Build adds a new GCP region in the future, the existing
-    /// `WorkerPool` will not be enabled in the new region automatically;
-    /// you must add the new region to the `regions` field to enable the
-    /// `WorkerPool` in that region.
-    #[prost(enumeration = "worker_pool::Region", repeated, tag = "9")]
-    pub regions: ::prost::alloc::vec::Vec<i32>,
+    pub uid: ::prost::alloc::string::String,
+    /// User specified annotations. See https://google.aip.dev/128#annotations
+    /// for more details such as format and size limitations.
+    #[prost(map = "string, string", tag = "4")]
+    pub annotations:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. Time at which the request to create the `WorkerPool` was
     /// received.
-    #[prost(message, optional, tag = "11")]
+    #[prost(message, optional, tag = "5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time at which the request to update the `WorkerPool` was
     /// received.
-    #[prost(message, optional, tag = "17")]
+    #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time at which the request to delete the `WorkerPool` was
     /// received.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag = "7")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. WorkerPool Status.
-    #[prost(enumeration = "worker_pool::Status", tag = "13")]
-    pub status: i32,
+    /// Output only. `WorkerPool` state.
+    #[prost(enumeration = "worker_pool::State", tag = "8")]
+    pub state: i32,
+    /// Output only. Checksum computed by the server. May be sent on update and
+    /// delete requests to ensure that the client has an up-to-date value before
+    /// proceeding.
+    #[prost(string, tag = "11")]
+    pub etag: ::prost::alloc::string::String,
+    /// Private Pool configuration for the `WorkerPool`.
+    #[prost(oneof = "worker_pool::Config", tags = "12")]
+    pub config: ::core::option::Option<worker_pool::Config>,
 }
 /// Nested message and enum types in `WorkerPool`.
 pub mod worker_pool {
-    /// Supported GCP regions to create the `WorkerPool`.
+    /// State of the `WorkerPool`.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
-    pub enum Region {
-        /// no region
-        Unspecified = 0,
-        /// us-central1 region
-        UsCentral1 = 1,
-        /// us-west1 region
-        UsWest1 = 2,
-        /// us-east1 region
-        UsEast1 = 3,
-        /// us-east4 region
-        UsEast4 = 4,
-    }
-    /// `WorkerPool` status
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum Status {
-        /// Status of the `WorkerPool` is unknown.
+    pub enum State {
+        /// State of the `WorkerPool` is unknown.
         Unspecified = 0,
         /// `WorkerPool` is being created.
         Creating = 1,
@@ -1237,115 +1474,224 @@ pub mod worker_pool {
         /// `WorkerPool` is deleted.
         Deleted = 4,
     }
+    /// Private Pool configuration for the `WorkerPool`.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Config {
+        /// Private Pool using a v1 configuration.
+        #[prost(message, tag = "12")]
+        PrivatePoolV1Config(super::PrivatePoolV1Config),
+    }
 }
-/// WorkerConfig defines the configuration to be used for a creating workers in
-/// the pool.
+/// Configuration for a V1 `PrivatePool`.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WorkerConfig {
-    /// Machine Type of the worker, such as n1-standard-1.
-    /// See https://cloud.google.com/compute/docs/machine-types.
-    /// If left blank, Cloud Build will use a standard unspecified machine to
-    /// create the worker pool.
-    /// `machine_type` is overridden if you specify a different machine type in
-    /// `build_options`. In this case, the VM specified in the `build_options`
-    /// will be created on demand at build time. For more information see
-    /// https://cloud.google.com/cloud-build/docs/speeding-up-builds#using_custom_virtual_machine_sizes
-    #[prost(string, tag = "1")]
-    pub machine_type: ::prost::alloc::string::String,
-    /// Size of the disk attached to the worker, in GB.
-    /// See https://cloud.google.com/compute/docs/disks/
-    /// If `0` is specified, Cloud Build will use a standard disk size.
-    /// `disk_size` is overridden if you specify a different disk size in
-    /// `build_options`. In this case, a VM with a disk size specified in the
-    /// `build_options` will be created on demand at build time. For more
-    /// information see
-    /// https://cloud.google.com/cloud-build/docs/api/reference/rest/v1/projects.builds#buildoptions
-    #[prost(int64, tag = "2")]
-    pub disk_size_gb: i64,
-    /// The network definition used to create the worker.
-    /// If this section is left empty, the workers will be created in
-    /// WorkerPool.project_id on the default network.
-    #[prost(message, optional, tag = "3")]
-    pub network: ::core::option::Option<Network>,
-    /// The tag applied to the worker, and the same tag used by the firewall rule.
-    /// It is used to identify the Cloud Build workers among other VMs.
-    /// The default value for tag is `worker`.
-    #[prost(string, tag = "4")]
-    pub tag: ::prost::alloc::string::String,
+pub struct PrivatePoolV1Config {
+    /// Machine configuration for the workers in the pool.
+    #[prost(message, optional, tag = "1")]
+    pub worker_config: ::core::option::Option<private_pool_v1_config::WorkerConfig>,
+    /// Network configuration for the pool.
+    #[prost(message, optional, tag = "2")]
+    pub network_config: ::core::option::Option<private_pool_v1_config::NetworkConfig>,
 }
-/// Network describes the GCP network used to create workers in.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Network {
-    /// Project id containing the defined network and subnetwork. For a peered VPC,
-    /// this will be the same as the project_id in which the workers are created.
-    /// For a shared VPC, this will be the project sharing the network with the
-    /// project_id project in which workers will be created. For custom workers
-    /// with no VPC, this will be the same as project_id.
-    #[prost(string, tag = "1")]
-    pub project_id: ::prost::alloc::string::String,
-    /// Network on which the workers are created.
-    /// "default" network is used if empty.
-    #[prost(string, tag = "2")]
-    pub network: ::prost::alloc::string::String,
-    /// Subnetwork on which the workers are created.
-    /// "default" subnetwork is used if empty.
-    #[prost(string, tag = "3")]
-    pub subnetwork: ::prost::alloc::string::String,
+/// Nested message and enum types in `PrivatePoolV1Config`.
+pub mod private_pool_v1_config {
+    /// Defines the configuration to be used for creating workers in
+    /// the pool.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WorkerConfig {
+        /// Machine type of a worker, such as `e2-medium`.
+        /// See [Worker pool config
+        /// file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema).
+        /// If left blank, Cloud Build will use a sensible default.
+        #[prost(string, tag = "1")]
+        pub machine_type: ::prost::alloc::string::String,
+        /// Size of the disk attached to the worker, in GB.
+        /// See [Worker pool config
+        /// file](https://cloud.google.com/build/docs/private-pools/worker-pool-config-file-schema).
+        /// Specify a value of up to 1000. If `0` is specified, Cloud Build will use
+        /// a standard disk size.
+        #[prost(int64, tag = "2")]
+        pub disk_size_gb: i64,
+    }
+    /// Defines the network configuration for the pool.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NetworkConfig {
+        /// Required. Immutable. The network definition that the workers are peered
+        /// to. If this section is left empty, the workers will be peered to
+        /// `WorkerPool.project_id` on the service producer network. Must be in the
+        /// format `projects/{project}/global/networks/{network}`, where `{project}`
+        /// is a project number, such as `12345`, and `{network}` is the name of a
+        /// VPC network in the project. See
+        /// [Understanding network configuration
+        /// options](https://cloud.google.com/build/docs/private-pools/set-up-private-pool-environment)
+        #[prost(string, tag = "1")]
+        pub peered_network: ::prost::alloc::string::String,
+        /// Option to configure network egress for the workers.
+        #[prost(enumeration = "network_config::EgressOption", tag = "2")]
+        pub egress_option: i32,
+    }
+    /// Nested message and enum types in `NetworkConfig`.
+    pub mod network_config {
+        /// Defines the egress option for the pool.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum EgressOption {
+            /// If set, defaults to PUBLIC_EGRESS.
+            Unspecified = 0,
+            /// If set, workers are created without any public address, which prevents
+            /// network egress to public IPs unless a network proxy is configured.
+            NoPublicEgress = 1,
+            /// If set, workers are created with a public address which allows for
+            /// public internet egress.
+            PublicEgress = 2,
+        }
+    }
 }
 /// Request to create a new `WorkerPool`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkerPoolRequest {
-    /// ID of the parent project.
+    /// Required. The parent resource where this worker pool will be created.
+    /// Format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// `WorkerPool` resource to create.
+    /// Required. `WorkerPool` resource to create.
     #[prost(message, optional, tag = "2")]
     pub worker_pool: ::core::option::Option<WorkerPool>,
+    /// Required. Immutable. The ID to use for the `WorkerPool`, which will become
+    /// the final component of the resource name.
+    ///
+    /// This value should be 1-63 characters, and valid characters
+    /// are /[a-z][0-9]-/.
+    #[prost(string, tag = "3")]
+    pub worker_pool_id: ::prost::alloc::string::String,
+    /// If set, validate the request and preview the response, but do not actually
+    /// post it.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
 }
 /// Request to get a `WorkerPool` with the specified name.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkerPoolRequest {
-    /// The field will contain name of the resource requested, for example:
-    /// "projects/project-1/workerPools/workerpool-name"
+    /// Required. The name of the `WorkerPool` to retrieve.
+    /// Format: `projects/{project}/locations/{location}/workerPools/{workerPool}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request to delete a `WorkerPool`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkerPoolRequest {
-    /// The field will contain name of the resource requested, for example:
-    /// "projects/project-1/workerPools/workerpool-name"
+    /// Required. The name of the `WorkerPool` to delete.
+    /// Format:
+    /// `projects/{project}/locations/{workerPool}/workerPools/{workerPool}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. If this is provided, it must match the server's etag on the
+    /// workerpool for the request to be processed.
+    #[prost(string, tag = "2")]
+    pub etag: ::prost::alloc::string::String,
+    /// If set to true, and the `WorkerPool` is not found, the request will succeed
+    /// but no action will be taken on the server.
+    #[prost(bool, tag = "3")]
+    pub allow_missing: bool,
+    /// If set, validate the request and preview the response, but do not actually
+    /// post it.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
 }
 /// Request to update a `WorkerPool`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkerPoolRequest {
-    /// The field will contain name of the resource requested, for example:
-    /// "projects/project-1/workerPools/workerpool-name"
-    #[prost(string, tag = "2")]
-    pub name: ::prost::alloc::string::String,
-    /// `WorkerPool` resource to update.
-    #[prost(message, optional, tag = "3")]
+    /// Required. The `WorkerPool` to update.
+    ///
+    /// The `name` field is used to identify the `WorkerPool` to update.
+    /// Format: `projects/{project}/locations/{location}/workerPools/{workerPool}`.
+    #[prost(message, optional, tag = "1")]
     pub worker_pool: ::core::option::Option<WorkerPool>,
+    /// A mask specifying which fields in `worker_pool` to update.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// If set, validate the request and preview the response, but do not actually
+    /// post it.
+    #[prost(bool, tag = "4")]
+    pub validate_only: bool,
 }
-/// Request to list `WorkerPools`.
+/// Request to list `WorkerPool`s.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkerPoolsRequest {
-    /// ID of the parent project.
+    /// Required. The parent of the collection of `WorkerPools`.
+    /// Format: `projects/{project}/locations/{location}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// The maximum number of `WorkerPool`s to return. The service may return
+    /// fewer than this value. If omitted, the server will use a sensible default.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListWorkerPools` call. Provide this
+    /// to retrieve the subsequent page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
 }
 /// Response containing existing `WorkerPools`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkerPoolsResponse {
-    /// `WorkerPools` for the project.
+    /// `WorkerPools` for the specified project.
     #[prost(message, repeated, tag = "1")]
     pub worker_pools: ::prost::alloc::vec::Vec<WorkerPool>,
+    /// Continuation token used to page through large result sets. Provide this
+    /// value in a subsequent ListWorkerPoolsRequest to return the next page of
+    /// results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Metadata for the `CreateWorkerPool` operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateWorkerPoolOperationMetadata {
+    /// The resource name of the `WorkerPool` to create.
+    /// Format:
+    /// `projects/{project}/locations/{location}/workerPools/{worker_pool}`.
+    #[prost(string, tag = "1")]
+    pub worker_pool: ::prost::alloc::string::String,
+    /// Time the operation was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Time the operation was completed.
+    #[prost(message, optional, tag = "3")]
+    pub complete_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Metadata for the `UpdateWorkerPool` operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateWorkerPoolOperationMetadata {
+    /// The resource name of the `WorkerPool` being updated.
+    /// Format:
+    /// `projects/{project}/locations/{location}/workerPools/{worker_pool}`.
+    #[prost(string, tag = "1")]
+    pub worker_pool: ::prost::alloc::string::String,
+    /// Time the operation was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Time the operation was completed.
+    #[prost(message, optional, tag = "3")]
+    pub complete_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Metadata for the `DeleteWorkerPool` operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteWorkerPoolOperationMetadata {
+    /// The resource name of the `WorkerPool` being deleted.
+    /// Format:
+    /// `projects/{project}/locations/{location}/workerPools/{worker_pool}`.
+    #[prost(string, tag = "1")]
+    pub worker_pool: ::prost::alloc::string::String,
+    /// Time the operation was created.
+    #[prost(message, optional, tag = "2")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Time the operation was completed.
+    #[prost(message, optional, tag = "3")]
+    pub complete_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 #[doc = r" Generated client implementations."]
 pub mod cloud_build_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Creates and manages builds on Google Cloud Platform."]
     #[doc = ""]
@@ -1355,23 +1701,50 @@ pub mod cloud_build_client {
     #[doc = ""]
     #[doc = " A user can list previously-requested builds or get builds by their ID to"]
     #[doc = " determine the status of the build."]
+    #[derive(Debug, Clone)]
     pub struct CloudBuildClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> CloudBuildClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> CloudBuildClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            CloudBuildClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Starts a build with the specified configuration."]
         #[doc = ""]
@@ -1633,13 +2006,14 @@ pub mod cloud_build_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a `WorkerPool` to run the builds, and returns the new worker pool."]
-        #[doc = ""]
-        #[doc = " This API is experimental."]
+        #[doc = " Creates a `WorkerPool`."]
         pub async fn create_worker_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWorkerPoolRequest>,
-        ) -> Result<tonic::Response<super::WorkerPool>, tonic::Status> {
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
             self.inner.ready().await.map_err(|e| {
                 tonic::Status::new(
                     tonic::Code::Unknown,
@@ -1652,9 +2026,7 @@ pub mod cloud_build_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns information about a `WorkerPool`."]
-        #[doc = ""]
-        #[doc = " This API is experimental."]
+        #[doc = " Returns details of a `WorkerPool`."]
         pub async fn get_worker_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWorkerPoolRequest>,
@@ -1671,13 +2043,14 @@ pub mod cloud_build_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a `WorkerPool` by its project ID and WorkerPool name."]
-        #[doc = ""]
-        #[doc = " This API is experimental."]
+        #[doc = " Deletes a `WorkerPool`."]
         pub async fn delete_worker_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteWorkerPoolRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
             self.inner.ready().await.map_err(|e| {
                 tonic::Status::new(
                     tonic::Code::Unknown,
@@ -1690,13 +2063,14 @@ pub mod cloud_build_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Update a `WorkerPool`."]
-        #[doc = ""]
-        #[doc = " This API is experimental."]
+        #[doc = " Updates a `WorkerPool`."]
         pub async fn update_worker_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateWorkerPoolRequest>,
-        ) -> Result<tonic::Response<super::WorkerPool>, tonic::Status> {
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
             self.inner.ready().await.map_err(|e| {
                 tonic::Status::new(
                     tonic::Code::Unknown,
@@ -1709,9 +2083,7 @@ pub mod cloud_build_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List project's `WorkerPools`."]
-        #[doc = ""]
-        #[doc = " This API is experimental."]
+        #[doc = " Lists `WorkerPool`s."]
         pub async fn list_worker_pools(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWorkerPoolsRequest>,
@@ -1727,18 +2099,6 @@ pub mod cloud_build_client {
                 "/google.devtools.cloudbuild.v1.CloudBuild/ListWorkerPools",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for CloudBuildClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for CloudBuildClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "CloudBuildClient {{ ... }}")
         }
     }
 }

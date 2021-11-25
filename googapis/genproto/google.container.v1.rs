@@ -1098,6 +1098,9 @@ pub struct ClusterUpdate {
     /// The desired release channel configuration.
     #[prost(message, optional, tag = "31")]
     pub desired_release_channel: ::core::option::Option<ReleaseChannel>,
+    /// The desired authenticator groups config for the cluster.
+    #[prost(message, optional, tag = "63")]
+    pub desired_authenticator_groups_config: ::core::option::Option<AuthenticatorGroupsConfig>,
     /// The Kubernetes version to change the master to.
     ///
     /// Users may specify either explicit versions offered by
@@ -2471,6 +2474,9 @@ pub struct AutoprovisioningNodePoolDefaults {
     /// https://cloud.google.com/compute/docs/disks/customer-managed-encryption
     #[prost(string, tag = "9")]
     pub boot_disk_kms_key: ::prost::alloc::string::String,
+    /// The image type to use for NAP created node.
+    #[prost(string, tag = "10")]
+    pub image_type: ::prost::alloc::string::String,
 }
 /// Contains information about amount of some resource in the cluster.
 /// For memory, value should be in GB.
@@ -3117,26 +3123,53 @@ pub struct ShieldedNodes {
 }
 #[doc = r" Generated client implementations."]
 pub mod cluster_manager_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Google Kubernetes Engine Cluster Manager v1"]
+    #[derive(Debug, Clone)]
     pub struct ClusterManagerClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ClusterManagerClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ClusterManagerClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ClusterManagerClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists all clusters owned by a project in either the specified zone or all"]
         #[doc = " zones."]
@@ -3712,18 +3745,6 @@ pub mod cluster_manager_client {
                 "/google.container.v1.ClusterManager/ListUsableSubnetworks",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ClusterManagerClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ClusterManagerClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ClusterManagerClient {{ ... }}")
         }
     }
 }

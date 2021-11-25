@@ -1,3 +1,25 @@
+/// Entity sets describe the pre-defined set of entities that the values of
+/// built-in intent parameters can come from. Entity sets can be referenced from
+/// entity_set in built-in intent parameters.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntitySet {
+    /// Required. The list of entities this entity set supports.
+    #[prost(message, repeated, tag = "1")]
+    pub entities: ::prost::alloc::vec::Vec<entity_set::Entity>,
+}
+/// Nested message and enum types in `EntitySet`.
+pub mod entity_set {
+    /// An entity a built-in intent parameter value can come from.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Entity {
+        /// Required. The ID of the entity.
+        /// For a list of built-in-intent parameters and their supported entities,
+        /// see
+        /// https://developers.google.com/assistant/conversational/build/built-in-intents
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+    }
+}
 /// Defines a handler to be executed after an event. Examples of events are
 /// intent and condition based events in a scene.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -82,11 +104,31 @@ pub mod intent {
         #[prost(string, tag = "1")]
         pub name: ::prost::alloc::string::String,
         /// The type of the intent parameter.
-        #[prost(oneof = "intent_parameter::ParameterType", tags = "2")]
+        #[prost(oneof = "intent_parameter::ParameterType", tags = "2, 3")]
         pub parameter_type: ::core::option::Option<intent_parameter::ParameterType>,
     }
     /// Nested message and enum types in `IntentParameter`.
     pub mod intent_parameter {
+        /// Entity set references for an intent parameter.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct EntitySetReferences {
+            /// Required. Entity set references for an intent parameter.
+            #[prost(message, repeated, tag = "1")]
+            pub entity_set_references:
+                ::prost::alloc::vec::Vec<entity_set_references::EntitySetReference>,
+        }
+        /// Nested message and enum types in `EntitySetReferences`.
+        pub mod entity_set_references {
+            /// A reference to the set of allowed entities for this intent parameter.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct EntitySetReference {
+                /// Required. Identifies the specific collection of entities to be considered for a
+                /// given parameter. The corresponding entity set definition should be
+                /// present in the custom/entitySets/ directory.
+                #[prost(string, tag = "1")]
+                pub entity_set: ::prost::alloc::string::String,
+            }
+        }
         /// The type of the intent parameter.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ParameterType {
@@ -94,6 +136,11 @@ pub mod intent {
             /// This should not be set for built-in intents.
             #[prost(message, tag = "2")]
             Type(super::super::r#type::ClassReference),
+            /// Optional. References to the sets of allowed entities for this intent parameter.
+            /// Only valid for parameters of a built-in intent. These
+            /// references point to entity sets in the 'custom/entitySets' directory.
+            #[prost(message, tag = "3")]
+            EntitySetReferences(EntitySetReferences),
         }
     }
 }

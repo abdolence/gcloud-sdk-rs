@@ -401,7 +401,7 @@ pub enum LeaseState {
 }
 #[doc = r" Generated client implementations."]
 pub mod bots_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Design doc: https://goo.gl/oojM5H"]
     #[doc = ""]
@@ -430,23 +430,47 @@ pub mod bots_client {
     #[doc = " example, for a farm managed through GCP, the parent resource will typically"]
     #[doc = " take the form \"projects/{project_id}\". This is referred to below as \"the farm"]
     #[doc = " resource.\""]
+    #[derive(Debug, Clone)]
     pub struct BotsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> BotsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(inner: T, interceptor: F) -> BotsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            BotsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " CreateBotSession is called when the bot first joins the farm, and"]
         #[doc = " establishes a session ID to ensure that multiple machines do not register"]
@@ -485,18 +509,6 @@ pub mod bots_client {
                 "/google.devtools.remoteworkers.v1test2.Bots/UpdateBotSession",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for BotsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for BotsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "BotsClient {{ ... }}")
         }
     }
 }
@@ -721,7 +733,8 @@ pub struct FileMetadata {
 /// Execution API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DirectoryMetadata {
-    /// The path of the directory, as in [FileMetadata.path][google.devtools.remoteworkers.v1test2.FileMetadata.path].
+    /// The path of the directory, as in
+    /// [FileMetadata.path][google.devtools.remoteworkers.v1test2.FileMetadata.path].
     #[prost(string, tag = "1")]
     pub path: ::prost::alloc::string::String,
     /// A pointer to the contents of the directory, in the form of a marshalled

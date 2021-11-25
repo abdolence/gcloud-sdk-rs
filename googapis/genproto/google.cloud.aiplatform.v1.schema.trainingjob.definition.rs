@@ -312,7 +312,6 @@ pub struct ExportEvaluatedDataItemsConfig {
     ///
     /// If not specified, then results are exported to the following auto-created
     /// BigQuery table:
-    ///
     /// <project_id>:export_evaluated_examples_<model_name>_<yyyy_MM_dd'T'HH_mm_ss_SSS'Z'>.evaluated_examples
     #[prost(string, tag = "1")]
     pub destination_bigquery_uri: ::prost::alloc::string::String,
@@ -411,6 +410,9 @@ pub struct AutoMlTablesInputs {
     /// this configuration is absent, then the export is not performed.
     #[prost(message, optional, tag = "10")]
     pub export_evaluated_data_items_config: ::core::option::Option<ExportEvaluatedDataItemsConfig>,
+    /// Additional experiment flags for the Tables training pipeline.
+    #[prost(string, repeated, tag = "11")]
+    pub additional_experiments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Additional optimization objective configuration. Required for
     /// `maximize-precision-at-recall` and `maximize-recall-at-precision`,
     /// otherwise unused.
@@ -681,6 +683,14 @@ pub mod auto_ml_video_action_recognition_inputs {
         /// also be exported (see ModelService.ExportModel) as a TensorFlow or
         /// TensorFlow Lite model and used on a mobile or edge device afterwards.
         MobileVersatile1 = 2,
+        /// A model that, in addition to being available within Google Cloud, can
+        /// also be exported (see ModelService.ExportModel) to a Jetson device
+        /// afterwards.
+        MobileJetsonVersatile1 = 3,
+        /// A model that, in addition to being available within Google Cloud, can
+        /// also be exported (see ModelService.ExportModel) as a TensorFlow or
+        /// TensorFlow Lite model and used on a Coral device afterwards.
+        MobileCoralVersatile1 = 4,
     }
 }
 /// A TrainingJob that trains and uploads an AutoML Video Classification Model.

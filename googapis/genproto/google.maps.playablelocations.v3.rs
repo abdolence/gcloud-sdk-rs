@@ -129,9 +129,10 @@ pub struct SamplePlayableLocationsResponse {
     #[prost(map = "int32, message", tag = "1")]
     pub locations_per_game_object_type:
         ::std::collections::HashMap<i32, sample::PlayableLocationList>,
-    /// Required. Specifies the "time-to-live" for the set of playable locations. You can use
-    /// this value to determine how long to cache the set of playable locations.
-    /// After this length of time, your back-end game server should issue a new
+    /// Required. Specifies the "time-to-live" for the set of playable locations.
+    /// You can use this value to determine how long to cache the set of playable
+    /// locations. After this length of time, your back-end game server should
+    /// issue a new
     /// [SamplePlayableLocations][google.maps.playablelocations.v3.PlayableLocations.SamplePlayableLocations]
     /// request to get a fresh set of playable locations (because for example, they
     /// might have been removed, a park might have closed for the day, a
@@ -142,25 +143,26 @@ pub struct SamplePlayableLocationsResponse {
 /// A request for logging your player's bad location reports.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogPlayerReportsRequest {
-    /// Required. Player reports. The maximum number of player reports that you can log at
-    /// once is 50.
+    /// Required. Player reports. The maximum number of player reports that you can
+    /// log at once is 50.
     #[prost(message, repeated, tag = "1")]
     pub player_reports: ::prost::alloc::vec::Vec<PlayerReport>,
-    /// Required. A string that uniquely identifies the log player reports request. This
-    /// allows you to detect duplicate requests. We recommend that you use UUIDs
-    /// for this value. The value must not exceed 50 characters.
+    /// Required. A string that uniquely identifies the log player reports request.
+    /// This allows you to detect duplicate requests. We recommend that you use
+    /// UUIDs for this value. The value must not exceed 50 characters.
     ///
     /// You should reuse the `request_id` only when retrying a request in the case
     /// of a failure. In that case, the request must be identical to the one that
     /// failed.
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-    /// Required. Information about the client device (for example, device model and
-    /// operating system).
+    /// Required. Information about the client device (for example, device model
+    /// and operating system).
     #[prost(message, optional, tag = "3")]
     pub client_info: ::core::option::Option<super::super::unity::ClientInfo>,
 }
-/// A response for the [LogPlayerReports][google.maps.playablelocations.v3.PlayableLocations.LogPlayerReports]
+/// A response for the
+/// [LogPlayerReports][google.maps.playablelocations.v3.PlayableLocations.LogPlayerReports]
 /// method.
 ///
 /// This method returns no data upon success.
@@ -169,50 +171,78 @@ pub struct LogPlayerReportsResponse {}
 /// A request for logging impressions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogImpressionsRequest {
-    /// Required. Impression event details. The maximum number of impression reports that you
-    /// can log at once is 50.
+    /// Required. Impression event details. The maximum number of impression
+    /// reports that you can log at once is 50.
     #[prost(message, repeated, tag = "1")]
     pub impressions: ::prost::alloc::vec::Vec<Impression>,
-    /// Required. A string that uniquely identifies the log impressions request. This allows
-    /// you to detect duplicate requests. We recommend that you use UUIDs for this
-    /// value. The value must not exceed 50 characters.
+    /// Required. A string that uniquely identifies the log impressions request.
+    /// This allows you to detect duplicate requests. We recommend that you use
+    /// UUIDs for this value. The value must not exceed 50 characters.
     ///
     /// You should reuse the `request_id` only when retrying a request in case of
     /// failure. In this case, the request must be identical to the one that
     /// failed.
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-    /// Required. Information about the client device. For example, device model and
-    /// operating system.
+    /// Required. Information about the client device. For example, device model
+    /// and operating system.
     #[prost(message, optional, tag = "3")]
     pub client_info: ::core::option::Option<super::super::unity::ClientInfo>,
 }
-/// A response for the [LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions] method.
-/// This method returns no data upon success.
+/// A response for the
+/// [LogImpressions][google.maps.playablelocations.v3.PlayableLocations.LogImpressions]
+/// method. This method returns no data upon success.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LogImpressionsResponse {}
 #[doc = r" Generated client implementations."]
 pub mod playable_locations_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " The Playable Locations API for v3."]
+    #[derive(Debug, Clone)]
     pub struct PlayableLocationsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> PlayableLocationsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> PlayableLocationsClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            PlayableLocationsClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns a set of playable locations that lie within a specified area,"]
         #[doc = " that satisfy optional filter criteria."]
@@ -276,18 +306,6 @@ pub mod playable_locations_client {
                 "/google.maps.playablelocations.v3.PlayableLocations/LogImpressions",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for PlayableLocationsClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for PlayableLocationsClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "PlayableLocationsClient {{ ... }}")
         }
     }
 }

@@ -2,13 +2,14 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVoicesRequest {
     /// Optional. Recommended.
-    /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag. If
-    /// specified, the ListVoices call will only return voices that can be used to
-    /// synthesize this language_code. E.g. when specifying "en-NZ", you will get
-    /// supported "en-\*" voices; when specifying "no", you will get supported
+    /// [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
+    /// If not specified, the API will return all supported voices.
+    /// If specified, the ListVoices call will only return voices that can be used
+    /// to synthesize this language_code. E.g. when specifying "en-NZ", you will
+    /// get supported "en-NZ" voices; when specifying "no", you will get supported
     /// "no-\*" (Norwegian) and "nb-\*" (Norwegian Bokmal) voices; specifying "zh"
     /// will also get supported "cmn-\*" voices; specifying "zh-hk" will also get
-    /// supported "yue-\*" voices.
+    /// supported "yue-hk" voices.
     #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -49,7 +50,7 @@ pub struct SynthesizeSpeechRequest {
     /// Required. The configuration of the synthesized audio.
     #[prost(message, optional, tag = "3")]
     pub audio_config: ::core::option::Option<AudioConfig>,
-    /// Whether and what timepoints should be returned in the response.
+    /// Whether and what timepoints are returned in the response.
     #[prost(
         enumeration = "synthesize_speech_request::TimepointType",
         repeated,
@@ -237,29 +238,59 @@ pub enum AudioEncoding {
     /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/mu-law.
     /// Audio content returned as MULAW also contains a WAV header.
     Mulaw = 5,
+    /// 8-bit samples that compand 14-bit audio samples using G.711 PCMU/A-law.
+    /// Audio content returned as ALAW also contains a WAV header.
+    Alaw = 6,
 }
 #[doc = r" Generated client implementations."]
 pub mod text_to_speech_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service that implements Google Cloud Text-to-Speech API."]
+    #[derive(Debug, Clone)]
     pub struct TextToSpeechClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> TextToSpeechClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> TextToSpeechClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            TextToSpeechClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns a list of Voice supported for synthesis."]
         pub async fn list_voices(
@@ -295,18 +326,6 @@ pub mod text_to_speech_client {
                 "/google.cloud.texttospeech.v1beta1.TextToSpeech/SynthesizeSpeech",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for TextToSpeechClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for TextToSpeechClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "TextToSpeechClient {{ ... }}")
         }
     }
 }

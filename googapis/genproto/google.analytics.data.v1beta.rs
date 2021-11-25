@@ -21,10 +21,42 @@ pub struct DateRange {
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
 }
+/// A contiguous set of minutes: startMinutesAgo, startMinutesAgo + 1, ...,
+/// endMinutesAgo. Requests are allowed up to 2 minute ranges.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MinuteRange {
+    /// The inclusive start minute for the query as a number of minutes before now.
+    /// For example, `"startMinutesAgo": 29` specifies the report should include
+    /// event data from 29 minutes ago and after. Cannot be after `endMinutesAgo`.
+    ///
+    /// If unspecified, `startMinutesAgo` is defaulted to 29. Standard Analytics
+    /// properties can request up to the last 30 minutes of event data
+    /// (`startMinutesAgo <= 29`), and 360 Analytics properties can request up to
+    /// the last 60 minutes of event data (`startMinutesAgo <= 59`).
+    #[prost(int32, optional, tag = "1")]
+    pub start_minutes_ago: ::core::option::Option<i32>,
+    /// The inclusive end minute for the query as a number of minutes before now.
+    /// Cannot be before `startMinutesAgo`. For example, `"endMinutesAgo": 15`
+    /// specifies the report should include event data from prior to 15 minutes
+    /// ago.
+    ///
+    /// If unspecified, `endMinutesAgo` is defaulted to 0. Standard Analytics
+    /// properties can request any minute in the last 30 minutes of event data
+    /// (`endMinutesAgo <= 29`), and 360 Analytics properties can request any
+    /// minute in the last 60 minutes of event data (`endMinutesAgo <= 59`).
+    #[prost(int32, optional, tag = "2")]
+    pub end_minutes_ago: ::core::option::Option<i32>,
+    /// Assigns a name to this minute range. The dimension `dateRange` is valued to
+    /// this name in a report response. If set, cannot begin with `date_range_` or
+    /// `RESERVED_`. If not set, minute ranges are named by their zero based index
+    /// in the request: `date_range_0`, `date_range_1`, etc.
+    #[prost(string, tag = "3")]
+    pub name: ::prost::alloc::string::String,
+}
 /// Dimensions are attributes of your data. For example, the dimension city
 /// indicates the city from which an event originates. Dimension values in report
 /// responses are strings; for example, city could be "Paris" or "New York".
-/// Requests are allowed up to 8 dimensions.
+/// Requests are allowed up to 9 dimensions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dimension {
     /// The name of the dimension. See the [API
@@ -412,8 +444,8 @@ pub struct Pivot {
     #[prost(int64, tag = "3")]
     pub offset: i64,
     /// The number of unique combinations of dimension values to return in this
-    /// pivot. If unspecified, up to 10,000 unique combinations of dimension values
-    /// are returned. `limit` must be positive.
+    /// pivot. The `limit` parameter is required. A `limit` of 10,000 is common for
+    /// single pivot requests.
     ///
     /// The product of the `limit` for each `pivot` in a `RunPivotReportRequest`
     /// must not exceed 100,000. For example, a two pivot request with `limit:
@@ -735,6 +767,12 @@ pub struct PropertyQuota {
     /// can have up to 50 server errors per hour.
     #[prost(message, optional, tag = "4")]
     pub server_errors_per_project_per_hour: ::core::option::Option<QuotaStatus>,
+    /// Analytics Properties can send up to 120 requests with potentially
+    /// thresholded dimensions per hour. In a batch request, each report request
+    /// is individually counted for this quota if the request contains potentially
+    /// thresholded dimensions.
+    #[prost(message, optional, tag = "5")]
+    pub potentially_thresholded_requests_per_hour: ::core::option::Option<QuotaStatus>,
 }
 /// Current state for a particular quota group.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -985,6 +1023,11 @@ pub struct RunReportResponse {
     /// This Analytics Property's quota state including this request.
     #[prost(message, optional, tag = "9")]
     pub property_quota: ::core::option::Option<PropertyQuota>,
+    /// Identifies what kind of resource this message is. This `kind` is always the
+    /// fixed string "analyticsData#runReport". Useful to distinguish between
+    /// response types in JSON.
+    #[prost(string, tag = "10")]
+    pub kind: ::prost::alloc::string::String,
 }
 /// The request to generate a pivot report.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1112,6 +1155,11 @@ pub struct RunPivotReportResponse {
     /// This Analytics Property's quota state including this request.
     #[prost(message, optional, tag = "7")]
     pub property_quota: ::core::option::Option<PropertyQuota>,
+    /// Identifies what kind of resource this message is. This `kind` is always the
+    /// fixed string "analyticsData#runPivotReport". Useful to distinguish between
+    /// response types in JSON.
+    #[prost(string, tag = "8")]
+    pub kind: ::prost::alloc::string::String,
 }
 /// The batch request containing multiple report requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1138,6 +1186,11 @@ pub struct BatchRunReportsResponse {
     /// Individual responses. Each response has a separate report request.
     #[prost(message, repeated, tag = "1")]
     pub reports: ::prost::alloc::vec::Vec<RunReportResponse>,
+    /// Identifies what kind of resource this message is. This `kind` is always the
+    /// fixed string "analyticsData#batchRunReports". Useful to distinguish between
+    /// response types in JSON.
+    #[prost(string, tag = "2")]
+    pub kind: ::prost::alloc::string::String,
 }
 /// The batch request containing multiple pivot report requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1164,6 +1217,11 @@ pub struct BatchRunPivotReportsResponse {
     /// Individual responses. Each response has a separate pivot report request.
     #[prost(message, repeated, tag = "1")]
     pub pivot_reports: ::prost::alloc::vec::Vec<RunPivotReportResponse>,
+    /// Identifies what kind of resource this message is. This `kind` is always the
+    /// fixed string "analyticsData#batchRunPivotReports". Useful to distinguish
+    /// between response types in JSON.
+    #[prost(string, tag = "2")]
+    pub kind: ::prost::alloc::string::String,
 }
 /// Request for a property's dimension and metric metadata.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1230,6 +1288,13 @@ pub struct RunRealtimeReportRequest {
     /// Realtime quota. Quota is returned in [PropertyQuota](#PropertyQuota).
     #[prost(bool, tag = "9")]
     pub return_property_quota: bool,
+    /// The minute ranges of event data to read. If unspecified, one minute range
+    /// for the last 30 minutes will be used. If multiple minute ranges are
+    /// requested, each response row will contain a zero based minute range index.
+    /// If two minute ranges overlap, the event data for the overlapping minutes is
+    /// included in the response rows for both minute ranges.
+    #[prost(message, repeated, tag = "10")]
+    pub minute_ranges: ::prost::alloc::vec::Vec<MinuteRange>,
 }
 /// The response realtime report table corresponding to a request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1264,29 +1329,61 @@ pub struct RunRealtimeReportResponse {
     /// This Analytics Property's Realtime quota state including this request.
     #[prost(message, optional, tag = "8")]
     pub property_quota: ::core::option::Option<PropertyQuota>,
+    /// Identifies what kind of resource this message is. This `kind` is always the
+    /// fixed string "analyticsData#runRealtimeReport". Useful to distinguish
+    /// between response types in JSON.
+    #[prost(string, tag = "9")]
+    pub kind: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod beta_analytics_data_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Google Analytics reporting data service."]
+    #[derive(Debug, Clone)]
     pub struct BetaAnalyticsDataClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> BetaAnalyticsDataClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> BetaAnalyticsDataClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            BetaAnalyticsDataClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Returns a customized report of your Google Analytics event data. Reports"]
         #[doc = " contain statistics derived from data collected by the Google Analytics"]
@@ -1412,18 +1509,6 @@ pub mod beta_analytics_data_client {
                 "/google.analytics.data.v1beta.BetaAnalyticsData/RunRealtimeReport",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for BetaAnalyticsDataClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for BetaAnalyticsDataClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "BetaAnalyticsDataClient {{ ... }}")
         }
     }
 }

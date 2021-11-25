@@ -2,23 +2,23 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuditLog {
     /// The name of the API service performing the operation. For example,
-    /// `"datastore.googleapis.com"`.
+    /// `"compute.googleapis.com"`.
     #[prost(string, tag = "7")]
     pub service_name: ::prost::alloc::string::String,
     /// The name of the service method or operation.
     /// For API calls, this should be the name of the API method.
     /// For example,
     ///
-    ///     "google.datastore.v1.Datastore.RunQuery"
-    ///     "google.logging.v1.LoggingService.DeleteLog"
+    ///     "google.cloud.bigquery.v2.TableService.InsertTable"
+    ///     "google.logging.v2.ConfigServiceV2.CreateSink"
     #[prost(string, tag = "8")]
     pub method_name: ::prost::alloc::string::String,
     /// The resource or collection that is the target of the operation.
     /// The name is a scheme-less URI, not including the API service name.
     /// For example:
     ///
-    ///     "shelves/SHELF_ID/books"
-    ///     "shelves/SHELF_ID/books/BOOK_ID"
+    ///     "projects/PROJECT_ID/zones/us-central1-a/instances"
+    ///     "projects/PROJECT_ID/datasets/DATASET_ID"
     #[prost(string, tag = "11")]
     pub resource_name: ::prost::alloc::string::String,
     /// The resource location information.
@@ -71,9 +71,10 @@ pub struct AuditLog {
     /// information associated with the current audited event.
     #[prost(message, optional, tag = "18")]
     pub metadata: ::core::option::Option<::prost_types::Struct>,
-    /// Deprecated, use `metadata` field instead.
+    /// Deprecated. Use the `metadata` field instead.
     /// Other service-specific data about the request, response, and other
     /// activities.
+    #[deprecated]
     #[prost(message, optional, tag = "15")]
     pub service_data: ::core::option::Option<::prost_types::Any>,
 }
@@ -81,9 +82,11 @@ pub struct AuditLog {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthenticationInfo {
     /// The email address of the authenticated user (or service account on behalf
-    /// of third party principal) making the request. For privacy reasons, the
-    /// principal email address is redacted for all read-only operations that fail
-    /// with a "permission denied" error.
+    /// of third party principal) making the request. For third party identity
+    /// callers, the `principal_subject` field is populated instead of this field.
+    /// For privacy reasons, the principal email address is sometimes redacted.
+    /// For more information, see
+    /// https://cloud.google.com/logging/docs/audit#user-id.
     #[prost(string, tag = "1")]
     pub principal_email: ::prost::alloc::string::String,
     /// The authority selector specified by the requestor, if any.
@@ -118,9 +121,12 @@ pub struct AuthenticationInfo {
 /// Authorization information for the operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AuthorizationInfo {
-    /// The resource being accessed, as a REST-style string. For example:
+    /// The resource being accessed, as a REST-style or cloud resource string.
+    /// For example:
     ///
     ///     bigquery.googleapis.com/projects/PROJECTID/datasets/DATASETID
+    /// or
+    ///     projects/PROJECTID/datasets/DATASETID
     #[prost(string, tag = "1")]
     pub resource: ::prost::alloc::string::String,
     /// The required IAM permission.
@@ -223,6 +229,14 @@ pub struct ResourceLocation {
 /// Identity delegation history of an authenticated service account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServiceAccountDelegationInfo {
+    /// A string representing the principal_subject associated with the identity.
+    /// For most identities, the format will be
+    /// `principal://iam.googleapis.com/{identity pool name}/subject/{subject)`
+    /// except for some GKE identities (GKE_WORKLOAD, FREEFORM, GKE_HUB_WORKLOAD)
+    /// that are still in the legacy format `serviceAccount:{identity pool
+    /// name}[{subject}]`
+    #[prost(string, tag = "3")]
+    pub principal_subject: ::prost::alloc::string::String,
     /// Entity that creates credentials for service account and assumes its
     /// identity for authentication.
     #[prost(oneof = "service_account_delegation_info::Authority", tags = "1, 2")]

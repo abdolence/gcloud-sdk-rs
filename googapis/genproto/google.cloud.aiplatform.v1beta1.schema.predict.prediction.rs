@@ -1,8 +1,7 @@
 /// Prediction output format for Image and Text Classification.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ClassificationPredictionResult {
-    /// The resource IDs of the AnnotationSpecs that had been identified, ordered
-    /// by the confidence score descendingly.
+    /// The resource IDs of the AnnotationSpecs that had been identified.
     #[prost(int64, repeated, tag = "1")]
     pub ids: ::prost::alloc::vec::Vec<i64>,
     /// The display names of the AnnotationSpecs that had been identified, order
@@ -119,6 +118,13 @@ pub struct TextSentimentPredictionResult {
     /// an integer value between 1 (inclusive) and 10 (inclusive).
     #[prost(int32, tag = "1")]
     pub sentiment: i32,
+}
+/// Prediction output format for Time Series Forecasting.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimeSeriesForecastingPredictionResult {
+    /// The regression value.
+    #[prost(float, tag = "1")]
+    pub value: f32,
 }
 /// Prediction output format for Video Action Recognition.
 #[derive(Clone, PartialEq, ::prost::Message)]

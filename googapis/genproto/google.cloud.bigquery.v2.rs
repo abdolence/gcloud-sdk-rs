@@ -66,12 +66,16 @@ pub mod standard_sql_data_type {
         Time = 20,
         /// Encoded as RFC 3339 full-date "T" partial-time: 1985-04-12T23:20:50.52
         Datetime = 21,
+        /// Encoded as fully qualified 3 part: 0-5 15 2:30:45.6
+        Interval = 26,
         /// Encoded as WKT
         Geography = 22,
         /// Encoded as a decimal string.
         Numeric = 23,
         /// Encoded as a decimal string.
         Bignumeric = 24,
+        /// Encoded as a string.
+        Json = 25,
         /// Encoded as a list with types matching Type.array_type.
         Array = 16,
         /// Encoded as a list with fields of type Type.struct_type[i]. List is used
@@ -105,6 +109,13 @@ pub struct StandardSqlStructType {
     #[prost(message, repeated, tag = "1")]
     pub fields: ::prost::alloc::vec::Vec<StandardSqlField>,
 }
+/// A table type
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StandardSqlTableType {
+    /// The columns in this table type
+    #[prost(message, repeated, tag = "1")]
+    pub columns: ::prost::alloc::vec::Vec<StandardSqlField>,
+}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableReference {
     /// Required. The ID of the project containing this table.
@@ -120,6 +131,18 @@ pub struct TableReference {
     /// `sample_table$20190123`.
     #[prost(string, tag = "3")]
     pub table_id: ::prost::alloc::string::String,
+    /// The alternative field that will be used when ESF is not able to translate
+    /// the received data to the project_id field.
+    #[prost(string, repeated, tag = "4")]
+    pub project_id_alternative: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The alternative field that will be used when ESF is not able to translate
+    /// the received data to the project_id field.
+    #[prost(string, repeated, tag = "5")]
+    pub dataset_id_alternative: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The alternative field that will be used when ESF is not able to translate
+    /// the received data to the project_id field.
+    #[prost(string, repeated, tag = "6")]
+    pub table_id_alternative: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Model {
@@ -180,6 +203,10 @@ pub struct Model {
     /// The output of the model will have a "predicted_" prefix to these columns.
     #[prost(message, repeated, tag = "11")]
     pub label_columns: ::prost::alloc::vec::Vec<StandardSqlField>,
+    /// The best trial_id across all training runs.
+    #[deprecated]
+    #[prost(int64, tag = "19")]
+    pub best_trial_id: i64,
 }
 /// Nested message and enum types in `Model`.
 pub mod model {
@@ -218,6 +245,7 @@ pub mod model {
         )]
         #[repr(i32)]
         pub enum KmeansInitializationMethod {
+            /// Unspecified initialization method.
             Unspecified = 0,
             /// Initializes the centroids randomly.
             Random = 1,
@@ -244,7 +272,7 @@ pub mod model {
         /// Median absolute error.
         #[prost(message, optional, tag = "4")]
         pub median_absolute_error: ::core::option::Option<f64>,
-        /// R^2 score.
+        /// R^2 score. This corresponds to r2_score in ML.EVALUATE.
         #[prost(message, optional, tag = "5")]
         pub r_squared: ::core::option::Option<f64>,
     }
@@ -401,7 +429,7 @@ pub mod model {
         /// Mean of squared distances between each sample to its cluster centroid.
         #[prost(message, optional, tag = "2")]
         pub mean_squared_distance: ::core::option::Option<f64>,
-        /// [Beta] Information for all clusters.
+        /// Information for all clusters.
         #[prost(message, repeated, tag = "3")]
         pub clusters: ::prost::alloc::vec::Vec<clustering_metrics::Cluster>,
     }
@@ -498,24 +526,30 @@ pub mod model {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ArimaForecastingMetrics {
         /// Non-seasonal order.
+        #[deprecated]
         #[prost(message, repeated, tag = "1")]
         pub non_seasonal_order: ::prost::alloc::vec::Vec<ArimaOrder>,
         /// Arima model fitting metrics.
+        #[deprecated]
         #[prost(message, repeated, tag = "2")]
         pub arima_fitting_metrics: ::prost::alloc::vec::Vec<ArimaFittingMetrics>,
         /// Seasonal periods. Repeated because multiple periods are supported for one
         /// time series.
+        #[deprecated]
         #[prost(
             enumeration = "seasonal_period::SeasonalPeriodType",
             repeated,
+            packed = "false",
             tag = "3"
         )]
         pub seasonal_periods: ::prost::alloc::vec::Vec<i32>,
         /// Whether Arima model fitted with drift or not. It is always false when d
         /// is not 1.
-        #[prost(bool, repeated, tag = "4")]
+        #[deprecated]
+        #[prost(bool, repeated, packed = "false", tag = "4")]
         pub has_drift: ::prost::alloc::vec::Vec<bool>,
         /// Id to differentiate different time series for the large-scale case.
+        #[deprecated]
         #[prost(string, repeated, tag = "5")]
         pub time_series_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Repeated as there can be many metric sets (one for each model) in
@@ -539,9 +573,20 @@ pub mod model {
             /// is not 1.
             #[prost(bool, tag = "3")]
             pub has_drift: bool,
-            /// The id to indicate different time series.
+            /// The time_series_id value for this time series. It will be one of
+            /// the unique values from the time_series_id_column specified during
+            /// ARIMA model training. Only present when time_series_id_column
+            /// training option was used.
             #[prost(string, tag = "4")]
             pub time_series_id: ::prost::alloc::string::String,
+            /// The tuple of time_series_ids identifying this time series. It will
+            /// be one of the unique tuples of values present in the
+            /// time_series_id_columns specified during ARIMA model training. Only
+            /// present when time_series_id_columns training option was used and
+            /// the order of values here are same as the order of
+            /// time_series_id_columns.
+            #[prost(string, repeated, tag = "9")]
+            pub time_series_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Seasonal periods. Repeated because multiple periods are supported
             /// for one time series.
             #[prost(
@@ -550,6 +595,15 @@ pub mod model {
                 tag = "5"
             )]
             pub seasonal_periods: ::prost::alloc::vec::Vec<i32>,
+            /// If true, holiday_effect is a part of time series decomposition result.
+            #[prost(message, optional, tag = "6")]
+            pub has_holiday_effect: ::core::option::Option<bool>,
+            /// If true, spikes_and_dips is a part of time series decomposition result.
+            #[prost(message, optional, tag = "7")]
+            pub has_spikes_and_dips: ::core::option::Option<bool>,
+            /// If true, step_changes is a part of time series decomposition result.
+            #[prost(message, optional, tag = "8")]
+            pub has_step_changes: ::core::option::Option<bool>,
         }
     }
     /// Evaluation metrics of a model. These are either computed on all training
@@ -680,6 +734,7 @@ pub mod model {
     }
     /// Nested message and enum types in `TrainingRun`.
     pub mod training_run {
+        /// Options used in model training.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TrainingOptions {
             /// The maximum number of iterations in training. Used only for iterative
@@ -759,7 +814,7 @@ pub mod model {
             /// Number of clusters for clustering models.
             #[prost(int64, tag = "21")]
             pub num_clusters: i64,
-            /// [Beta] Google Cloud Storage URI from which the model was imported. Only
+            /// Google Cloud Storage URI from which the model was imported. Only
             /// applicable for imported models.
             #[prost(string, tag = "22")]
             pub model_uri: ::prost::alloc::string::String,
@@ -831,10 +886,12 @@ pub mod model {
             /// effects modeling is enabled.
             #[prost(enumeration = "super::HolidayRegion", tag = "42")]
             pub holiday_region: i32,
-            /// The id column that will be used to indicate different time series to
-            /// forecast in parallel.
+            /// The time series id column that was used during ARIMA model training.
             #[prost(string, tag = "43")]
             pub time_series_id_column: ::prost::alloc::string::String,
+            /// The time series id columns that were used during ARIMA model training.
+            #[prost(string, repeated, tag = "51")]
+            pub time_series_id_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// The number of periods ahead that need to be forecasted.
             #[prost(int64, tag = "44")]
             pub horizon: i64,
@@ -847,6 +904,16 @@ pub mod model {
             /// The max value of non-seasonal p and q.
             #[prost(int64, tag = "46")]
             pub auto_arima_max_order: i64,
+            /// If true, perform decompose time series and save the results.
+            #[prost(message, optional, tag = "50")]
+            pub decompose_time_series: ::core::option::Option<bool>,
+            /// If true, clean spikes and dips in the input time series.
+            #[prost(message, optional, tag = "52")]
+            pub clean_spikes_and_dips: ::core::option::Option<bool>,
+            /// If true, detect step changes and make data adjustment in the input time
+            /// series.
+            #[prost(message, optional, tag = "53")]
+            pub adjust_step_changes: ::core::option::Option<bool>,
         }
         /// Information about a single iteration of the training run.
         #[derive(Clone, PartialEq, ::prost::Message)]
@@ -937,9 +1004,20 @@ pub mod model {
                     /// when d is not 1.
                     #[prost(bool, tag = "4")]
                     pub has_drift: bool,
-                    /// The id to indicate different time series.
+                    /// The time_series_id value for this time series. It will be one of
+                    /// the unique values from the time_series_id_column specified during
+                    /// ARIMA model training. Only present when time_series_id_column
+                    /// training option was used.
                     #[prost(string, tag = "5")]
                     pub time_series_id: ::prost::alloc::string::String,
+                    /// The tuple of time_series_ids identifying this time series. It will
+                    /// be one of the unique tuples of values present in the
+                    /// time_series_id_columns specified during ARIMA model training. Only
+                    /// present when time_series_id_columns training option was used and
+                    /// the order of values here are same as the order of
+                    /// time_series_id_columns.
+                    #[prost(string, repeated, tag = "10")]
+                    pub time_series_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
                     /// Seasonal periods. Repeated because multiple periods are supported
                     /// for one time series.
                     #[prost(
@@ -948,6 +1026,18 @@ pub mod model {
                         tag = "6"
                     )]
                     pub seasonal_periods: ::prost::alloc::vec::Vec<i32>,
+                    /// If true, holiday_effect is a part of time series decomposition
+                    /// result.
+                    #[prost(message, optional, tag = "7")]
+                    pub has_holiday_effect: ::core::option::Option<bool>,
+                    /// If true, spikes_and_dips is a part of time series decomposition
+                    /// result.
+                    #[prost(message, optional, tag = "8")]
+                    pub has_spikes_and_dips: ::core::option::Option<bool>,
+                    /// If true, step_changes is a part of time series decomposition
+                    /// result.
+                    #[prost(message, optional, tag = "9")]
+                    pub has_step_changes: ::core::option::Option<bool>,
                 }
             }
         }
@@ -965,22 +1055,24 @@ pub mod model {
         Kmeans = 3,
         /// Matrix factorization model.
         MatrixFactorization = 4,
-        /// [Beta] DNN classifier model.
+        /// DNN classifier model.
         DnnClassifier = 5,
-        /// [Beta] An imported TensorFlow model.
+        /// An imported TensorFlow model.
         Tensorflow = 6,
-        /// [Beta] DNN regressor model.
+        /// DNN regressor model.
         DnnRegressor = 7,
-        /// [Beta] Boosted tree regressor model.
+        /// Boosted tree regressor model.
         BoostedTreeRegressor = 9,
-        /// [Beta] Boosted tree classifier model.
+        /// Boosted tree classifier model.
         BoostedTreeClassifier = 10,
-        /// [Beta] ARIMA model.
+        /// ARIMA model.
         Arima = 11,
         /// [Beta] AutoML Tables regression model.
         AutomlRegressor = 12,
         /// [Beta] AutoML Tables classification model.
         AutomlClassifier = 13,
+        /// New name for the ARIMA model.
+        ArimaPlus = 19,
     }
     /// Loss metric to evaluate model training performance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1038,6 +1130,8 @@ pub mod model {
         Daily = 6,
         /// Hourly data.
         Hourly = 7,
+        /// Per-minute data.
+        PerMinute = 8,
     }
     /// Type of supported holiday regions for time series forecasting models.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1285,25 +1379,52 @@ pub struct ListModelsResponse {
 }
 #[doc = r" Generated client implementations."]
 pub mod model_service_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
+    #[derive(Debug, Clone)]
     pub struct ModelServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> ModelServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ModelServiceClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            ModelServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Gets the specified model resource by model ID."]
         pub async fn get_model(
@@ -1323,7 +1444,8 @@ pub mod model_service_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists all models in the specified dataset. Requires the READER dataset"]
-        #[doc = " role."]
+        #[doc = " role. After retrieving the list of models, you can get information about a"]
+        #[doc = " particular model by calling the models.get method."]
         pub async fn list_models(
             &mut self,
             request: impl tonic::IntoRequest<super::ListModelsRequest>,
@@ -1373,18 +1495,6 @@ pub mod model_service_client {
                 "/google.cloud.bigquery.v2.ModelService/DeleteModel",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for ModelServiceClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for ModelServiceClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "ModelServiceClient {{ ... }}")
         }
     }
 }

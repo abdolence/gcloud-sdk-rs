@@ -64,6 +64,10 @@ pub struct InstanceConfig {
     /// replication properties.
     #[prost(message, repeated, tag = "3")]
     pub replicas: ::prost::alloc::vec::Vec<ReplicaInfo>,
+    /// Allowed values of the “default_leader” schema option for databases in
+    /// instances that use this instance configuration.
+    #[prost(string, repeated, tag = "4")]
+    pub leader_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// An isolated set of Cloud Spanner resources on which databases can be hosted.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -92,6 +96,11 @@ pub struct Instance {
     /// for more information about nodes.
     #[prost(int32, tag = "5")]
     pub node_count: i32,
+    /// The number of processing units allocated to this instance. At most one of
+    /// processing_units or node_count should be present in the message. This may
+    /// be zero in API responses for instances that are not yet in state `READY`.
+    #[prost(int32, tag = "9")]
+    pub processing_units: i32,
     /// Output only. The current instance state. For
     /// [CreateInstance][google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance], the state must be
     /// either omitted or set to `CREATING`. For
@@ -328,7 +337,7 @@ pub struct UpdateInstanceMetadata {
 }
 #[doc = r" Generated client implementations."]
 pub mod instance_admin_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Cloud Spanner Instance Admin API"]
     #[doc = ""]
@@ -351,23 +360,50 @@ pub mod instance_admin_client {
     #[doc = " instance receives a lot of requests and consumes most of the"]
     #[doc = " instance resources, fewer resources are available for other"]
     #[doc = " databases in that instance, and their performance may suffer."]
+    #[derive(Debug, Clone)]
     pub struct InstanceAdminClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> InstanceAdminClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> InstanceAdminClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            InstanceAdminClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Lists the supported instance configurations for a given project."]
         pub async fn list_instance_configs(
@@ -654,18 +690,6 @@ pub mod instance_admin_client {
                 "/google.spanner.admin.instance.v1.InstanceAdmin/TestIamPermissions",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for InstanceAdminClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for InstanceAdminClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "InstanceAdminClient {{ ... }}")
         }
     }
 }

@@ -1,3 +1,15 @@
+/// Message that contains the resource name and display name of a folder
+/// resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Folder {
+    /// Full resource name of this folder. See:
+    /// https://cloud.google.com/apis/design/resource_names#full_resource_name
+    #[prost(string, tag = "1")]
+    pub resource_folder: ::prost::alloc::string::String,
+    /// The user defined display name for this folder.
+    #[prost(string, tag = "2")]
+    pub resource_folder_display_name: ::prost::alloc::string::String,
+}
 /// User specified security marks that are attached to the parent Security
 /// Command Center resource. Security marks are scoped within a Security Command
 /// Center organization -- they can be modified and viewed by all users who have
@@ -22,6 +34,16 @@ pub struct SecurityMarks {
     #[prost(map = "string, string", tag = "2")]
     pub marks:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// The canonical name of the marks.
+    /// Examples:
+    /// "organizations/{organization_id}/assets/{asset_id}/securityMarks"
+    /// "folders/{folder_id}/assets/{asset_id}/securityMarks"
+    /// "projects/{project_number}/assets/{asset_id}/securityMarks"
+    /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
+    /// "folders/{folder_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
+    /// "projects/{project_number}/sources/{source_id}/findings/{finding_id}/securityMarks"
+    #[prost(string, tag = "3")]
+    pub canonical_name: ::prost::alloc::string::String,
 }
 /// Security Command Center representation of a Google Cloud
 /// resource.
@@ -54,8 +76,7 @@ pub struct Asset {
     /// The time at which the asset was created in Security Command Center.
     #[prost(message, optional, tag = "9")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The time at which the asset was last updated, added, or deleted in Cloud
-    /// SCC.
+    /// The time at which the asset was last updated or added in Cloud SCC.
     #[prost(message, optional, tag = "10")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Cloud IAM Policy information associated with the Google Cloud resource
@@ -64,6 +85,13 @@ pub struct Asset {
     /// user.
     #[prost(message, optional, tag = "11")]
     pub iam_policy: ::core::option::Option<asset::IamPolicy>,
+    /// The canonical name of the resource. It's either
+    /// "organizations/{organization_id}/assets/{asset_id}",
+    /// "folders/{folder_id}/assets/{asset_id}" or
+    /// "projects/{project_number}/assets/{asset_id}", depending on the closest CRM
+    /// ancestor of the resource.
+    #[prost(string, tag = "13")]
+    pub canonical_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Asset`.
 pub mod asset {
@@ -102,6 +130,11 @@ pub mod asset {
         /// The user defined display name for the project of this resource.
         #[prost(string, tag = "8")]
         pub resource_project_display_name: ::prost::alloc::string::String,
+        /// Contains a Folder message for each folder in the assets ancestry.
+        /// The first folder is the deepest nested folder, and the last folder is the
+        /// folder directly under the Organization.
+        #[prost(message, repeated, tag = "10")]
+        pub folders: ::prost::alloc::vec::Vec<super::Folder>,
     }
     /// Cloud IAM Policy information associated with the Google Cloud resource
     /// described by the Security Command Center asset. This information is managed
@@ -174,7 +207,8 @@ pub struct Finding {
     /// occurred. For example, if the finding represents an open firewall it would
     /// capture the time the detector believes the firewall became open. The
     /// accuracy is determined by the detector. If the finding were to be resolved
-    /// afterward, this time would reflect when the finding was resolved.
+    /// afterward, this time would reflect when the finding was resolved. Must not
+    /// be set to a value greater than the current timestamp.
     #[prost(message, optional, tag = "9")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the finding was created in Security Command Center.
@@ -184,6 +218,14 @@ pub struct Finding {
     /// writes the finding.
     #[prost(enumeration = "finding::Severity", tag = "13")]
     pub severity: i32,
+    /// The canonical name of the finding. It's either
+    /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
+    /// "folders/{folder_id}/sources/{source_id}/findings/{finding_id}" or
+    /// "projects/{project_number}/sources/{source_id}/findings/{finding_id}",
+    /// depending on the closest CRM ancestor of the resource associated with the
+    /// finding.
+    #[prost(string, tag = "14")]
+    pub canonical_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -313,6 +355,11 @@ pub struct Resource {
     /// The human readable name of resource's parent.
     #[prost(string, tag = "5")]
     pub parent_display_name: ::prost::alloc::string::String,
+    /// Output only. Contains a Folder message for each folder in the assets ancestry.
+    /// The first folder is the deepest nested folder, and the last folder is the
+    /// folder directly under the Organization.
+    #[prost(message, repeated, tag = "7")]
+    pub folders: ::prost::alloc::vec::Vec<Folder>,
 }
 /// Security Command Center's Notification
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -369,6 +416,10 @@ pub mod organization_settings {
         /// The mode to use for filtering asset discovery.
         #[prost(enumeration = "asset_discovery_config::InclusionMode", tag = "2")]
         pub inclusion_mode: i32,
+        /// The folder ids to use for filtering asset discovery.
+        /// It consists of only digits, e.g., 756619654966.
+        #[prost(string, repeated, tag = "3")]
+        pub folder_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Nested message and enum types in `AssetDiscoveryConfig`.
     pub mod asset_discovery_config {
@@ -451,6 +502,14 @@ pub struct Source {
     /// outdated/insecure libraries."
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
+    /// The canonical name of the finding. It's either
+    /// "organizations/{organization_id}/sources/{source_id}",
+    /// "folders/{folder_id}/sources/{source_id}" or
+    /// "projects/{project_number}/sources/{source_id}",
+    /// depending on the closest CRM ancestor of the resource associated with the
+    /// finding.
+    #[prost(string, tag = "14")]
+    pub canonical_name: ::prost::alloc::string::String,
 }
 /// Request message for creating a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -532,7 +591,8 @@ pub struct GetSourceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupAssetsRequest {
     /// Required. Name of the organization to groupBy. Its format is
-    /// "organizations/[organization_id]".
+    /// "organizations/[organization_id], folders/[folder_id], or
+    /// projects/[project_id]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
@@ -687,9 +747,12 @@ pub struct GroupAssetsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupFindingsRequest {
     /// Required. Name of the source to groupBy. Its format is
-    /// "organizations/[organization_id]/sources/[source_id]". To groupBy across
-    /// all sources provide a source_id of `-`. For example:
-    /// organizations/{organization_id}/sources/-
+    /// "organizations/[organization_id]/sources/[source_id]",
+    /// folders/[folder_id]/sources/[source_id], or
+    /// projects/[project_id]/sources/[source_id]. To groupBy across all sources
+    /// provide a source_id of `-`. For example:
+    /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-,
+    /// or projects/{project_id}/sources/-
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across findings.
@@ -873,7 +936,8 @@ pub struct ListNotificationConfigsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesRequest {
     /// Required. Resource name of the parent of sources to list. Its format should be
-    /// "organizations/[organization_id]".
+    /// "organizations/[organization_id], folders/[folder_id], or
+    /// projects/[project_id]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListSourcesResponse`; indicates
@@ -901,7 +965,8 @@ pub struct ListSourcesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsRequest {
     /// Required. Name of the organization assets should belong to. Its format is
-    /// "organizations/[organization_id]".
+    /// "organizations/[organization_id], folders/[folder_id], or
+    /// projects/[project_id]".
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
@@ -1095,9 +1160,12 @@ pub mod list_assets_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsRequest {
     /// Required. Name of the source the findings belong to. Its format is
-    /// "organizations/[organization_id]/sources/[source_id]". To list across all
-    /// sources provide a source_id of `-`. For example:
-    /// organizations/{organization_id}/sources/-
+    /// "organizations/[organization_id]/sources/[source_id],
+    /// folders/[folder_id]/sources/[source_id], or
+    /// projects/[project_id]/sources/[source_id]". To list across all sources
+    /// provide a source_id of `-`. For example:
+    /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/- or
+    /// projects/{projects_id}/sources/-
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across findings.
@@ -1278,6 +1346,11 @@ pub mod list_findings_response {
             /// The human readable name of resource's parent.
             #[prost(string, tag = "5")]
             pub parent_display_name: ::prost::alloc::string::String,
+            /// Contains a Folder message for each folder in the assets ancestry.
+            /// The first folder is the deepest nested folder, and the last folder is
+            /// the folder directly under the Organization.
+            #[prost(message, repeated, tag = "10")]
+            pub folders: ::prost::alloc::vec::Vec<super::super::Folder>,
         }
         /// The change in state of the finding.
         ///
@@ -1410,26 +1483,53 @@ pub struct UpdateSecurityMarksRequest {
 }
 #[doc = r" Generated client implementations."]
 pub mod security_center_client {
-    #![allow(unused_variables, dead_code, missing_docs)]
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " V1p1Beta1 APIs for Security Center service."]
+    #[derive(Debug, Clone)]
     pub struct SecurityCenterClient<T> {
         inner: tonic::client::Grpc<T>,
     }
     impl<T> SecurityCenterClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::ResponseBody: Body + Send + Sync + 'static,
         T::Error: Into<StdError>,
-        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
             let inner = tonic::client::Grpc::new(inner);
             Self { inner }
         }
-        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
-            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
-            Self { inner }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> SecurityCenterClient<InterceptedService<T, F>>
+        where
+            F: FnMut(tonic::Request<()>) -> Result<tonic::Request<()>, tonic::Status>,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
+                Into<StdError> + Send + Sync,
+        {
+            SecurityCenterClient::new(InterceptedService::new(inner, interceptor))
+        }
+        #[doc = r" Compress requests with `gzip`."]
+        #[doc = r""]
+        #[doc = r" This requires the server to support it otherwise it might respond with an"]
+        #[doc = r" error."]
+        pub fn send_gzip(mut self) -> Self {
+            self.inner = self.inner.send_gzip();
+            self
+        }
+        #[doc = r" Enable decompressing responses with `gzip`."]
+        pub fn accept_gzip(mut self) -> Self {
+            self.inner = self.inner.accept_gzip();
+            self
         }
         #[doc = " Creates a source."]
         pub async fn create_source(
@@ -1591,7 +1691,9 @@ pub mod security_center_client {
         #[doc = " specified properties."]
         #[doc = ""]
         #[doc = " To group across all sources provide a `-` as the source id."]
-        #[doc = " Example: /v1p1beta1/organizations/{organization_id}/sources/-/findings"]
+        #[doc = " Example: /v1/organizations/{organization_id}/sources/-/findings,"]
+        #[doc = " /v1/folders/{folder_id}/sources/-/findings,"]
+        #[doc = " /v1/projects/{project_id}/sources/-/findings"]
         pub async fn group_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::GroupFindingsRequest>,
@@ -1848,18 +1950,6 @@ pub mod security_center_client {
                 "/google.cloud.securitycenter.v1p1beta1.SecurityCenter/UpdateSecurityMarks",
             );
             self.inner.unary(request.into_request(), path, codec).await
-        }
-    }
-    impl<T: Clone> Clone for SecurityCenterClient<T> {
-        fn clone(&self) -> Self {
-            Self {
-                inner: self.inner.clone(),
-            }
-        }
-    }
-    impl<T> std::fmt::Debug for SecurityCenterClient<T> {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "SecurityCenterClient {{ ... }}")
         }
     }
 }

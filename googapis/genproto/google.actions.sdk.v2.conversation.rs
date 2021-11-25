@@ -48,6 +48,12 @@ pub struct Canvas {
     /// Optional. Default value: false.
     #[prost(bool, tag = "3")]
     pub suppress_mic: bool,
+    /// If `true` the canvas application occupies the full screen and won't
+    /// have a header at the top. A toast message will also be displayed on the
+    /// loading screen that includes the Action's display name, the developer's
+    /// name, and instructions for exiting the Action. Default value: `false`.
+    #[prost(bool, tag = "8")]
+    pub enable_full_screen: bool,
 }
 /// An image displayed in the card.
 #[derive(Clone, PartialEq, ::prost::Message)]
