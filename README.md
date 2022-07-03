@@ -6,8 +6,8 @@
 
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
 
-The library is a fork of [mechiru/googapis](https://github.com/mechiru/googapis) to keep up with 
-the dependency updates and API proto descriptions from Google more frequently.
+The library is a fork of [mechiru/googapis](https://github.com/mechiru/googapis) and [mechiru/gouth](https://github.com/mechiru/gouth) to keep up with 
+the updates and API proto descriptions from Google more frequently and simplify dependencies management.
 
 ## Overview
 This library contains all the code generated from the Google API.
@@ -65,7 +65,6 @@ Cargo.toml:
 ```toml
 [dependencies]
 gcloud-sdk = { version = "0.7", features = ["google-spanner-admin-database-v1"] }
-gouth = { version = "0.2" }
 tonic = { version = "0.7", features = ["tls"] }
 prost = "0.10"
 prost-types = "0.10"
@@ -74,13 +73,13 @@ tokio = { version = "1.14", features = ["rt-multi-thread", "time", "fs", "macros
 
 main.rs:
 ```rust
-use googapis::{
+use gcloud_sdk::{
     google::spanner::admin::database::v1::{
         database_admin_client::DatabaseAdminClient, ListDatabasesRequest,
     },
     CERTIFICATES,
 };
-use gouth::Token;
+use gcloud_sdk::Token;
 use tonic::{
     metadata::MetadataValue,
     transport::{Certificate, Channel, ClientTlsConfig},

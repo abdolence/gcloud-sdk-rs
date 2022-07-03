@@ -1,40 +1,43 @@
-use std::convert::TryFrom;
-use gcloud_sdk::{
-    google::spanner::admin::database::v1::{
-        database_admin_client::DatabaseAdminClient, ListDatabasesRequest,
-    },
-    CERTIFICATES,
+use gcloud_sdk::google::spanner::admin::database::v1::{
+    database_admin_client::DatabaseAdminClient, ListDatabasesRequest,
 };
-use gouth::Token;
-use tonic::{
-    metadata::MetadataValue,
-    transport::{Certificate, Channel, ClientTlsConfig},
-    Request,
-};
+use gcloud_sdk::google_cached_client::{CachedGoogleApiClient, CachedGoogleApiClientBuilder};
+use gcloud_sdk::google_tonic_connector::GoogleConnectorInterceptor;
+use tonic::{transport::Channel, Request};
+
+pub struct GoogleSpannerClientBuilder;
+
+impl GoogleSpannerClientBuilder {
+    pub fn new() -> Self {
+        Self {}
+    }
+}
+
+pub type GoogleDatabaseAdminClient = DatabaseAdminClient<
+    tonic::service::interceptor::InterceptedService<Channel, GoogleConnectorInterceptor>,
+>;
+
+impl CachedGoogleApiClientBuilder<GoogleDatabaseAdminClient> for GoogleSpannerClientBuilder {
+    fn create_client(
+        &self,
+        channel: Channel,
+        interceptor: GoogleConnectorInterceptor,
+    ) -> GoogleDatabaseAdminClient {
+        DatabaseAdminClient::with_interceptor(channel, interceptor)
+    }
+}
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let project = std::env::var("PROJECT")?;
     let instance = std::env::var("INSTANCE")?;
-    let token = Token::new()?;
 
-    let tls_config = ClientTlsConfig::new()
-        .ca_certificate(Certificate::from_pem(CERTIFICATES))
-        .domain_name("spanner.googleapis.com");
+    let spanner_client_factory =
+        CachedGoogleApiClient::new(GoogleSpannerClientBuilder::new(), "spanner.googleapis.com");
 
-    let channel = Channel::from_static("https://spanner.googleapis.com")
-        .tls_config(tls_config)?
-        .connect()
-        .await?;
+    let mut spanner_client = spanner_client_factory.get().await?;
 
-    let mut service = DatabaseAdminClient::with_interceptor(channel, move |mut req: Request<()>| {
-        let token = &*token.header_value().unwrap();
-        let meta: MetadataValue<_> = MetadataValue::try_from(token).unwrap();
-        req.metadata_mut().insert("authorization", meta);
-        Ok(req)
-    });
-
-    let response = service
+    let response = spanner_client
         .list_databases(Request::new(ListDatabasesRequest {
             parent: format!("projects/{}/instances/{}", project, instance),
             page_size: 100,

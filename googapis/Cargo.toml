@@ -393,3 +393,16 @@ maps-fleetengine-v1 = []
 tonic = "0.7"
 prost = "0.10"
 prost-types = "0.10"
+gcemeta = { version = "0.2" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+attohttpc = { version = "0.19", default-features = false, features = ["compress", "tls-rustls", "form"] }
+url = { version = "2.2" }
+jsonwebtoken = { version = "8" }
+hyper = { version ="0.14", features = ["client", "http2", "h2"] }
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+
+[dev-dependencies]
+lazy_static = "1.4"
+rouille = "3.0"
