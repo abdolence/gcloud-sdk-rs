@@ -1,4 +1,4 @@
-# googapis
+# gcloud-sdk for Rust
 
 [![ci](https://github.com/latestbit/gcloud-sdk/workflows/ci/badge.svg)](https://github.com/mechiru/googapis/actions?query=workflow:ci)
 [![Rust Documentation](https://docs.rs/gcloud-sdk/badge.svg)](https://mechiru.github.io/googapis/googapis/index.html)
@@ -6,8 +6,7 @@
 
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
 
-The library is a fork of [mechiru/googapis](https://github.com/mechiru/googapis) and [mechiru/gouth](https://github.com/mechiru/gouth) to keep up with 
-the updates and API proto descriptions from Google more frequently and simplify dependencies management.
+This is not offical gcloud sdk from Google (and it doesn't exist at the moment of this page was updated).
 
 ## Overview
 This library contains all the code generated from the Google API.
@@ -18,6 +17,7 @@ For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub)
 The feature name is the period of the package name of each proto file, replaced by a hyphen.
 If you specify a package, it will automatically load the dependent packages and include them in the build.
 It means that `features = ["google-spanner-admin-database-v1"]` is the same as the code below:
+
 ```rust
 pub mod google {
     pub mod api {
@@ -53,11 +53,6 @@ In addition, multiple features can be specified.
 
 The list of available features can be found [here](./googapis/Cargo.toml#L22-L315).
 
-## Version matrices
-| googapis | tonic | tonic-build |
-|----------|-------|-------------|
-| 0.7.x    | 0.7.x | 0.7.x       |
-
 ## Example
 The complete code can be found [here](./examples/spanner-admin).
 
@@ -71,57 +66,23 @@ prost-types = "0.10"
 tokio = { version = "1.14", features = ["rt-multi-thread", "time", "fs", "macros"] }
 ```
 
-main.rs:
-```rust
-use gcloud_sdk::{
-    google::spanner::admin::database::v1::{
-        database_admin_client::DatabaseAdminClient, ListDatabasesRequest,
-    },
-    CERTIFICATES,
-};
-use gcloud_sdk::Token;
-use tonic::{
-    metadata::MetadataValue,
-    transport::{Certificate, Channel, ClientTlsConfig},
-    Request,
-};
-use std::convert::TryFrom;
+## Fork
+The library is a fork of [mechiru/googapis](https://github.com/mechiru/googapis) and [mechiru/gouth](https://github.com/mechiru/gouth) to keep up with
+the updates and API proto descriptions from Google more frequently and simplify dependencies management.
 
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let project = std::env::var("PROJECT")?;
-    let instance = std::env::var("INSTANCE")?;
-    let token = Token::new()?;
+### Why not to contribute back?
+- Different goals from googapis.
+    * This fork focuses on simplicity and provided authentication capabilities natively.
+    * Has direct dependency to tokio runtime and uses synchronisation primitives (such as Mutex) from tokio.
+    * Provides Facade API and caching client implementation
+- Different development cycles - the original development was updated less frequently than it was needed for me.
 
-    let tls_config = ClientTlsConfig::new()
-        .ca_certificate(Certificate::from_pem(CERTIFICATES))
-        .domain_name("spanner.googleapis.com");
-
-    let channel = Channel::from_static("https://spanner.googleapis.com")
-        .tls_config(tls_config)?
-        .connect()
-        .await?;
-
-    let mut service = DatabaseAdminClient::with_interceptor(channel, move |mut req: Request<()>| {
-        let token = &*token.header_value().unwrap();
-        let meta = MetadataValue::try_from(token).unwrap();
-        req.metadata_mut().insert("authorization", meta);
-        Ok(req)
-    });
-
-    let response = service
-        .list_databases(Request::new(ListDatabasesRequest {
-            parent: format!("projects/{}/instances/{}", project, instance),
-            page_size: 100,
-            ..Default::default()
-        }))
-        .await?;
-
-    println!("RESPONSE={:?}", response);
-
-    Ok(())
-}
-```
+I'd be glad to contribute all of the changes back if author sees the same goals now.
 
 ## License
-Licensed under either of [Apache License, Version 2.0](./LICENSE-APACHE) or [MIT license](./LICENSE-MIT) at your option.
+Licensed under either of [Apache License, Version 2.0](./LICENSE-APACHE)
+or [MIT license](./LICENSE-MIT) at your option.
+
+## Authors
+- [mechiru](https://github.com/mechiru) - the original project
+- Abdulla Abdurakhmanov - updated for recent deps, introduced caching client implementation, merged with gouth.
