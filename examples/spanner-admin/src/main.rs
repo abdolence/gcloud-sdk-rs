@@ -1,4 +1,5 @@
-use googapis::{
+use std::convert::TryFrom;
+use gcloud_sdk::{
     google::spanner::admin::database::v1::{
         database_admin_client::DatabaseAdminClient, ListDatabasesRequest,
     },
@@ -28,7 +29,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut service = DatabaseAdminClient::with_interceptor(channel, move |mut req: Request<()>| {
         let token = &*token.header_value().unwrap();
-        let meta = MetadataValue::from_str(token).unwrap();
+        let meta: MetadataValue<_> = MetadataValue::try_from(token).unwrap();
         req.metadata_mut().insert("authorization", meta);
         Ok(req)
     });
