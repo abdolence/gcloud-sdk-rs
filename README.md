@@ -1,6 +1,6 @@
 # gcloud-sdk for Rust
 
-[![ci](https://github.com/latestbit/gcloud-sdk-rs/workflows/ci/badge.svg)](https://github.com/latestbit/gcloud-sdk-rs/actions?query=workflow:ci)
+[![ci](https://github.com/abdolence/gcloud-sdk-rs/workflows/ci/badge.svg)](https://github.com/abdolence/gcloud-sdk-rs/actions?query=workflow:ci)
 [![Rust Documentation](https://docs.rs/gcloud-sdk/badge.svg)](https://docs.rs/gcloud-sdk)
 [![Latest Version](https://img.shields.io/crates/v/gcloud-sdk.svg)](https://crates.io/crates/gcloud-sdk)
 
