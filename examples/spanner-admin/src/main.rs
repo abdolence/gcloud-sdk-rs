@@ -33,7 +33,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let instance = std::env::var("INSTANCE")?;
 
     let spanner_client_factory =
-        CachedGoogleApiClient::new(GoogleSpannerClientBuilder::new(), "spanner.googleapis.com");
+        CachedGoogleApiClient::new(GoogleSpannerClientBuilder::new(), "spanner.googleapis.com", None);
 
     let mut spanner_client = spanner_client_factory.get().await?;
 

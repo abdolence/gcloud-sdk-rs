@@ -1,8 +1,10 @@
-use crate::google_tonic_connector::GoogleConnectorInterceptor;
+use std::sync::{Arc, RwLock};
+
 use async_trait::async_trait;
 use chrono::prelude::*;
-use std::sync::{Arc, RwLock};
 use tonic::transport::Channel;
+
+use crate::google_tonic_connector::GoogleConnectorInterceptor;
 
 #[async_trait]
 pub trait CachedGoogleApiClientBuilder<C> {
@@ -10,34 +12,36 @@ pub trait CachedGoogleApiClientBuilder<C> {
 }
 
 pub struct CachedGoogleApiClient<B, C>
-where
-    B: CachedGoogleApiClientBuilder<C>,
-    C: Clone,
+    where
+        B: CachedGoogleApiClientBuilder<C>,
+        C: Clone,
 {
     builder: B,
     google_api_url: &'static str,
+    cloud_resource_prefix_meta: Option<String>,
     state: Arc<RwLock<Option<CachedGoogleApiClientState<C>>>>,
 }
 
 #[derive(Clone)]
 struct CachedGoogleApiClientState<C>
-where
-    C: Clone,
+    where
+        C: Clone,
 {
     cached_at: DateTime<Utc>,
     client: C,
 }
 
 impl<B, C> CachedGoogleApiClient<B, C>
-where
-    B: CachedGoogleApiClientBuilder<C>,
-    C: Clone,
+    where
+        B: CachedGoogleApiClientBuilder<C>,
+        C: Clone,
 {
-    pub fn new(builder: B, google_api_url: &'static str) -> Self {
+    pub fn new(builder: B, google_api_url: &'static str, cloud_resource_prefix_meta: Option<String>) -> Self {
         Self {
             state: Arc::new(RwLock::new(None)),
             builder: builder,
             google_api_url: google_api_url,
+            cloud_resource_prefix_meta: cloud_resource_prefix_meta
         }
     }
 
@@ -63,9 +67,10 @@ where
                     self.google_api_url.as_ref(),
                     &tls_config,
                 )
-                .await?;
+                    .await?;
 
-                let interceptor = GoogleConnectorInterceptor::new().await?;
+                let interceptor = GoogleConnectorInterceptor::with_cloud_resource_prefix(
+                    self.cloud_resource_prefix_meta.clone()).await?;
 
                 let new_client = self.builder.create_client(channel, interceptor);
                 {
