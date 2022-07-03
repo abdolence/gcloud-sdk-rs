@@ -5,17 +5,11 @@ use gcloud_sdk::google_cached_client::{CachedGoogleApiClient, CachedGoogleApiCli
 use gcloud_sdk::google_tonic_connector::GoogleConnectorInterceptor;
 use tonic::{transport::Channel, Request};
 
-pub struct GoogleSpannerClientBuilder;
-
-impl GoogleSpannerClientBuilder {
-    pub fn new() -> Self {
-        Self {}
-    }
-}
-
 pub type GoogleDatabaseAdminClient = DatabaseAdminClient<
     tonic::service::interceptor::InterceptedService<Channel, GoogleConnectorInterceptor>,
 >;
+
+pub struct GoogleSpannerClientBuilder;
 
 impl CachedGoogleApiClientBuilder<GoogleDatabaseAdminClient> for GoogleSpannerClientBuilder {
     fn create_client(
@@ -33,7 +27,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let instance = std::env::var("INSTANCE")?;
 
     let spanner_client_factory =
-        CachedGoogleApiClient::new(GoogleSpannerClientBuilder::new(), "spanner.googleapis.com", None);
+        CachedGoogleApiClient::new(GoogleSpannerClientBuilder{}, "spanner.googleapis.com", None);
 
     let mut spanner_client = spanner_client_factory.get().await?;
 
