@@ -59,7 +59,7 @@ The complete code can be found [here](./examples/spanner-admin).
 Cargo.toml:
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.7", features = ["google-spanner-admin-database-v1"] }
+gcloud-sdk = { version = "0.8", features = ["google-spanner-admin-database-v1"] }
 tonic = { version = "0.7", features = ["tls"] }
 prost = "0.10"
 prost-types = "0.10"
