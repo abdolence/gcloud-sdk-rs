@@ -26,16 +26,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let project = std::env::var("PROJECT")?;
     let instance = std::env::var("INSTANCE")?;
 
-    let spanner_client_factory = CachedGoogleApiClient::new(
+    let spanner_client = CachedGoogleApiClient::new(
         GoogleSpannerClientBuilder {},
         "spanner.googleapis.com",
         chrono::Duration::minutes(15),
         None,
     );
 
-    let mut spanner_client = spanner_client_factory.get().await?;
-
-    let response = spanner_client
+    let response = spanner_client.get().await?
         .list_databases(Request::new(ListDatabasesRequest {
             parent: format!("projects/{}/instances/{}", project, instance),
             page_size: 100,
