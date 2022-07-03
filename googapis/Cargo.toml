@@ -390,7 +390,7 @@ grafeas-v1beta1-source = []
 maps-fleetengine-v1 = []
 
 [dependencies]
-tonic = "0.7"
+tonic = { version = "0.7", features = ["tls"] }
 prost = "0.10"
 prost-types = "0.10"
 gcemeta = { version = "0.2" }
