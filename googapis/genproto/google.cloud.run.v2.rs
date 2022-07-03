@@ -6,24 +6,24 @@ pub struct Condition {
     /// <https://github.com/knative/serving/blob/main/docs/spec/errors.md#error-conditions-and-reporting>
     /// Types common to all resources include:
     /// * "Ready": True when the Resource is ready.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub r#type: ::prost::alloc::string::String,
     /// State of the condition.
-    #[prost(enumeration = "condition::State", tag = "2")]
+    #[prost(enumeration="condition::State", tag="2")]
     pub state: i32,
     /// Human readable message indicating details about the current status.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub message: ::prost::alloc::string::String,
     /// Last time the condition transitioned from one status to another.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub last_transition_time: ::core::option::Option<::prost_types::Timestamp>,
     /// How to interpret failures of this condition, one of Error, Warning, Info
-    #[prost(enumeration = "condition::Severity", tag = "5")]
+    #[prost(enumeration="condition::Severity", tag="5")]
     pub severity: i32,
     /// The reason for this condition. Depending on the condition type,
     /// it will populate one of these fields.
     /// Successful conditions may not have a reason.
-    #[prost(oneof = "condition::Reasons", tags = "6, 9, 11")]
+    #[prost(oneof="condition::Reasons", tags="6, 9, 11")]
     pub reasons: ::core::option::Option<condition::Reasons>,
 }
 /// Nested message and enum types in `Condition`.
@@ -144,13 +144,13 @@ pub mod condition {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Reasons {
         /// A common (service-level) reason for this condition.
-        #[prost(enumeration = "CommonReason", tag = "6")]
+        #[prost(enumeration="CommonReason", tag="6")]
         Reason(i32),
         /// A reason for the revision condition.
-        #[prost(enumeration = "RevisionReason", tag = "9")]
+        #[prost(enumeration="RevisionReason", tag="9")]
         RevisionReason(i32),
         /// A reason for the execution condition.
-        #[prost(enumeration = "ExecutionReason", tag = "11")]
+        #[prost(enumeration="ExecutionReason", tag="11")]
         ExecutionReason(i32),
     }
 }
@@ -162,11 +162,11 @@ pub mod condition {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Container {
     /// Name of the container specified as a DNS_LABEL.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Required. URL of the Container image in Google Container Registry or Google Artifact
     /// Registry. More info: <https://kubernetes.io/docs/concepts/containers/images>
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub image: ::prost::alloc::string::String,
     /// Entrypoint array. Not executed within a shell.
     /// The docker image's ENTRYPOINT is used if this is not provided.
@@ -177,7 +177,7 @@ pub struct Container {
     /// regardless of whether the variable exists or not.
     /// More info:
     /// <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell>
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub command: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Arguments to the entrypoint.
     /// The docker image's CMD is used if this is not provided.
@@ -188,15 +188,15 @@ pub struct Container {
     /// regardless of whether the variable exists or not.
     /// More info:
     /// <https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/#running-a-command-in-a-shell>
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of environment variables to set in the container.
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag="5")]
     pub env: ::prost::alloc::vec::Vec<EnvVar>,
     /// Compute Resource requirements by this container.
     /// More info:
     /// <https://kubernetes.io/docs/concepts/storage/persistent-volumes#resources>
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub resources: ::core::option::Option<ResourceRequirements>,
     /// List of ports to expose from the container. Only a single port can be
     /// specified. The specified ports must be listening on all interfaces
@@ -204,10 +204,10 @@ pub struct Container {
     ///
     /// If omitted, a port number will be chosen and passed to the container
     /// through the PORT environment variable for the container to listen on.
-    #[prost(message, repeated, tag = "7")]
+    #[prost(message, repeated, tag="7")]
     pub ports: ::prost::alloc::vec::Vec<ContainerPort>,
     /// Volume to mount into the container's filesystem.
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag="8")]
     pub volume_mounts: ::prost::alloc::vec::Vec<VolumeMount>,
 }
 /// ResourceRequirements describes the compute resource requirements.
@@ -218,11 +218,10 @@ pub struct ResourceRequirements {
     /// least 2Gi of memory.
     /// The values of the map is string form of the 'quantity' k8s type:
     /// <https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/apimachinery/pkg/api/resource/quantity.go>
-    #[prost(map = "string, string", tag = "1")]
-    pub limits:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="1")]
+    pub limits: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Determines whether CPU should be throttled or not outside of requests.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub cpu_idle: bool,
 }
 /// EnvVar represents an environment variable present in a Container.
@@ -230,9 +229,9 @@ pub struct ResourceRequirements {
 pub struct EnvVar {
     /// Required. Name of the environment variable. Must be a C_IDENTIFIER, and mnay not
     /// exceed 32768 characters.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    #[prost(oneof = "env_var::Values", tags = "2, 3")]
+    #[prost(oneof="env_var::Values", tags="2, 3")]
     pub values: ::core::option::Option<env_var::Values>,
 }
 /// Nested message and enum types in `EnvVar`.
@@ -247,10 +246,10 @@ pub mod env_var {
         /// references will never be expanded, regardless of whether the variable
         /// exists or not.
         /// Defaults to "", and the maximum length is 32768 bytes.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         Value(::prost::alloc::string::String),
         /// Source for the environment variable's value.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         ValueSource(super::EnvVarSource),
     }
 }
@@ -258,7 +257,7 @@ pub mod env_var {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvVarSource {
     /// Selects a secret and a specific version from Cloud Secret Manager.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub secret_key_ref: ::core::option::Option<SecretKeySelector>,
 }
 /// SecretEnvVarSource represents a source for the value of an EnvVar.
@@ -268,11 +267,11 @@ pub struct SecretKeySelector {
     /// Format: {secret_name} if the secret is in the same project.
     /// projects/{project}/secrets/{secret_name} if the secret is
     /// in a different project.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub secret: ::prost::alloc::string::String,
     /// The Cloud Secret Manager secret version.
     /// Can be 'latest' for the latest value or an integer for a specific version.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub version: ::prost::alloc::string::String,
 }
 /// ContainerPort represents a network port in a single container.
@@ -280,34 +279,34 @@ pub struct SecretKeySelector {
 pub struct ContainerPort {
     /// If specified, used to specify which protocol to use.
     /// Allowed values are "http1" and "h2c".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Port number the container listens on.
     /// This must be a valid TCP port number, 0 < container_port < 65536.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub container_port: i32,
 }
 /// VolumeMount describes a mounting of a Volume within a container.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VolumeMount {
     /// Required. This must match the Name of a Volume.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Required. Path within the container at which the volume should be mounted.  Must
     /// not contain ':'. For Cloud SQL volumes, it can be left empty, or must
     /// otherwise be `/cloudsql`. All instances defined in the Volume will be
     /// available as `/cloudsql/\[instance\]`. For more information on Cloud SQL
     /// volumes, visit <https://cloud.google.com/sql/docs/mysql/connect-run>
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub mount_path: ::prost::alloc::string::String,
 }
 /// Volume represents a named volume in a container.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Volume {
     /// Required. Volume's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
-    #[prost(oneof = "volume::VolumeType", tags = "2, 3")]
+    #[prost(oneof="volume::VolumeType", tags="2, 3")]
     pub volume_type: ::core::option::Option<volume::VolumeType>,
 }
 /// Nested message and enum types in `Volume`.
@@ -316,12 +315,12 @@ pub mod volume {
     pub enum VolumeType {
         /// Secret represents a secret that should populate this volume.
         /// More info: <https://kubernetes.io/docs/concepts/storage/volumes#secret>
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         Secret(super::SecretVolumeSource),
         /// For Cloud SQL volumes, contains the specific instances that should be
         /// mounted. Visit <https://cloud.google.com/sql/docs/mysql/connect-run> for
         /// more information on how to connect Cloud SQL and Cloud Run.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         CloudSqlInstance(super::CloudSqlInstance),
     }
 }
@@ -334,14 +333,14 @@ pub struct SecretVolumeSource {
     /// Format: {secret} if the secret is in the same project.
     /// projects/{project}/secrets/{secret} if the secret is
     /// in a different project.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub secret: ::prost::alloc::string::String,
     /// If unspecified, the volume will expose a file whose name is the
     /// secret, relative to VolumeMount.mount_path.
     /// If specified, the key will be used as the version to fetch from Cloud
     /// Secret Manager and the path will be the name of the file exposed in the
     /// volume. When items are defined, they must specify a path and a version.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub items: ::prost::alloc::vec::Vec<VersionToPath>,
     /// Integer representation of mode bits to use on created files by default.
     /// Must be a value between 0000 and 0777 (octal), defaulting to 0644.
@@ -361,7 +360,7 @@ pub struct SecretVolumeSource {
     ///
     /// This might be in conflict with other options that affect the
     /// file mode, like fsGroup, and as a result, other mode bits could be set.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub default_mode: i32,
 }
 /// VersionToPath maps a specific version of a secret to a relative file to mount
@@ -369,11 +368,11 @@ pub struct SecretVolumeSource {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VersionToPath {
     /// Required. The relative path of the secret in the container.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub path: ::prost::alloc::string::String,
     /// The Cloud Secret Manager secret version.
     /// Can be 'latest' for the latest value or an integer for a specific version.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub version: ::prost::alloc::string::String,
     /// Integer octal mode bits to use on this file, must be a value between
     /// 01 and 0777 (octal). If 0 or not set, the Volume's default mode will be
@@ -390,7 +389,7 @@ pub struct VersionToPath {
     /// (base-10).
     /// * This might be in conflict with other options that affect the
     /// file mode, like fsGroup, and the result can be other mode bits set.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub mode: i32,
 }
 /// Represents a specific Cloud SQL instance.
@@ -401,7 +400,7 @@ pub struct CloudSqlInstance {
     /// <https://cloud.google.com/sql/docs/mysql/connect-run> for more information on
     /// how to connect Cloud SQL and Cloud Run. Format:
     /// {project}:{location}:{instance}
-    #[prost(string, repeated, tag = "1")]
+    #[prost(string, repeated, tag="1")]
     pub instances: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// VPC Access settings. For more information on creating a VPC Connector, visit
@@ -412,10 +411,10 @@ pub struct CloudSqlInstance {
 pub struct VpcAccess {
     /// VPC Access connector name.
     /// Format: projects/{project}/locations/{location}/connectors/{connector}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub connector: ::prost::alloc::string::String,
     /// Traffic VPC egress settings.
-    #[prost(enumeration = "vpc_access::VpcEgress", tag = "2")]
+    #[prost(enumeration="vpc_access::VpcEgress", tag="2")]
     pub egress: i32,
 }
 /// Nested message and enum types in `VpcAccess`.
@@ -439,9 +438,9 @@ pub struct BinaryAuthorization {
     /// If use_default is False, then it must be empty.
     /// For more information on breakglass, see
     /// <https://cloud.google.com/binary-authorization/docs/using-breakglass>
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub breakglass_justification: ::prost::alloc::string::String,
-    #[prost(oneof = "binary_authorization::BinauthzMethod", tags = "1")]
+    #[prost(oneof="binary_authorization::BinauthzMethod", tags="1")]
     pub binauthz_method: ::core::option::Option<binary_authorization::BinauthzMethod>,
 }
 /// Nested message and enum types in `BinaryAuthorization`.
@@ -450,7 +449,7 @@ pub mod binary_authorization {
     pub enum BinauthzMethod {
         /// If True, indicates to use the default project's binary authorization
         /// policy. If False, binary authorization will be disabled.
-        #[prost(bool, tag = "1")]
+        #[prost(bool, tag="1")]
         UseDefault(bool),
     }
 }
@@ -458,10 +457,10 @@ pub mod binary_authorization {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RevisionScaling {
     /// Minimum number of serving instances that this resource should have.
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub min_instance_count: i32,
     /// Maximum number of serving instances that this resource should have.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub max_instance_count: i32,
 }
 /// Allowed ingress traffic for the Container.
@@ -494,7 +493,7 @@ pub struct GetRevisionRequest {
     /// Required. The full name of the Revision.
     /// Format:
     /// projects/{project}/locations/{location}/services/{service}/revisions/{revision}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a list of Revisions.
@@ -504,28 +503,28 @@ pub struct ListRevisionsRequest {
     /// To list all Revisions across Services, use "-" instead of Service name.
     /// Format:
     /// projects/{project}/locations/{location}/services/{service}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of revisions to return in this call.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token received from a previous call to ListRevisions.
     /// All other parameters must match.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// If true, returns deleted (but unexpired) resources along with active ones.
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag="4")]
     pub show_deleted: bool,
 }
 /// Response message containing a list of Revisions.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRevisionsResponse {
     /// The resulting list of Revisions.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub revisions: ::prost::alloc::vec::Vec<Revision>,
     /// A token indicating there are more items than page_size. Use it in the next
     /// ListRevisions request to continue.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for deleting a retired Revision.
@@ -536,15 +535,15 @@ pub struct DeleteRevisionRequest {
     /// Required. The name of the Revision to delete.
     /// Format:
     /// projects/{project}/locations/{location}/services/{service}/revisions/{revision}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Indicates that the request should be validated without actually
     /// deleting any resources.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub validate_only: bool,
     /// A system-generated fingerprint for this version of the
     /// resource. This may be used to detect modification conflict during updates.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub etag: ::prost::alloc::string::String,
 }
 /// A Revision is an immutable snapshot of code and configuration.  A Revision
@@ -553,15 +552,15 @@ pub struct DeleteRevisionRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Revision {
     /// Output only. The unique name of this Revision.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Server assigned unique identifier for the Revision. The value is a UUID4
     /// string and guaranteed to remain unchanged until the resource is deleted.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. A number that monotonically increases every time the user
     /// modifies the desired state.
-    #[prost(int64, tag = "3")]
+    #[prost(int64, tag="3")]
     pub generation: i64,
     /// KRM-style labels for the resource.
     /// User-provided labels are shared with Google's billing system, so they can
@@ -572,106 +571,115 @@ pub struct Revision {
     /// Cloud Run will populate some labels with 'run.googleapis.com' or
     /// 'serving.knative.dev' namespaces. Those labels are read-only, and user
     /// changes will not be preserved.
-    #[prost(map = "string, string", tag = "4")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="4")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// KRM-style annotations for the resource.
-    #[prost(map = "string, string", tag = "5")]
-    pub annotations:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="5")]
+    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. The creation time.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last-modified time.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. For a deleted resource, the deletion time. It is only
     /// populated as a response to a Delete request.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. For a deleted resource, the time after which it will be
     /// permamently deleted. It is only populated as a response to a Delete
     /// request.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Set the launch stage to a preview stage on write to allow use of preview
     /// features in that stage. On read, describes whether the resource uses
     /// preview features. Launch Stages are defined at [Google Cloud Platform
     /// Launch Stages](<https://cloud.google.com/terms/launch-stages>).
-    #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "10")]
+    #[prost(enumeration="super::super::super::api::LaunchStage", tag="10")]
     pub launch_stage: i32,
     /// Output only. The name of the parent service.
-    #[prost(string, tag = "11")]
+    #[prost(string, tag="11")]
     pub service: ::prost::alloc::string::String,
     /// Scaling settings for this revision.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag="12")]
     pub scaling: ::core::option::Option<RevisionScaling>,
     /// VPC Access configuration for this Revision. For more information, visit
     /// <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag="13")]
     pub vpc_access: ::core::option::Option<VpcAccess>,
     /// Sets the maximum number of requests that each serving instance can receive.
-    #[prost(int32, tag = "34")]
+    #[prost(int32, tag="34")]
     pub max_instance_request_concurrency: i32,
     /// Max allowed time for an instance to respond to a request.
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag="15")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Email address of the IAM service account associated with the revision of
     /// the service. The service account represents the identity of the running
     /// revision, and determines what permissions the revision has.
-    #[prost(string, tag = "16")]
+    #[prost(string, tag="16")]
     pub service_account: ::prost::alloc::string::String,
     /// Holds the single container that defines the unit of execution for this
     /// Revision.
-    #[prost(message, repeated, tag = "17")]
+    #[prost(message, repeated, tag="17")]
     pub containers: ::prost::alloc::vec::Vec<Container>,
     /// A list of Volumes to make available to containers.
-    #[prost(message, repeated, tag = "18")]
+    #[prost(message, repeated, tag="18")]
     pub volumes: ::prost::alloc::vec::Vec<Volume>,
     /// The execution environment being used to host this Revision.
-    #[prost(enumeration = "ExecutionEnvironment", tag = "20")]
+    #[prost(enumeration="ExecutionEnvironment", tag="20")]
     pub execution_environment: i32,
     /// A reference to a customer managed encryption key (CMEK) to use to encrypt
     /// this container image. For more information, go to
     /// <https://cloud.google.com/run/docs/securing/using-cmek>
-    #[prost(string, tag = "21")]
+    #[prost(string, tag="21")]
     pub encryption_key: ::prost::alloc::string::String,
     /// Output only. Indicates whether the resource's reconciliation is still in progress.
     /// See comments in `Service.reconciling` for additional information on
     /// reconciliation process in Cloud Run.
-    #[prost(bool, tag = "30")]
+    #[prost(bool, tag="30")]
     pub reconciling: bool,
     /// Output only. The Condition of this Revision, containing its readiness status, and
     /// detailed error information in case it did not reach a serving state.
-    #[prost(message, repeated, tag = "31")]
+    #[prost(message, repeated, tag="31")]
     pub conditions: ::prost::alloc::vec::Vec<Condition>,
     /// Output only. The generation of this Revision currently serving traffic. See comments in
     /// `reconciling` for additional information on reconciliation process in Cloud
     /// Run.
-    #[prost(int64, tag = "32")]
+    #[prost(int64, tag="32")]
     pub observed_generation: i64,
     /// Output only. The Google Console URI to obtain logs for the Revision.
-    #[prost(string, tag = "33")]
+    #[prost(string, tag="33")]
     pub log_uri: ::prost::alloc::string::String,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
-    #[prost(string, tag = "99")]
+    #[prost(string, tag="99")]
     pub etag: ::prost::alloc::string::String,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod revisions_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Cloud Run Revision Control Plane API."]
+    /// Cloud Run Revision Control Plane API.
     #[derive(Debug, Clone)]
     pub struct RevisionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl RevisionsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> RevisionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -684,64 +692,75 @@ pub mod revisions_client {
         ) -> RevisionsClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             RevisionsClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Gets information about a Revision."]
+        /// Gets information about a Revision.
         pub async fn get_revision(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRevisionRequest>,
         ) -> Result<tonic::Response<super::Revision>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.cloud.run.v2.Revisions/GetRevision");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Revisions/GetRevision",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List Revisions from a given Service, or from a given location."]
+        /// List Revisions from a given Service, or from a given location.
         pub async fn list_revisions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRevisionsRequest>,
         ) -> Result<tonic::Response<super::ListRevisionsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Revisions/ListRevisions",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Delete a Revision."]
+        /// Delete a Revision.
         pub async fn delete_revision(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRevisionRequest>,
@@ -749,12 +768,15 @@ pub mod revisions_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Revisions/DeleteRevision",
@@ -769,49 +791,47 @@ pub mod revisions_client {
 pub struct RevisionTemplate {
     /// The unique name for the revision. If this field is omitted, it will be
     /// automatically generated based on the Service name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub revision: ::prost::alloc::string::String,
     /// KRM-style labels for the resource.
-    #[prost(map = "string, string", tag = "2")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="2")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// KRM-style annotations for the resource.
-    #[prost(map = "string, string", tag = "3")]
-    pub annotations:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="3")]
+    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Scaling settings for this Revision.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub scaling: ::core::option::Option<RevisionScaling>,
     /// VPC Access configuration to use for this Revision. For more information,
     /// visit <https://cloud.google.com/run/docs/configuring/connecting-vpc.>
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub vpc_access: ::core::option::Option<VpcAccess>,
     /// Max allowed time for an instance to respond to a request.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Email address of the IAM service account associated with the revision of
     /// the service. The service account represents the identity of the running
     /// revision, and determines what permissions the revision has. If not
     /// provided, the revision will use the project's default service account.
-    #[prost(string, tag = "9")]
+    #[prost(string, tag="9")]
     pub service_account: ::prost::alloc::string::String,
     /// Holds the single container that defines the unit of execution for this
     /// Revision.
-    #[prost(message, repeated, tag = "10")]
+    #[prost(message, repeated, tag="10")]
     pub containers: ::prost::alloc::vec::Vec<Container>,
     /// A list of Volumes to make available to containers.
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag="11")]
     pub volumes: ::prost::alloc::vec::Vec<Volume>,
     /// The sandbox environment to host this Revision.
-    #[prost(enumeration = "ExecutionEnvironment", tag = "13")]
+    #[prost(enumeration="ExecutionEnvironment", tag="13")]
     pub execution_environment: i32,
     /// A reference to a customer managed encryption key (CMEK) to use to encrypt
     /// this container image. For more information, go to
     /// <https://cloud.google.com/run/docs/securing/using-cmek>
-    #[prost(string, tag = "14")]
+    #[prost(string, tag="14")]
     pub encryption_key: ::prost::alloc::string::String,
     /// Sets the maximum number of requests that each serving instance can receive.
-    #[prost(int32, tag = "15")]
+    #[prost(int32, tag="15")]
     pub max_instance_request_concurrency: i32,
 }
 /// Holds a single traffic routing entry for the Service. Allocations can be done
@@ -819,38 +839,38 @@ pub struct RevisionTemplate {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficTarget {
     /// The allocation type for this traffic target.
-    #[prost(enumeration = "TrafficTargetAllocationType", tag = "1")]
+    #[prost(enumeration="TrafficTargetAllocationType", tag="1")]
     pub r#type: i32,
     /// Revision to which to send this portion of traffic, if traffic allocation is
     /// by revision.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub revision: ::prost::alloc::string::String,
     /// Specifies percent of the traffic to this Revision.
     /// This defaults to zero if unspecified.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub percent: i32,
     /// Indicates a string to be part of the URI to exclusively reference this
     /// target.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub tag: ::prost::alloc::string::String,
 }
 /// Represents the observed state of a single `TrafficTarget` entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TrafficTargetStatus {
     /// The allocation type for this traffic target.
-    #[prost(enumeration = "TrafficTargetAllocationType", tag = "1")]
+    #[prost(enumeration="TrafficTargetAllocationType", tag="1")]
     pub r#type: i32,
     /// Revision to which this traffic is sent.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub revision: ::prost::alloc::string::String,
     /// Specifies percent of the traffic to this Revision.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub percent: i32,
     /// Indicates the string used in the URI to exclusively reference this target.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub tag: ::prost::alloc::string::String,
     /// Displays the target URI.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub uri: ::prost::alloc::string::String,
 }
 /// The type of instance allocation.
@@ -869,34 +889,34 @@ pub enum TrafficTargetAllocationType {
 pub struct CreateServiceRequest {
     /// Required. The location and project in which this service should be created.
     /// Format: projects/{projectnumber}/locations/{location}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Service instance to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub service: ::core::option::Option<Service>,
     /// Required. The unique identifier for the Service. The name of the service becomes
     /// {parent}/services/{service_id}.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub service_id: ::prost::alloc::string::String,
     /// Indicates that the request should be validated and default values
     /// populated, without persisting the request or creating any resources.
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag="4")]
     pub validate_only: bool,
 }
 /// Request message for updating a service.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. The Service to be updated.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub service: ::core::option::Option<Service>,
     /// Indicates that the request should be validated and default values
     /// populated, without persisting the request or updating any resources.
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag="3")]
     pub validate_only: bool,
     /// If set to true, and if the Service does not exist, it will create a new
     /// one. Caller must have both create and update permissions for this call if
     /// this is set to true.
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag="4")]
     pub allow_missing: bool,
 }
 /// Request message for retrieving a list of Services.
@@ -905,28 +925,28 @@ pub struct ListServicesRequest {
     /// Required. The location and project to list resources on.
     /// Location must be a valid GCP region, and may not be the "-" wildcard.
     /// Format: projects/{projectnumber}/locations/{location}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Maximum number of Services to return in this call.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token received from a previous call to ListServices.
     /// All other parameters must match.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// If true, returns deleted (but unexpired) resources along with active ones.
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag="4")]
     pub show_deleted: bool,
 }
 /// Response message containing a list of Services.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The resulting list of Services.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub services: ::prost::alloc::vec::Vec<Service>,
     /// A token indicating there are more items than page_size. Use it in the next
     /// ListServices request to continue.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for obtaining a Service by its full name.
@@ -934,7 +954,7 @@ pub struct ListServicesResponse {
 pub struct GetServiceRequest {
     /// Required. The full name of the Service.
     /// Format: projects/{projectnumber}/locations/{location}/services/{service}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message to delete a Service by its full name.
@@ -942,15 +962,15 @@ pub struct GetServiceRequest {
 pub struct DeleteServiceRequest {
     /// Required. The full name of the Service.
     /// Format: projects/{projectnumber}/locations/{location}/services/{service}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Indicates that the request should be validated without actually
     /// deleting any resources.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub validate_only: bool,
     /// A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub etag: ::prost::alloc::string::String,
 }
 /// Service acts as a top-level container that manages a set of
@@ -966,21 +986,21 @@ pub struct Service {
     ///
     /// Format:
     /// projects/{project}/locations/{location}/services/{service_id}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// User-provided description of the Service. This field currently has a
     /// 512-character limit.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub description: ::prost::alloc::string::String,
     /// Output only. Server assigned unique identifier for the trigger. The value is a UUID4
     /// string and guaranteed to remain unchanged until the resource is deleted.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. A number that monotonically increases every time the user
     /// modifies the desired state.
     /// Please note that unlike v1, this is an int64 value. As with most Google
     /// APIs, its JSON representation will be a `string` instead of an `integer`.
-    #[prost(int64, tag = "4")]
+    #[prost(int64, tag="4")]
     pub generation: i64,
     /// Map of string keys and values that can be used to organize and categorize
     /// objects.
@@ -992,100 +1012,98 @@ pub struct Service {
     /// Cloud Run will populate some labels with 'run.googleapis.com' or
     /// 'serving.knative.dev' namespaces. Those labels are read-only, and user
     /// changes will not be preserved.
-    #[prost(map = "string, string", tag = "5")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="5")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Unstructured key value map that may be set by external tools to store and
     /// arbitrary metadata. They are not queryable and should be preserved
     /// when modifying objects. Cloud Run will populate some annotations using
     /// 'run.googleapis.com' or 'serving.knative.dev' namespaces. This field
     /// follows Kubernetes annotations' namespacing, limits, and rules. More info:
     /// <https://kubernetes.io/docs/user-guide/annotations>
-    #[prost(map = "string, string", tag = "6")]
-    pub annotations:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="6")]
+    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. The creation time.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last-modified time.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The deletion time.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. For a deleted resource, the time after which it will be
     /// permamently deleted.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Email address of the authenticated creator.
-    #[prost(string, tag = "11")]
+    #[prost(string, tag="11")]
     pub creator: ::prost::alloc::string::String,
     /// Output only. Email address of the last authenticated modifier.
-    #[prost(string, tag = "12")]
+    #[prost(string, tag="12")]
     pub last_modifier: ::prost::alloc::string::String,
     /// Arbitrary identifier for the API client.
-    #[prost(string, tag = "13")]
+    #[prost(string, tag="13")]
     pub client: ::prost::alloc::string::String,
     /// Arbitrary version identifier for the API client.
-    #[prost(string, tag = "14")]
+    #[prost(string, tag="14")]
     pub client_version: ::prost::alloc::string::String,
     /// Provides the ingress settings for this Service. On output, returns the
     /// currently observed ingress settings, or INGRESS_TRAFFIC_UNSPECIFIED if no
     /// revision is active.
-    #[prost(enumeration = "IngressTraffic", tag = "15")]
+    #[prost(enumeration="IngressTraffic", tag="15")]
     pub ingress: i32,
     /// The launch stage as defined by [Google Cloud Platform
     /// Launch Stages](<https://cloud.google.com/terms/launch-stages>).
     /// Cloud Run supports `ALPHA`, `BETA`, and `GA`. If no value is specified, GA
     /// is assumed.
-    #[prost(enumeration = "super::super::super::api::LaunchStage", tag = "16")]
+    #[prost(enumeration="super::super::super::api::LaunchStage", tag="16")]
     pub launch_stage: i32,
     /// Settings for the Binary Authorization feature.
-    #[prost(message, optional, tag = "17")]
+    #[prost(message, optional, tag="17")]
     pub binary_authorization: ::core::option::Option<BinaryAuthorization>,
     /// Required. The template used to create revisions for this Service.
-    #[prost(message, optional, tag = "18")]
+    #[prost(message, optional, tag="18")]
     pub template: ::core::option::Option<RevisionTemplate>,
     /// Specifies how to distribute traffic over a collection of Revisions
     /// belonging to the Service. If traffic is empty or not provided, defaults to
     /// 100% traffic to the latest `Ready` Revision.
-    #[prost(message, repeated, tag = "19")]
+    #[prost(message, repeated, tag="19")]
     pub traffic: ::prost::alloc::vec::Vec<TrafficTarget>,
     /// Output only. The generation of this Service currently serving traffic. See comments in
     /// `reconciling` for additional information on reconciliation process in Cloud
     /// Run.
     /// Please note that unlike v1, this is an int64 value. As with most Google
     /// APIs, its JSON representation will be a `string` instead of an `integer`.
-    #[prost(int64, tag = "30")]
+    #[prost(int64, tag="30")]
     pub observed_generation: i64,
     /// Output only. The Condition of this Service, containing its readiness status, and
     /// detailed error information in case it did not reach a serving state. See
     /// comments in `reconciling` for additional information on reconciliation
     /// process in Cloud Run.
-    #[prost(message, optional, tag = "31")]
+    #[prost(message, optional, tag="31")]
     pub terminal_condition: ::core::option::Option<Condition>,
     /// Output only. The Conditions of all other associated sub-resources. They contain
     /// additional diagnostics information in case the Service does not reach its
     /// Serving state. See comments in `reconciling` for additional information on
     /// reconciliation process in Cloud Run.
-    #[prost(message, repeated, tag = "32")]
+    #[prost(message, repeated, tag="32")]
     pub conditions: ::prost::alloc::vec::Vec<Condition>,
     /// Output only. Name of the latest revision that is serving traffic. See comments in
     /// `reconciling` for additional information on reconciliation process in Cloud
     /// Run.
-    #[prost(string, tag = "33")]
+    #[prost(string, tag="33")]
     pub latest_ready_revision: ::prost::alloc::string::String,
     /// Output only. Name of the last created revision. See comments in `reconciling` for
     /// additional information on reconciliation process in Cloud Run.
-    #[prost(string, tag = "34")]
+    #[prost(string, tag="34")]
     pub latest_created_revision: ::prost::alloc::string::String,
     /// Output only. Detailed status information for corresponding traffic targets. See comments
     /// in `reconciling` for additional information on reconciliation process in
     /// Cloud Run.
-    #[prost(message, repeated, tag = "35")]
+    #[prost(message, repeated, tag="35")]
     pub traffic_statuses: ::prost::alloc::vec::Vec<TrafficTargetStatus>,
     /// Output only. The main URI in which this Service is serving traffic.
-    #[prost(string, tag = "36")]
+    #[prost(string, tag="36")]
     pub uri: ::prost::alloc::string::String,
     /// Output only. Returns true if the Service is currently being acted upon by the system to
     /// bring it into the desired state.
@@ -1109,27 +1127,38 @@ pub struct Service {
     /// `latest_ready_revision` will have the state of the last serving revision,
     /// or empty for newly created Services. Additional information on the failure
     /// can be found in `terminal_condition` and `conditions`.
-    #[prost(bool, tag = "98")]
+    #[prost(bool, tag="98")]
     pub reconciling: bool,
     /// Output only. A system-generated fingerprint for this version of the
     /// resource. May be used to detect modification conflict during updates.
-    #[prost(string, tag = "99")]
+    #[prost(string, tag="99")]
     pub etag: ::prost::alloc::string::String,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod services_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Cloud Run Service Control Plane API"]
+    /// Cloud Run Service Control Plane API
     #[derive(Debug, Clone)]
     pub struct ServicesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl ServicesClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> ServicesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -1142,31 +1171,35 @@ pub mod services_client {
         ) -> ServicesClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             ServicesClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Creates a new Service in a given project and location."]
+        /// Creates a new Service in a given project and location.
         pub async fn create_service(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceRequest>,
@@ -1174,50 +1207,62 @@ pub mod services_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.cloud.run.v2.Services/CreateService");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Services/CreateService",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets information about a Service."]
+        /// Gets information about a Service.
         pub async fn get_service(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceRequest>,
         ) -> Result<tonic::Response<super::Service>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.cloud.run.v2.Services/GetService");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Services/GetService",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List Services."]
+        /// List Services.
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
         ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.cloud.run.v2.Services/ListServices");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Services/ListServices",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a Service."]
+        /// Updates a Service.
         pub async fn update_service(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateServiceRequest>,
@@ -1225,20 +1270,24 @@ pub mod services_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.cloud.run.v2.Services/UpdateService");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Services/UpdateService",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a Service."]
-        #[doc = " This will cause the Service to stop serving traffic and will delete all"]
-        #[doc = " revisions."]
+        /// Deletes a Service.
+        /// This will cause the Service to stop serving traffic and will delete all
+        /// revisions.
         pub async fn delete_service(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServiceRequest>,
@@ -1246,71 +1295,96 @@ pub mod services_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.cloud.run.v2.Services/DeleteService");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Services/DeleteService",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Get the IAM Access Control policy currently in effect for the given"]
-        #[doc = " Cloud Run Service. This result does not include any inherited policies."]
+        /// Get the IAM Access Control policy currently in effect for the given
+        /// Cloud Run Service. This result does not include any inherited policies.
         pub async fn get_iam_policy(
             &mut self,
-            request: impl tonic::IntoRequest<super::super::super::super::iam::v1::GetIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::GetIamPolicyRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.cloud.run.v2.Services/GetIamPolicy");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Services/GetIamPolicy",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Sets the IAM Access control policy for the specified Service. Overwrites"]
-        #[doc = " any existing policy."]
+        /// Sets the IAM Access control policy for the specified Service. Overwrites
+        /// any existing policy.
         pub async fn set_iam_policy(
             &mut self,
-            request: impl tonic::IntoRequest<super::super::super::super::iam::v1::SetIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::SetIamPolicyRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.cloud.run.v2.Services/SetIamPolicy");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.run.v2.Services/SetIamPolicy",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns permissions that a caller has on the specified Project."]
-        #[doc = ""]
-        #[doc = " There are no permissions required for making this API call."]
+        /// Returns permissions that a caller has on the specified Project.
+        ///
+        /// There are no permissions required for making this API call.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
         ) -> Result<
-            tonic::Response<super::super::super::super::iam::v1::TestIamPermissionsResponse>,
+            tonic::Response<
+                super::super::super::super::iam::v1::TestIamPermissionsResponse,
+            >,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.run.v2.Services/TestIamPermissions",

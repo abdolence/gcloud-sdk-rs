@@ -5,7 +5,7 @@
 pub struct Endpoint {
     /// Immutable. The resource name for the endpoint in the format
     /// `projects/*/locations/*/namespaces/*/services/*/endpoints/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An IPv4 or IPv6 address. Service Directory rejects bad addresses like:
     ///
@@ -16,10 +16,10 @@ pub struct Endpoint {
     /// *   `\[::1\]:8080`
     ///
     /// Limited to 45 characters.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub address: ::prost::alloc::string::String,
     /// Optional. Service Directory rejects values outside of `[0, 65535]`.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub port: i32,
     /// Optional. Metadata for the endpoint. This data can be consumed by service
     /// clients.
@@ -45,9 +45,8 @@ pub struct Endpoint {
     /// Note: This field is equivalent to the `annotations` field in the v1 API.
     /// They have the same syntax and read/write to the same location in Service
     /// Directory.
-    #[prost(map = "string, string", tag = "4")]
-    pub metadata:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="4")]
+    pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Immutable. The Google Compute Engine network (VPC) of the endpoint in the format
     /// `projects/<project number>/locations/global/networks/*`.
     ///
@@ -55,13 +54,13 @@ pub struct Endpoint {
     /// Incorrectly formatted networks are rejected, but no other validation
     /// is performed on this field (ex. network or project existence, reachability,
     /// or permissions).
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub network: ::prost::alloc::string::String,
     /// Output only. The timestamp when the endpoint was created.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The timestamp when the endpoint was last updated.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// An individual service. A service contains a name and optional metadata.
@@ -72,7 +71,7 @@ pub struct Endpoint {
 pub struct Service {
     /// Immutable. The resource name for the service in the format
     /// `projects/*/locations/*/namespaces/*/services/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Metadata for the service. This data can be consumed by service
     /// clients.
@@ -98,21 +97,20 @@ pub struct Service {
     /// Note: This field is equivalent to the `annotations` field in the v1 API.
     /// They have the same syntax and read/write to the same location in Service
     /// Directory.
-    #[prost(map = "string, string", tag = "2")]
-    pub metadata:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="2")]
+    pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. Endpoints associated with this service. Returned on
     /// \[LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService\]. Control plane clients should use
     /// \[RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints\].
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
     /// Output only. The timestamp when the service was created.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The timestamp when the service was last updated. Note: endpoints being
     /// created/deleted/updated within the service are not considered service
     /// updates for the purpose of this timestamp.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request message for \[LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService\].
@@ -120,12 +118,12 @@ pub struct Service {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveServiceRequest {
     /// Required. The name of the service to resolve.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The maximum number of endpoints to return. Defaults to 25. Maximum is 100.
     /// If a value less than one is specified, the Default is used.
     /// If a value greater than the Maximum is specified, the Maximum is used.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub max_endpoints: i32,
     /// Optional. The filter applied to the endpoints of the resolved service.
     ///
@@ -160,29 +158,40 @@ pub struct ResolveServiceRequest {
     ///
     /// For more information about filtering, see
     /// [API Filtering](<https://aip.dev/160>).
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub endpoint_filter: ::prost::alloc::string::String,
 }
 /// The response message for \[LookupService.ResolveService][google.cloud.servicedirectory.v1beta1.LookupService.ResolveService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveServiceResponse {
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub service: ::core::option::Option<Service>,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod lookup_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Service Directory API for looking up service data at runtime."]
+    /// Service Directory API for looking up service data at runtime.
     #[derive(Debug, Clone)]
     pub struct LookupServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl LookupServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> LookupServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -195,43 +204,50 @@ pub mod lookup_service_client {
         ) -> LookupServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             LookupServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Returns a [service][google.cloud.servicedirectory.v1beta1.Service] and its"]
-        #[doc = " associated endpoints."]
-        #[doc = " Resolving a service is not considered an active developer method."]
+        /// Returns a [service][google.cloud.servicedirectory.v1beta1.Service] and its
+        /// associated endpoints.
+        /// Resolving a service is not considered an active developer method.
         pub async fn resolve_service(
             &mut self,
             request: impl tonic::IntoRequest<super::ResolveServiceRequest>,
         ) -> Result<tonic::Response<super::ResolveServiceResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.LookupService/ResolveService",
@@ -247,19 +263,18 @@ pub mod lookup_service_client {
 pub struct Namespace {
     /// Immutable. The resource name for the namespace in the format
     /// `projects/*/locations/*/namespaces/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Resource labels associated with this namespace.
     /// No more than 64 user labels can be associated with a given resource. Label
     /// keys and values can be no longer than 63 characters.
-    #[prost(map = "string, string", tag = "2")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="2")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. The timestamp when the namespace was created.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The timestamp when the namespace was last updated.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request message for \[RegistrationService.CreateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateNamespace\].
@@ -267,7 +282,7 @@ pub struct Namespace {
 pub struct CreateNamespaceRequest {
     /// Required. The resource name of the project and location the namespace
     /// will be created in.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
     /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
@@ -276,10 +291,10 @@ pub struct CreateNamespaceRequest {
     /// character must be a lowercase letter, and all following characters must
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub namespace_id: ::prost::alloc::string::String,
     /// Required. A namespace with initial fields set.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub namespace: ::core::option::Option<Namespace>,
 }
 /// The request message for \[RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces\].
@@ -287,13 +302,13 @@ pub struct CreateNamespaceRequest {
 pub struct ListNamespacesRequest {
     /// Required. The resource name of the project and location whose namespaces you'd like
     /// to list.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to list results by.
     ///
@@ -322,7 +337,7 @@ pub struct ListNamespacesRequest {
     ///
     /// For more information about filtering, see
     /// [API Filtering](<https://aip.dev/160>).
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list results by.
     ///
@@ -334,49 +349,49 @@ pub struct ListNamespacesRequest {
     ///
     /// Note that an empty `order_by` string results in default order, which is
     /// order by `name` in ascending order.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for \[RegistrationService.ListNamespaces][google.cloud.servicedirectory.v1beta1.RegistrationService.ListNamespaces\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNamespacesResponse {
     /// The list of namespaces.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub namespaces: ::prost::alloc::vec::Vec<Namespace>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[RegistrationService.GetNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.GetNamespace\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetNamespaceRequest {
     /// Required. The name of the namespace to retrieve.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[RegistrationService.UpdateNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateNamespace\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNamespaceRequest {
     /// Required. The updated namespace.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub namespace: ::core::option::Option<Namespace>,
     /// Required. List of fields to be updated in this request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for \[RegistrationService.DeleteNamespace][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteNamespace\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteNamespaceRequest {
     /// Required. The name of the namespace to delete.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[RegistrationService.CreateService][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateServiceRequest {
     /// Required. The resource name of the namespace this service will belong to.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
     /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
@@ -385,10 +400,10 @@ pub struct CreateServiceRequest {
     /// character must be a lowercase letter, and all following characters must
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub service_id: ::prost::alloc::string::String,
     /// Required. A service  with initial fields set.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub service: ::core::option::Option<Service>,
 }
 /// The request message for \[RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices\].
@@ -396,14 +411,14 @@ pub struct CreateServiceRequest {
 pub struct ListServicesRequest {
     /// Required. The resource name of the namespace whose services you'd
     /// like to list.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
     /// if any.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to list results by.
     ///
@@ -435,7 +450,7 @@ pub struct ListServicesRequest {
     ///
     /// For more information about filtering, see
     /// [API Filtering](<https://aip.dev/160>).
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list results by.
     ///
@@ -447,18 +462,18 @@ pub struct ListServicesRequest {
     ///
     /// Note that an empty `order_by` string results in default order, which is
     /// order by `name` in ascending order.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for \[RegistrationService.ListServices][google.cloud.servicedirectory.v1beta1.RegistrationService.ListServices\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServicesResponse {
     /// The list of services.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub services: ::prost::alloc::vec::Vec<Service>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[RegistrationService.GetService][google.cloud.servicedirectory.v1beta1.RegistrationService.GetService\].
@@ -467,31 +482,31 @@ pub struct ListServicesResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceRequest {
     /// Required. The name of the service to get.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[RegistrationService.UpdateService][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateServiceRequest {
     /// Required. The updated service.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub service: ::core::option::Option<Service>,
     /// Required. List of fields to be updated in this request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for \[RegistrationService.DeleteService][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteService\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServiceRequest {
     /// Required. The name of the service to delete.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[RegistrationService.CreateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.CreateEndpoint\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEndpointRequest {
     /// Required. The resource name of the service that this endpoint provides.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Resource ID must be 1-63 characters long, and comply with
     /// <a href="<https://www.ietf.org/rfc/rfc1035.txt"> target="_blank">RFC1035</a>.
@@ -500,10 +515,10 @@ pub struct CreateEndpointRequest {
     /// character must be a lowercase letter, and all following characters must
     /// be a dash, lowercase letter, or digit, except the last character, which
     /// cannot be a dash.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub endpoint_id: ::prost::alloc::string::String,
     /// Required. A endpoint with initial fields set.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub endpoint: ::core::option::Option<Endpoint>,
 }
 /// The request message for \[RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints\].
@@ -511,14 +526,14 @@ pub struct CreateEndpointRequest {
 pub struct ListEndpointsRequest {
     /// Required. The resource name of the service whose endpoints you'd like to
     /// list.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous List request,
     /// if any.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. The filter to list results by.
     ///
@@ -553,7 +568,7 @@ pub struct ListEndpointsRequest {
     ///
     /// For more information about filtering, see
     /// [API Filtering](<https://aip.dev/160>).
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. The order to list results by.
     ///
@@ -565,18 +580,18 @@ pub struct ListEndpointsRequest {
     ///
     /// Note that an empty `order_by` string results in default order, which is
     /// order by `name` in ascending order.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// The response message for \[RegistrationService.ListEndpoints][google.cloud.servicedirectory.v1beta1.RegistrationService.ListEndpoints\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListEndpointsResponse {
     /// The list of endpoints.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub endpoints: ::prost::alloc::vec::Vec<Endpoint>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for \[RegistrationService.GetEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.GetEndpoint\].
@@ -585,54 +600,65 @@ pub struct ListEndpointsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetEndpointRequest {
     /// Required. The name of the endpoint to get.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request message for \[RegistrationService.UpdateEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.UpdateEndpoint\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateEndpointRequest {
     /// Required. The updated endpoint.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub endpoint: ::core::option::Option<Endpoint>,
     /// Required. List of fields to be updated in this request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request message for \[RegistrationService.DeleteEndpoint][google.cloud.servicedirectory.v1beta1.RegistrationService.DeleteEndpoint\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteEndpointRequest {
     /// Required. The name of the endpoint to delete.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod registration_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Service Directory API for registering services. It defines the following"]
-    #[doc = " resource model:"]
-    #[doc = ""]
-    #[doc = " - The API has a collection of"]
-    #[doc = " [Namespace][google.cloud.servicedirectory.v1beta1.Namespace]"]
-    #[doc = " resources, named `projects/*/locations/*/namespaces/*`."]
-    #[doc = ""]
-    #[doc = " - Each Namespace has a collection of"]
-    #[doc = " [Service][google.cloud.servicedirectory.v1beta1.Service] resources, named"]
-    #[doc = " `projects/*/locations/*/namespaces/*/services/*`."]
-    #[doc = ""]
-    #[doc = " - Each Service has a collection of"]
-    #[doc = " [Endpoint][google.cloud.servicedirectory.v1beta1.Endpoint]"]
-    #[doc = " resources, named"]
-    #[doc = " `projects/*/locations/*/namespaces/*/services/*/endpoints/*`."]
+    /// Service Directory API for registering services. It defines the following
+    /// resource model:
+    ///
+    /// - The API has a collection of
+    /// [Namespace][google.cloud.servicedirectory.v1beta1.Namespace]
+    /// resources, named `projects/*/locations/*/namespaces/*`.
+    ///
+    /// - Each Namespace has a collection of
+    /// [Service][google.cloud.servicedirectory.v1beta1.Service] resources, named
+    /// `projects/*/locations/*/namespaces/*/services/*`.
+    ///
+    /// - Each Service has a collection of
+    /// [Endpoint][google.cloud.servicedirectory.v1beta1.Endpoint]
+    /// resources, named
+    /// `projects/*/locations/*/namespaces/*/services/*/endpoints/*`.
     #[derive(Debug, Clone)]
     pub struct RegistrationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl RegistrationServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> RegistrationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -645,339 +671,407 @@ pub mod registration_service_client {
         ) -> RegistrationServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             RegistrationServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Creates a namespace, and returns the new namespace."]
+        /// Creates a namespace, and returns the new namespace.
         pub async fn create_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateNamespaceRequest>,
         ) -> Result<tonic::Response<super::Namespace>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/CreateNamespace",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists all namespaces."]
+        /// Lists all namespaces.
         pub async fn list_namespaces(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNamespacesRequest>,
         ) -> Result<tonic::Response<super::ListNamespacesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/ListNamespaces",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a namespace."]
+        /// Gets a namespace.
         pub async fn get_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNamespaceRequest>,
         ) -> Result<tonic::Response<super::Namespace>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/GetNamespace",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a namespace."]
+        /// Updates a namespace.
         pub async fn update_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateNamespaceRequest>,
         ) -> Result<tonic::Response<super::Namespace>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/UpdateNamespace",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a namespace. This also deletes all services and endpoints in"]
-        #[doc = " the namespace."]
+        /// Deletes a namespace. This also deletes all services and endpoints in
+        /// the namespace.
         pub async fn delete_namespace(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNamespaceRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/DeleteNamespace",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a service, and returns the new service."]
+        /// Creates a service, and returns the new service.
         pub async fn create_service(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateServiceRequest>,
         ) -> Result<tonic::Response<super::Service>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/CreateService",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists all services belonging to a namespace."]
+        /// Lists all services belonging to a namespace.
         pub async fn list_services(
             &mut self,
             request: impl tonic::IntoRequest<super::ListServicesRequest>,
         ) -> Result<tonic::Response<super::ListServicesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/ListServices",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a service."]
+        /// Gets a service.
         pub async fn get_service(
             &mut self,
             request: impl tonic::IntoRequest<super::GetServiceRequest>,
         ) -> Result<tonic::Response<super::Service>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/GetService",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a service."]
+        /// Updates a service.
         pub async fn update_service(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateServiceRequest>,
         ) -> Result<tonic::Response<super::Service>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/UpdateService",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a service. This also deletes all endpoints associated with"]
-        #[doc = " the service."]
+        /// Deletes a service. This also deletes all endpoints associated with
+        /// the service.
         pub async fn delete_service(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteServiceRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/DeleteService",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates an endpoint, and returns the new endpoint."]
+        /// Creates an endpoint, and returns the new endpoint.
         pub async fn create_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateEndpointRequest>,
         ) -> Result<tonic::Response<super::Endpoint>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/CreateEndpoint",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists all endpoints."]
+        /// Lists all endpoints.
         pub async fn list_endpoints(
             &mut self,
             request: impl tonic::IntoRequest<super::ListEndpointsRequest>,
         ) -> Result<tonic::Response<super::ListEndpointsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/ListEndpoints",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets an endpoint."]
+        /// Gets an endpoint.
         pub async fn get_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::GetEndpointRequest>,
         ) -> Result<tonic::Response<super::Endpoint>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/GetEndpoint",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates an endpoint."]
+        /// Updates an endpoint.
         pub async fn update_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateEndpointRequest>,
         ) -> Result<tonic::Response<super::Endpoint>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/UpdateEndpoint",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes an endpoint."]
+        /// Deletes an endpoint.
         pub async fn delete_endpoint(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteEndpointRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/DeleteEndpoint",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets the IAM Policy for a resource (namespace or service only)."]
+        /// Gets the IAM Policy for a resource (namespace or service only).
         pub async fn get_iam_policy(
             &mut self,
-            request: impl tonic::IntoRequest<super::super::super::super::iam::v1::GetIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::GetIamPolicyRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/GetIamPolicy",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Sets the IAM Policy for a resource (namespace or service only)."]
+        /// Sets the IAM Policy for a resource (namespace or service only).
         pub async fn set_iam_policy(
             &mut self,
-            request: impl tonic::IntoRequest<super::super::super::super::iam::v1::SetIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::SetIamPolicyRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/SetIamPolicy",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Tests IAM permissions for a resource (namespace or service only)."]
+        /// Tests IAM permissions for a resource (namespace or service only).
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
         ) -> Result<
-            tonic::Response<super::super::super::super::iam::v1::TestIamPermissionsResponse>,
+            tonic::Response<
+                super::super::super::super::iam::v1::TestIamPermissionsResponse,
+            >,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.servicedirectory.v1beta1.RegistrationService/TestIamPermissions",

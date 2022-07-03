@@ -2,39 +2,39 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Device {
     /// Third-party device ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
     /// Hardware type of the device.
     /// See [device
     /// types](<https://developers.google.com/assistant/smarthome/guides>).
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub r#type: ::prost::alloc::string::String,
     /// Traits supported by the device.
     /// See [device
     /// traits](<https://developers.google.com/assistant/smarthome/traits>).
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub traits: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Names given to this device by your smart home Action.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub name: ::core::option::Option<DeviceNames>,
     /// Indicates whether your smart home Action will report state of this device
     /// to Google via
     /// \[ReportStateAndNotification][google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification\].
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag="5")]
     pub will_report_state: bool,
     /// Suggested name for the room where this device is installed.
     /// Google attempts to use this value during user setup.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub room_hint: ::prost::alloc::string::String,
     /// Suggested name for the structure where this device is installed.
     /// Google attempts to use this value during user setup.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub structure_hint: ::prost::alloc::string::String,
     /// Device manufacturer, model, hardware version, and software version.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub device_info: ::core::option::Option<DeviceInfo>,
     /// Attributes for the traits supported by the device.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub attributes: ::core::option::Option<::prost_types::Struct>,
     /// Custom device attributes stored in Home Graph and provided to your
     /// smart home Action in each
@@ -42,12 +42,12 @@ pub struct Device {
     /// and
     /// \[EXECUTE\](<https://developers.google.com/assistant/smarthome/reference/intent/execute>)
     /// intent.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub custom_data: ::core::option::Option<::prost_types::Struct>,
     /// Alternate IDs associated with this device.
     /// This is used to identify cloud synced devices enabled for [local
     /// fulfillment](<https://developers.google.com/assistant/smarthome/concepts/local>).
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag="11")]
     pub other_device_ids: ::prost::alloc::vec::Vec<AgentOtherDeviceId>,
     /// Indicates whether your smart home Action will report notifications
     /// to Google for this device via
@@ -56,47 +56,47 @@ pub struct Device {
     /// If your smart home Action enables users to control device notifications,
     /// you should update this field and call
     /// \[RequestSyncDevices][google.home.graph.v1.HomeGraphApiService.RequestSyncDevices\].
-    #[prost(bool, tag = "12")]
+    #[prost(bool, tag="12")]
     pub notification_supported_by_agent: bool,
 }
 /// Identifiers used to describe the device.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceNames {
     /// Primary name of the device, generally provided by the user.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Additional names provided by the user for the device.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub nicknames: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of names provided by the manufacturer rather than the user, such as
     /// serial numbers, SKUs, etc.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub default_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Device information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceInfo {
     /// Device manufacturer.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub manufacturer: ::prost::alloc::string::String,
     /// Device model.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub model: ::prost::alloc::string::String,
     /// Device hardware version.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub hw_version: ::prost::alloc::string::String,
     /// Device software version.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub sw_version: ::prost::alloc::string::String,
 }
 /// Alternate third-party device ID.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentOtherDeviceId {
     /// Project ID for your smart home Action.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub agent_id: ::prost::alloc::string::String,
     /// Unique third-party device ID.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub device_id: ::prost::alloc::string::String,
 }
 /// Request type for the
@@ -105,12 +105,12 @@ pub struct AgentOtherDeviceId {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestSyncDevicesRequest {
     /// Required. Third-party user ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub agent_user_id: ::prost::alloc::string::String,
     /// Optional. If set, the request will be added to a queue and a response will
     /// be returned immediately. This enables concurrent requests for the given
     /// `agent_user_id`, but the caller will not receive any error responses.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub r#async: bool,
 }
 /// Response type for the
@@ -120,7 +120,8 @@ pub struct RequestSyncDevicesRequest {
 /// Intentionally empty upon success. An HTTP response code is returned
 /// with more details upon failure.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RequestSyncDevicesResponse {}
+pub struct RequestSyncDevicesResponse {
+}
 /// Request type for the
 /// \[`ReportStateAndNotification`\](#google.home.graph.v1.HomeGraphApiService.ReportStateAndNotification)
 /// call. It may include states, notifications, or both. States and notifications
@@ -150,13 +151,13 @@ pub struct RequestSyncDevicesResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportStateAndNotificationRequest {
     /// Request ID used for debugging.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub request_id: ::prost::alloc::string::String,
     /// Unique identifier per event (for example, a doorbell press).
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub event_id: ::prost::alloc::string::String,
     /// Required. Third-party user ID.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub agent_user_id: ::prost::alloc::string::String,
     /// Deprecated.
     /// (-- Token to maintain state in the follow up notification response. See the
@@ -164,10 +165,10 @@ pub struct ReportStateAndNotificationRequest {
     /// <https://developers.google.com/assistant/smarthome/develop/notifications> for
     /// details on implementing follow up notifications --)
     #[deprecated]
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub follow_up_token: ::prost::alloc::string::String,
     /// Required. State of devices to update and notification metadata for devices.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub payload: ::core::option::Option<StateAndNotificationPayload>,
 }
 /// Response type for the
@@ -177,14 +178,14 @@ pub struct ReportStateAndNotificationRequest {
 pub struct ReportStateAndNotificationResponse {
     /// Request ID copied from
     /// \[ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest\].
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// Payload containing the state and notification information for devices.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StateAndNotificationPayload {
     /// The devices for updating state and sending notifications.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub devices: ::core::option::Option<ReportStateAndNotificationDevice>,
 }
 /// The states and notifications specific to a device.
@@ -193,12 +194,12 @@ pub struct ReportStateAndNotificationDevice {
     /// States of devices to update. See the **Device STATES** section
     /// of the individual trait [reference
     /// guides](<https://developers.google.com/assistant/smarthome/traits>).
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub states: ::core::option::Option<::prost_types::Struct>,
     /// Notifications metadata for devices. See the **Device NOTIFICATIONS**
     /// section of the individual trait [reference
     /// guides](<https://developers.google.com/assistant/smarthome/traits>).
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub notifications: ::core::option::Option<::prost_types::Struct>,
 }
 /// Request type for the
@@ -207,10 +208,10 @@ pub struct ReportStateAndNotificationDevice {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAgentUserRequest {
     /// Request ID used for debugging.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub request_id: ::prost::alloc::string::String,
     /// Required. Third-party user ID.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub agent_user_id: ::prost::alloc::string::String,
 }
 /// Request type for the
@@ -218,35 +219,35 @@ pub struct DeleteAgentUserRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequest {
     /// Request ID used for debugging.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub request_id: ::prost::alloc::string::String,
     /// Required. Third-party user ID.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub agent_user_id: ::prost::alloc::string::String,
     /// Required. Inputs containing third-party device IDs for which to
     /// get the device states.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub inputs: ::prost::alloc::vec::Vec<QueryRequestInput>,
 }
 /// Device ID inputs to \[QueryRequest][google.home.graph.v1.QueryRequest\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequestInput {
     /// Payload containing third-party device IDs.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub payload: ::core::option::Option<QueryRequestPayload>,
 }
 /// Payload containing device IDs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryRequestPayload {
     /// Third-party device IDs for which to get the device states.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub devices: ::prost::alloc::vec::Vec<AgentDeviceId>,
 }
 /// Third-party device ID for one device.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgentDeviceId {
     /// Third-party device ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
 }
 /// Response type for the
@@ -281,10 +282,10 @@ pub struct AgentDeviceId {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryResponse {
     /// Request ID used for debugging. Copied from the request.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub request_id: ::prost::alloc::string::String,
     /// Device states for the devices given in the request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub payload: ::core::option::Option<QueryResponsePayload>,
 }
 /// Payload containing device states information.
@@ -292,7 +293,7 @@ pub struct QueryResponse {
 pub struct QueryResponsePayload {
     /// States of the devices. Map of third-party device ID to struct of device
     /// states.
-    #[prost(map = "string, message", tag = "1")]
+    #[prost(map="string, message", tag="1")]
     pub devices: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Struct>,
 }
 /// Request type for the \[`Sync`\](#google.home.graph.v1.HomeGraphApiService.Sync)
@@ -300,10 +301,10 @@ pub struct QueryResponsePayload {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncRequest {
     /// Request ID used for debugging.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub request_id: ::prost::alloc::string::String,
     /// Required. Third-party user ID.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub agent_user_id: ::prost::alloc::string::String,
 }
 /// Response type for the
@@ -348,42 +349,53 @@ pub struct SyncRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncResponse {
     /// Request ID used for debugging. Copied from the request.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub request_id: ::prost::alloc::string::String,
     /// Devices associated with the third-party user.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub payload: ::core::option::Option<SyncResponsePayload>,
 }
 /// Payload containing device information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SyncResponsePayload {
     /// Third-party user ID
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub agent_user_id: ::prost::alloc::string::String,
     /// Devices associated with the third-party user.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub devices: ::prost::alloc::vec::Vec<Device>,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod home_graph_api_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Google Home Graph API service. The Home Graph service provides support for"]
-    #[doc = " accessing first-party and third-party devices stored in Google's Home Graph."]
-    #[doc = " The Home Graph database provides contextual data about the relationships"]
-    #[doc = " between devices and the home."]
-    #[doc = ""]
-    #[doc = " For more details, see the [Home Graph developer"]
-    #[doc = " guide](https://developers.google.com/assistant/smarthome/concepts/homegraph)."]
+    /// Google Home Graph API service. The Home Graph service provides support for
+    /// accessing first-party and third-party devices stored in Google's Home Graph.
+    /// The Home Graph database provides contextual data about the relationships
+    /// between devices and the home.
+    ///
+    /// For more details, see the [Home Graph developer
+    /// guide](https://developers.google.com/assistant/smarthome/concepts/homegraph).
     #[derive(Debug, Clone)]
     pub struct HomeGraphApiServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl HomeGraphApiServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> HomeGraphApiServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -396,157 +408,178 @@ pub mod home_graph_api_service_client {
         ) -> HomeGraphApiServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             HomeGraphApiServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Requests Google to send an `action.devices.SYNC`"]
-        #[doc = " [intent](https://developers.google.com/assistant/smarthome/reference/intent/sync)"]
-        #[doc = " to your smart home Action to update device metadata for the given user."]
-        #[doc = ""]
-        #[doc = ""]
-        #[doc = " The third-party user's identity is passed via the `agent_user_id`"]
-        #[doc = " (see"]
-        #[doc = " [RequestSyncDevicesRequest][google.home.graph.v1.RequestSyncDevicesRequest])."]
-        #[doc = " This request must be authorized using service account credentials from your"]
-        #[doc = " Actions console project."]
+        /// Requests Google to send an `action.devices.SYNC`
+        /// [intent](https://developers.google.com/assistant/smarthome/reference/intent/sync)
+        /// to your smart home Action to update device metadata for the given user.
+        ///
+        ///
+        /// The third-party user's identity is passed via the `agent_user_id`
+        /// (see
+        /// [RequestSyncDevicesRequest][google.home.graph.v1.RequestSyncDevicesRequest]).
+        /// This request must be authorized using service account credentials from your
+        /// Actions console project.
         pub async fn request_sync_devices(
             &mut self,
             request: impl tonic::IntoRequest<super::RequestSyncDevicesRequest>,
         ) -> Result<tonic::Response<super::RequestSyncDevicesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.graph.v1.HomeGraphApiService/RequestSyncDevices",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Reports device state and optionally sends device notifications."]
-        #[doc = " Called by your smart home Action when the state of a third-party device"]
-        #[doc = " changes or you need to send a notification about the device."]
-        #[doc = " See [Implement Report"]
-        #[doc = " State](https://developers.google.com/assistant/smarthome/develop/report-state)"]
-        #[doc = " for more information."]
-        #[doc = ""]
-        #[doc = " This method updates the device state according to its declared"]
-        #[doc = " [traits](https://developers.google.com/assistant/smarthome/concepts/devices-traits)."]
-        #[doc = " Publishing a new state value outside of these traits will result in an"]
-        #[doc = " `INVALID_ARGUMENT` error response."]
-        #[doc = ""]
-        #[doc = " The third-party user's identity is passed in via the `agent_user_id`"]
-        #[doc = " (see"]
-        #[doc = " [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest])."]
-        #[doc = " This request must be authorized using service account credentials from your"]
-        #[doc = " Actions console project."]
+        /// Reports device state and optionally sends device notifications.
+        /// Called by your smart home Action when the state of a third-party device
+        /// changes or you need to send a notification about the device.
+        /// See [Implement Report
+        /// State](https://developers.google.com/assistant/smarthome/develop/report-state)
+        /// for more information.
+        ///
+        /// This method updates the device state according to its declared
+        /// [traits](https://developers.google.com/assistant/smarthome/concepts/devices-traits).
+        /// Publishing a new state value outside of these traits will result in an
+        /// `INVALID_ARGUMENT` error response.
+        ///
+        /// The third-party user's identity is passed in via the `agent_user_id`
+        /// (see
+        /// [ReportStateAndNotificationRequest][google.home.graph.v1.ReportStateAndNotificationRequest]).
+        /// This request must be authorized using service account credentials from your
+        /// Actions console project.
         pub async fn report_state_and_notification(
             &mut self,
             request: impl tonic::IntoRequest<super::ReportStateAndNotificationRequest>,
-        ) -> Result<tonic::Response<super::ReportStateAndNotificationResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ReportStateAndNotificationResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.graph.v1.HomeGraphApiService/ReportStateAndNotification",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Unlinks the given third-party user from your smart home Action."]
-        #[doc = " All data related to this user will be deleted."]
-        #[doc = ""]
-        #[doc = " For more details on how users link their accounts, see"]
-        #[doc = " [fulfillment and"]
-        #[doc = " authentication](https://developers.google.com/assistant/smarthome/concepts/fulfillment-authentication)."]
-        #[doc = ""]
-        #[doc = " The third-party user's identity is passed in via the `agent_user_id`"]
-        #[doc = " (see"]
-        #[doc = " [DeleteAgentUserRequest][google.home.graph.v1.DeleteAgentUserRequest])."]
-        #[doc = " This request must be authorized using service account credentials from your"]
-        #[doc = " Actions console project."]
+        /// Unlinks the given third-party user from your smart home Action.
+        /// All data related to this user will be deleted.
+        ///
+        /// For more details on how users link their accounts, see
+        /// [fulfillment and
+        /// authentication](https://developers.google.com/assistant/smarthome/concepts/fulfillment-authentication).
+        ///
+        /// The third-party user's identity is passed in via the `agent_user_id`
+        /// (see
+        /// [DeleteAgentUserRequest][google.home.graph.v1.DeleteAgentUserRequest]).
+        /// This request must be authorized using service account credentials from your
+        /// Actions console project.
         pub async fn delete_agent_user(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAgentUserRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.graph.v1.HomeGraphApiService/DeleteAgentUser",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets the current states in Home Graph for the given set of the third-party"]
-        #[doc = " user's devices."]
-        #[doc = ""]
-        #[doc = " The third-party user's identity is passed in via the `agent_user_id`"]
-        #[doc = " (see [QueryRequest][google.home.graph.v1.QueryRequest])."]
-        #[doc = " This request must be authorized using service account credentials from your"]
-        #[doc = " Actions console project."]
+        /// Gets the current states in Home Graph for the given set of the third-party
+        /// user's devices.
+        ///
+        /// The third-party user's identity is passed in via the `agent_user_id`
+        /// (see [QueryRequest][google.home.graph.v1.QueryRequest]).
+        /// This request must be authorized using service account credentials from your
+        /// Actions console project.
         pub async fn query(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryRequest>,
         ) -> Result<tonic::Response<super::QueryResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.graph.v1.HomeGraphApiService/Query",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets all the devices associated with the given third-party user."]
-        #[doc = ""]
-        #[doc = " The third-party user's identity is passed in via the `agent_user_id`"]
-        #[doc = " (see [SyncRequest][google.home.graph.v1.SyncRequest])."]
-        #[doc = " This request must be authorized using service account credentials from your"]
-        #[doc = " Actions console project."]
+        /// Gets all the devices associated with the given third-party user.
+        ///
+        /// The third-party user's identity is passed in via the `agent_user_id`
+        /// (see [SyncRequest][google.home.graph.v1.SyncRequest]).
+        /// This request must be authorized using service account credentials from your
+        /// Actions console project.
         pub async fn sync(
             &mut self,
             request: impl tonic::IntoRequest<super::SyncRequest>,
         ) -> Result<tonic::Response<super::SyncResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.home.graph.v1.HomeGraphApiService/Sync",

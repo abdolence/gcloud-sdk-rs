@@ -10,16 +10,16 @@ pub struct MetricsScope {
     /// specified with the scoping project number.
     /// Example:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time when this `Metrics Scope` was created.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when this `Metrics Scope` record was last updated.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The list of projects monitored by this `Metrics Scope`.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub monitored_projects: ::prost::alloc::vec::Vec<MonitoredProject>,
 }
 /// A [project being
@@ -32,10 +32,10 @@ pub struct MonitoredProject {
     /// contains the equivalent project numbers.
     /// Example:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}/projects/{MONITORED_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The time when this `MonitoredProject` was created.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `GetMetricsScope` method.
@@ -44,7 +44,7 @@ pub struct GetMetricsScopeRequest {
     /// Required. The resource name of the `Metrics Scope`.
     /// Example:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request for the `ListMetricsScopesByMonitoredProject` method.
@@ -53,7 +53,7 @@ pub struct ListMetricsScopesByMonitoredProjectRequest {
     /// Required. The resource name of the `Monitored Project` being requested.
     /// Example:
     /// `projects/{MONITORED_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub monitored_resource_container: ::prost::alloc::string::String,
 }
 /// Response for the `ListMetricsScopesByMonitoredProject` method.
@@ -61,7 +61,7 @@ pub struct ListMetricsScopesByMonitoredProjectRequest {
 pub struct ListMetricsScopesByMonitoredProjectResponse {
     /// A set of all metrics scopes that the specified monitored project has been
     /// added to.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub metrics_scopes: ::prost::alloc::vec::Vec<MetricsScope>,
 }
 /// Request for the `CreateMonitoredProject` method.
@@ -71,13 +71,13 @@ pub struct CreateMonitoredProjectRequest {
     /// project.
     /// Example:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The initial `MonitoredProject` configuration.
     /// Specify only the `monitored_project.name` field. All other fields are
     /// ignored. The `monitored_project.name` must be in the format:
     /// `locations/global/metricsScopes/{SCOPING_PROJECT_ID_OR_NUMBER}/projects/{MONITORED_PROJECT_ID_OR_NUMBER}`
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub monitored_project: ::core::option::Option<MonitoredProject>,
 }
 /// Request for the `DeleteMonitoredProject` method.
@@ -90,7 +90,7 @@ pub struct DeleteMonitoredProjectRequest {
     /// Authorization requires the following [Google
     /// IAM](<https://cloud.google.com/iam>) permissions on both the `Metrics Scope`
     /// and on the `MonitoredProject`: `monitoring.metricsScopes.link`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Contains metadata for longrunning operation for the edit Metrics Scope
@@ -98,13 +98,13 @@ pub struct DeleteMonitoredProjectRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// Current state of the batch operation.
-    #[prost(enumeration = "operation_metadata::State", tag = "1")]
+    #[prost(enumeration="operation_metadata::State", tag="1")]
     pub state: i32,
     /// The time when the batch request was received.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time when the operation result was last updated.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `OperationMetadata`.
@@ -125,21 +125,32 @@ pub mod operation_metadata {
         Cancelled = 4,
     }
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod metrics_scopes_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Manages Cloud Monitoring Metrics Scopes, and the monitoring of Google Cloud"]
-    #[doc = " projects and AWS accounts."]
+    /// Manages Cloud Monitoring Metrics Scopes, and the monitoring of Google Cloud
+    /// projects and AWS accounts.
     #[derive(Debug, Clone)]
     pub struct MetricsScopesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl MetricsScopesClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> MetricsScopesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -152,69 +163,83 @@ pub mod metrics_scopes_client {
         ) -> MetricsScopesClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             MetricsScopesClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Returns a specific `Metrics Scope`."]
+        /// Returns a specific `Metrics Scope`.
         pub async fn get_metrics_scope(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMetricsScopeRequest>,
         ) -> Result<tonic::Response<super::MetricsScope>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.monitoring.metricsscope.v1.MetricsScopes/GetMetricsScope",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns a list of every `Metrics Scope` that a specific `MonitoredProject`"]
-        #[doc = " has been added to. The metrics scope representing the specified monitored"]
-        #[doc = " project will always be the first entry in the response."]
+        /// Returns a list of every `Metrics Scope` that a specific `MonitoredProject`
+        /// has been added to. The metrics scope representing the specified monitored
+        /// project will always be the first entry in the response.
         pub async fn list_metrics_scopes_by_monitored_project(
             &mut self,
-            request: impl tonic::IntoRequest<super::ListMetricsScopesByMonitoredProjectRequest>,
+            request: impl tonic::IntoRequest<
+                super::ListMetricsScopesByMonitoredProjectRequest,
+            >,
         ) -> Result<
             tonic::Response<super::ListMetricsScopesByMonitoredProjectResponse>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.monitoring.metricsscope.v1.MetricsScopes/ListMetricsScopesByMonitoredProject") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.monitoring.metricsscope.v1.MetricsScopes/ListMetricsScopesByMonitoredProject",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Adds a `MonitoredProject` with the given project ID"]
-        #[doc = " to the specified `Metrics Scope`."]
+        /// Adds a `MonitoredProject` with the given project ID
+        /// to the specified `Metrics Scope`.
         pub async fn create_monitored_project(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMonitoredProjectRequest>,
@@ -222,19 +247,22 @@ pub mod metrics_scopes_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.monitoring.metricsscope.v1.MetricsScopes/CreateMonitoredProject",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a `MonitoredProject` from the specified `Metrics Scope`."]
+        /// Deletes a `MonitoredProject` from the specified `Metrics Scope`.
         pub async fn delete_monitored_project(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteMonitoredProjectRequest>,
@@ -242,12 +270,15 @@ pub mod metrics_scopes_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.monitoring.metricsscope.v1.MetricsScopes/DeleteMonitoredProject",

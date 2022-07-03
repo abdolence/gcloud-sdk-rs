@@ -2,10 +2,10 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Repository {
     /// Output only. The repository's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. If set, configures this repository to be linked to a Git remote.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub git_remote_settings: ::core::option::Option<repository::GitRemoteSettings>,
 }
 /// Nested message and enum types in `Repository`.
@@ -14,26 +14,24 @@ pub mod repository {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GitRemoteSettings {
         /// Required. The Git remote's URL.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub url: ::prost::alloc::string::String,
         /// Required. The Git remote's default branch name.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub default_branch: ::prost::alloc::string::String,
         /// Required. The name of the Secret Manager secret version to use as an
         /// authentication token for Git operations. Must be in the format
         /// `projects/*/secrets/*/versions/*`.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub authentication_token_secret_version: ::prost::alloc::string::String,
         /// Output only. Indicates the status of the Git access token.
-        #[prost(enumeration = "git_remote_settings::TokenStatus", tag = "4")]
+        #[prost(enumeration="git_remote_settings::TokenStatus", tag="4")]
         pub token_status: i32,
     }
     /// Nested message and enum types in `GitRemoteSettings`.
     pub mod git_remote_settings {
         /// Indicates the status of a Git authentication token.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum TokenStatus {
             /// Default value. This value is unused.
@@ -53,45 +51,45 @@ pub mod repository {
 pub struct ListRepositoriesRequest {
     /// Required. The location in which to list repositories. Must be in the format
     /// `projects/*/locations/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of repositories to return. The server may return fewer
     /// items than requested. If unspecified, the server will pick an appropriate
     /// default.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `ListRepositories` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListRepositories`
     /// must match the call that provided the page token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. This field only supports ordering by `name`. If unspecified, the server
     /// will choose the ordering. If specified, the default order is ascending for
     /// the `name` field.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub order_by: ::prost::alloc::string::String,
     /// Optional. Filter for the returned list.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub filter: ::prost::alloc::string::String,
 }
 /// `ListRepositories` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRepositoriesResponse {
     /// List of repositories.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub repositories: ::prost::alloc::vec::Vec<Repository>,
     /// A token which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// `GetRepository` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetRepositoryRequest {
     /// Required. The repository's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// `CreateRepository` request message.
@@ -99,14 +97,14 @@ pub struct GetRepositoryRequest {
 pub struct CreateRepositoryRequest {
     /// Required. The location in which to create the repository. Must be in the format
     /// `projects/*/locations/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The repository to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub repository: ::core::option::Option<Repository>,
     /// Required. The ID to use for the repository, which will become the final component of
     /// the repository's resource name.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub repository_id: ::prost::alloc::string::String,
 }
 /// `UpdateRepository` request message.
@@ -114,43 +112,43 @@ pub struct CreateRepositoryRequest {
 pub struct UpdateRepositoryRequest {
     /// Optional. Specifies the fields to be updated in the repository. If left unset,
     /// all fields will be updated.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. The repository to update.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub repository: ::core::option::Option<Repository>,
 }
 /// `DeleteRepository` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteRepositoryRequest {
     /// Required. The repository's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// If set to true, any child resources of this repository will also be
     /// deleted. (Otherwise, the request will only succeed if the repository has no
     /// child resources.)
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub force: bool,
 }
 /// `FetchRemoteBranches` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchRemoteBranchesRequest {
     /// Required. The repository's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// `FetchRemoteBranches` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchRemoteBranchesResponse {
     /// The remote repository's branch names.
-    #[prost(string, repeated, tag = "1")]
+    #[prost(string, repeated, tag="1")]
     pub branches: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a Dataform Git workspace.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Workspace {
     /// Output only. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// `ListWorkspaces` request message.
@@ -158,45 +156,45 @@ pub struct Workspace {
 pub struct ListWorkspacesRequest {
     /// Required. The repository in which to list workspaces. Must be in the
     /// format `projects/*/locations/*/repositories/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of workspaces to return. The server may return fewer
     /// items than requested. If unspecified, the server will pick an appropriate
     /// default.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `ListWorkspaces` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListWorkspaces`
     /// must match the call that provided the page token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. This field only supports ordering by `name`. If unspecified, the server
     /// will choose the ordering. If specified, the default order is ascending for
     /// the `name` field.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub order_by: ::prost::alloc::string::String,
     /// Optional. Filter for the returned list.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub filter: ::prost::alloc::string::String,
 }
 /// `ListWorkspaces` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkspacesResponse {
     /// List of workspaces.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub workspaces: ::prost::alloc::vec::Vec<Workspace>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// `GetWorkspace` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkspaceRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// `CreateWorkspace` request message.
@@ -204,64 +202,64 @@ pub struct GetWorkspaceRequest {
 pub struct CreateWorkspaceRequest {
     /// Required. The repository in which to create the workspace. Must be in the format
     /// `projects/*/locations/*/repositories/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The workspace to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub workspace: ::core::option::Option<Workspace>,
     /// Required. The ID to use for the workspace, which will become the final component of
     /// the workspace's resource name.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub workspace_id: ::prost::alloc::string::String,
 }
 /// `DeleteWorkspace` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkspaceRequest {
     /// Required. The workspace resource's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the author of a Git commit.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitAuthor {
     /// Required. The commit author's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The commit author's email address.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub email_address: ::prost::alloc::string::String,
 }
 /// `PullGitCommits` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PullGitCommitsRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The name of the branch in the Git remote from which to pull commits.
     /// If left unset, the repository's default branch name will be used.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub remote_branch: ::prost::alloc::string::String,
     /// Required. The author of any merge commit which may be created as a result of merging
     /// fetched Git commits into this workspace.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub author: ::core::option::Option<CommitAuthor>,
 }
 /// `PushGitCommits` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PushGitCommitsRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The name of the branch in the Git remote to which commits should be pushed.
     /// If left unset, the repository's default branch name will be used.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub remote_branch: ::prost::alloc::string::String,
 }
 /// `FetchFileGitStatuses` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileGitStatusesRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// `FetchFileGitStatuses` response message.
@@ -269,9 +267,8 @@ pub struct FetchFileGitStatusesRequest {
 pub struct FetchFileGitStatusesResponse {
     /// A list of all files which have uncommitted Git changes. There will only be
     /// a single entry for any given file.
-    #[prost(message, repeated, tag = "1")]
-    pub uncommitted_file_changes:
-        ::prost::alloc::vec::Vec<fetch_file_git_statuses_response::UncommittedFileChange>,
+    #[prost(message, repeated, tag="1")]
+    pub uncommitted_file_changes: ::prost::alloc::vec::Vec<fetch_file_git_statuses_response::UncommittedFileChange>,
 }
 /// Nested message and enum types in `FetchFileGitStatusesResponse`.
 pub mod fetch_file_git_statuses_response {
@@ -279,18 +276,16 @@ pub mod fetch_file_git_statuses_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct UncommittedFileChange {
         /// The file's full path including filename, relative to the workspace root.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub path: ::prost::alloc::string::String,
         /// Indicates the status of the file.
-        #[prost(enumeration = "uncommitted_file_change::State", tag = "2")]
+        #[prost(enumeration="uncommitted_file_change::State", tag="2")]
         pub state: i32,
     }
     /// Nested message and enum types in `UncommittedFileChange`.
     pub mod uncommitted_file_change {
         /// Indicates the status of an uncommitted file change.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum State {
             /// Default value. This value is unused.
@@ -310,86 +305,86 @@ pub mod fetch_file_git_statuses_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchGitAheadBehindRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The name of the branch in the Git remote against which this workspace
     /// should be compared. If left unset, the repository's default branch name
     /// will be used.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub remote_branch: ::prost::alloc::string::String,
 }
 /// `FetchGitAheadBehind` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchGitAheadBehindResponse {
     /// The number of commits in the remote branch that are not in the workspace.
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub commits_ahead: i32,
     /// The number of commits in the workspace that are not in the remote branch.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub commits_behind: i32,
 }
 /// `CommitWorkspaceChanges` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitWorkspaceChangesRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The commit's author.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub author: ::core::option::Option<CommitAuthor>,
     /// Optional. The commit's message.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub commit_message: ::prost::alloc::string::String,
     /// Optional. Full file paths to commit including filename, rooted at workspace root. If
     /// left empty, all files will be committed.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `ResetWorkspaceChanges` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetWorkspaceChangesRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Full file paths to reset back to their committed state including filename,
     /// rooted at workspace root. If left empty, all files will be reset.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub paths: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If set to true, untracked files will be deleted.
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag="3")]
     pub clean: bool,
 }
 /// `FetchFileDiff` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileDiffRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
     /// Required. The file's full path including filename, relative to the workspace root.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
 /// `FetchFileDiff` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchFileDiffResponse {
     /// The raw formatted Git diff for the file.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub formatted_diff: ::prost::alloc::string::String,
 }
 /// `QueryDirectoryContents` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDirectoryContentsRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
     /// Optional. The directory's full path including directory name, relative to the
     /// workspace root. If left unset, the workspace root is used.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
     /// Optional. Maximum number of paths to return. The server may return fewer
     /// items than requested. If unspecified, the server will pick an appropriate
     /// default.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `QueryDirectoryContents` call.
     /// Provide this to retrieve the subsequent page.
@@ -397,19 +392,18 @@ pub struct QueryDirectoryContentsRequest {
     /// When paginating, all other parameters provided to
     /// `QueryDirectoryContents` must match the call that provided the page
     /// token.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// `QueryDirectoryContents` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryDirectoryContentsResponse {
     /// List of entries in the directory.
-    #[prost(message, repeated, tag = "1")]
-    pub directory_entries:
-        ::prost::alloc::vec::Vec<query_directory_contents_response::DirectoryEntry>,
+    #[prost(message, repeated, tag="1")]
+    pub directory_entries: ::prost::alloc::vec::Vec<query_directory_contents_response::DirectoryEntry>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `QueryDirectoryContentsResponse`.
@@ -417,7 +411,7 @@ pub mod query_directory_contents_response {
     /// Represents a single entry in a workspace directory.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DirectoryEntry {
-        #[prost(oneof = "directory_entry::Entry", tags = "1, 2")]
+        #[prost(oneof="directory_entry::Entry", tags="1, 2")]
         pub entry: ::core::option::Option<directory_entry::Entry>,
     }
     /// Nested message and enum types in `DirectoryEntry`.
@@ -425,10 +419,10 @@ pub mod query_directory_contents_response {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Entry {
             /// A file in the directory.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             File(::prost::alloc::string::String),
             /// A child directory in the directory.
-            #[prost(string, tag = "2")]
+            #[prost(string, tag="2")]
             Directory(::prost::alloc::string::String),
         }
     }
@@ -437,131 +431,136 @@ pub mod query_directory_contents_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MakeDirectoryRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
     /// Required. The directory's full path including directory name, relative to the
     /// workspace root.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
 /// `MakeDirectory` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MakeDirectoryResponse {}
+pub struct MakeDirectoryResponse {
+}
 /// `RemoveDirectory` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveDirectoryRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
     /// Required. The directory's full path including directory name, relative to the
     /// workspace root.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
 /// `MoveDirectory` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveDirectoryRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
     /// Required. The directory's full path including directory name, relative to the
     /// workspace root.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
     /// Required. The new path for the directory including directory name, rooted at
     /// workspace root.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub new_path: ::prost::alloc::string::String,
 }
 /// `MoveDirectory` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MoveDirectoryResponse {}
+pub struct MoveDirectoryResponse {
+}
 /// `ReadFile` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadFileRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
     /// Required. The file's full path including filename, relative to the workspace root.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
 /// `ReadFile` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadFileResponse {
     /// The file's contents.
-    #[prost(bytes = "vec", tag = "1")]
+    #[prost(bytes="vec", tag="1")]
     pub file_contents: ::prost::alloc::vec::Vec<u8>,
 }
 /// `RemoveFile` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveFileRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
     /// Required. The file's full path including filename, relative to the workspace root.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
 }
 /// `MoveFile` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MoveFileRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
     /// Required. The file's full path including filename, relative to the workspace root.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
     /// Required. The file's new path including filename, relative to the workspace root.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub new_path: ::prost::alloc::string::String,
 }
 /// `MoveFile` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MoveFileResponse {}
+pub struct MoveFileResponse {
+}
 /// `WriteFile` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WriteFileRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
     /// Required. The file.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub path: ::prost::alloc::string::String,
     /// Required. The file's contents.
-    #[prost(bytes = "vec", tag = "3")]
+    #[prost(bytes="vec", tag="3")]
     pub contents: ::prost::alloc::vec::Vec<u8>,
 }
 /// `WriteFile` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WriteFileResponse {}
+pub struct WriteFileResponse {
+}
 /// `InstallNpmPackages` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InstallNpmPackagesRequest {
     /// Required. The workspace's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub workspace: ::prost::alloc::string::String,
 }
 /// `InstallNpmPackages` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InstallNpmPackagesResponse {}
+pub struct InstallNpmPackagesResponse {
+}
 /// Represents the result of compiling a Dataform project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompilationResult {
     /// Output only. The compilation result's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. If set, fields of `code_compilation_overrides` override the default
     /// compilation settings that are specified in dataform.json.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub code_compilation_config: ::core::option::Option<compilation_result::CodeCompilationConfig>,
     /// Output only. The version of `@dataform/core` that was used for compilation.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub dataform_core_version: ::prost::alloc::string::String,
     /// Output only. Errors encountered during project compilation.
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag="6")]
     pub compilation_errors: ::prost::alloc::vec::Vec<compilation_result::CompilationError>,
-    #[prost(oneof = "compilation_result::Source", tags = "2, 3")]
+    #[prost(oneof="compilation_result::Source", tags="2, 3")]
     pub source: ::core::option::Option<compilation_result::Source>,
 }
 /// Nested message and enum types in `CompilationResult`.
@@ -570,53 +569,50 @@ pub mod compilation_result {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CodeCompilationConfig {
         /// Optional. The default database (Google Cloud project ID).
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub default_database: ::prost::alloc::string::String,
         /// Optional. The default schema (BigQuery dataset ID).
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub default_schema: ::prost::alloc::string::String,
         /// Optional. The default BigQuery location to use. Defaults to "US".
         /// See the BigQuery docs for a full list of locations:
         /// <https://cloud.google.com/bigquery/docs/locations.>
-        #[prost(string, tag = "8")]
+        #[prost(string, tag="8")]
         pub default_location: ::prost::alloc::string::String,
         /// Optional. The default schema (BigQuery dataset ID) for assertions.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub assertion_schema: ::prost::alloc::string::String,
         /// Optional. User-defined variables that are made available to project code during
         /// compilation.
-        #[prost(map = "string, string", tag = "4")]
-        pub vars: ::std::collections::HashMap<
-            ::prost::alloc::string::String,
-            ::prost::alloc::string::String,
-        >,
+        #[prost(map="string, string", tag="4")]
+        pub vars: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
         /// Optional. The suffix that should be appended to all database (Google Cloud project
         /// ID) names.
-        #[prost(string, tag = "5")]
+        #[prost(string, tag="5")]
         pub database_suffix: ::prost::alloc::string::String,
         /// Optional. The suffix that should be appended to all schema (BigQuery dataset ID)
         /// names.
-        #[prost(string, tag = "6")]
+        #[prost(string, tag="6")]
         pub schema_suffix: ::prost::alloc::string::String,
         /// Optional. The prefix that should be prepended to all table names.
-        #[prost(string, tag = "7")]
+        #[prost(string, tag="7")]
         pub table_prefix: ::prost::alloc::string::String,
     }
     /// An error encountered when attempting to compile a Dataform project.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CompilationError {
         /// Output only. The error's top level message.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub message: ::prost::alloc::string::String,
         /// Output only. The error's full stack trace.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub stack: ::prost::alloc::string::String,
         /// Output only. The path of the file where this error occurred, if available, relative to
         /// the project root.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub path: ::prost::alloc::string::String,
         /// Output only. The identifier of the action where this error occurred, if available.
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub action_target: ::core::option::Option<super::Target>,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -627,11 +623,11 @@ pub mod compilation_result {
         /// - a commit SHA: `12ade345`
         /// - a tag: `tag1`
         /// - a branch name: `branch1`
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         GitCommitish(::prost::alloc::string::String),
         /// Immutable. The name of the workspace to compile. Must be in the format
         /// `projects/*/locations/*/repositories/*/workspaces/*`.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         Workspace(::prost::alloc::string::String),
     }
 }
@@ -640,37 +636,37 @@ pub mod compilation_result {
 pub struct ListCompilationResultsRequest {
     /// Required. The repository in which to list compilation results. Must be in the
     /// format `projects/*/locations/*/repositories/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of compilation results to return. The server may return
     /// fewer items than requested. If unspecified, the server will pick an
     /// appropriate default.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `ListCompilationResults` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListCompilationResults`
     /// must match the call that provided the page token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// `ListCompilationResults` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCompilationResultsResponse {
     /// List of compilation results.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub compilation_results: ::prost::alloc::vec::Vec<CompilationResult>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// `GetCompilationResult` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCompilationResultRequest {
     /// Required. The compilation result's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// `CreateCompilationResult` request message.
@@ -678,10 +674,10 @@ pub struct GetCompilationResultRequest {
 pub struct CreateCompilationResultRequest {
     /// Required. The repository in which to create the compilation result. Must be in the
     /// format `projects/*/locations/*/repositories/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The compilation result to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub compilation_result: ::core::option::Option<CompilationResult>,
 }
 /// Represents an action identifier. If the action writes output, the output
@@ -689,28 +685,27 @@ pub struct CreateCompilationResultRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Target {
     /// The action's database (Google Cloud project ID) .
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub database: ::prost::alloc::string::String,
     /// The action's schema (BigQuery dataset ID), within `database`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub schema: ::prost::alloc::string::String,
     /// The action's name, within `database` and `schema`.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
 }
 /// Describes a relation and its columns.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RelationDescriptor {
     /// A text description of the relation.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub description: ::prost::alloc::string::String,
     /// A list of descriptions of columns within the relation.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub columns: ::prost::alloc::vec::Vec<relation_descriptor::ColumnDescriptor>,
     /// A set of BigQuery labels that should be applied to the relation.
-    #[prost(map = "string, string", tag = "3")]
-    pub bigquery_labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="3")]
+    pub bigquery_labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `RelationDescriptor`.
 pub mod relation_descriptor {
@@ -719,13 +714,13 @@ pub mod relation_descriptor {
     pub struct ColumnDescriptor {
         /// The identifier for the column. Each entry in `path` represents one level
         /// of nesting.
-        #[prost(string, repeated, tag = "1")]
+        #[prost(string, repeated, tag="1")]
         pub path: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// A textual description of the column.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub description: ::prost::alloc::string::String,
         /// A list of BigQuery policy tags that will be applied to the column.
-        #[prost(string, repeated, tag = "3")]
+        #[prost(string, repeated, tag="3")]
         pub bigquery_policy_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
@@ -733,20 +728,17 @@ pub mod relation_descriptor {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompilationResultAction {
     /// This action's identifier. Unique within the compilation result.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub target: ::core::option::Option<Target>,
     /// The action's identifier if the project had been compiled without any
     /// overrides configured. Unique within the compilation result.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub canonical_target: ::core::option::Option<Target>,
     /// The full path including filename in which this action is located, relative
     /// to the workspace root.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub file_path: ::prost::alloc::string::String,
-    #[prost(
-        oneof = "compilation_result_action::CompiledObject",
-        tags = "4, 5, 6, 7"
-    )]
+    #[prost(oneof="compilation_result_action::CompiledObject", tags="4, 5, 6, 7")]
     pub compiled_object: ::core::option::Option<compilation_result_action::CompiledObject>,
 }
 /// Nested message and enum types in `CompilationResultAction`.
@@ -755,55 +747,52 @@ pub mod compilation_result_action {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Relation {
         /// A list of actions that this action depends on.
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub dependency_targets: ::prost::alloc::vec::Vec<super::Target>,
         /// Whether this action is disabled (i.e. should not be run).
-        #[prost(bool, tag = "2")]
+        #[prost(bool, tag="2")]
         pub disabled: bool,
         /// Arbitrary, user-defined tags on this action.
-        #[prost(string, repeated, tag = "3")]
+        #[prost(string, repeated, tag="3")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Descriptor for the relation and its columns.
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub relation_descriptor: ::core::option::Option<super::RelationDescriptor>,
         /// The type of this relation.
-        #[prost(enumeration = "relation::RelationType", tag = "5")]
+        #[prost(enumeration="relation::RelationType", tag="5")]
         pub relation_type: i32,
         /// The SELECT query which returns rows which this relation should contain.
-        #[prost(string, tag = "6")]
+        #[prost(string, tag="6")]
         pub select_query: ::prost::alloc::string::String,
         /// SQL statements to be executed before creating the relation.
-        #[prost(string, repeated, tag = "7")]
+        #[prost(string, repeated, tag="7")]
         pub pre_operations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// SQL statements to be executed after creating the relation.
-        #[prost(string, repeated, tag = "8")]
+        #[prost(string, repeated, tag="8")]
         pub post_operations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Configures `INCREMENTAL_TABLE` settings for this relation. Only set if
         /// `relation_type` is `INCREMENTAL_TABLE`.
-        #[prost(message, optional, tag = "9")]
+        #[prost(message, optional, tag="9")]
         pub incremental_table_config: ::core::option::Option<relation::IncrementalTableConfig>,
         /// The SQL expression used to partition the relation.
-        #[prost(string, tag = "10")]
+        #[prost(string, tag="10")]
         pub partition_expression: ::prost::alloc::string::String,
         /// A list of columns or SQL expressions used to cluster the table.
-        #[prost(string, repeated, tag = "11")]
+        #[prost(string, repeated, tag="11")]
         pub cluster_expressions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Sets the partition expiration in days.
-        #[prost(int32, tag = "12")]
+        #[prost(int32, tag="12")]
         pub partition_expiration_days: i32,
         /// Specifies whether queries on this table must include a predicate filter
         /// that filters on the partitioning column.
-        #[prost(bool, tag = "13")]
+        #[prost(bool, tag="13")]
         pub require_partition_filter: bool,
         /// Additional options that will be provided as key/value pairs into the
         /// options clause of a create table/view statement. See
         /// <https://cloud.google.com/bigquery/docs/reference/standard-sql/data-definition-language>
         /// for more information on which options are supported.
-        #[prost(map = "string, string", tag = "14")]
-        pub additional_options: ::std::collections::HashMap<
-            ::prost::alloc::string::String,
-            ::prost::alloc::string::String,
-        >,
+        #[prost(map="string, string", tag="14")]
+        pub additional_options: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     }
     /// Nested message and enum types in `Relation`.
     pub mod relation {
@@ -812,37 +801,33 @@ pub mod compilation_result_action {
         pub struct IncrementalTableConfig {
             /// The SELECT query which returns rows which should be inserted into the
             /// relation if it already exists and is not being refreshed.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub incremental_select_query: ::prost::alloc::string::String,
             /// Whether this table should be protected from being refreshed.
-            #[prost(bool, tag = "2")]
+            #[prost(bool, tag="2")]
             pub refresh_disabled: bool,
             /// A set of columns or SQL expressions used to define row uniqueness.
             /// If any duplicates are discovered (as defined by `unique_key_parts`),
             /// only the newly selected rows (as defined by `incremental_select_query`)
             /// will be included in the relation.
-            #[prost(string, repeated, tag = "3")]
+            #[prost(string, repeated, tag="3")]
             pub unique_key_parts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// A SQL expression conditional used to limit the set of existing rows
             /// considered for a merge operation (see `unique_key_parts` for more
             /// information).
-            #[prost(string, tag = "4")]
+            #[prost(string, tag="4")]
             pub update_partition_filter: ::prost::alloc::string::String,
             /// SQL statements to be executed before inserting new rows into the
             /// relation.
-            #[prost(string, repeated, tag = "5")]
-            pub incremental_pre_operations:
-                ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            #[prost(string, repeated, tag="5")]
+            pub incremental_pre_operations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// SQL statements to be executed after inserting new rows into the
             /// relation.
-            #[prost(string, repeated, tag = "6")]
-            pub incremental_post_operations:
-                ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+            #[prost(string, repeated, tag="6")]
+            pub incremental_post_operations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// Indicates the type of this relation.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum RelationType {
             /// Default value. This value is unused.
@@ -861,24 +846,24 @@ pub mod compilation_result_action {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Operations {
         /// A list of actions that this action depends on.
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub dependency_targets: ::prost::alloc::vec::Vec<super::Target>,
         /// Whether this action is disabled (i.e. should not be run).
-        #[prost(bool, tag = "2")]
+        #[prost(bool, tag="2")]
         pub disabled: bool,
         /// Arbitrary, user-defined tags on this action.
-        #[prost(string, repeated, tag = "3")]
+        #[prost(string, repeated, tag="3")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Descriptor for any output relation and its columns. Only set if
         /// `has_output` is true.
-        #[prost(message, optional, tag = "6")]
+        #[prost(message, optional, tag="6")]
         pub relation_descriptor: ::core::option::Option<super::RelationDescriptor>,
         /// A list of arbitrary SQL statements that will be executed without
         /// alteration.
-        #[prost(string, repeated, tag = "4")]
+        #[prost(string, repeated, tag="4")]
         pub queries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Whether these operations produce an output relation.
-        #[prost(bool, tag = "5")]
+        #[prost(bool, tag="5")]
         pub has_output: bool,
     }
     /// Represents an assertion upon a SQL query which is required return zero
@@ -886,25 +871,25 @@ pub mod compilation_result_action {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Assertion {
         /// A list of actions that this action depends on.
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub dependency_targets: ::prost::alloc::vec::Vec<super::Target>,
         /// The parent action of this assertion. Only set if this assertion was
         /// automatically generated.
-        #[prost(message, optional, tag = "5")]
+        #[prost(message, optional, tag="5")]
         pub parent_action: ::core::option::Option<super::Target>,
         /// Whether this action is disabled (i.e. should not be run).
-        #[prost(bool, tag = "2")]
+        #[prost(bool, tag="2")]
         pub disabled: bool,
         /// Arbitrary, user-defined tags on this action.
-        #[prost(string, repeated, tag = "3")]
+        #[prost(string, repeated, tag="3")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The SELECT query which must return zero rows in order for this assertion
         /// to succeed.
-        #[prost(string, tag = "4")]
+        #[prost(string, tag="4")]
         pub select_query: ::prost::alloc::string::String,
         /// Descriptor for the assertion's automatically-generated view and its
         /// columns.
-        #[prost(message, optional, tag = "6")]
+        #[prost(message, optional, tag="6")]
         pub relation_descriptor: ::core::option::Option<super::RelationDescriptor>,
     }
     /// Represents a relation which is not managed by Dataform but which may be
@@ -913,22 +898,22 @@ pub mod compilation_result_action {
     pub struct Declaration {
         /// Descriptor for the relation and its columns. Used as documentation only,
         /// i.e. values here will result in no changes to the relation's metadata.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub relation_descriptor: ::core::option::Option<super::RelationDescriptor>,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CompiledObject {
         /// The database relation created/updated by this action.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         Relation(Relation),
         /// The database operations executed by this action.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         Operations(Operations),
         /// The assertion executed by this action.
-        #[prost(message, tag = "6")]
+        #[prost(message, tag="6")]
         Assertion(Assertion),
         /// The declaration declared by this action.
-        #[prost(message, tag = "7")]
+        #[prost(message, tag="7")]
         Declaration(Declaration),
     }
 }
@@ -936,12 +921,12 @@ pub mod compilation_result_action {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryCompilationResultActionsRequest {
     /// Required. The compilation result's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Maximum number of compilation results to return. The server may return
     /// fewer items than requested. If unspecified, the server will pick an
     /// appropriate default.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `QueryCompilationResultActions` call.
     /// Provide this to retrieve the subsequent page.
@@ -949,42 +934,42 @@ pub struct QueryCompilationResultActionsRequest {
     /// When paginating, all other parameters provided to
     /// `QueryCompilationResultActions` must match the call that provided the page
     /// token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. Optional filter for the returned list. Filtering is only currently
     /// supported on the `file_path` field.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// `QueryCompilationResultActions` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryCompilationResultActionsResponse {
     /// List of compilation result actions.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub compilation_result_actions: ::prost::alloc::vec::Vec<CompilationResultAction>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Represents a single invocation of a compilation result.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowInvocation {
     /// Output only. The workflow invocation's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. The name of the compilation result to compile. Must be in the format
     /// `projects/*/locations/*/repositories/*/compilationResults/*`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub compilation_result: ::prost::alloc::string::String,
     /// Immutable. If left unset, a default InvocationConfig will be used.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub invocation_config: ::core::option::Option<workflow_invocation::InvocationConfig>,
     /// Output only. This workflow invocation's current state.
-    #[prost(enumeration = "workflow_invocation::State", tag = "4")]
+    #[prost(enumeration="workflow_invocation::State", tag="4")]
     pub state: i32,
     /// Output only. This workflow invocation's timing details.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub invocation_timing: ::core::option::Option<super::super::super::r#type::Interval>,
 }
 /// Nested message and enum types in `WorkflowInvocation`.
@@ -995,21 +980,21 @@ pub mod workflow_invocation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InvocationConfig {
         /// Immutable. The set of action identifiers to include.
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub included_targets: ::prost::alloc::vec::Vec<super::Target>,
         /// Immutable. The set of tags to include.
-        #[prost(string, repeated, tag = "2")]
+        #[prost(string, repeated, tag="2")]
         pub included_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Immutable. When set to true, transitive dependencies of included actions will be
         /// executed.
-        #[prost(bool, tag = "3")]
+        #[prost(bool, tag="3")]
         pub transitive_dependencies_included: bool,
         /// Immutable. When set to true, transitive dependents of included actions will be
         /// executed.
-        #[prost(bool, tag = "4")]
+        #[prost(bool, tag="4")]
         pub transitive_dependents_included: bool,
         /// Immutable. When set to true, any incremental tables will be fully refreshed.
-        #[prost(bool, tag = "5")]
+        #[prost(bool, tag="5")]
         pub fully_refresh_incremental_tables_enabled: bool,
     }
     /// Represents the current state of a workflow invocation.
@@ -1036,85 +1021,85 @@ pub mod workflow_invocation {
 pub struct ListWorkflowInvocationsRequest {
     /// Required. The parent resource of the WorkflowInvocation type. Must be in the
     /// format `projects/*/locations/*/repositories/*`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. Maximum number of workflow invocations to return. The server may return
     /// fewer items than requested. If unspecified, the server will pick an
     /// appropriate default.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `ListWorkflowInvocations` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListWorkflowInvocations`
     /// must match the call that provided the page token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// `ListWorkflowInvocations` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListWorkflowInvocationsResponse {
     /// List of workflow invocations.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub workflow_invocations: ::prost::alloc::vec::Vec<WorkflowInvocation>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// `GetWorkflowInvocation` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkflowInvocationRequest {
     /// Required. The workflow invocation resource's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// `CreateWorkflowInvocation` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateWorkflowInvocationRequest {
     /// Required. The parent resource of the WorkflowInvocation type.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The workflow invocation resource to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub workflow_invocation: ::core::option::Option<WorkflowInvocation>,
 }
 /// `DeleteWorkflowInvocation` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteWorkflowInvocationRequest {
     /// Required. The workflow invocation resource's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// `CancelWorkflowInvocation` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CancelWorkflowInvocationRequest {
     /// Required. The workflow invocation resource's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Represents a single action in a workflow invocation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WorkflowInvocationAction {
     /// Output only. This action's identifier. Unique within the workflow invocation.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub target: ::core::option::Option<Target>,
     /// Output only. The action's identifier if the project had been compiled without any
     /// overrides configured. Unique within the compilation result.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub canonical_target: ::core::option::Option<Target>,
     /// Output only. This action's current state.
-    #[prost(enumeration = "workflow_invocation_action::State", tag = "4")]
+    #[prost(enumeration="workflow_invocation_action::State", tag="4")]
     pub state: i32,
     /// Output only. This action's timing details.
     /// `start_time` will be set if the action is in [RUNNING, SUCCEEDED,
     /// CANCELLED, FAILED] state.
     /// `end_time` will be set if the action is in [SUCCEEDED, CANCELLED, FAILED]
     /// state.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub invocation_timing: ::core::option::Option<super::super::super::r#type::Interval>,
     /// Output only. The workflow action's bigquery action details.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub bigquery_action: ::core::option::Option<workflow_invocation_action::BigQueryAction>,
 }
 /// Nested message and enum types in `WorkflowInvocationAction`.
@@ -1123,7 +1108,7 @@ pub mod workflow_invocation_action {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BigQueryAction {
         /// Output only. The generated BigQuery SQL script that will be executed.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub sql_script: ::prost::alloc::string::String,
     }
     /// Represents the current state of an workflow invocation action.
@@ -1152,12 +1137,12 @@ pub mod workflow_invocation_action {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWorkflowInvocationActionsRequest {
     /// Required. The workflow invocation's name.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. Maximum number of workflow invocations to return. The server may return
     /// fewer items than requested. If unspecified, the server will pick an
     /// appropriate default.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. Page token received from a previous `QueryWorkflowInvocationActions` call.
     /// Provide this to retrieve the subsequent page.
@@ -1165,35 +1150,46 @@ pub struct QueryWorkflowInvocationActionsRequest {
     /// When paginating, all other parameters provided to
     /// `QueryWorkflowInvocationActions` must match the call that provided the page
     /// token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// `QueryWorkflowInvocationActions` response message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWorkflowInvocationActionsResponse {
     /// List of workflow invocation actions.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub workflow_invocation_actions: ::prost::alloc::vec::Vec<WorkflowInvocationAction>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod dataform_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Dataform is a service to develop, create, document, test, and update curated"]
-    #[doc = " tables in BigQuery."]
+    /// Dataform is a service to develop, create, document, test, and update curated
+    /// tables in BigQuery.
     #[derive(Debug, Clone)]
     pub struct DataformClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl DataformClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> DataformClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -1206,640 +1202,769 @@ pub mod dataform_client {
         ) -> DataformClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             DataformClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Lists Repositories in a given project and location."]
+        /// Lists Repositories in a given project and location.
         pub async fn list_repositories(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRepositoriesRequest>,
         ) -> Result<tonic::Response<super::ListRepositoriesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/ListRepositories",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Fetches a single Repository."]
+        /// Fetches a single Repository.
         pub async fn get_repository(
             &mut self,
             request: impl tonic::IntoRequest<super::GetRepositoryRequest>,
         ) -> Result<tonic::Response<super::Repository>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/GetRepository",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a new Repository in a given project and location."]
+        /// Creates a new Repository in a given project and location.
         pub async fn create_repository(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateRepositoryRequest>,
         ) -> Result<tonic::Response<super::Repository>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/CreateRepository",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a single Repository."]
+        /// Updates a single Repository.
         pub async fn update_repository(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateRepositoryRequest>,
         ) -> Result<tonic::Response<super::Repository>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/UpdateRepository",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a single Repository."]
+        /// Deletes a single Repository.
         pub async fn delete_repository(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteRepositoryRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/DeleteRepository",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Fetches a Repository's remote branches."]
+        /// Fetches a Repository's remote branches.
         pub async fn fetch_remote_branches(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchRemoteBranchesRequest>,
         ) -> Result<tonic::Response<super::FetchRemoteBranchesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/FetchRemoteBranches",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists Workspaces in a given Repository."]
+        /// Lists Workspaces in a given Repository.
         pub async fn list_workspaces(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWorkspacesRequest>,
         ) -> Result<tonic::Response<super::ListWorkspacesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/ListWorkspaces",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Fetches a single Workspace."]
+        /// Fetches a single Workspace.
         pub async fn get_workspace(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWorkspaceRequest>,
         ) -> Result<tonic::Response<super::Workspace>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/GetWorkspace",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a new Workspace in a given Repository."]
+        /// Creates a new Workspace in a given Repository.
         pub async fn create_workspace(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWorkspaceRequest>,
         ) -> Result<tonic::Response<super::Workspace>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/CreateWorkspace",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a single Workspace."]
+        /// Deletes a single Workspace.
         pub async fn delete_workspace(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteWorkspaceRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/DeleteWorkspace",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Installs dependency NPM packages (inside a Workspace)."]
+        /// Installs dependency NPM packages (inside a Workspace).
         pub async fn install_npm_packages(
             &mut self,
             request: impl tonic::IntoRequest<super::InstallNpmPackagesRequest>,
         ) -> Result<tonic::Response<super::InstallNpmPackagesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/InstallNpmPackages",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Pulls Git commits from the Repository's remote into a Workspace."]
+        /// Pulls Git commits from the Repository's remote into a Workspace.
         pub async fn pull_git_commits(
             &mut self,
             request: impl tonic::IntoRequest<super::PullGitCommitsRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/PullGitCommits",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Pushes Git commits from a Workspace to the Repository's remote."]
+        /// Pushes Git commits from a Workspace to the Repository's remote.
         pub async fn push_git_commits(
             &mut self,
             request: impl tonic::IntoRequest<super::PushGitCommitsRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/PushGitCommits",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Fetches Git statuses for the files in a Workspace."]
+        /// Fetches Git statuses for the files in a Workspace.
         pub async fn fetch_file_git_statuses(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchFileGitStatusesRequest>,
-        ) -> Result<tonic::Response<super::FetchFileGitStatusesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::FetchFileGitStatusesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/FetchFileGitStatuses",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Fetches Git ahead/behind against a remote branch."]
+        /// Fetches Git ahead/behind against a remote branch.
         pub async fn fetch_git_ahead_behind(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchGitAheadBehindRequest>,
         ) -> Result<tonic::Response<super::FetchGitAheadBehindResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/FetchGitAheadBehind",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Applies a Git commit for uncommitted files in a Workspace."]
+        /// Applies a Git commit for uncommitted files in a Workspace.
         pub async fn commit_workspace_changes(
             &mut self,
             request: impl tonic::IntoRequest<super::CommitWorkspaceChangesRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/CommitWorkspaceChanges",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Performs a Git reset for uncommitted files in a Workspace."]
+        /// Performs a Git reset for uncommitted files in a Workspace.
         pub async fn reset_workspace_changes(
             &mut self,
             request: impl tonic::IntoRequest<super::ResetWorkspaceChangesRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/ResetWorkspaceChanges",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Fetches Git diff for an uncommitted file in a Workspace."]
+        /// Fetches Git diff for an uncommitted file in a Workspace.
         pub async fn fetch_file_diff(
             &mut self,
             request: impl tonic::IntoRequest<super::FetchFileDiffRequest>,
         ) -> Result<tonic::Response<super::FetchFileDiffResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/FetchFileDiff",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns the contents of a given Workspace directory."]
+        /// Returns the contents of a given Workspace directory.
         pub async fn query_directory_contents(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryDirectoryContentsRequest>,
-        ) -> Result<tonic::Response<super::QueryDirectoryContentsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::QueryDirectoryContentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/QueryDirectoryContents",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a directory inside a Workspace."]
+        /// Creates a directory inside a Workspace.
         pub async fn make_directory(
             &mut self,
             request: impl tonic::IntoRequest<super::MakeDirectoryRequest>,
         ) -> Result<tonic::Response<super::MakeDirectoryResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/MakeDirectory",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a directory (inside a Workspace) and all of its contents."]
+        /// Deletes a directory (inside a Workspace) and all of its contents.
         pub async fn remove_directory(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveDirectoryRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/RemoveDirectory",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Moves a directory (inside a Workspace), and all of its contents, to a new"]
-        #[doc = " location."]
+        /// Moves a directory (inside a Workspace), and all of its contents, to a new
+        /// location.
         pub async fn move_directory(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveDirectoryRequest>,
         ) -> Result<tonic::Response<super::MoveDirectoryResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/MoveDirectory",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns the contents of a file (inside a Workspace)."]
+        /// Returns the contents of a file (inside a Workspace).
         pub async fn read_file(
             &mut self,
             request: impl tonic::IntoRequest<super::ReadFileRequest>,
         ) -> Result<tonic::Response<super::ReadFileResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/ReadFile",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a file (inside a Workspace)."]
+        /// Deletes a file (inside a Workspace).
         pub async fn remove_file(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveFileRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/RemoveFile",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Moves a file (inside a Workspace) to a new location."]
+        /// Moves a file (inside a Workspace) to a new location.
         pub async fn move_file(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveFileRequest>,
         ) -> Result<tonic::Response<super::MoveFileResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/MoveFile",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Writes to a file (inside a Workspace)."]
+        /// Writes to a file (inside a Workspace).
         pub async fn write_file(
             &mut self,
             request: impl tonic::IntoRequest<super::WriteFileRequest>,
         ) -> Result<tonic::Response<super::WriteFileResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/WriteFile",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists CompilationResults in a given Repository."]
+        /// Lists CompilationResults in a given Repository.
         pub async fn list_compilation_results(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCompilationResultsRequest>,
-        ) -> Result<tonic::Response<super::ListCompilationResultsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ListCompilationResultsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/ListCompilationResults",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Fetches a single CompilationResult."]
+        /// Fetches a single CompilationResult.
         pub async fn get_compilation_result(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCompilationResultRequest>,
         ) -> Result<tonic::Response<super::CompilationResult>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/GetCompilationResult",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a new CompilationResult in a given project and location."]
+        /// Creates a new CompilationResult in a given project and location.
         pub async fn create_compilation_result(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCompilationResultRequest>,
         ) -> Result<tonic::Response<super::CompilationResult>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/CreateCompilationResult",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns CompilationResultActions in a given CompilationResult."]
+        /// Returns CompilationResultActions in a given CompilationResult.
         pub async fn query_compilation_result_actions(
             &mut self,
             request: impl tonic::IntoRequest<super::QueryCompilationResultActionsRequest>,
-        ) -> Result<tonic::Response<super::QueryCompilationResultActionsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::QueryCompilationResultActionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/QueryCompilationResultActions",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists WorkflowInvocations in a given Repository."]
+        /// Lists WorkflowInvocations in a given Repository.
         pub async fn list_workflow_invocations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListWorkflowInvocationsRequest>,
-        ) -> Result<tonic::Response<super::ListWorkflowInvocationsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ListWorkflowInvocationsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/ListWorkflowInvocations",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Fetches a single WorkflowInvocation."]
+        /// Fetches a single WorkflowInvocation.
         pub async fn get_workflow_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWorkflowInvocationRequest>,
         ) -> Result<tonic::Response<super::WorkflowInvocation>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/GetWorkflowInvocation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a new WorkflowInvocation in a given Repository."]
+        /// Creates a new WorkflowInvocation in a given Repository.
         pub async fn create_workflow_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWorkflowInvocationRequest>,
         ) -> Result<tonic::Response<super::WorkflowInvocation>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/CreateWorkflowInvocation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a single WorkflowInvocation."]
+        /// Deletes a single WorkflowInvocation.
         pub async fn delete_workflow_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteWorkflowInvocationRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/DeleteWorkflowInvocation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Requests cancellation of a running WorkflowInvocation."]
+        /// Requests cancellation of a running WorkflowInvocation.
         pub async fn cancel_workflow_invocation(
             &mut self,
             request: impl tonic::IntoRequest<super::CancelWorkflowInvocationRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/CancelWorkflowInvocation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns WorkflowInvocationActions in a given WorkflowInvocation."]
+        /// Returns WorkflowInvocationActions in a given WorkflowInvocation.
         pub async fn query_workflow_invocation_actions(
             &mut self,
-            request: impl tonic::IntoRequest<super::QueryWorkflowInvocationActionsRequest>,
-        ) -> Result<tonic::Response<super::QueryWorkflowInvocationActionsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            request: impl tonic::IntoRequest<
+                super::QueryWorkflowInvocationActionsRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::QueryWorkflowInvocationActionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.dataform.v1alpha2.Dataform/QueryWorkflowInvocationActions",

@@ -4,10 +4,10 @@
 pub struct FeatureSpec {
     /// Fully-qualified Membership name which hosts the MultiClusterIngress CRD.
     /// Example: `projects/foo-proj/locations/global/memberships/bar`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub config_membership: ::prost::alloc::string::String,
     /// Customer's billing structure
-    #[prost(enumeration = "Billing", tag = "2")]
+    #[prost(enumeration="Billing", tag="2")]
     pub billing: i32,
 }
 /// Billing identifies which billing structure the customer is using.

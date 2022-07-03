@@ -2,10 +2,10 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleServiceAccount {
     /// Email address of the service account.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub account_email: ::prost::alloc::string::String,
     /// Unique identifier for the service account.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub subject_id: ::prost::alloc::string::String,
 }
 /// AWS access key (see
@@ -17,11 +17,11 @@ pub struct GoogleServiceAccount {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AwsAccessKey {
     /// Required. AWS access key ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub access_key_id: ::prost::alloc::string::String,
     /// Required. AWS secret access key. This field is not returned in RPC
     /// responses.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub secret_access_key: ::prost::alloc::string::String,
 }
 /// Azure credentials
@@ -36,7 +36,7 @@ pub struct AzureCredentials {
     /// [Grant limited access to Azure Storage resources using shared access
     /// signatures
     /// (SAS)](<https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview>).
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub sas_token: ::prost::alloc::string::String,
 }
 /// Conditions that determine which objects are transferred. Applies only
@@ -59,7 +59,7 @@ pub struct ObjectConditions {
     /// and the "last modification time" of the object is equal to or
     /// greater than the value of min_time_elapsed_since_last_modification`.
     /// Objects that do not have a "last modification time" are also transferred.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub min_time_elapsed_since_last_modification: ::core::option::Option<::prost_types::Duration>,
     /// Ensures that objects are not transferred if a specific maximum time
     /// has elapsed since the "last modification time".
@@ -69,7 +69,7 @@ pub struct ObjectConditions {
     /// `TransferOperation`and the "last modification time" of the object
     ///  is less than the value of max_time_elapsed_since_last_modification`.
     /// Objects that do not have a "last modification time" are also transferred.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub max_time_elapsed_since_last_modification: ::core::option::Option<::prost_types::Duration>,
     /// If you specify `include_prefixes`, Storage Transfer Service uses the items
     /// in the `include_prefixes` array to determine which objects to include in a
@@ -99,7 +99,7 @@ pub struct ObjectConditions {
     ///
     /// For more information, see [Filtering objects from
     /// transfers](/storage-transfer/docs/filtering-objects-from-transfers).
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub include_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If you specify `exclude_prefixes`, Storage Transfer Service uses the items
     /// in the `exclude_prefixes` array to determine which objects to exclude from
@@ -130,7 +130,7 @@ pub struct ObjectConditions {
     ///
     /// For more information, see [Filtering objects from
     /// transfers](/storage-transfer/docs/filtering-objects-from-transfers).
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub exclude_prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// If specified, only objects with a "last modification time" on or after
     /// this timestamp and objects that don't have a "last modification time" are
@@ -144,12 +144,12 @@ pub struct ObjectConditions {
     /// *  `last_modified_since` to the start of the day
     ///
     /// *  `last_modified_before` to the end of the day
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub last_modified_since: ::core::option::Option<::prost_types::Timestamp>,
     /// If specified, only objects with a "last modification time" before this
     /// timestamp and objects that don't have a "last modification time" are
     /// transferred.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub last_modified_before: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// In a GcsData resource, an object's name is the Cloud Storage object's
@@ -160,7 +160,7 @@ pub struct ObjectConditions {
 pub struct GcsData {
     /// Required. Cloud Storage bucket name. Must meet
     /// [Bucket Name Requirements](/storage/docs/naming#requirements).
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub bucket_name: ::prost::alloc::string::String,
     /// Root path to transfer objects.
     ///
@@ -170,7 +170,7 @@ pub struct GcsData {
     ///
     /// The root path value must meet
     /// [Object Name Requirements](/storage/docs/naming#objectnames).
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub path: ::prost::alloc::string::String,
 }
 /// An AwsS3Data resource can be a data source, but not a data sink.
@@ -180,7 +180,7 @@ pub struct AwsS3Data {
     /// Required. S3 Bucket name (see
     /// [Creating a
     /// bucket](<https://docs.aws.amazon.com/AmazonS3/latest/dev/create-bucket-get-location-example.html>)).
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub bucket_name: ::prost::alloc::string::String,
     /// Input only. AWS access key used to sign the API requests to the AWS S3 bucket.
     /// Permissions on the bucket must be granted to the access ID of the AWS
@@ -188,14 +188,14 @@ pub struct AwsS3Data {
     ///
     /// For information on our data retention policy for user credentials, see
     /// [User credentials](/storage-transfer/docs/data-retention#user-credentials).
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub aws_access_key: ::core::option::Option<AwsAccessKey>,
     /// Root path to transfer objects.
     ///
     /// Must be an empty string or full path name that ends with a '/'. This field
     /// is treated as an object prefix. As such, it should generally not begin with
     /// a '/'.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub path: ::prost::alloc::string::String,
     /// The Amazon Resource Name (ARN) of the role to support temporary
     /// credentials via `AssumeRoleWithWebIdentity`. For more information about
@@ -205,7 +205,7 @@ pub struct AwsS3Data {
     /// When a role ARN is provided, Transfer Service fetches temporary
     /// credentials for the session using a `AssumeRoleWithWebIdentity` call for
     /// the provided role using the \[GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount\] for this project.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub role_arn: ::prost::alloc::string::String,
 }
 /// An AzureBlobStorageData resource can be a data source, but not a data sink.
@@ -218,23 +218,23 @@ pub struct AwsS3Data {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AzureBlobStorageData {
     /// Required. The name of the Azure Storage account.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub storage_account: ::prost::alloc::string::String,
     /// Required. Input only. Credentials used to authenticate API requests to Azure.
     ///
     /// For information on our data retention policy for user credentials, see
     /// [User credentials](/storage-transfer/docs/data-retention#user-credentials).
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub azure_credentials: ::core::option::Option<AzureCredentials>,
     /// Required. The container to transfer from the Azure Storage account.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub container: ::prost::alloc::string::String,
     /// Root path to transfer objects.
     ///
     /// Must be an empty string or full path name that ends with a '/'. This field
     /// is treated as an object prefix. As such, it should generally not begin with
     /// a '/'.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub path: ::prost::alloc::string::String,
 }
 /// An HttpData resource specifies a list of objects on the web to be transferred
@@ -281,14 +281,14 @@ pub struct HttpData {
     /// Required. The URL that points to the file that stores the object list
     /// entries. This file must allow public access.  Currently, only URLs with
     /// HTTP and HTTPS schemes are supported.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub list_url: ::prost::alloc::string::String,
 }
 /// A POSIX filesystem resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PosixFilesystem {
     /// Root directory path to the filesystem.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub root_directory: ::prost::alloc::string::String,
 }
 /// Represents an On-Premises Agent pool.
@@ -297,17 +297,17 @@ pub struct AgentPool {
     /// Required. Specifies a unique string that identifies the agent pool.
     ///
     /// Format: `projects/{project_id}/agentPools/{agent_pool_id}`
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub name: ::prost::alloc::string::String,
     /// Specifies the client-specified AgentPool description.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. Specifies the state of the AgentPool.
-    #[prost(enumeration = "agent_pool::State", tag = "4")]
+    #[prost(enumeration="agent_pool::State", tag="4")]
     pub state: i32,
     /// Specifies the bandwidth limit details. If this field is unspecified, the
     /// default value is set as 'No Limit'.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub bandwidth_limit: ::core::option::Option<agent_pool::BandwidthLimit>,
 }
 /// Nested message and enum types in `AgentPool`.
@@ -317,7 +317,7 @@ pub mod agent_pool {
     pub struct BandwidthLimit {
         /// Bandwidth rate in megabytes per second, distributed across all the agents
         /// in the pool.
-        #[prost(int64, tag = "1")]
+        #[prost(int64, tag="1")]
         pub limit_mbps: i64,
     }
     /// The state of an AgentPool.
@@ -344,29 +344,29 @@ pub struct TransferOptions {
     /// that only objects that are different from the source are ovewritten. If
     /// true, all objects in the sink whose name matches an object in the source
     /// are overwritten with the source object.
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag="1")]
     pub overwrite_objects_already_existing_in_sink: bool,
     /// Whether objects that exist only in the sink should be deleted.
     ///
     /// **Note:** This option and \[delete_objects_from_source_after_transfer][google.storagetransfer.v1.TransferOptions.delete_objects_from_source_after_transfer\] are
     /// mutually exclusive.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub delete_objects_unique_in_sink: bool,
     /// Whether objects should be deleted from the source after they are
     /// transferred to the sink.
     ///
     /// **Note:** This option and \[delete_objects_unique_in_sink][google.storagetransfer.v1.TransferOptions.delete_objects_unique_in_sink\] are mutually
     /// exclusive.
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag="3")]
     pub delete_objects_from_source_after_transfer: bool,
     /// When to overwrite objects that already exist in the sink. If not set
     /// overwrite behavior is determined by
     /// \[overwrite_objects_already_existing_in_sink][google.storagetransfer.v1.TransferOptions.overwrite_objects_already_existing_in_sink\].
-    #[prost(enumeration = "transfer_options::OverwriteWhen", tag = "4")]
+    #[prost(enumeration="transfer_options::OverwriteWhen", tag="4")]
     pub overwrite_when: i32,
     /// Represents the selected metadata options for a transfer job. This feature
     /// is in Preview.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub metadata_options: ::core::option::Option<MetadataOptions>,
 }
 /// Nested message and enum types in `TransferOptions`.
@@ -393,38 +393,38 @@ pub struct TransferSpec {
     /// Only objects that satisfy these object conditions are included in the set
     /// of data source and data sink objects.  Object conditions based on
     /// objects' "last modification time" do not exclude objects in a data sink.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub object_conditions: ::core::option::Option<ObjectConditions>,
     /// If the option
     /// \[delete_objects_unique_in_sink][google.storagetransfer.v1.TransferOptions.delete_objects_unique_in_sink\]
     /// is `true` and time-based object conditions such as 'last modification time'
     /// are specified, the request fails with an
     /// \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\] error.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub transfer_options: ::core::option::Option<TransferOptions>,
     /// A manifest file provides a list of objects to be transferred from the data
     /// source. This field points to the location of the manifest file.
     /// Otherwise, the entire source bucket is used. ObjectConditions still apply.
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag="15")]
     pub transfer_manifest: ::core::option::Option<TransferManifest>,
     /// Specifies the agent pool name associated with the posix data source. When
     /// unspecified, the default name is used.
-    #[prost(string, tag = "17")]
+    #[prost(string, tag="17")]
     pub source_agent_pool_name: ::prost::alloc::string::String,
     /// Specifies the agent pool name associated with the posix data sink. When
     /// unspecified, the default name is used.
-    #[prost(string, tag = "18")]
+    #[prost(string, tag="18")]
     pub sink_agent_pool_name: ::prost::alloc::string::String,
     /// The write sink for the data.
-    #[prost(oneof = "transfer_spec::DataSink", tags = "4, 13")]
+    #[prost(oneof="transfer_spec::DataSink", tags="4, 13")]
     pub data_sink: ::core::option::Option<transfer_spec::DataSink>,
     /// The read source of the data.
-    #[prost(oneof = "transfer_spec::DataSource", tags = "1, 2, 3, 14, 8")]
+    #[prost(oneof="transfer_spec::DataSource", tags="1, 2, 3, 14, 8")]
     pub data_source: ::core::option::Option<transfer_spec::DataSource>,
     /// Represents a supported data container type which is required for transfer
     /// jobs which needs a data source, a data sink and an intermediate location to
     /// transfer data through. This is validated on TransferJob creation.
-    #[prost(oneof = "transfer_spec::IntermediateDataLocation", tags = "16")]
+    #[prost(oneof="transfer_spec::IntermediateDataLocation", tags="16")]
     pub intermediate_data_location: ::core::option::Option<transfer_spec::IntermediateDataLocation>,
 }
 /// Nested message and enum types in `TransferSpec`.
@@ -433,29 +433,29 @@ pub mod transfer_spec {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataSink {
         /// A Cloud Storage data sink.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         GcsDataSink(super::GcsData),
         /// A POSIX Filesystem data sink.
-        #[prost(message, tag = "13")]
+        #[prost(message, tag="13")]
         PosixDataSink(super::PosixFilesystem),
     }
     /// The read source of the data.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum DataSource {
         /// A Cloud Storage data source.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         GcsDataSource(super::GcsData),
         /// An AWS S3 data source.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         AwsS3DataSource(super::AwsS3Data),
         /// An HTTP URL data source.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         HttpDataSource(super::HttpData),
         /// A POSIX Filesystem data source.
-        #[prost(message, tag = "14")]
+        #[prost(message, tag="14")]
         PosixDataSource(super::PosixFilesystem),
         /// An Azure Blob Storage data source.
-        #[prost(message, tag = "8")]
+        #[prost(message, tag="8")]
         AzureBlobStorageDataSource(super::AzureBlobStorageData),
     }
     /// Represents a supported data container type which is required for transfer
@@ -464,7 +464,7 @@ pub mod transfer_spec {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum IntermediateDataLocation {
         /// Cloud Storage intermediate data location.
-        #[prost(message, tag = "16")]
+        #[prost(message, tag="16")]
         GcsIntermediateDataLocation(super::GcsData),
     }
 }
@@ -474,50 +474,50 @@ pub struct MetadataOptions {
     /// Specifies how symlinks should be handled by the transfer. By default,
     /// symlinks are not preserved. Only applicable to transfers involving
     /// POSIX file systems, and ignored for other transfers.
-    #[prost(enumeration = "metadata_options::Symlink", tag = "1")]
+    #[prost(enumeration="metadata_options::Symlink", tag="1")]
     pub symlink: i32,
     /// Specifies how each file's mode attribute should be handled by the transfer.
     /// By default, mode is not preserved. Only applicable to transfers involving
     /// POSIX file systems, and ignored for other transfers.
-    #[prost(enumeration = "metadata_options::Mode", tag = "2")]
+    #[prost(enumeration="metadata_options::Mode", tag="2")]
     pub mode: i32,
     /// Specifies how each file's POSIX group ID (GID) attribute should be handled
     /// by the transfer. By default, GID is not preserved. Only applicable to
     /// transfers involving POSIX file systems, and ignored for other transfers.
-    #[prost(enumeration = "metadata_options::Gid", tag = "3")]
+    #[prost(enumeration="metadata_options::Gid", tag="3")]
     pub gid: i32,
     /// Specifies how each file's POSIX user ID (UID) attribute should be handled
     /// by the transfer. By default, UID is not preserved. Only applicable to
     /// transfers involving POSIX file systems, and ignored for other transfers.
-    #[prost(enumeration = "metadata_options::Uid", tag = "4")]
+    #[prost(enumeration="metadata_options::Uid", tag="4")]
     pub uid: i32,
     /// Specifies how each object's ACLs should be preserved for transfers between
     /// Google Cloud Storage buckets. If unspecified, the default behavior is the
     /// same as ACL_DESTINATION_BUCKET_DEFAULT.
-    #[prost(enumeration = "metadata_options::Acl", tag = "5")]
+    #[prost(enumeration="metadata_options::Acl", tag="5")]
     pub acl: i32,
     /// Specifies the storage class to set on objects being transferred to Google
     /// Cloud Storage buckets.  If unspecified, the default behavior is the same as
     /// \[STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT][google.storagetransfer.v1.MetadataOptions.StorageClass.STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT\].
-    #[prost(enumeration = "metadata_options::StorageClass", tag = "6")]
+    #[prost(enumeration="metadata_options::StorageClass", tag="6")]
     pub storage_class: i32,
     /// Specifies how each object's temporary hold status should be preserved for
     /// transfers between Google Cloud Storage buckets.  If unspecified, the
     /// default behavior is the same as
     /// \[TEMPORARY_HOLD_PRESERVE][google.storagetransfer.v1.MetadataOptions.TemporaryHold.TEMPORARY_HOLD_PRESERVE\].
-    #[prost(enumeration = "metadata_options::TemporaryHold", tag = "7")]
+    #[prost(enumeration="metadata_options::TemporaryHold", tag="7")]
     pub temporary_hold: i32,
     /// Specifies how each object's Cloud KMS customer-managed encryption key
     /// (CMEK) is preserved for transfers between Google Cloud Storage buckets.  If
     /// unspecified, the default behavior is the same as
     /// \[KMS_KEY_DESTINATION_BUCKET_DEFAULT][google.storagetransfer.v1.MetadataOptions.KmsKey.KMS_KEY_DESTINATION_BUCKET_DEFAULT\].
-    #[prost(enumeration = "metadata_options::KmsKey", tag = "8")]
+    #[prost(enumeration="metadata_options::KmsKey", tag="8")]
     pub kms_key: i32,
     /// Specifies how each object's `timeCreated` metadata is preserved for
     /// transfers between Google Cloud Storage buckets.  If unspecified, the
     /// default behavior is the same as
     /// \[TIME_CREATED_SKIP][google.storagetransfer.v1.MetadataOptions.TimeCreated.TIME_CREATED_SKIP\].
-    #[prost(enumeration = "metadata_options::TimeCreated", tag = "9")]
+    #[prost(enumeration="metadata_options::TimeCreated", tag="9")]
     pub time_created: i32,
 }
 /// Nested message and enum types in `MetadataOptions`.
@@ -648,7 +648,7 @@ pub struct TransferManifest {
     /// service account for the transfer must have `storage.objects.get`
     /// permission for this object. An example path is
     /// `gs://bucket_name/path/manifest.csv`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub location: ::prost::alloc::string::String,
 }
 /// Transfers can be scheduled to recur or to run just once.
@@ -666,7 +666,7 @@ pub struct Schedule {
     /// a TransferJob with `schedule_start_date` set to June 2 and a
     /// `start_time_of_day` set to midnight UTC. The first scheduled
     /// \[TransferOperation][google.storagetransfer.v1.TransferOperation\] takes place on June 3 at midnight UTC.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub schedule_start_date: ::core::option::Option<super::super::r#type::Date>,
     /// The last day a transfer runs. Date boundaries are determined relative to
     /// UTC time. A job runs once per 24 hours within the following guidelines:
@@ -676,7 +676,7 @@ pub struct Schedule {
     /// *   If `schedule_end_date` is later than `schedule_start_date`  and
     ///     `schedule_end_date` is in the future relative to UTC, the job runs each
     ///     day at \[start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day\] through `schedule_end_date`.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub schedule_end_date: ::core::option::Option<super::super::r#type::Date>,
     /// The time in UTC that a transfer job is scheduled to run. Transfers may
     /// start later than this time.
@@ -692,7 +692,7 @@ pub struct Schedule {
     /// *   One-time transfers run at the specified time.
     /// *   Recurring transfers run at the specified time each day, through
     ///     `schedule_end_date`.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub start_time_of_day: ::core::option::Option<super::super::r#type::TimeOfDay>,
     /// The time in UTC that no further transfer operations are scheduled. Combined
     /// with \[schedule_end_date][google.storagetransfer.v1.Schedule.schedule_end_date\], `end_time_of_day` specifies the end date and
@@ -706,12 +706,12 @@ pub struct Schedule {
     ///
     /// *   If `end_time_of_day` is set and `schedule_end_date` is not set, then
     ///     \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\] is returned.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub end_time_of_day: ::core::option::Option<super::super::r#type::TimeOfDay>,
     /// Interval between the start of each scheduled TransferOperation. If
     /// unspecified, the default value is 24 hours. This value may not be less than
     /// 1 hour.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub repeat_interval: ::core::option::Option<::prost_types::Duration>,
 }
 /// This resource represents the configuration of a transfer job that runs
@@ -743,30 +743,30 @@ pub struct TransferJob {
     ///
     /// Invalid job names fail with an
     /// \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\] error.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// A description provided by the user for the job. Its max length is 1024
     /// bytes when Unicode-encoded.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub description: ::prost::alloc::string::String,
     /// The ID of the Google Cloud project that owns the job.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub project_id: ::prost::alloc::string::String,
     /// Transfer specification.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub transfer_spec: ::core::option::Option<TransferSpec>,
     /// Notification configuration. This is not supported for transfers involving
     /// PosixFilesystem.
-    #[prost(message, optional, tag = "11")]
+    #[prost(message, optional, tag="11")]
     pub notification_config: ::core::option::Option<NotificationConfig>,
     /// Logging configuration.
-    #[prost(message, optional, tag = "14")]
+    #[prost(message, optional, tag="14")]
     pub logging_config: ::core::option::Option<LoggingConfig>,
     /// Specifies schedule for the transfer job.
     /// This is an optional field. When the field is not set, the job never
     /// executes a transfer, unless you invoke RunTransferJob or update the job to
     /// have a non-empty schedule.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub schedule: ::core::option::Option<Schedule>,
     /// Status of the job. This value MUST be specified for
     /// `CreateTransferJobRequests`.
@@ -776,20 +776,20 @@ pub struct TransferJob {
     /// \[ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED\] to \[DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED\], and an operation
     /// spawned by the transfer is running, the status change would not affect the
     /// current operation.
-    #[prost(enumeration = "transfer_job::Status", tag = "6")]
+    #[prost(enumeration="transfer_job::Status", tag="6")]
     pub status: i32,
     /// Output only. The time that the transfer job was created.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub creation_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time that the transfer job was last modified.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub last_modification_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time that the transfer job was deleted.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub deletion_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The name of the most recently started TransferOperation of this JobConfig.
     /// Present if a TransferOperation has been created for this JobConfig.
-    #[prost(string, tag = "12")]
+    #[prost(string, tag="12")]
     pub latest_operation_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TransferJob`.
@@ -816,10 +816,10 @@ pub mod transfer_job {
 pub struct ErrorLogEntry {
     /// Required. A URL that refers to the target (a data source, a data sink,
     /// or an object) with which the error is associated.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub url: ::prost::alloc::string::String,
     /// A list of messages that carry the error details.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub error_details: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A summary of errors by error code, plus a count and sample error log
@@ -827,16 +827,16 @@ pub struct ErrorLogEntry {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorSummary {
     /// Required.
-    #[prost(enumeration = "super::super::rpc::Code", tag = "1")]
+    #[prost(enumeration="super::super::rpc::Code", tag="1")]
     pub error_code: i32,
     /// Required. Count of this type of error.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub error_count: i64,
     /// Error samples.
     ///
     /// At most 5 error log entries are recorded for a given
     /// error code for a single transfer operation.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub error_log_entries: ::prost::alloc::vec::Vec<ErrorLogEntry>,
 }
 /// A collection of counters that report the progress of a transfer operation.
@@ -845,58 +845,58 @@ pub struct TransferCounters {
     /// Objects found in the data source that are scheduled to be transferred,
     /// excluding any that are filtered based on object conditions or skipped due
     /// to sync.
-    #[prost(int64, tag = "1")]
+    #[prost(int64, tag="1")]
     pub objects_found_from_source: i64,
     /// Bytes found in the data source that are scheduled to be transferred,
     /// excluding any that are filtered based on object conditions or skipped due
     /// to sync.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub bytes_found_from_source: i64,
     /// Objects found only in the data sink that are scheduled to be deleted.
-    #[prost(int64, tag = "3")]
+    #[prost(int64, tag="3")]
     pub objects_found_only_from_sink: i64,
     /// Bytes found only in the data sink that are scheduled to be deleted.
-    #[prost(int64, tag = "4")]
+    #[prost(int64, tag="4")]
     pub bytes_found_only_from_sink: i64,
     /// Objects in the data source that are not transferred because they already
     /// exist in the data sink.
-    #[prost(int64, tag = "5")]
+    #[prost(int64, tag="5")]
     pub objects_from_source_skipped_by_sync: i64,
     /// Bytes in the data source that are not transferred because they already
     /// exist in the data sink.
-    #[prost(int64, tag = "6")]
+    #[prost(int64, tag="6")]
     pub bytes_from_source_skipped_by_sync: i64,
     /// Objects that are copied to the data sink.
-    #[prost(int64, tag = "7")]
+    #[prost(int64, tag="7")]
     pub objects_copied_to_sink: i64,
     /// Bytes that are copied to the data sink.
-    #[prost(int64, tag = "8")]
+    #[prost(int64, tag="8")]
     pub bytes_copied_to_sink: i64,
     /// Objects that are deleted from the data source.
-    #[prost(int64, tag = "9")]
+    #[prost(int64, tag="9")]
     pub objects_deleted_from_source: i64,
     /// Bytes that are deleted from the data source.
-    #[prost(int64, tag = "10")]
+    #[prost(int64, tag="10")]
     pub bytes_deleted_from_source: i64,
     /// Objects that are deleted from the data sink.
-    #[prost(int64, tag = "11")]
+    #[prost(int64, tag="11")]
     pub objects_deleted_from_sink: i64,
     /// Bytes that are deleted from the data sink.
-    #[prost(int64, tag = "12")]
+    #[prost(int64, tag="12")]
     pub bytes_deleted_from_sink: i64,
     /// Objects in the data source that failed to be transferred or that failed
     /// to be deleted after being transferred.
-    #[prost(int64, tag = "13")]
+    #[prost(int64, tag="13")]
     pub objects_from_source_failed: i64,
     /// Bytes in the data source that failed to be transferred or that failed to
     /// be deleted after being transferred.
-    #[prost(int64, tag = "14")]
+    #[prost(int64, tag="14")]
     pub bytes_from_source_failed: i64,
     /// Objects that failed to be deleted from the data sink.
-    #[prost(int64, tag = "15")]
+    #[prost(int64, tag="15")]
     pub objects_failed_to_delete_from_sink: i64,
     /// Bytes that failed to be deleted from the data sink.
-    #[prost(int64, tag = "16")]
+    #[prost(int64, tag="16")]
     pub bytes_failed_to_delete_from_sink: i64,
     /// For transfers involving PosixFilesystem only.
     ///
@@ -904,7 +904,7 @@ pub struct TransferCounters {
     /// directory of the transfer is `base/` and there are two other directories,
     /// `a/` and `b/` under this directory, the count after listing `base/`,
     /// `base/a/` and `base/b/` is 3.
-    #[prost(int64, tag = "17")]
+    #[prost(int64, tag="17")]
     pub directories_found_from_source: i64,
     /// For transfers involving PosixFilesystem only.
     ///
@@ -912,18 +912,18 @@ pub struct TransferCounters {
     /// Potential failures when listing a directory include permission failure or
     /// block failure. If listing a directory fails, no files in the directory are
     /// transferred.
-    #[prost(int64, tag = "18")]
+    #[prost(int64, tag="18")]
     pub directories_failed_to_list_from_source: i64,
     /// For transfers involving PosixFilesystem only.
     ///
     /// Number of successful listings for each directory found at the source.
-    #[prost(int64, tag = "19")]
+    #[prost(int64, tag="19")]
     pub directories_successfully_listed_from_source: i64,
     /// Number of successfully cleaned up intermediate objects.
-    #[prost(int64, tag = "22")]
+    #[prost(int64, tag="22")]
     pub intermediate_objects_cleaned_up: i64,
     /// Number of intermediate objects failed cleaned up.
-    #[prost(int64, tag = "23")]
+    #[prost(int64, tag="23")]
     pub intermediate_objects_failed_cleaned_up: i64,
 }
 /// Specification to configure notifications published to Pub/Sub.
@@ -948,14 +948,14 @@ pub struct NotificationConfig {
     /// notifications. Must be of the format: `projects/{project}/topics/{topic}`.
     /// Not matching this format results in an
     /// \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\] error.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub pubsub_topic: ::prost::alloc::string::String,
     /// Event types for which a notification is desired. If empty, send
     /// notifications for all event types.
-    #[prost(enumeration = "notification_config::EventType", repeated, tag = "2")]
+    #[prost(enumeration="notification_config::EventType", repeated, tag="2")]
     pub event_types: ::prost::alloc::vec::Vec<i32>,
     /// Required. The desired format of the notification message payloads.
-    #[prost(enumeration = "notification_config::PayloadFormat", tag = "3")]
+    #[prost(enumeration="notification_config::PayloadFormat", tag="3")]
     pub payload_format: i32,
 }
 /// Nested message and enum types in `NotificationConfig`.
@@ -1012,20 +1012,16 @@ pub struct LoggingConfig {
     /// Specifies the actions to be logged. If empty, no logs are generated.
     /// Not supported for transfers with PosixFilesystem data sources; use
     /// \[enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs\] instead.
-    #[prost(enumeration = "logging_config::LoggableAction", repeated, tag = "1")]
+    #[prost(enumeration="logging_config::LoggableAction", repeated, tag="1")]
     pub log_actions: ::prost::alloc::vec::Vec<i32>,
     /// States in which `log_actions` are logged. If empty, no logs are generated.
     /// Not supported for transfers with PosixFilesystem data sources; use
     /// \[enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs\] instead.
-    #[prost(
-        enumeration = "logging_config::LoggableActionState",
-        repeated,
-        tag = "2"
-    )]
+    #[prost(enumeration="logging_config::LoggableActionState", repeated, tag="2")]
     pub log_action_states: ::prost::alloc::vec::Vec<i32>,
     /// For transfers with a PosixFilesystem source, this option enables the Cloud
     /// Storage transfer logs for this transfer.
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag="3")]
     pub enable_onprem_gcs_transfer_logs: bool,
 }
 /// Nested message and enum types in `LoggingConfig`.
@@ -1061,34 +1057,34 @@ pub mod logging_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TransferOperation {
     /// A globally unique ID assigned by the system.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The ID of the Google Cloud project that owns the operation.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub project_id: ::prost::alloc::string::String,
     /// Transfer specification.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub transfer_spec: ::core::option::Option<TransferSpec>,
     /// Notification configuration.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub notification_config: ::core::option::Option<NotificationConfig>,
     /// Start time of this transfer execution.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End time of this transfer execution.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Status of the transfer operation.
-    #[prost(enumeration = "transfer_operation::Status", tag = "6")]
+    #[prost(enumeration="transfer_operation::Status", tag="6")]
     pub status: i32,
     /// Information about the progress of the transfer operation.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub counters: ::core::option::Option<TransferCounters>,
     /// Summarizes errors encountered with sample error log entries.
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag="8")]
     pub error_breakdowns: ::prost::alloc::vec::Vec<ErrorSummary>,
     /// The name of the transfer job that triggers this transfer operation.
-    #[prost(string, tag = "9")]
+    #[prost(string, tag="9")]
     pub transfer_job_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TransferOperation`.
@@ -1118,25 +1114,25 @@ pub mod transfer_operation {
 pub struct GetGoogleServiceAccountRequest {
     /// Required. The ID of the Google Cloud project that the Google service
     /// account is associated with.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
 }
 /// Request passed to CreateTransferJob.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTransferJobRequest {
     /// Required. The job to create.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub transfer_job: ::core::option::Option<TransferJob>,
 }
 /// Request passed to UpdateTransferJob.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateTransferJobRequest {
     /// Required. The name of job to update.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub job_name: ::prost::alloc::string::String,
     /// Required. The ID of the Google Cloud project that owns the
     /// job.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. The job to update. `transferJob` is expected to specify one or more of
     /// five fields: \[description][google.storagetransfer.v1.TransferJob.description\],
@@ -1148,7 +1144,7 @@ pub struct UpdateTransferJobRequest {
     /// \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\]. Updating a job status
     /// to \[DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED\] requires
     /// `storagetransfer.jobs.delete` permissions.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub transfer_job: ::core::option::Option<TransferJob>,
     /// The field mask of the fields in `transferJob` that are to be updated in
     /// this request.  Fields in `transferJob` that can be updated are:
@@ -1160,18 +1156,18 @@ pub struct UpdateTransferJobRequest {
     /// complete transfer specification must be provided. An incomplete
     /// specification missing any required fields is rejected with the error
     /// \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\].
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub update_transfer_job_field_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request passed to GetTransferJob.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTransferJobRequest {
     /// Required. The job to get.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub job_name: ::prost::alloc::string::String,
     /// Required. The ID of the Google Cloud project that owns the
     /// job.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub project_id: ::prost::alloc::string::String,
 }
 /// `projectId`, `jobNames`, and `jobStatuses` are query parameters that can
@@ -1190,48 +1186,48 @@ pub struct ListTransferJobsRequest {
     /// \[ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED\],
     /// \[DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED\], and
     /// \[DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED\].
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub filter: ::prost::alloc::string::String,
     /// The list page size. The max allowed value is 256.
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub page_size: i32,
     /// The list page token.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response from ListTransferJobs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferJobsResponse {
     /// A list of transfer jobs.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub transfer_jobs: ::prost::alloc::vec::Vec<TransferJob>,
     /// The list next page token.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request passed to PauseTransferOperation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PauseTransferOperationRequest {
     /// Required. The name of the transfer operation.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed to ResumeTransferOperation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResumeTransferOperationRequest {
     /// Required. The name of the transfer operation.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request passed to RunTransferJob.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunTransferJobRequest {
     /// Required. The name of the transfer job.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub job_name: ::prost::alloc::string::String,
     /// Required. The ID of the Google Cloud project that owns the transfer
     /// job.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub project_id: ::prost::alloc::string::String,
 }
 /// Specifies the request passed to CreateAgentPool.
@@ -1239,10 +1235,10 @@ pub struct RunTransferJobRequest {
 pub struct CreateAgentPoolRequest {
     /// Required. The ID of the Google Cloud project that owns the
     /// agent pool.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. The agent pool to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub agent_pool: ::core::option::Option<AgentPool>,
     /// Required. The ID of the agent pool to create.
     ///
@@ -1257,7 +1253,7 @@ pub struct CreateAgentPoolRequest {
     ///
     /// As expressed by the regular expression:
     /// `^(?!goog)\[a-z]([a-z0-9-._~]*[a-z0-9\])?$`.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub agent_pool_id: ::prost::alloc::string::String,
 }
 /// Specifies the request passed to UpdateAgentPool.
@@ -1273,7 +1269,7 @@ pub struct UpdateAgentPoolRequest {
     /// *  \[bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit\]
     /// An `UpdateAgentPoolRequest` with any other fields is rejected
     /// with the error \[INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT\].
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub agent_pool: ::core::option::Option<AgentPool>,
     /// The [field mask]
     /// (<https://developers.google.com/protocol-buffers/docs/reference/google.protobuf>)
@@ -1283,28 +1279,28 @@ pub struct UpdateAgentPoolRequest {
     /// *  \[display_name][google.storagetransfer.v1.AgentPool.display_name\]
     ///
     /// *  \[bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit\]
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Specifies the request passed to GetAgentPool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAgentPoolRequest {
     /// Required. The name of the agent pool to get.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Specifies the request passed to DeleteAgentPool.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteAgentPoolRequest {
     /// Required. The name of the agent pool to delete.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request passed to ListAgentPools.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAgentPoolsRequest {
     /// Required. The ID of the Google Cloud project that owns the job.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
     /// An optional list of query parameters specified as JSON text in the
     /// form of:
@@ -1314,41 +1310,52 @@ pub struct ListAgentPoolsRequest {
     /// Since `agentPoolNames` support multiple values, its values must be
     /// specified with array notation. When the filter is either empty or not
     /// provided, the list returns all agent pools for the project.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// The list page size. The max allowed value is `256`.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub page_size: i32,
     /// The list page token.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response from ListAgentPools.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAgentPoolsResponse {
     /// A list of agent pools.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub agent_pools: ::prost::alloc::vec::Vec<AgentPool>,
     /// The list next page token.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod storage_transfer_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Storage Transfer Service and its protos."]
-    #[doc = " Transfers data between between Google Cloud Storage buckets or from a data"]
-    #[doc = " source external to Google to a Cloud Storage bucket."]
+    /// Storage Transfer Service and its protos.
+    /// Transfers data between between Google Cloud Storage buckets or from a data
+    /// source external to Google to a Cloud Storage bucket.
     #[derive(Debug, Clone)]
     pub struct StorageTransferServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl StorageTransferServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> StorageTransferServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -1361,262 +1368,309 @@ pub mod storage_transfer_service_client {
         ) -> StorageTransferServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
-            StorageTransferServiceClient::new(InterceptedService::new(inner, interceptor))
+            StorageTransferServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Returns the Google service account that is used by Storage Transfer"]
-        #[doc = " Service to access buckets in the project where transfers"]
-        #[doc = " run or in other projects. Each Google service account is associated"]
-        #[doc = " with one Google Cloud project. Users"]
-        #[doc = " should add this service account to the Google Cloud Storage bucket"]
-        #[doc = " ACLs to grant access to Storage Transfer Service. This service"]
-        #[doc = " account is created and owned by Storage Transfer Service and can"]
-        #[doc = " only be used by Storage Transfer Service."]
+        /// Returns the Google service account that is used by Storage Transfer
+        /// Service to access buckets in the project where transfers
+        /// run or in other projects. Each Google service account is associated
+        /// with one Google Cloud project. Users
+        /// should add this service account to the Google Cloud Storage bucket
+        /// ACLs to grant access to Storage Transfer Service. This service
+        /// account is created and owned by Storage Transfer Service and can
+        /// only be used by Storage Transfer Service.
         pub async fn get_google_service_account(
             &mut self,
             request: impl tonic::IntoRequest<super::GetGoogleServiceAccountRequest>,
         ) -> Result<tonic::Response<super::GoogleServiceAccount>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/GetGoogleServiceAccount",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a transfer job that runs periodically."]
+        /// Creates a transfer job that runs periodically.
         pub async fn create_transfer_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateTransferJobRequest>,
         ) -> Result<tonic::Response<super::TransferJob>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/CreateTransferJob",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a transfer job. Updating a job's transfer spec does not affect"]
-        #[doc = " transfer operations that are running already."]
-        #[doc = ""]
-        #[doc = " **Note:** The job's [status][google.storagetransfer.v1.TransferJob.status] field can be modified"]
-        #[doc = " using this RPC (for example, to set a job's status to"]
-        #[doc = " [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED],"]
-        #[doc = " [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED], or"]
-        #[doc = " [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED])."]
+        /// Updates a transfer job. Updating a job's transfer spec does not affect
+        /// transfer operations that are running already.
+        ///
+        /// **Note:** The job's [status][google.storagetransfer.v1.TransferJob.status] field can be modified
+        /// using this RPC (for example, to set a job's status to
+        /// [DELETED][google.storagetransfer.v1.TransferJob.Status.DELETED],
+        /// [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED], or
+        /// [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]).
         pub async fn update_transfer_job(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateTransferJobRequest>,
         ) -> Result<tonic::Response<super::TransferJob>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/UpdateTransferJob",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a transfer job."]
+        /// Gets a transfer job.
         pub async fn get_transfer_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTransferJobRequest>,
         ) -> Result<tonic::Response<super::TransferJob>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/GetTransferJob",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists transfer jobs."]
+        /// Lists transfer jobs.
         pub async fn list_transfer_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTransferJobsRequest>,
         ) -> Result<tonic::Response<super::ListTransferJobsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/ListTransferJobs",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Pauses a transfer operation."]
+        /// Pauses a transfer operation.
         pub async fn pause_transfer_operation(
             &mut self,
             request: impl tonic::IntoRequest<super::PauseTransferOperationRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/PauseTransferOperation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Resumes a transfer operation that is paused."]
+        /// Resumes a transfer operation that is paused.
         pub async fn resume_transfer_operation(
             &mut self,
             request: impl tonic::IntoRequest<super::ResumeTransferOperationRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/ResumeTransferOperation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Attempts to start a new TransferOperation for the current TransferJob. A"]
-        #[doc = " TransferJob has a maximum of one active TransferOperation. If this method"]
-        #[doc = " is called while a TransferOperation is active, an error will be returned."]
+        /// Attempts to start a new TransferOperation for the current TransferJob. A
+        /// TransferJob has a maximum of one active TransferOperation. If this method
+        /// is called while a TransferOperation is active, an error will be returned.
         pub async fn run_transfer_job(
             &mut self,
             request: impl tonic::IntoRequest<super::RunTransferJobRequest>,
-        ) -> Result<tonic::Response<super::super::super::longrunning::Operation>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/RunTransferJob",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates an agent pool resource."]
+        /// Creates an agent pool resource.
         pub async fn create_agent_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAgentPoolRequest>,
         ) -> Result<tonic::Response<super::AgentPool>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/CreateAgentPool",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates an existing agent pool resource."]
+        /// Updates an existing agent pool resource.
         pub async fn update_agent_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAgentPoolRequest>,
         ) -> Result<tonic::Response<super::AgentPool>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/UpdateAgentPool",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets an agent pool."]
+        /// Gets an agent pool.
         pub async fn get_agent_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAgentPoolRequest>,
         ) -> Result<tonic::Response<super::AgentPool>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/GetAgentPool",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists agent pools."]
+        /// Lists agent pools.
         pub async fn list_agent_pools(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAgentPoolsRequest>,
         ) -> Result<tonic::Response<super::ListAgentPoolsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/ListAgentPools",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes an agent pool."]
+        /// Deletes an agent pool.
         pub async fn delete_agent_pool(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAgentPoolRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storagetransfer.v1.StorageTransferService/DeleteAgentPool",

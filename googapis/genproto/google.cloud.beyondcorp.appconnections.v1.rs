@@ -3,7 +3,7 @@
 pub struct ListAppConnectionsRequest {
     /// Required. The resource name of the AppConnection location using the form:
     /// `projects/{project_id}/locations/{location_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
     /// If not specified, a default value of 50 will be used by the service.
@@ -11,34 +11,34 @@ pub struct ListAppConnectionsRequest {
     /// and a caller should only rely on response's
     /// \[next_page_token][BeyondCorp.ListAppConnectionsResponse.next_page_token\] to
     /// determine if there are more instances left to be queried.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous
     /// ListAppConnectionsRequest, if any.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// Optional. A filter specifying constraints of a list operation.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Specifies the ordering of results. See
     /// [Sorting
     /// order](<https://cloud.google.com/apis/design/design_patterns#sorting_order>)
     /// for more information.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Response message for BeyondCorp.ListAppConnections.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAppConnectionsResponse {
     /// A list of BeyondCorp AppConnections in the project.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub app_connections: ::prost::alloc::vec::Vec<AppConnection>,
     /// A token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations that could not be reached.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for BeyondCorp.GetAppConnection.
@@ -46,7 +46,7 @@ pub struct ListAppConnectionsResponse {
 pub struct GetAppConnectionRequest {
     /// Required. BeyondCorp AppConnection name using the form:
     /// `projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for BeyondCorp.CreateAppConnection.
@@ -54,16 +54,16 @@ pub struct GetAppConnectionRequest {
 pub struct CreateAppConnectionRequest {
     /// Required. The resource project name of the AppConnection location using the
     /// form: `projects/{project_id}/locations/{location_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Optional. User-settable AppConnection resource ID.
     ///  * Must start with a letter.
     ///  * Must contain between 4-63 characters from `/\[a-z][0-9\]-/`.
     ///  * Must end with a number or a letter.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub app_connection_id: ::prost::alloc::string::String,
     /// Required. A BeyondCorp AppConnection resource.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub app_connection: ::core::option::Option<AppConnection>,
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server will know to
@@ -78,11 +78,11 @@ pub struct CreateAppConnectionRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. If set, validates request by executing a dry-run which would not
     /// alter the resource in any way.
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag="5")]
     pub validate_only: bool,
 }
 /// Request message for BeyondCorp.UpdateAppConnection.
@@ -95,11 +95,11 @@ pub struct UpdateAppConnectionRequest {
     /// * `display_name`
     /// * `application_endpoint`
     /// * `connectors`
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Required. AppConnection message with updated fields. Only supported fields
     /// specified in update_mask are updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub app_connection: ::core::option::Option<AppConnection>,
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server will know to
@@ -114,14 +114,14 @@ pub struct UpdateAppConnectionRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. If set, validates request by executing a dry-run which would not
     /// alter the resource in any way.
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag="4")]
     pub validate_only: bool,
     /// Optional. If set as true, will create the resource if it is not found.
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag="5")]
     pub allow_missing: bool,
 }
 /// Request message for BeyondCorp.DeleteAppConnection.
@@ -129,7 +129,7 @@ pub struct UpdateAppConnectionRequest {
 pub struct DeleteAppConnectionRequest {
     /// Required. BeyondCorp Connector name using the form:
     /// `projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. An optional request ID to identify requests. Specify a unique
     /// request ID so that if you must retry your request, the server will know to
@@ -144,11 +144,11 @@ pub struct DeleteAppConnectionRequest {
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
     /// Optional. If set, validates request by executing a dry-run which would not
     /// alter the resource in any way.
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag="3")]
     pub validate_only: bool,
 }
 /// Request message for BeyondCorp.ResolveAppConnections.
@@ -156,12 +156,12 @@ pub struct DeleteAppConnectionRequest {
 pub struct ResolveAppConnectionsRequest {
     /// Required. The resource name of the AppConnection location using the form:
     /// `projects/{project_id}/locations/{location_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. BeyondCorp Connector name of the connector associated with those
     /// AppConnections using the form:
     /// `projects/{project_id}/locations/{location_id}/appConnectors/{app_connector_id}`
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub app_connector_id: ::prost::alloc::string::String,
     /// Optional. The maximum number of items to return.
     /// If not specified, a default value of 50 will be used by the service.
@@ -169,26 +169,25 @@ pub struct ResolveAppConnectionsRequest {
     /// and a caller should only rely on response's
     /// \[next_page_token][BeyondCorp.ResolveAppConnectionsResponse.next_page_token\]
     /// to determine if there are more instances left to be queried.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub page_size: i32,
     /// Optional. The next_page_token value returned from a previous
     /// ResolveAppConnectionsResponse, if any.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for BeyondCorp.ResolveAppConnections.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveAppConnectionsResponse {
     /// A list of BeyondCorp AppConnections with details in the project.
-    #[prost(message, repeated, tag = "1")]
-    pub app_connection_details:
-        ::prost::alloc::vec::Vec<resolve_app_connections_response::AppConnectionDetails>,
+    #[prost(message, repeated, tag="1")]
+    pub app_connection_details: ::prost::alloc::vec::Vec<resolve_app_connections_response::AppConnectionDetails>,
     /// A token to retrieve the next page of results, or empty if there are no more
     /// results in the list.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// A list of locations that could not be reached.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `ResolveAppConnectionsResponse`.
@@ -197,11 +196,11 @@ pub mod resolve_app_connections_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AppConnectionDetails {
         /// A BeyondCorp AppConnection in the project.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub app_connection: ::core::option::Option<super::AppConnection>,
         /// If type=GCP_REGIONAL_MIG, contains most recent VM instances, like
         /// `<https://www.googleapis.com/compute/v1/projects/{project_id}/zones/{zone_id}/instances/{instance_id}`.>
-        #[prost(string, repeated, tag = "2")]
+        #[prost(string, repeated, tag="2")]
         pub recent_mig_vms: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
 }
@@ -213,42 +212,41 @@ pub mod resolve_app_connections_response {
 pub struct AppConnection {
     /// Required. Unique resource name of the AppConnection.
     /// The name is ignored when creating a AppConnection.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Timestamp when the resource was created.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Timestamp when the resource was last modified.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. Resource labels to represent user provided metadata.
-    #[prost(map = "string, string", tag = "4")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="4")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. An arbitrary user-provided name for the AppConnection. Cannot
     /// exceed 64 characters.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub display_name: ::prost::alloc::string::String,
     /// Output only. A unique identifier for the instance generated by the
     /// system.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub uid: ::prost::alloc::string::String,
     /// Required. The type of network connectivity used by the AppConnection.
-    #[prost(enumeration = "app_connection::Type", tag = "7")]
+    #[prost(enumeration="app_connection::Type", tag="7")]
     pub r#type: i32,
     /// Required. Address of the remote application endpoint for the BeyondCorp
     /// AppConnection.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub application_endpoint: ::core::option::Option<app_connection::ApplicationEndpoint>,
     /// Optional. List of \[google.cloud.beyondcorp.v1main.Connector.name\] that are
     /// authorised to be associated with this AppConnection.
-    #[prost(string, repeated, tag = "9")]
+    #[prost(string, repeated, tag="9")]
     pub connectors: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Output only. The current state of the AppConnection.
-    #[prost(enumeration = "app_connection::State", tag = "10")]
+    #[prost(enumeration="app_connection::State", tag="10")]
     pub state: i32,
     /// Optional. Gateway used by the AppConnection.
-    #[prost(message, optional, tag = "11")]
+    #[prost(message, optional, tag="11")]
     pub gateway: ::core::option::Option<app_connection::Gateway>,
 }
 /// Nested message and enum types in `AppConnection`.
@@ -257,10 +255,10 @@ pub mod app_connection {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ApplicationEndpoint {
         /// Required. Hostname or IP address of the remote application endpoint.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub host: ::prost::alloc::string::String,
         /// Required. Port of the remote application endpoint.
-        #[prost(int32, tag = "2")]
+        #[prost(int32, tag="2")]
         pub port: i32,
     }
     /// Gateway represents a user facing component that serves as an entrance to
@@ -268,26 +266,24 @@ pub mod app_connection {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Gateway {
         /// Required. The type of hosting used by the gateway.
-        #[prost(enumeration = "gateway::Type", tag = "2")]
+        #[prost(enumeration="gateway::Type", tag="2")]
         pub r#type: i32,
         /// Output only. Server-defined URI for this resource.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub uri: ::prost::alloc::string::String,
         /// Output only. Ingress port reserved on the gateways for this
         /// AppConnection, if not specified or zero, the default port is 19443.
-        #[prost(int32, tag = "4")]
+        #[prost(int32, tag="4")]
         pub ingress_port: i32,
         /// Required. AppGateway name in following format:
         /// `projects/{project_id}/locations/{location_id}/appgateways/{gateway_id}`
-        #[prost(string, tag = "5")]
+        #[prost(string, tag="5")]
         pub app_gateway: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Gateway`.
     pub mod gateway {
         /// Enum listing possible gateway hosting options.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Type {
             /// Default value. This value is unused.
@@ -330,58 +326,69 @@ pub mod app_connection {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppConnectionOperationMetadata {
     /// Output only. The time the operation was created.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the operation finished running.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Server-defined resource path for the target of the operation.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub target: ::prost::alloc::string::String,
     /// Output only. Name of the verb executed by the operation.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub verb: ::prost::alloc::string::String,
     /// Output only. Human-readable status of the operation, if any.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
     /// have \[Operation.error][\] value with a
     /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
     /// `Code.CANCELLED`.
-    #[prost(bool, tag = "6")]
+    #[prost(bool, tag="6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub api_version: ::prost::alloc::string::String,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod app_connections_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " ## API Overview"]
-    #[doc = ""]
-    #[doc = " The `beyondcorp.googleapis.com` service implements the Google Cloud"]
-    #[doc = " BeyondCorp API."]
-    #[doc = ""]
-    #[doc = " ## Data Model"]
-    #[doc = ""]
-    #[doc = " The AppConnectionsService exposes the following resources:"]
-    #[doc = ""]
-    #[doc = " * AppConnections, named as follows:"]
-    #[doc = "   `projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}`."]
-    #[doc = ""]
-    #[doc = " The AppConnectionsService service provides methods to manage"]
-    #[doc = " (create/read/update/delete) BeyondCorp AppConnections."]
+    /// ## API Overview
+    ///
+    /// The `beyondcorp.googleapis.com` service implements the Google Cloud
+    /// BeyondCorp API.
+    ///
+    /// ## Data Model
+    ///
+    /// The AppConnectionsService exposes the following resources:
+    ///
+    /// * AppConnections, named as follows:
+    ///   `projects/{project_id}/locations/{location_id}/appConnections/{app_connection_id}`.
+    ///
+    /// The AppConnectionsService service provides methods to manage
+    /// (create/read/update/delete) BeyondCorp AppConnections.
     #[derive(Debug, Clone)]
     pub struct AppConnectionsServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl AppConnectionsServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> AppConnectionsServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -394,63 +401,75 @@ pub mod app_connections_service_client {
         ) -> AppConnectionsServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             AppConnectionsServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Lists AppConnections in a given project and location."]
+        /// Lists AppConnections in a given project and location.
         pub async fn list_app_connections(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAppConnectionsRequest>,
         ) -> Result<tonic::Response<super::ListAppConnectionsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/ListAppConnections") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/ListAppConnections",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets details of a single AppConnection."]
+        /// Gets details of a single AppConnection.
         pub async fn get_app_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::GetAppConnectionRequest>,
         ) -> Result<tonic::Response<super::AppConnection>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/GetAppConnection",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a new AppConnection in a given project and location."]
+        /// Creates a new AppConnection in a given project and location.
         pub async fn create_app_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAppConnectionRequest>,
@@ -458,17 +477,22 @@ pub mod app_connections_service_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/CreateAppConnection") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/CreateAppConnection",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates the parameters of a single AppConnection."]
+        /// Updates the parameters of a single AppConnection.
         pub async fn update_app_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateAppConnectionRequest>,
@@ -476,17 +500,22 @@ pub mod app_connections_service_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/UpdateAppConnection") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/UpdateAppConnection",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a single AppConnection."]
+        /// Deletes a single AppConnection.
         pub async fn delete_app_connection(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAppConnectionRequest>,
@@ -494,31 +523,44 @@ pub mod app_connections_service_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/DeleteAppConnection") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/DeleteAppConnection",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Resolves AppConnections details for a given AppConnector."]
-        #[doc = " An internal method called by a connector to find AppConnections to connect"]
-        #[doc = " to."]
+        /// Resolves AppConnections details for a given AppConnector.
+        /// An internal method called by a connector to find AppConnections to connect
+        /// to.
         pub async fn resolve_app_connections(
             &mut self,
             request: impl tonic::IntoRequest<super::ResolveAppConnectionsRequest>,
-        ) -> Result<tonic::Response<super::ResolveAppConnectionsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ResolveAppConnectionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/ResolveAppConnections") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.beyondcorp.appconnections.v1.AppConnectionsService/ResolveAppConnections",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

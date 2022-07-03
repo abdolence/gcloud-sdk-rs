@@ -25,7 +25,7 @@ pub struct Request {
     /// contains a special character, it must be %-encoded.  We recommend that
     /// clients and servers use their runtime's URL library to produce and consume
     /// target values.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub target: ::prost::alloc::string::String,
     /// The `resume_marker` specifies how much of the existing underlying state is
     /// delivered to the client when the watch request is received by the
@@ -56,14 +56,14 @@ pub struct Request {
     /// An implementation MUST support an unspecified parameter and the
     /// empty string "" marker (initial state fetching) and the "now" marker.
     /// It need not support resuming from a specific point.
-    #[prost(bytes = "vec", tag = "2")]
+    #[prost(bytes="vec", tag="2")]
     pub resume_marker: ::prost::alloc::vec::Vec<u8>,
 }
 /// A batch of Change messages.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ChangeBatch {
     /// A list of Change messages.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub changes: ::prost::alloc::vec::Vec<Change>,
 }
 /// A Change indicates the most recent state of an element.
@@ -72,26 +72,26 @@ pub struct Change {
     /// Name of the element, interpreted relative to the entity's actual
     /// name. "" refers to the entity itself. The element name is a valid
     /// UTF-8 string.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub element: ::prost::alloc::string::String,
     /// The state of the `element`.
-    #[prost(enumeration = "change::State", tag = "2")]
+    #[prost(enumeration="change::State", tag="2")]
     pub state: i32,
     /// The actual change data. This field is present only when `state() == EXISTS`
     /// or `state() == ERROR`. Please see
     /// \[google.protobuf.Any][google.protobuf.Any\] about how to use the Any type.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub data: ::core::option::Option<::prost_types::Any>,
     /// If present, provides a compact representation of all the messages that have
     /// been received by the caller for the given entity, e.g., it could be a
     /// sequence number or a multi-part timestamp/version vector. This marker can
     /// be provided in the Request message, allowing the caller to resume the
     /// stream watching at a specific point without fetching the initial state.
-    #[prost(bytes = "vec", tag = "4")]
+    #[prost(bytes="vec", tag="4")]
     pub resume_marker: ::prost::alloc::vec::Vec<u8>,
     /// If true, this Change is followed by more Changes that are in the same group
     /// as this Change.
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag="5")]
     pub continued: bool,
 }
 /// Nested message and enum types in `Change`.
@@ -114,22 +114,33 @@ pub mod change {
         Error = 3,
     }
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod watcher_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " The service that a client uses to connect to the watcher system."]
-    #[doc = " The errors returned by the service are in the canonical error space,"]
-    #[doc = " see [google.rpc.Code][]."]
+    /// The service that a client uses to connect to the watcher system.
+    /// The errors returned by the service are in the canonical error space,
+    /// see [google.rpc.Code][].
     #[derive(Debug, Clone)]
     pub struct WatcherClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl WatcherClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> WatcherClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -142,47 +153,56 @@ pub mod watcher_client {
         ) -> WatcherClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             WatcherClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Start a streaming RPC to get watch information from the server."]
+        /// Start a streaming RPC to get watch information from the server.
         pub async fn watch(
             &mut self,
             request: impl tonic::IntoRequest<super::Request>,
-        ) -> Result<tonic::Response<tonic::codec::Streaming<super::ChangeBatch>>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static("/google.watcher.v1.Watcher/Watch");
+        ) -> Result<
+            tonic::Response<tonic::codec::Streaming<super::ChangeBatch>>,
+            tonic::Status,
+        > {
             self.inner
-                .server_streaming(request.into_request(), path, codec)
+                .ready()
                 .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.watcher.v1.Watcher/Watch",
+            );
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
     }
 }

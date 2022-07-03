@@ -2,7 +2,8 @@
 
 /// Container for enum describing possible policy topic entry types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEntryTypeEnum {}
+pub struct PolicyTopicEntryTypeEnum {
+}
 /// Nested message and enum types in `PolicyTopicEntryTypeEnum`.
 pub mod policy_topic_entry_type_enum {
     /// The possible policy topic entry types.
@@ -36,7 +37,8 @@ pub mod policy_topic_entry_type_enum {
 /// Container for enum describing possible policy topic evidence destination
 /// mismatch url types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEvidenceDestinationMismatchUrlTypeEnum {}
+pub struct PolicyTopicEvidenceDestinationMismatchUrlTypeEnum {
+}
 /// Nested message and enum types in `PolicyTopicEvidenceDestinationMismatchUrlTypeEnum`.
 pub mod policy_topic_evidence_destination_mismatch_url_type_enum {
     /// The possible policy topic evidence destination mismatch url types.
@@ -67,7 +69,8 @@ pub mod policy_topic_evidence_destination_mismatch_url_type_enum {
 /// Container for enum describing possible policy topic evidence destination not
 /// working devices.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEvidenceDestinationNotWorkingDeviceEnum {}
+pub struct PolicyTopicEvidenceDestinationNotWorkingDeviceEnum {
+}
 /// Nested message and enum types in `PolicyTopicEvidenceDestinationNotWorkingDeviceEnum`.
 pub mod policy_topic_evidence_destination_not_working_device_enum {
     /// The possible policy topic evidence destination not working devices.
@@ -94,7 +97,8 @@ pub mod policy_topic_evidence_destination_not_working_device_enum {
 /// Container for enum describing possible policy topic evidence destination not
 /// working DNS error types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyTopicEvidenceDestinationNotWorkingDnsErrorTypeEnum {}
+pub struct PolicyTopicEvidenceDestinationNotWorkingDnsErrorTypeEnum {
+}
 /// Nested message and enum types in `PolicyTopicEvidenceDestinationNotWorkingDnsErrorTypeEnum`.
 pub mod policy_topic_evidence_destination_not_working_dns_error_type_enum {
     /// The possible policy topic evidence destination not working DNS error types.
@@ -119,7 +123,8 @@ pub mod policy_topic_evidence_destination_not_working_dns_error_type_enum {
 
 /// Container for enum describing possible policy approval statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyApprovalStatusEnum {}
+pub struct PolicyApprovalStatusEnum {
+}
 /// Nested message and enum types in `PolicyApprovalStatusEnum`.
 pub mod policy_approval_status_enum {
     /// The possible policy approval statuses. When there are several approval
@@ -149,7 +154,8 @@ pub mod policy_approval_status_enum {
 
 /// Container for enum describing possible policy review statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyReviewStatusEnum {}
+pub struct PolicyReviewStatusEnum {
+}
 /// Nested message and enum types in `PolicyReviewStatusEnum`.
 pub mod policy_review_status_enum {
     /// The possible policy review statuses.
@@ -178,7 +184,8 @@ pub mod policy_review_status_enum {
 
 /// Container for enum describing the performance label of an asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetPerformanceLabelEnum {}
+pub struct AssetPerformanceLabelEnum {
+}
 /// Nested message and enum types in `AssetPerformanceLabelEnum`.
 pub mod asset_performance_label_enum {
     /// Enum describing the possible performance labels of an asset, usually
@@ -208,7 +215,8 @@ pub mod asset_performance_label_enum {
 
 /// Container for enum describing possible asset field types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ServedAssetFieldTypeEnum {}
+pub struct ServedAssetFieldTypeEnum {
+}
 /// Nested message and enum types in `ServedAssetFieldTypeEnum`.
 pub mod served_asset_field_type_enum {
     /// The possible asset field types.
@@ -238,7 +246,8 @@ pub mod served_asset_field_type_enum {
 /// Container for enum describing possible data types for call conversion
 /// reporting state.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallConversionReportingStateEnum {}
+pub struct CallConversionReportingStateEnum {
+}
 /// Nested message and enum types in `CallConversionReportingStateEnum`.
 pub mod call_conversion_reporting_state_enum {
     /// Possible data types for a call conversion action state.
@@ -263,7 +272,8 @@ pub mod call_conversion_reporting_state_enum {
 
 /// Container for display ad format settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DisplayAdFormatSettingEnum {}
+pub struct DisplayAdFormatSettingEnum {
+}
 /// Nested message and enum types in `DisplayAdFormatSettingEnum`.
 pub mod display_ad_format_setting_enum {
     /// Enumerates display ad format settings.
@@ -291,7 +301,8 @@ pub mod display_ad_format_setting_enum {
 /// for more info about dynamic remarketing. Other product types are regarded
 /// as "static" and do not have this requirement.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DisplayUploadProductTypeEnum {}
+pub struct DisplayUploadProductTypeEnum {
+}
 /// Nested message and enum types in `DisplayUploadProductTypeEnum`.
 pub mod display_upload_product_type_enum {
     /// Enumerates display upload product types.
@@ -347,7 +358,8 @@ pub mod display_upload_product_type_enum {
 
 /// Container for enum describing app store type in a legacy app install ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LegacyAppInstallAdAppStoreEnum {}
+pub struct LegacyAppInstallAdAppStoreEnum {
+}
 /// Nested message and enum types in `LegacyAppInstallAdAppStoreEnum`.
 pub mod legacy_app_install_ad_app_store_enum {
     /// App store type in a legacy app install ad.
@@ -374,7 +386,8 @@ pub mod legacy_app_install_ad_app_store_enum {
 
 /// Container for enum describing the mime types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MimeTypeEnum {}
+pub struct MimeTypeEnum {
+}
 /// Nested message and enum types in `MimeTypeEnum`.
 pub mod mime_type_enum {
     /// The mime type
@@ -419,7 +432,8 @@ pub mod mime_type_enum {
 /// DEFAULT_THUMBNAIL may have been uploaded by the user while thumbnails 1-3 are
 /// auto-generated from the video.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VideoThumbnailEnum {}
+pub struct VideoThumbnailEnum {
+}
 /// Nested message and enum types in `VideoThumbnailEnum`.
 pub mod video_thumbnail_enum {
     /// Enum listing the possible types of a video thumbnail.
@@ -445,7 +459,8 @@ pub mod video_thumbnail_enum {
 
 /// Container for enum describing the type of demographic age ranges.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AgeRangeTypeEnum {}
+pub struct AgeRangeTypeEnum {
+}
 /// Nested message and enum types in `AgeRangeTypeEnum`.
 pub mod age_range_type_enum {
     /// The type of demographic age ranges (e.g. between 18 and 24 years old).
@@ -476,7 +491,8 @@ pub mod age_range_type_enum {
 
 /// Represents a criterion for targeting paid apps.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppPaymentModelTypeEnum {}
+pub struct AppPaymentModelTypeEnum {
+}
 /// Nested message and enum types in `AppPaymentModelTypeEnum`.
 pub mod app_payment_model_type_enum {
     /// Enum describing possible app payment models.
@@ -495,7 +511,8 @@ pub mod app_payment_model_type_enum {
 
 /// Container for enum describing content label types in ContentLabel.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ContentLabelTypeEnum {}
+pub struct ContentLabelTypeEnum {
+}
 /// Nested message and enum types in `ContentLabelTypeEnum`.
 pub mod content_label_type_enum {
     /// Enum listing the content label types supported by ContentLabel criterion.
@@ -542,7 +559,8 @@ pub mod content_label_type_enum {
 
 /// Container for enumeration of days of the week, e.g., "Monday".
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DayOfWeekEnum {}
+pub struct DayOfWeekEnum {
+}
 /// Nested message and enum types in `DayOfWeekEnum`.
 pub mod day_of_week_enum {
     /// Enumerates days of the week, e.g., "Monday".
@@ -573,7 +591,8 @@ pub mod day_of_week_enum {
 
 /// Container for enumeration of Google Ads devices available for targeting.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeviceEnum {}
+pub struct DeviceEnum {
+}
 /// Nested message and enum types in `DeviceEnum`.
 pub mod device_enum {
     /// Enumerates Google Ads devices available for targeting.
@@ -600,7 +619,8 @@ pub mod device_enum {
 
 /// Container for enum describing the type of demographic genders.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GenderTypeEnum {}
+pub struct GenderTypeEnum {
+}
 /// Nested message and enum types in `GenderTypeEnum`.
 pub mod gender_type_enum {
     /// The type of demographic genders (e.g. female).
@@ -623,7 +643,8 @@ pub mod gender_type_enum {
 
 /// Container for enum describing possible hotel date selection types
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelDateSelectionTypeEnum {}
+pub struct HotelDateSelectionTypeEnum {
+}
 /// Nested message and enum types in `HotelDateSelectionTypeEnum`.
 pub mod hotel_date_selection_type_enum {
     /// Enum describing possible hotel date selection types.
@@ -644,7 +665,8 @@ pub mod hotel_date_selection_type_enum {
 
 /// Container for enum describing the type of demographic income ranges.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IncomeRangeTypeEnum {}
+pub struct IncomeRangeTypeEnum {
+}
 /// Nested message and enum types in `IncomeRangeTypeEnum`.
 pub mod income_range_type_enum {
     /// The type of demographic income ranges (e.g. between 0% to 50%).
@@ -675,7 +697,8 @@ pub mod income_range_type_enum {
 
 /// Container for enum describing possible interaction types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InteractionTypeEnum {}
+pub struct InteractionTypeEnum {
+}
 /// Nested message and enum types in `InteractionTypeEnum`.
 pub mod interaction_type_enum {
     /// Enum describing possible interaction types.
@@ -694,7 +717,8 @@ pub mod interaction_type_enum {
 
 /// Message describing Keyword match types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordMatchTypeEnum {}
+pub struct KeywordMatchTypeEnum {
+}
 /// Nested message and enum types in `KeywordMatchTypeEnum`.
 pub mod keyword_match_type_enum {
     /// Possible Keyword match types.
@@ -717,7 +741,8 @@ pub mod keyword_match_type_enum {
 
 /// Container for enum describing the type of the listing group.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupTypeEnum {}
+pub struct ListingGroupTypeEnum {
+}
 /// Nested message and enum types in `ListingGroupTypeEnum`.
 pub mod listing_group_type_enum {
     /// The type of the listing group.
@@ -740,7 +765,8 @@ pub mod listing_group_type_enum {
 
 /// Container for enum describing unit of radius in location group.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationGroupRadiusUnitsEnum {}
+pub struct LocationGroupRadiusUnitsEnum {
+}
 /// Nested message and enum types in `LocationGroupRadiusUnitsEnum`.
 pub mod location_group_radius_units_enum {
     /// The unit of radius distance in location group (e.g. MILES)
@@ -763,7 +789,8 @@ pub mod location_group_radius_units_enum {
 
 /// Container for enumeration of quarter-hours.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MinuteOfHourEnum {}
+pub struct MinuteOfHourEnum {
+}
 /// Nested message and enum types in `MinuteOfHourEnum`.
 pub mod minute_of_hour_enum {
     /// Enumerates of quarter-hours. E.g. "FIFTEEN"
@@ -788,7 +815,8 @@ pub mod minute_of_hour_enum {
 
 /// Container for enum describing the type of demographic parental statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ParentalStatusTypeEnum {}
+pub struct ParentalStatusTypeEnum {
+}
 /// Nested message and enum types in `ParentalStatusTypeEnum`.
 pub mod parental_status_type_enum {
     /// The type of parental statuses (e.g. not a parent).
@@ -811,7 +839,8 @@ pub mod parental_status_type_enum {
 
 /// Container for enumeration of preferred content criterion type.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PreferredContentTypeEnum {}
+pub struct PreferredContentTypeEnum {
+}
 /// Nested message and enum types in `PreferredContentTypeEnum`.
 pub mod preferred_content_type_enum {
     /// Enumerates preferred content criterion type.
@@ -828,7 +857,8 @@ pub mod preferred_content_type_enum {
 }
 /// Level of a product bidding category.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductBiddingCategoryLevelEnum {}
+pub struct ProductBiddingCategoryLevelEnum {
+}
 /// Nested message and enum types in `ProductBiddingCategoryLevelEnum`.
 pub mod product_bidding_category_level_enum {
     /// Enum describing the level of the product bidding category.
@@ -855,7 +885,8 @@ pub mod product_bidding_category_level_enum {
 
 /// Locality of a product offer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductChannelEnum {}
+pub struct ProductChannelEnum {
+}
 /// Nested message and enum types in `ProductChannelEnum`.
 pub mod product_channel_enum {
     /// Enum describing the locality of a product offer.
@@ -876,7 +907,8 @@ pub mod product_channel_enum {
 
 /// Availability of a product offer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductChannelExclusivityEnum {}
+pub struct ProductChannelExclusivityEnum {
+}
 /// Nested message and enum types in `ProductChannelExclusivityEnum`.
 pub mod product_channel_exclusivity_enum {
     /// Enum describing the availability of a product offer.
@@ -899,7 +931,8 @@ pub mod product_channel_exclusivity_enum {
 
 /// Condition of a product offer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductConditionEnum {}
+pub struct ProductConditionEnum {
+}
 /// Nested message and enum types in `ProductConditionEnum`.
 pub mod product_condition_enum {
     /// Enum describing the condition of a product offer.
@@ -922,7 +955,8 @@ pub mod product_condition_enum {
 
 /// Container for enum describing the index of the product custom attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductCustomAttributeIndexEnum {}
+pub struct ProductCustomAttributeIndexEnum {
+}
 /// Nested message and enum types in `ProductCustomAttributeIndexEnum`.
 pub mod product_custom_attribute_index_enum {
     /// The index of the product custom attribute.
@@ -949,7 +983,8 @@ pub mod product_custom_attribute_index_enum {
 
 /// Level of the type of a product offer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductTypeLevelEnum {}
+pub struct ProductTypeLevelEnum {
+}
 /// Nested message and enum types in `ProductTypeLevelEnum`.
 pub mod product_type_level_enum {
     /// Enum describing the level of the type of a product offer.
@@ -976,7 +1011,8 @@ pub mod product_type_level_enum {
 
 /// Container for enum describing unit of radius in proximity.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProximityRadiusUnitsEnum {}
+pub struct ProximityRadiusUnitsEnum {
+}
 /// Nested message and enum types in `ProximityRadiusUnitsEnum`.
 pub mod proximity_radius_units_enum {
     /// The unit of radius distance in proximity (e.g. MILES)
@@ -997,7 +1033,8 @@ pub mod proximity_radius_units_enum {
 
 /// Container for enum describing webpage condition operand in webpage criterion.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WebpageConditionOperandEnum {}
+pub struct WebpageConditionOperandEnum {
+}
 /// Nested message and enum types in `WebpageConditionOperandEnum`.
 pub mod webpage_condition_operand_enum {
     /// The webpage condition operand in webpage criterion.
@@ -1025,7 +1062,8 @@ pub mod webpage_condition_operand_enum {
 /// Container for enum describing webpage condition operator in webpage
 /// criterion.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WebpageConditionOperatorEnum {}
+pub struct WebpageConditionOperatorEnum {
+}
 /// Nested message and enum types in `WebpageConditionOperatorEnum`.
 pub mod webpage_condition_operator_enum {
     /// The webpage condition operator in webpage criterion.
@@ -1046,7 +1084,8 @@ pub mod webpage_condition_operator_enum {
 
 /// Container for enum describing the call to action types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallToActionTypeEnum {}
+pub struct CallToActionTypeEnum {
+}
 /// Nested message and enum types in `CallToActionTypeEnum`.
 pub mod call_to_action_type_enum {
     /// Enum describing possible types of call to action.
@@ -1079,7 +1118,8 @@ pub mod call_to_action_type_enum {
 }
 /// Describes the type of call-to-action phrases in a lead form.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LeadFormCallToActionTypeEnum {}
+pub struct LeadFormCallToActionTypeEnum {
+}
 /// Nested message and enum types in `LeadFormCallToActionTypeEnum`.
 pub mod lead_form_call_to_action_type_enum {
     /// Enum describing the type of call-to-action phrases in a lead form.
@@ -1122,7 +1162,8 @@ pub mod lead_form_call_to_action_type_enum {
 }
 /// Describes the desired level of intent of generated leads.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LeadFormDesiredIntentEnum {}
+pub struct LeadFormDesiredIntentEnum {
+}
 /// Nested message and enum types in `LeadFormDesiredIntentEnum`.
 pub mod lead_form_desired_intent_enum {
     /// Enum describing the desired level of intent of generated leads.
@@ -1141,7 +1182,8 @@ pub mod lead_form_desired_intent_enum {
 }
 /// Describes the input type of a lead form field.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LeadFormFieldUserInputTypeEnum {}
+pub struct LeadFormFieldUserInputTypeEnum {
+}
 /// Nested message and enum types in `LeadFormFieldUserInputTypeEnum`.
 pub mod lead_form_field_user_input_type_enum {
     /// Enum describing the input type of a lead form field.
@@ -1341,7 +1383,8 @@ pub mod lead_form_field_user_input_type_enum {
 }
 /// Describes the type of post-submit call-to-action phrases for a lead form.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LeadFormPostSubmitCallToActionTypeEnum {}
+pub struct LeadFormPostSubmitCallToActionTypeEnum {
+}
 /// Nested message and enum types in `LeadFormPostSubmitCallToActionTypeEnum`.
 pub mod lead_form_post_submit_call_to_action_type_enum {
     /// Enum describing the type of post-submit call-to-action phrases for a lead
@@ -1365,7 +1408,8 @@ pub mod lead_form_post_submit_call_to_action_type_enum {
 }
 /// Container for enum describing different types of mobile app vendors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MobileAppVendorEnum {}
+pub struct MobileAppVendorEnum {
+}
 /// Nested message and enum types in `MobileAppVendorEnum`.
 pub mod mobile_app_vendor_enum {
     /// The type of mobile app vendor
@@ -1386,7 +1430,8 @@ pub mod mobile_app_vendor_enum {
 
 /// Container for enum describing a price extension price qualifier.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PriceExtensionPriceQualifierEnum {}
+pub struct PriceExtensionPriceQualifierEnum {
+}
 /// Nested message and enum types in `PriceExtensionPriceQualifierEnum`.
 pub mod price_extension_price_qualifier_enum {
     /// Enums of price extension price qualifier.
@@ -1409,7 +1454,8 @@ pub mod price_extension_price_qualifier_enum {
 
 /// Container for enum describing price extension price unit.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PriceExtensionPriceUnitEnum {}
+pub struct PriceExtensionPriceUnitEnum {
+}
 /// Nested message and enum types in `PriceExtensionPriceUnitEnum`.
 pub mod price_extension_price_unit_enum {
     /// Price extension price unit.
@@ -1438,7 +1484,8 @@ pub mod price_extension_price_unit_enum {
 
 /// Container for enum describing types for a price extension.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PriceExtensionTypeEnum {}
+pub struct PriceExtensionTypeEnum {
+}
 /// Nested message and enum types in `PriceExtensionTypeEnum`.
 pub mod price_extension_type_enum {
     /// Price extension type.
@@ -1474,7 +1521,8 @@ pub mod price_extension_type_enum {
 /// Container for enum describing possible a promotion extension
 /// discount modifier.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PromotionExtensionDiscountModifierEnum {}
+pub struct PromotionExtensionDiscountModifierEnum {
+}
 /// Nested message and enum types in `PromotionExtensionDiscountModifierEnum`.
 pub mod promotion_extension_discount_modifier_enum {
     /// A promotion extension discount modifier.
@@ -1495,7 +1543,8 @@ pub mod promotion_extension_discount_modifier_enum {
 /// For more information about the occasions please check:
 /// <https://support.google.com/google-ads/answer/7367521>
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PromotionExtensionOccasionEnum {}
+pub struct PromotionExtensionOccasionEnum {
+}
 /// Nested message and enum types in `PromotionExtensionOccasionEnum`.
 pub mod promotion_extension_occasion_enum {
     /// A promotion extension occasion.
@@ -1588,7 +1637,8 @@ pub mod promotion_extension_occasion_enum {
 /// automated bidding system should target impressions for the
 /// TargetImpressionShare bidding strategy.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetImpressionShareLocationEnum {}
+pub struct TargetImpressionShareLocationEnum {
+}
 /// Nested message and enum types in `TargetImpressionShareLocationEnum`.
 pub mod target_impression_share_location_enum {
     /// Enum describing possible goals.
@@ -1611,7 +1661,8 @@ pub mod target_impression_share_location_enum {
 
 /// An immutable specialization of an Advertising Channel.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdvertisingChannelSubTypeEnum {}
+pub struct AdvertisingChannelSubTypeEnum {
+}
 /// Nested message and enum types in `AdvertisingChannelSubTypeEnum`.
 pub mod advertising_channel_sub_type_enum {
     /// Enum describing the different channel subtypes.
@@ -1669,7 +1720,8 @@ pub mod advertising_channel_sub_type_enum {
 
 /// The channel type a campaign may target to serve on.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdvertisingChannelTypeEnum {}
+pub struct AdvertisingChannelTypeEnum {
+}
 /// Nested message and enum types in `AdvertisingChannelTypeEnum`.
 pub mod advertising_channel_type_enum {
     /// Enum describing the various advertising channel types.
@@ -1713,7 +1765,8 @@ pub mod advertising_channel_type_enum {
 /// particular channel with all its channel subtypes, or a channel with a certain
 /// subset of channel subtypes.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryChannelAvailabilityModeEnum {}
+pub struct CriterionCategoryChannelAvailabilityModeEnum {
+}
 /// Nested message and enum types in `CriterionCategoryChannelAvailabilityModeEnum`.
 pub mod criterion_category_channel_availability_mode_enum {
     /// Enum containing the possible CriterionCategoryChannelAvailabilityMode.
@@ -1740,7 +1793,8 @@ pub mod criterion_category_channel_availability_mode_enum {
 /// it's available globally, or a particular country with all languages, or a
 /// particular language with all countries, or a country-language pair.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionCategoryLocaleAvailabilityModeEnum {}
+pub struct CriterionCategoryLocaleAvailabilityModeEnum {
+}
 /// Nested message and enum types in `CriterionCategoryLocaleAvailabilityModeEnum`.
 pub mod criterion_category_locale_availability_mode_enum {
     /// Enum containing the possible CriterionCategoryLocaleAvailabilityMode.
@@ -1768,7 +1822,8 @@ pub mod criterion_category_locale_availability_mode_enum {
 
 /// Container for enum describing possible types of a customizer attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomizerAttributeTypeEnum {}
+pub struct CustomizerAttributeTypeEnum {
+}
 /// Nested message and enum types in `CustomizerAttributeTypeEnum`.
 pub mod customizer_attribute_type_enum {
     /// The possible types of a customizer attribute.
@@ -1793,7 +1848,8 @@ pub mod customizer_attribute_type_enum {
 
 /// Container for enumeration of months of the year, e.g., "January".
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MonthOfYearEnum {}
+pub struct MonthOfYearEnum {
+}
 /// Nested message and enum types in `MonthOfYearEnum`.
 pub mod month_of_year_enum {
     /// Enumerates months of the year, e.g., "January".
@@ -1834,7 +1890,8 @@ pub mod month_of_year_enum {
 
 /// Container for enum describing app store type in an app extension.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppStoreEnum {}
+pub struct AppStoreEnum {
+}
 /// Nested message and enum types in `AppStoreEnum`.
 pub mod app_store_enum {
     /// App store type in an app extension.
@@ -1853,7 +1910,8 @@ pub mod app_store_enum {
 }
 /// The type of string matching to be used for a dynamic FeedItemSet filter.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemSetStringFilterTypeEnum {}
+pub struct FeedItemSetStringFilterTypeEnum {
+}
 /// Nested message and enum types in `FeedItemSetStringFilterTypeEnum`.
 pub mod feed_item_set_string_filter_type_enum {
     /// describe the possible types for a FeedItemSetStringFilter.
@@ -1872,7 +1930,8 @@ pub mod feed_item_set_string_filter_type_enum {
 
 /// The possible OS types for a deeplink AppUrl.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppUrlOperatingSystemTypeEnum {}
+pub struct AppUrlOperatingSystemTypeEnum {
+}
 /// Nested message and enum types in `AppUrlOperatingSystemTypeEnum`.
 pub mod app_url_operating_system_type_enum {
     /// Operating System
@@ -1893,7 +1952,8 @@ pub mod app_url_operating_system_type_enum {
 
 /// Container for enum describing the type of event that the cap applies to.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapEventTypeEnum {}
+pub struct FrequencyCapEventTypeEnum {
+}
 /// Nested message and enum types in `FrequencyCapEventTypeEnum`.
 pub mod frequency_cap_event_type_enum {
     /// The type of event that the cap applies to (e.g. impression).
@@ -1914,7 +1974,8 @@ pub mod frequency_cap_event_type_enum {
 
 /// Container for enum describing the level on which the cap is to be applied.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapLevelEnum {}
+pub struct FrequencyCapLevelEnum {
+}
 /// Nested message and enum types in `FrequencyCapLevelEnum`.
 pub mod frequency_cap_level_enum {
     /// The level on which the cap is to be applied (e.g ad group ad, ad group).
@@ -1938,7 +1999,8 @@ pub mod frequency_cap_level_enum {
 
 /// Container for enum describing the unit of time the cap is defined at.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FrequencyCapTimeUnitEnum {}
+pub struct FrequencyCapTimeUnitEnum {
+}
 /// Nested message and enum types in `FrequencyCapTimeUnitEnum`.
 pub mod frequency_cap_time_unit_enum {
     /// Unit of time the cap is defined at (e.g. day, week).
@@ -1961,7 +2023,8 @@ pub mod frequency_cap_time_unit_enum {
 
 /// The enumeration of keyword plan aggregate metric types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanAggregateMetricTypeEnum {}
+pub struct KeywordPlanAggregateMetricTypeEnum {
+}
 /// Nested message and enum types in `KeywordPlanAggregateMetricTypeEnum`.
 pub mod keyword_plan_aggregate_metric_type_enum {
     /// Aggregate fields.
@@ -1984,7 +2047,8 @@ pub mod keyword_plan_aggregate_metric_type_enum {
 /// to all keywords across Google. The competition level can depend on the
 /// location and Search Network targeting options you've selected.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanCompetitionLevelEnum {}
+pub struct KeywordPlanCompetitionLevelEnum {
+}
 /// Nested message and enum types in `KeywordPlanCompetitionLevelEnum`.
 pub mod keyword_plan_competition_level_enum {
     /// Competition level of a keyword.
@@ -2007,7 +2071,8 @@ pub mod keyword_plan_competition_level_enum {
 
 /// Container for enumeration of keyword plan concept group types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanConceptGroupTypeEnum {}
+pub struct KeywordPlanConceptGroupTypeEnum {
+}
 /// Nested message and enum types in `KeywordPlanConceptGroupTypeEnum`.
 pub mod keyword_plan_concept_group_type_enum {
     /// Enumerates keyword plan concept group types.
@@ -2035,7 +2100,8 @@ pub mod keyword_plan_concept_group_type_enum {
 
 /// Container for context types for an operand in a matching function.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MatchingFunctionContextTypeEnum {}
+pub struct MatchingFunctionContextTypeEnum {
+}
 /// Nested message and enum types in `MatchingFunctionContextTypeEnum`.
 pub mod matching_function_context_type_enum {
     /// Possible context types for an operand in a matching function.
@@ -2058,7 +2124,8 @@ pub mod matching_function_context_type_enum {
 
 /// Container for enum describing matching function operator.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MatchingFunctionOperatorEnum {}
+pub struct MatchingFunctionOperatorEnum {
+}
 /// Nested message and enum types in `MatchingFunctionOperatorEnum`.
 pub mod matching_function_operator_enum {
     /// Possible operators in a matching function.
@@ -2091,7 +2158,8 @@ pub mod matching_function_operator_enum {
 
 /// Container for enum describing the type of experiment metric.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExperimentMetricEnum {}
+pub struct ExperimentMetricEnum {
+}
 /// Nested message and enum types in `ExperimentMetricEnum`.
 pub mod experiment_metric_enum {
     /// The type of experiment metric.
@@ -2134,7 +2202,8 @@ pub mod experiment_metric_enum {
 
 /// Container for enum describing the type of experiment metric direction.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExperimentMetricDirectionEnum {}
+pub struct ExperimentMetricDirectionEnum {
+}
 /// Nested message and enum types in `ExperimentMetricDirectionEnum`.
 pub mod experiment_metric_direction_enum {
     /// The type of experiment metric direction.
@@ -2163,7 +2232,8 @@ pub mod experiment_metric_direction_enum {
 
 /// Container for enum describing types of payable and free interactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InteractionEventTypeEnum {}
+pub struct InteractionEventTypeEnum {
+}
 /// Nested message and enum types in `InteractionEventTypeEnum`.
 pub mod interaction_event_type_enum {
     /// Enum describing possible types of payable and free interactions.
@@ -2194,7 +2264,8 @@ pub mod interaction_event_type_enum {
 
 /// The relative performance compared to other advertisers.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QualityScoreBucketEnum {}
+pub struct QualityScoreBucketEnum {
+}
 /// Nested message and enum types in `QualityScoreBucketEnum`.
 pub mod quality_score_bucket_enum {
     /// Enum listing the possible quality score buckets.
@@ -2218,7 +2289,8 @@ pub mod quality_score_bucket_enum {
 /// Container for enum describing the source of the user identifier for offline
 /// Store Sales, click conversion, and conversion adjustment uploads.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserIdentifierSourceEnum {}
+pub struct UserIdentifierSourceEnum {
+}
 /// Nested message and enum types in `UserIdentifierSourceEnum`.
 pub mod user_identifier_source_enum {
     /// The type of user identifier source for offline Store Sales, click
@@ -2242,7 +2314,8 @@ pub mod user_identifier_source_enum {
 
 /// Container for enumeration of Google Ads destination types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdDestinationTypeEnum {}
+pub struct AdDestinationTypeEnum {
+}
 /// Nested message and enum types in `AdDestinationTypeEnum`.
 pub mod ad_destination_type_enum {
     /// Enumerates Google Ads destination types
@@ -2281,7 +2354,8 @@ pub mod ad_destination_type_enum {
 
 /// Container for enumeration of Google Ads network types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdNetworkTypeEnum {}
+pub struct AdNetworkTypeEnum {
+}
 /// Nested message and enum types in `AdNetworkTypeEnum`.
 pub mod ad_network_type_enum {
     /// Enumerates Google Ads network types.
@@ -2311,7 +2385,8 @@ pub mod ad_network_type_enum {
 /// Message describing the status of the association between the Budget and the
 /// Campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetCampaignAssociationStatusEnum {}
+pub struct BudgetCampaignAssociationStatusEnum {
+}
 /// Nested message and enum types in `BudgetCampaignAssociationStatusEnum`.
 pub mod budget_campaign_association_status_enum {
     /// Possible statuses of the association between the Budget and the Campaign.
@@ -2332,7 +2407,8 @@ pub mod budget_campaign_association_status_enum {
 
 /// Container for enumeration of Google Ads click types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ClickTypeEnum {}
+pub struct ClickTypeEnum {
+}
 /// Nested message and enum types in `ClickTypeEnum`.
 pub mod click_type_enum {
     /// Enumerates Google Ads click types.
@@ -2456,7 +2532,8 @@ pub mod click_type_enum {
 /// Container for enum describing the category of conversions that are associated
 /// with a ConversionAction.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionActionCategoryEnum {}
+pub struct ConversionActionCategoryEnum {
+}
 /// Nested message and enum types in `ConversionActionCategoryEnum`.
 pub mod conversion_action_category_enum {
     /// The category of conversions that are associated with a ConversionAction.
@@ -2523,7 +2600,8 @@ pub mod conversion_action_category_enum {
 }
 /// Container for enum indicating the event type the conversion is attributed to.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionAttributionEventTypeEnum {}
+pub struct ConversionAttributionEventTypeEnum {
+}
 /// Nested message and enum types in `ConversionAttributionEventTypeEnum`.
 pub mod conversion_attribution_event_type_enum {
     /// The event type of conversions that are attributed to.
@@ -2543,7 +2621,8 @@ pub mod conversion_attribution_event_type_enum {
 /// Container for enum representing the number of days between impression and
 /// conversion.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionLagBucketEnum {}
+pub struct ConversionLagBucketEnum {
+}
 /// Nested message and enum types in `ConversionLagBucketEnum`.
 pub mod conversion_lag_bucket_enum {
     /// Enum representing the number of days between impression and conversion.
@@ -2614,7 +2693,8 @@ pub mod conversion_lag_bucket_enum {
 /// Container for enum representing the number of days between the impression and
 /// the conversion or between the impression and adjustments to the conversion.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionOrAdjustmentLagBucketEnum {}
+pub struct ConversionOrAdjustmentLagBucketEnum {
+}
 /// Nested message and enum types in `ConversionOrAdjustmentLagBucketEnum`.
 pub mod conversion_or_adjustment_lag_bucket_enum {
     /// Enum representing the number of days between the impression and the
@@ -2753,7 +2833,8 @@ pub mod conversion_or_adjustment_lag_bucket_enum {
 
 /// Container for enum describing value rule primary dimension for stats.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionValueRulePrimaryDimensionEnum {}
+pub struct ConversionValueRulePrimaryDimensionEnum {
+}
 /// Nested message and enum types in `ConversionValueRulePrimaryDimensionEnum`.
 pub mod conversion_value_rule_primary_dimension_enum {
     /// Identifies the primary dimension for conversion value rule stats.
@@ -2784,7 +2865,8 @@ pub mod conversion_value_rule_primary_dimension_enum {
 /// Container for enum describing the external conversion source that is
 /// associated with a ConversionAction.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExternalConversionSourceEnum {}
+pub struct ExternalConversionSourceEnum {
+}
 /// Nested message and enum types in `ExternalConversionSourceEnum`.
 pub mod external_conversion_source_enum {
     /// The external conversion source that is associated with a ConversionAction.
@@ -2885,7 +2967,8 @@ pub mod external_conversion_source_enum {
 
 /// Container for enum describing hotel price bucket for a hotel itinerary.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelPriceBucketEnum {}
+pub struct HotelPriceBucketEnum {
+}
 /// Nested message and enum types in `HotelPriceBucketEnum`.
 pub mod hotel_price_bucket_enum {
     /// Enum describing possible hotel price buckets.
@@ -2913,7 +2996,8 @@ pub mod hotel_price_bucket_enum {
 
 /// Container for enum describing possible hotel rate types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelRateTypeEnum {}
+pub struct HotelRateTypeEnum {
+}
 /// Nested message and enum types in `HotelRateTypeEnum`.
 pub mod hotel_rate_type_enum {
     /// Enum describing possible hotel rate types.
@@ -2944,7 +3028,8 @@ pub mod hotel_rate_type_enum {
 
 /// Container for enum describing possible placeholder types for a feed mapping.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PlaceholderTypeEnum {}
+pub struct PlaceholderTypeEnum {
+}
 /// Nested message and enum types in `PlaceholderTypeEnum`.
 pub mod placeholder_type_enum {
     /// Possible placeholder types for a feed mapping.
@@ -3021,7 +3106,8 @@ pub mod placeholder_type_enum {
 
 /// Container for enum describing types of recommendations.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RecommendationTypeEnum {}
+pub struct RecommendationTypeEnum {
+}
 /// Nested message and enum types in `RecommendationTypeEnum`.
 pub mod recommendation_type_enum {
     /// Types of recommendations.
@@ -3098,7 +3184,8 @@ pub mod recommendation_type_enum {
 
 /// The type of the search engine results page.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SearchEngineResultsPageTypeEnum {}
+pub struct SearchEngineResultsPageTypeEnum {
+}
 /// Nested message and enum types in `SearchEngineResultsPageTypeEnum`.
 pub mod search_engine_results_page_type_enum {
     /// The type of the search engine results page.
@@ -3122,7 +3209,8 @@ pub mod search_engine_results_page_type_enum {
 
 /// Container for enum describing match types for a keyword triggering an ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SearchTermMatchTypeEnum {}
+pub struct SearchTermMatchTypeEnum {
+}
 /// Nested message and enum types in `SearchTermMatchTypeEnum`.
 pub mod search_term_match_type_enum {
     /// Possible match types for a keyword triggering an ad, including variants.
@@ -3149,7 +3237,8 @@ pub mod search_term_match_type_enum {
 
 /// Container for enumeration of SkAdNetwork ad event types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SkAdNetworkAdEventTypeEnum {}
+pub struct SkAdNetworkAdEventTypeEnum {
+}
 /// Nested message and enum types in `SkAdNetworkAdEventTypeEnum`.
 pub mod sk_ad_network_ad_event_type_enum {
     /// Enumerates SkAdNetwork ad event types
@@ -3173,7 +3262,8 @@ pub mod sk_ad_network_ad_event_type_enum {
 
 /// Container for enumeration of SkAdNetwork attribution credits.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SkAdNetworkAttributionCreditEnum {}
+pub struct SkAdNetworkAttributionCreditEnum {
+}
 /// Nested message and enum types in `SkAdNetworkAttributionCreditEnum`.
 pub mod sk_ad_network_attribution_credit_enum {
     /// Enumerates SkAdNetwork attribution credits.
@@ -3198,7 +3288,8 @@ pub mod sk_ad_network_attribution_credit_enum {
 
 /// Container for enumeration of SkAdNetwork user types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SkAdNetworkUserTypeEnum {}
+pub struct SkAdNetworkUserTypeEnum {
+}
 /// Nested message and enum types in `SkAdNetworkUserTypeEnum`.
 pub mod sk_ad_network_user_type_enum {
     /// Enumerates SkAdNetwork user types
@@ -3222,7 +3313,8 @@ pub mod sk_ad_network_user_type_enum {
 
 /// Container for enumeration of possible positions of the Ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SlotEnum {}
+pub struct SlotEnum {
+}
 /// Nested message and enum types in `SlotEnum`.
 pub mod slot_enum {
     /// Enumerates possible positions of the Ad.
@@ -3252,7 +3344,8 @@ pub mod slot_enum {
 /// Container for enum describing the format of the web page where the tracking
 /// tag and snippet will be installed.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TrackingCodePageFormatEnum {}
+pub struct TrackingCodePageFormatEnum {
+}
 /// Nested message and enum types in `TrackingCodePageFormatEnum`.
 pub mod tracking_code_page_format_enum {
     /// The format of the web page where the tracking tag and snippet will be
@@ -3273,7 +3366,8 @@ pub mod tracking_code_page_format_enum {
 /// Container for enum describing the type of the generated tag snippets for
 /// tracking conversions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TrackingCodeTypeEnum {}
+pub struct TrackingCodeTypeEnum {
+}
 /// Nested message and enum types in `TrackingCodeTypeEnum`.
 pub mod tracking_code_type_enum {
     /// The type of the generated tag snippets for tracking conversions.
@@ -3302,7 +3396,8 @@ pub mod tracking_code_type_enum {
 
 /// The dimensions that can be targeted.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetingDimensionEnum {}
+pub struct TargetingDimensionEnum {
+}
 /// Nested message and enum types in `TargetingDimensionEnum`.
 pub mod targeting_dimension_enum {
     /// Enum describing possible targeting dimensions.
@@ -3339,7 +3434,8 @@ pub mod targeting_dimension_enum {
 }
 /// Indicates what type of data are the user list's members matched from.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerMatchUploadKeyTypeEnum {}
+pub struct CustomerMatchUploadKeyTypeEnum {
+}
 /// Nested message and enum types in `CustomerMatchUploadKeyTypeEnum`.
 pub mod customer_match_upload_key_type_enum {
     /// Enum describing possible customer match upload key types.
@@ -3362,7 +3458,8 @@ pub mod customer_match_upload_key_type_enum {
 }
 /// Logical operator connecting two rules.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListCombinedRuleOperatorEnum {}
+pub struct UserListCombinedRuleOperatorEnum {
+}
 /// Nested message and enum types in `UserListCombinedRuleOperatorEnum`.
 pub mod user_list_combined_rule_operator_enum {
     /// Enum describing possible user list combined rule operators.
@@ -3381,7 +3478,8 @@ pub mod user_list_combined_rule_operator_enum {
 }
 /// Indicates source of Crm upload data.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListCrmDataSourceTypeEnum {}
+pub struct UserListCrmDataSourceTypeEnum {
+}
 /// Nested message and enum types in `UserListCrmDataSourceTypeEnum`.
 pub mod user_list_crm_data_source_type_enum {
     /// Enum describing possible user list crm data source type.
@@ -3402,7 +3500,8 @@ pub mod user_list_crm_data_source_type_enum {
 }
 /// Supported rule operator for date type.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListDateRuleItemOperatorEnum {}
+pub struct UserListDateRuleItemOperatorEnum {
+}
 /// Nested message and enum types in `UserListDateRuleItemOperatorEnum`.
 pub mod user_list_date_rule_item_operator_enum {
     /// Enum describing possible user list date rule item operators.
@@ -3425,7 +3524,8 @@ pub mod user_list_date_rule_item_operator_enum {
 }
 /// The logical operator of the rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListLogicalRuleOperatorEnum {}
+pub struct UserListLogicalRuleOperatorEnum {
+}
 /// Nested message and enum types in `UserListLogicalRuleOperatorEnum`.
 pub mod user_list_logical_rule_operator_enum {
     /// Enum describing possible user list logical rule operators.
@@ -3446,7 +3546,8 @@ pub mod user_list_logical_rule_operator_enum {
 }
 /// Supported rule operator for number type.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListNumberRuleItemOperatorEnum {}
+pub struct UserListNumberRuleItemOperatorEnum {
+}
 /// Nested message and enum types in `UserListNumberRuleItemOperatorEnum`.
 pub mod user_list_number_rule_item_operator_enum {
     /// Enum describing possible user list number rule item operators.
@@ -3473,7 +3574,8 @@ pub mod user_list_number_rule_item_operator_enum {
 }
 /// Indicates status of prepopulation based on the rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListPrepopulationStatusEnum {}
+pub struct UserListPrepopulationStatusEnum {
+}
 /// Nested message and enum types in `UserListPrepopulationStatusEnum`.
 pub mod user_list_prepopulation_status_enum {
     /// Enum describing possible user list prepopulation status.
@@ -3494,7 +3596,8 @@ pub mod user_list_prepopulation_status_enum {
 }
 /// Rule based user list rule type.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListRuleTypeEnum {}
+pub struct UserListRuleTypeEnum {
+}
 /// Nested message and enum types in `UserListRuleTypeEnum`.
 pub mod user_list_rule_type_enum {
     /// Enum describing possible user list rule types.
@@ -3513,7 +3616,8 @@ pub mod user_list_rule_type_enum {
 }
 /// Supported rule operator for string type.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListStringRuleItemOperatorEnum {}
+pub struct UserListStringRuleItemOperatorEnum {
+}
 /// Nested message and enum types in `UserListStringRuleItemOperatorEnum`.
 pub mod user_list_string_rule_item_operator_enum {
     /// Enum describing possible user list string rule item operators.
@@ -3546,7 +3650,8 @@ pub mod user_list_string_rule_item_operator_enum {
 
 /// Container for enum for identifying the status of access invitation
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccessInvitationStatusEnum {}
+pub struct AccessInvitationStatusEnum {
+}
 /// Nested message and enum types in `AccessInvitationStatusEnum`.
 pub mod access_invitation_status_enum {
     /// Possible access invitation status of a user
@@ -3569,7 +3674,8 @@ pub mod access_invitation_status_enum {
 }
 /// Indicates the way the resource such as user list is related to a user.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccessReasonEnum {}
+pub struct AccessReasonEnum {
+}
 /// Nested message and enum types in `AccessReasonEnum`.
 pub mod access_reason_enum {
     /// Enum describing possible access reasons.
@@ -3594,7 +3700,8 @@ pub mod access_reason_enum {
 }
 /// Container for enum describing possible access role for user.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccessRoleEnum {}
+pub struct AccessRoleEnum {
+}
 /// Nested message and enum types in `AccessRoleEnum`.
 pub mod access_role_enum {
     /// Possible access role of a user.
@@ -3620,7 +3727,8 @@ pub mod access_role_enum {
 
 /// Message describing AccountBudgetProposal statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountBudgetProposalStatusEnum {}
+pub struct AccountBudgetProposalStatusEnum {
+}
 /// Nested message and enum types in `AccountBudgetProposalStatusEnum`.
 pub mod account_budget_proposal_status_enum {
     /// The possible statuses of an AccountBudgetProposal.
@@ -3651,7 +3759,8 @@ pub mod account_budget_proposal_status_enum {
 
 /// Message describing AccountBudgetProposal types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountBudgetProposalTypeEnum {}
+pub struct AccountBudgetProposalTypeEnum {
+}
 /// Nested message and enum types in `AccountBudgetProposalTypeEnum`.
 pub mod account_budget_proposal_type_enum {
     /// The possible types of an AccountBudgetProposal.
@@ -3676,7 +3785,8 @@ pub mod account_budget_proposal_type_enum {
 
 /// Message describing AccountBudget statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountBudgetStatusEnum {}
+pub struct AccountBudgetStatusEnum {
+}
 /// Nested message and enum types in `AccountBudgetStatusEnum`.
 pub mod account_budget_status_enum {
     /// The possible statuses of an AccountBudget.
@@ -3697,7 +3807,8 @@ pub mod account_budget_status_enum {
 }
 /// Container for enum describing possible statuses of an account link.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountLinkStatusEnum {}
+pub struct AccountLinkStatusEnum {
+}
 /// Nested message and enum types in `AccountLinkStatusEnum`.
 pub mod account_link_status_enum {
     /// Describes the possible statuses for a link between a Google Ads customer
@@ -3729,7 +3840,8 @@ pub mod account_link_status_enum {
 
 /// Values for Ad Customizer placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdCustomizerPlaceholderFieldEnum {}
+pub struct AdCustomizerPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `AdCustomizerPlaceholderFieldEnum`.
 pub mod ad_customizer_placeholder_field_enum {
     /// Possible values for Ad Customizers placeholder fields.
@@ -3755,7 +3867,8 @@ pub mod ad_customizer_placeholder_field_enum {
 /// Container for enum describing possible ad rotation modes of ads within an
 /// ad group.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupAdRotationModeEnum {}
+pub struct AdGroupAdRotationModeEnum {
+}
 /// Nested message and enum types in `AdGroupAdRotationModeEnum`.
 pub mod ad_group_ad_rotation_mode_enum {
     /// The possible ad rotation modes of an ad group.
@@ -3778,7 +3891,8 @@ pub mod ad_group_ad_rotation_mode_enum {
 
 /// Container for enum describing possible statuses of an AdGroupAd.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupAdStatusEnum {}
+pub struct AdGroupAdStatusEnum {
+}
 /// Nested message and enum types in `AdGroupAdStatusEnum`.
 pub mod ad_group_ad_status_enum {
     /// The possible statuses of an AdGroupAd.
@@ -3803,7 +3917,8 @@ pub mod ad_group_ad_status_enum {
 
 /// Container for enum describing possible AdGroupCriterion approval statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupCriterionApprovalStatusEnum {}
+pub struct AdGroupCriterionApprovalStatusEnum {
+}
 /// Nested message and enum types in `AdGroupCriterionApprovalStatusEnum`.
 pub mod ad_group_criterion_approval_status_enum {
     /// Enumerates AdGroupCriterion approval statuses.
@@ -3828,7 +3943,8 @@ pub mod ad_group_criterion_approval_status_enum {
 
 /// Message describing AdGroupCriterion statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupCriterionStatusEnum {}
+pub struct AdGroupCriterionStatusEnum {
+}
 /// Nested message and enum types in `AdGroupCriterionStatusEnum`.
 pub mod ad_group_criterion_status_enum {
     /// The possible statuses of an AdGroupCriterion.
@@ -3853,7 +3969,8 @@ pub mod ad_group_criterion_status_enum {
 
 /// Container for enum describing possible statuses of an ad group.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupStatusEnum {}
+pub struct AdGroupStatusEnum {
+}
 /// Nested message and enum types in `AdGroupStatusEnum`.
 pub mod ad_group_status_enum {
     /// The possible statuses of an ad group.
@@ -3880,7 +3997,8 @@ pub mod ad_group_status_enum {
 /// type. This type drives validations that restrict which entities can be
 /// added to the ad group.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupTypeEnum {}
+pub struct AdGroupTypeEnum {
+}
 /// Nested message and enum types in `AdGroupTypeEnum`.
 pub mod ad_group_type_enum {
     /// Enum listing the possible types of an ad group.
@@ -3931,7 +4049,8 @@ pub mod ad_group_type_enum {
 
 /// Possible ad serving statuses of a campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdServingOptimizationStatusEnum {}
+pub struct AdServingOptimizationStatusEnum {
+}
 /// Nested message and enum types in `AdServingOptimizationStatusEnum`.
 pub mod ad_serving_optimization_status_enum {
     /// Enum describing possible serving statuses.
@@ -3963,7 +4082,8 @@ pub mod ad_serving_optimization_status_enum {
 
 /// Container for enum describing possible ad strengths.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdStrengthEnum {}
+pub struct AdStrengthEnum {
+}
 /// Nested message and enum types in `AdStrengthEnum`.
 pub mod ad_strength_enum {
     /// Enum listing the possible ad strengths.
@@ -3992,7 +4112,8 @@ pub mod ad_strength_enum {
 
 /// Container for enum describing possible types of an ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdTypeEnum {}
+pub struct AdTypeEnum {
+}
 /// Nested message and enum types in `AdTypeEnum`.
 pub mod ad_type_enum {
     /// The possible types of an ad.
@@ -4073,7 +4194,8 @@ pub mod ad_type_enum {
 /// Container for enum describing possible values for a relationship type for
 /// an affiliate location feed.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AffiliateLocationFeedRelationshipTypeEnum {}
+pub struct AffiliateLocationFeedRelationshipTypeEnum {
+}
 /// Nested message and enum types in `AffiliateLocationFeedRelationshipTypeEnum`.
 pub mod affiliate_location_feed_relationship_type_enum {
     /// Possible values for a relationship type for an affiliate location feed.
@@ -4092,7 +4214,8 @@ pub mod affiliate_location_feed_relationship_type_enum {
 
 /// Values for Affiliate Location placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AffiliateLocationPlaceholderFieldEnum {}
+pub struct AffiliateLocationPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `AffiliateLocationPlaceholderFieldEnum`.
 pub mod affiliate_location_placeholder_field_enum {
     /// Possible values for Affiliate Location placeholder fields.
@@ -4131,7 +4254,8 @@ pub mod affiliate_location_placeholder_field_enum {
 
 /// The application store that distributes mobile applications.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppCampaignAppStoreEnum {}
+pub struct AppCampaignAppStoreEnum {
+}
 /// Nested message and enum types in `AppCampaignAppStoreEnum`.
 pub mod app_campaign_app_store_enum {
     /// Enum describing app campaign app store.
@@ -4153,7 +4277,8 @@ pub mod app_campaign_app_store_enum {
 /// Container for enum describing goal towards which the bidding strategy of an
 /// app campaign should optimize for.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppCampaignBiddingStrategyGoalTypeEnum {}
+pub struct AppCampaignBiddingStrategyGoalTypeEnum {
+}
 /// Nested message and enum types in `AppCampaignBiddingStrategyGoalTypeEnum`.
 pub mod app_campaign_bidding_strategy_goal_type_enum {
     /// Goal type of App campaign BiddingStrategy.
@@ -4189,7 +4314,8 @@ pub mod app_campaign_bidding_strategy_goal_type_enum {
 
 /// Values for App placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AppPlaceholderFieldEnum {}
+pub struct AppPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `AppPlaceholderFieldEnum`.
 pub mod app_placeholder_field_enum {
     /// Possible values for App placeholder fields.
@@ -4229,7 +4355,8 @@ pub mod app_placeholder_field_enum {
 
 /// Container for enum describing the possible placements of an asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetFieldTypeEnum {}
+pub struct AssetFieldTypeEnum {
+}
 /// Nested message and enum types in `AssetFieldTypeEnum`.
 pub mod asset_field_type_enum {
     /// Enum describing the possible placements of an asset.
@@ -4295,7 +4422,8 @@ pub mod asset_field_type_enum {
 
 /// Container for enum describing possible statuses of an asset group.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetGroupStatusEnum {}
+pub struct AssetGroupStatusEnum {
+}
 /// Nested message and enum types in `AssetGroupStatusEnum`.
 pub mod asset_group_status_enum {
     /// The possible statuses of an asset group.
@@ -4318,7 +4446,8 @@ pub mod asset_group_status_enum {
 
 /// Container for enum describing possible statuses of an asset link.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetLinkStatusEnum {}
+pub struct AssetLinkStatusEnum {
+}
 /// Nested message and enum types in `AssetLinkStatusEnum`.
 pub mod asset_link_status_enum {
     /// Enum describing statuses of an asset link.
@@ -4341,7 +4470,8 @@ pub mod asset_link_status_enum {
 
 /// Container for enum describing possible statuses of an asset set asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetAssetStatusEnum {}
+pub struct AssetSetAssetStatusEnum {
+}
 /// Nested message and enum types in `AssetSetAssetStatusEnum`.
 pub mod asset_set_asset_status_enum {
     /// The possible statuses of an asset set asset.
@@ -4364,7 +4494,8 @@ pub mod asset_set_asset_status_enum {
 /// Container for enum describing possible statuses of the linkage between asset
 /// set and its container.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetLinkStatusEnum {}
+pub struct AssetSetLinkStatusEnum {
+}
 /// Nested message and enum types in `AssetSetLinkStatusEnum`.
 pub mod asset_set_link_status_enum {
     /// The possible statuses of he linkage between asset set and its container.
@@ -4386,7 +4517,8 @@ pub mod asset_set_link_status_enum {
 
 /// Container for enum describing possible statuses of an asset set.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetStatusEnum {}
+pub struct AssetSetStatusEnum {
+}
 /// Nested message and enum types in `AssetSetStatusEnum`.
 pub mod asset_set_status_enum {
     /// The possible statuses of an asset set.
@@ -4408,7 +4540,8 @@ pub mod asset_set_status_enum {
 
 /// Container for enum describing possible types of an asset set.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetTypeEnum {}
+pub struct AssetSetTypeEnum {
+}
 /// Nested message and enum types in `AssetSetTypeEnum`.
 pub mod asset_set_type_enum {
     /// Possible types of an asset set.
@@ -4446,7 +4579,8 @@ pub mod asset_set_type_enum {
 /// Source of the asset or asset link for who generated the entity.
 /// e.g. advertiser or automatically created.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSourceEnum {}
+pub struct AssetSourceEnum {
+}
 /// Nested message and enum types in `AssetSourceEnum`.
 pub mod asset_source_enum {
     /// Enum describing possible source of asset.
@@ -4467,7 +4601,8 @@ pub mod asset_source_enum {
 
 /// Container for enum describing the types of asset.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetTypeEnum {}
+pub struct AssetTypeEnum {
+}
 /// Nested message and enum types in `AssetTypeEnum`.
 pub mod asset_type_enum {
     /// Enum describing possible types of asset.
@@ -4534,7 +4669,8 @@ pub mod asset_type_enum {
 
 /// Container for enum describing the experiment async action status.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AsyncActionStatusEnum {}
+pub struct AsyncActionStatusEnum {
+}
 /// Nested message and enum types in `AsyncActionStatusEnum`.
 pub mod async_action_status_enum {
     /// The async action status of the experiment.
@@ -4561,7 +4697,8 @@ pub mod async_action_status_enum {
 /// distribute credit for a particular conversion across potentially many prior
 /// interactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AttributionModelEnum {}
+pub struct AttributionModelEnum {
+}
 /// Nested message and enum types in `AttributionModelEnum`.
 pub mod attribution_model_enum {
     /// The attribution model that describes how to distribute credit for a
@@ -4599,7 +4736,8 @@ pub mod attribution_model_enum {
 
 /// Container for enum describing audience insights dimensions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AudienceInsightsDimensionEnum {}
+pub struct AudienceInsightsDimensionEnum {
+}
 /// Nested message and enum types in `AudienceInsightsDimensionEnum`.
 pub mod audience_insights_dimension_enum {
     /// Possible audience dimensions for use in generating insights.
@@ -4620,7 +4758,8 @@ pub mod audience_insights_dimension_enum {
 
 /// The status of audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AudienceStatusEnum {}
+pub struct AudienceStatusEnum {
+}
 /// Nested message and enum types in `AudienceStatusEnum`.
 pub mod audience_status_enum {
     /// Enum containing possible audience status types.
@@ -4642,7 +4781,8 @@ pub mod audience_status_enum {
 
 /// Container for enum describing possible batch job statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchJobStatusEnum {}
+pub struct BatchJobStatusEnum {
+}
 /// Nested message and enum types in `BatchJobStatusEnum`.
 pub mod batch_job_status_enum {
     /// The batch job statuses.
@@ -4665,7 +4805,8 @@ pub mod batch_job_status_enum {
 
 /// Container for enum describing possible bid modifier sources.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BidModifierSourceEnum {}
+pub struct BidModifierSourceEnum {
+}
 /// Nested message and enum types in `BidModifierSourceEnum`.
 pub mod bid_modifier_source_enum {
     /// Enum describing possible bid modifier sources.
@@ -4687,7 +4828,8 @@ pub mod bid_modifier_source_enum {
 
 /// Container for enum describing possible bidding sources.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BiddingSourceEnum {}
+pub struct BiddingSourceEnum {
+}
 /// Nested message and enum types in `BiddingSourceEnum`.
 pub mod bidding_source_enum {
     /// Indicates where a bid or target is defined. For example, an ad group
@@ -4712,7 +4854,8 @@ pub mod bidding_source_enum {
 
 /// Message describing BiddingStrategy statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BiddingStrategyStatusEnum {}
+pub struct BiddingStrategyStatusEnum {
+}
 /// Nested message and enum types in `BiddingStrategyStatusEnum`.
 pub mod bidding_strategy_status_enum {
     /// The possible statuses of a BiddingStrategy.
@@ -4735,7 +4878,8 @@ pub mod bidding_strategy_status_enum {
 
 /// Container for enum describing possible bidding strategy types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BiddingStrategyTypeEnum {}
+pub struct BiddingStrategyTypeEnum {
+}
 /// Nested message and enum types in `BiddingStrategyTypeEnum`.
 pub mod bidding_strategy_type_enum {
     /// Enum describing possible bidding strategy types.
@@ -4814,7 +4958,8 @@ pub mod bidding_strategy_type_enum {
 
 /// Message describing BillingSetup statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BillingSetupStatusEnum {}
+pub struct BillingSetupStatusEnum {
+}
 /// Nested message and enum types in `BillingSetupStatusEnum`.
 pub mod billing_setup_status_enum {
     /// The possible statuses of a BillingSetup.
@@ -4841,7 +4986,8 @@ pub mod billing_setup_status_enum {
 
 /// Container for enum with 3-Tier brand safety suitability control.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BrandSafetySuitabilityEnum {}
+pub struct BrandSafetySuitabilityEnum {
+}
 /// Nested message and enum types in `BrandSafetySuitabilityEnum`.
 pub mod brand_safety_suitability_enum {
     /// 3-Tier brand safety suitability control.
@@ -4885,7 +5031,8 @@ pub mod brand_safety_suitability_enum {
 /// Message describing Budget delivery methods. A delivery method determines the
 /// rate at which the Budget is spent.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetDeliveryMethodEnum {}
+pub struct BudgetDeliveryMethodEnum {
+}
 /// Nested message and enum types in `BudgetDeliveryMethodEnum`.
 pub mod budget_delivery_method_enum {
     /// Possible delivery methods of a Budget.
@@ -4908,7 +5055,8 @@ pub mod budget_delivery_method_enum {
 
 /// Message describing Budget period.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetPeriodEnum {}
+pub struct BudgetPeriodEnum {
+}
 /// Nested message and enum types in `BudgetPeriodEnum`.
 pub mod budget_period_enum {
     /// Possible period of a Budget.
@@ -4932,7 +5080,8 @@ pub mod budget_period_enum {
 
 /// Message describing a Budget status
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetStatusEnum {}
+pub struct BudgetStatusEnum {
+}
 /// Nested message and enum types in `BudgetStatusEnum`.
 pub mod budget_status_enum {
     /// Possible statuses of a Budget.
@@ -4953,7 +5102,8 @@ pub mod budget_status_enum {
 
 /// Describes Budget types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BudgetTypeEnum {}
+pub struct BudgetTypeEnum {
+}
 /// Nested message and enum types in `BudgetTypeEnum`.
 pub mod budget_type_enum {
     /// Possible Budget types.
@@ -4995,7 +5145,8 @@ pub mod budget_type_enum {
 
 /// Values for Call placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallPlaceholderFieldEnum {}
+pub struct CallPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `CallPlaceholderFieldEnum`.
 pub mod call_placeholder_field_enum {
     /// Possible values for Call placeholder fields.
@@ -5029,7 +5180,8 @@ pub mod call_placeholder_field_enum {
 
 /// Container for enum describing possible call tracking display locations.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallTrackingDisplayLocationEnum {}
+pub struct CallTrackingDisplayLocationEnum {
+}
 /// Nested message and enum types in `CallTrackingDisplayLocationEnum`.
 pub mod call_tracking_display_location_enum {
     /// Possible call tracking display locations.
@@ -5051,7 +5203,8 @@ pub mod call_tracking_display_location_enum {
 /// Container for enum describing possible types of property from where the call
 /// was made.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CallTypeEnum {}
+pub struct CallTypeEnum {
+}
 /// Nested message and enum types in `CallTypeEnum`.
 pub mod call_type_enum {
     /// Possible types of property from where the call was made.
@@ -5072,7 +5225,8 @@ pub mod call_type_enum {
 
 /// Values for Callout placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CalloutPlaceholderFieldEnum {}
+pub struct CalloutPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `CalloutPlaceholderFieldEnum`.
 pub mod callout_placeholder_field_enum {
     /// Possible values for Callout placeholder fields.
@@ -5091,7 +5245,8 @@ pub mod callout_placeholder_field_enum {
 
 /// Message describing CampaignCriterion statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignCriterionStatusEnum {}
+pub struct CampaignCriterionStatusEnum {
+}
 /// Nested message and enum types in `CampaignCriterionStatusEnum`.
 pub mod campaign_criterion_status_enum {
     /// The possible statuses of a CampaignCriterion.
@@ -5116,7 +5271,8 @@ pub mod campaign_criterion_status_enum {
 
 /// Container for enum describing possible statuses of a campaign draft.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignDraftStatusEnum {}
+pub struct CampaignDraftStatusEnum {
+}
 /// Nested message and enum types in `CampaignDraftStatusEnum`.
 pub mod campaign_draft_status_enum {
     /// Possible statuses of a campaign draft.
@@ -5149,7 +5305,8 @@ pub mod campaign_draft_status_enum {
 
 /// Container for enum describing possible statuses of a campaign experiment.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignExperimentStatusEnum {}
+pub struct CampaignExperimentStatusEnum {
+}
 /// Nested message and enum types in `CampaignExperimentStatusEnum`.
 pub mod campaign_experiment_status_enum {
     /// Possible statuses of a campaign experiment.
@@ -5190,7 +5347,8 @@ pub mod campaign_experiment_status_enum {
 
 /// Container for enum describing campaign experiment traffic split type.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignExperimentTrafficSplitTypeEnum {}
+pub struct CampaignExperimentTrafficSplitTypeEnum {
+}
 /// Nested message and enum types in `CampaignExperimentTrafficSplitTypeEnum`.
 pub mod campaign_experiment_traffic_split_type_enum {
     /// Enum of strategies for splitting traffic between base and experiment
@@ -5214,7 +5372,8 @@ pub mod campaign_experiment_traffic_split_type_enum {
 
 /// Container for enum describing campaign experiment type.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignExperimentTypeEnum {}
+pub struct CampaignExperimentTypeEnum {
+}
 /// Nested message and enum types in `CampaignExperimentTypeEnum`.
 pub mod campaign_experiment_type_enum {
     /// Indicates if this campaign is a normal campaign,
@@ -5243,7 +5402,8 @@ pub mod campaign_experiment_type_enum {
 
 /// Message describing CampaignGroup statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignGroupStatusEnum {}
+pub struct CampaignGroupStatusEnum {
+}
 /// Nested message and enum types in `CampaignGroupStatusEnum`.
 pub mod campaign_group_status_enum {
     /// Possible statuses of a CampaignGroup.
@@ -5264,7 +5424,8 @@ pub mod campaign_group_status_enum {
 
 /// Message describing Campaign serving statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignServingStatusEnum {}
+pub struct CampaignServingStatusEnum {
+}
 /// Nested message and enum types in `CampaignServingStatusEnum`.
 pub mod campaign_serving_status_enum {
     /// Possible serving statuses of a campaign.
@@ -5293,7 +5454,8 @@ pub mod campaign_serving_status_enum {
 
 /// Container for enum describing types of campaign shared set statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignSharedSetStatusEnum {}
+pub struct CampaignSharedSetStatusEnum {
+}
 /// Nested message and enum types in `CampaignSharedSetStatusEnum`.
 pub mod campaign_shared_set_status_enum {
     /// Enum listing the possible campaign shared set statuses.
@@ -5314,7 +5476,8 @@ pub mod campaign_shared_set_status_enum {
 
 /// Container for enum describing possible statuses of a campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignStatusEnum {}
+pub struct CampaignStatusEnum {
+}
 /// Nested message and enum types in `CampaignStatusEnum`.
 pub mod campaign_status_enum {
     /// Possible statuses of a campaign.
@@ -5339,7 +5502,8 @@ pub mod campaign_status_enum {
 /// Container for enum describing the sources that the change event resource
 /// was made through.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeClientTypeEnum {}
+pub struct ChangeClientTypeEnum {
+}
 /// Nested message and enum types in `ChangeClientTypeEnum`.
 pub mod change_client_type_enum {
     /// The source that the change_event resource was made through.
@@ -5386,7 +5550,8 @@ pub mod change_client_type_enum {
 /// Container for enum describing supported resource types for the ChangeEvent
 /// resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeEventResourceTypeEnum {}
+pub struct ChangeEventResourceTypeEnum {
+}
 /// Nested message and enum types in `ChangeEventResourceTypeEnum`.
 pub mod change_event_resource_type_enum {
     /// Enum listing the resource types support by the ChangeEvent resource.
@@ -5442,7 +5607,8 @@ pub mod change_event_resource_type_enum {
 
 /// Container for enum describing operations for the ChangeStatus resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeStatusOperationEnum {}
+pub struct ChangeStatusOperationEnum {
+}
 /// Nested message and enum types in `ChangeStatusOperationEnum`.
 pub mod change_status_operation_enum {
     /// Status of the changed resource
@@ -5467,7 +5633,8 @@ pub mod change_status_operation_enum {
 /// Container for enum describing supported resource types for the ChangeStatus
 /// resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeStatusResourceTypeEnum {}
+pub struct ChangeStatusResourceTypeEnum {
+}
 /// Nested message and enum types in `ChangeStatusResourceTypeEnum`.
 pub mod change_status_resource_type_enum {
     /// Enum listing the resource types support by the ChangeStatus resource.
@@ -5517,7 +5684,8 @@ pub mod change_status_resource_type_enum {
 
 /// The status of combined audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CombinedAudienceStatusEnum {}
+pub struct CombinedAudienceStatusEnum {
+}
 /// Nested message and enum types in `CombinedAudienceStatusEnum`.
 pub mod combined_audience_status_enum {
     /// Enum containing possible combined audience status types.
@@ -5540,7 +5708,8 @@ pub mod combined_audience_status_enum {
 /// Container for enum describing the conversion deduplication mode for
 /// conversion optimizer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionActionCountingTypeEnum {}
+pub struct ConversionActionCountingTypeEnum {
+}
 /// Nested message and enum types in `ConversionActionCountingTypeEnum`.
 pub mod conversion_action_counting_type_enum {
     /// Indicates how conversions for this action will be counted. For more
@@ -5562,7 +5731,8 @@ pub mod conversion_action_counting_type_enum {
 
 /// Container for enum describing possible statuses of a conversion action.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionActionStatusEnum {}
+pub struct ConversionActionStatusEnum {
+}
 /// Nested message and enum types in `ConversionActionStatusEnum`.
 pub mod conversion_action_status_enum {
     /// Possible statuses of a conversion action.
@@ -5586,7 +5756,8 @@ pub mod conversion_action_status_enum {
 
 /// Container for enum describing possible types of a conversion action.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionActionTypeEnum {}
+pub struct ConversionActionTypeEnum {
+}
 /// Nested message and enum types in `ConversionActionTypeEnum`.
 pub mod conversion_action_type_enum {
     /// Possible types of a conversion action.
@@ -5698,7 +5869,8 @@ pub mod conversion_action_type_enum {
 
 /// Container for enum describing conversion adjustment types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionAdjustmentTypeEnum {}
+pub struct ConversionAdjustmentTypeEnum {
+}
 /// Nested message and enum types in `ConversionAdjustmentTypeEnum`.
 pub mod conversion_adjustment_type_enum {
     /// The different actions advertisers can take to adjust the conversions that
@@ -5725,7 +5897,8 @@ pub mod conversion_adjustment_type_enum {
 /// Container for enum describing possible statuses of a conversion custom
 /// variable.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionCustomVariableStatusEnum {}
+pub struct ConversionCustomVariableStatusEnum {
+}
 /// Nested message and enum types in `ConversionCustomVariableStatusEnum`.
 pub mod conversion_custom_variable_status_enum {
     /// Possible statuses of a conversion custom variable.
@@ -5751,7 +5924,8 @@ pub mod conversion_custom_variable_status_enum {
 /// Container for enum representing the conversion environment an uploaded
 /// conversion was recorded on. e.g. App or Web.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionEnvironmentEnum {}
+pub struct ConversionEnvironmentEnum {
+}
 /// Nested message and enum types in `ConversionEnvironmentEnum`.
 pub mod conversion_environment_enum {
     /// Conversion environment of the uploaded conversion.
@@ -5772,7 +5946,8 @@ pub mod conversion_environment_enum {
 
 /// Container for enum describing possible conversion origins.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionOriginEnum {}
+pub struct ConversionOriginEnum {
+}
 /// Nested message and enum types in `ConversionOriginEnum`.
 pub mod conversion_origin_enum {
     /// The possible places where a conversion can occur.
@@ -5805,7 +5980,8 @@ pub mod conversion_origin_enum {
 /// Container for enum representing the conversion tracking status of the
 /// customer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionTrackingStatusEnum {}
+pub struct ConversionTrackingStatusEnum {
+}
 /// Nested message and enum types in `ConversionTrackingStatusEnum`.
 pub mod conversion_tracking_status_enum {
     /// Conversion Tracking status of the customer.
@@ -5834,7 +6010,8 @@ pub mod conversion_tracking_status_enum {
 /// Container for enum describing possible statuses of a conversion value rule
 /// set.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionValueRuleSetStatusEnum {}
+pub struct ConversionValueRuleSetStatusEnum {
+}
 /// Nested message and enum types in `ConversionValueRuleSetStatusEnum`.
 pub mod conversion_value_rule_set_status_enum {
     /// Possible statuses of a conversion value rule set.
@@ -5858,7 +6035,8 @@ pub mod conversion_value_rule_set_status_enum {
 
 /// Container for enum describing possible statuses of a conversion value rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionValueRuleStatusEnum {}
+pub struct ConversionValueRuleStatusEnum {
+}
 /// Nested message and enum types in `ConversionValueRuleStatusEnum`.
 pub mod conversion_value_rule_status_enum {
     /// Possible statuses of a conversion value rule.
@@ -5881,7 +6059,8 @@ pub mod conversion_value_rule_status_enum {
 
 /// Container for enum describing possible criterion system serving statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionSystemServingStatusEnum {}
+pub struct CriterionSystemServingStatusEnum {
+}
 /// Nested message and enum types in `CriterionSystemServingStatusEnum`.
 pub mod criterion_system_serving_status_enum {
     /// Enumerates criterion system serving statuses.
@@ -5902,7 +6081,8 @@ pub mod criterion_system_serving_status_enum {
 
 /// The possible types of a criterion.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionTypeEnum {}
+pub struct CriterionTypeEnum {
+}
 /// Nested message and enum types in `CriterionTypeEnum`.
 pub mod criterion_type_enum {
     /// Enum describing possible criterion types.
@@ -5987,7 +6167,8 @@ pub mod criterion_type_enum {
 
 /// The type of custom audience member.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomAudienceMemberTypeEnum {}
+pub struct CustomAudienceMemberTypeEnum {
+}
 /// Nested message and enum types in `CustomAudienceMemberTypeEnum`.
 pub mod custom_audience_member_type_enum {
     /// Enum containing possible custom audience member types.
@@ -6012,7 +6193,8 @@ pub mod custom_audience_member_type_enum {
 
 /// The status of custom audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomAudienceStatusEnum {}
+pub struct CustomAudienceStatusEnum {
+}
 /// Nested message and enum types in `CustomAudienceStatusEnum`.
 pub mod custom_audience_status_enum {
     /// Enum containing possible custom audience statuses.
@@ -6034,7 +6216,8 @@ pub mod custom_audience_status_enum {
 
 /// The types of custom audience.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomAudienceTypeEnum {}
+pub struct CustomAudienceTypeEnum {
+}
 /// Nested message and enum types in `CustomAudienceTypeEnum`.
 pub mod custom_audience_type_enum {
     /// Enum containing possible custom audience types.
@@ -6061,7 +6244,8 @@ pub mod custom_audience_type_enum {
 
 /// Container for enum describing possible statuses of a custom conversion goal.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomConversionGoalStatusEnum {}
+pub struct CustomConversionGoalStatusEnum {
+}
 /// Nested message and enum types in `CustomConversionGoalStatusEnum`.
 pub mod custom_conversion_goal_status_enum {
     /// The possible statuses of a custom conversion goal.
@@ -6082,7 +6266,8 @@ pub mod custom_conversion_goal_status_enum {
 
 /// The types of custom interest member, either KEYWORD or URL.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomInterestMemberTypeEnum {}
+pub struct CustomInterestMemberTypeEnum {
+}
 /// Nested message and enum types in `CustomInterestMemberTypeEnum`.
 pub mod custom_interest_member_type_enum {
     /// Enum containing possible custom interest member types.
@@ -6103,7 +6288,8 @@ pub mod custom_interest_member_type_enum {
 
 /// The status of custom interest.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomInterestStatusEnum {}
+pub struct CustomInterestStatusEnum {
+}
 /// Nested message and enum types in `CustomInterestStatusEnum`.
 pub mod custom_interest_status_enum {
     /// Enum containing possible custom interest types.
@@ -6125,7 +6311,8 @@ pub mod custom_interest_status_enum {
 
 /// The types of custom interest.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomInterestTypeEnum {}
+pub struct CustomInterestTypeEnum {
+}
 /// Nested message and enum types in `CustomInterestTypeEnum`.
 pub mod custom_interest_type_enum {
     /// Enum containing possible custom interest types.
@@ -6148,7 +6335,8 @@ pub mod custom_interest_type_enum {
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomPlaceholderFieldEnum {}
+pub struct CustomPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `CustomPlaceholderFieldEnum`.
 pub mod custom_placeholder_field_enum {
     /// Possible values for Custom placeholder fields.
@@ -6229,7 +6417,8 @@ pub mod custom_placeholder_field_enum {
 /// Container for enum describing reasons why a customer is not eligible to use
 /// PaymentMode.CONVERSIONS.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerPayPerConversionEligibilityFailureReasonEnum {}
+pub struct CustomerPayPerConversionEligibilityFailureReasonEnum {
+}
 /// Nested message and enum types in `CustomerPayPerConversionEligibilityFailureReasonEnum`.
 pub mod customer_pay_per_conversion_eligibility_failure_reason_enum {
     /// Enum describing possible reasons a customer is not eligible to use
@@ -6260,7 +6449,8 @@ pub mod customer_pay_per_conversion_eligibility_failure_reason_enum {
 }
 /// Container for enum describing possible statuses of a customer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerStatusEnum {}
+pub struct CustomerStatusEnum {
+}
 /// Nested message and enum types in `CustomerStatusEnum`.
 pub mod customer_status_enum {
     /// Possible statuses of a customer.
@@ -6289,7 +6479,8 @@ pub mod customer_status_enum {
 
 /// Container for enum describing possible statuses of a customizer attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomizerAttributeStatusEnum {}
+pub struct CustomizerAttributeStatusEnum {
+}
 /// Nested message and enum types in `CustomizerAttributeStatusEnum`.
 pub mod customizer_attribute_status_enum {
     /// The possible statuses of a customizer attribute.
@@ -6310,7 +6501,8 @@ pub mod customizer_attribute_status_enum {
 
 /// Container for enum describing possible statuses of a customizer value.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomizerValueStatusEnum {}
+pub struct CustomizerValueStatusEnum {
+}
 /// Nested message and enum types in `CustomizerValueStatusEnum`.
 pub mod customizer_value_status_enum {
     /// The possible statuses of a customizer value.
@@ -6331,7 +6523,8 @@ pub mod customizer_value_status_enum {
 
 /// Container for enum indicating data driven model status.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DataDrivenModelStatusEnum {}
+pub struct DataDrivenModelStatusEnum {
+}
 /// Nested message and enum types in `DataDrivenModelStatusEnum`.
 pub mod data_driven_model_status_enum {
     /// Enumerates data driven model statuses.
@@ -6363,7 +6556,8 @@ pub mod data_driven_model_status_enum {
 /// Container for distance buckets of a user's distance from an advertiser's
 /// location extension.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DistanceBucketEnum {}
+pub struct DistanceBucketEnum {
+}
 /// Nested message and enum types in `DistanceBucketEnum`.
 pub mod distance_bucket_enum {
     /// The distance bucket for a user's distance from an advertiser's location
@@ -6435,7 +6629,8 @@ pub mod distance_bucket_enum {
 
 /// Values for Dynamic Search Ad Page Feed criterion fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DsaPageFeedCriterionFieldEnum {}
+pub struct DsaPageFeedCriterionFieldEnum {
+}
 /// Nested message and enum types in `DsaPageFeedCriterionFieldEnum`.
 pub mod dsa_page_feed_criterion_field_enum {
     /// Possible values for Dynamic Search Ad Page Feed criterion fields.
@@ -6459,7 +6654,8 @@ pub mod dsa_page_feed_criterion_field_enum {
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EducationPlaceholderFieldEnum {}
+pub struct EducationPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `EducationPlaceholderFieldEnum`.
 pub mod education_placeholder_field_enum {
     /// Possible values for Education placeholder fields.
@@ -6524,7 +6720,8 @@ pub mod education_placeholder_field_enum {
 
 /// Container for enum describing the experiment status.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExperimentStatusEnum {}
+pub struct ExperimentStatusEnum {
+}
 /// Nested message and enum types in `ExperimentStatusEnum`.
 pub mod experiment_status_enum {
     /// The status of the experiment.
@@ -6557,7 +6754,8 @@ pub mod experiment_status_enum {
 
 /// Container for enum describing the type of experiment.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExperimentTypeEnum {}
+pub struct ExperimentTypeEnum {
+}
 /// Nested message and enum types in `ExperimentTypeEnum`.
 pub mod experiment_type_enum {
     /// The type of the experiment.
@@ -6594,7 +6792,8 @@ pub mod experiment_type_enum {
 
 /// Container for enum describing extension setting device types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExtensionSettingDeviceEnum {}
+pub struct ExtensionSettingDeviceEnum {
+}
 /// Nested message and enum types in `ExtensionSettingDeviceEnum`.
 pub mod extension_setting_device_enum {
     /// Possible device types for an extension setting.
@@ -6618,7 +6817,8 @@ pub mod extension_setting_device_enum {
 /// Container for enum describing possible data types for an extension in an
 /// extension setting.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExtensionTypeEnum {}
+pub struct ExtensionTypeEnum {
+}
 /// Nested message and enum types in `ExtensionTypeEnum`.
 pub mod extension_type_enum {
     /// Possible data types for an extension in an extension setting.
@@ -6661,7 +6861,8 @@ pub mod extension_type_enum {
 
 /// Container for enum describing possible data types for a feed attribute.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedAttributeTypeEnum {}
+pub struct FeedAttributeTypeEnum {
+}
 /// Nested message and enum types in `FeedAttributeTypeEnum`.
 pub mod feed_attribute_type_enum {
     /// Possible data types for a feed attribute.
@@ -6705,7 +6906,8 @@ pub mod feed_attribute_type_enum {
 /// Container for enum describing possible quality evaluation approval statuses
 /// of a feed item.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemQualityApprovalStatusEnum {}
+pub struct FeedItemQualityApprovalStatusEnum {
+}
 /// Nested message and enum types in `FeedItemQualityApprovalStatusEnum`.
 pub mod feed_item_quality_approval_status_enum {
     /// The possible quality evaluation approval statuses of a feed item.
@@ -6728,7 +6930,8 @@ pub mod feed_item_quality_approval_status_enum {
 /// Container for enum describing possible quality evaluation disapproval reasons
 /// of a feed item.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemQualityDisapprovalReasonEnum {}
+pub struct FeedItemQualityDisapprovalReasonEnum {
+}
 /// Nested message and enum types in `FeedItemQualityDisapprovalReasonEnum`.
 pub mod feed_item_quality_disapproval_reason_enum {
     /// The possible quality evaluation disapproval reasons of a feed item.
@@ -6781,7 +6984,8 @@ pub mod feed_item_quality_disapproval_reason_enum {
 
 /// Container for enum describing possible statuses of a feed item set.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemSetStatusEnum {}
+pub struct FeedItemSetStatusEnum {
+}
 /// Nested message and enum types in `FeedItemSetStatusEnum`.
 pub mod feed_item_set_status_enum {
     /// Possible statuses of a feed item set.
@@ -6802,7 +7006,8 @@ pub mod feed_item_set_status_enum {
 
 /// Container for enum describing possible statuses of a feed item.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemStatusEnum {}
+pub struct FeedItemStatusEnum {
+}
 /// Nested message and enum types in `FeedItemStatusEnum`.
 pub mod feed_item_status_enum {
     /// Possible statuses of a feed item.
@@ -6824,7 +7029,8 @@ pub mod feed_item_status_enum {
 /// Container for enum describing possible data types for a feed item target
 /// device.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemTargetDeviceEnum {}
+pub struct FeedItemTargetDeviceEnum {
+}
 /// Nested message and enum types in `FeedItemTargetDeviceEnum`.
 pub mod feed_item_target_device_enum {
     /// Possible data types for a feed item target device.
@@ -6843,7 +7049,8 @@ pub mod feed_item_target_device_enum {
 
 /// Container for enum describing possible statuses of a feed item target.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemTargetStatusEnum {}
+pub struct FeedItemTargetStatusEnum {
+}
 /// Nested message and enum types in `FeedItemTargetStatusEnum`.
 pub mod feed_item_target_status_enum {
     /// Possible statuses of a feed item target.
@@ -6864,7 +7071,8 @@ pub mod feed_item_target_status_enum {
 
 /// Container for enum describing possible types of a feed item target.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemTargetTypeEnum {}
+pub struct FeedItemTargetTypeEnum {
+}
 /// Nested message and enum types in `FeedItemTargetTypeEnum`.
 pub mod feed_item_target_type_enum {
     /// Possible type of a feed item target.
@@ -6887,7 +7095,8 @@ pub mod feed_item_target_type_enum {
 
 /// Container for enum describing possible validation statuses of a feed item.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemValidationStatusEnum {}
+pub struct FeedItemValidationStatusEnum {
+}
 /// Nested message and enum types in `FeedItemValidationStatusEnum`.
 pub mod feed_item_validation_status_enum {
     /// The possible validation statuses of a feed item.
@@ -6910,7 +7119,8 @@ pub mod feed_item_validation_status_enum {
 
 /// Container for an enum describing possible statuses of a feed link.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedLinkStatusEnum {}
+pub struct FeedLinkStatusEnum {
+}
 /// Nested message and enum types in `FeedLinkStatusEnum`.
 pub mod feed_link_status_enum {
     /// Possible statuses of a feed link.
@@ -6931,7 +7141,8 @@ pub mod feed_link_status_enum {
 
 /// Container for enum describing possible criterion types for a feed mapping.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedMappingCriterionTypeEnum {}
+pub struct FeedMappingCriterionTypeEnum {
+}
 /// Nested message and enum types in `FeedMappingCriterionTypeEnum`.
 pub mod feed_mapping_criterion_type_enum {
     /// Possible placeholder types for a feed mapping.
@@ -6952,7 +7163,8 @@ pub mod feed_mapping_criterion_type_enum {
 
 /// Container for enum describing possible statuses of a feed mapping.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedMappingStatusEnum {}
+pub struct FeedMappingStatusEnum {
+}
 /// Nested message and enum types in `FeedMappingStatusEnum`.
 pub mod feed_mapping_status_enum {
     /// Possible statuses of a feed mapping.
@@ -6973,7 +7185,8 @@ pub mod feed_mapping_status_enum {
 
 /// Container for enum describing possible values for a feed origin.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedOriginEnum {}
+pub struct FeedOriginEnum {
+}
 /// Nested message and enum types in `FeedOriginEnum`.
 pub mod feed_origin_enum {
     /// Possible values for a feed origin.
@@ -6997,7 +7210,8 @@ pub mod feed_origin_enum {
 
 /// Container for enum describing possible statuses of a feed.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedStatusEnum {}
+pub struct FeedStatusEnum {
+}
 /// Nested message and enum types in `FeedStatusEnum`.
 pub mod feed_status_enum {
     /// Possible statuses of a feed.
@@ -7020,7 +7234,8 @@ pub mod feed_status_enum {
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FlightPlaceholderFieldEnum {}
+pub struct FlightPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `FlightPlaceholderFieldEnum`.
 pub mod flight_placeholder_field_enum {
     /// Possible values for Flight placeholder fields.
@@ -7092,7 +7307,8 @@ pub mod flight_placeholder_field_enum {
 
 /// Container for describing the status of a geo target constant.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeoTargetConstantStatusEnum {}
+pub struct GeoTargetConstantStatusEnum {
+}
 /// Nested message and enum types in `GeoTargetConstantStatusEnum`.
 pub mod geo_target_constant_status_enum {
     /// The possible statuses of a geo target constant.
@@ -7115,7 +7331,8 @@ pub mod geo_target_constant_status_enum {
 
 /// Message describing feed item geo targeting restriction.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeoTargetingRestrictionEnum {}
+pub struct GeoTargetingRestrictionEnum {
+}
 /// Nested message and enum types in `GeoTargetingRestrictionEnum`.
 pub mod geo_targeting_restriction_enum {
     /// A restriction used to determine if the request context's
@@ -7136,7 +7353,8 @@ pub mod geo_targeting_restriction_enum {
 
 /// Container for enum describing possible geo targeting types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeoTargetingTypeEnum {}
+pub struct GeoTargetingTypeEnum {
+}
 /// Nested message and enum types in `GeoTargetingTypeEnum`.
 pub mod geo_targeting_type_enum {
     /// The possible geo targeting types.
@@ -7157,7 +7375,8 @@ pub mod geo_targeting_type_enum {
 
 /// Container for enum describing possible goal config levels.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoalConfigLevelEnum {}
+pub struct GoalConfigLevelEnum {
+}
 /// Nested message and enum types in `GoalConfigLevelEnum`.
 pub mod goal_config_level_enum {
     /// The possible goal config levels. Campaigns automatically inherit the
@@ -7181,7 +7400,8 @@ pub mod goal_config_level_enum {
 /// Container for enum that determines if the described artifact is a resource
 /// or a field, and if it is a field, when it segments search queries.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoogleAdsFieldCategoryEnum {}
+pub struct GoogleAdsFieldCategoryEnum {
+}
 /// Nested message and enum types in `GoogleAdsFieldCategoryEnum`.
 pub mod google_ads_field_category_enum {
     /// The category of the artifact.
@@ -7210,7 +7430,8 @@ pub mod google_ads_field_category_enum {
 
 /// Container holding the various data types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoogleAdsFieldDataTypeEnum {}
+pub struct GoogleAdsFieldDataTypeEnum {
+}
 /// Nested message and enum types in `GoogleAdsFieldDataTypeEnum`.
 pub mod google_ads_field_data_type_enum {
     /// These are the various types a GoogleAdsService artifact may take on.
@@ -7274,7 +7495,8 @@ pub mod google_ads_field_data_type_enum {
 
 /// Container for enum describing possible statuses of a google voice call.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GoogleVoiceCallStatusEnum {}
+pub struct GoogleVoiceCallStatusEnum {
+}
 /// Nested message and enum types in `GoogleVoiceCallStatusEnum`.
 pub mod google_voice_call_status_enum {
     /// Possible statuses of a google voice call.
@@ -7297,7 +7519,8 @@ pub mod google_voice_call_status_enum {
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelPlaceholderFieldEnum {}
+pub struct HotelPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `HotelPlaceholderFieldEnum`.
 pub mod hotel_placeholder_field_enum {
     /// Possible values for Hotel placeholder fields.
@@ -7372,7 +7595,8 @@ pub mod hotel_placeholder_field_enum {
 
 /// Container for HotelReconciliationStatus.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HotelReconciliationStatusEnum {}
+pub struct HotelReconciliationStatusEnum {
+}
 /// Nested message and enum types in `HotelReconciliationStatusEnum`.
 pub mod hotel_reconciliation_status_enum {
     /// Status of the hotel booking reconciliation.
@@ -7403,7 +7627,8 @@ pub mod hotel_reconciliation_status_enum {
 
 /// Values for Advertiser Provided Image placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImagePlaceholderFieldEnum {}
+pub struct ImagePlaceholderFieldEnum {
+}
 /// Nested message and enum types in `ImagePlaceholderFieldEnum`.
 pub mod image_placeholder_field_enum {
     /// Possible values for Advertiser Provided Image placeholder fields.
@@ -7422,7 +7647,8 @@ pub mod image_placeholder_field_enum {
 
 /// Container for enum describing the type of invoices.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InvoiceTypeEnum {}
+pub struct InvoiceTypeEnum {
+}
 /// Nested message and enum types in `InvoiceTypeEnum`.
 pub mod invoice_type_enum {
     /// The possible type of invoices.
@@ -7445,7 +7671,8 @@ pub mod invoice_type_enum {
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct JobPlaceholderFieldEnum {}
+pub struct JobPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `JobPlaceholderFieldEnum`.
 pub mod job_placeholder_field_enum {
     /// Possible values for Job placeholder fields.
@@ -7514,7 +7741,8 @@ pub mod job_placeholder_field_enum {
 
 /// Container for enumeration of forecast intervals.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanForecastIntervalEnum {}
+pub struct KeywordPlanForecastIntervalEnum {
+}
 /// Nested message and enum types in `KeywordPlanForecastIntervalEnum`.
 pub mod keyword_plan_forecast_interval_enum {
     /// Forecast intervals.
@@ -7540,7 +7768,8 @@ pub mod keyword_plan_forecast_interval_enum {
 
 /// Container for enumeration of keyword plan keyword annotations.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanKeywordAnnotationEnum {}
+pub struct KeywordPlanKeywordAnnotationEnum {
+}
 /// Nested message and enum types in `KeywordPlanKeywordAnnotationEnum`.
 pub mod keyword_plan_keyword_annotation_enum {
     /// Enumerates keyword plan annotations that can be requested.
@@ -7559,7 +7788,8 @@ pub mod keyword_plan_keyword_annotation_enum {
 
 /// Container for enumeration of keyword plan forecastable network types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanNetworkEnum {}
+pub struct KeywordPlanNetworkEnum {
+}
 /// Nested message and enum types in `KeywordPlanNetworkEnum`.
 pub mod keyword_plan_network_enum {
     /// Enumerates keyword plan forecastable network types.
@@ -7578,7 +7808,8 @@ pub mod keyword_plan_network_enum {
 }
 /// Container for enum describing possible status of a label.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LabelStatusEnum {}
+pub struct LabelStatusEnum {
+}
 /// Nested message and enum types in `LabelStatusEnum`.
 pub mod label_status_enum {
     /// Possible statuses of a label.
@@ -7597,7 +7828,8 @@ pub mod label_status_enum {
 }
 /// Container for enum describing different types of Linked accounts.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LinkedAccountTypeEnum {}
+pub struct LinkedAccountTypeEnum {
+}
 /// Nested message and enum types in `LinkedAccountTypeEnum`.
 pub mod linked_account_type_enum {
     /// Describes the possible link types between a Google Ads customer
@@ -7624,7 +7856,8 @@ pub mod linked_account_type_enum {
 /// Container for enum describing the levels of bidding category used in
 /// ListingGroupFilterDimension.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterBiddingCategoryLevelEnum {}
+pub struct ListingGroupFilterBiddingCategoryLevelEnum {
+}
 /// Nested message and enum types in `ListingGroupFilterBiddingCategoryLevelEnum`.
 pub mod listing_group_filter_bidding_category_level_enum {
     /// The level of the listing group filter bidding category.
@@ -7652,7 +7885,8 @@ pub mod listing_group_filter_bidding_category_level_enum {
 /// Container for enum describing the indexes of custom attribute used in
 /// ListingGroupFilterDimension.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterCustomAttributeIndexEnum {}
+pub struct ListingGroupFilterCustomAttributeIndexEnum {
+}
 /// Nested message and enum types in `ListingGroupFilterCustomAttributeIndexEnum`.
 pub mod listing_group_filter_custom_attribute_index_enum {
     /// The index of customer attributes.
@@ -7679,7 +7913,8 @@ pub mod listing_group_filter_custom_attribute_index_enum {
 
 /// Locality of a product offer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterProductChannelEnum {}
+pub struct ListingGroupFilterProductChannelEnum {
+}
 /// Nested message and enum types in `ListingGroupFilterProductChannelEnum`.
 pub mod listing_group_filter_product_channel_enum {
     /// Enum describing the locality of a product offer.
@@ -7700,7 +7935,8 @@ pub mod listing_group_filter_product_channel_enum {
 
 /// Condition of a product offer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterProductConditionEnum {}
+pub struct ListingGroupFilterProductConditionEnum {
+}
 /// Nested message and enum types in `ListingGroupFilterProductConditionEnum`.
 pub mod listing_group_filter_product_condition_enum {
     /// Enum describing the condition of a product offer.
@@ -7723,7 +7959,8 @@ pub mod listing_group_filter_product_condition_enum {
 
 /// Level of the type of a product offer.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterProductTypeLevelEnum {}
+pub struct ListingGroupFilterProductTypeLevelEnum {
+}
 /// Nested message and enum types in `ListingGroupFilterProductTypeLevelEnum`.
 pub mod listing_group_filter_product_type_level_enum {
     /// Enum describing the level of the type of a product offer.
@@ -7750,7 +7987,8 @@ pub mod listing_group_filter_product_type_level_enum {
 
 /// Container for enum describing the type of the listing group filter node.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterTypeEnum {}
+pub struct ListingGroupFilterTypeEnum {
+}
 /// Nested message and enum types in `ListingGroupFilterTypeEnum`.
 pub mod listing_group_filter_type_enum {
     /// The type of the listing group filter.
@@ -7774,7 +8012,8 @@ pub mod listing_group_filter_type_enum {
 /// Container for enum describing the type of the vertical a listing group filter
 /// tree represents.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListingGroupFilterVerticalEnum {}
+pub struct ListingGroupFilterVerticalEnum {
+}
 /// Nested message and enum types in `ListingGroupFilterVerticalEnum`.
 pub mod listing_group_filter_vertical_enum {
     /// The type of the listing group filter vertical.
@@ -7795,7 +8034,8 @@ pub mod listing_group_filter_vertical_enum {
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocalPlaceholderFieldEnum {}
+pub struct LocalPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `LocalPlaceholderFieldEnum`.
 pub mod local_placeholder_field_enum {
     /// Possible values for Local placeholder fields.
@@ -7866,7 +8106,8 @@ pub mod local_placeholder_field_enum {
 
 /// Values for Location Extension Targeting criterion fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationExtensionTargetingCriterionFieldEnum {}
+pub struct LocationExtensionTargetingCriterionFieldEnum {
+}
 /// Nested message and enum types in `LocationExtensionTargetingCriterionFieldEnum`.
 pub mod location_extension_targeting_criterion_field_enum {
     /// Possible values for Location Extension Targeting criterion fields.
@@ -7895,7 +8136,8 @@ pub mod location_extension_targeting_criterion_field_enum {
 
 /// Values for Location placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationPlaceholderFieldEnum {}
+pub struct LocationPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `LocationPlaceholderFieldEnum`.
 pub mod location_placeholder_field_enum {
     /// Possible values for Location placeholder fields.
@@ -7928,7 +8170,8 @@ pub mod location_placeholder_field_enum {
 
 /// Used to distinguish the location source type.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LocationSourceTypeEnum {}
+pub struct LocationSourceTypeEnum {
+}
 /// Nested message and enum types in `LocationSourceTypeEnum`.
 pub mod location_source_type_enum {
     /// The possible types of a location source.
@@ -7947,7 +8190,8 @@ pub mod location_source_type_enum {
 }
 /// Container for enum describing possible status of a manager and client link.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ManagerLinkStatusEnum {}
+pub struct ManagerLinkStatusEnum {
+}
 /// Nested message and enum types in `ManagerLinkStatusEnum`.
 pub mod manager_link_status_enum {
     /// Possible statuses of a link.
@@ -7976,7 +8220,8 @@ pub mod manager_link_status_enum {
 
 /// Container for enum describing the types of media.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MediaTypeEnum {}
+pub struct MediaTypeEnum {
+}
 /// Nested message and enum types in `MediaTypeEnum`.
 pub mod media_type_enum {
     /// The type of media.
@@ -8008,7 +8253,8 @@ pub mod media_type_enum {
 /// Container for enum describing possible statuses of a Google Merchant Center
 /// link.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MerchantCenterLinkStatusEnum {}
+pub struct MerchantCenterLinkStatusEnum {
+}
 /// Nested message and enum types in `MerchantCenterLinkStatusEnum`.
 pub mod merchant_center_link_status_enum {
     /// Describes the possible statuses for a link between a Google Ads customer
@@ -8031,7 +8277,8 @@ pub mod merchant_center_link_status_enum {
 
 /// Values for Message placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MessagePlaceholderFieldEnum {}
+pub struct MessagePlaceholderFieldEnum {
+}
 /// Nested message and enum types in `MessagePlaceholderFieldEnum`.
 pub mod message_placeholder_field_enum {
     /// Possible values for Message placeholder fields.
@@ -8060,7 +8307,8 @@ pub mod message_placeholder_field_enum {
 
 /// Container for enum describing the types of mobile device.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MobileDeviceTypeEnum {}
+pub struct MobileDeviceTypeEnum {
+}
 /// Nested message and enum types in `MobileDeviceTypeEnum`.
 pub mod mobile_device_type_enum {
     /// The type of mobile device.
@@ -8081,7 +8329,8 @@ pub mod mobile_device_type_enum {
 
 /// Container for enum describing possible negative geo target types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NegativeGeoTargetTypeEnum {}
+pub struct NegativeGeoTargetTypeEnum {
+}
 /// Nested message and enum types in `NegativeGeoTargetTypeEnum`.
 pub mod negative_geo_target_type_enum {
     /// The possible negative geo target types.
@@ -8105,7 +8354,8 @@ pub mod negative_geo_target_type_enum {
 /// Container for enum describing reasons why an offline user data job
 /// failed to be processed.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserDataJobFailureReasonEnum {}
+pub struct OfflineUserDataJobFailureReasonEnum {
+}
 /// Nested message and enum types in `OfflineUserDataJobFailureReasonEnum`.
 pub mod offline_user_data_job_failure_reason_enum {
     /// The failure reason of an offline user data job.
@@ -8125,7 +8375,8 @@ pub mod offline_user_data_job_failure_reason_enum {
 /// Container for enum describing reasons match rate ranges for a customer match
 /// list upload.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserDataJobMatchRateRangeEnum {}
+pub struct OfflineUserDataJobMatchRateRangeEnum {
+}
 /// Nested message and enum types in `OfflineUserDataJobMatchRateRangeEnum`.
 pub mod offline_user_data_job_match_rate_range_enum {
     /// The match rate range of an offline user data job.
@@ -8161,7 +8412,8 @@ pub mod offline_user_data_job_match_rate_range_enum {
 
 /// Container for enum describing status of an offline user data job.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserDataJobStatusEnum {}
+pub struct OfflineUserDataJobStatusEnum {
+}
 /// Nested message and enum types in `OfflineUserDataJobStatusEnum`.
 pub mod offline_user_data_job_status_enum {
     /// The status of an offline user data job.
@@ -8186,7 +8438,8 @@ pub mod offline_user_data_job_status_enum {
 
 /// Container for enum describing types of an offline user data job.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserDataJobTypeEnum {}
+pub struct OfflineUserDataJobTypeEnum {
+}
 /// Nested message and enum types in `OfflineUserDataJobTypeEnum`.
 pub mod offline_user_data_job_type_enum {
     /// The type of an offline user data job.
@@ -8211,7 +8464,8 @@ pub mod offline_user_data_job_type_enum {
 
 /// Container for enum describing the type of OS operators.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperatingSystemVersionOperatorTypeEnum {}
+pub struct OperatingSystemVersionOperatorTypeEnum {
+}
 /// Nested message and enum types in `OperatingSystemVersionOperatorTypeEnum`.
 pub mod operating_system_version_operator_type_enum {
     /// The type of operating system version.
@@ -8232,7 +8486,8 @@ pub mod operating_system_version_operator_type_enum {
 
 /// Container for enum describing the type of optimization goal.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OptimizationGoalTypeEnum {}
+pub struct OptimizationGoalTypeEnum {
+}
 /// Nested message and enum types in `OptimizationGoalTypeEnum`.
 pub mod optimization_goal_type_enum {
     /// The type of optimization goal
@@ -8260,7 +8515,8 @@ pub mod optimization_goal_type_enum {
 
 /// Container for enum describing possible payment modes.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PaymentModeEnum {}
+pub struct PaymentModeEnum {
+}
 /// Nested message and enum types in `PaymentModeEnum`.
 pub mod payment_mode_enum {
     /// Enum describing possible payment modes.
@@ -8293,7 +8549,8 @@ pub mod payment_mode_enum {
 
 /// Performance Max Upgrade status for campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PerformanceMaxUpgradeStatusEnum {}
+pub struct PerformanceMaxUpgradeStatusEnum {
+}
 /// Nested message and enum types in `PerformanceMaxUpgradeStatusEnum`.
 pub mod performance_max_upgrade_status_enum {
     /// Performance Max Upgrade status enum for campaign.
@@ -8319,7 +8576,8 @@ pub mod performance_max_upgrade_status_enum {
 
 /// Container for enum describing possible placement types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PlacementTypeEnum {}
+pub struct PlacementTypeEnum {
+}
 /// Nested message and enum types in `PlacementTypeEnum`.
 pub mod placement_type_enum {
     /// Possible placement types for a feed mapping.
@@ -8346,7 +8604,8 @@ pub mod placement_type_enum {
 
 /// Container for enum describing possible positive geo target types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PositiveGeoTargetTypeEnum {}
+pub struct PositiveGeoTargetTypeEnum {
+}
 /// Nested message and enum types in `PositiveGeoTargetTypeEnum`.
 pub mod positive_geo_target_type_enum {
     /// The possible positive geo target types.
@@ -8374,7 +8633,8 @@ pub mod positive_geo_target_type_enum {
 
 /// Values for Price placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PricePlaceholderFieldEnum {}
+pub struct PricePlaceholderFieldEnum {
+}
 /// Nested message and enum types in `PricePlaceholderFieldEnum`.
 pub mod price_placeholder_field_enum {
     /// Possible values for Price placeholder fields.
@@ -8534,7 +8794,8 @@ pub mod price_placeholder_field_enum {
 
 /// Status of the product bidding category.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProductBiddingCategoryStatusEnum {}
+pub struct ProductBiddingCategoryStatusEnum {
+}
 /// Nested message and enum types in `ProductBiddingCategoryStatusEnum`.
 pub mod product_bidding_category_status_enum {
     /// Enum describing the status of the product bidding category.
@@ -8555,7 +8816,8 @@ pub mod product_bidding_category_status_enum {
 
 /// Values for Promotion placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PromotionPlaceholderFieldEnum {}
+pub struct PromotionPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `PromotionPlaceholderFieldEnum`.
 pub mod promotion_placeholder_field_enum {
     /// Possible values for Promotion placeholder fields.
@@ -8609,7 +8871,8 @@ pub mod promotion_placeholder_field_enum {
 
 /// Message describing length of a plannable video ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReachPlanAdLengthEnum {}
+pub struct ReachPlanAdLengthEnum {
+}
 /// Nested message and enum types in `ReachPlanAdLengthEnum`.
 pub mod reach_plan_ad_length_enum {
     /// Possible ad length values.
@@ -8632,7 +8895,8 @@ pub mod reach_plan_ad_length_enum {
 
 /// Message describing plannable age ranges.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReachPlanAgeRangeEnum {}
+pub struct ReachPlanAgeRangeEnum {
+}
 /// Nested message and enum types in `ReachPlanAgeRangeEnum`.
 pub mod reach_plan_age_range_enum {
     /// Possible plannable age range values.
@@ -8701,7 +8965,8 @@ pub mod reach_plan_age_range_enum {
 
 /// Container for enum describing plannable networks.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReachPlanNetworkEnum {}
+pub struct ReachPlanNetworkEnum {
+}
 /// Nested message and enum types in `ReachPlanNetworkEnum`.
 pub mod reach_plan_network_enum {
     /// Possible plannable network values.
@@ -8727,7 +8992,8 @@ pub mod reach_plan_network_enum {
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RealEstatePlaceholderFieldEnum {}
+pub struct RealEstatePlaceholderFieldEnum {
+}
 /// Nested message and enum types in `RealEstatePlaceholderFieldEnum`.
 pub mod real_estate_placeholder_field_enum {
     /// Possible values for Real Estate placeholder fields.
@@ -8796,7 +9062,8 @@ pub mod real_estate_placeholder_field_enum {
 /// Container for enum describing resource change operations
 /// in the ChangeEvent resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceChangeOperationEnum {}
+pub struct ResourceChangeOperationEnum {
+}
 /// Nested message and enum types in `ResourceChangeOperationEnum`.
 pub mod resource_change_operation_enum {
     /// The operation on the changed resource in change_event resource.
@@ -8818,7 +9085,8 @@ pub mod resource_change_operation_enum {
 }
 /// Container for enum describing possible resource limit types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceLimitTypeEnum {}
+pub struct ResourceLimitTypeEnum {
+}
 /// Nested message and enum types in `ResourceLimitTypeEnum`.
 pub mod resource_limit_type_enum {
     /// Resource limit type.
@@ -9126,7 +9394,8 @@ pub mod resource_limit_type_enum {
 
 /// Container for possible response content types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResponseContentTypeEnum {}
+pub struct ResponseContentTypeEnum {
+}
 /// Nested message and enum types in `ResponseContentTypeEnum`.
 pub mod response_content_type_enum {
     /// Possible response content types.
@@ -9147,7 +9416,8 @@ pub mod response_content_type_enum {
 /// Container for enum indicating whether a search term is one of your targeted
 /// or excluded keywords.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SearchTermTargetingStatusEnum {}
+pub struct SearchTermTargetingStatusEnum {
+}
 /// Nested message and enum types in `SearchTermTargetingStatusEnum`.
 pub mod search_term_targeting_status_enum {
     /// Indicates whether the search term is one of your targeted or excluded
@@ -9174,7 +9444,8 @@ pub mod search_term_targeting_status_enum {
 /// Message describing seasonality event scopes. The two types of seasonality
 /// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SeasonalityEventScopeEnum {}
+pub struct SeasonalityEventScopeEnum {
+}
 /// Nested message and enum types in `SeasonalityEventScopeEnum`.
 pub mod seasonality_event_scope_enum {
     /// The possible scopes of a Seasonality Event.
@@ -9203,7 +9474,8 @@ pub mod seasonality_event_scope_enum {
 /// Message describing seasonality event statuses. The two types of seasonality
 /// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SeasonalityEventStatusEnum {}
+pub struct SeasonalityEventStatusEnum {
+}
 /// Nested message and enum types in `SeasonalityEventStatusEnum`.
 pub mod seasonality_event_status_enum {
     /// The possible statuses of a Seasonality Event.
@@ -9226,7 +9498,8 @@ pub mod seasonality_event_status_enum {
 
 /// Container for enum describing types of shared set statuses.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SharedSetStatusEnum {}
+pub struct SharedSetStatusEnum {
+}
 /// Nested message and enum types in `SharedSetStatusEnum`.
 pub mod shared_set_status_enum {
     /// Enum listing the possible shared set statuses.
@@ -9247,7 +9520,8 @@ pub mod shared_set_status_enum {
 
 /// Container for enum describing types of shared sets.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SharedSetTypeEnum {}
+pub struct SharedSetTypeEnum {
+}
 /// Nested message and enum types in `SharedSetTypeEnum`.
 pub mod shared_set_type_enum {
     /// Enum listing the possible shared set types.
@@ -9269,7 +9543,8 @@ pub mod shared_set_type_enum {
 /// Container for enum describing the method by which a simulation modifies
 /// a field.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SimulationModificationMethodEnum {}
+pub struct SimulationModificationMethodEnum {
+}
 /// Nested message and enum types in `SimulationModificationMethodEnum`.
 pub mod simulation_modification_method_enum {
     /// Enum describing the method by which a simulation modifies a field.
@@ -9297,7 +9572,8 @@ pub mod simulation_modification_method_enum {
 
 /// Container for enum describing the field a simulation modifies.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SimulationTypeEnum {}
+pub struct SimulationTypeEnum {
+}
 /// Nested message and enum types in `SimulationTypeEnum`.
 pub mod simulation_type_enum {
     /// Enum describing the field a simulation modifies.
@@ -9330,7 +9606,8 @@ pub mod simulation_type_enum {
 
 /// Values for Sitelink placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SitelinkPlaceholderFieldEnum {}
+pub struct SitelinkPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `SitelinkPlaceholderFieldEnum`.
 pub mod sitelink_placeholder_field_enum {
     /// Possible values for Sitelink placeholder fields.
@@ -9365,7 +9642,8 @@ pub mod sitelink_placeholder_field_enum {
 
 /// Message describing spending limit types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SpendingLimitTypeEnum {}
+pub struct SpendingLimitTypeEnum {
+}
 /// Nested message and enum types in `SpendingLimitTypeEnum`.
 pub mod spending_limit_type_enum {
     /// The possible spending limit types used by certain resources as an
@@ -9385,7 +9663,8 @@ pub mod spending_limit_type_enum {
 
 /// Values for Structured Snippet placeholder fields.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StructuredSnippetPlaceholderFieldEnum {}
+pub struct StructuredSnippetPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `StructuredSnippetPlaceholderFieldEnum`.
 pub mod structured_snippet_placeholder_field_enum {
     /// Possible values for Structured Snippet placeholder fields.
@@ -9411,7 +9690,8 @@ pub mod structured_snippet_placeholder_field_enum {
 
 /// Indicates summary row setting in request parameter.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SummaryRowSettingEnum {}
+pub struct SummaryRowSettingEnum {
+}
 /// Nested message and enum types in `SummaryRowSettingEnum`.
 pub mod summary_row_setting_enum {
     /// Enum describing return summary row settings.
@@ -9435,7 +9715,8 @@ pub mod summary_row_setting_enum {
 
 /// Container for enum describing possible system managed entity sources.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SystemManagedResourceSourceEnum {}
+pub struct SystemManagedResourceSourceEnum {
+}
 /// Nested message and enum types in `SystemManagedResourceSourceEnum`.
 pub mod system_managed_resource_source_enum {
     /// Enum listing the possible system managed entity sources.
@@ -9454,7 +9735,8 @@ pub mod system_managed_resource_source_enum {
 
 /// Container for enum describing goals for TargetCpaOptIn recommendation.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TargetCpaOptInRecommendationGoalEnum {}
+pub struct TargetCpaOptInRecommendationGoalEnum {
+}
 /// Nested message and enum types in `TargetCpaOptInRecommendationGoalEnum`.
 pub mod target_cpa_opt_in_recommendation_goal_enum {
     /// Goal of TargetCpaOptIn recommendation.
@@ -9480,7 +9762,8 @@ pub mod target_cpa_opt_in_recommendation_goal_enum {
 
 /// Message describing time types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TimeTypeEnum {}
+pub struct TimeTypeEnum {
+}
 /// Nested message and enum types in `TimeTypeEnum`.
 pub mod time_type_enum {
     /// The possible time types used by certain resources as an alternative to
@@ -9504,7 +9787,8 @@ pub mod time_type_enum {
 /// For more information about dynamic remarketing feeds, see
 /// <https://support.google.com/google-ads/answer/6053288.>
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TravelPlaceholderFieldEnum {}
+pub struct TravelPlaceholderFieldEnum {
+}
 /// Nested message and enum types in `TravelPlaceholderFieldEnum`.
 pub mod travel_placeholder_field_enum {
     /// Possible values for Travel placeholder fields.
@@ -9583,7 +9867,8 @@ pub mod travel_placeholder_field_enum {
 
 /// Message describing a UserInterestTaxonomyType.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserInterestTaxonomyTypeEnum {}
+pub struct UserInterestTaxonomyTypeEnum {
+}
 /// Nested message and enum types in `UserInterestTaxonomyTypeEnum`.
 pub mod user_interest_taxonomy_type_enum {
     /// Enum containing the possible UserInterestTaxonomyTypes.
@@ -9610,7 +9895,8 @@ pub mod user_interest_taxonomy_type_enum {
 
 /// Indicates if this client still has access to the list.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListAccessStatusEnum {}
+pub struct UserListAccessStatusEnum {
+}
 /// Nested message and enum types in `UserListAccessStatusEnum`.
 pub mod user_list_access_status_enum {
     /// Enum containing possible user list access statuses.
@@ -9632,7 +9918,8 @@ pub mod user_list_access_status_enum {
 /// Indicates the reason why the userlist was closed.
 /// This enum is only used when a list is auto-closed by the system.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListClosingReasonEnum {}
+pub struct UserListClosingReasonEnum {
+}
 /// Nested message and enum types in `UserListClosingReasonEnum`.
 pub mod user_list_closing_reason_enum {
     /// Enum describing possible user list closing reasons.
@@ -9653,7 +9940,8 @@ pub mod user_list_closing_reason_enum {
 /// or active. Only open user lists can accumulate more users and can be used for
 /// targeting.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListMembershipStatusEnum {}
+pub struct UserListMembershipStatusEnum {
+}
 /// Nested message and enum types in `UserListMembershipStatusEnum`.
 pub mod user_list_membership_status_enum {
     /// Enum containing possible user list membership statuses.
@@ -9674,7 +9962,8 @@ pub mod user_list_membership_status_enum {
 
 /// Size range in terms of number of users of a UserList.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListSizeRangeEnum {}
+pub struct UserListSizeRangeEnum {
+}
 /// Nested message and enum types in `UserListSizeRangeEnum`.
 pub mod user_list_size_range_enum {
     /// Enum containing possible user list size ranges.
@@ -9723,7 +10012,8 @@ pub mod user_list_size_range_enum {
 
 /// The user list types.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListTypeEnum {}
+pub struct UserListTypeEnum {
+}
 /// Nested message and enum types in `UserListTypeEnum`.
 pub mod user_list_type_enum {
     /// Enum containing possible user list types.
@@ -9754,7 +10044,8 @@ pub mod user_list_type_enum {
 /// Container for enum describing possible device types used in a conversion
 /// value rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleDeviceTypeEnum {}
+pub struct ValueRuleDeviceTypeEnum {
+}
 /// Nested message and enum types in `ValueRuleDeviceTypeEnum`.
 pub mod value_rule_device_type_enum {
     /// Possible device types used in conversion value rule.
@@ -9778,7 +10069,8 @@ pub mod value_rule_device_type_enum {
 /// Container for enum describing possible geographic location matching types
 /// used in a conversion value rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleGeoLocationMatchTypeEnum {}
+pub struct ValueRuleGeoLocationMatchTypeEnum {
+}
 /// Nested message and enum types in `ValueRuleGeoLocationMatchTypeEnum`.
 pub mod value_rule_geo_location_match_type_enum {
     /// Possible geographic location matching types.
@@ -9800,7 +10092,8 @@ pub mod value_rule_geo_location_match_type_enum {
 /// Container for enum describing possible operations for value rules which are
 /// executed when rules are triggered.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleOperationEnum {}
+pub struct ValueRuleOperationEnum {
+}
 /// Nested message and enum types in `ValueRuleOperationEnum`.
 pub mod value_rule_operation_enum {
     /// Possible operations of the action of a conversion value rule.
@@ -9823,7 +10116,8 @@ pub mod value_rule_operation_enum {
 
 /// Container for enum describing where a value rule set is attached.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleSetAttachmentTypeEnum {}
+pub struct ValueRuleSetAttachmentTypeEnum {
+}
 /// Nested message and enum types in `ValueRuleSetAttachmentTypeEnum`.
 pub mod value_rule_set_attachment_type_enum {
     /// Possible level where a value rule set is attached.
@@ -9845,7 +10139,8 @@ pub mod value_rule_set_attachment_type_enum {
 /// Container for enum describing possible dimensions of a conversion value rule
 /// set.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ValueRuleSetDimensionEnum {}
+pub struct ValueRuleSetDimensionEnum {
+}
 /// Nested message and enum types in `ValueRuleSetDimensionEnum`.
 pub mod value_rule_set_dimension_enum {
     /// Possible dimensions of a conversion value rule set.
@@ -9870,7 +10165,8 @@ pub mod value_rule_set_dimension_enum {
 
 /// The display mode for vanity pharma URLs.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VanityPharmaDisplayUrlModeEnum {}
+pub struct VanityPharmaDisplayUrlModeEnum {
+}
 /// Nested message and enum types in `VanityPharmaDisplayUrlModeEnum`.
 pub mod vanity_pharma_display_url_mode_enum {
     /// Enum describing possible display modes for vanity pharma URLs.
@@ -9892,7 +10188,8 @@ pub mod vanity_pharma_display_url_mode_enum {
 /// The text that will be displayed in display URL of the text ad when website
 /// description is the selected display mode for vanity pharma URLs.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VanityPharmaTextEnum {}
+pub struct VanityPharmaTextEnum {
+}
 /// Nested message and enum types in `VanityPharmaTextEnum`.
 pub mod vanity_pharma_text_enum {
     /// Enum describing possible text.

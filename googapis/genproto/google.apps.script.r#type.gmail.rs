@@ -8,15 +8,15 @@ pub struct GmailAddOnManifest {
     ///
     /// If present, this overrides the configuration from
     /// `addOns.common.homepageTrigger`.
-    #[prost(message, optional, tag = "14")]
+    #[prost(message, optional, tag="14")]
     pub homepage_trigger: ::core::option::Option<super::HomepageExtensionPoint>,
     /// Defines the set of conditions that trigger the add-on.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub contextual_triggers: ::prost::alloc::vec::Vec<ContextualTrigger>,
     /// Defines set of [universal
     /// actions](/gmail/add-ons/how-tos/universal-actions) for the add-on. The user
     /// triggers universal actions from the add-on toolbar menu.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub universal_actions: ::prost::alloc::vec::Vec<UniversalAction>,
     /// Defines the compose time trigger for a compose time add-on. This is the
     /// trigger that causes an add-on to take action when the user is composing an
@@ -24,14 +24,14 @@ pub struct GmailAddOnManifest {
     /// All compose time addons are required to have the
     /// gmail.addons.current.action.compose scope even though it might not edit the
     /// draft.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag="12")]
     pub compose_trigger: ::core::option::Option<ComposeTrigger>,
     /// The name of an endpoint that verifies that the add-on has
     /// all the required third-party authorizations, by probing the third-party
     /// APIs. If the probe fails, the function should throw an exception to
     /// initiate the authorization flow. This function is called before each
     /// invocation of the add-on, in order to ensure a smooth user experience.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub authorization_check_function: ::prost::alloc::string::String,
 }
 /// An action that is always available in the add-on toolbar menu regardless of
@@ -40,11 +40,11 @@ pub struct GmailAddOnManifest {
 pub struct UniversalAction {
     /// Required. User-visible text describing the action, for example, "Add a new
     /// contact."
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub text: ::prost::alloc::string::String,
     /// The type of the action determines the behavior of Gmail when the user
     /// invokes the action.
-    #[prost(oneof = "universal_action::ActionType", tags = "2, 3")]
+    #[prost(oneof="universal_action::ActionType", tags="2, 3")]
     pub action_type: ::core::option::Option<universal_action::ActionType>,
 }
 /// Nested message and enum types in `UniversalAction`.
@@ -54,12 +54,12 @@ pub mod universal_action {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ActionType {
         /// A link that is opened by Gmail when the user triggers the action.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         OpenLink(::prost::alloc::string::String),
         /// An endpoint that is called when the user triggers the
         /// action. See the [universal actions
         /// guide](/gmail/add-ons/how-tos/universal-actions) for details.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         RunFunction(::prost::alloc::string::String),
     }
 }
@@ -68,10 +68,10 @@ pub mod universal_action {
 pub struct ComposeTrigger {
     /// Defines the set of actions for compose time add-on. These are actions
     /// that user can trigger on a compose time addon.
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag="5")]
     pub actions: ::prost::alloc::vec::Vec<super::MenuItemExtensionPoint>,
     /// Define the level of data access when a compose time addon is triggered.
-    #[prost(enumeration = "compose_trigger::DraftAccess", tag = "4")]
+    #[prost(enumeration="compose_trigger::DraftAccess", tag="4")]
     pub draft_access: i32,
 }
 /// Nested message and enum types in `ComposeTrigger`.
@@ -98,11 +98,11 @@ pub mod compose_trigger {
 pub struct ContextualTrigger {
     /// Required. The name of the endpoint to call when a message matches the
     /// trigger.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub on_trigger_function: ::prost::alloc::string::String,
     /// The type of trigger determines the conditions Gmail uses to show the
     /// add-on.
-    #[prost(oneof = "contextual_trigger::Trigger", tags = "1")]
+    #[prost(oneof="contextual_trigger::Trigger", tags="1")]
     pub trigger: ::core::option::Option<contextual_trigger::Trigger>,
 }
 /// Nested message and enum types in `ContextualTrigger`.
@@ -112,10 +112,11 @@ pub mod contextual_trigger {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Trigger {
         /// UnconditionalTriggers are executed when any mail message is opened.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         Unconditional(super::UnconditionalTrigger),
     }
 }
 /// A trigger that fires when any email message is opened.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UnconditionalTrigger {}
+pub struct UnconditionalTrigger {
+}

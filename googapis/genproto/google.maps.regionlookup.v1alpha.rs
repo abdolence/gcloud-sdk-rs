@@ -41,19 +41,19 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionIdentifier {
     /// Required. Place type to match.
-    #[prost(enumeration = "region_identifier::PlaceType", tag = "6")]
+    #[prost(enumeration="region_identifier::PlaceType", tag="6")]
     pub place_type: i32,
     /// The BCP-47 language code, such as "en-US" or "sr-Latn", corresponding to
     /// the language in which the place name and address is requested. If none is
     /// requested, then it defaults to English.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub language_code: ::prost::alloc::string::String,
     /// Two-letter ISO-3166 country/region code for the location you're trying to
     /// match. region_code is optional if place_type is "country".
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub region_code: ::prost::alloc::string::String,
     /// The location must be specified by one of the following:
-    #[prost(oneof = "region_identifier::Location", tags = "4, 5")]
+    #[prost(oneof="region_identifier::Location", tags="4, 5")]
     pub location: ::core::option::Option<region_identifier::Location>,
 }
 /// Nested message and enum types in `RegionIdentifier`.
@@ -103,7 +103,7 @@ pub mod region_identifier {
         ///
         /// region_code is required when place is specified except when
         /// place_type is "country".
-        #[prost(string, tag = "4")]
+        #[prost(string, tag="4")]
         Place(::prost::alloc::string::String),
         /// The FIPs state or county codes (US only) or ISO-3166-1 country code to be
         /// matched.
@@ -126,7 +126,7 @@ pub mod region_identifier {
         ///
         /// region_code is required when specifying a FIPs code. region_code is
         /// ignored for ISO-3166-1 country codes.
-        #[prost(string, tag = "5")]
+        #[prost(string, tag="5")]
         UnitCode(::prost::alloc::string::String),
     }
 }
@@ -137,13 +137,13 @@ pub mod region_identifier {
 pub struct RegionMatch {
     /// Place ID of the region that is matched. If region is found, this field is
     /// not set.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub matched_place_id: ::prost::alloc::string::String,
     /// Region candidate IDs. Up to three candidates may be returned.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub candidate_place_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Matching debug information for when no match is found.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub debug_info: ::prost::alloc::string::String,
 }
 /// Region Search Values.
@@ -188,19 +188,19 @@ pub struct RegionMatch {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionSearchValue {
     /// Required. The type of the place to match.
-    #[prost(enumeration = "region_search_value::PlaceType", tag = "6")]
+    #[prost(enumeration="region_search_value::PlaceType", tag="6")]
     pub place_type: i32,
     /// The BCP-47 language code, such as "en-US" or "sr-Latn", corresponding to
     /// the language in which the place name and address is requested. If none is
     /// requested, then it defaults to English.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub language_code: ::prost::alloc::string::String,
     /// Two-letter ISO-3166 country/region code for the location you're trying to
     /// match. region_code is required when address is specified.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub region_code: ::prost::alloc::string::String,
     /// The location must be specified by one of the following:
-    #[prost(oneof = "region_search_value::Location", tags = "1, 2, 3")]
+    #[prost(oneof="region_search_value::Location", tags="1, 2, 3")]
     pub location: ::core::option::Option<region_search_value::Location>,
 }
 /// Nested message and enum types in `RegionSearchValue`.
@@ -237,13 +237,13 @@ pub mod region_search_value {
     pub enum Location {
         /// The unstructured street address that is contained inside a region to
         /// match. region_code is required when address is specified.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         Address(::prost::alloc::string::String),
         /// The latitude and longitude that is contained inside a region to match.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         Latlng(super::super::super::super::r#type::LatLng),
         /// The Place ID that is contained inside a region to match.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         PlaceId(::prost::alloc::string::String),
     }
 }
@@ -254,21 +254,21 @@ pub mod region_search_value {
 pub struct LookupRegionRequest {
     /// Each `RegionIdentifier` represents the desired fields used to lookup a
     /// single region. See `RegionIdentifier` proto for more details and examples.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub identifiers: ::prost::alloc::vec::Vec<RegionIdentifier>,
     /// The maximum number of matches to return. The service may return fewer than
     /// this value.
     ///
     /// If unspecified, at most 50 matches will be returned. The maximum value is
     /// 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `LookupRegion` call. Provide this to
     /// retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `LookupRegion` must match
     /// the call that provided the page token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Lookup Region Response.
@@ -278,11 +278,11 @@ pub struct LookupRegionRequest {
 pub struct LookupRegionResponse {
     /// Lookup region matches, one for each `RegionIdentifier` in
     /// `LookupRegionRequest.identifiers`.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub matches: ::prost::alloc::vec::Vec<RegionMatch>,
     /// A token that can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Search Region Request.
@@ -293,21 +293,21 @@ pub struct SearchRegionRequest {
     /// Each value represents desired search values of a single region to match.
     /// The API tries to match them to Place IDs. See `RegionSearchValue`
     /// proto for more info and examples.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub search_values: ::prost::alloc::vec::Vec<RegionSearchValue>,
     /// The maximum number of matches to return. The service may return fewer than
     /// this value.
     ///
     /// If unspecified, at most 50 matches will be returned. The maximum value is
     /// 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `SearchRegion` call. Provide this to
     /// retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `LookupRegion` must match
     /// the call that provided the page token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Match Region Response.
@@ -317,27 +317,38 @@ pub struct SearchRegionRequest {
 pub struct SearchRegionResponse {
     /// Search region matches, one for each `RegionSearchValue` in
     /// `SearchRegionRequest.search_values`.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub matches: ::prost::alloc::vec::Vec<RegionMatch>,
     /// A token that can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod region_lookup_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Service definition for the Region Lookup API."]
+    /// Service definition for the Region Lookup API.
     #[derive(Debug, Clone)]
     pub struct RegionLookupClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl RegionLookupClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> RegionLookupClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -350,81 +361,91 @@ pub mod region_lookup_client {
         ) -> RegionLookupClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             RegionLookupClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Lookup region RPC."]
-        #[doc = ""]
-        #[doc = " Looks up a set of region Place IDs of types related to geographic"]
-        #[doc = " boundaries."]
-        #[doc = ""]
-        #[doc = " The API looks up a region Place ID using the `RegionIdentifier` proto. See"]
-        #[doc = " `RegionIdentifier` for more details and examples."]
-        #[doc = ""]
-        #[doc = " The following region place types are supported for look up: postal_code,"]
-        #[doc = " administrative_area_level_1, administrative_area_level_2, locality,"]
-        #[doc = " neighborhood, and country."]
+        /// Lookup region RPC.
+        ///
+        /// Looks up a set of region Place IDs of types related to geographic
+        /// boundaries.
+        ///
+        /// The API looks up a region Place ID using the `RegionIdentifier` proto. See
+        /// `RegionIdentifier` for more details and examples.
+        ///
+        /// The following region place types are supported for look up: postal_code,
+        /// administrative_area_level_1, administrative_area_level_2, locality,
+        /// neighborhood, and country.
         pub async fn lookup_region(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupRegionRequest>,
         ) -> Result<tonic::Response<super::LookupRegionResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.regionlookup.v1alpha.RegionLookup/LookupRegion",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Search region RPC."]
-        #[doc = ""]
-        #[doc = " Searches for a set of region Place IDs of types related to geographic"]
-        #[doc = " boundaries."]
-        #[doc = ""]
-        #[doc = " Similar to `LookupRegion` RPC but instead of looking up Place IDs for the"]
-        #[doc = " given `RegionIdentifier`, the API searches for Region Place IDs by"]
-        #[doc = " considering all regions that are contained within a specified location. The"]
-        #[doc = " `RegionSearchValue` is used to specify the search values. See"]
-        #[doc = " `RegionSearchValue` for more details and examples."]
-        #[doc = ""]
-        #[doc = " The following region place types are supported for searching: postal_code,"]
-        #[doc = " administrative_area_level_1, administrative_area_level_2, locality,"]
-        #[doc = " neighborhood, and country."]
+        /// Search region RPC.
+        ///
+        /// Searches for a set of region Place IDs of types related to geographic
+        /// boundaries.
+        ///
+        /// Similar to `LookupRegion` RPC but instead of looking up Place IDs for the
+        /// given `RegionIdentifier`, the API searches for Region Place IDs by
+        /// considering all regions that are contained within a specified location. The
+        /// `RegionSearchValue` is used to specify the search values. See
+        /// `RegionSearchValue` for more details and examples.
+        ///
+        /// The following region place types are supported for searching: postal_code,
+        /// administrative_area_level_1, administrative_area_level_2, locality,
+        /// neighborhood, and country.
         pub async fn search_region(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchRegionRequest>,
         ) -> Result<tonic::Response<super::SearchRegionResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.regionlookup.v1alpha.RegionLookup/SearchRegion",

@@ -2,31 +2,31 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Access {
     /// Associated email, such as "foo@google.com".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub principal_email: ::prost::alloc::string::String,
     /// Caller's IP address, such as "1.1.1.1".
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub caller_ip: ::prost::alloc::string::String,
     /// The caller IP's geolocation, which identifies where the call came from.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub caller_ip_geo: ::core::option::Option<Geolocation>,
     /// What kind of user agent is associated, e.g. operating system shells,
     /// embedded or stand-alone applications, etc.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub user_agent_family: ::prost::alloc::string::String,
     /// This is the API service that the service account made a call to, e.g.
     /// "iam.googleapis.com"
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub service_name: ::prost::alloc::string::String,
     /// The method that the service account called, e.g. "SetIamPolicy".
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub method_name: ::prost::alloc::string::String,
 }
 /// Represents a geographical location for a given access.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Geolocation {
     /// A CLDR.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub region_code: ::prost::alloc::string::String,
 }
 /// Message that contains the resource name and display name of a folder
@@ -35,10 +35,10 @@ pub struct Geolocation {
 pub struct Folder {
     /// Full resource name of this folder. See:
     /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub resource_folder: ::prost::alloc::string::String,
     /// The user defined display name for this folder.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub resource_folder_display_name: ::prost::alloc::string::String,
 }
 /// User specified security marks that are attached to the parent Security
@@ -52,7 +52,7 @@ pub struct SecurityMarks {
     /// Examples:
     /// "organizations/{organization_id}/assets/{asset_id}/securityMarks"
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Mutable user specified security marks belonging to the parent resource.
     /// Constraints are as follows:
@@ -62,9 +62,8 @@ pub struct SecurityMarks {
     ///   * Keys must be letters, numbers, underscores, or dashes
     ///   * Values have leading and trailing whitespace trimmed, remaining
     ///     characters must be between 1 - 4096 characters (inclusive)
-    #[prost(map = "string, string", tag = "2")]
-    pub marks:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="2")]
+    pub marks: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// The canonical name of the marks.
     /// Examples:
     /// "organizations/{organization_id}/assets/{asset_id}/securityMarks"
@@ -73,7 +72,7 @@ pub struct SecurityMarks {
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
     /// "folders/{folder_id}/sources/{source_id}/findings/{finding_id}/securityMarks"
     /// "projects/{project_number}/sources/{source_id}/findings/{finding_id}/securityMarks"
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub canonical_name: ::prost::alloc::string::String,
 }
 /// Security Command Center representation of a Google Cloud
@@ -89,39 +88,38 @@ pub struct Asset {
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/assets/{asset_id}".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Security Command Center managed properties. These properties are managed by
     /// Security Command Center and cannot be modified by the user.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub security_center_properties: ::core::option::Option<asset::SecurityCenterProperties>,
     /// Resource managed properties. These properties are managed and defined by
     /// the Google Cloud resource and cannot be modified by the user.
-    #[prost(map = "string, message", tag = "7")]
-    pub resource_properties:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
+    #[prost(map="string, message", tag="7")]
+    pub resource_properties: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
     /// User specified security marks. These marks are entirely managed by the user
     /// and come from the SecurityMarks resource that belongs to the asset.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub security_marks: ::core::option::Option<SecurityMarks>,
     /// The time at which the asset was created in Security Command Center.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the asset was last updated or added in Cloud SCC.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Cloud IAM Policy information associated with the Google Cloud resource
     /// described by the Security Command Center asset. This information is managed
     /// and defined by the Google Cloud resource and cannot be modified by the
     /// user.
-    #[prost(message, optional, tag = "11")]
+    #[prost(message, optional, tag="11")]
     pub iam_policy: ::core::option::Option<asset::IamPolicy>,
     /// The canonical name of the resource. It's either
     /// "organizations/{organization_id}/assets/{asset_id}",
     /// "folders/{folder_id}/assets/{asset_id}" or
     /// "projects/{project_number}/assets/{asset_id}", depending on the closest CRM
     /// ancestor of the resource.
-    #[prost(string, tag = "13")]
+    #[prost(string, tag="13")]
     pub canonical_name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Asset`.
@@ -133,38 +131,38 @@ pub mod asset {
         /// The full resource name of the Google Cloud resource this asset
         /// represents. This field is immutable after create time. See:
         /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub resource_name: ::prost::alloc::string::String,
         /// The type of the Google Cloud resource. Examples include: APPLICATION,
         /// PROJECT, and ORGANIZATION. This is a case insensitive field defined by
         /// Security Command Center and/or the producer of the resource and is
         /// immutable after create time.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub resource_type: ::prost::alloc::string::String,
         /// The full resource name of the immediate parent of the resource. See:
         /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub resource_parent: ::prost::alloc::string::String,
         /// The full resource name of the project the resource belongs to. See:
         /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
-        #[prost(string, tag = "4")]
+        #[prost(string, tag="4")]
         pub resource_project: ::prost::alloc::string::String,
         /// Owners of the Google Cloud resource.
-        #[prost(string, repeated, tag = "5")]
+        #[prost(string, repeated, tag="5")]
         pub resource_owners: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The user defined display name for this resource.
-        #[prost(string, tag = "6")]
+        #[prost(string, tag="6")]
         pub resource_display_name: ::prost::alloc::string::String,
         /// The user defined display name for the parent of this resource.
-        #[prost(string, tag = "7")]
+        #[prost(string, tag="7")]
         pub resource_parent_display_name: ::prost::alloc::string::String,
         /// The user defined display name for the project of this resource.
-        #[prost(string, tag = "8")]
+        #[prost(string, tag="8")]
         pub resource_project_display_name: ::prost::alloc::string::String,
         /// Contains a Folder message for each folder in the assets ancestry.
         /// The first folder is the deepest nested folder, and the last folder is the
         /// folder directly under the Organization.
-        #[prost(message, repeated, tag = "10")]
+        #[prost(message, repeated, tag="10")]
         pub folders: ::prost::alloc::vec::Vec<super::Folder>,
     }
     /// Cloud IAM Policy information associated with the Google Cloud resource
@@ -176,7 +174,7 @@ pub mod asset {
         /// The JSON representation of the Policy associated with the asset.
         /// See <https://cloud.google.com/iam/reference/rest/v1/Policy> for format
         /// details.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub policy_blob: ::prost::alloc::string::String,
     }
 }
@@ -191,10 +189,10 @@ pub struct BigQueryExport {
     /// "projects/{project_id}/bigQueryExports/{export_id}"
     /// This field is provided in responses, and is ignored when provided in create
     /// requests.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The description of the export (max of 1024 characters).
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub description: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across create/update events
     /// of findings. The expression is a list of zero or more restrictions combined
@@ -216,32 +214,32 @@ pub struct BigQueryExport {
     /// * string literals in quotes.
     /// * integer literals without quotes.
     /// * boolean literals `true` and `false` without quotes.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub filter: ::prost::alloc::string::String,
     /// The dataset to write findings' updates to. Its format is
     /// "projects/\[project_id]/datasets/[bigquery_dataset_id\]".
     /// BigQuery Dataset unique ID  must contain only letters (a-z, A-Z), numbers
     /// (0-9), or underscores (_).
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub dataset: ::prost::alloc::string::String,
     /// Output only. The time at which the big query export was created.
     /// This field is set by the server and will be ignored if provided on export
     /// on creation.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The most recent time at which the big export was updated.
     /// This field is set by the server and will be ignored if provided on export
     /// creation or update.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Email address of the user who last edited the big query export.
     /// This field is set by the server and will be ignored if provided on export
     /// creation or update.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub most_recent_editor: ::prost::alloc::string::String,
     /// Output only. The service account that needs permission to create table, upload data to
     /// the big query dataset.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub principal: ::prost::alloc::string::String,
 }
 /// Contains compliance information about a security standard indicating unmet
@@ -250,13 +248,13 @@ pub struct BigQueryExport {
 pub struct Compliance {
     /// Refers to industry wide standards or benchmarks e.g. "cis", "pci", "owasp",
     /// etc.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub standard: ::prost::alloc::string::String,
     /// Version of the standard/benchmark e.g. 1.1
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub version: ::prost::alloc::string::String,
     /// Policies within the standard/benchmark e.g. A.12.4.1
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Contains information about the IP connection associated with the finding.
@@ -264,20 +262,20 @@ pub struct Compliance {
 pub struct Connection {
     /// Destination IP address. Not present for sockets that are listening and not
     /// connected.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub destination_ip: ::prost::alloc::string::String,
     /// Destination port. Not present for sockets that are listening and not
     /// connected.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub destination_port: i32,
     /// Source IP address.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub source_ip: ::prost::alloc::string::String,
     /// Source port.
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub source_port: i32,
     /// IANA Internet Protocol Number such as TCP(6) and UDP(17).
-    #[prost(enumeration = "connection::Protocol", tag = "5")]
+    #[prost(enumeration="connection::Protocol", tag="5")]
     pub protocol: i32,
 }
 /// Nested message and enum types in `Connection`.
@@ -304,14 +302,14 @@ pub mod connection {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContactDetails {
     /// A list of contacts
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub contacts: ::prost::alloc::vec::Vec<Contact>,
 }
 /// Representa a single contact's email address
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Contact {
     /// An email address e.g. "person123@company.com"
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub email: ::prost::alloc::string::String,
 }
 /// Exfiltration represents a data exfiltration attempt of one or more
@@ -323,24 +321,24 @@ pub struct Exfiltration {
     /// If there are multiple sources, then the data is considered "joined" between
     /// them. For instance, BigQuery can join multiple tables, and each
     /// table would be considered a source.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub sources: ::prost::alloc::vec::Vec<ExfilResource>,
     /// If there are multiple targets, each target would get a complete copy of the
     /// "joined" source data.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub targets: ::prost::alloc::vec::Vec<ExfilResource>,
 }
 /// Resource that has been exfiltrated or exfiltrated_to.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExfilResource {
     /// Resource's URI (<https://google.aip.dev/122#full-resource-names>)
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Subcomponents of the asset that is exfiltrated - these could be
     /// URIs used during exfiltration, table names, databases, filenames, etc.
     /// For example, multiple tables may be exfiltrated from the same CloudSQL
     /// instance, or multiple files from the same Cloud Storage bucket.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Representation of third party SIEM/SOAR fields within SCC.
@@ -351,21 +349,21 @@ pub struct ExternalSystem {
     ///  `organizations/1234/sources/5678/findings/123456/externalSystems/jira`
     /// `folders/1234/sources/5678/findings/123456/externalSystems/jira`
     /// `projects/1234/sources/5678/findings/123456/externalSystems/jira`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// References primary/secondary etc assignees in the external system.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub assignees: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Identifier that's used to track the given finding in the external system.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub external_uid: ::prost::alloc::string::String,
     /// Most recent status of the corresponding finding's ticket/tracker in the
     /// external system.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub status: ::prost::alloc::string::String,
     /// The most recent time when the corresponding finding's ticket/tracker was
     /// updated in the external system.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub external_system_update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// File information about the related binary/library used by an executable, or
@@ -373,27 +371,27 @@ pub struct ExternalSystem {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct File {
     /// Absolute path of the file as a JSON encoded string.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub path: ::prost::alloc::string::String,
     /// Size of the file in bytes.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub size: i64,
     /// SHA256 hash of the first hashed_size bytes of the file encoded as a
     /// hex string.  If hashed_size == size, sha256 represents the SHA256 hash
     /// of the entire file.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub sha256: ::prost::alloc::string::String,
     /// The length in bytes of the file prefix that was hashed.  If
     /// hashed_size == size, any hashes reported represent the entire
     /// file.
-    #[prost(int64, tag = "4")]
+    #[prost(int64, tag="4")]
     pub hashed_size: i64,
     /// True when the hash covers only a prefix of the file.
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag="5")]
     pub partially_hashed: bool,
     /// Prefix of the file contents as a JSON encoded string.
     /// (Currently only populated for Malicious Script Executed findings.)
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub contents: ::prost::alloc::string::String,
 }
 /// Represents a particular IAM binding, which captures a member's role addition,
@@ -401,15 +399,15 @@ pub struct File {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IamBinding {
     /// The action that was performed on a Binding.
-    #[prost(enumeration = "iam_binding::Action", tag = "1")]
+    #[prost(enumeration="iam_binding::Action", tag="1")]
     pub action: i32,
     /// Role that is assigned to "members".
     /// For example, "roles/viewer", "roles/editor", or "roles/owner".
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub role: ::prost::alloc::string::String,
     /// A single identity requesting access for a Cloud Platform resource,
     /// e.g. "foo@google.com".
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub member: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `IamBinding`.
@@ -433,14 +431,14 @@ pub mod iam_binding {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Indicator {
     /// List of ip addresses associated to the Finding.
-    #[prost(string, repeated, tag = "1")]
+    #[prost(string, repeated, tag="1")]
     pub ip_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of domains associated to the Finding.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The list of matched signatures indicating that the given
     /// process is present in the environment.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub signatures: ::prost::alloc::vec::Vec<indicator::ProcessSignature>,
 }
 /// Nested message and enum types in `Indicator`.
@@ -448,7 +446,7 @@ pub mod indicator {
     /// Indicates what signature matched this process.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ProcessSignature {
-        #[prost(oneof = "process_signature::Signature", tags = "6, 7")]
+        #[prost(oneof="process_signature::Signature", tags="6, 7")]
         pub signature: ::core::option::Option<process_signature::Signature>,
     }
     /// Nested message and enum types in `ProcessSignature`.
@@ -457,11 +455,11 @@ pub mod indicator {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct MemoryHashSignature {
             /// The binary family.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub binary_family: ::prost::alloc::string::String,
             /// The list of memory hash detections contributing to the binary family
             /// match.
-            #[prost(message, repeated, tag = "4")]
+            #[prost(message, repeated, tag="4")]
             pub detections: ::prost::alloc::vec::Vec<memory_hash_signature::Detection>,
         }
         /// Nested message and enum types in `MemoryHashSignature`.
@@ -471,11 +469,11 @@ pub mod indicator {
             pub struct Detection {
                 /// The name of the binary associated with the memory hash
                 /// signature detection.
-                #[prost(string, tag = "2")]
+                #[prost(string, tag="2")]
                 pub binary: ::prost::alloc::string::String,
                 /// The percentage of memory page hashes in the signature
                 /// that were matched.
-                #[prost(double, tag = "3")]
+                #[prost(double, tag="3")]
                 pub percent_pages_matched: f64,
             }
         }
@@ -483,16 +481,16 @@ pub mod indicator {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct YaraRuleSignature {
             /// The name of the YARA rule.
-            #[prost(string, tag = "5")]
+            #[prost(string, tag="5")]
             pub yara_rule: ::prost::alloc::string::String,
         }
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Signature {
             /// Signature indicating that a binary family was matched.
-            #[prost(message, tag = "6")]
+            #[prost(message, tag="6")]
             MemoryHashSignature(MemoryHashSignature),
             /// Signature indicating that a YARA rule was matched.
-            #[prost(message, tag = "7")]
+            #[prost(message, tag="7")]
             YaraRuleSignature(YaraRuleSignature),
         }
     }
@@ -502,7 +500,7 @@ pub mod indicator {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MitreAttack {
     /// The MITRE ATT&CK tactic most closely represented by this finding, if any.
-    #[prost(enumeration = "mitre_attack::Tactic", tag = "1")]
+    #[prost(enumeration="mitre_attack::Tactic", tag="1")]
     pub primary_tactic: i32,
     /// The MITRE ATT&CK technique most closely represented by this finding, if
     /// any. primary_techniques is a repeated field because there are multiple
@@ -510,17 +508,17 @@ pub struct MitreAttack {
     /// represented by this finding is a sub-technique (e.g. `SCANNING_IP_BLOCKS`),
     /// both the sub-technique and its parent technique(s) will be listed (e.g.
     /// `SCANNING_IP_BLOCKS`, `ACTIVE_SCANNING`).
-    #[prost(enumeration = "mitre_attack::Technique", repeated, tag = "2")]
+    #[prost(enumeration="mitre_attack::Technique", repeated, tag="2")]
     pub primary_techniques: ::prost::alloc::vec::Vec<i32>,
     /// Additional MITRE ATT&CK tactics related to this finding, if any.
-    #[prost(enumeration = "mitre_attack::Tactic", repeated, tag = "3")]
+    #[prost(enumeration="mitre_attack::Tactic", repeated, tag="3")]
     pub additional_tactics: ::prost::alloc::vec::Vec<i32>,
     /// Additional MITRE ATT&CK techniques related to this finding, if any, along
     /// with any of their respective parent techniques.
-    #[prost(enumeration = "mitre_attack::Technique", repeated, tag = "4")]
+    #[prost(enumeration="mitre_attack::Technique", repeated, tag="4")]
     pub additional_techniques: ::prost::alloc::vec::Vec<i32>,
     /// The MITRE ATT&CK version referenced by the above fields. E.g. "8".
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub version: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `MitreAttack`.
@@ -637,37 +635,37 @@ pub mod mitre_attack {
 pub struct Process {
     /// The process name visible in utilities like `top` and `ps`; it can
     /// be accessed via `/proc/\[pid\]/comm` and changed with `prctl(PR_SET_NAME)`.
-    #[prost(string, tag = "12")]
+    #[prost(string, tag="12")]
     pub name: ::prost::alloc::string::String,
     /// File information for the process executable.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub binary: ::core::option::Option<File>,
     /// File information for libraries loaded by the process.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub libraries: ::prost::alloc::vec::Vec<File>,
     /// When the process represents the invocation of a script,
     /// `binary` provides information about the interpreter while `script`
     /// provides information about the script file provided to the
     /// interpreter.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub script: ::core::option::Option<File>,
     /// Process arguments as JSON encoded strings.
-    #[prost(string, repeated, tag = "6")]
+    #[prost(string, repeated, tag="6")]
     pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// True if `args` is incomplete.
-    #[prost(bool, tag = "7")]
+    #[prost(bool, tag="7")]
     pub arguments_truncated: bool,
     /// Process environment variables.
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag="8")]
     pub env_variables: ::prost::alloc::vec::Vec<EnvironmentVariable>,
     /// True if `env_variables` is incomplete.
-    #[prost(bool, tag = "9")]
+    #[prost(bool, tag="9")]
     pub env_variables_truncated: bool,
     /// The process id.
-    #[prost(int64, tag = "10")]
+    #[prost(int64, tag="10")]
     pub pid: i64,
     /// The parent process id.
-    #[prost(int64, tag = "11")]
+    #[prost(int64, tag="11")]
     pub parent_pid: i64,
 }
 /// EnvironmentVariable is a name-value pair to store environment variables for
@@ -675,10 +673,10 @@ pub struct Process {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EnvironmentVariable {
     /// Environment variable name as a JSON encoded string.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Environment variable value as a JSON encoded string.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub val: ::prost::alloc::string::String,
 }
 /// Refers to common vulnerability fields e.g. cve, cvss, cwe etc.
@@ -686,7 +684,7 @@ pub struct EnvironmentVariable {
 pub struct Vulnerability {
     /// CVE stands for Common Vulnerabilities and Exposures
     /// (<https://cve.mitre.org/about/>)
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub cve: ::core::option::Option<Cve>,
 }
 /// CVE stands for Common Vulnerabilities and Exposures.
@@ -694,73 +692,73 @@ pub struct Vulnerability {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cve {
     /// The unique identifier for the vulnerability. e.g. CVE-2021-34527
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
     /// Additional information about the CVE.
     /// e.g. <https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-34527>
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub references: ::prost::alloc::vec::Vec<Reference>,
     /// Describe Common Vulnerability Scoring System specified at
     /// <https://www.first.org/cvss/v3.1/specification-document>
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub cvssv3: ::core::option::Option<Cvssv3>,
     /// Whether upstream fix is available for the CVE.
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag="4")]
     pub upstream_fix_available: bool,
 }
 /// Additional Links
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Reference {
     /// Source of the reference e.g. NVD
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub source: ::prost::alloc::string::String,
     /// Uri for the mentioned source e.g.
     /// <https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-34527.>
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub uri: ::prost::alloc::string::String,
 }
 /// Common Vulnerability Scoring System version 3.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Cvssv3 {
     /// The base score is a function of the base metric scores.
-    #[prost(double, tag = "1")]
+    #[prost(double, tag="1")]
     pub base_score: f64,
     /// Base Metrics
     /// Represents the intrinsic characteristics of a vulnerability that are
     /// constant over time and across user environments.
     /// This metric reflects the context by which vulnerability exploitation is
     /// possible.
-    #[prost(enumeration = "cvssv3::AttackVector", tag = "5")]
+    #[prost(enumeration="cvssv3::AttackVector", tag="5")]
     pub attack_vector: i32,
     /// This metric describes the conditions beyond the attacker's control that
     /// must exist in order to exploit the vulnerability.
-    #[prost(enumeration = "cvssv3::AttackComplexity", tag = "6")]
+    #[prost(enumeration="cvssv3::AttackComplexity", tag="6")]
     pub attack_complexity: i32,
     /// This metric describes the level of privileges an attacker must possess
     /// before successfully exploiting the vulnerability.
-    #[prost(enumeration = "cvssv3::PrivilegesRequired", tag = "7")]
+    #[prost(enumeration="cvssv3::PrivilegesRequired", tag="7")]
     pub privileges_required: i32,
     /// This metric captures the requirement for a human user, other than the
     /// attacker, to participate in the successful compromise of the vulnerable
     /// component.
-    #[prost(enumeration = "cvssv3::UserInteraction", tag = "8")]
+    #[prost(enumeration="cvssv3::UserInteraction", tag="8")]
     pub user_interaction: i32,
     /// The Scope metric captures whether a vulnerability in one vulnerable
     /// component impacts resources in components beyond its security scope.
-    #[prost(enumeration = "cvssv3::Scope", tag = "9")]
+    #[prost(enumeration="cvssv3::Scope", tag="9")]
     pub scope: i32,
     /// This metric measures the impact to the confidentiality of the information
     /// resources managed by a software component due to a successfully exploited
     /// vulnerability.
-    #[prost(enumeration = "cvssv3::Impact", tag = "10")]
+    #[prost(enumeration="cvssv3::Impact", tag="10")]
     pub confidentiality_impact: i32,
     /// This metric measures the impact to integrity of a successfully exploited
     /// vulnerability.
-    #[prost(enumeration = "cvssv3::Impact", tag = "11")]
+    #[prost(enumeration="cvssv3::Impact", tag="11")]
     pub integrity_impact: i32,
     /// This metric measures the impact to the availability of the impacted
     /// component resulting from a successfully exploited vulnerability.
-    #[prost(enumeration = "cvssv3::Impact", tag = "12")]
+    #[prost(enumeration="cvssv3::Impact", tag="12")]
     pub availability_impact: i32,
 }
 /// Nested message and enum types in `Cvssv3`.
@@ -882,14 +880,14 @@ pub struct Finding {
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}"
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The relative resource name of the source the finding belongs to. See:
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// This field is immutable after creation time.
     /// For example:
     /// "organizations/{organization_id}/sources/{source_id}"
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub parent: ::prost::alloc::string::String,
     /// For findings on Google Cloud resources, the full resource
     /// name of the Google Cloud resource this finding is for. See:
@@ -897,32 +895,31 @@ pub struct Finding {
     /// When the finding is for a non-Google Cloud resource, the resourceName can
     /// be a customer or partner defined string. This field is immutable after
     /// creation time.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub resource_name: ::prost::alloc::string::String,
     /// The state of the finding.
-    #[prost(enumeration = "finding::State", tag = "4")]
+    #[prost(enumeration="finding::State", tag="4")]
     pub state: i32,
     /// The additional taxonomy group within findings from a given source.
     /// This field is immutable after creation time.
     /// Example: "XSS_FLASH_INJECTION"
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub category: ::prost::alloc::string::String,
     /// The URI that, if available, points to a web page outside of Security
     /// Command Center where additional information about the finding can be found.
     /// This field is guaranteed to be either empty or a well formed URL.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub external_uri: ::prost::alloc::string::String,
     /// Source specific properties. These properties are managed by the source
     /// that writes the finding. The key names in the source_properties map must be
     /// between 1 and 255 characters, and must start with a letter and contain
     /// alphanumeric characters or underscores only.
-    #[prost(map = "string, message", tag = "7")]
-    pub source_properties:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
+    #[prost(map="string, message", tag="7")]
+    pub source_properties: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
     /// Output only. User specified security marks. These marks are entirely
     /// managed by the user and come from the SecurityMarks resource that belongs
     /// to the finding.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub security_marks: ::core::option::Option<SecurityMarks>,
     /// The time the finding was first detected. If an existing finding is updated,
     /// then this is the time the update occurred.
@@ -931,14 +928,14 @@ pub struct Finding {
     /// accuracy is determined by the detector. If the finding is later resolved,
     /// then this time reflects when the finding was resolved. This must not
     /// be set to a value greater than the current timestamp.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time at which the finding was created in Security Command Center.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The severity of the finding. This field is managed by the source that
     /// writes the finding.
-    #[prost(enumeration = "finding::Severity", tag = "12")]
+    #[prost(enumeration="finding::Severity", tag="12")]
     pub severity: i32,
     /// The canonical name of the finding. It's either
     /// "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}",
@@ -946,55 +943,54 @@ pub struct Finding {
     /// "projects/{project_number}/sources/{source_id}/findings/{finding_id}",
     /// depending on the closest CRM ancestor of the resource associated with the
     /// finding.
-    #[prost(string, tag = "14")]
+    #[prost(string, tag="14")]
     pub canonical_name: ::prost::alloc::string::String,
     /// Indicates the mute state of a finding (either muted, unmuted
     /// or undefined). Unlike other attributes of a finding, a finding provider
     /// shouldn't set the value of mute.
-    #[prost(enumeration = "finding::Mute", tag = "15")]
+    #[prost(enumeration="finding::Mute", tag="15")]
     pub mute: i32,
     /// The class of the finding.
-    #[prost(enumeration = "finding::FindingClass", tag = "17")]
+    #[prost(enumeration="finding::FindingClass", tag="17")]
     pub finding_class: i32,
     /// Represents what's commonly known as an Indicator of compromise (IoC) in
     /// computer forensics. This is an artifact observed on a network or in an
     /// operating system that, with high confidence, indicates a computer
     /// intrusion.
     /// Reference: <https://en.wikipedia.org/wiki/Indicator_of_compromise>
-    #[prost(message, optional, tag = "18")]
+    #[prost(message, optional, tag="18")]
     pub indicator: ::core::option::Option<Indicator>,
     /// Represents vulnerability specific fields like cve, cvss scores etc.
     /// CVE stands for Common Vulnerabilities and Exposures
     /// (<https://cve.mitre.org/about/>)
-    #[prost(message, optional, tag = "20")]
+    #[prost(message, optional, tag="20")]
     pub vulnerability: ::core::option::Option<Vulnerability>,
     /// Output only. The most recent time this finding was muted or unmuted.
-    #[prost(message, optional, tag = "21")]
+    #[prost(message, optional, tag="21")]
     pub mute_update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Third party SIEM/SOAR fields within SCC, contains external system
     /// information and external system finding fields.
-    #[prost(map = "string, message", tag = "22")]
-    pub external_systems:
-        ::std::collections::HashMap<::prost::alloc::string::String, ExternalSystem>,
+    #[prost(map="string, message", tag="22")]
+    pub external_systems: ::std::collections::HashMap<::prost::alloc::string::String, ExternalSystem>,
     /// MITRE ATT&CK tactics and techniques related to this finding.
     /// See: <https://attack.mitre.org>
-    #[prost(message, optional, tag = "25")]
+    #[prost(message, optional, tag="25")]
     pub mitre_attack: ::core::option::Option<MitreAttack>,
     /// Access details associated to the Finding, such as more information on the
     /// caller, which method was accessed, from where, etc.
-    #[prost(message, optional, tag = "26")]
+    #[prost(message, optional, tag="26")]
     pub access: ::core::option::Option<Access>,
     /// Contains information about the IP connection associated with the finding.
-    #[prost(message, repeated, tag = "31")]
+    #[prost(message, repeated, tag="31")]
     pub connections: ::prost::alloc::vec::Vec<Connection>,
     /// First known as mute_annotation. Records additional information about the
     /// mute operation e.g. mute config that muted the finding, user who muted the
     /// finding, etc. Unlike other attributes of a finding, a finding provider
     /// shouldn't set the value of mute.
-    #[prost(string, tag = "28")]
+    #[prost(string, tag="28")]
     pub mute_initiator: ::prost::alloc::string::String,
     /// Represents operating system processes associated with the Finding.
-    #[prost(message, repeated, tag = "30")]
+    #[prost(message, repeated, tag="30")]
     pub processes: ::prost::alloc::vec::Vec<Process>,
     /// Output only. Map containing the point of contacts for the given finding. The key
     /// represents the type of contact, while the value contains a list of all the
@@ -1013,23 +1009,23 @@ pub struct Finding {
     ///         ]
     ///       }
     ///     }
-    #[prost(map = "string, message", tag = "33")]
+    #[prost(map="string, message", tag="33")]
     pub contacts: ::std::collections::HashMap<::prost::alloc::string::String, ContactDetails>,
     /// Contains compliance information for security standards associated to the
     /// finding.
-    #[prost(message, repeated, tag = "34")]
+    #[prost(message, repeated, tag="34")]
     pub compliances: ::prost::alloc::vec::Vec<Compliance>,
     /// Contains more detail about the finding.
-    #[prost(string, tag = "37")]
+    #[prost(string, tag="37")]
     pub description: ::prost::alloc::string::String,
     /// Represents exfiltration associated with the Finding.
-    #[prost(message, optional, tag = "38")]
+    #[prost(message, optional, tag="38")]
     pub exfiltration: ::core::option::Option<Exfiltration>,
     /// Represents IAM bindings associated with the Finding.
-    #[prost(message, repeated, tag = "39")]
+    #[prost(message, repeated, tag="39")]
     pub iam_bindings: ::prost::alloc::vec::Vec<IamBinding>,
     /// Next steps associate to the finding.
-    #[prost(string, tag = "40")]
+    #[prost(string, tag="40")]
     pub next_steps: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Finding`.
@@ -1143,14 +1139,14 @@ pub struct MuteConfig {
     /// "organizations/{organization}/muteConfigs/{mute_config}"
     /// "folders/{folder}/muteConfigs/{mute_config}"
     /// "projects/{project}/muteConfigs/{mute_config}"
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The human readable name to be displayed for the mute config.
     #[deprecated]
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
     /// A description of the mute config.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
     /// Required. An expression that defines the filter to apply across create/update events
     /// of findings. While creating a filter string, be mindful of the
@@ -1172,22 +1168,22 @@ pub struct MuteConfig {
     /// * finding_class: `=`, `:`
     /// * indicator.ip_addresses: `=`, `:`
     /// * indicator.domains: `=`, `:`
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
     /// Output only. The time at which the mute config was created.
     /// This field is set by the server and will be ignored if provided on config
     /// creation.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The most recent time at which the mute config was updated.
     /// This field is set by the server and will be ignored if provided on config
     /// creation or update.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Email address of the user who last edited the mute config.
     /// This field is set by the server and will be ignored if provided on config
     /// creation or update.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub most_recent_editor: ::prost::alloc::string::String,
 }
 /// Cloud Security Command Center (Cloud SCC) notification configs.
@@ -1200,21 +1196,21 @@ pub struct NotificationConfig {
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/notificationConfigs/notify_public_bucket".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The description of the notification config (max of 1024 characters).
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub description: ::prost::alloc::string::String,
     /// The Pub/Sub topic to send notifications to. Its format is
     /// "projects/\[project_id]/topics/[topic\]".
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub pubsub_topic: ::prost::alloc::string::String,
     /// Output only. The service account that needs "pubsub.topics.publish"
     /// permission to publish to the Pub/Sub topic.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub service_account: ::prost::alloc::string::String,
     /// The config for triggering notifications.
-    #[prost(oneof = "notification_config::NotifyConfig", tags = "5")]
+    #[prost(oneof="notification_config::NotifyConfig", tags="5")]
     pub notify_config: ::core::option::Option<notification_config::NotifyConfig>,
 }
 /// Nested message and enum types in `NotificationConfig`.
@@ -1244,14 +1240,14 @@ pub mod notification_config {
         /// * string literals in quotes.
         /// * integer literals without quotes.
         /// * boolean literals `true` and `false` without quotes.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub filter: ::prost::alloc::string::String,
     }
     /// The config for triggering notifications.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum NotifyConfig {
         /// The config for triggering streaming-based notifications.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         StreamingConfig(StreamingConfig),
     }
 }
@@ -1260,43 +1256,43 @@ pub mod notification_config {
 pub struct Resource {
     /// The full resource name of the resource. See:
     /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The human readable name of the resource.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub display_name: ::prost::alloc::string::String,
     /// The full resource type of the resource.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub r#type: ::prost::alloc::string::String,
     /// The full resource name of project that the resource belongs to.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub project: ::prost::alloc::string::String,
     /// The project ID that the resource belongs to.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub project_display_name: ::prost::alloc::string::String,
     /// The full resource name of resource's parent.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub parent: ::prost::alloc::string::String,
     /// The human readable name of resource's parent.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub parent_display_name: ::prost::alloc::string::String,
     /// Output only. Contains a Folder message for each folder in the assets ancestry.
     /// The first folder is the deepest nested folder, and the last folder is the
     /// folder directly under the Organization.
-    #[prost(message, repeated, tag = "7")]
+    #[prost(message, repeated, tag="7")]
     pub folders: ::prost::alloc::vec::Vec<Folder>,
 }
 /// Cloud SCC's Notification
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NotificationMessage {
     /// Name of the notification config that generated current notification.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub notification_config_name: ::prost::alloc::string::String,
     /// The Cloud resource tied to this notification's Finding.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub resource: ::core::option::Option<Resource>,
     /// Notification Event.
-    #[prost(oneof = "notification_message::Event", tags = "2")]
+    #[prost(oneof="notification_message::Event", tags="2")]
     pub event: ::core::option::Option<notification_message::Event>,
 }
 /// Nested message and enum types in `NotificationMessage`.
@@ -1306,7 +1302,7 @@ pub mod notification_message {
     pub enum Event {
         /// If it's a Finding based notification config, this field will be
         /// populated.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         Finding(super::Finding),
     }
 }
@@ -1318,16 +1314,16 @@ pub struct OrganizationSettings {
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/organizationSettings".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// A flag that indicates if Asset Discovery should be enabled. If the flag is
     /// set to `true`, then discovery of assets will occur. If it is set to `false,
     /// all historical assets will remain, but discovery of future assets will not
     /// occur.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub enable_asset_discovery: bool,
     /// The configuration used for Asset Discovery runs.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub asset_discovery_config: ::core::option::Option<organization_settings::AssetDiscoveryConfig>,
 }
 /// Nested message and enum types in `OrganizationSettings`.
@@ -1336,14 +1332,14 @@ pub mod organization_settings {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AssetDiscoveryConfig {
         /// The project ids to use for filtering asset discovery.
-        #[prost(string, repeated, tag = "1")]
+        #[prost(string, repeated, tag="1")]
         pub project_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The mode to use for filtering asset discovery.
-        #[prost(enumeration = "asset_discovery_config::InclusionMode", tag = "2")]
+        #[prost(enumeration="asset_discovery_config::InclusionMode", tag="2")]
         pub inclusion_mode: i32,
         /// The folder ids to use for filtering asset discovery.
         /// It consists of only digits, e.g., 756619654966.
-        #[prost(string, repeated, tag = "3")]
+        #[prost(string, repeated, tag="3")]
         pub folder_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     /// Nested message and enum types in `AssetDiscoveryConfig`.
@@ -1356,9 +1352,7 @@ pub mod organization_settings {
         /// projects are discovered during asset discovery. If neither are set, then
         /// all projects within the organization are discovered during asset
         /// discovery.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum InclusionMode {
             /// Unspecified. Setting the mode with this value will disable
@@ -1377,10 +1371,10 @@ pub mod organization_settings {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunAssetDiscoveryResponse {
     /// The state of an asset discovery run.
-    #[prost(enumeration = "run_asset_discovery_response::State", tag = "1")]
+    #[prost(enumeration="run_asset_discovery_response::State", tag="1")]
     pub state: i32,
     /// The duration between asset discovery run start and end
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `RunAssetDiscoveryResponse`.
@@ -1410,14 +1404,14 @@ pub struct Source {
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}"
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The source's display name.
     /// A source's display name must be unique amongst its siblings, for example,
     /// two sources with the same parent can't share the same display name.
     /// The display name must have a length between 1 and 64 characters
     /// (inclusive).
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
     /// The description of the source (max of 1024 characters).
     /// Example:
@@ -1426,7 +1420,7 @@ pub struct Source {
     /// scan and detect four common vulnerabilities, including cross-site-scripting
     /// (XSS), Flash injection, mixed content (HTTP in HTTPS), and
     /// outdated or insecure libraries."
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
     /// The canonical name of the finding. It's either
     /// "organizations/{organization_id}/sources/{source_id}",
@@ -1434,7 +1428,7 @@ pub struct Source {
     /// "projects/{project_number}/sources/{source_id}",
     /// depending on the closest CRM ancestor of the resource associated with the
     /// finding.
-    #[prost(string, tag = "14")]
+    #[prost(string, tag="14")]
     pub canonical_name: ::prost::alloc::string::String,
 }
 /// Request message for bulk findings update.
@@ -1448,7 +1442,7 @@ pub struct BulkMuteFindingsRequest {
     /// Required. The parent, at which bulk action needs to be applied. Its format is
     /// "organizations/\[organization_id\]", "folders/\[folder_id\]",
     /// "projects/\[project_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that identifies findings that should be updated.
     /// The expression is a list of zero or more restrictions combined
@@ -1470,32 +1464,33 @@ pub struct BulkMuteFindingsRequest {
     /// * string literals in quotes.
     /// * integer literals without quotes.
     /// * boolean literals `true` and `false` without quotes.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// This can be a mute configuration name or any identifier for mute/unmute
     /// of findings based on the filter.
     #[deprecated]
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub mute_annotation: ::prost::alloc::string::String,
 }
 /// The response to a BulkMute request. Contains the LRO information.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BulkMuteFindingsResponse {}
+pub struct BulkMuteFindingsResponse {
+}
 /// Request message for creating a finding.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFindingRequest {
     /// Required. Resource name of the new finding's parent. Its format should be
     /// "organizations/\[organization_id]/sources/[source_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Unique identifier provided by the client within the parent scope.
     /// It must be alphanumeric and less than or equal to 32 characters and
     /// greater than 0 characters in length.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub finding_id: ::prost::alloc::string::String,
     /// Required. The Finding being created. The name and security_marks will be ignored as
     /// they are both output only fields on this resource.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub finding: ::core::option::Option<Finding>,
 }
 /// Request message for creating a mute config.
@@ -1504,16 +1499,16 @@ pub struct CreateMuteConfigRequest {
     /// Required. Resource name of the new mute configs's parent. Its format is
     /// "organizations/\[organization_id\]", "folders/\[folder_id\]", or
     /// "projects/\[project_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The mute config being created.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub mute_config: ::core::option::Option<MuteConfig>,
     /// Required. Unique identifier provided by the client within the parent scope.
     /// It must consist of lower case letters, numbers, and hyphen, with the first
     /// character a letter, the last a letter or a number, and a 63 character
     /// maximum.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub mute_config_id: ::prost::alloc::string::String,
 }
 /// Request message for creating a notification config.
@@ -1521,17 +1516,17 @@ pub struct CreateMuteConfigRequest {
 pub struct CreateNotificationConfigRequest {
     /// Required. Resource name of the new notification config's parent. Its format is
     /// "organizations/\[organization_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required.
     /// Unique identifier provided by the client within the parent scope.
     /// It must be between 1 and 128 characters, and contains alphanumeric
     /// characters, underscores or hyphens only.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub config_id: ::prost::alloc::string::String,
     /// Required. The notification config being created. The name and the service account
     /// will be ignored as they are both output only fields on this resource.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub notification_config: ::core::option::Option<NotificationConfig>,
 }
 /// Request message for creating a source.
@@ -1539,11 +1534,11 @@ pub struct CreateNotificationConfigRequest {
 pub struct CreateSourceRequest {
     /// Required. Resource name of the new source's parent. Its format should be
     /// "organizations/\[organization_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The Source being created, only the display_name and description will be
     /// used. All other fields will be ignored.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub source: ::core::option::Option<Source>,
 }
 /// Request message for deleting a mute config.
@@ -1553,7 +1548,7 @@ pub struct DeleteMuteConfigRequest {
     /// organizations/{organization}/muteConfigs/{config_id},
     /// folders/{folder}/muteConfigs/{config_id}, or
     /// projects/{project}/muteConfigs/{config_id}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for deleting a notification config.
@@ -1561,7 +1556,7 @@ pub struct DeleteMuteConfigRequest {
 pub struct DeleteNotificationConfigRequest {
     /// Required. Name of the notification config to delete. Its format is
     /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a big query export.
@@ -1571,7 +1566,7 @@ pub struct GetBigQueryExportRequest {
     /// organizations/{organization}/bigQueryExports/{export_id},
     /// folders/{folder}/bigQueryExports/{export_id}, or
     /// projects/{project}/bigQueryExports/{export_id}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for retrieving a mute config.
@@ -1581,7 +1576,7 @@ pub struct GetMuteConfigRequest {
     /// organizations/{organization}/muteConfigs/{config_id},
     /// folders/{folder}/muteConfigs/{config_id}, or
     /// projects/{project}/muteConfigs/{config_id}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a notification config.
@@ -1589,7 +1584,7 @@ pub struct GetMuteConfigRequest {
 pub struct GetNotificationConfigRequest {
     /// Required. Name of the notification config to get. Its format is
     /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting organization settings.
@@ -1597,7 +1592,7 @@ pub struct GetNotificationConfigRequest {
 pub struct GetOrganizationSettingsRequest {
     /// Required. Name of the organization to get organization settings for. Its format is
     /// "organizations/\[organization_id\]/organizationSettings".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for getting a source.
@@ -1605,7 +1600,7 @@ pub struct GetOrganizationSettingsRequest {
 pub struct GetSourceRequest {
     /// Required. Relative resource name of the source. Its format is
     /// "organizations/\[organization_id]/source/[source_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for grouping by assets.
@@ -1614,7 +1609,7 @@ pub struct GroupAssetsRequest {
     /// Required. Name of the organization to groupBy. Its format is
     /// "organizations/\[organization_id\], folders/\[folder_id\], or
     /// projects/\[project_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
     /// The expression is a list of zero or more restrictions combined via logical
@@ -1678,7 +1673,7 @@ pub struct GroupAssetsRequest {
     ///
     /// Use a negated partial match on the empty string to filter based on a
     /// property not existing: `-resource_properties.my_property : ""`
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// Required. Expression that defines what assets fields to use for grouping. The string
     /// value should follow SQL syntax: comma separated list of fields. For
@@ -1698,7 +1693,7 @@ pub struct GroupAssetsRequest {
     /// * security_center_properties.resource_type
     /// * security_center_properties.resource_project_display_name
     /// * security_center_properties.resource_parent_display_name
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub group_by: ::prost::alloc::string::String,
     /// When compare_duration is set, the GroupResult's "state_change" property is
     /// updated to indicate whether the asset was added, removed, or remained
@@ -1727,22 +1722,22 @@ pub struct GroupAssetsRequest {
     ///
     /// If this field is set then `state_change` must be a specified field in
     /// `group_by`.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub compare_duration: ::core::option::Option<::prost_types::Duration>,
     /// Time used as a reference point when filtering assets. The filter is limited
     /// to assets existing at the supplied time and their values are those at that
     /// specific time. Absence of this field will default to the API's version of
     /// NOW.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The value returned by the last `GroupAssetsResponse`; indicates
     /// that this is a continuation of a prior `GroupAssets` call, and that the
     /// system should return the next page of data.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
-    #[prost(int32, tag = "8")]
+    #[prost(int32, tag="8")]
     pub page_size: i32,
 }
 /// Response message for grouping by assets.
@@ -1751,17 +1746,17 @@ pub struct GroupAssetsResponse {
     /// Group results. There exists an element for each existing unique
     /// combination of property/values. The element contains a count for the number
     /// of times those specific property/values appear.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub group_by_results: ::prost::alloc::vec::Vec<GroupResult>,
     /// Time used for executing the groupBy request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of results matching the query.
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub total_size: i32,
 }
 /// Request message for grouping by findings.
@@ -1774,7 +1769,7 @@ pub struct GroupFindingsRequest {
     /// provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/-,
     /// or projects/{project_id}/sources/-
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across findings.
     /// The expression is a list of one or more restrictions combined via logical
@@ -1835,7 +1830,7 @@ pub struct GroupFindingsRequest {
     ///   * resource.project_name: `=`, `:`
     ///   * resource.project_display_name: `=`, `:`
     ///   * resource.type: `=`, `:`
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// Required. Expression that defines what assets fields to use for grouping (including
     /// `state_change`). The string value should follow SQL syntax: comma separated
@@ -1852,13 +1847,13 @@ pub struct GroupFindingsRequest {
     /// The following fields are supported when compare_duration is set:
     ///
     /// * state_change
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub group_by: ::prost::alloc::string::String,
     /// Time used as a reference point when filtering findings. The filter is
     /// limited to findings existing at the supplied time and their values are
     /// those at that specific time. Absence of this field will default to the
     /// API's version of NOW.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// When compare_duration is set, the GroupResult's "state_change" attribute is
     /// updated to indicate whether the finding had its state changed, the
@@ -1892,16 +1887,16 @@ pub struct GroupFindingsRequest {
     ///
     /// If this field is set then `state_change` must be a specified field in
     /// `group_by`.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub compare_duration: ::core::option::Option<::prost_types::Duration>,
     /// The value returned by the last `GroupFindingsResponse`; indicates
     /// that this is a continuation of a prior `GroupFindings` call, and
     /// that the system should return the next page of data.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
-    #[prost(int32, tag = "8")]
+    #[prost(int32, tag="8")]
     pub page_size: i32,
 }
 /// Response message for group by findings.
@@ -1910,28 +1905,27 @@ pub struct GroupFindingsResponse {
     /// Group results. There exists an element for each existing unique
     /// combination of property/values. The element contains a count for the number
     /// of times those specific property/values appear.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub group_by_results: ::prost::alloc::vec::Vec<GroupResult>,
     /// Time used for executing the groupBy request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of results matching the query.
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub total_size: i32,
 }
 /// Result containing the properties and count of a groupBy request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GroupResult {
     /// Properties matching the groupBy fields in the request.
-    #[prost(map = "string, message", tag = "1")]
-    pub properties:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
+    #[prost(map="string, message", tag="1")]
+    pub properties: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
     /// Total count of resources for the given properties.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub count: i64,
 }
 /// Request message for listing  mute configs at a given scope e.g. organization,
@@ -1941,31 +1935,31 @@ pub struct ListMuteConfigsRequest {
     /// Required. The parent, which owns the collection of mute configs. Its format is
     /// "organizations/\[organization_id\]", "folders/\[folder_id\]",
     /// "projects/\[project_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of configs to return. The service may return fewer than
     /// this value.
     /// If unspecified, at most 10 configs will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListMuteConfigs` call.
     /// Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListMuteConfigs` must
     /// match the call that provided the page token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for listing mute configs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMuteConfigsResponse {
     /// The mute configs from the specified parent.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub mute_configs: ::prost::alloc::vec::Vec<MuteConfig>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing notification configs.
@@ -1973,27 +1967,27 @@ pub struct ListMuteConfigsResponse {
 pub struct ListNotificationConfigsRequest {
     /// Required. Name of the organization to list notification configs.
     /// Its format is "organizations/\[organization_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListNotificationConfigsResponse`; indicates
     /// that this is a continuation of a prior `ListNotificationConfigs` call, and
     /// that the system should return the next page of data.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub page_size: i32,
 }
 /// Response message for listing notification configs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListNotificationConfigsResponse {
     /// Notification configs belonging to the requested parent.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub notification_configs: ::prost::alloc::vec::Vec<NotificationConfig>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing sources.
@@ -2002,27 +1996,27 @@ pub struct ListSourcesRequest {
     /// Required. Resource name of the parent of sources to list. Its format should be
     /// "organizations/\[organization_id\], folders/\[folder_id\], or
     /// projects/\[project_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The value returned by the last `ListSourcesResponse`; indicates
     /// that this is a continuation of a prior `ListSources` call, and
     /// that the system should return the next page of data.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
-    #[prost(int32, tag = "7")]
+    #[prost(int32, tag="7")]
     pub page_size: i32,
 }
 /// Response message for listing sources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSourcesResponse {
     /// Sources belonging to the requested parent.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub sources: ::prost::alloc::vec::Vec<Source>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for listing assets.
@@ -2031,7 +2025,7 @@ pub struct ListAssetsRequest {
     /// Required. Name of the organization assets should belong to. Its format is
     /// "organizations/\[organization_id\], folders/\[folder_id\], or
     /// projects/\[project_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across assets.
     /// The expression is a list of zero or more restrictions combined via logical
@@ -2095,7 +2089,7 @@ pub struct ListAssetsRequest {
     ///
     /// Use a negated partial match on the empty string to filter based on a
     /// property not existing: `-resource_properties.my_property : ""`
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// Expression that defines what fields and order to use for sorting. The
     /// string value should follow SQL syntax: comma separated list of fields. For
@@ -2118,13 +2112,13 @@ pub struct ListAssetsRequest {
     /// security_center_properties.resource_project
     /// security_center_properties.resource_project_display_name
     /// security_center_properties.resource_type
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub order_by: ::prost::alloc::string::String,
     /// Time used as a reference point when filtering assets. The filter is limited
     /// to assets existing at the supplied time and their values are those at that
     /// specific time. Absence of this field will default to the API's version of
     /// NOW.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// When compare_duration is set, the ListAssetsResult's "state_change"
     /// attribute is updated to indicate whether the asset was added, removed, or
@@ -2150,38 +2144,38 @@ pub struct ListAssetsRequest {
     /// If compare_duration is not specified, then the only possible state_change
     /// is "UNUSED",  which will be the state_change set for all assets present at
     /// read_time.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub compare_duration: ::core::option::Option<::prost_types::Duration>,
     /// A field mask to specify the ListAssetsResult fields to be listed in the
     /// response.
     /// An empty field mask will list all fields.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The value returned by the last `ListAssetsResponse`; indicates
     /// that this is a continuation of a prior `ListAssets` call, and
     /// that the system should return the next page of data.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
-    #[prost(int32, tag = "9")]
+    #[prost(int32, tag="9")]
     pub page_size: i32,
 }
 /// Response message for listing assets.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssetsResponse {
     /// Assets matching the list request.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub list_assets_results: ::prost::alloc::vec::Vec<list_assets_response::ListAssetsResult>,
     /// Time used for executing the list request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of assets matching the query.
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub total_size: i32,
 }
 /// Nested message and enum types in `ListAssetsResponse`.
@@ -2190,10 +2184,10 @@ pub mod list_assets_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListAssetsResult {
         /// Asset matching the search request.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub asset: ::core::option::Option<super::Asset>,
         /// State change of the asset between the points in time.
-        #[prost(enumeration = "list_assets_result::StateChange", tag = "2")]
+        #[prost(enumeration="list_assets_result::StateChange", tag="2")]
         pub state_change: i32,
     }
     /// Nested message and enum types in `ListAssetsResult`.
@@ -2204,9 +2198,7 @@ pub mod list_assets_response {
         /// the change between the two points: ADDED, REMOVED, or ACTIVE.
         /// If there was no compare_duration supplied in the request the state change
         /// will be: UNUSED
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum StateChange {
             /// State change is unused, this is the canonical default for this enum.
@@ -2230,7 +2222,7 @@ pub struct ListFindingsRequest {
     /// provide a source_id of `-`. For example:
     /// organizations/{organization_id}/sources/-, folders/{folder_id}/sources/- or
     /// projects/{projects_id}/sources/-
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Expression that defines the filter to apply across findings.
     /// The expression is a list of one or more restrictions combined via logical
@@ -2293,7 +2285,7 @@ pub struct ListFindingsRequest {
     ///   * resource.type: `=`, `:`
     ///   * resource.folders.resource_folder: `=`, `:`
     ///   * resource.display_name: `=`, `:`
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// Expression that defines what fields and order to use for sorting. The
     /// string value should follow SQL syntax: comma separated list of fields. For
@@ -2313,13 +2305,13 @@ pub struct ListFindingsRequest {
     /// event_time
     /// source_properties
     /// security_marks.marks
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub order_by: ::prost::alloc::string::String,
     /// Time used as a reference point when filtering findings. The filter is
     /// limited to findings existing at the supplied time and their values are
     /// those at that specific time. Absence of this field will default to the
     /// API's version of NOW.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// When compare_duration is set, the ListFindingsResult's "state_change"
     /// attribute is updated to indicate whether the finding had its state changed,
@@ -2351,37 +2343,37 @@ pub struct ListFindingsRequest {
     /// If compare_duration is not specified, then the only possible state_change
     /// is "UNUSED", which will be the state_change set for all findings present at
     /// read_time.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub compare_duration: ::core::option::Option<::prost_types::Duration>,
     /// A field mask to specify the Finding fields to be listed in the response.
     /// An empty field mask will list all fields.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub field_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The value returned by the last `ListFindingsResponse`; indicates
     /// that this is a continuation of a prior `ListFindings` call, and
     /// that the system should return the next page of data.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub page_token: ::prost::alloc::string::String,
     /// The maximum number of results to return in a single response. Default is
     /// 10, minimum is 1, maximum is 1000.
-    #[prost(int32, tag = "9")]
+    #[prost(int32, tag="9")]
     pub page_size: i32,
 }
 /// Response message for listing findings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFindingsResponse {
     /// Findings matching the list request.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub list_findings_results: ::prost::alloc::vec::Vec<list_findings_response::ListFindingsResult>,
     /// Time used for executing the list request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Token to retrieve the next page of results, or empty if there are no more
     /// results.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub next_page_token: ::prost::alloc::string::String,
     /// The total number of findings matching the query.
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub total_size: i32,
 }
 /// Nested message and enum types in `ListFindingsResponse`.
@@ -2390,13 +2382,13 @@ pub mod list_findings_response {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ListFindingsResult {
         /// Finding matching the search request.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub finding: ::core::option::Option<super::Finding>,
         /// State change of the finding between the points in time.
-        #[prost(enumeration = "list_findings_result::StateChange", tag = "2")]
+        #[prost(enumeration="list_findings_result::StateChange", tag="2")]
         pub state_change: i32,
         /// Output only. Resource that is associated with this finding.
-        #[prost(message, optional, tag = "3")]
+        #[prost(message, optional, tag="3")]
         pub resource: ::core::option::Option<list_findings_result::Resource>,
     }
     /// Nested message and enum types in `ListFindingsResult`.
@@ -2407,30 +2399,30 @@ pub mod list_findings_response {
         pub struct Resource {
             /// The full resource name of the resource. See:
             /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub name: ::prost::alloc::string::String,
             /// The human readable name of the resource.
-            #[prost(string, tag = "8")]
+            #[prost(string, tag="8")]
             pub display_name: ::prost::alloc::string::String,
             /// The full resource type of the resource.
-            #[prost(string, tag = "6")]
+            #[prost(string, tag="6")]
             pub r#type: ::prost::alloc::string::String,
             /// The full resource name of project that the resource belongs to.
-            #[prost(string, tag = "2")]
+            #[prost(string, tag="2")]
             pub project_name: ::prost::alloc::string::String,
             /// The project ID that the resource belongs to.
-            #[prost(string, tag = "3")]
+            #[prost(string, tag="3")]
             pub project_display_name: ::prost::alloc::string::String,
             /// The full resource name of resource's parent.
-            #[prost(string, tag = "4")]
+            #[prost(string, tag="4")]
             pub parent_name: ::prost::alloc::string::String,
             /// The human readable name of resource's parent.
-            #[prost(string, tag = "5")]
+            #[prost(string, tag="5")]
             pub parent_display_name: ::prost::alloc::string::String,
             /// Contains a Folder message for each folder in the assets ancestry.
             /// The first folder is the deepest nested folder, and the last folder is
             /// the folder directly under the Organization.
-            #[prost(message, repeated, tag = "7")]
+            #[prost(message, repeated, tag="7")]
             pub folders: ::prost::alloc::vec::Vec<super::super::Folder>,
         }
         /// The change in state of the finding.
@@ -2441,9 +2433,7 @@ pub mod list_findings_response {
         /// the finding at timestamp does not match the filter specified, but it did
         /// at timestamp - compare_duration. If there was no compare_duration
         /// supplied in the request the state change will be: UNUSED
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum StateChange {
             /// State change is unused, this is the canonical default for this enum.
@@ -2469,13 +2459,13 @@ pub struct SetFindingStateRequest {
     /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name>
     /// Example:
     /// "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The desired State of the finding.
-    #[prost(enumeration = "finding::State", tag = "2")]
+    #[prost(enumeration="finding::State", tag="2")]
     pub state: i32,
     /// Required. The time at which the updated state takes effect.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for updating a finding's mute status.
@@ -2487,10 +2477,10 @@ pub struct SetMuteRequest {
     /// "organizations/{organization_id}/sources/{source_id}/finding/{finding_id}",
     /// "folders/{folder_id}/sources/{source_id}/finding/{finding_id}",
     /// "projects/{project_id}/sources/{source_id}/finding/{finding_id}".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The desired state of the Mute.
-    #[prost(enumeration = "finding::Mute", tag = "2")]
+    #[prost(enumeration="finding::Mute", tag="2")]
     pub mute: i32,
 }
 /// Request message for running asset discovery for an organization.
@@ -2498,19 +2488,19 @@ pub struct SetMuteRequest {
 pub struct RunAssetDiscoveryRequest {
     /// Required. Name of the organization to run asset discovery for. Its format is
     /// "organizations/\[organization_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
 }
 /// Request message for updating a ExternalSystem resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateExternalSystemRequest {
     /// Required. The external system resource to update.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub external_system: ::core::option::Option<ExternalSystem>,
     /// The FieldMask to use when updating the external system resource.
     ///
     /// If empty all mutable fields will be updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating or creating a finding.
@@ -2522,7 +2512,7 @@ pub struct UpdateFindingRequest {
     /// In the case of creation, the finding id portion of the name must be
     /// alphanumeric and less than or equal to 32 characters and greater than 0
     /// characters in length.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub finding: ::core::option::Option<Finding>,
     /// The FieldMask to use when updating the finding resource. This field should
     /// not be specified when creating a finding.
@@ -2531,74 +2521,74 @@ pub struct UpdateFindingRequest {
     /// fields and replacing source_properties.  Individual source_properties can
     /// be added/updated by using "source_properties.<property key>" in the field
     /// mask.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a mute config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateMuteConfigRequest {
     /// Required. The mute config being updated.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub mute_config: ::core::option::Option<MuteConfig>,
     /// The list of fields to be updated.
     /// If empty all mutable fields will be updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a notification config.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateNotificationConfigRequest {
     /// Required. The notification config to update.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub notification_config: ::core::option::Option<NotificationConfig>,
     /// The FieldMask to use when updating the notification config.
     ///
     /// If empty all mutable fields will be updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating an organization's settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateOrganizationSettingsRequest {
     /// Required. The organization settings resource to update.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub organization_settings: ::core::option::Option<OrganizationSettings>,
     /// The FieldMask to use when updating the settings resource.
     ///
     /// If empty all mutable fields will be updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a source.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSourceRequest {
     /// Required. The source resource to update.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub source: ::core::option::Option<Source>,
     /// The FieldMask to use when updating the source resource.
     ///
     /// If empty all mutable fields will be updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for updating a SecurityMarks resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateSecurityMarksRequest {
     /// Required. The security marks resource to update.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub security_marks: ::core::option::Option<SecurityMarks>,
     /// The FieldMask to use when updating the security marks resource.
     ///
     /// The field mask must not contain duplicate fields.
     /// If empty or set to "marks", all marks will be replaced.  Individual
     /// marks can be updated using "marks.<mark_key>".
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The time at which the updated SecurityMarks take effect.
     /// If not set uses current server time.  Updates will be applied to the
     /// SecurityMarks that are active immediately preceding this time. Must be
     /// earlier or equal to the server time.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request message for creating a big query export.
@@ -2607,27 +2597,27 @@ pub struct CreateBigQueryExportRequest {
     /// Required. Resource name of the new big query export's parent. Its format is
     /// "organizations/\[organization_id\]", "folders/\[folder_id\]", or
     /// "projects/\[project_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The big query export being created.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub big_query_export: ::core::option::Option<BigQueryExport>,
     /// Required. Unique identifier provided by the client within the parent scope.
     /// It must consist of lower case letters, numbers, and hyphen, with the first
     /// character a letter, the last a letter or a number, and a 63 character
     /// maximum.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub big_query_export_id: ::prost::alloc::string::String,
 }
 /// Request message for updating a BigQuery export.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBigQueryExportRequest {
     /// Required. The BigQuery export being updated.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub big_query_export: ::core::option::Option<BigQueryExport>,
     /// The list of fields to be updated.
     /// If empty all mutable fields will be updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Request message for listing  BigQuery exports at a given scope e.g.
@@ -2637,30 +2627,30 @@ pub struct ListBigQueryExportsRequest {
     /// Required. The parent, which owns the collection of BigQuery exports. Its format is
     /// "organizations/\[organization_id\]", "folders/\[folder_id\]",
     /// "projects/\[project_id\]".
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of configs to return. The service may return fewer than
     /// this value.
     /// If unspecified, at most 10 configs will be returned.
     /// The maximum value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListBigQueryExports` call.
     /// Provide this to retrieve the subsequent page.
     /// When paginating, all other parameters provided to `ListBigQueryExports`
     /// must match the call that provided the page token.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for listing BigQuery exports.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListBigQueryExportsResponse {
     /// The BigQuery exports from the specified parent.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub big_query_exports: ::prost::alloc::vec::Vec<BigQueryExport>,
     /// A token, which can be sent as `page_token` to retrieve the next page.
     /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for deleting a big query export.
@@ -2670,23 +2660,34 @@ pub struct DeleteBigQueryExportRequest {
     /// organizations/{organization}/bigQueryExports/{export_id},
     /// folders/{folder}/bigQueryExports/{export_id}, or
     /// projects/{project}/bigQueryExports/{export_id}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod security_center_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " V1 APIs for Security Center service."]
+    /// V1 APIs for Security Center service.
     #[derive(Debug, Clone)]
     pub struct SecurityCenterClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl SecurityCenterClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> SecurityCenterClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -2699,33 +2700,37 @@ pub mod security_center_client {
         ) -> SecurityCenterClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             SecurityCenterClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Kicks off an LRO to bulk mute findings for a parent based on a filter. The"]
-        #[doc = " parent can be either an organization, folder or project. The findings"]
-        #[doc = " matched by the filter will be muted after the LRO is done."]
+        /// Kicks off an LRO to bulk mute findings for a parent based on a filter. The
+        /// parent can be either an organization, folder or project. The findings
+        /// matched by the filter will be muted after the LRO is done.
         pub async fn bulk_mute_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::BulkMuteFindingsRequest>,
@@ -2733,360 +2738,426 @@ pub mod security_center_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/BulkMuteFindings",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a source."]
+        /// Creates a source.
         pub async fn create_source(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateSourceRequest>,
         ) -> Result<tonic::Response<super::Source>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateSource",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a finding. The corresponding source must exist for finding creation"]
-        #[doc = " to succeed."]
+        /// Creates a finding. The corresponding source must exist for finding creation
+        /// to succeed.
         pub async fn create_finding(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateFindingRequest>,
         ) -> Result<tonic::Response<super::Finding>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateFinding",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a mute config."]
+        /// Creates a mute config.
         pub async fn create_mute_config(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateMuteConfigRequest>,
         ) -> Result<tonic::Response<super::MuteConfig>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateMuteConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a notification config."]
+        /// Creates a notification config.
         pub async fn create_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateNotificationConfigRequest>,
         ) -> Result<tonic::Response<super::NotificationConfig>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateNotificationConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes an existing mute config."]
+        /// Deletes an existing mute config.
         pub async fn delete_mute_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteMuteConfigRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/DeleteMuteConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a notification config."]
+        /// Deletes a notification config.
         pub async fn delete_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteNotificationConfigRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/DeleteNotificationConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a big query export."]
+        /// Gets a big query export.
         pub async fn get_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBigQueryExportRequest>,
         ) -> Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetBigQueryExport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets the access control policy on the specified Source."]
+        /// Gets the access control policy on the specified Source.
         pub async fn get_iam_policy(
             &mut self,
-            request: impl tonic::IntoRequest<super::super::super::super::iam::v1::GetIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::GetIamPolicyRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetIamPolicy",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a mute config."]
+        /// Gets a mute config.
         pub async fn get_mute_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetMuteConfigRequest>,
         ) -> Result<tonic::Response<super::MuteConfig>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetMuteConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a notification config."]
+        /// Gets a notification config.
         pub async fn get_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::GetNotificationConfigRequest>,
         ) -> Result<tonic::Response<super::NotificationConfig>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetNotificationConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets the settings for an organization."]
+        /// Gets the settings for an organization.
         pub async fn get_organization_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::GetOrganizationSettingsRequest>,
         ) -> Result<tonic::Response<super::OrganizationSettings>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetOrganizationSettings",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a source."]
+        /// Gets a source.
         pub async fn get_source(
             &mut self,
             request: impl tonic::IntoRequest<super::GetSourceRequest>,
         ) -> Result<tonic::Response<super::Source>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GetSource",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Filters an organization's assets and  groups them by their specified"]
-        #[doc = " properties."]
+        /// Filters an organization's assets and  groups them by their specified
+        /// properties.
         pub async fn group_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::GroupAssetsRequest>,
         ) -> Result<tonic::Response<super::GroupAssetsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GroupAssets",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Filters an organization or source's findings and  groups them by their"]
-        #[doc = " specified properties."]
-        #[doc = ""]
-        #[doc = " To group across all sources provide a `-` as the source id."]
-        #[doc = " Example: /v1/organizations/{organization_id}/sources/-/findings,"]
-        #[doc = " /v1/folders/{folder_id}/sources/-/findings,"]
-        #[doc = " /v1/projects/{project_id}/sources/-/findings"]
+        /// Filters an organization or source's findings and  groups them by their
+        /// specified properties.
+        ///
+        /// To group across all sources provide a `-` as the source id.
+        /// Example: /v1/organizations/{organization_id}/sources/-/findings,
+        /// /v1/folders/{folder_id}/sources/-/findings,
+        /// /v1/projects/{project_id}/sources/-/findings
         pub async fn group_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::GroupFindingsRequest>,
         ) -> Result<tonic::Response<super::GroupFindingsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/GroupFindings",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists an organization's assets."]
+        /// Lists an organization's assets.
         pub async fn list_assets(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAssetsRequest>,
         ) -> Result<tonic::Response<super::ListAssetsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListAssets",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists an organization or source's findings."]
-        #[doc = ""]
-        #[doc = " To list across all sources provide a `-` as the source id."]
-        #[doc = " Example: /v1/organizations/{organization_id}/sources/-/findings"]
+        /// Lists an organization or source's findings.
+        ///
+        /// To list across all sources provide a `-` as the source id.
+        /// Example: /v1/organizations/{organization_id}/sources/-/findings
         pub async fn list_findings(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFindingsRequest>,
         ) -> Result<tonic::Response<super::ListFindingsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListFindings",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists mute configs."]
+        /// Lists mute configs.
         pub async fn list_mute_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMuteConfigsRequest>,
         ) -> Result<tonic::Response<super::ListMuteConfigsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListMuteConfigs",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists notification configs."]
+        /// Lists notification configs.
         pub async fn list_notification_configs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListNotificationConfigsRequest>,
-        ) -> Result<tonic::Response<super::ListNotificationConfigsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ListNotificationConfigsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListNotificationConfigs",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists all sources belonging to an organization."]
+        /// Lists all sources belonging to an organization.
         pub async fn list_sources(
             &mut self,
             request: impl tonic::IntoRequest<super::ListSourcesRequest>,
         ) -> Result<tonic::Response<super::ListSourcesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListSources",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Runs asset discovery. The discovery is tracked with a long-running"]
-        #[doc = " operation."]
-        #[doc = ""]
-        #[doc = " This API can only be called with limited frequency for an organization. If"]
-        #[doc = " it is called too frequently the caller will receive a TOO_MANY_REQUESTS"]
-        #[doc = " error."]
+        /// Runs asset discovery. The discovery is tracked with a long-running
+        /// operation.
+        ///
+        /// This API can only be called with limited frequency for an organization. If
+        /// it is called too frequently the caller will receive a TOO_MANY_REQUESTS
+        /// error.
         pub async fn run_asset_discovery(
             &mut self,
             request: impl tonic::IntoRequest<super::RunAssetDiscoveryRequest>,
@@ -3094,280 +3165,334 @@ pub mod security_center_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/RunAssetDiscovery",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates the state of a finding."]
+        /// Updates the state of a finding.
         pub async fn set_finding_state(
             &mut self,
             request: impl tonic::IntoRequest<super::SetFindingStateRequest>,
         ) -> Result<tonic::Response<super::Finding>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/SetFindingState",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates the mute state of a finding."]
+        /// Updates the mute state of a finding.
         pub async fn set_mute(
             &mut self,
             request: impl tonic::IntoRequest<super::SetMuteRequest>,
         ) -> Result<tonic::Response<super::Finding>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/SetMute",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Sets the access control policy on the specified Source."]
+        /// Sets the access control policy on the specified Source.
         pub async fn set_iam_policy(
             &mut self,
-            request: impl tonic::IntoRequest<super::super::super::super::iam::v1::SetIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::super::iam::v1::Policy>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            request: impl tonic::IntoRequest<
+                super::super::super::super::iam::v1::SetIamPolicyRequest,
+            >,
+        ) -> Result<
+            tonic::Response<super::super::super::super::iam::v1::Policy>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/SetIamPolicy",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns the permissions that a caller has on the specified source."]
+        /// Returns the permissions that a caller has on the specified source.
         pub async fn test_iam_permissions(
             &mut self,
             request: impl tonic::IntoRequest<
                 super::super::super::super::iam::v1::TestIamPermissionsRequest,
             >,
         ) -> Result<
-            tonic::Response<super::super::super::super::iam::v1::TestIamPermissionsResponse>,
+            tonic::Response<
+                super::super::super::super::iam::v1::TestIamPermissionsResponse,
+            >,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/TestIamPermissions",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates external system. This is for a given finding."]
+        /// Updates external system. This is for a given finding.
         pub async fn update_external_system(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateExternalSystemRequest>,
         ) -> Result<tonic::Response<super::ExternalSystem>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateExternalSystem",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates or updates a finding. The corresponding source must exist for a"]
-        #[doc = " finding creation to succeed."]
+        /// Creates or updates a finding. The corresponding source must exist for a
+        /// finding creation to succeed.
         pub async fn update_finding(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFindingRequest>,
         ) -> Result<tonic::Response<super::Finding>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateFinding",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a mute config."]
+        /// Updates a mute config.
         pub async fn update_mute_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateMuteConfigRequest>,
         ) -> Result<tonic::Response<super::MuteConfig>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateMuteConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = ""]
-        #[doc = " Updates a notification config. The following update"]
-        #[doc = " fields are allowed: description, pubsub_topic, streaming_config.filter"]
+        ///
+        /// Updates a notification config. The following update
+        /// fields are allowed: description, pubsub_topic, streaming_config.filter
         pub async fn update_notification_config(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateNotificationConfigRequest>,
         ) -> Result<tonic::Response<super::NotificationConfig>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateNotificationConfig",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates an organization's settings."]
+        /// Updates an organization's settings.
         pub async fn update_organization_settings(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateOrganizationSettingsRequest>,
         ) -> Result<tonic::Response<super::OrganizationSettings>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateOrganizationSettings",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a source."]
+        /// Updates a source.
         pub async fn update_source(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSourceRequest>,
         ) -> Result<tonic::Response<super::Source>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateSource",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates security marks."]
+        /// Updates security marks.
         pub async fn update_security_marks(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateSecurityMarksRequest>,
         ) -> Result<tonic::Response<super::SecurityMarks>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateSecurityMarks",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a big query export."]
+        /// Creates a big query export.
         pub async fn create_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBigQueryExportRequest>,
         ) -> Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/CreateBigQueryExport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes an existing big query export."]
+        /// Deletes an existing big query export.
         pub async fn delete_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteBigQueryExportRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/DeleteBigQueryExport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a BigQuery export."]
+        /// Updates a BigQuery export.
         pub async fn update_big_query_export(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBigQueryExportRequest>,
         ) -> Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateBigQueryExport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists BigQuery exports. Note that when requesting BigQuery exports at a"]
-        #[doc = " given level all exports under that level are also returned e.g. if"]
-        #[doc = " requesting BigQuery exports under a folder, then all BigQuery exports"]
-        #[doc = " immediately under the folder plus the ones created under the projects"]
-        #[doc = " within the folder are returned."]
+        /// Lists BigQuery exports. Note that when requesting BigQuery exports at a
+        /// given level all exports under that level are also returned e.g. if
+        /// requesting BigQuery exports under a folder, then all BigQuery exports
+        /// immediately under the folder plus the ones created under the projects
+        /// within the folder are returned.
         pub async fn list_big_query_exports(
             &mut self,
             request: impl tonic::IntoRequest<super::ListBigQueryExportsRequest>,
         ) -> Result<tonic::Response<super::ListBigQueryExportsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/ListBigQueryExports",

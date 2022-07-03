@@ -12,13 +12,13 @@ pub struct PgpSignedAttestation {
     /// --output=signature.gpg payload.json` will create the signature content
     /// expected in this field in `signature.gpg` for the `payload.json`
     /// attestation payload.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub signature: ::prost::alloc::string::String,
     /// Type (for example schema) of the attestation payload that was signed.
     /// The verifier must ensure that the provided type is one that the verifier
     /// supports, and that the attestation payload is a valid instantiation of that
     /// type (for example by validating a JSON schema).
-    #[prost(enumeration = "pgp_signed_attestation::ContentType", tag = "3")]
+    #[prost(enumeration="pgp_signed_attestation::ContentType", tag="3")]
     pub content_type: i32,
     /// This field is used by verifiers to select the public key used to validate
     /// the signature. Note that the policy of the verifier ultimately determines
@@ -28,7 +28,7 @@ pub struct PgpSignedAttestation {
     /// different ID that would verify the signature. Note that this ID should also
     /// be present in the signature content above, but that is not expected to be
     /// used by the verifier.
-    #[prost(oneof = "pgp_signed_attestation::KeyId", tags = "2")]
+    #[prost(oneof="pgp_signed_attestation::KeyId", tags="2")]
     pub key_id: ::core::option::Option<pgp_signed_attestation::KeyId>,
 }
 /// Nested message and enum types in `PgpSignedAttestation`.
@@ -71,7 +71,7 @@ pub mod pgp_signed_attestation {
         /// fpr:::::::::24FF6481B76AC91E66A00AC657A93A81EF3AE6FB:
         /// ```
         /// Above, the fingerprint is `24FF6481B76AC91E66A00AC657A93A81EF3AE6FB`.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         PgpKeyId(::prost::alloc::string::String),
     }
 }
@@ -85,18 +85,18 @@ pub struct GenericSignedAttestation {
     /// The verifier must ensure that the provided type is one that the verifier
     /// supports, and that the attestation payload is a valid instantiation of that
     /// type (for example by validating a JSON schema).
-    #[prost(enumeration = "generic_signed_attestation::ContentType", tag = "1")]
+    #[prost(enumeration="generic_signed_attestation::ContentType", tag="1")]
     pub content_type: i32,
     /// The serialized payload that is verified by one or more `signatures`.
     /// The encoding and semantic meaning of this payload must match what is set in
     /// `content_type`.
-    #[prost(bytes = "vec", tag = "2")]
+    #[prost(bytes="vec", tag="2")]
     pub serialized_payload: ::prost::alloc::vec::Vec<u8>,
     /// One or more signatures over `serialized_payload`.  Verifier implementations
     /// should consider this attestation message verified if at least one
     /// `signature` verifies `serialized_payload`.  See `Signature` in common.proto
     /// for more details on signature structure and verification.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub signatures: ::prost::alloc::vec::Vec<super::Signature>,
 }
 /// Nested message and enum types in `GenericSignedAttestation`.
@@ -125,7 +125,7 @@ pub mod generic_signed_attestation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Authority {
     /// Hint hints at the purpose of the attestation authority.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub hint: ::core::option::Option<authority::Hint>,
 }
 /// Nested message and enum types in `Authority`.
@@ -141,7 +141,7 @@ pub mod authority {
     pub struct Hint {
         /// Required. The human readable name of this attestation authority, for
         /// example "qa".
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub human_readable_name: ::prost::alloc::string::String,
     }
 }
@@ -149,7 +149,7 @@ pub mod authority {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Details {
     /// Required. Attestation for the resource.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub attestation: ::core::option::Option<Attestation>,
 }
 /// Occurrence that represents a single "attestation". The authenticity of an
@@ -165,7 +165,7 @@ pub struct Attestation {
     /// Required. The signature, generally over the `resource_url`, that verifies
     /// this attestation. The semantics of the signature veracity are ultimately
     /// determined by the verification engine.
-    #[prost(oneof = "attestation::Signature", tags = "1, 2")]
+    #[prost(oneof="attestation::Signature", tags="1, 2")]
     pub signature: ::core::option::Option<attestation::Signature>,
 }
 /// Nested message and enum types in `Attestation`.
@@ -176,9 +176,9 @@ pub mod attestation {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Signature {
         /// A PGP signed attestation.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         PgpSignedAttestation(super::PgpSignedAttestation),
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         GenericSignedAttestation(super::GenericSignedAttestation),
     }
 }

@@ -7,19 +7,19 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowSchema {
     /// IPC serialized Arrow schema.
-    #[prost(bytes = "vec", tag = "1")]
+    #[prost(bytes="vec", tag="1")]
     pub serialized_schema: ::prost::alloc::vec::Vec<u8>,
 }
 /// Arrow RecordBatch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ArrowRecordBatch {
     /// IPC-serialized Arrow RecordBatch.
-    #[prost(bytes = "vec", tag = "1")]
+    #[prost(bytes="vec", tag="1")]
     pub serialized_record_batch: ::prost::alloc::vec::Vec<u8>,
     /// \[Deprecated\] The count of rows in `serialized_record_batch`.
     /// Please use the format-independent ReadRowsResponse.row_count instead.
     #[deprecated]
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub row_count: i64,
 }
 /// Contains options specific to Arrow Serialization.
@@ -27,10 +27,7 @@ pub struct ArrowRecordBatch {
 pub struct ArrowSerializationOptions {
     /// The compression codec to use for Arrow buffers in serialized record
     /// batches.
-    #[prost(
-        enumeration = "arrow_serialization_options::CompressionCodec",
-        tag = "2"
-    )]
+    #[prost(enumeration="arrow_serialization_options::CompressionCodec", tag="2")]
     pub buffer_compression: i32,
 }
 /// Nested message and enum types in `ArrowSerializationOptions`.
@@ -52,19 +49,19 @@ pub mod arrow_serialization_options {
 pub struct AvroSchema {
     /// Json serialized schema, as described at
     /// <https://avro.apache.org/docs/1.8.1/spec.html.>
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub schema: ::prost::alloc::string::String,
 }
 /// Avro rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AvroRows {
     /// Binary serialized rows in a block.
-    #[prost(bytes = "vec", tag = "1")]
+    #[prost(bytes="vec", tag="1")]
     pub serialized_binary_rows: ::prost::alloc::vec::Vec<u8>,
     /// \[Deprecated\] The count of rows in the returning block.
     /// Please use the format-independent ReadRowsResponse.row_count instead.
     #[deprecated]
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub row_count: i64,
 }
 /// ProtoSchema describes the schema of the serialized protocol buffer data rows.
@@ -79,7 +76,7 @@ pub struct ProtoSchema {
     ///
     /// For additional information for how proto types and values map onto BigQuery
     /// see: <https://cloud.google.com/bigquery/docs/write-api#data_type_conversions>
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub proto_descriptor: ::core::option::Option<::prost_types::DescriptorProto>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -88,7 +85,7 @@ pub struct ProtoRows {
     ///
     /// See <https://developers.google.com/protocol-buffers/docs/overview> for more
     /// information on deserializing this field.
-    #[prost(bytes = "vec", repeated, tag = "1")]
+    #[prost(bytes="vec", repeated, tag="1")]
     pub serialized_rows: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
 }
 /// Schema of a table. This schema is a subset of
@@ -97,7 +94,7 @@ pub struct ProtoRows {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSchema {
     /// Describes the fields in a table.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
 }
 /// TableFieldSchema defines a single field/column within a table schema.
@@ -106,19 +103,19 @@ pub struct TableFieldSchema {
     /// Required. The field name. The name must contain only letters (a-z, A-Z),
     /// numbers (0-9), or underscores (_), and must start with a letter or
     /// underscore. The maximum length is 128 characters.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Required. The field data type.
-    #[prost(enumeration = "table_field_schema::Type", tag = "2")]
+    #[prost(enumeration="table_field_schema::Type", tag="2")]
     pub r#type: i32,
     /// Optional. The field mode. The default value is NULLABLE.
-    #[prost(enumeration = "table_field_schema::Mode", tag = "3")]
+    #[prost(enumeration="table_field_schema::Mode", tag="3")]
     pub mode: i32,
     /// Optional. Describes the nested schema fields if the type property is set to STRUCT.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
     /// Optional. The field description. The maximum length is 1,024 characters.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub description: ::prost::alloc::string::String,
     /// Optional. Maximum length of values of this field for STRINGS or BYTES.
     ///
@@ -132,7 +129,7 @@ pub struct TableFieldSchema {
     /// bytes in this field.
     ///
     /// It is invalid to set this field if type is not "STRING" or "BYTES".
-    #[prost(int64, tag = "7")]
+    #[prost(int64, tag="7")]
     pub max_length: i64,
     /// Optional. Precision (maximum number of total digits in base 10) and scale
     /// (maximum number of digits in the fractional part in base 10) constraints
@@ -166,10 +163,10 @@ pub struct TableFieldSchema {
     /// * If type = "BIGNUMERIC": 1 <= precision <= 38.
     ///
     /// If scale is specified but not precision, then it is invalid.
-    #[prost(int64, tag = "8")]
+    #[prost(int64, tag="8")]
     pub precision: i64,
     /// Optional. See documentation for precision.
-    #[prost(int64, tag = "9")]
+    #[prost(int64, tag="9")]
     pub scale: i64,
 }
 /// Nested message and enum types in `TableFieldSchema`.
@@ -225,25 +222,25 @@ pub mod table_field_schema {
 pub struct ReadSession {
     /// Output only. Unique identifier for the session, in the form
     /// `projects/{project_id}/locations/{location}/sessions/{session_id}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Time at which the session becomes invalid. After this time, subsequent
     /// requests to read this Session will return errors. The expire_time is
     /// automatically assigned and currently cannot be specified or updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Immutable. Data format of the output data. DATA_FORMAT_UNSPECIFIED not supported.
-    #[prost(enumeration = "DataFormat", tag = "3")]
+    #[prost(enumeration="DataFormat", tag="3")]
     pub data_format: i32,
     /// Immutable. Table that this ReadSession is reading from, in the form
     /// `projects/{project_id}/datasets/{dataset_id}/tables/{table_id}`
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub table: ::prost::alloc::string::String,
     /// Optional. Any modifiers which are applied when reading from the specified table.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub table_modifiers: ::core::option::Option<read_session::TableModifiers>,
     /// Optional. Read options for this session (e.g. column selection, filters).
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub read_options: ::core::option::Option<read_session::TableReadOptions>,
     /// Output only. A list of streams created with the session.
     ///
@@ -251,12 +248,12 @@ pub struct ReadSession {
     /// request_stream_count values *may* result in this list being unpopulated,
     /// in that case, the user will need to use a List method to get the streams
     /// instead, which is not yet available.
-    #[prost(message, repeated, tag = "10")]
+    #[prost(message, repeated, tag="10")]
     pub streams: ::prost::alloc::vec::Vec<ReadStream>,
     /// Output only. An estimate on the number of bytes this session will scan when
     /// all streams are completely consumed. This estimate is based on
     /// metadata from the table which might be incomplete or stale.
-    #[prost(int64, tag = "12")]
+    #[prost(int64, tag="12")]
     pub estimated_total_bytes_scanned: i64,
     /// Optional. ID set by client to annotate a session identity.  This does not need
     /// to be strictly unique, but instead the same ID should be used to group
@@ -264,12 +261,12 @@ pub struct ReadSession {
     /// needed to complete a Spark SQL query is reasonable).
     ///
     /// Maximum length is 256 bytes.
-    #[prost(string, tag = "13")]
+    #[prost(string, tag="13")]
     pub trace_id: ::prost::alloc::string::String,
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
     /// the selected fields.
-    #[prost(oneof = "read_session::Schema", tags = "4, 5")]
+    #[prost(oneof="read_session::Schema", tags="4, 5")]
     pub schema: ::core::option::Option<read_session::Schema>,
 }
 /// Nested message and enum types in `ReadSession`.
@@ -278,7 +275,7 @@ pub mod read_session {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableModifiers {
         /// The snapshot time of the table. If not set, interpreted as now.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub snapshot_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Options dictating how we read a table.
@@ -288,7 +285,7 @@ pub mod read_session {
         /// fields will be read. If the specified field is a nested field, all
         /// the sub-fields in the field will be selected. The output field order is
         /// unrelated to the order of fields in selected_fields.
-        #[prost(string, repeated, tag = "1")]
+        #[prost(string, repeated, tag="1")]
         pub selected_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// SQL text filtering statement, similar to a WHERE clause in a query.
         /// Aggregates are not supported.
@@ -300,21 +297,17 @@ pub mod read_session {
         ///           "numeric_field BETWEEN 1.0 AND 5.0"
         ///
         /// Restricted to a maximum length for 1 MB.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub row_restriction: ::prost::alloc::string::String,
-        #[prost(
-            oneof = "table_read_options::OutputFormatSerializationOptions",
-            tags = "3"
-        )]
-        pub output_format_serialization_options:
-            ::core::option::Option<table_read_options::OutputFormatSerializationOptions>,
+        #[prost(oneof="table_read_options::OutputFormatSerializationOptions", tags="3")]
+        pub output_format_serialization_options: ::core::option::Option<table_read_options::OutputFormatSerializationOptions>,
     }
     /// Nested message and enum types in `TableReadOptions`.
     pub mod table_read_options {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum OutputFormatSerializationOptions {
             /// Optional. Options specific to the Apache Arrow output format.
-            #[prost(message, tag = "3")]
+            #[prost(message, tag="3")]
             ArrowSerializationOptions(super::super::ArrowSerializationOptions),
         }
     }
@@ -324,10 +317,10 @@ pub mod read_session {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
         /// Output only. Avro schema.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         AvroSchema(super::AvroSchema),
         /// Output only. Arrow schema.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         ArrowSchema(super::ArrowSchema),
     }
 }
@@ -338,7 +331,7 @@ pub mod read_session {
 pub struct ReadStream {
     /// Output only. Name of the stream, in the form
     /// `projects/{project_id}/locations/{location}/sessions/{session_id}/streams/{stream_id}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Information about a single stream that gets data inside the storage system.
@@ -346,29 +339,29 @@ pub struct ReadStream {
 pub struct WriteStream {
     /// Output only. Name of the stream, in the form
     /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. Type of the stream.
-    #[prost(enumeration = "write_stream::Type", tag = "2")]
+    #[prost(enumeration="write_stream::Type", tag="2")]
     pub r#type: i32,
     /// Output only. Create time of the stream. For the _default stream, this is the
     /// creation_time of the table.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Commit time of the stream.
     /// If a stream is of `COMMITTED` type, then it will have a commit_time same as
     /// `create_time`. If the stream is of `PENDING` type, empty commit_time
     /// means it is not committed.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The schema of the destination table. It is only returned in
     /// `CreateWriteStream` response. Caller should generate data that's
     /// compatible with this schema to send in initial `AppendRowsRequest`.
     /// The table schema could go out of date during the life time of the stream.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub table_schema: ::core::option::Option<TableSchema>,
     /// Immutable. Mode of the stream.
-    #[prost(enumeration = "write_stream::WriteMode", tag = "7")]
+    #[prost(enumeration="write_stream::WriteMode", tag="7")]
     pub write_mode: i32,
 }
 /// Nested message and enum types in `WriteStream`.
@@ -416,10 +409,10 @@ pub enum DataFormat {
 pub struct CreateReadSessionRequest {
     /// Required. The request project that owns the session, in the form of
     /// `projects/{project_id}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Session to be created.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub read_session: ::core::option::Option<ReadSession>,
     /// Max initial number of streams. If unset or zero, the server will
     /// provide a value of streams so as to produce reasonable throughput. Must be
@@ -431,19 +424,19 @@ pub struct CreateReadSessionRequest {
     /// Typically, clients should either leave this unset to let the system to
     /// determine an upper bound OR set this a size for the maximum "units of work"
     /// it can gracefully handle.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub max_stream_count: i32,
 }
 /// Request message for `ReadRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsRequest {
     /// Required. Stream to read rows from.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub read_stream: ::prost::alloc::string::String,
     /// The offset requested must be less than the last row read from Read.
     /// Requesting a larger offset is undefined. If not specified, start reading
     /// from offset zero.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub offset: i64,
 }
 /// Information on if the current connection is being throttled.
@@ -451,14 +444,14 @@ pub struct ReadRowsRequest {
 pub struct ThrottleState {
     /// How much this connection is being throttled. Zero means no throttling,
     /// 100 means fully throttled.
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub throttle_percent: i32,
 }
 /// Estimated stream statistics for a given read Stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamStats {
     /// Represents the progress of the current stream.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub progress: ::core::option::Option<stream_stats::Progress>,
 }
 /// Nested message and enum types in `StreamStats`.
@@ -477,11 +470,11 @@ pub mod stream_stats {
         /// Note that if a filter is provided, the `at_response_end` value of the
         /// previous response may not necessarily be equal to the
         /// `at_response_start` value of the current response.
-        #[prost(double, tag = "1")]
+        #[prost(double, tag="1")]
         pub at_response_start: f64,
         /// Similar to `at_response_start`, except that this value includes the
         /// rows in the current response.
-        #[prost(double, tag = "2")]
+        #[prost(double, tag="2")]
         pub at_response_end: f64,
     }
 }
@@ -490,24 +483,24 @@ pub mod stream_stats {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadRowsResponse {
     /// Number of serialized rows in the rows block.
-    #[prost(int64, tag = "6")]
+    #[prost(int64, tag="6")]
     pub row_count: i64,
     /// Statistics for the stream.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub stats: ::core::option::Option<StreamStats>,
     /// Throttling state. If unset, the latest response still describes
     /// the current throttling status.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub throttle_state: ::core::option::Option<ThrottleState>,
     /// Row data is returned in format specified during session creation.
-    #[prost(oneof = "read_rows_response::Rows", tags = "3, 4")]
+    #[prost(oneof="read_rows_response::Rows", tags="3, 4")]
     pub rows: ::core::option::Option<read_rows_response::Rows>,
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
     /// the selected fields. This schema is equivalent to the one returned by
     /// CreateSession. This field is only populated in the first ReadRowsResponse
     /// RPC.
-    #[prost(oneof = "read_rows_response::Schema", tags = "7, 8")]
+    #[prost(oneof="read_rows_response::Schema", tags="7, 8")]
     pub schema: ::core::option::Option<read_rows_response::Schema>,
 }
 /// Nested message and enum types in `ReadRowsResponse`.
@@ -516,10 +509,10 @@ pub mod read_rows_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rows {
         /// Serialized row data in AVRO format.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         AvroRows(super::AvroRows),
         /// Serialized row data in Arrow RecordBatch format.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         ArrowRecordBatch(super::ArrowRecordBatch),
     }
     /// The schema for the read. If read_options.selected_fields is set, the
@@ -530,10 +523,10 @@ pub mod read_rows_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schema {
         /// Output only. Avro schema.
-        #[prost(message, tag = "7")]
+        #[prost(message, tag="7")]
         AvroSchema(super::AvroSchema),
         /// Output only. Arrow schema.
-        #[prost(message, tag = "8")]
+        #[prost(message, tag="8")]
         ArrowSchema(super::ArrowSchema),
     }
 }
@@ -541,7 +534,7 @@ pub mod read_rows_response {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitReadStreamRequest {
     /// Required. Name of the stream to split.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// A value in the range (0.0, 1.0) that specifies the fractional point at
     /// which the original stream should be split. The actual split point is
@@ -550,7 +543,7 @@ pub struct SplitReadStreamRequest {
     /// will be proportional to this fractional value. Additionally, because the
     /// server-side unit for assigning data is collections of rows, this fraction
     /// will always map to a data storage boundary on the server side.
-    #[prost(double, tag = "2")]
+    #[prost(double, tag="2")]
     pub fraction: f64,
 }
 /// Response message for `SplitReadStream`.
@@ -559,11 +552,11 @@ pub struct SplitReadStreamResponse {
     /// Primary stream, which contains the beginning portion of
     /// |original_stream|. An empty value indicates that the original stream can no
     /// longer be split.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub primary_stream: ::core::option::Option<ReadStream>,
     /// Remainder stream, which contains the tail of |original_stream|. An empty
     /// value indicates that the original stream can no longer be split.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub remainder_stream: ::core::option::Option<ReadStream>,
 }
 /// Request message for `CreateWriteStream`.
@@ -571,10 +564,10 @@ pub struct SplitReadStreamResponse {
 pub struct CreateWriteStreamRequest {
     /// Required. Reference to the table to which the stream belongs, in the format
     /// of `projects/{project}/datasets/{dataset}/tables/{table}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Stream to be created.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub write_stream: ::core::option::Option<WriteStream>,
 }
 /// Request message for `AppendRows`.
@@ -596,23 +589,23 @@ pub struct AppendRowsRequest {
     /// For the special default stream, the format is:
     ///
     /// * `projects/{project}/datasets/{dataset}/tables/{table}/streams/_default`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub write_stream: ::prost::alloc::string::String,
     /// If present, the write is only performed if the next append offset is same
     /// as the provided value. If not present, the write is performed at the
     /// current end of stream. Specifying a value for this field is not allowed
     /// when calling AppendRows for the '_default' stream.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub offset: ::core::option::Option<i64>,
     /// Id set by client to annotate its identity. Only initial request setting is
     /// respected.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub trace_id: ::prost::alloc::string::String,
     /// Input rows. The `writer_schema` field must be specified at the initial
     /// request and currently, it will be ignored if specified in following
     /// requests. Following requests must have data in the same format as the
     /// initial request.
-    #[prost(oneof = "append_rows_request::Rows", tags = "4")]
+    #[prost(oneof="append_rows_request::Rows", tags="4")]
     pub rows: ::core::option::Option<append_rows_request::Rows>,
 }
 /// Nested message and enum types in `AppendRowsRequest`.
@@ -624,13 +617,13 @@ pub mod append_rows_request {
         /// Proto schema used to serialize the data.  This value only needs to be
         /// provided as part of the first request on a gRPC network connection,
         /// and will be ignored for subsequent requests on the connection.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub writer_schema: ::core::option::Option<super::ProtoSchema>,
         /// Serialized row data in protobuf message format.
         /// Currently, the backend expects the serialized rows to adhere to
         /// proto2 semantics when appending rows, particularly with respect to
         /// how default values are encoded.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub rows: ::core::option::Option<super::ProtoRows>,
     }
     /// Input rows. The `writer_schema` field must be specified at the initial
@@ -640,7 +633,7 @@ pub mod append_rows_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Rows {
         /// Rows in proto format.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         ProtoRows(ProtoData),
     }
 }
@@ -650,14 +643,14 @@ pub struct AppendRowsResponse {
     /// If backend detects a schema update, pass it to user so that user can
     /// use it to input new type of message. It will be empty when no schema
     /// updates have occurred.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub updated_schema: ::core::option::Option<TableSchema>,
     /// If a request failed due to corrupted rows, no rows in the batch will be
     /// appended. The API will return row level error info, so that the caller can
     /// remove the bad rows and retry the request.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub row_errors: ::prost::alloc::vec::Vec<RowError>,
-    #[prost(oneof = "append_rows_response::Response", tags = "1, 2")]
+    #[prost(oneof="append_rows_response::Response", tags="1, 2")]
     pub response: ::core::option::Option<append_rows_response::Response>,
 }
 /// Nested message and enum types in `AppendRowsResponse`.
@@ -667,13 +660,13 @@ pub mod append_rows_response {
     pub struct AppendResult {
         /// The row offset at which the last append occurred. The offset will not be
         /// set if appending using default streams.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub offset: ::core::option::Option<i64>,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Response {
         /// Result if the append is successful.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         AppendResult(AppendResult),
         /// Error returned when problems were encountered.  If present,
         /// it indicates rows were not accepted into the system.
@@ -695,7 +688,7 @@ pub mod append_rows_response {
         /// request can be retried if previous failure is addressed.
         ///
         /// INTERNAL: Indicates server side error(s) that can be retried.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         Error(super::super::super::super::super::rpc::Status),
     }
 }
@@ -704,7 +697,7 @@ pub mod append_rows_response {
 pub struct GetWriteStreamRequest {
     /// Required. Name of the stream to get, in the form of
     /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `BatchCommitWriteStreams`.
@@ -712,10 +705,10 @@ pub struct GetWriteStreamRequest {
 pub struct BatchCommitWriteStreamsRequest {
     /// Required. Parent table that all the streams should belong to, in the form of
     /// `projects/{project}/datasets/{dataset}/tables/{table}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The group of streams that will be committed atomically.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub write_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Response message for `BatchCommitWriteStreams`.
@@ -724,14 +717,14 @@ pub struct BatchCommitWriteStreamsResponse {
     /// The time at which streams were committed in microseconds granularity.
     /// This field will only exist when there are no stream errors.
     /// **Note** if this field is not set, it means the commit was not successful.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Stream level error if commit failed. Only streams with error will be in
     /// the list.
     /// If empty, there is no error and all streams are committed successfully.
     /// If non empty, certain streams have errors and ZERO stream is committed due
     /// to atomicity guarantee.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub stream_errors: ::prost::alloc::vec::Vec<StorageError>,
 }
 /// Request message for invoking `FinalizeWriteStream`.
@@ -739,32 +732,32 @@ pub struct BatchCommitWriteStreamsResponse {
 pub struct FinalizeWriteStreamRequest {
     /// Required. Name of the stream to finalize, in the form of
     /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Response message for `FinalizeWriteStream`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FinalizeWriteStreamResponse {
     /// Number of rows in the finalized stream.
-    #[prost(int64, tag = "1")]
+    #[prost(int64, tag="1")]
     pub row_count: i64,
 }
 /// Request message for `FlushRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlushRowsRequest {
     /// Required. The stream that is the target of the flush operation.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub write_stream: ::prost::alloc::string::String,
     /// Ending offset of the flush operation. Rows before this offset(including
     /// this offset) will be flushed.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub offset: ::core::option::Option<i64>,
 }
 /// Respond message for `FlushRows`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FlushRowsResponse {
     /// The rows before this offset (including this offset) are flushed.
-    #[prost(int64, tag = "1")]
+    #[prost(int64, tag="1")]
     pub offset: i64,
 }
 /// Structured custom BigQuery Storage error message. The error can be attached
@@ -774,13 +767,13 @@ pub struct FlushRowsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StorageError {
     /// BigQuery Storage specific error code.
-    #[prost(enumeration = "storage_error::StorageErrorCode", tag = "1")]
+    #[prost(enumeration="storage_error::StorageErrorCode", tag="1")]
     pub code: i32,
     /// Name of the failed entity.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub entity: ::prost::alloc::string::String,
     /// Message that describes the error.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub error_message: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `StorageError`.
@@ -819,13 +812,13 @@ pub mod storage_error {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RowError {
     /// Index of the malformed row in the request.
-    #[prost(int64, tag = "1")]
+    #[prost(int64, tag="1")]
     pub index: i64,
     /// Structured error reason for a row error.
-    #[prost(enumeration = "row_error::RowErrorCode", tag = "2")]
+    #[prost(enumeration="row_error::RowErrorCode", tag="2")]
     pub code: i32,
     /// Description of the issue encountered when processing the row.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub message: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `RowError`.
@@ -840,22 +833,33 @@ pub mod row_error {
         FieldsError = 1,
     }
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod big_query_read_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " BigQuery Read API."]
-    #[doc = ""]
-    #[doc = " The Read API can be used to read data from BigQuery."]
+    /// BigQuery Read API.
+    ///
+    /// The Read API can be used to read data from BigQuery.
     #[derive(Debug, Clone)]
     pub struct BigQueryReadClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl BigQueryReadClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> BigQueryReadClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -868,113 +872,126 @@ pub mod big_query_read_client {
         ) -> BigQueryReadClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             BigQueryReadClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Creates a new read session. A read session divides the contents of a"]
-        #[doc = " BigQuery table into one or more streams, which can then be used to read"]
-        #[doc = " data from the table. The read session also specifies properties of the"]
-        #[doc = " data to be read, such as a list of columns or a push-down filter describing"]
-        #[doc = " the rows to be returned."]
-        #[doc = ""]
-        #[doc = " A particular row can be read by at most one stream. When the caller has"]
-        #[doc = " reached the end of each stream in the session, then all the data in the"]
-        #[doc = " table has been read."]
-        #[doc = ""]
-        #[doc = " Data is assigned to each stream such that roughly the same number of"]
-        #[doc = " rows can be read from each stream. Because the server-side unit for"]
-        #[doc = " assigning data is collections of rows, the API does not guarantee that"]
-        #[doc = " each stream will return the same number or rows. Additionally, the"]
-        #[doc = " limits are enforced based on the number of pre-filtered rows, so some"]
-        #[doc = " filters can lead to lopsided assignments."]
-        #[doc = ""]
-        #[doc = " Read sessions automatically expire 6 hours after they are created and do"]
-        #[doc = " not require manual clean-up by the caller."]
+        /// Creates a new read session. A read session divides the contents of a
+        /// BigQuery table into one or more streams, which can then be used to read
+        /// data from the table. The read session also specifies properties of the
+        /// data to be read, such as a list of columns or a push-down filter describing
+        /// the rows to be returned.
+        ///
+        /// A particular row can be read by at most one stream. When the caller has
+        /// reached the end of each stream in the session, then all the data in the
+        /// table has been read.
+        ///
+        /// Data is assigned to each stream such that roughly the same number of
+        /// rows can be read from each stream. Because the server-side unit for
+        /// assigning data is collections of rows, the API does not guarantee that
+        /// each stream will return the same number or rows. Additionally, the
+        /// limits are enforced based on the number of pre-filtered rows, so some
+        /// filters can lead to lopsided assignments.
+        ///
+        /// Read sessions automatically expire 6 hours after they are created and do
+        /// not require manual clean-up by the caller.
         pub async fn create_read_session(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateReadSessionRequest>,
         ) -> Result<tonic::Response<super::ReadSession>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryRead/CreateReadSession",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Reads rows from the stream in the format prescribed by the ReadSession."]
-        #[doc = " Each response contains one or more table rows, up to a maximum of 100 MiB"]
-        #[doc = " per response; read requests which attempt to read individual rows larger"]
-        #[doc = " than 100 MiB will fail."]
-        #[doc = ""]
-        #[doc = " Each request also returns a set of stream statistics reflecting the current"]
-        #[doc = " state of the stream."]
+        /// Reads rows from the stream in the format prescribed by the ReadSession.
+        /// Each response contains one or more table rows, up to a maximum of 100 MiB
+        /// per response; read requests which attempt to read individual rows larger
+        /// than 100 MiB will fail.
+        ///
+        /// Each request also returns a set of stream statistics reflecting the current
+        /// state of the stream.
         pub async fn read_rows(
             &mut self,
             request: impl tonic::IntoRequest<super::ReadRowsRequest>,
-        ) -> Result<tonic::Response<tonic::codec::Streaming<super::ReadRowsResponse>>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<tonic::codec::Streaming<super::ReadRowsResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryRead/ReadRows",
             );
-            self.inner
-                .server_streaming(request.into_request(), path, codec)
-                .await
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
-        #[doc = " Splits a given `ReadStream` into two `ReadStream` objects. These"]
-        #[doc = " `ReadStream` objects are referred to as the primary and the residual"]
-        #[doc = " streams of the split. The original `ReadStream` can still be read from in"]
-        #[doc = " the same manner as before. Both of the returned `ReadStream` objects can"]
-        #[doc = " also be read from, and the rows returned by both child streams will be"]
-        #[doc = " the same as the rows read from the original stream."]
-        #[doc = ""]
-        #[doc = " Moreover, the two child streams will be allocated back-to-back in the"]
-        #[doc = " original `ReadStream`. Concretely, it is guaranteed that for streams"]
-        #[doc = " original, primary, and residual, that original[0-j] = primary[0-j] and"]
-        #[doc = " original[j-n] = residual[0-m] once the streams have been read to"]
-        #[doc = " completion."]
+        /// Splits a given `ReadStream` into two `ReadStream` objects. These
+        /// `ReadStream` objects are referred to as the primary and the residual
+        /// streams of the split. The original `ReadStream` can still be read from in
+        /// the same manner as before. Both of the returned `ReadStream` objects can
+        /// also be read from, and the rows returned by both child streams will be
+        /// the same as the rows read from the original stream.
+        ///
+        /// Moreover, the two child streams will be allocated back-to-back in the
+        /// original `ReadStream`. Concretely, it is guaranteed that for streams
+        /// original, primary, and residual, that original[0-j] = primary[0-j] and
+        /// original[j-n] = residual[0-m] once the streams have been read to
+        /// completion.
         pub async fn split_read_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::SplitReadStreamRequest>,
         ) -> Result<tonic::Response<super::SplitReadStreamResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryRead/SplitReadStream",
@@ -983,25 +1000,36 @@ pub mod big_query_read_client {
         }
     }
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod big_query_write_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " BigQuery Write API."]
-    #[doc = ""]
-    #[doc = " The Write API can be used to write data to BigQuery."]
-    #[doc = ""]
-    #[doc = " For supplementary information about the Write API, see:"]
-    #[doc = " https://cloud.google.com/bigquery/docs/write-api"]
+    /// BigQuery Write API.
+    ///
+    /// The Write API can be used to write data to BigQuery.
+    ///
+    /// For supplementary information about the Write API, see:
+    /// https://cloud.google.com/bigquery/docs/write-api
     #[derive(Debug, Clone)]
     pub struct BigQueryWriteClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl BigQueryWriteClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> BigQueryWriteClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -1014,90 +1042,97 @@ pub mod big_query_write_client {
         ) -> BigQueryWriteClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             BigQueryWriteClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Creates a write stream to the given table."]
-        #[doc = " Additionally, every table has a special stream named '_default'"]
-        #[doc = " to which data can be written. This stream doesn't need to be created using"]
-        #[doc = " CreateWriteStream. It is a stream that can be used simultaneously by any"]
-        #[doc = " number of clients. Data written to this stream is considered committed as"]
-        #[doc = " soon as an acknowledgement is received."]
+        /// Creates a write stream to the given table.
+        /// Additionally, every table has a special stream named '_default'
+        /// to which data can be written. This stream doesn't need to be created using
+        /// CreateWriteStream. It is a stream that can be used simultaneously by any
+        /// number of clients. Data written to this stream is considered committed as
+        /// soon as an acknowledgement is received.
         pub async fn create_write_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateWriteStreamRequest>,
         ) -> Result<tonic::Response<super::WriteStream>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryWrite/CreateWriteStream",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Appends data to the given stream."]
-        #[doc = ""]
-        #[doc = " If `offset` is specified, the `offset` is checked against the end of"]
-        #[doc = " stream. The server returns `OUT_OF_RANGE` in `AppendRowsResponse` if an"]
-        #[doc = " attempt is made to append to an offset beyond the current end of the stream"]
-        #[doc = " or `ALREADY_EXISTS` if user provides an `offset` that has already been"]
-        #[doc = " written to. User can retry with adjusted offset within the same RPC"]
-        #[doc = " connection. If `offset` is not specified, append happens at the end of the"]
-        #[doc = " stream."]
-        #[doc = ""]
-        #[doc = " The response contains an optional offset at which the append"]
-        #[doc = " happened.  No offset information will be returned for appends to a"]
-        #[doc = " default stream."]
-        #[doc = ""]
-        #[doc = " Responses are received in the same order in which requests are sent."]
-        #[doc = " There will be one response for each successful inserted request.  Responses"]
-        #[doc = " may optionally embed error information if the originating AppendRequest was"]
-        #[doc = " not successfully processed."]
-        #[doc = ""]
-        #[doc = " The specifics of when successfully appended data is made visible to the"]
-        #[doc = " table are governed by the type of stream:"]
-        #[doc = ""]
-        #[doc = " * For COMMITTED streams (which includes the default stream), data is"]
-        #[doc = " visible immediately upon successful append."]
-        #[doc = ""]
-        #[doc = " * For BUFFERED streams, data is made visible via a subsequent `FlushRows`"]
-        #[doc = " rpc which advances a cursor to a newer offset in the stream."]
-        #[doc = ""]
-        #[doc = " * For PENDING streams, data is not made visible until the stream itself is"]
-        #[doc = " finalized (via the `FinalizeWriteStream` rpc), and the stream is explicitly"]
-        #[doc = " committed via the `BatchCommitWriteStreams` rpc."]
-        #[doc = ""]
-        #[doc = " Note: For users coding against the gRPC api directly, it may be"]
-        #[doc = " necessary to supply the x-goog-request-params system parameter"]
-        #[doc = " with `write_stream=<full_write_stream_name>`."]
-        #[doc = ""]
-        #[doc = " More information about system parameters:"]
-        #[doc = " https://cloud.google.com/apis/docs/system-parameters"]
+        /// Appends data to the given stream.
+        ///
+        /// If `offset` is specified, the `offset` is checked against the end of
+        /// stream. The server returns `OUT_OF_RANGE` in `AppendRowsResponse` if an
+        /// attempt is made to append to an offset beyond the current end of the stream
+        /// or `ALREADY_EXISTS` if user provides an `offset` that has already been
+        /// written to. User can retry with adjusted offset within the same RPC
+        /// connection. If `offset` is not specified, append happens at the end of the
+        /// stream.
+        ///
+        /// The response contains an optional offset at which the append
+        /// happened.  No offset information will be returned for appends to a
+        /// default stream.
+        ///
+        /// Responses are received in the same order in which requests are sent.
+        /// There will be one response for each successful inserted request.  Responses
+        /// may optionally embed error information if the originating AppendRequest was
+        /// not successfully processed.
+        ///
+        /// The specifics of when successfully appended data is made visible to the
+        /// table are governed by the type of stream:
+        ///
+        /// * For COMMITTED streams (which includes the default stream), data is
+        /// visible immediately upon successful append.
+        ///
+        /// * For BUFFERED streams, data is made visible via a subsequent `FlushRows`
+        /// rpc which advances a cursor to a newer offset in the stream.
+        ///
+        /// * For PENDING streams, data is not made visible until the stream itself is
+        /// finalized (via the `FinalizeWriteStream` rpc), and the stream is explicitly
+        /// committed via the `BatchCommitWriteStreams` rpc.
+        ///
+        /// Note: For users coding against the gRPC api directly, it may be
+        /// necessary to supply the x-goog-request-params system parameter
+        /// with `write_stream=<full_write_stream_name>`.
+        ///
+        /// More information about system parameters:
+        /// https://cloud.google.com/apis/docs/system-parameters
         pub async fn append_rows(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::AppendRowsRequest>,
@@ -1105,96 +1140,111 @@ pub mod big_query_write_client {
             tonic::Response<tonic::codec::Streaming<super::AppendRowsResponse>>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryWrite/AppendRows",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
-        #[doc = " Gets information about a write stream."]
+        /// Gets information about a write stream.
         pub async fn get_write_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::GetWriteStreamRequest>,
         ) -> Result<tonic::Response<super::WriteStream>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryWrite/GetWriteStream",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Finalize a write stream so that no new data can be appended to the"]
-        #[doc = " stream. Finalize is not supported on the '_default' stream."]
+        /// Finalize a write stream so that no new data can be appended to the
+        /// stream. Finalize is not supported on the '_default' stream.
         pub async fn finalize_write_stream(
             &mut self,
             request: impl tonic::IntoRequest<super::FinalizeWriteStreamRequest>,
         ) -> Result<tonic::Response<super::FinalizeWriteStreamResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryWrite/FinalizeWriteStream",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Atomically commits a group of `PENDING` streams that belong to the same"]
-        #[doc = " `parent` table."]
-        #[doc = ""]
-        #[doc = " Streams must be finalized before commit and cannot be committed multiple"]
-        #[doc = " times. Once a stream is committed, data in the stream becomes available"]
-        #[doc = " for read operations."]
+        /// Atomically commits a group of `PENDING` streams that belong to the same
+        /// `parent` table.
+        ///
+        /// Streams must be finalized before commit and cannot be committed multiple
+        /// times. Once a stream is committed, data in the stream becomes available
+        /// for read operations.
         pub async fn batch_commit_write_streams(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCommitWriteStreamsRequest>,
-        ) -> Result<tonic::Response<super::BatchCommitWriteStreamsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::BatchCommitWriteStreamsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryWrite/BatchCommitWriteStreams",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Flushes rows to a BUFFERED stream."]
-        #[doc = ""]
-        #[doc = " If users are appending rows to BUFFERED stream, flush operation is"]
-        #[doc = " required in order for the rows to become available for reading. A"]
-        #[doc = " Flush operation flushes up to any previously flushed offset in a BUFFERED"]
-        #[doc = " stream, to the offset specified in the request."]
-        #[doc = ""]
-        #[doc = " Flush is not supported on the _default stream, since it is not BUFFERED."]
+        /// Flushes rows to a BUFFERED stream.
+        ///
+        /// If users are appending rows to BUFFERED stream, flush operation is
+        /// required in order for the rows to become available for reading. A
+        /// Flush operation flushes up to any previously flushed offset in a BUFFERED
+        /// stream, to the offset specified in the request.
+        ///
+        /// Flush is not supported on the _default stream, since it is not BUFFERED.
         pub async fn flush_rows(
             &mut self,
             request: impl tonic::IntoRequest<super::FlushRowsRequest>,
         ) -> Result<tonic::Response<super::FlushRowsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryWrite/FlushRows",

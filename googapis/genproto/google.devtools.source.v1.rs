@@ -3,7 +3,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SourceContext {
     /// A SourceContext can refer any one of the following types of repositories.
-    #[prost(oneof = "source_context::Context", tags = "1, 2, 3, 6")]
+    #[prost(oneof="source_context::Context", tags="1, 2, 3, 6")]
     pub context: ::core::option::Option<source_context::Context>,
 }
 /// Nested message and enum types in `SourceContext`.
@@ -12,16 +12,16 @@ pub mod source_context {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Context {
         /// A SourceContext referring to a revision in a cloud repo.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         CloudRepo(super::CloudRepoSourceContext),
         /// A SourceContext referring to a snapshot in a cloud workspace.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         CloudWorkspace(super::CloudWorkspaceSourceContext),
         /// A SourceContext referring to a Gerrit project.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         Gerrit(super::GerritSourceContext),
         /// A SourceContext referring to any third party Git repo (e.g. GitHub).
-        #[prost(message, tag = "6")]
+        #[prost(message, tag="6")]
         Git(super::GitSourceContext),
     }
 }
@@ -30,21 +30,20 @@ pub mod source_context {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExtendedSourceContext {
     /// Any source context.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub context: ::core::option::Option<SourceContext>,
     /// Labels with user defined metadata.
-    #[prost(map = "string, string", tag = "2")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="2")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// An alias to a repo revision.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AliasContext {
     /// The alias kind.
-    #[prost(enumeration = "alias_context::Kind", tag = "1")]
+    #[prost(enumeration="alias_context::Kind", tag="1")]
     pub kind: i32,
     /// The alias name.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub name: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AliasContext`.
@@ -70,11 +69,11 @@ pub mod alias_context {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudRepoSourceContext {
     /// The ID of the repo.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub repo_id: ::core::option::Option<RepoId>,
     /// A revision in a cloud repository can be identified by either its revision
     /// ID or its Alias.
-    #[prost(oneof = "cloud_repo_source_context::Revision", tags = "2, 3, 4")]
+    #[prost(oneof="cloud_repo_source_context::Revision", tags="2, 3, 4")]
     pub revision: ::core::option::Option<cloud_repo_source_context::Revision>,
 }
 /// Nested message and enum types in `CloudRepoSourceContext`.
@@ -84,13 +83,13 @@ pub mod cloud_repo_source_context {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Revision {
         /// A revision ID.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         RevisionId(::prost::alloc::string::String),
         /// The name of an alias (branch, tag, etc.).
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         AliasName(::prost::alloc::string::String),
         /// An alias, which may be a branch or tag.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         AliasContext(super::AliasContext),
     }
 }
@@ -98,27 +97,27 @@ pub mod cloud_repo_source_context {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudWorkspaceSourceContext {
     /// The ID of the workspace.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub workspace_id: ::core::option::Option<CloudWorkspaceId>,
     /// The ID of the snapshot.
     /// An empty snapshot_id refers to the most recent snapshot.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub snapshot_id: ::prost::alloc::string::String,
 }
 /// A SourceContext referring to a Gerrit project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GerritSourceContext {
     /// The URI of a running Gerrit instance.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub host_uri: ::prost::alloc::string::String,
     /// The full project name within the host. Projects may be nested, so
     /// "project/subproject" is a valid project name.
     /// The "repo name" is hostURI/project.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub gerrit_project: ::prost::alloc::string::String,
     /// A revision in a Gerrit project can be identified by either its revision ID
     /// or its alias.
-    #[prost(oneof = "gerrit_source_context::Revision", tags = "3, 4, 5")]
+    #[prost(oneof="gerrit_source_context::Revision", tags="3, 4, 5")]
     pub revision: ::core::option::Option<gerrit_source_context::Revision>,
 }
 /// Nested message and enum types in `GerritSourceContext`.
@@ -128,13 +127,13 @@ pub mod gerrit_source_context {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Revision {
         /// A revision (commit) ID.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         RevisionId(::prost::alloc::string::String),
         /// The name of an alias (branch, tag, etc.).
-        #[prost(string, tag = "4")]
+        #[prost(string, tag="4")]
         AliasName(::prost::alloc::string::String),
         /// An alias, which may be a branch or tag.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         AliasContext(super::AliasContext),
     }
 }
@@ -143,11 +142,11 @@ pub mod gerrit_source_context {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GitSourceContext {
     /// Git repository URL.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub url: ::prost::alloc::string::String,
     /// Git commit hash.
     /// required.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub revision_id: ::prost::alloc::string::String,
 }
 /// A unique identifier for a cloud repo.
@@ -155,7 +154,7 @@ pub struct GitSourceContext {
 pub struct RepoId {
     /// A cloud repository can be identified by either its project ID and
     /// repository name combination, or its globally unique identifier.
-    #[prost(oneof = "repo_id::Id", tags = "1, 2")]
+    #[prost(oneof="repo_id::Id", tags="1, 2")]
     pub id: ::core::option::Option<repo_id::Id>,
 }
 /// Nested message and enum types in `RepoId`.
@@ -165,10 +164,10 @@ pub mod repo_id {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Id {
         /// A combination of a project ID and a repo name.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         ProjectRepoId(super::ProjectRepoId),
         /// A server-assigned, globally unique identifier.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         Uid(::prost::alloc::string::String),
     }
 }
@@ -177,10 +176,10 @@ pub mod repo_id {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectRepoId {
     /// The ID of the project.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
     /// The name of the repo. Leave empty for the default repo.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub repo_name: ::prost::alloc::string::String,
 }
 /// A CloudWorkspaceId is a unique identifier for a cloud workspace.
@@ -189,10 +188,10 @@ pub struct ProjectRepoId {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudWorkspaceId {
     /// The ID of the repo containing the workspace.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub repo_id: ::core::option::Option<RepoId>,
     /// The unique name of the workspace within the repo.  This is the name
     /// chosen by the client in the Source API's CreateWorkspace method.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub name: ::prost::alloc::string::String,
 }

@@ -26,11 +26,11 @@ pub struct Package {
     /// The name of the package. A package is uniquely identified for conflict
     /// validation by checking the package name and the manager(s) that the
     /// package targets.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The desired_state the agent should maintain for this package. The
     /// default is to ensure the package is installed.
-    #[prost(enumeration = "DesiredState", tag = "2")]
+    #[prost(enumeration="DesiredState", tag="2")]
     pub desired_state: i32,
     /// Type of package manager that can be used to install this package.
     /// If a system does not have the package manager, the package is not
@@ -41,7 +41,7 @@ pub struct Package {
     /// different types of systems.
     ///
     /// The default behavior is ANY.
-    #[prost(enumeration = "package::Manager", tag = "3")]
+    #[prost(enumeration="package::Manager", tag="3")]
     pub manager: i32,
 }
 /// Nested message and enum types in `Package`.
@@ -70,21 +70,21 @@ pub mod package {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AptRepository {
     /// Type of archive files in this repository. The default behavior is DEB.
-    #[prost(enumeration = "apt_repository::ArchiveType", tag = "1")]
+    #[prost(enumeration="apt_repository::ArchiveType", tag="1")]
     pub archive_type: i32,
     /// URI for this repository.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub uri: ::prost::alloc::string::String,
     /// Distribution of this repository.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub distribution: ::prost::alloc::string::String,
     /// List of components for this repository. Must contain at least one item.
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// URI of the key file for this repository. The agent maintains
     /// a keyring at `/etc/apt/trusted.gpg.d/osconfig_agent_managed.gpg` containing
     /// all the keys in any applied guest policy.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub gpg_key: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AptRepository`.
@@ -109,16 +109,16 @@ pub struct YumRepository {
     /// the `repo id` in the Yum config file and also the `display_name` if
     /// `display_name` is omitted. This id is also used as the unique identifier
     /// when checking for guest policy conflicts.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
     /// The display name of the repository.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
     /// The location of the repository directory.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub base_url: ::prost::alloc::string::String,
     /// URIs of GPG keys.
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub gpg_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a single Zypper package repository. This repository is added to a
@@ -129,16 +129,16 @@ pub struct ZypperRepository {
     /// the `repo id` in the zypper config file and also the `display_name` if
     /// `display_name` is omitted. This id is also used as the unique identifier
     /// when checking for guest policy conflicts.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
     /// The display name of the repository.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
     /// The location of the repository directory.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub base_url: ::prost::alloc::string::String,
     /// URIs of GPG keys.
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub gpg_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Represents a Goo package repository. These is added to a repo file
@@ -146,17 +146,17 @@ pub struct ZypperRepository {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GooRepository {
     /// The name of the repository.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The url of the repository.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub url: ::prost::alloc::string::String,
 }
 /// A package repository.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PackageRepository {
     /// A specific type of repository.
-    #[prost(oneof = "package_repository::Repository", tags = "1, 2, 3, 4")]
+    #[prost(oneof="package_repository::Repository", tags="1, 2, 3, 4")]
     pub repository: ::core::option::Option<package_repository::Repository>,
 }
 /// Nested message and enum types in `PackageRepository`.
@@ -165,16 +165,16 @@ pub mod package_repository {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Repository {
         /// An Apt Repository.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         Apt(super::AptRepository),
         /// A Yum Repository.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         Yum(super::YumRepository),
         /// A Zypper Repository.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         Zypper(super::ZypperRepository),
         /// A Goo Repository.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         Goo(super::GooRepository),
     }
 }
@@ -210,26 +210,26 @@ pub struct SoftwareRecipe {
     /// guest policies have conflicts. This means that requests to create multiple
     /// recipes with the same name and version are rejected since they
     /// could potentially have conflicting assignments.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The version of this software recipe. Version can be up to 4 period
     /// separated numbers (e.g. 12.34.56.78).
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub version: ::prost::alloc::string::String,
     /// Resources available to be used in the steps in the recipe.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub artifacts: ::prost::alloc::vec::Vec<software_recipe::Artifact>,
     /// Actions to be taken for installing this recipe. On failure it stops
     /// executing steps and does not attempt another installation. Any steps taken
     /// (including partially completed steps) are not rolled back.  Install steps
     /// must be specified and are used on first installation.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub install_steps: ::prost::alloc::vec::Vec<software_recipe::Step>,
     /// Actions to be taken for updating this recipe. On failure it stops
     /// executing steps and  does not attempt another update for this recipe. Any
     /// steps taken (including partially completed steps) are not rolled back.
     /// Upgrade steps are not mandatory and are only used when upgrading.
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag="5")]
     pub update_steps: ::prost::alloc::vec::Vec<software_recipe::Step>,
     /// Default is INSTALLED. The desired state the agent should maintain for this
     /// recipe.
@@ -241,7 +241,7 @@ pub struct SoftwareRecipe {
     ///                         the recipe is assigned to this instance.
     /// REMOVE: Remove is unsupported for software recipes and attempts to
     ///         create or update a recipe to the REMOVE state is rejected.
-    #[prost(enumeration = "DesiredState", tag = "6")]
+    #[prost(enumeration="DesiredState", tag="6")]
     pub desired_state: i32,
 }
 /// Nested message and enum types in `SoftwareRecipe`.
@@ -251,7 +251,7 @@ pub mod software_recipe {
     pub struct Artifact {
         /// Id of the artifact, which the installation and update steps of this
         /// recipe can reference. Artifacts in a recipe cannot have the same id.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub id: ::prost::alloc::string::String,
         /// Defaults to false. When false, recipes are subject to validations
         /// based on the artifact type:
@@ -259,10 +259,10 @@ pub mod software_recipe {
         /// Remote: A checksum must be specified, and only protocols with
         ///         transport-layer security are permitted.
         /// GCS:    An object generation number must be specified.
-        #[prost(bool, tag = "4")]
+        #[prost(bool, tag="4")]
         pub allow_insecure: bool,
         /// A specific type of artifact.
-        #[prost(oneof = "artifact::Artifact", tags = "2, 3")]
+        #[prost(oneof="artifact::Artifact", tags="2, 3")]
         pub artifact: ::core::option::Option<artifact::Artifact>,
     }
     /// Nested message and enum types in `Artifact`.
@@ -272,14 +272,14 @@ pub mod software_recipe {
         pub struct Remote {
             /// URI from which to fetch the object. It should contain both the protocol
             /// and path following the format {protocol}://{location}.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub uri: ::prost::alloc::string::String,
             /// Must be provided if `allow_insecure` is `false`.
             /// SHA256 checksum in hex format, to compare to the checksum of the
             /// artifact. If the checksum is not empty and it doesn't match the
             /// artifact then the recipe installation fails before running any of the
             /// steps.
-            #[prost(string, tag = "2")]
+            #[prost(string, tag="2")]
             pub checksum: ::prost::alloc::string::String,
         }
         /// Specifies an artifact available as a Cloud Storage object.
@@ -289,7 +289,7 @@ pub mod software_recipe {
             /// Given an example URL:
             /// `<https://storage.googleapis.com/my-bucket/foo/bar#1234567`>
             /// this value would be `my-bucket`.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub bucket: ::prost::alloc::string::String,
             /// Name of the Cloud Storage object.
             /// As specified \[here\]
@@ -297,23 +297,23 @@ pub mod software_recipe {
             /// Given an example URL:
             /// `<https://storage.googleapis.com/my-bucket/foo/bar#1234567`>
             /// this value would be `foo/bar`.
-            #[prost(string, tag = "2")]
+            #[prost(string, tag="2")]
             pub object: ::prost::alloc::string::String,
             /// Must be provided if allow_insecure is false.
             /// Generation number of the Cloud Storage object.
             /// `<https://storage.googleapis.com/my-bucket/foo/bar#1234567`>
             /// this value would be `1234567`.
-            #[prost(int64, tag = "3")]
+            #[prost(int64, tag="3")]
             pub generation: i64,
         }
         /// A specific type of artifact.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Artifact {
             /// A generic remote artifact.
-            #[prost(message, tag = "2")]
+            #[prost(message, tag="2")]
             Remote(Remote),
             /// A Cloud Storage artifact.
-            #[prost(message, tag = "3")]
+            #[prost(message, tag="3")]
             Gcs(Gcs),
         }
     }
@@ -321,7 +321,7 @@ pub mod software_recipe {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Step {
         /// A specific type of step.
-        #[prost(oneof = "step::Step", tags = "1, 2, 3, 4, 5, 6, 7")]
+        #[prost(oneof="step::Step", tags="1, 2, 3, 4, 5, 6, 7")]
         pub step: ::core::option::Option<step::Step>,
     }
     /// Nested message and enum types in `Step`.
@@ -330,15 +330,15 @@ pub mod software_recipe {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CopyFile {
             /// The id of the relevant artifact in the recipe.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub artifact_id: ::prost::alloc::string::String,
             /// The absolute path on the instance to put the file.
-            #[prost(string, tag = "2")]
+            #[prost(string, tag="2")]
             pub destination: ::prost::alloc::string::String,
             /// Whether to allow this step to overwrite existing files. If this is
             /// false and the file already exists the file is not overwritten
             /// and the step is considered a success. Defaults to false.
-            #[prost(bool, tag = "3")]
+            #[prost(bool, tag="3")]
             pub overwrite: bool,
             /// Consists of three octal digits which represent, in
             /// order, the permissions of the owner, group, and other users for the
@@ -353,29 +353,27 @@ pub mod software_recipe {
             /// read and execute: 5
             /// read and write: 6
             /// read only: 4
-            #[prost(string, tag = "4")]
+            #[prost(string, tag="4")]
             pub permissions: ::prost::alloc::string::String,
         }
         /// Extracts an archive of the type specified in the specified directory.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ExtractArchive {
             /// The id of the relevant artifact in the recipe.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub artifact_id: ::prost::alloc::string::String,
             /// Directory to extract archive to.
             /// Defaults to `/` on Linux or `C:\` on Windows.
-            #[prost(string, tag = "2")]
+            #[prost(string, tag="2")]
             pub destination: ::prost::alloc::string::String,
             /// The type of the archive to extract.
-            #[prost(enumeration = "extract_archive::ArchiveType", tag = "3")]
+            #[prost(enumeration="extract_archive::ArchiveType", tag="3")]
             pub r#type: i32,
         }
         /// Nested message and enum types in `ExtractArchive`.
         pub mod extract_archive {
             /// Specifying the type of archive.
-            #[derive(
-                Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-            )]
+            #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
             #[repr(i32)]
             pub enum ArchiveType {
                 /// Indicates that the archive type isn't specified.
@@ -398,43 +396,43 @@ pub mod software_recipe {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct InstallMsi {
             /// The id of the relevant artifact in the recipe.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub artifact_id: ::prost::alloc::string::String,
             /// The flags to use when installing the MSI
             /// defaults to \["/i"\] (i.e. the install flag).
-            #[prost(string, repeated, tag = "2")]
+            #[prost(string, repeated, tag="2")]
             pub flags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Return codes that indicate that the software installed or updated
             /// successfully. Behaviour defaults to \[0\]
-            #[prost(int32, repeated, tag = "3")]
+            #[prost(int32, repeated, tag="3")]
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
         }
         /// Installs a deb via dpkg.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct InstallDpkg {
             /// The id of the relevant artifact in the recipe.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub artifact_id: ::prost::alloc::string::String,
         }
         /// Installs an rpm file via the rpm utility.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct InstallRpm {
             /// The id of the relevant artifact in the recipe.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub artifact_id: ::prost::alloc::string::String,
         }
         /// Executes an artifact or local file.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ExecFile {
             /// Arguments to be passed to the provided executable.
-            #[prost(string, repeated, tag = "3")]
+            #[prost(string, repeated, tag="3")]
             pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Defaults to \[0\]. A list of possible return values that the program
             /// can return to indicate a success.
-            #[prost(int32, repeated, tag = "4")]
+            #[prost(int32, repeated, tag="4")]
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
             /// Location of the file to execute.
-            #[prost(oneof = "exec_file::LocationType", tags = "1, 2")]
+            #[prost(oneof="exec_file::LocationType", tags="1, 2")]
             pub location_type: ::core::option::Option<exec_file::LocationType>,
         }
         /// Nested message and enum types in `ExecFile`.
@@ -443,10 +441,10 @@ pub mod software_recipe {
             #[derive(Clone, PartialEq, ::prost::Oneof)]
             pub enum LocationType {
                 /// The id of the relevant artifact in the recipe.
-                #[prost(string, tag = "1")]
+                #[prost(string, tag="1")]
                 ArtifactId(::prost::alloc::string::String),
                 /// The absolute path of the file on the local filesystem.
-                #[prost(string, tag = "2")]
+                #[prost(string, tag="2")]
                 LocalPath(::prost::alloc::string::String),
             }
         }
@@ -454,25 +452,23 @@ pub mod software_recipe {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct RunScript {
             /// The shell script to be executed.
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub script: ::prost::alloc::string::String,
             /// Return codes that indicate that the software installed or updated
             /// successfully. Behaviour defaults to \[0\]
-            #[prost(int32, repeated, tag = "2")]
+            #[prost(int32, repeated, tag="2")]
             pub allowed_exit_codes: ::prost::alloc::vec::Vec<i32>,
             /// The script interpreter to use to run the script. If no interpreter is
             /// specified the script is executed directly, which likely
             /// only succeed for scripts with
             /// [shebang lines](<https://en.wikipedia.org/wiki/Shebang_(Unix>)).
-            #[prost(enumeration = "run_script::Interpreter", tag = "3")]
+            #[prost(enumeration="run_script::Interpreter", tag="3")]
             pub interpreter: i32,
         }
         /// Nested message and enum types in `RunScript`.
         pub mod run_script {
             /// The interpreter used to execute a script.
-            #[derive(
-                Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-            )]
+            #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
             #[repr(i32)]
             pub enum Interpreter {
                 /// Default value for ScriptType.
@@ -488,25 +484,25 @@ pub mod software_recipe {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Step {
             /// Copies a file onto the instance.
-            #[prost(message, tag = "1")]
+            #[prost(message, tag="1")]
             FileCopy(CopyFile),
             /// Extracts an archive into the specified directory.
-            #[prost(message, tag = "2")]
+            #[prost(message, tag="2")]
             ArchiveExtraction(ExtractArchive),
             /// Installs an MSI file.
-            #[prost(message, tag = "3")]
+            #[prost(message, tag="3")]
             MsiInstallation(InstallMsi),
             /// Installs a deb file via dpkg.
-            #[prost(message, tag = "4")]
+            #[prost(message, tag="4")]
             DpkgInstallation(InstallDpkg),
             /// Installs an rpm file via the rpm utility.
-            #[prost(message, tag = "5")]
+            #[prost(message, tag="5")]
             RpmInstallation(InstallRpm),
             /// Executes an artifact or local file.
-            #[prost(message, tag = "6")]
+            #[prost(message, tag="6")]
             FileExec(ExecFile),
             /// Runs commands in a shell.
-            #[prost(message, tag = "7")]
+            #[prost(message, tag="7")]
             ScriptRun(RunScript),
         }
     }
@@ -517,36 +513,35 @@ pub struct LookupEffectiveGuestPolicyRequest {
     /// Required. This is the GCE instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub instance_id_token: ::prost::alloc::string::String,
     /// Short name of the OS running on the instance. The OS Config agent only
     /// provideS this field for targeting if OS Inventory is enabled for that
     /// instance.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub os_short_name: ::prost::alloc::string::String,
     /// Version of the OS running on the instance. The OS Config agent only
     /// provide this field for targeting if OS Inventory is enabled for that
     /// VM instance.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub os_version: ::prost::alloc::string::String,
     /// Architecture of OS running on the instance. The OS Config agent only
     /// provide this field for targeting if OS Inventory is enabled for that
     /// instance.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub os_architecture: ::prost::alloc::string::String,
 }
 /// The effective guest policy assigned to the instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EffectiveGuestPolicy {
     /// List of package configurations assigned to the VM instance.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub packages: ::prost::alloc::vec::Vec<effective_guest_policy::SourcedPackage>,
     /// List of package repository configurations assigned to the VM instance.
-    #[prost(message, repeated, tag = "2")]
-    pub package_repositories:
-        ::prost::alloc::vec::Vec<effective_guest_policy::SourcedPackageRepository>,
+    #[prost(message, repeated, tag="2")]
+    pub package_repositories: ::prost::alloc::vec::Vec<effective_guest_policy::SourcedPackageRepository>,
     /// List of recipes assigned to the VM instance.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub software_recipes: ::prost::alloc::vec::Vec<effective_guest_policy::SourcedSoftwareRecipe>,
 }
 /// Nested message and enum types in `EffectiveGuestPolicy`.
@@ -555,30 +550,30 @@ pub mod effective_guest_policy {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SourcedPackage {
         /// Name of the guest policy providing this config.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub source: ::prost::alloc::string::String,
         /// A software package to configure on the VM instance.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub package: ::core::option::Option<super::Package>,
     }
     /// A guest policy package repository including its source.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SourcedPackageRepository {
         /// Name of the guest policy providing this config.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub source: ::prost::alloc::string::String,
         /// A software package repository to configure on the VM instance.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub package_repository: ::core::option::Option<super::PackageRepository>,
     }
     /// A guest policy recipe including its source.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SourcedSoftwareRecipe {
         /// Name of the guest policy providing this config.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub source: ::prost::alloc::string::String,
         /// A software recipe to configure on the VM instance.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub software_recipe: ::core::option::Option<super::SoftwareRecipe>,
     }
 }
@@ -602,36 +597,36 @@ pub enum DesiredState {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchConfig {
     /// Post-patch reboot settings.
-    #[prost(enumeration = "patch_config::RebootConfig", tag = "1")]
+    #[prost(enumeration="patch_config::RebootConfig", tag="1")]
     pub reboot_config: i32,
     /// Retry strategy can be defined to have the agent retry patching
     /// during the window if patching fails. If omitted, the agent will use its
     /// default retry strategy.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub retry_strategy: ::core::option::Option<RetryStrategy>,
     /// Apt update settings. Use this override the default apt patch rules.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub apt: ::core::option::Option<AptSettings>,
     /// Yum update settings. Use this override the default yum patch rules.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub yum: ::core::option::Option<YumSettings>,
     /// Goo update settings. Use this override the default goo patch rules.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub goo: ::core::option::Option<GooSettings>,
     /// Zypper update settings. Use this override the default zypper patch rules.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub zypper: ::core::option::Option<ZypperSettings>,
     /// Windows update settings. Use this override the default windows patch rules.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub windows_update: ::core::option::Option<WindowsUpdateSettings>,
     /// The ExecStep to run before the patch update.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub pre_step: ::core::option::Option<ExecStep>,
     /// The ExecStep to run after the patch update.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub post_step: ::core::option::Option<ExecStep>,
     /// Allows the patch job to run on Managed instance groups (MIGs).
-    #[prost(bool, tag = "10")]
+    #[prost(bool, tag="10")]
     pub mig_instances_allowed: bool,
 }
 /// Nested message and enum types in `PatchConfig`.
@@ -659,16 +654,16 @@ pub mod patch_config {
 pub struct AptSettings {
     /// By changing the type to DIST, the patching will be performed
     /// using `apt-get dist-upgrade` instead.
-    #[prost(enumeration = "apt_settings::Type", tag = "1")]
+    #[prost(enumeration="apt_settings::Type", tag="1")]
     pub r#type: i32,
     /// List of packages to exclude from update.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub excludes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// An exclusive list of packages to be updated. These are the only packages
     /// that will be updated. If these packages are not installed, they will be
     /// ignored. This field cannot be specified with any other patch configuration
     /// fields.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub exclusive_packages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `AptSettings`.
@@ -693,50 +688,51 @@ pub mod apt_settings {
 pub struct YumSettings {
     /// Adds the `--security` flag to `yum update`. Not supported on
     /// all platforms.
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag="1")]
     pub security: bool,
     /// Will cause patch to run `yum update-minimal` instead.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub minimal: bool,
     /// List of packages to exclude from update. These packages will be excluded by
     /// using the yum `--exclude` flag.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub excludes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// An exclusive list of packages to be updated. These are the only packages
     /// that will be updated. If these packages are not installed, they will be
     /// ignored. This field must not be specified with any other patch
     /// configuration fields.
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub exclusive_packages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Googet patching is performed by running `googet update`.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GooSettings {}
+pub struct GooSettings {
+}
 /// Zypper patching is performed by running `zypper patch`.
 /// See also <https://en.opensuse.org/SDB:Zypper_manual.>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ZypperSettings {
     /// Adds the `--with-optional` flag to `zypper patch`.
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag="1")]
     pub with_optional: bool,
     /// Adds the `--with-update` flag, to `zypper patch`.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub with_update: bool,
     /// Install only patches with these categories.
     /// Common categories include security, recommended, and feature.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub categories: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Install only patches with these severities.
     /// Common severities include critical, important, moderate, and low.
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub severities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// List of patches to exclude from update.
-    #[prost(string, repeated, tag = "5")]
+    #[prost(string, repeated, tag="5")]
     pub excludes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// An exclusive list of patches to be updated. These are the only patches
     /// that will be installed using 'zypper patch patch:<patch_name>' command.
     /// This field must not be used with any other patch configuration fields.
-    #[prost(string, repeated, tag = "6")]
+    #[prost(string, repeated, tag="6")]
     pub exclusive_patches: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Windows patching is performed using the Windows Update Agent.
@@ -744,19 +740,15 @@ pub struct ZypperSettings {
 pub struct WindowsUpdateSettings {
     /// Only apply updates of these windows update classifications. If empty, all
     /// updates will be applied.
-    #[prost(
-        enumeration = "windows_update_settings::Classification",
-        repeated,
-        tag = "1"
-    )]
+    #[prost(enumeration="windows_update_settings::Classification", repeated, tag="1")]
     pub classifications: ::prost::alloc::vec::Vec<i32>,
     /// List of KBs to exclude from update.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub excludes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// An exclusive list of kbs to be updated. These are the only patches
     /// that will be updated. This field must not be used with other
     /// patch configurations.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub exclusive_patches: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `WindowsUpdateSettings`.
@@ -811,17 +803,17 @@ pub mod windows_update_settings {
 pub struct RetryStrategy {
     /// If true, the agent will continue to try and patch until the window has
     /// ended.
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag="1")]
     pub enabled: bool,
 }
 /// A step that runs an executable for a PatchJob.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecStep {
     /// The ExecStepConfig for all Linux VMs targeted by the PatchJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub linux_exec_step_config: ::core::option::Option<ExecStepConfig>,
     /// The ExecStepConfig for all Windows VMs targeted by the PatchJob.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub windows_exec_step_config: ::core::option::Option<ExecStepConfig>,
 }
 /// Common configurations for an ExecStep.
@@ -829,16 +821,16 @@ pub struct ExecStep {
 pub struct ExecStepConfig {
     /// Defaults to \[0\]. A list of possible return values that the
     /// execution can return to indicate a success.
-    #[prost(int32, repeated, tag = "3")]
+    #[prost(int32, repeated, tag="3")]
     pub allowed_success_codes: ::prost::alloc::vec::Vec<i32>,
     /// The script interpreter to use to run the script. If no interpreter is
     /// specified the script will be executed directly, which will likely
     /// only succeed for scripts with shebang lines.
     /// [Wikipedia shebang](<https://en.wikipedia.org/wiki/Shebang_(Unix>)).
-    #[prost(enumeration = "exec_step_config::Interpreter", tag = "4")]
+    #[prost(enumeration="exec_step_config::Interpreter", tag="4")]
     pub interpreter: i32,
     /// Location of the executable.
-    #[prost(oneof = "exec_step_config::Executable", tags = "1, 2")]
+    #[prost(oneof="exec_step_config::Executable", tags="1, 2")]
     pub executable: ::core::option::Option<exec_step_config::Executable>,
 }
 /// Nested message and enum types in `ExecStepConfig`.
@@ -863,10 +855,10 @@ pub mod exec_step_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Executable {
         /// An absolute path to the executable on the VM.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         LocalPath(::prost::alloc::string::String),
         /// A GCS object containing the executable.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         GcsObject(super::GcsObject),
     }
 }
@@ -874,21 +866,21 @@ pub mod exec_step_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsObject {
     /// Bucket of the GCS object.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub bucket: ::prost::alloc::string::String,
     /// Name of the GCS object.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub object: ::prost::alloc::string::String,
     /// Generation number of the GCS object. This is used to ensure that the
     /// ExecStep specified by this PatchJob does not change.
-    #[prost(int64, tag = "3")]
+    #[prost(int64, tag="3")]
     pub generation_number: i64,
 }
 /// A unit of work to be performed by the agent.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Task {
     /// Unique task id.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub task_id: ::prost::alloc::string::String,
     /// The type of task to perform.
     ///
@@ -896,17 +888,16 @@ pub struct Task {
     /// specified below:
     /// APPLY_PATCHES = ApplyPatchesTask
     /// EXEC_STEP = ExecStepTask;
-    #[prost(enumeration = "TaskType", tag = "2")]
+    #[prost(enumeration="TaskType", tag="2")]
     pub task_type: i32,
     /// Current directive to the agent.
-    #[prost(enumeration = "TaskDirective", tag = "3")]
+    #[prost(enumeration="TaskDirective", tag="3")]
     pub task_directive: i32,
     /// Labels describing the task.  Used for logging by the agent.
-    #[prost(map = "string, string", tag = "6")]
-    pub service_labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="6")]
+    pub service_labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Specific details about the current task to perform.
-    #[prost(oneof = "task::TaskDetails", tags = "4, 5")]
+    #[prost(oneof="task::TaskDetails", tags="4, 5")]
     pub task_details: ::core::option::Option<task::TaskDetails>,
 }
 /// Nested message and enum types in `Task`.
@@ -915,10 +906,10 @@ pub mod task {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum TaskDetails {
         /// Details about the apply patches task to perform.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         ApplyPatchesTask(super::ApplyPatchesTask),
         /// Details about the exec step task to perform.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         ExecStepTask(super::ExecStepTask),
     }
 }
@@ -926,18 +917,18 @@ pub mod task {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyPatchesTask {
     /// Specific information about how patches should be applied.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub patch_config: ::core::option::Option<PatchConfig>,
     /// If true, the agent will report its status as it goes through the motions
     /// but won't actually run any updates or perform any reboots.
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag="3")]
     pub dry_run: bool,
 }
 /// Information reported from the agent about applying patches execution.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyPatchesTaskProgress {
     /// Required. The current state of this patch execution.
-    #[prost(enumeration = "apply_patches_task_progress::State", tag = "1")]
+    #[prost(enumeration="apply_patches_task_progress::State", tag="1")]
     pub state: i32,
 }
 /// Nested message and enum types in `ApplyPatchesTaskProgress`.
@@ -962,7 +953,7 @@ pub mod apply_patches_task_progress {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ApplyPatchesTaskOutput {
     /// Required. The final state of this task.
-    #[prost(enumeration = "apply_patches_task_output::State", tag = "1")]
+    #[prost(enumeration="apply_patches_task_output::State", tag="1")]
     pub state: i32,
 }
 /// Nested message and enum types in `ApplyPatchesTaskOutput`.
@@ -985,14 +976,14 @@ pub mod apply_patches_task_output {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecStepTask {
     /// Details of the exec step to run.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub exec_step: ::core::option::Option<ExecStep>,
 }
 /// Information reported from the agent about the exec step execution.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecStepTaskProgress {
     /// Required. The current state of this exec step.
-    #[prost(enumeration = "exec_step_task_progress::State", tag = "1")]
+    #[prost(enumeration="exec_step_task_progress::State", tag="1")]
     pub state: i32,
 }
 /// Nested message and enum types in `ExecStepTaskProgress`.
@@ -1011,10 +1002,10 @@ pub mod exec_step_task_progress {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecStepTaskOutput {
     /// Required. The final state of the exec step.
-    #[prost(enumeration = "exec_step_task_output::State", tag = "1")]
+    #[prost(enumeration="exec_step_task_output::State", tag="1")]
     pub state: i32,
     /// Required. The exit code received from the script which ran as part of the exec step.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub exit_code: i32,
 }
 /// Nested message and enum types in `ExecStepTaskOutput`.
@@ -1063,23 +1054,24 @@ pub struct ReceiveTaskNotificationRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub instance_id_token: ::prost::alloc::string::String,
     /// Required. The version of the agent making the request.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub agent_version: ::prost::alloc::string::String,
 }
 /// The streaming rpc message that notifies the agent when it has a task
 /// that it needs to perform on the VM instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReceiveTaskNotificationResponse {}
+pub struct ReceiveTaskNotificationResponse {
+}
 /// A request message for signaling the start of a task execution.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartNextTaskRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub instance_id_token: ::prost::alloc::string::String,
 }
 /// A response message that contains the details of the task to work on.
@@ -1087,7 +1079,7 @@ pub struct StartNextTaskRequest {
 pub struct StartNextTaskResponse {
     /// The details of the task that should be worked on.  Can be empty if there
     /// is no new task to work on.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub task: ::core::option::Option<Task>,
 }
 /// A request message for reporting the progress of current task.
@@ -1096,10 +1088,10 @@ pub struct ReportTaskProgressRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub instance_id_token: ::prost::alloc::string::String,
     /// Required. Unique identifier of the task this applies to.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub task_id: ::prost::alloc::string::String,
     /// Required. The type of task to report progress on.
     ///
@@ -1108,10 +1100,10 @@ pub struct ReportTaskProgressRequest {
     /// APPLY_PATCHES = ApplyPatchesTaskProgress
     /// EXEC_STEP = Progress not supported for this type.
     /// APPLY_CONFIG_TASK = ApplyConfigTaskProgress
-    #[prost(enumeration = "TaskType", tag = "3")]
+    #[prost(enumeration="TaskType", tag="3")]
     pub task_type: i32,
     /// Intermediate progress of the current task.
-    #[prost(oneof = "report_task_progress_request::Progress", tags = "4, 5")]
+    #[prost(oneof="report_task_progress_request::Progress", tags="4, 5")]
     pub progress: ::core::option::Option<report_task_progress_request::Progress>,
 }
 /// Nested message and enum types in `ReportTaskProgressRequest`.
@@ -1120,10 +1112,10 @@ pub mod report_task_progress_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Progress {
         /// Details about the progress of the apply patches task.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         ApplyPatchesTaskProgress(super::ApplyPatchesTaskProgress),
         /// Details about the progress of the exec step task.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         ExecStepTaskProgress(super::ExecStepTaskProgress),
     }
 }
@@ -1131,7 +1123,7 @@ pub mod report_task_progress_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReportTaskProgressResponse {
     /// Instructs agent to continue or not.
-    #[prost(enumeration = "TaskDirective", tag = "1")]
+    #[prost(enumeration="TaskDirective", tag="1")]
     pub task_directive: i32,
 }
 /// A request message for signaling the completion of a task execution.
@@ -1140,10 +1132,10 @@ pub struct ReportTaskCompleteRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub instance_id_token: ::prost::alloc::string::String,
     /// Required. Unique identifier of the task this applies to.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub task_id: ::prost::alloc::string::String,
     /// Required. The type of task to report completed.
     ///
@@ -1152,13 +1144,13 @@ pub struct ReportTaskCompleteRequest {
     /// APPLY_PATCHES = ApplyPatchesTaskOutput
     /// EXEC_STEP = ExecStepTaskOutput
     /// APPLY_CONFIG_TASK = ApplyConfigTaskOutput
-    #[prost(enumeration = "TaskType", tag = "3")]
+    #[prost(enumeration="TaskType", tag="3")]
     pub task_type: i32,
     /// Descriptive error message if the task execution ended in error.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub error_message: ::prost::alloc::string::String,
     /// Final output details of the current task.
-    #[prost(oneof = "report_task_complete_request::Output", tags = "5, 6")]
+    #[prost(oneof="report_task_complete_request::Output", tags="5, 6")]
     pub output: ::core::option::Option<report_task_complete_request::Output>,
 }
 /// Nested message and enum types in `ReportTaskCompleteRequest`.
@@ -1167,66 +1159,79 @@ pub mod report_task_complete_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Output {
         /// Final output details of the apply patches task;
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         ApplyPatchesTaskOutput(super::ApplyPatchesTaskOutput),
         /// Final output details of the exec step task;
-        #[prost(message, tag = "6")]
+        #[prost(message, tag="6")]
         ExecStepTaskOutput(super::ExecStepTaskOutput),
     }
 }
 /// The response message after the agent signaled the current task complete.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReportTaskCompleteResponse {}
+pub struct ReportTaskCompleteResponse {
+}
 /// The request message for registering the agent.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegisterAgentRequest {
     /// Required. This is the Compute Engine instance identity token described in
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub instance_id_token: ::prost::alloc::string::String,
     /// Required. The version of the agent.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub agent_version: ::prost::alloc::string::String,
     /// Required. The capabilities supported by the agent. Supported values are:
     /// PATCH_GA
     /// GUEST_POLICY_BETA
     /// CONFIG_V1
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub supported_capabilities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The operating system long name.
     /// For example 'Debian GNU/Linux 9' or 'Microsoft Window Server 2019
     /// Datacenter'.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub os_long_name: ::prost::alloc::string::String,
     /// The operating system short name.
     /// For example, 'windows' or 'debian'.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub os_short_name: ::prost::alloc::string::String,
     /// The version of the operating system.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub os_version: ::prost::alloc::string::String,
     /// The system architecture of the operating system.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub os_architecture: ::prost::alloc::string::String,
 }
 /// The response message after the agent registered.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RegisterAgentResponse {}
-#[doc = r" Generated client implementations."]
+pub struct RegisterAgentResponse {
+}
+/// Generated client implementations.
 pub mod agent_endpoint_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " OS Config agent endpoint API."]
+    /// OS Config agent endpoint API.
     #[derive(Debug, Clone)]
     pub struct AgentEndpointServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl AgentEndpointServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> AgentEndpointServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -1239,125 +1244,155 @@ pub mod agent_endpoint_service_client {
         ) -> AgentEndpointServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             AgentEndpointServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Stream established by client to receive Task notifications."]
+        /// Stream established by client to receive Task notifications.
         pub async fn receive_task_notification(
             &mut self,
             request: impl tonic::IntoRequest<super::ReceiveTaskNotificationRequest>,
         ) -> Result<
-            tonic::Response<tonic::codec::Streaming<super::ReceiveTaskNotificationResponse>>,
+            tonic::Response<
+                tonic::codec::Streaming<super::ReceiveTaskNotificationResponse>,
+            >,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReceiveTaskNotification") ;
             self.inner
-                .server_streaming(request.into_request(), path, codec)
+                .ready()
                 .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReceiveTaskNotification",
+            );
+            self.inner.server_streaming(request.into_request(), path, codec).await
         }
-        #[doc = " Signals the start of a task execution and returns the task info."]
+        /// Signals the start of a task execution and returns the task info.
         pub async fn start_next_task(
             &mut self,
             request: impl tonic::IntoRequest<super::StartNextTaskRequest>,
         ) -> Result<tonic::Response<super::StartNextTaskResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/StartNextTask",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Signals an intermediary progress checkpoint in task execution."]
+        /// Signals an intermediary progress checkpoint in task execution.
         pub async fn report_task_progress(
             &mut self,
             request: impl tonic::IntoRequest<super::ReportTaskProgressRequest>,
         ) -> Result<tonic::Response<super::ReportTaskProgressResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReportTaskProgress") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReportTaskProgress",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Signals that the task execution is complete and optionally returns the next"]
-        #[doc = " task."]
+        /// Signals that the task execution is complete and optionally returns the next
+        /// task.
         pub async fn report_task_complete(
             &mut self,
             request: impl tonic::IntoRequest<super::ReportTaskCompleteRequest>,
         ) -> Result<tonic::Response<super::ReportTaskCompleteResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReportTaskComplete") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/ReportTaskComplete",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lookup the effective guest policy that applies to a VM instance. This"]
-        #[doc = " lookup merges all policies that are assigned to the instance ancestry."]
+        /// Lookup the effective guest policy that applies to a VM instance. This
+        /// lookup merges all policies that are assigned to the instance ancestry.
         pub async fn lookup_effective_guest_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupEffectiveGuestPolicyRequest>,
         ) -> Result<tonic::Response<super::EffectiveGuestPolicy>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/LookupEffectiveGuestPolicy") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/LookupEffectiveGuestPolicy",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Registers the agent running on the VM."]
+        /// Registers the agent running on the VM.
         pub async fn register_agent(
             &mut self,
             request: impl tonic::IntoRequest<super::RegisterAgentRequest>,
         ) -> Result<tonic::Response<super::RegisterAgentResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.agentendpoint.v1beta.AgentEndpointService/RegisterAgent",

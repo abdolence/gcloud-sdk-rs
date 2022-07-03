@@ -2,7 +2,8 @@
 
 /// Container for enum describing possible AccessInvitation errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccessInvitationErrorEnum {}
+pub struct AccessInvitationErrorEnum {
+}
 /// Nested message and enum types in `AccessInvitationErrorEnum`.
 pub mod access_invitation_error_enum {
     /// Enum describing possible AccessInvitation errors.
@@ -36,7 +37,8 @@ pub mod access_invitation_error_enum {
 
 /// Container for enum describing possible account budget proposal errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountBudgetProposalErrorEnum {}
+pub struct AccountBudgetProposalErrorEnum {
+}
 /// Nested message and enum types in `AccountBudgetProposalErrorEnum`.
 pub mod account_budget_proposal_error_enum {
     /// Enum describing possible account budget proposal errors.
@@ -107,7 +109,8 @@ pub mod account_budget_proposal_error_enum {
 
 /// Container for enum describing possible account link errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AccountLinkErrorEnum {}
+pub struct AccountLinkErrorEnum {
+}
 /// Nested message and enum types in `AccountLinkErrorEnum`.
 pub mod account_link_error_enum {
     /// Enum describing possible account link errors.
@@ -126,7 +129,8 @@ pub mod account_link_error_enum {
 
 /// Container for enum describing possible ad customizer errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdCustomizerErrorEnum {}
+pub struct AdCustomizerErrorEnum {
+}
 /// Nested message and enum types in `AdCustomizerErrorEnum`.
 pub mod ad_customizer_error_enum {
     /// Enum describing possible ad customizer errors.
@@ -153,7 +157,8 @@ pub mod ad_customizer_error_enum {
 
 /// Container for enum describing possible ad errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdErrorEnum {}
+pub struct AdErrorEnum {
+}
 /// Nested message and enum types in `AdErrorEnum`.
 pub mod ad_error_enum {
     /// Enum describing possible ad errors.
@@ -500,7 +505,8 @@ pub mod ad_error_enum {
 
 /// Container for enum describing possible ad group ad errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupAdErrorEnum {}
+pub struct AdGroupAdErrorEnum {
+}
 /// Nested message and enum types in `AdGroupAdErrorEnum`.
 pub mod ad_group_ad_error_enum {
     /// Enum describing possible ad group ad errors.
@@ -542,7 +548,8 @@ pub mod ad_group_ad_error_enum {
 
 /// Container for enum describing possible ad group bid modifier errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupBidModifierErrorEnum {}
+pub struct AdGroupBidModifierErrorEnum {
+}
 /// Nested message and enum types in `AdGroupBidModifierErrorEnum`.
 pub mod ad_group_bid_modifier_error_enum {
     /// Enum describing possible ad group bid modifier errors.
@@ -564,7 +571,8 @@ pub mod ad_group_bid_modifier_error_enum {
 
 /// Container for enum describing possible ad group criterion customizer errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupCriterionCustomizerErrorEnum {}
+pub struct AdGroupCriterionCustomizerErrorEnum {
+}
 /// Nested message and enum types in `AdGroupCriterionCustomizerErrorEnum`.
 pub mod ad_group_criterion_customizer_error_enum {
     /// Enum describing possible ad group criterion customizer errors.
@@ -583,7 +591,8 @@ pub mod ad_group_criterion_customizer_error_enum {
 
 /// Container for enum describing possible ad group criterion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupCriterionErrorEnum {}
+pub struct AdGroupCriterionErrorEnum {
+}
 /// Nested message and enum types in `AdGroupCriterionErrorEnum`.
 pub mod ad_group_criterion_error_enum {
     /// Enum describing possible ad group criterion errors.
@@ -665,7 +674,8 @@ pub mod ad_group_criterion_error_enum {
 
 /// Container for enum describing possible ad group customizer errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupCustomizerErrorEnum {}
+pub struct AdGroupCustomizerErrorEnum {
+}
 /// Nested message and enum types in `AdGroupCustomizerErrorEnum`.
 pub mod ad_group_customizer_error_enum {
     /// Enum describing possible ad group customizer errors.
@@ -682,7 +692,8 @@ pub mod ad_group_customizer_error_enum {
 
 /// Container for enum describing possible ad group errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupErrorEnum {}
+pub struct AdGroupErrorEnum {
+}
 /// Nested message and enum types in `AdGroupErrorEnum`.
 pub mod ad_group_error_enum {
     /// Enum describing possible ad group errors.
@@ -732,7 +743,8 @@ pub mod ad_group_error_enum {
 
 /// Container for enum describing possible ad group feed errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdGroupFeedErrorEnum {}
+pub struct AdGroupFeedErrorEnum {
+}
 /// Nested message and enum types in `AdGroupFeedErrorEnum`.
 pub mod ad_group_feed_error_enum {
     /// Enum describing possible ad group feed errors.
@@ -765,7 +777,8 @@ pub mod ad_group_feed_error_enum {
 
 /// Container for enum describing possible ad parameter errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdParameterErrorEnum {}
+pub struct AdParameterErrorEnum {
+}
 /// Nested message and enum types in `AdParameterErrorEnum`.
 pub mod ad_parameter_error_enum {
     /// Enum describing possible ad parameter errors.
@@ -786,7 +799,8 @@ pub mod ad_parameter_error_enum {
 
 /// Container for enum describing possible ad sharing errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdSharingErrorEnum {}
+pub struct AdSharingErrorEnum {
+}
 /// Nested message and enum types in `AdSharingErrorEnum`.
 pub mod ad_sharing_error_enum {
     /// Enum describing possible ad sharing errors.
@@ -810,7 +824,8 @@ pub mod ad_sharing_error_enum {
 
 /// Container for enum describing possible adx errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AdxErrorEnum {}
+pub struct AdxErrorEnum {
+}
 /// Nested message and enum types in `AdxErrorEnum`.
 pub mod adx_error_enum {
     /// Enum describing possible adx errors.
@@ -829,7 +844,8 @@ pub mod adx_error_enum {
 
 /// Container for enum describing possible asset errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetErrorEnum {}
+pub struct AssetErrorEnum {
+}
 /// Nested message and enum types in `AssetErrorEnum`.
 pub mod asset_error_enum {
     /// Enum describing possible asset errors.
@@ -909,7 +925,8 @@ pub mod asset_error_enum {
 
 /// Container for enum describing possible asset group asset errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetGroupAssetErrorEnum {}
+pub struct AssetGroupAssetErrorEnum {
+}
 /// Nested message and enum types in `AssetGroupAssetErrorEnum`.
 pub mod asset_group_asset_error_enum {
     /// Enum describing possible asset group asset errors.
@@ -932,7 +949,8 @@ pub mod asset_group_asset_error_enum {
 
 /// Container for enum describing possible asset group errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetGroupErrorEnum {}
+pub struct AssetGroupErrorEnum {
+}
 /// Nested message and enum types in `AssetGroupErrorEnum`.
 pub mod asset_group_error_enum {
     /// Enum describing possible asset group errors.
@@ -970,7 +988,8 @@ pub mod asset_group_error_enum {
 /// Container for enum describing possible asset group listing group filter
 /// errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetGroupListingGroupFilterErrorEnum {}
+pub struct AssetGroupListingGroupFilterErrorEnum {
+}
 /// Nested message and enum types in `AssetGroupListingGroupFilterErrorEnum`.
 pub mod asset_group_listing_group_filter_error_enum {
     /// Enum describing possible asset group listing group filter errors.
@@ -1014,7 +1033,8 @@ pub mod asset_group_listing_group_filter_error_enum {
 
 /// Container for enum describing possible asset link errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetLinkErrorEnum {}
+pub struct AssetLinkErrorEnum {
+}
 /// Nested message and enum types in `AssetLinkErrorEnum`.
 pub mod asset_link_error_enum {
     /// Enum describing possible asset link errors.
@@ -1079,7 +1099,8 @@ pub mod asset_link_error_enum {
 
 /// Container for enum describing possible asset set asset errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetAssetErrorEnum {}
+pub struct AssetSetAssetErrorEnum {
+}
 /// Nested message and enum types in `AssetSetAssetErrorEnum`.
 pub mod asset_set_asset_error_enum {
     /// Enum describing possible asset set asset errors.
@@ -1105,7 +1126,8 @@ pub mod asset_set_asset_error_enum {
 
 /// Container for enum describing possible asset set errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetErrorEnum {}
+pub struct AssetSetErrorEnum {
+}
 /// Nested message and enum types in `AssetSetErrorEnum`.
 pub mod asset_set_error_enum {
     /// Enum describing possible asset set errors.
@@ -1124,7 +1146,8 @@ pub mod asset_set_error_enum {
 
 /// Container for enum describing possible asset set link errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AssetSetLinkErrorEnum {}
+pub struct AssetSetLinkErrorEnum {
+}
 /// Nested message and enum types in `AssetSetLinkErrorEnum`.
 pub mod asset_set_link_error_enum {
     /// Enum describing possible asset set link errors.
@@ -1153,7 +1176,8 @@ pub mod asset_set_link_error_enum {
 
 /// Container for enum describing possible authentication errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AuthenticationErrorEnum {}
+pub struct AuthenticationErrorEnum {
+}
 /// Nested message and enum types in `AuthenticationErrorEnum`.
 pub mod authentication_error_enum {
     /// Enum describing possible authentication errors.
@@ -1211,7 +1235,8 @@ pub mod authentication_error_enum {
 
 /// Container for enum describing possible authorization errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AuthorizationErrorEnum {}
+pub struct AuthorizationErrorEnum {
+}
 /// Nested message and enum types in `AuthorizationErrorEnum`.
 pub mod authorization_error_enum {
     /// Enum describing possible authorization errors.
@@ -1263,7 +1288,8 @@ pub mod authorization_error_enum {
 
 /// Container for enum describing possible batch job errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchJobErrorEnum {}
+pub struct BatchJobErrorEnum {
+}
 /// Nested message and enum types in `BatchJobErrorEnum`.
 pub mod batch_job_error_enum {
     /// Enum describing possible request errors.
@@ -1293,7 +1319,8 @@ pub mod batch_job_error_enum {
 
 /// Container for enum describing possible bidding errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BiddingErrorEnum {}
+pub struct BiddingErrorEnum {
+}
 /// Nested message and enum types in `BiddingErrorEnum`.
 pub mod bidding_error_enum {
     /// Enum describing possible bidding errors.
@@ -1364,7 +1391,8 @@ pub mod bidding_error_enum {
 
 /// Container for enum describing possible bidding strategy errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BiddingStrategyErrorEnum {}
+pub struct BiddingStrategyErrorEnum {
+}
 /// Nested message and enum types in `BiddingStrategyErrorEnum`.
 pub mod bidding_strategy_error_enum {
     /// Enum describing possible bidding strategy errors.
@@ -1393,7 +1421,8 @@ pub mod bidding_strategy_error_enum {
 
 /// Container for enum describing possible billing setup errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BillingSetupErrorEnum {}
+pub struct BillingSetupErrorEnum {
+}
 /// Nested message and enum types in `BillingSetupErrorEnum`.
 pub mod billing_setup_error_enum {
     /// Enum describing possible billing setup errors.
@@ -1457,7 +1486,8 @@ pub mod billing_setup_error_enum {
 
 /// Container for enum describing possible campaign budget errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignBudgetErrorEnum {}
+pub struct CampaignBudgetErrorEnum {
+}
 /// Nested message and enum types in `CampaignBudgetErrorEnum`.
 pub mod campaign_budget_error_enum {
     /// Enum describing possible campaign budget errors.
@@ -1513,7 +1543,8 @@ pub mod campaign_budget_error_enum {
 
 /// Container for enum describing possible campaign criterion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignCriterionErrorEnum {}
+pub struct CampaignCriterionErrorEnum {
+}
 /// Nested message and enum types in `CampaignCriterionErrorEnum`.
 pub mod campaign_criterion_error_enum {
     /// Enum describing possible campaign criterion errors.
@@ -1569,7 +1600,8 @@ pub mod campaign_criterion_error_enum {
 
 /// Container for enum describing possible campaign customizer errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignCustomizerErrorEnum {}
+pub struct CampaignCustomizerErrorEnum {
+}
 /// Nested message and enum types in `CampaignCustomizerErrorEnum`.
 pub mod campaign_customizer_error_enum {
     /// Enum describing possible campaign customizer errors.
@@ -1586,7 +1618,8 @@ pub mod campaign_customizer_error_enum {
 
 /// Container for enum describing possible campaign draft errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignDraftErrorEnum {}
+pub struct CampaignDraftErrorEnum {
+}
 /// Nested message and enum types in `CampaignDraftErrorEnum`.
 pub mod campaign_draft_error_enum {
     /// Enum describing possible campaign draft errors.
@@ -1628,7 +1661,8 @@ pub mod campaign_draft_error_enum {
 
 /// Container for enum describing possible campaign errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignErrorEnum {}
+pub struct CampaignErrorEnum {
+}
 /// Nested message and enum types in `CampaignErrorEnum`.
 pub mod campaign_error_enum {
     /// Enum describing possible campaign errors.
@@ -1756,7 +1790,8 @@ pub mod campaign_error_enum {
 
 /// Container for enum describing possible campaign experiment errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignExperimentErrorEnum {}
+pub struct CampaignExperimentErrorEnum {
+}
 /// Nested message and enum types in `CampaignExperimentErrorEnum`.
 pub mod campaign_experiment_error_enum {
     /// Enum describing possible campaign experiment errors.
@@ -1800,7 +1835,8 @@ pub mod campaign_experiment_error_enum {
 
 /// Container for enum describing possible campaign feed errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignFeedErrorEnum {}
+pub struct CampaignFeedErrorEnum {
+}
 /// Nested message and enum types in `CampaignFeedErrorEnum`.
 pub mod campaign_feed_error_enum {
     /// Enum describing possible campaign feed errors.
@@ -1833,7 +1869,8 @@ pub mod campaign_feed_error_enum {
 
 /// Container for enum describing possible campaign shared set errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CampaignSharedSetErrorEnum {}
+pub struct CampaignSharedSetErrorEnum {
+}
 /// Nested message and enum types in `CampaignSharedSetErrorEnum`.
 pub mod campaign_shared_set_error_enum {
     /// Enum describing possible campaign shared set errors.
@@ -1852,7 +1889,8 @@ pub mod campaign_shared_set_error_enum {
 
 /// Container for enum describing possible change event errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeEventErrorEnum {}
+pub struct ChangeEventErrorEnum {
+}
 /// Nested message and enum types in `ChangeEventErrorEnum`.
 pub mod change_event_error_enum {
     /// Enum describing possible change event errors.
@@ -1883,7 +1921,8 @@ pub mod change_event_error_enum {
 
 /// Container for enum describing possible change status errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ChangeStatusErrorEnum {}
+pub struct ChangeStatusErrorEnum {
+}
 /// Nested message and enum types in `ChangeStatusErrorEnum`.
 pub mod change_status_error_enum {
     /// Enum describing possible change status errors.
@@ -1914,7 +1953,8 @@ pub mod change_status_error_enum {
 
 /// Container for enum describing possible collection size errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CollectionSizeErrorEnum {}
+pub struct CollectionSizeErrorEnum {
+}
 /// Nested message and enum types in `CollectionSizeErrorEnum`.
 pub mod collection_size_error_enum {
     /// Enum describing possible collection size errors.
@@ -1935,7 +1975,8 @@ pub mod collection_size_error_enum {
 
 /// Container for enum describing possible context errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ContextErrorEnum {}
+pub struct ContextErrorEnum {
+}
 /// Nested message and enum types in `ContextErrorEnum`.
 pub mod context_error_enum {
     /// Enum describing possible context errors.
@@ -1956,7 +1997,8 @@ pub mod context_error_enum {
 
 /// Container for enum describing possible conversion action errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionActionErrorEnum {}
+pub struct ConversionActionErrorEnum {
+}
 /// Nested message and enum types in `ConversionActionErrorEnum`.
 pub mod conversion_action_error_enum {
     /// Enum describing possible conversion action errors.
@@ -2001,7 +2043,8 @@ pub mod conversion_action_error_enum {
 
 /// Container for enum describing possible conversion adjustment upload errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionAdjustmentUploadErrorEnum {}
+pub struct ConversionAdjustmentUploadErrorEnum {
+}
 /// Nested message and enum types in `ConversionAdjustmentUploadErrorEnum`.
 pub mod conversion_adjustment_upload_error_enum {
     /// Enum describing possible conversion adjustment upload errors.
@@ -2076,7 +2119,8 @@ pub mod conversion_adjustment_upload_error_enum {
 
 /// Container for enum describing possible conversion custom variable errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionCustomVariableErrorEnum {}
+pub struct ConversionCustomVariableErrorEnum {
+}
 /// Nested message and enum types in `ConversionCustomVariableErrorEnum`.
 pub mod conversion_custom_variable_error_enum {
     /// Enum describing possible conversion custom variable errors.
@@ -2097,7 +2141,8 @@ pub mod conversion_custom_variable_error_enum {
 
 /// Container for enum describing possible conversion upload errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionUploadErrorEnum {}
+pub struct ConversionUploadErrorEnum {
+}
 /// Nested message and enum types in `ConversionUploadErrorEnum`.
 pub mod conversion_upload_error_enum {
     /// Enum describing possible conversion upload errors.
@@ -2233,7 +2278,8 @@ pub mod conversion_upload_error_enum {
 
 /// Container for enum describing possible conversion value rule errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionValueRuleErrorEnum {}
+pub struct ConversionValueRuleErrorEnum {
+}
 /// Nested message and enum types in `ConversionValueRuleErrorEnum`.
 pub mod conversion_value_rule_error_enum {
     /// Enum describing possible conversion value rule errors.
@@ -2286,7 +2332,8 @@ pub mod conversion_value_rule_error_enum {
 
 /// Container for enum describing possible conversion value rule set errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ConversionValueRuleSetErrorEnum {}
+pub struct ConversionValueRuleSetErrorEnum {
+}
 /// Nested message and enum types in `ConversionValueRuleSetErrorEnum`.
 pub mod conversion_value_rule_set_error_enum {
     /// Enum describing possible conversion value rule set errors.
@@ -2334,7 +2381,8 @@ pub mod conversion_value_rule_set_error_enum {
 
 /// Container for enum describing country code errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CountryCodeErrorEnum {}
+pub struct CountryCodeErrorEnum {
+}
 /// Nested message and enum types in `CountryCodeErrorEnum`.
 pub mod country_code_error_enum {
     /// Enum describing country code errors.
@@ -2353,7 +2401,8 @@ pub mod country_code_error_enum {
 
 /// Container for enum describing possible criterion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CriterionErrorEnum {}
+pub struct CriterionErrorEnum {
+}
 /// Nested message and enum types in `CriterionErrorEnum`.
 pub mod criterion_error_enum {
     /// Enum describing possible criterion errors.
@@ -2656,7 +2705,8 @@ pub mod criterion_error_enum {
 
 /// Container for enum describing possible currency code errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CurrencyCodeErrorEnum {}
+pub struct CurrencyCodeErrorEnum {
+}
 /// Nested message and enum types in `CurrencyCodeErrorEnum`.
 pub mod currency_code_error_enum {
     /// Enum describing possible currency code errors.
@@ -2675,7 +2725,8 @@ pub mod currency_code_error_enum {
 
 /// Container for enum describing possible custom audience errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomAudienceErrorEnum {}
+pub struct CustomAudienceErrorEnum {
+}
 /// Nested message and enum types in `CustomAudienceErrorEnum`.
 pub mod custom_audience_error_enum {
     /// Enum describing possible custom audience errors.
@@ -2708,7 +2759,8 @@ pub mod custom_audience_error_enum {
 
 /// Container for enum describing possible custom conversion goal errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomConversionGoalErrorEnum {}
+pub struct CustomConversionGoalErrorEnum {
+}
 /// Nested message and enum types in `CustomConversionGoalErrorEnum`.
 pub mod custom_conversion_goal_error_enum {
     /// Enum describing possible custom conversion goal errors.
@@ -2733,7 +2785,8 @@ pub mod custom_conversion_goal_error_enum {
 
 /// Container for enum describing possible custom interest errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomInterestErrorEnum {}
+pub struct CustomInterestErrorEnum {
+}
 /// Nested message and enum types in `CustomInterestErrorEnum`.
 pub mod custom_interest_error_enum {
     /// Enum describing possible custom interest errors.
@@ -2765,7 +2818,8 @@ pub mod custom_interest_error_enum {
 
 /// Container for enum describing possible CustomeClientLink errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerClientLinkErrorEnum {}
+pub struct CustomerClientLinkErrorEnum {
+}
 /// Nested message and enum types in `CustomerClientLinkErrorEnum`.
 pub mod customer_client_link_error_enum {
     /// Enum describing possible CustomerClientLink errors.
@@ -2798,7 +2852,8 @@ pub mod customer_client_link_error_enum {
 
 /// Container for enum describing possible customer customizer errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerCustomizerErrorEnum {}
+pub struct CustomerCustomizerErrorEnum {
+}
 /// Nested message and enum types in `CustomerCustomizerErrorEnum`.
 pub mod customer_customizer_error_enum {
     /// Enum describing possible customer customizer errors.
@@ -2813,7 +2868,8 @@ pub mod customer_customizer_error_enum {
 }
 /// Container for enum describing possible customer errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerErrorEnum {}
+pub struct CustomerErrorEnum {
+}
 /// Nested message and enum types in `CustomerErrorEnum`.
 pub mod customer_error_enum {
     /// Set of errors that are related to requests dealing with Customer.
@@ -2836,7 +2892,8 @@ pub mod customer_error_enum {
 
 /// Container for enum describing possible customer feed errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerFeedErrorEnum {}
+pub struct CustomerFeedErrorEnum {
+}
 /// Nested message and enum types in `CustomerFeedErrorEnum`.
 pub mod customer_feed_error_enum {
     /// Enum describing possible customer feed errors.
@@ -2868,7 +2925,8 @@ pub mod customer_feed_error_enum {
 
 /// Container for enum describing possible CustomerManagerLink errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerManagerLinkErrorEnum {}
+pub struct CustomerManagerLinkErrorEnum {
+}
 /// Nested message and enum types in `CustomerManagerLinkErrorEnum`.
 pub mod customer_manager_link_error_enum {
     /// Enum describing possible CustomerManagerLink errors.
@@ -2907,7 +2965,8 @@ pub mod customer_manager_link_error_enum {
 
 /// Container for enum describing possible CustomerUserAccess errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomerUserAccessErrorEnum {}
+pub struct CustomerUserAccessErrorEnum {
+}
 /// Nested message and enum types in `CustomerUserAccessErrorEnum`.
 pub mod customer_user_access_error_enum {
     /// Enum describing possible customer user access errors.
@@ -2935,7 +2994,8 @@ pub mod customer_user_access_error_enum {
 
 /// Container for enum describing possible customizer attribute errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CustomizerAttributeErrorEnum {}
+pub struct CustomizerAttributeErrorEnum {
+}
 /// Nested message and enum types in `CustomizerAttributeErrorEnum`.
 pub mod customizer_attribute_error_enum {
     /// Enum describing possible customizer attribute errors.
@@ -2955,7 +3015,8 @@ pub mod customizer_attribute_error_enum {
 
 /// Container for enum describing possible database errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DatabaseErrorEnum {}
+pub struct DatabaseErrorEnum {
+}
 /// Nested message and enum types in `DatabaseErrorEnum`.
 pub mod database_error_enum {
     /// Enum describing possible database errors.
@@ -2981,7 +3042,8 @@ pub mod database_error_enum {
 
 /// Container for enum describing possible date errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DateErrorEnum {}
+pub struct DateErrorEnum {
+}
 /// Nested message and enum types in `DateErrorEnum`.
 pub mod date_error_enum {
     /// Enum describing possible date errors.
@@ -3018,7 +3080,8 @@ pub mod date_error_enum {
 
 /// Container for enum describing possible date range errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DateRangeErrorEnum {}
+pub struct DateRangeErrorEnum {
+}
 /// Nested message and enum types in `DateRangeErrorEnum`.
 pub mod date_range_error_enum {
     /// Enum describing possible date range errors.
@@ -3045,7 +3108,8 @@ pub mod date_range_error_enum {
 
 /// Container for enum describing possible distinct errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DistinctErrorEnum {}
+pub struct DistinctErrorEnum {
+}
 /// Nested message and enum types in `DistinctErrorEnum`.
 pub mod distinct_error_enum {
     /// Enum describing possible distinct errors.
@@ -3066,7 +3130,8 @@ pub mod distinct_error_enum {
 
 /// Container for enum describing possible enum errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EnumErrorEnum {}
+pub struct EnumErrorEnum {
+}
 /// Nested message and enum types in `EnumErrorEnum`.
 pub mod enum_error_enum {
     /// Enum describing possible enum errors.
@@ -3085,7 +3150,8 @@ pub mod enum_error_enum {
 
 /// Container for enum describing possible extension feed item error.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExtensionFeedItemErrorEnum {}
+pub struct ExtensionFeedItemErrorEnum {
+}
 /// Nested message and enum types in `ExtensionFeedItemErrorEnum`.
 pub mod extension_feed_item_error_enum {
     /// Enum describing possible extension feed item errors.
@@ -3208,7 +3274,8 @@ pub mod extension_feed_item_error_enum {
 
 /// Container for enum describing validation errors of extension settings.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExtensionSettingErrorEnum {}
+pub struct ExtensionSettingErrorEnum {
+}
 /// Nested message and enum types in `ExtensionSettingErrorEnum`.
 pub mod extension_setting_error_enum {
     /// Enum describing possible extension setting errors.
@@ -3377,7 +3444,8 @@ pub mod extension_setting_error_enum {
 
 /// Container for enum describing possible feed attribute reference errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedAttributeReferenceErrorEnum {}
+pub struct FeedAttributeReferenceErrorEnum {
+}
 /// Nested message and enum types in `FeedAttributeReferenceErrorEnum`.
 pub mod feed_attribute_reference_error_enum {
     /// Enum describing possible feed attribute reference errors.
@@ -3400,7 +3468,8 @@ pub mod feed_attribute_reference_error_enum {
 
 /// Container for enum describing possible feed errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedErrorEnum {}
+pub struct FeedErrorEnum {
+}
 /// Nested message and enum types in `FeedErrorEnum`.
 pub mod feed_error_enum {
     /// Enum describing possible feed errors.
@@ -3464,7 +3533,8 @@ pub mod feed_error_enum {
 
 /// Container for enum describing possible feed item errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemErrorEnum {}
+pub struct FeedItemErrorEnum {
+}
 /// Nested message and enum types in `FeedItemErrorEnum`.
 pub mod feed_item_error_enum {
     /// Enum describing possible feed item errors.
@@ -3499,7 +3569,8 @@ pub mod feed_item_error_enum {
 
 /// Container for enum describing possible feed item set errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemSetErrorEnum {}
+pub struct FeedItemSetErrorEnum {
+}
 /// Nested message and enum types in `FeedItemSetErrorEnum`.
 pub mod feed_item_set_error_enum {
     /// Enum describing possible feed item set errors.
@@ -3536,7 +3607,8 @@ pub mod feed_item_set_error_enum {
 
 /// Container for enum describing possible feed item set link errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemSetLinkErrorEnum {}
+pub struct FeedItemSetLinkErrorEnum {
+}
 /// Nested message and enum types in `FeedItemSetLinkErrorEnum`.
 pub mod feed_item_set_link_error_enum {
     /// Enum describing possible feed item set link errors.
@@ -3558,7 +3630,8 @@ pub mod feed_item_set_link_error_enum {
 
 /// Container for enum describing possible feed item target errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemTargetErrorEnum {}
+pub struct FeedItemTargetErrorEnum {
+}
 /// Nested message and enum types in `FeedItemTargetErrorEnum`.
 pub mod feed_item_target_error_enum {
     /// Enum describing possible feed item target errors.
@@ -3593,7 +3666,8 @@ pub mod feed_item_target_error_enum {
 
 /// Container for enum describing possible validation errors of a feed item.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedItemValidationErrorEnum {}
+pub struct FeedItemValidationErrorEnum {
+}
 /// Nested message and enum types in `FeedItemValidationErrorEnum`.
 pub mod feed_item_validation_error_enum {
     /// The possible validation errors of a feed item.
@@ -3838,7 +3912,8 @@ pub mod feed_item_validation_error_enum {
 
 /// Container for enum describing possible feed item errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeedMappingErrorEnum {}
+pub struct FeedMappingErrorEnum {
+}
 /// Nested message and enum types in `FeedMappingErrorEnum`.
 pub mod feed_mapping_error_enum {
     /// Enum describing possible feed item errors.
@@ -3894,7 +3969,8 @@ pub mod feed_mapping_error_enum {
 
 /// Container for enum describing possible field errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FieldErrorEnum {}
+pub struct FieldErrorEnum {
+}
 /// Nested message and enum types in `FieldErrorEnum`.
 pub mod field_error_enum {
     /// Enum describing possible field errors.
@@ -3925,7 +4001,8 @@ pub mod field_error_enum {
 
 /// Container for enum describing possible field mask errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FieldMaskErrorEnum {}
+pub struct FieldMaskErrorEnum {
+}
 /// Nested message and enum types in `FieldMaskErrorEnum`.
 pub mod field_mask_error_enum {
     /// Enum describing possible field mask errors.
@@ -3952,7 +4029,8 @@ pub mod field_mask_error_enum {
 
 /// Container for enum describing possible function errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FunctionErrorEnum {}
+pub struct FunctionErrorEnum {
+}
 /// Nested message and enum types in `FunctionErrorEnum`.
 pub mod function_error_enum {
     /// Enum describing possible function errors.
@@ -4002,7 +4080,8 @@ pub mod function_error_enum {
 
 /// Container for enum describing possible function parsing errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FunctionParsingErrorEnum {}
+pub struct FunctionParsingErrorEnum {
+}
 /// Nested message and enum types in `FunctionParsingErrorEnum`.
 pub mod function_parsing_error_enum {
     /// Enum describing possible function parsing errors.
@@ -4039,7 +4118,8 @@ pub mod function_parsing_error_enum {
 }
 /// Container for enum describing possible geo target constant suggestion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GeoTargetConstantSuggestionErrorEnum {}
+pub struct GeoTargetConstantSuggestionErrorEnum {
+}
 /// Nested message and enum types in `GeoTargetConstantSuggestionErrorEnum`.
 pub mod geo_target_constant_suggestion_error_enum {
     /// Enum describing possible geo target constant suggestion errors.
@@ -4066,7 +4146,8 @@ pub mod geo_target_constant_suggestion_error_enum {
 
 /// Container for enum describing possible header errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct HeaderErrorEnum {}
+pub struct HeaderErrorEnum {
+}
 /// Nested message and enum types in `HeaderErrorEnum`.
 pub mod header_error_enum {
     /// Enum describing possible header errors.
@@ -4087,7 +4168,8 @@ pub mod header_error_enum {
 
 /// Container for enum describing possible id errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IdErrorEnum {}
+pub struct IdErrorEnum {
+}
 /// Nested message and enum types in `IdErrorEnum`.
 pub mod id_error_enum {
     /// Enum describing possible id errors.
@@ -4106,7 +4188,8 @@ pub mod id_error_enum {
 
 /// Container for enum describing possible image errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ImageErrorEnum {}
+pub struct ImageErrorEnum {
+}
 /// Nested message and enum types in `ImageErrorEnum`.
 pub mod image_error_enum {
     /// Enum describing possible image errors.
@@ -4204,7 +4287,8 @@ pub mod image_error_enum {
 
 /// Container for enum describing possible internal errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InternalErrorEnum {}
+pub struct InternalErrorEnum {
+}
 /// Nested message and enum types in `InternalErrorEnum`.
 pub mod internal_error_enum {
     /// Enum describing possible internal errors.
@@ -4231,7 +4315,8 @@ pub mod internal_error_enum {
 
 /// Container for enum describing possible invoice errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct InvoiceErrorEnum {}
+pub struct InvoiceErrorEnum {
+}
 /// Nested message and enum types in `InvoiceErrorEnum`.
 pub mod invoice_error_enum {
     /// Enum describing possible invoice errors.
@@ -4260,7 +4345,8 @@ pub mod invoice_error_enum {
 /// Container for enum describing possible errors from applying a keyword plan
 /// ad group.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanAdGroupErrorEnum {}
+pub struct KeywordPlanAdGroupErrorEnum {
+}
 /// Nested message and enum types in `KeywordPlanAdGroupErrorEnum`.
 pub mod keyword_plan_ad_group_error_enum {
     /// Enum describing possible errors from applying a keyword plan ad group.
@@ -4285,7 +4371,8 @@ pub mod keyword_plan_ad_group_error_enum {
 /// Container for enum describing possible errors from applying an ad group
 /// keyword or a campaign keyword from a keyword plan.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanAdGroupKeywordErrorEnum {}
+pub struct KeywordPlanAdGroupKeywordErrorEnum {
+}
 /// Nested message and enum types in `KeywordPlanAdGroupKeywordErrorEnum`.
 pub mod keyword_plan_ad_group_keyword_error_enum {
     /// Enum describing possible errors from applying a keyword plan ad group
@@ -4321,7 +4408,8 @@ pub mod keyword_plan_ad_group_keyword_error_enum {
 /// Container for enum describing possible errors from applying a keyword plan
 /// campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanCampaignErrorEnum {}
+pub struct KeywordPlanCampaignErrorEnum {
+}
 /// Nested message and enum types in `KeywordPlanCampaignErrorEnum`.
 pub mod keyword_plan_campaign_error_enum {
     /// Enum describing possible errors from applying a keyword plan campaign.
@@ -4353,7 +4441,8 @@ pub mod keyword_plan_campaign_error_enum {
 /// Container for enum describing possible errors from applying a keyword plan
 /// campaign keyword.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanCampaignKeywordErrorEnum {}
+pub struct KeywordPlanCampaignKeywordErrorEnum {
+}
 /// Nested message and enum types in `KeywordPlanCampaignKeywordErrorEnum`.
 pub mod keyword_plan_campaign_keyword_error_enum {
     /// Enum describing possible errors from applying a keyword plan campaign
@@ -4377,7 +4466,8 @@ pub mod keyword_plan_campaign_keyword_error_enum {
 /// resource (keyword plan, keyword plan campaign, keyword plan ad group or
 /// keyword plan keyword) or KeywordPlanService RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanErrorEnum {}
+pub struct KeywordPlanErrorEnum {
+}
 /// Nested message and enum types in `KeywordPlanErrorEnum`.
 pub mod keyword_plan_error_enum {
     /// Enum describing possible errors from applying a keyword plan.
@@ -4423,7 +4513,8 @@ pub mod keyword_plan_error_enum {
 
 /// Container for enum describing possible errors from KeywordPlanIdeaService.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct KeywordPlanIdeaErrorEnum {}
+pub struct KeywordPlanIdeaErrorEnum {
+}
 /// Nested message and enum types in `KeywordPlanIdeaErrorEnum`.
 pub mod keyword_plan_idea_error_enum {
     /// Enum describing possible errors from KeywordPlanIdeaService.
@@ -4444,7 +4535,8 @@ pub mod keyword_plan_idea_error_enum {
 
 /// Container for enum describing possible label errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LabelErrorEnum {}
+pub struct LabelErrorEnum {
+}
 /// Nested message and enum types in `LabelErrorEnum`.
 pub mod label_error_enum {
     /// Enum describing possible label errors.
@@ -4481,7 +4573,8 @@ pub mod label_error_enum {
 
 /// Container for enum describing language code errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LanguageCodeErrorEnum {}
+pub struct LanguageCodeErrorEnum {
+}
 /// Nested message and enum types in `LanguageCodeErrorEnum`.
 pub mod language_code_error_enum {
     /// Enum describing language code errors.
@@ -4502,7 +4595,8 @@ pub mod language_code_error_enum {
 
 /// Container for enum describing possible list operation errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListOperationErrorEnum {}
+pub struct ListOperationErrorEnum {
+}
 /// Nested message and enum types in `ListOperationErrorEnum`.
 pub mod list_operation_error_enum {
     /// Enum describing possible list operation errors.
@@ -4523,7 +4617,8 @@ pub mod list_operation_error_enum {
 
 /// Container for enum describing possible ManagerLink errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ManagerLinkErrorEnum {}
+pub struct ManagerLinkErrorEnum {
+}
 /// Nested message and enum types in `ManagerLinkErrorEnum`.
 pub mod manager_link_error_enum {
     /// Enum describing possible ManagerLink errors.
@@ -4580,7 +4675,8 @@ pub mod manager_link_error_enum {
 
 /// Container for enum describing possible media bundle errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MediaBundleErrorEnum {}
+pub struct MediaBundleErrorEnum {
+}
 /// Nested message and enum types in `MediaBundleErrorEnum`.
 pub mod media_bundle_error_enum {
     /// Enum describing possible media bundle errors.
@@ -4641,7 +4737,8 @@ pub mod media_bundle_error_enum {
 
 /// Container for enum describing possible media file errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MediaFileErrorEnum {}
+pub struct MediaFileErrorEnum {
+}
 /// Nested message and enum types in `MediaFileErrorEnum`.
 pub mod media_file_error_enum {
     /// Enum describing possible media file errors.
@@ -4704,7 +4801,8 @@ pub mod media_file_error_enum {
 
 /// Container for enum describing possible media uploading errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MediaUploadErrorEnum {}
+pub struct MediaUploadErrorEnum {
+}
 /// Nested message and enum types in `MediaUploadErrorEnum`.
 pub mod media_upload_error_enum {
     /// Enum describing possible media uploading errors.
@@ -4795,7 +4893,8 @@ pub mod media_upload_error_enum {
 
 /// Container for enum describing possible merchant center errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MerchantCenterErrorEnum {}
+pub struct MerchantCenterErrorEnum {
+}
 /// Nested message and enum types in `MerchantCenterErrorEnum`.
 pub mod merchant_center_error_enum {
     /// Enum describing Merchant Center errors.
@@ -4816,7 +4915,8 @@ pub mod merchant_center_error_enum {
 
 /// Container for enum describing possible multiplier errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MultiplierErrorEnum {}
+pub struct MultiplierErrorEnum {
+}
 /// Nested message and enum types in `MultiplierErrorEnum`.
 pub mod multiplier_error_enum {
     /// Enum describing possible multiplier errors.
@@ -4858,7 +4958,8 @@ pub mod multiplier_error_enum {
 
 /// Container for enum describing possible mutate errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MutateErrorEnum {}
+pub struct MutateErrorEnum {
+}
 /// Nested message and enum types in `MutateErrorEnum`.
 pub mod mutate_error_enum {
     /// Enum describing possible mutate errors.
@@ -4894,7 +4995,8 @@ pub mod mutate_error_enum {
 
 /// Container for enum describing possible new resource creation errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NewResourceCreationErrorEnum {}
+pub struct NewResourceCreationErrorEnum {
+}
 /// Nested message and enum types in `NewResourceCreationErrorEnum`.
 pub mod new_resource_creation_error_enum {
     /// Enum describing possible new resource creation errors.
@@ -4918,7 +5020,8 @@ pub mod new_resource_creation_error_enum {
 
 /// Container for enum describing possible not allowlisted errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NotAllowlistedErrorEnum {}
+pub struct NotAllowlistedErrorEnum {
+}
 /// Nested message and enum types in `NotAllowlistedErrorEnum`.
 pub mod not_allowlisted_error_enum {
     /// Enum describing possible not allowlisted errors.
@@ -4937,7 +5040,8 @@ pub mod not_allowlisted_error_enum {
 
 /// Container for enum describing possible not empty errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NotEmptyErrorEnum {}
+pub struct NotEmptyErrorEnum {
+}
 /// Nested message and enum types in `NotEmptyErrorEnum`.
 pub mod not_empty_error_enum {
     /// Enum describing possible not empty errors.
@@ -4956,7 +5060,8 @@ pub mod not_empty_error_enum {
 
 /// Container for enum describing possible null errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NullErrorEnum {}
+pub struct NullErrorEnum {
+}
 /// Nested message and enum types in `NullErrorEnum`.
 pub mod null_error_enum {
     /// Enum describing possible null errors.
@@ -4975,7 +5080,8 @@ pub mod null_error_enum {
 
 /// Container for enum describing possible offline user data job errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OfflineUserDataJobErrorEnum {}
+pub struct OfflineUserDataJobErrorEnum {
+}
 /// Nested message and enum types in `OfflineUserDataJobErrorEnum`.
 pub mod offline_user_data_job_error_enum {
     /// Enum describing possible request errors.
@@ -5074,7 +5180,8 @@ pub mod offline_user_data_job_error_enum {
 
 /// Container for enum describing possible operation access denied errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperationAccessDeniedErrorEnum {}
+pub struct OperationAccessDeniedErrorEnum {
+}
 /// Nested message and enum types in `OperationAccessDeniedErrorEnum`.
 pub mod operation_access_denied_error_enum {
     /// Enum describing possible operation access denied errors.
@@ -5111,7 +5218,8 @@ pub mod operation_access_denied_error_enum {
 
 /// Container for enum describing possible operator errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OperatorErrorEnum {}
+pub struct OperatorErrorEnum {
+}
 /// Nested message and enum types in `OperatorErrorEnum`.
 pub mod operator_error_enum {
     /// Enum describing possible operator errors.
@@ -5130,7 +5238,8 @@ pub mod operator_error_enum {
 
 /// Container for enum describing possible partial failure errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PartialFailureErrorEnum {}
+pub struct PartialFailureErrorEnum {
+}
 /// Nested message and enum types in `PartialFailureErrorEnum`.
 pub mod partial_failure_error_enum {
     /// Enum describing possible partial failure errors.
@@ -5150,7 +5259,8 @@ pub mod partial_failure_error_enum {
 
 /// Container for enum describing possible errors in payments account service.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PaymentsAccountErrorEnum {}
+pub struct PaymentsAccountErrorEnum {
+}
 /// Nested message and enum types in `PaymentsAccountErrorEnum`.
 pub mod payments_account_error_enum {
     /// Enum describing possible errors in payments account service.
@@ -5169,7 +5279,8 @@ pub mod payments_account_error_enum {
 
 /// Container for enum describing possible policy finding errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyFindingErrorEnum {}
+pub struct PolicyFindingErrorEnum {
+}
 /// Nested message and enum types in `PolicyFindingErrorEnum`.
 pub mod policy_finding_error_enum {
     /// Enum describing possible policy finding errors.
@@ -5191,7 +5302,8 @@ pub mod policy_finding_error_enum {
 
 /// Container for enum describing possible policy validation parameter errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyValidationParameterErrorEnum {}
+pub struct PolicyValidationParameterErrorEnum {
+}
 /// Nested message and enum types in `PolicyValidationParameterErrorEnum`.
 pub mod policy_validation_parameter_error_enum {
     /// Enum describing possible policy validation parameter errors.
@@ -5215,7 +5327,8 @@ pub mod policy_validation_parameter_error_enum {
 
 /// Container for enum describing possible policy violation errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PolicyViolationErrorEnum {}
+pub struct PolicyViolationErrorEnum {
+}
 /// Nested message and enum types in `PolicyViolationErrorEnum`.
 pub mod policy_violation_error_enum {
     /// Enum describing possible policy violation errors.
@@ -5234,7 +5347,8 @@ pub mod policy_violation_error_enum {
 
 /// Container for enum describing possible query errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryErrorEnum {}
+pub struct QueryErrorEnum {
+}
 /// Nested message and enum types in `QueryErrorEnum`.
 pub mod query_error_enum {
     /// Enum describing possible query errors.
@@ -5379,7 +5493,8 @@ pub mod query_error_enum {
 
 /// Container for enum describing possible quota errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QuotaErrorEnum {}
+pub struct QuotaErrorEnum {
+}
 /// Nested message and enum types in `QuotaErrorEnum`.
 pub mod quota_error_enum {
     /// Enum describing possible quota errors.
@@ -5402,7 +5517,8 @@ pub mod quota_error_enum {
 
 /// Container for enum describing possible range errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RangeErrorEnum {}
+pub struct RangeErrorEnum {
+}
 /// Nested message and enum types in `RangeErrorEnum`.
 pub mod range_error_enum {
     /// Enum describing possible range errors.
@@ -5424,7 +5540,8 @@ pub mod range_error_enum {
 /// Container for enum describing possible errors returned from
 /// the ReachPlanService.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReachPlanErrorEnum {}
+pub struct ReachPlanErrorEnum {
+}
 /// Nested message and enum types in `ReachPlanErrorEnum`.
 pub mod reach_plan_error_enum {
     /// Enum describing possible errors from ReachPlanService.
@@ -5443,7 +5560,8 @@ pub mod reach_plan_error_enum {
 
 /// Container for enum describing possible errors from applying a recommendation.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RecommendationErrorEnum {}
+pub struct RecommendationErrorEnum {
+}
 /// Nested message and enum types in `RecommendationErrorEnum`.
 pub mod recommendation_error_enum {
     /// Enum describing possible errors from applying a recommendation.
@@ -5492,7 +5610,8 @@ pub mod recommendation_error_enum {
 
 /// Container for enum describing possible region code errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RegionCodeErrorEnum {}
+pub struct RegionCodeErrorEnum {
+}
 /// Nested message and enum types in `RegionCodeErrorEnum`.
 pub mod region_code_error_enum {
     /// Enum describing possible region code errors.
@@ -5511,7 +5630,8 @@ pub mod region_code_error_enum {
 
 /// Container for enum describing possible request errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RequestErrorEnum {}
+pub struct RequestErrorEnum {
+}
 /// Nested message and enum types in `RequestErrorEnum`.
 pub mod request_error_enum {
     /// Enum describing possible request errors.
@@ -5580,7 +5700,8 @@ pub mod request_error_enum {
 
 /// Container for enum describing possible resource access denied errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceAccessDeniedErrorEnum {}
+pub struct ResourceAccessDeniedErrorEnum {
+}
 /// Nested message and enum types in `ResourceAccessDeniedErrorEnum`.
 pub mod resource_access_denied_error_enum {
     /// Enum describing possible resource access denied errors.
@@ -5599,7 +5720,8 @@ pub mod resource_access_denied_error_enum {
 
 /// Container for enum describing possible resource count limit exceeded errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResourceCountLimitExceededErrorEnum {}
+pub struct ResourceCountLimitExceededErrorEnum {
+}
 /// Nested message and enum types in `ResourceCountLimitExceededErrorEnum`.
 pub mod resource_count_limit_exceeded_error_enum {
     /// Enum describing possible resource count limit exceeded errors.
@@ -5656,7 +5778,8 @@ pub mod resource_count_limit_exceeded_error_enum {
 
 /// Container for enum describing possible setting errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SettingErrorEnum {}
+pub struct SettingErrorEnum {
+}
 /// Nested message and enum types in `SettingErrorEnum`.
 pub mod setting_error_enum {
     /// Enum describing possible setting errors.
@@ -5703,7 +5826,8 @@ pub mod setting_error_enum {
 
 /// Container for enum describing possible shared criterion errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SharedCriterionErrorEnum {}
+pub struct SharedCriterionErrorEnum {
+}
 /// Nested message and enum types in `SharedCriterionErrorEnum`.
 pub mod shared_criterion_error_enum {
     /// Enum describing possible shared criterion errors.
@@ -5722,7 +5846,8 @@ pub mod shared_criterion_error_enum {
 
 /// Container for enum describing possible shared set errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SharedSetErrorEnum {}
+pub struct SharedSetErrorEnum {
+}
 /// Nested message and enum types in `SharedSetErrorEnum`.
 pub mod shared_set_error_enum {
     /// Enum describing possible shared set errors.
@@ -5747,7 +5872,8 @@ pub mod shared_set_error_enum {
 
 /// Container for enum describing possible size limit errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SizeLimitErrorEnum {}
+pub struct SizeLimitErrorEnum {
+}
 /// Nested message and enum types in `SizeLimitErrorEnum`.
 pub mod size_limit_error_enum {
     /// Enum describing possible size limit errors.
@@ -5768,7 +5894,8 @@ pub mod size_limit_error_enum {
 
 /// Container for enum describing possible string format errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StringFormatErrorEnum {}
+pub struct StringFormatErrorEnum {
+}
 /// Nested message and enum types in `StringFormatErrorEnum`.
 pub mod string_format_error_enum {
     /// Enum describing possible string format errors.
@@ -5789,7 +5916,8 @@ pub mod string_format_error_enum {
 
 /// Container for enum describing possible string length errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct StringLengthErrorEnum {}
+pub struct StringLengthErrorEnum {
+}
 /// Nested message and enum types in `StringLengthErrorEnum`.
 pub mod string_length_error_enum {
     /// Enum describing possible string length errors.
@@ -5813,7 +5941,8 @@ pub mod string_length_error_enum {
 
 /// Container for enum describing possible third party app analytics link errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ThirdPartyAppAnalyticsLinkErrorEnum {}
+pub struct ThirdPartyAppAnalyticsLinkErrorEnum {
+}
 /// Nested message and enum types in `ThirdPartyAppAnalyticsLinkErrorEnum`.
 pub mod third_party_app_analytics_link_error_enum {
     /// Enum describing possible third party app analytics link errors.
@@ -5839,7 +5968,8 @@ pub mod third_party_app_analytics_link_error_enum {
 
 /// Container for enum describing possible time zone errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TimeZoneErrorEnum {}
+pub struct TimeZoneErrorEnum {
+}
 /// Nested message and enum types in `TimeZoneErrorEnum`.
 pub mod time_zone_error_enum {
     /// Enum describing possible currency code errors.
@@ -5858,7 +5988,8 @@ pub mod time_zone_error_enum {
 
 /// Container for enum describing possible url field errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UrlFieldErrorEnum {}
+pub struct UrlFieldErrorEnum {
+}
 /// Nested message and enum types in `UrlFieldErrorEnum`.
 pub mod url_field_error_enum {
     /// Enum describing possible url field errors.
@@ -5995,7 +6126,8 @@ pub mod url_field_error_enum {
 
 /// Container for enum describing possible user data errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserDataErrorEnum {}
+pub struct UserDataErrorEnum {
+}
 /// Nested message and enum types in `UserDataErrorEnum`.
 pub mod user_data_error_enum {
     /// Enum describing possible request errors.
@@ -6018,7 +6150,8 @@ pub mod user_data_error_enum {
 
 /// Container for enum describing possible user list errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UserListErrorEnum {}
+pub struct UserListErrorEnum {
+}
 /// Nested message and enum types in `UserListErrorEnum`.
 pub mod user_list_error_enum {
     /// Enum describing possible user list errors.
@@ -6094,7 +6227,8 @@ pub mod user_list_error_enum {
 
 /// Container for enum describing YouTube video registration errors.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct YoutubeVideoRegistrationErrorEnum {}
+pub struct YoutubeVideoRegistrationErrorEnum {
+}
 /// Nested message and enum types in `YoutubeVideoRegistrationErrorEnum`.
 pub mod youtube_video_registration_error_enum {
     /// Enum describing YouTube video registration errors.
@@ -6120,40 +6254,37 @@ pub mod youtube_video_registration_error_enum {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsFailure {
     /// The list of errors that occurred.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub errors: ::prost::alloc::vec::Vec<GoogleAdsError>,
     /// The unique ID of the request that is used for debugging purposes.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
 }
 /// GoogleAds-specific error.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsError {
     /// An enum value that indicates which error occurred.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub error_code: ::core::option::Option<ErrorCode>,
     /// A human-readable description of the error.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub message: ::prost::alloc::string::String,
     /// The value that triggered the error.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub trigger: ::core::option::Option<super::common::Value>,
     /// Describes the part of the request proto that caused the error.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub location: ::core::option::Option<ErrorLocation>,
     /// Additional error details, which are returned by certain error codes. Most
     /// error codes do not include details.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub details: ::core::option::Option<ErrorDetails>,
 }
 /// The error reason represented by type and enum.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorCode {
     /// The list of error enums
-    #[prost(
-        oneof = "error_code::ErrorCode",
-        tags = "1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 161, 18, 159, 19, 21, 24, 25, 107, 149, 155, 148, 153, 154, 152, 26, 29, 160, 31, 109, 32, 150, 158, 90, 151, 33, 34, 35, 36, 37, 38, 39, 40, 110, 42, 116, 86, 162, 44, 45, 46, 47, 48, 49, 58, 51, 52, 53, 54, 55, 56, 57, 117, 59, 60, 61, 62, 63, 64, 65, 115, 143, 111, 145, 146, 66, 67, 68, 70, 71, 72, 132, 74, 133, 76, 77, 78, 136, 79, 80, 81, 82, 83, 84, 87, 88, 91, 92, 93, 94, 96, 97, 98, 100, 101, 102, 103, 140, 141, 104, 105, 112, 114, 118, 119, 137, 121, 122, 124, 125, 126, 127, 128, 129, 130, 131, 134, 135, 138, 139"
-    )]
+    #[prost(oneof="error_code::ErrorCode", tags="1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 161, 18, 159, 19, 21, 24, 25, 107, 149, 155, 148, 153, 154, 152, 26, 29, 160, 31, 109, 32, 150, 158, 90, 151, 33, 34, 35, 36, 37, 38, 39, 40, 110, 42, 116, 86, 162, 44, 45, 46, 47, 48, 49, 58, 51, 52, 53, 54, 55, 56, 57, 117, 59, 60, 61, 62, 63, 64, 65, 115, 143, 111, 145, 146, 66, 67, 68, 70, 71, 72, 132, 74, 133, 76, 77, 78, 136, 79, 80, 81, 82, 83, 84, 87, 88, 91, 92, 93, 94, 96, 97, 98, 100, 101, 102, 103, 140, 141, 104, 105, 112, 114, 118, 119, 137, 121, 122, 124, 125, 126, 127, 128, 129, 130, 131, 134, 135, 138, 139")]
     pub error_code: ::core::option::Option<error_code::ErrorCode>,
 }
 /// Nested message and enum types in `ErrorCode`.
@@ -6162,709 +6293,406 @@ pub mod error_code {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ErrorCode {
         /// An error caused by the request
-        #[prost(enumeration = "super::request_error_enum::RequestError", tag = "1")]
+        #[prost(enumeration="super::request_error_enum::RequestError", tag="1")]
         RequestError(i32),
         /// An error with a Bidding Strategy mutate.
-        #[prost(
-            enumeration = "super::bidding_strategy_error_enum::BiddingStrategyError",
-            tag = "2"
-        )]
+        #[prost(enumeration="super::bidding_strategy_error_enum::BiddingStrategyError", tag="2")]
         BiddingStrategyError(i32),
         /// An error with a URL field mutate.
-        #[prost(enumeration = "super::url_field_error_enum::UrlFieldError", tag = "3")]
+        #[prost(enumeration="super::url_field_error_enum::UrlFieldError", tag="3")]
         UrlFieldError(i32),
         /// An error with a list operation.
-        #[prost(
-            enumeration = "super::list_operation_error_enum::ListOperationError",
-            tag = "4"
-        )]
+        #[prost(enumeration="super::list_operation_error_enum::ListOperationError", tag="4")]
         ListOperationError(i32),
         /// An error with an AWQL query
-        #[prost(enumeration = "super::query_error_enum::QueryError", tag = "5")]
+        #[prost(enumeration="super::query_error_enum::QueryError", tag="5")]
         QueryError(i32),
         /// An error with a mutate
-        #[prost(enumeration = "super::mutate_error_enum::MutateError", tag = "7")]
+        #[prost(enumeration="super::mutate_error_enum::MutateError", tag="7")]
         MutateError(i32),
         /// An error with a field mask
-        #[prost(
-            enumeration = "super::field_mask_error_enum::FieldMaskError",
-            tag = "8"
-        )]
+        #[prost(enumeration="super::field_mask_error_enum::FieldMaskError", tag="8")]
         FieldMaskError(i32),
         /// An error encountered when trying to authorize a user.
-        #[prost(
-            enumeration = "super::authorization_error_enum::AuthorizationError",
-            tag = "9"
-        )]
+        #[prost(enumeration="super::authorization_error_enum::AuthorizationError", tag="9")]
         AuthorizationError(i32),
         /// An unexpected server-side error.
-        #[prost(enumeration = "super::internal_error_enum::InternalError", tag = "10")]
+        #[prost(enumeration="super::internal_error_enum::InternalError", tag="10")]
         InternalError(i32),
         /// An error with the amonut of quota remaining.
-        #[prost(enumeration = "super::quota_error_enum::QuotaError", tag = "11")]
+        #[prost(enumeration="super::quota_error_enum::QuotaError", tag="11")]
         QuotaError(i32),
         /// An error with an Ad Group Ad mutate.
-        #[prost(enumeration = "super::ad_error_enum::AdError", tag = "12")]
+        #[prost(enumeration="super::ad_error_enum::AdError", tag="12")]
         AdError(i32),
         /// An error with an Ad Group mutate.
-        #[prost(enumeration = "super::ad_group_error_enum::AdGroupError", tag = "13")]
+        #[prost(enumeration="super::ad_group_error_enum::AdGroupError", tag="13")]
         AdGroupError(i32),
         /// An error with a Campaign Budget mutate.
-        #[prost(
-            enumeration = "super::campaign_budget_error_enum::CampaignBudgetError",
-            tag = "14"
-        )]
+        #[prost(enumeration="super::campaign_budget_error_enum::CampaignBudgetError", tag="14")]
         CampaignBudgetError(i32),
         /// An error with a Campaign mutate.
-        #[prost(enumeration = "super::campaign_error_enum::CampaignError", tag = "15")]
+        #[prost(enumeration="super::campaign_error_enum::CampaignError", tag="15")]
         CampaignError(i32),
         /// Indicates failure to properly authenticate user.
-        #[prost(
-            enumeration = "super::authentication_error_enum::AuthenticationError",
-            tag = "17"
-        )]
+        #[prost(enumeration="super::authentication_error_enum::AuthenticationError", tag="17")]
         AuthenticationError(i32),
         /// The reasons for the ad group criterion customizer error.
-        #[prost(
-            enumeration = "super::ad_group_criterion_customizer_error_enum::AdGroupCriterionCustomizerError",
-            tag = "161"
-        )]
+        #[prost(enumeration="super::ad_group_criterion_customizer_error_enum::AdGroupCriterionCustomizerError", tag="161")]
         AdGroupCriterionCustomizerError(i32),
         /// Indicates failure to properly authenticate user.
-        #[prost(
-            enumeration = "super::ad_group_criterion_error_enum::AdGroupCriterionError",
-            tag = "18"
-        )]
+        #[prost(enumeration="super::ad_group_criterion_error_enum::AdGroupCriterionError", tag="18")]
         AdGroupCriterionError(i32),
         /// The reasons for the ad group customizer error.
-        #[prost(
-            enumeration = "super::ad_group_customizer_error_enum::AdGroupCustomizerError",
-            tag = "159"
-        )]
+        #[prost(enumeration="super::ad_group_customizer_error_enum::AdGroupCustomizerError", tag="159")]
         AdGroupCustomizerError(i32),
         /// The reasons for the ad customizer error
-        #[prost(
-            enumeration = "super::ad_customizer_error_enum::AdCustomizerError",
-            tag = "19"
-        )]
+        #[prost(enumeration="super::ad_customizer_error_enum::AdCustomizerError", tag="19")]
         AdCustomizerError(i32),
         /// The reasons for the ad group ad error
-        #[prost(
-            enumeration = "super::ad_group_ad_error_enum::AdGroupAdError",
-            tag = "21"
-        )]
+        #[prost(enumeration="super::ad_group_ad_error_enum::AdGroupAdError", tag="21")]
         AdGroupAdError(i32),
         /// The reasons for the ad sharing error
-        #[prost(
-            enumeration = "super::ad_sharing_error_enum::AdSharingError",
-            tag = "24"
-        )]
+        #[prost(enumeration="super::ad_sharing_error_enum::AdSharingError", tag="24")]
         AdSharingError(i32),
         /// The reasons for the adx error
-        #[prost(enumeration = "super::adx_error_enum::AdxError", tag = "25")]
+        #[prost(enumeration="super::adx_error_enum::AdxError", tag="25")]
         AdxError(i32),
         /// The reasons for the asset error
-        #[prost(enumeration = "super::asset_error_enum::AssetError", tag = "107")]
+        #[prost(enumeration="super::asset_error_enum::AssetError", tag="107")]
         AssetError(i32),
         /// The reasons for the asset group asset error
-        #[prost(
-            enumeration = "super::asset_group_asset_error_enum::AssetGroupAssetError",
-            tag = "149"
-        )]
+        #[prost(enumeration="super::asset_group_asset_error_enum::AssetGroupAssetError", tag="149")]
         AssetGroupAssetError(i32),
         /// The reasons for the asset group listing group filter error
-        #[prost(
-            enumeration = "super::asset_group_listing_group_filter_error_enum::AssetGroupListingGroupFilterError",
-            tag = "155"
-        )]
+        #[prost(enumeration="super::asset_group_listing_group_filter_error_enum::AssetGroupListingGroupFilterError", tag="155")]
         AssetGroupListingGroupFilterError(i32),
         /// The reasons for the asset group error
-        #[prost(
-            enumeration = "super::asset_group_error_enum::AssetGroupError",
-            tag = "148"
-        )]
+        #[prost(enumeration="super::asset_group_error_enum::AssetGroupError", tag="148")]
         AssetGroupError(i32),
         /// The reasons for the asset set asset error
-        #[prost(
-            enumeration = "super::asset_set_asset_error_enum::AssetSetAssetError",
-            tag = "153"
-        )]
+        #[prost(enumeration="super::asset_set_asset_error_enum::AssetSetAssetError", tag="153")]
         AssetSetAssetError(i32),
         /// The reasons for the asset set link error
-        #[prost(
-            enumeration = "super::asset_set_link_error_enum::AssetSetLinkError",
-            tag = "154"
-        )]
+        #[prost(enumeration="super::asset_set_link_error_enum::AssetSetLinkError", tag="154")]
         AssetSetLinkError(i32),
         /// The reasons for the asset set error
-        #[prost(
-            enumeration = "super::asset_set_error_enum::AssetSetError",
-            tag = "152"
-        )]
+        #[prost(enumeration="super::asset_set_error_enum::AssetSetError", tag="152")]
         AssetSetError(i32),
         /// The reasons for the bidding errors
-        #[prost(enumeration = "super::bidding_error_enum::BiddingError", tag = "26")]
+        #[prost(enumeration="super::bidding_error_enum::BiddingError", tag="26")]
         BiddingError(i32),
         /// The reasons for the campaign criterion error
-        #[prost(
-            enumeration = "super::campaign_criterion_error_enum::CampaignCriterionError",
-            tag = "29"
-        )]
+        #[prost(enumeration="super::campaign_criterion_error_enum::CampaignCriterionError", tag="29")]
         CampaignCriterionError(i32),
         /// The reasons for the campaign customizer error.
-        #[prost(
-            enumeration = "super::campaign_customizer_error_enum::CampaignCustomizerError",
-            tag = "160"
-        )]
+        #[prost(enumeration="super::campaign_customizer_error_enum::CampaignCustomizerError", tag="160")]
         CampaignCustomizerError(i32),
         /// The reasons for the collection size error
-        #[prost(
-            enumeration = "super::collection_size_error_enum::CollectionSizeError",
-            tag = "31"
-        )]
+        #[prost(enumeration="super::collection_size_error_enum::CollectionSizeError", tag="31")]
         CollectionSizeError(i32),
         /// The reasons for the country code error
-        #[prost(
-            enumeration = "super::country_code_error_enum::CountryCodeError",
-            tag = "109"
-        )]
+        #[prost(enumeration="super::country_code_error_enum::CountryCodeError", tag="109")]
         CountryCodeError(i32),
         /// The reasons for the criterion error
-        #[prost(
-            enumeration = "super::criterion_error_enum::CriterionError",
-            tag = "32"
-        )]
+        #[prost(enumeration="super::criterion_error_enum::CriterionError", tag="32")]
         CriterionError(i32),
         /// The reasons for the custom conversion goal error
-        #[prost(
-            enumeration = "super::custom_conversion_goal_error_enum::CustomConversionGoalError",
-            tag = "150"
-        )]
+        #[prost(enumeration="super::custom_conversion_goal_error_enum::CustomConversionGoalError", tag="150")]
         CustomConversionGoalError(i32),
         /// The reasons for the customer customizer error.
-        #[prost(
-            enumeration = "super::customer_customizer_error_enum::CustomerCustomizerError",
-            tag = "158"
-        )]
+        #[prost(enumeration="super::customer_customizer_error_enum::CustomerCustomizerError", tag="158")]
         CustomerCustomizerError(i32),
         /// The reasons for the customer error
-        #[prost(enumeration = "super::customer_error_enum::CustomerError", tag = "90")]
+        #[prost(enumeration="super::customer_error_enum::CustomerError", tag="90")]
         CustomerError(i32),
         /// The reasons for the customizer attribute error.
-        #[prost(
-            enumeration = "super::customizer_attribute_error_enum::CustomizerAttributeError",
-            tag = "151"
-        )]
+        #[prost(enumeration="super::customizer_attribute_error_enum::CustomizerAttributeError", tag="151")]
         CustomizerAttributeError(i32),
         /// The reasons for the date error
-        #[prost(enumeration = "super::date_error_enum::DateError", tag = "33")]
+        #[prost(enumeration="super::date_error_enum::DateError", tag="33")]
         DateError(i32),
         /// The reasons for the date range error
-        #[prost(
-            enumeration = "super::date_range_error_enum::DateRangeError",
-            tag = "34"
-        )]
+        #[prost(enumeration="super::date_range_error_enum::DateRangeError", tag="34")]
         DateRangeError(i32),
         /// The reasons for the distinct error
-        #[prost(enumeration = "super::distinct_error_enum::DistinctError", tag = "35")]
+        #[prost(enumeration="super::distinct_error_enum::DistinctError", tag="35")]
         DistinctError(i32),
         /// The reasons for the feed attribute reference error
-        #[prost(
-            enumeration = "super::feed_attribute_reference_error_enum::FeedAttributeReferenceError",
-            tag = "36"
-        )]
+        #[prost(enumeration="super::feed_attribute_reference_error_enum::FeedAttributeReferenceError", tag="36")]
         FeedAttributeReferenceError(i32),
         /// The reasons for the function error
-        #[prost(enumeration = "super::function_error_enum::FunctionError", tag = "37")]
+        #[prost(enumeration="super::function_error_enum::FunctionError", tag="37")]
         FunctionError(i32),
         /// The reasons for the function parsing error
-        #[prost(
-            enumeration = "super::function_parsing_error_enum::FunctionParsingError",
-            tag = "38"
-        )]
+        #[prost(enumeration="super::function_parsing_error_enum::FunctionParsingError", tag="38")]
         FunctionParsingError(i32),
         /// The reasons for the id error
-        #[prost(enumeration = "super::id_error_enum::IdError", tag = "39")]
+        #[prost(enumeration="super::id_error_enum::IdError", tag="39")]
         IdError(i32),
         /// The reasons for the image error
-        #[prost(enumeration = "super::image_error_enum::ImageError", tag = "40")]
+        #[prost(enumeration="super::image_error_enum::ImageError", tag="40")]
         ImageError(i32),
         /// The reasons for the language code error
-        #[prost(
-            enumeration = "super::language_code_error_enum::LanguageCodeError",
-            tag = "110"
-        )]
+        #[prost(enumeration="super::language_code_error_enum::LanguageCodeError", tag="110")]
         LanguageCodeError(i32),
         /// The reasons for the media bundle error
-        #[prost(
-            enumeration = "super::media_bundle_error_enum::MediaBundleError",
-            tag = "42"
-        )]
+        #[prost(enumeration="super::media_bundle_error_enum::MediaBundleError", tag="42")]
         MediaBundleError(i32),
         /// The reasons for media uploading errors.
-        #[prost(
-            enumeration = "super::media_upload_error_enum::MediaUploadError",
-            tag = "116"
-        )]
+        #[prost(enumeration="super::media_upload_error_enum::MediaUploadError", tag="116")]
         MediaUploadError(i32),
         /// The reasons for the media file error
-        #[prost(
-            enumeration = "super::media_file_error_enum::MediaFileError",
-            tag = "86"
-        )]
+        #[prost(enumeration="super::media_file_error_enum::MediaFileError", tag="86")]
         MediaFileError(i32),
         /// Container for enum describing possible merchant center errors.
-        #[prost(
-            enumeration = "super::merchant_center_error_enum::MerchantCenterError",
-            tag = "162"
-        )]
+        #[prost(enumeration="super::merchant_center_error_enum::MerchantCenterError", tag="162")]
         MerchantCenterError(i32),
         /// The reasons for the multiplier error
-        #[prost(
-            enumeration = "super::multiplier_error_enum::MultiplierError",
-            tag = "44"
-        )]
+        #[prost(enumeration="super::multiplier_error_enum::MultiplierError", tag="44")]
         MultiplierError(i32),
         /// The reasons for the new resource creation error
-        #[prost(
-            enumeration = "super::new_resource_creation_error_enum::NewResourceCreationError",
-            tag = "45"
-        )]
+        #[prost(enumeration="super::new_resource_creation_error_enum::NewResourceCreationError", tag="45")]
         NewResourceCreationError(i32),
         /// The reasons for the not empty error
-        #[prost(enumeration = "super::not_empty_error_enum::NotEmptyError", tag = "46")]
+        #[prost(enumeration="super::not_empty_error_enum::NotEmptyError", tag="46")]
         NotEmptyError(i32),
         /// The reasons for the null error
-        #[prost(enumeration = "super::null_error_enum::NullError", tag = "47")]
+        #[prost(enumeration="super::null_error_enum::NullError", tag="47")]
         NullError(i32),
         /// The reasons for the operator error
-        #[prost(enumeration = "super::operator_error_enum::OperatorError", tag = "48")]
+        #[prost(enumeration="super::operator_error_enum::OperatorError", tag="48")]
         OperatorError(i32),
         /// The reasons for the range error
-        #[prost(enumeration = "super::range_error_enum::RangeError", tag = "49")]
+        #[prost(enumeration="super::range_error_enum::RangeError", tag="49")]
         RangeError(i32),
         /// The reasons for error in applying a recommendation
-        #[prost(
-            enumeration = "super::recommendation_error_enum::RecommendationError",
-            tag = "58"
-        )]
+        #[prost(enumeration="super::recommendation_error_enum::RecommendationError", tag="58")]
         RecommendationError(i32),
         /// The reasons for the region code error
-        #[prost(
-            enumeration = "super::region_code_error_enum::RegionCodeError",
-            tag = "51"
-        )]
+        #[prost(enumeration="super::region_code_error_enum::RegionCodeError", tag="51")]
         RegionCodeError(i32),
         /// The reasons for the setting error
-        #[prost(enumeration = "super::setting_error_enum::SettingError", tag = "52")]
+        #[prost(enumeration="super::setting_error_enum::SettingError", tag="52")]
         SettingError(i32),
         /// The reasons for the string format error
-        #[prost(
-            enumeration = "super::string_format_error_enum::StringFormatError",
-            tag = "53"
-        )]
+        #[prost(enumeration="super::string_format_error_enum::StringFormatError", tag="53")]
         StringFormatError(i32),
         /// The reasons for the string length error
-        #[prost(
-            enumeration = "super::string_length_error_enum::StringLengthError",
-            tag = "54"
-        )]
+        #[prost(enumeration="super::string_length_error_enum::StringLengthError", tag="54")]
         StringLengthError(i32),
         /// The reasons for the operation access denied error
-        #[prost(
-            enumeration = "super::operation_access_denied_error_enum::OperationAccessDeniedError",
-            tag = "55"
-        )]
+        #[prost(enumeration="super::operation_access_denied_error_enum::OperationAccessDeniedError", tag="55")]
         OperationAccessDeniedError(i32),
         /// The reasons for the resource access denied error
-        #[prost(
-            enumeration = "super::resource_access_denied_error_enum::ResourceAccessDeniedError",
-            tag = "56"
-        )]
+        #[prost(enumeration="super::resource_access_denied_error_enum::ResourceAccessDeniedError", tag="56")]
         ResourceAccessDeniedError(i32),
         /// The reasons for the resource count limit exceeded error
-        #[prost(
-            enumeration = "super::resource_count_limit_exceeded_error_enum::ResourceCountLimitExceededError",
-            tag = "57"
-        )]
+        #[prost(enumeration="super::resource_count_limit_exceeded_error_enum::ResourceCountLimitExceededError", tag="57")]
         ResourceCountLimitExceededError(i32),
         /// The reasons for YouTube video registration errors.
-        #[prost(
-            enumeration = "super::youtube_video_registration_error_enum::YoutubeVideoRegistrationError",
-            tag = "117"
-        )]
+        #[prost(enumeration="super::youtube_video_registration_error_enum::YoutubeVideoRegistrationError", tag="117")]
         YoutubeVideoRegistrationError(i32),
         /// The reasons for the ad group bid modifier error
-        #[prost(
-            enumeration = "super::ad_group_bid_modifier_error_enum::AdGroupBidModifierError",
-            tag = "59"
-        )]
+        #[prost(enumeration="super::ad_group_bid_modifier_error_enum::AdGroupBidModifierError", tag="59")]
         AdGroupBidModifierError(i32),
         /// The reasons for the context error
-        #[prost(enumeration = "super::context_error_enum::ContextError", tag = "60")]
+        #[prost(enumeration="super::context_error_enum::ContextError", tag="60")]
         ContextError(i32),
         /// The reasons for the field error
-        #[prost(enumeration = "super::field_error_enum::FieldError", tag = "61")]
+        #[prost(enumeration="super::field_error_enum::FieldError", tag="61")]
         FieldError(i32),
         /// The reasons for the shared set error
-        #[prost(
-            enumeration = "super::shared_set_error_enum::SharedSetError",
-            tag = "62"
-        )]
+        #[prost(enumeration="super::shared_set_error_enum::SharedSetError", tag="62")]
         SharedSetError(i32),
         /// The reasons for the shared criterion error
-        #[prost(
-            enumeration = "super::shared_criterion_error_enum::SharedCriterionError",
-            tag = "63"
-        )]
+        #[prost(enumeration="super::shared_criterion_error_enum::SharedCriterionError", tag="63")]
         SharedCriterionError(i32),
         /// The reasons for the campaign shared set error
-        #[prost(
-            enumeration = "super::campaign_shared_set_error_enum::CampaignSharedSetError",
-            tag = "64"
-        )]
+        #[prost(enumeration="super::campaign_shared_set_error_enum::CampaignSharedSetError", tag="64")]
         CampaignSharedSetError(i32),
         /// The reasons for the conversion action error
-        #[prost(
-            enumeration = "super::conversion_action_error_enum::ConversionActionError",
-            tag = "65"
-        )]
+        #[prost(enumeration="super::conversion_action_error_enum::ConversionActionError", tag="65")]
         ConversionActionError(i32),
         /// The reasons for the conversion adjustment upload error
-        #[prost(
-            enumeration = "super::conversion_adjustment_upload_error_enum::ConversionAdjustmentUploadError",
-            tag = "115"
-        )]
+        #[prost(enumeration="super::conversion_adjustment_upload_error_enum::ConversionAdjustmentUploadError", tag="115")]
         ConversionAdjustmentUploadError(i32),
         /// The reasons for the conversion custom variable error
-        #[prost(
-            enumeration = "super::conversion_custom_variable_error_enum::ConversionCustomVariableError",
-            tag = "143"
-        )]
+        #[prost(enumeration="super::conversion_custom_variable_error_enum::ConversionCustomVariableError", tag="143")]
         ConversionCustomVariableError(i32),
         /// The reasons for the conversion upload error
-        #[prost(
-            enumeration = "super::conversion_upload_error_enum::ConversionUploadError",
-            tag = "111"
-        )]
+        #[prost(enumeration="super::conversion_upload_error_enum::ConversionUploadError", tag="111")]
         ConversionUploadError(i32),
         /// The reasons for the conversion value rule error
-        #[prost(
-            enumeration = "super::conversion_value_rule_error_enum::ConversionValueRuleError",
-            tag = "145"
-        )]
+        #[prost(enumeration="super::conversion_value_rule_error_enum::ConversionValueRuleError", tag="145")]
         ConversionValueRuleError(i32),
         /// The reasons for the conversion value rule set error
-        #[prost(
-            enumeration = "super::conversion_value_rule_set_error_enum::ConversionValueRuleSetError",
-            tag = "146"
-        )]
+        #[prost(enumeration="super::conversion_value_rule_set_error_enum::ConversionValueRuleSetError", tag="146")]
         ConversionValueRuleSetError(i32),
         /// The reasons for the header error.
-        #[prost(enumeration = "super::header_error_enum::HeaderError", tag = "66")]
+        #[prost(enumeration="super::header_error_enum::HeaderError", tag="66")]
         HeaderError(i32),
         /// The reasons for the database error.
-        #[prost(enumeration = "super::database_error_enum::DatabaseError", tag = "67")]
+        #[prost(enumeration="super::database_error_enum::DatabaseError", tag="67")]
         DatabaseError(i32),
         /// The reasons for the policy finding error.
-        #[prost(
-            enumeration = "super::policy_finding_error_enum::PolicyFindingError",
-            tag = "68"
-        )]
+        #[prost(enumeration="super::policy_finding_error_enum::PolicyFindingError", tag="68")]
         PolicyFindingError(i32),
         /// The reason for enum error.
-        #[prost(enumeration = "super::enum_error_enum::EnumError", tag = "70")]
+        #[prost(enumeration="super::enum_error_enum::EnumError", tag="70")]
         EnumError(i32),
         /// The reason for keyword plan error.
-        #[prost(
-            enumeration = "super::keyword_plan_error_enum::KeywordPlanError",
-            tag = "71"
-        )]
+        #[prost(enumeration="super::keyword_plan_error_enum::KeywordPlanError", tag="71")]
         KeywordPlanError(i32),
         /// The reason for keyword plan campaign error.
-        #[prost(
-            enumeration = "super::keyword_plan_campaign_error_enum::KeywordPlanCampaignError",
-            tag = "72"
-        )]
+        #[prost(enumeration="super::keyword_plan_campaign_error_enum::KeywordPlanCampaignError", tag="72")]
         KeywordPlanCampaignError(i32),
         /// The reason for keyword plan campaign keyword error.
-        #[prost(
-            enumeration = "super::keyword_plan_campaign_keyword_error_enum::KeywordPlanCampaignKeywordError",
-            tag = "132"
-        )]
+        #[prost(enumeration="super::keyword_plan_campaign_keyword_error_enum::KeywordPlanCampaignKeywordError", tag="132")]
         KeywordPlanCampaignKeywordError(i32),
         /// The reason for keyword plan ad group error.
-        #[prost(
-            enumeration = "super::keyword_plan_ad_group_error_enum::KeywordPlanAdGroupError",
-            tag = "74"
-        )]
+        #[prost(enumeration="super::keyword_plan_ad_group_error_enum::KeywordPlanAdGroupError", tag="74")]
         KeywordPlanAdGroupError(i32),
         /// The reason for keyword plan ad group keyword error.
-        #[prost(
-            enumeration = "super::keyword_plan_ad_group_keyword_error_enum::KeywordPlanAdGroupKeywordError",
-            tag = "133"
-        )]
+        #[prost(enumeration="super::keyword_plan_ad_group_keyword_error_enum::KeywordPlanAdGroupKeywordError", tag="133")]
         KeywordPlanAdGroupKeywordError(i32),
         /// The reason for keyword idea error.
-        #[prost(
-            enumeration = "super::keyword_plan_idea_error_enum::KeywordPlanIdeaError",
-            tag = "76"
-        )]
+        #[prost(enumeration="super::keyword_plan_idea_error_enum::KeywordPlanIdeaError", tag="76")]
         KeywordPlanIdeaError(i32),
         /// The reasons for account budget proposal errors.
-        #[prost(
-            enumeration = "super::account_budget_proposal_error_enum::AccountBudgetProposalError",
-            tag = "77"
-        )]
+        #[prost(enumeration="super::account_budget_proposal_error_enum::AccountBudgetProposalError", tag="77")]
         AccountBudgetProposalError(i32),
         /// The reasons for the user list error
-        #[prost(enumeration = "super::user_list_error_enum::UserListError", tag = "78")]
+        #[prost(enumeration="super::user_list_error_enum::UserListError", tag="78")]
         UserListError(i32),
         /// The reasons for the change event error
-        #[prost(
-            enumeration = "super::change_event_error_enum::ChangeEventError",
-            tag = "136"
-        )]
+        #[prost(enumeration="super::change_event_error_enum::ChangeEventError", tag="136")]
         ChangeEventError(i32),
         /// The reasons for the change status error
-        #[prost(
-            enumeration = "super::change_status_error_enum::ChangeStatusError",
-            tag = "79"
-        )]
+        #[prost(enumeration="super::change_status_error_enum::ChangeStatusError", tag="79")]
         ChangeStatusError(i32),
         /// The reasons for the feed error
-        #[prost(enumeration = "super::feed_error_enum::FeedError", tag = "80")]
+        #[prost(enumeration="super::feed_error_enum::FeedError", tag="80")]
         FeedError(i32),
         /// The reasons for the geo target constant suggestion error.
-        #[prost(
-            enumeration = "super::geo_target_constant_suggestion_error_enum::GeoTargetConstantSuggestionError",
-            tag = "81"
-        )]
+        #[prost(enumeration="super::geo_target_constant_suggestion_error_enum::GeoTargetConstantSuggestionError", tag="81")]
         GeoTargetConstantSuggestionError(i32),
         /// The reasons for the campaign draft error
-        #[prost(
-            enumeration = "super::campaign_draft_error_enum::CampaignDraftError",
-            tag = "82"
-        )]
+        #[prost(enumeration="super::campaign_draft_error_enum::CampaignDraftError", tag="82")]
         CampaignDraftError(i32),
         /// The reasons for the feed item error
-        #[prost(enumeration = "super::feed_item_error_enum::FeedItemError", tag = "83")]
+        #[prost(enumeration="super::feed_item_error_enum::FeedItemError", tag="83")]
         FeedItemError(i32),
         /// The reason for the label error.
-        #[prost(enumeration = "super::label_error_enum::LabelError", tag = "84")]
+        #[prost(enumeration="super::label_error_enum::LabelError", tag="84")]
         LabelError(i32),
         /// The reasons for the billing setup error
-        #[prost(
-            enumeration = "super::billing_setup_error_enum::BillingSetupError",
-            tag = "87"
-        )]
+        #[prost(enumeration="super::billing_setup_error_enum::BillingSetupError", tag="87")]
         BillingSetupError(i32),
         /// The reasons for the customer client link error
-        #[prost(
-            enumeration = "super::customer_client_link_error_enum::CustomerClientLinkError",
-            tag = "88"
-        )]
+        #[prost(enumeration="super::customer_client_link_error_enum::CustomerClientLinkError", tag="88")]
         CustomerClientLinkError(i32),
         /// The reasons for the customer manager link error
-        #[prost(
-            enumeration = "super::customer_manager_link_error_enum::CustomerManagerLinkError",
-            tag = "91"
-        )]
+        #[prost(enumeration="super::customer_manager_link_error_enum::CustomerManagerLinkError", tag="91")]
         CustomerManagerLinkError(i32),
         /// The reasons for the feed mapping error
-        #[prost(
-            enumeration = "super::feed_mapping_error_enum::FeedMappingError",
-            tag = "92"
-        )]
+        #[prost(enumeration="super::feed_mapping_error_enum::FeedMappingError", tag="92")]
         FeedMappingError(i32),
         /// The reasons for the customer feed error
-        #[prost(
-            enumeration = "super::customer_feed_error_enum::CustomerFeedError",
-            tag = "93"
-        )]
+        #[prost(enumeration="super::customer_feed_error_enum::CustomerFeedError", tag="93")]
         CustomerFeedError(i32),
         /// The reasons for the ad group feed error
-        #[prost(
-            enumeration = "super::ad_group_feed_error_enum::AdGroupFeedError",
-            tag = "94"
-        )]
+        #[prost(enumeration="super::ad_group_feed_error_enum::AdGroupFeedError", tag="94")]
         AdGroupFeedError(i32),
         /// The reasons for the campaign feed error
-        #[prost(
-            enumeration = "super::campaign_feed_error_enum::CampaignFeedError",
-            tag = "96"
-        )]
+        #[prost(enumeration="super::campaign_feed_error_enum::CampaignFeedError", tag="96")]
         CampaignFeedError(i32),
         /// The reasons for the custom interest error
-        #[prost(
-            enumeration = "super::custom_interest_error_enum::CustomInterestError",
-            tag = "97"
-        )]
+        #[prost(enumeration="super::custom_interest_error_enum::CustomInterestError", tag="97")]
         CustomInterestError(i32),
         /// The reasons for the campaign experiment error
-        #[prost(
-            enumeration = "super::campaign_experiment_error_enum::CampaignExperimentError",
-            tag = "98"
-        )]
+        #[prost(enumeration="super::campaign_experiment_error_enum::CampaignExperimentError", tag="98")]
         CampaignExperimentError(i32),
         /// The reasons for the extension feed item error
-        #[prost(
-            enumeration = "super::extension_feed_item_error_enum::ExtensionFeedItemError",
-            tag = "100"
-        )]
+        #[prost(enumeration="super::extension_feed_item_error_enum::ExtensionFeedItemError", tag="100")]
         ExtensionFeedItemError(i32),
         /// The reasons for the ad parameter error
-        #[prost(
-            enumeration = "super::ad_parameter_error_enum::AdParameterError",
-            tag = "101"
-        )]
+        #[prost(enumeration="super::ad_parameter_error_enum::AdParameterError", tag="101")]
         AdParameterError(i32),
         /// The reasons for the feed item validation error
-        #[prost(
-            enumeration = "super::feed_item_validation_error_enum::FeedItemValidationError",
-            tag = "102"
-        )]
+        #[prost(enumeration="super::feed_item_validation_error_enum::FeedItemValidationError", tag="102")]
         FeedItemValidationError(i32),
         /// The reasons for the extension setting error
-        #[prost(
-            enumeration = "super::extension_setting_error_enum::ExtensionSettingError",
-            tag = "103"
-        )]
+        #[prost(enumeration="super::extension_setting_error_enum::ExtensionSettingError", tag="103")]
         ExtensionSettingError(i32),
         /// The reasons for the feed item set error
-        #[prost(
-            enumeration = "super::feed_item_set_error_enum::FeedItemSetError",
-            tag = "140"
-        )]
+        #[prost(enumeration="super::feed_item_set_error_enum::FeedItemSetError", tag="140")]
         FeedItemSetError(i32),
         /// The reasons for the feed item set link error
-        #[prost(
-            enumeration = "super::feed_item_set_link_error_enum::FeedItemSetLinkError",
-            tag = "141"
-        )]
+        #[prost(enumeration="super::feed_item_set_link_error_enum::FeedItemSetLinkError", tag="141")]
         FeedItemSetLinkError(i32),
         /// The reasons for the feed item target error
-        #[prost(
-            enumeration = "super::feed_item_target_error_enum::FeedItemTargetError",
-            tag = "104"
-        )]
+        #[prost(enumeration="super::feed_item_target_error_enum::FeedItemTargetError", tag="104")]
         FeedItemTargetError(i32),
         /// The reasons for the policy violation error
-        #[prost(
-            enumeration = "super::policy_violation_error_enum::PolicyViolationError",
-            tag = "105"
-        )]
+        #[prost(enumeration="super::policy_violation_error_enum::PolicyViolationError", tag="105")]
         PolicyViolationError(i32),
         /// The reasons for the mutate job error
-        #[prost(
-            enumeration = "super::partial_failure_error_enum::PartialFailureError",
-            tag = "112"
-        )]
+        #[prost(enumeration="super::partial_failure_error_enum::PartialFailureError", tag="112")]
         PartialFailureError(i32),
         /// The reasons for the policy validation parameter error
-        #[prost(
-            enumeration = "super::policy_validation_parameter_error_enum::PolicyValidationParameterError",
-            tag = "114"
-        )]
+        #[prost(enumeration="super::policy_validation_parameter_error_enum::PolicyValidationParameterError", tag="114")]
         PolicyValidationParameterError(i32),
         /// The reasons for the size limit error
-        #[prost(
-            enumeration = "super::size_limit_error_enum::SizeLimitError",
-            tag = "118"
-        )]
+        #[prost(enumeration="super::size_limit_error_enum::SizeLimitError", tag="118")]
         SizeLimitError(i32),
         /// The reasons for the offline user data job error.
-        #[prost(
-            enumeration = "super::offline_user_data_job_error_enum::OfflineUserDataJobError",
-            tag = "119"
-        )]
+        #[prost(enumeration="super::offline_user_data_job_error_enum::OfflineUserDataJobError", tag="119")]
         OfflineUserDataJobError(i32),
         /// The reasons for the not allowlisted error
-        #[prost(
-            enumeration = "super::not_allowlisted_error_enum::NotAllowlistedError",
-            tag = "137"
-        )]
+        #[prost(enumeration="super::not_allowlisted_error_enum::NotAllowlistedError", tag="137")]
         NotAllowlistedError(i32),
         /// The reasons for the manager link error
-        #[prost(
-            enumeration = "super::manager_link_error_enum::ManagerLinkError",
-            tag = "121"
-        )]
+        #[prost(enumeration="super::manager_link_error_enum::ManagerLinkError", tag="121")]
         ManagerLinkError(i32),
         /// The reasons for the currency code error
-        #[prost(
-            enumeration = "super::currency_code_error_enum::CurrencyCodeError",
-            tag = "122"
-        )]
+        #[prost(enumeration="super::currency_code_error_enum::CurrencyCodeError", tag="122")]
         CurrencyCodeError(i32),
         /// The reasons for the access invitation error
-        #[prost(
-            enumeration = "super::access_invitation_error_enum::AccessInvitationError",
-            tag = "124"
-        )]
+        #[prost(enumeration="super::access_invitation_error_enum::AccessInvitationError", tag="124")]
         AccessInvitationError(i32),
         /// The reasons for the reach plan error
-        #[prost(
-            enumeration = "super::reach_plan_error_enum::ReachPlanError",
-            tag = "125"
-        )]
+        #[prost(enumeration="super::reach_plan_error_enum::ReachPlanError", tag="125")]
         ReachPlanError(i32),
         /// The reasons for the invoice error
-        #[prost(enumeration = "super::invoice_error_enum::InvoiceError", tag = "126")]
+        #[prost(enumeration="super::invoice_error_enum::InvoiceError", tag="126")]
         InvoiceError(i32),
         /// The reasons for errors in payments accounts service
-        #[prost(
-            enumeration = "super::payments_account_error_enum::PaymentsAccountError",
-            tag = "127"
-        )]
+        #[prost(enumeration="super::payments_account_error_enum::PaymentsAccountError", tag="127")]
         PaymentsAccountError(i32),
         /// The reasons for the time zone error
-        #[prost(
-            enumeration = "super::time_zone_error_enum::TimeZoneError",
-            tag = "128"
-        )]
+        #[prost(enumeration="super::time_zone_error_enum::TimeZoneError", tag="128")]
         TimeZoneError(i32),
         /// The reasons for the asset link error
-        #[prost(
-            enumeration = "super::asset_link_error_enum::AssetLinkError",
-            tag = "129"
-        )]
+        #[prost(enumeration="super::asset_link_error_enum::AssetLinkError", tag="129")]
         AssetLinkError(i32),
         /// The reasons for the user data error.
-        #[prost(
-            enumeration = "super::user_data_error_enum::UserDataError",
-            tag = "130"
-        )]
+        #[prost(enumeration="super::user_data_error_enum::UserDataError", tag="130")]
         UserDataError(i32),
         /// The reasons for the batch job error
-        #[prost(
-            enumeration = "super::batch_job_error_enum::BatchJobError",
-            tag = "131"
-        )]
+        #[prost(enumeration="super::batch_job_error_enum::BatchJobError", tag="131")]
         BatchJobError(i32),
         /// The reasons for the account link status change error
-        #[prost(
-            enumeration = "super::account_link_error_enum::AccountLinkError",
-            tag = "134"
-        )]
+        #[prost(enumeration="super::account_link_error_enum::AccountLinkError", tag="134")]
         AccountLinkError(i32),
         /// The reasons for the third party app analytics link mutate error
-        #[prost(
-            enumeration = "super::third_party_app_analytics_link_error_enum::ThirdPartyAppAnalyticsLinkError",
-            tag = "135"
-        )]
+        #[prost(enumeration="super::third_party_app_analytics_link_error_enum::ThirdPartyAppAnalyticsLinkError", tag="135")]
         ThirdPartyAppAnalyticsLinkError(i32),
         /// The reasons for the customer user access mutate error
-        #[prost(
-            enumeration = "super::customer_user_access_error_enum::CustomerUserAccessError",
-            tag = "138"
-        )]
+        #[prost(enumeration="super::customer_user_access_error_enum::CustomerUserAccessError", tag="138")]
         CustomerUserAccessError(i32),
         /// The reasons for the custom audience error
-        #[prost(
-            enumeration = "super::custom_audience_error_enum::CustomAudienceError",
-            tag = "139"
-        )]
+        #[prost(enumeration="super::custom_audience_error_enum::CustomAudienceError", tag="139")]
         CustomAudienceError(i32),
     }
 }
@@ -6872,7 +6700,7 @@ pub mod error_code {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ErrorLocation {
     /// A field path that indicates which field was invalid in the request.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub field_path_elements: ::prost::alloc::vec::Vec<error_location::FieldPathElement>,
 }
 /// Nested message and enum types in `ErrorLocation`.
@@ -6881,10 +6709,10 @@ pub mod error_location {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FieldPathElement {
         /// The name of a field or a oneof
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub field_name: ::prost::alloc::string::String,
         /// If field_name is a repeated field, this is the element that failed
-        #[prost(int32, optional, tag = "3")]
+        #[prost(int32, optional, tag="3")]
         pub index: ::core::option::Option<i32>,
     }
 }
@@ -6893,20 +6721,20 @@ pub mod error_location {
 pub struct ErrorDetails {
     /// The error code that should have been returned, but wasn't. This is used
     /// when the error code is not published in the client specified version.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub unpublished_error_code: ::prost::alloc::string::String,
     /// Describes an ad policy violation.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub policy_violation_details: ::core::option::Option<PolicyViolationDetails>,
     /// Describes policy violation findings.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub policy_finding_details: ::core::option::Option<PolicyFindingDetails>,
     /// Details on the quota error, including the scope (account or developer), the
     /// rate bucket name and the retry delay.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub quota_error_details: ::core::option::Option<QuotaErrorDetails>,
     /// Details for a resource count limit exceeded error.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub resource_count_details: ::core::option::Option<ResourceCountDetails>,
 }
 /// Error returned as part of a mutate response.
@@ -6915,17 +6743,17 @@ pub struct ErrorDetails {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyViolationDetails {
     /// Human readable description of policy violation.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub external_policy_description: ::prost::alloc::string::String,
     /// Unique identifier for this violation.
     /// If policy is exemptible, this key may be used to request exemption.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub key: ::core::option::Option<super::common::PolicyViolationKey>,
     /// Human readable name of the policy.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub external_policy_name: ::prost::alloc::string::String,
     /// Whether user can file an exemption request for this violation.
-    #[prost(bool, tag = "6")]
+    #[prost(bool, tag="6")]
     pub is_exemptible: bool,
 }
 /// Error returned as part of a mutate response.
@@ -6936,21 +6764,21 @@ pub struct PolicyFindingDetails {
     /// The list of policy topics for the resource. Contains the PROHIBITED or
     /// FULLY_LIMITED policy topic entries that prevented the resource from being
     /// saved (among any other entries the resource may also have).
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub policy_topic_entries: ::prost::alloc::vec::Vec<super::common::PolicyTopicEntry>,
 }
 /// Additional quota error details when there is QuotaError.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QuotaErrorDetails {
     /// The rate scope of the quota limit.
-    #[prost(enumeration = "quota_error_details::QuotaRateScope", tag = "1")]
+    #[prost(enumeration="quota_error_details::QuotaRateScope", tag="1")]
     pub rate_scope: i32,
     /// The high level description of the quota bucket.
     /// Examples are "Get requests for standard access" or "Requests per account".
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub rate_name: ::prost::alloc::string::String,
     /// Backoff period that customers should wait before sending next request.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub retry_delay: ::core::option::Option<::prost_types::Duration>,
 }
 /// Nested message and enum types in `QuotaErrorDetails`.
@@ -6974,22 +6802,19 @@ pub mod quota_error_details {
 pub struct ResourceCountDetails {
     /// The ID of the resource whose limit was exceeded.
     /// External customer ID if the limit is for a customer.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub enclosing_id: ::prost::alloc::string::String,
     /// The name of the resource (Customer, Campaign etc.) whose limit was
     /// exceeded.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub enclosing_resource: ::prost::alloc::string::String,
     /// The limit which was exceeded.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub limit: i32,
     /// The resource limit type which was exceeded.
-    #[prost(
-        enumeration = "super::enums::resource_limit_type_enum::ResourceLimitType",
-        tag = "3"
-    )]
+    #[prost(enumeration="super::enums::resource_limit_type_enum::ResourceLimitType", tag="3")]
     pub limit_type: i32,
     /// The count of existing entities.
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub existing_count: i32,
 }

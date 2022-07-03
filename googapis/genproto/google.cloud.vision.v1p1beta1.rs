@@ -3,17 +3,17 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub x: i32,
     /// Y coordinate.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub y: i32,
 }
 /// A bounding polygon for the detected image annotation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingPoly {
     /// The bounding polygon vertices.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub vertices: ::prost::alloc::vec::Vec<Vertex>,
 }
 /// A 3D position in the image, used primarily for Face detection landmarks.
@@ -22,13 +22,13 @@ pub struct BoundingPoly {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Position {
     /// X coordinate.
-    #[prost(float, tag = "1")]
+    #[prost(float, tag="1")]
     pub x: f32,
     /// Y coordinate.
-    #[prost(float, tag = "2")]
+    #[prost(float, tag="2")]
     pub y: f32,
     /// Z coordinate (or depth).
-    #[prost(float, tag = "3")]
+    #[prost(float, tag="3")]
     pub z: f32,
 }
 /// TextAnnotation contains a structured representation of OCR extracted text.
@@ -42,10 +42,10 @@ pub struct Position {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TextAnnotation {
     /// List of pages detected by OCR.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub pages: ::prost::alloc::vec::Vec<Page>,
     /// UTF-8 text detected on the pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub text: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TextAnnotation`.
@@ -56,28 +56,26 @@ pub mod text_annotation {
         /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
         /// information, see
         /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub language_code: ::prost::alloc::string::String,
         /// Confidence of detected language. Range [0, 1].
-        #[prost(float, tag = "2")]
+        #[prost(float, tag="2")]
         pub confidence: f32,
     }
     /// Detected start or end of a structural component.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DetectedBreak {
         /// Detected break type.
-        #[prost(enumeration = "detected_break::BreakType", tag = "1")]
+        #[prost(enumeration="detected_break::BreakType", tag="1")]
         pub r#type: i32,
         /// True if break prepends the element.
-        #[prost(bool, tag = "2")]
+        #[prost(bool, tag="2")]
         pub is_prefix: bool,
     }
     /// Nested message and enum types in `DetectedBreak`.
     pub mod detected_break {
         /// Enum to denote the type of break found. New line, space etc.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum BreakType {
             /// Unknown break label type.
@@ -99,10 +97,10 @@ pub mod text_annotation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TextProperty {
         /// A list of detected languages together with confidence.
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         /// Detected start or end of a text segment.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub detected_break: ::core::option::Option<DetectedBreak>,
     }
 }
@@ -110,26 +108,26 @@ pub mod text_annotation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Page {
     /// Additional information detected on the page.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
     /// Page width in pixels.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub width: i32,
     /// Page height in pixels.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub height: i32,
     /// List of blocks of text, images etc on this page.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub blocks: ::prost::alloc::vec::Vec<Block>,
     /// Confidence of the OCR results on the page. Range [0, 1].
-    #[prost(float, tag = "5")]
+    #[prost(float, tag="5")]
     pub confidence: f32,
 }
 /// Logical element on the page.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Block {
     /// Additional information detected for the block.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
     /// The bounding box for the block.
     /// The vertices are in the order of top-left, top-right, bottom-right,
@@ -146,16 +144,16 @@ pub struct Block {
     ///      |    |
     ///      1----0
     ///   and the vertice order will still be (0, 1, 2, 3).
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
     /// List of paragraphs in this block (if this blocks is of type text).
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub paragraphs: ::prost::alloc::vec::Vec<Paragraph>,
     /// Detected block type (text, image etc) for this block.
-    #[prost(enumeration = "block::BlockType", tag = "4")]
+    #[prost(enumeration="block::BlockType", tag="4")]
     pub block_type: i32,
     /// Confidence of the OCR results on the block. Range [0, 1].
-    #[prost(float, tag = "5")]
+    #[prost(float, tag="5")]
     pub confidence: f32,
 }
 /// Nested message and enum types in `Block`.
@@ -182,7 +180,7 @@ pub mod block {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Paragraph {
     /// Additional information detected for the paragraph.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
     /// The bounding box for the paragraph.
     /// The vertices are in the order of top-left, top-right, bottom-right,
@@ -199,20 +197,20 @@ pub struct Paragraph {
     ///      |    |
     ///      1----0
     ///   and the vertice order will still be (0, 1, 2, 3).
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
     /// List of words in this paragraph.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub words: ::prost::alloc::vec::Vec<Word>,
     /// Confidence of the OCR results for the paragraph. Range [0, 1].
-    #[prost(float, tag = "4")]
+    #[prost(float, tag="4")]
     pub confidence: f32,
 }
 /// A word representation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Word {
     /// Additional information detected for the word.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
     /// The bounding box for the word.
     /// The vertices are in the order of top-left, top-right, bottom-right,
@@ -229,21 +227,21 @@ pub struct Word {
     ///      |    |
     ///      1----0
     ///   and the vertice order will still be (0, 1, 2, 3).
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
     /// List of symbols in the word.
     /// The order of the symbols follows the natural reading order.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub symbols: ::prost::alloc::vec::Vec<Symbol>,
     /// Confidence of the OCR results for the word. Range [0, 1].
-    #[prost(float, tag = "4")]
+    #[prost(float, tag="4")]
     pub confidence: f32,
 }
 /// A single symbol representation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Symbol {
     /// Additional information detected for the symbol.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<text_annotation::TextProperty>,
     /// The bounding box for the symbol.
     /// The vertices are in the order of top-left, top-right, bottom-right,
@@ -260,38 +258,38 @@ pub struct Symbol {
     ///      |    |
     ///      1----0
     ///   and the vertice order will still be (0, 1, 2, 3).
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
     /// The actual UTF-8 representation of the symbol.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub text: ::prost::alloc::string::String,
     /// Confidence of the OCR results for the symbol. Range [0, 1].
-    #[prost(float, tag = "4")]
+    #[prost(float, tag="4")]
     pub confidence: f32,
 }
 /// Relevant information for the image from the Internet.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebDetection {
     /// Deduced entities from similar images on the Internet.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub web_entities: ::prost::alloc::vec::Vec<web_detection::WebEntity>,
     /// Fully matching images from the Internet.
     /// Can include resized copies of the query image.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub full_matching_images: ::prost::alloc::vec::Vec<web_detection::WebImage>,
     /// Partial matching images from the Internet.
     /// Those images are similar enough to share some key-point features. For
     /// example an original image will likely have partial matching for its crops.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub partial_matching_images: ::prost::alloc::vec::Vec<web_detection::WebImage>,
     /// Web pages containing the matching images from the Internet.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub pages_with_matching_images: ::prost::alloc::vec::Vec<web_detection::WebPage>,
     /// The visually similar image results.
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag="6")]
     pub visually_similar_images: ::prost::alloc::vec::Vec<web_detection::WebImage>,
     /// Best guess text labels for the request image.
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag="8")]
     pub best_guess_labels: ::prost::alloc::vec::Vec<web_detection::WebLabel>,
 }
 /// Nested message and enum types in `WebDetection`.
@@ -300,59 +298,59 @@ pub mod web_detection {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebEntity {
         /// Opaque entity ID.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub entity_id: ::prost::alloc::string::String,
         /// Overall relevancy score for the entity.
         /// Not normalized and not comparable across different image queries.
-        #[prost(float, tag = "2")]
+        #[prost(float, tag="2")]
         pub score: f32,
         /// Canonical description of the entity, in English.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub description: ::prost::alloc::string::String,
     }
     /// Metadata for online images.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebImage {
         /// The result image URL.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub url: ::prost::alloc::string::String,
         /// (Deprecated) Overall relevancy score for the image.
-        #[prost(float, tag = "2")]
+        #[prost(float, tag="2")]
         pub score: f32,
     }
     /// Metadata for web pages.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebPage {
         /// The result web page URL.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub url: ::prost::alloc::string::String,
         /// (Deprecated) Overall relevancy score for the web page.
-        #[prost(float, tag = "2")]
+        #[prost(float, tag="2")]
         pub score: f32,
         /// Title for the web page, may contain HTML markups.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub page_title: ::prost::alloc::string::String,
         /// Fully matching images on the page.
         /// Can include resized copies of the query image.
-        #[prost(message, repeated, tag = "4")]
+        #[prost(message, repeated, tag="4")]
         pub full_matching_images: ::prost::alloc::vec::Vec<WebImage>,
         /// Partial matching images on the page.
         /// Those images are similar enough to share some key-point features. For
         /// example an original image will likely have partial matching for its
         /// crops.
-        #[prost(message, repeated, tag = "5")]
+        #[prost(message, repeated, tag="5")]
         pub partial_matching_images: ::prost::alloc::vec::Vec<WebImage>,
     }
     /// Label to provide extra metadata for the web detection.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WebLabel {
         /// Label for extra metadata.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub label: ::prost::alloc::string::String,
         /// The BCP-47 language code for `label`, such as "en-US" or "sr-Latn".
         /// For more information, see
         /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub language_code: ::prost::alloc::string::String,
     }
 }
@@ -363,15 +361,15 @@ pub mod web_detection {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Feature {
     /// The feature type.
-    #[prost(enumeration = "feature::Type", tag = "1")]
+    #[prost(enumeration="feature::Type", tag="1")]
     pub r#type: i32,
     /// Maximum number of results of this type.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub max_results: i32,
     /// Model to use for the feature.
     /// Supported values: "builtin/stable" (the default if unset) and
     /// "builtin/latest".
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub model: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Feature`.
@@ -414,7 +412,7 @@ pub struct ImageSource {
     /// [Google Cloud Storage Request
     /// URIs](<https://cloud.google.com/storage/docs/reference-uris>)).
     /// NOTE: Cloud Storage object versioning is not supported.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub gcs_image_uri: ::prost::alloc::string::String,
     /// Image URI which supports:
     /// 1) Google Cloud Storage image URI, which must be in the following form:
@@ -426,7 +424,7 @@ pub struct ImageSource {
     /// This is preferred over the legacy `gcs_image_uri` above. When both
     /// `gcs_image_uri` and `image_uri` are specified, `image_uri` takes
     /// precedence.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub image_uri: ::prost::alloc::string::String,
 }
 /// Client image to perform Google Cloud Vision API tasks over.
@@ -435,12 +433,12 @@ pub struct Image {
     /// Image content, represented as a stream of bytes.
     /// Note: as with all `bytes` fields, protobuffers use a pure binary
     /// representation, whereas JSON representations use base64.
-    #[prost(bytes = "vec", tag = "1")]
+    #[prost(bytes="vec", tag="1")]
     pub content: ::prost::alloc::vec::Vec<u8>,
     /// Google Cloud Storage image location. If both `content` and `source`
     /// are provided for an image, `content` takes precedence and is
     /// used to perform the image annotation request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub source: ::core::option::Option<ImageSource>,
 }
 /// A face annotation object contains the results of face detection.
@@ -453,7 +451,7 @@ pub struct FaceAnnotation {
     /// Note that one or more x and/or y coordinates may not be generated in the
     /// `BoundingPoly` (the polygon will be unbounded) if only a partial face
     /// appears in the image to be annotated.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub bounding_poly: ::core::option::Option<BoundingPoly>,
     /// The `fd_bounding_poly` bounding polygon is tighter than the
     /// `boundingPoly`, and encloses only the skin part of the face. Typically, it
@@ -461,51 +459,51 @@ pub struct FaceAnnotation {
     /// "amount of skin" visible in an image. It is not based on the
     /// landmarker results, only on the initial face detection, hence
     /// the <code>fd</code> (face detection) prefix.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub fd_bounding_poly: ::core::option::Option<BoundingPoly>,
     /// Detected face landmarks.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub landmarks: ::prost::alloc::vec::Vec<face_annotation::Landmark>,
     /// Roll angle, which indicates the amount of clockwise/anti-clockwise rotation
     /// of the face relative to the image vertical about the axis perpendicular to
     /// the face. Range \[-180,180\].
-    #[prost(float, tag = "4")]
+    #[prost(float, tag="4")]
     pub roll_angle: f32,
     /// Yaw angle, which indicates the leftward/rightward angle that the face is
     /// pointing relative to the vertical plane perpendicular to the image. Range
     /// \[-180,180\].
-    #[prost(float, tag = "5")]
+    #[prost(float, tag="5")]
     pub pan_angle: f32,
     /// Pitch angle, which indicates the upwards/downwards angle that the face is
     /// pointing relative to the image's horizontal plane. Range \[-180,180\].
-    #[prost(float, tag = "6")]
+    #[prost(float, tag="6")]
     pub tilt_angle: f32,
     /// Detection confidence. Range [0, 1].
-    #[prost(float, tag = "7")]
+    #[prost(float, tag="7")]
     pub detection_confidence: f32,
     /// Face landmarking confidence. Range [0, 1].
-    #[prost(float, tag = "8")]
+    #[prost(float, tag="8")]
     pub landmarking_confidence: f32,
     /// Joy likelihood.
-    #[prost(enumeration = "Likelihood", tag = "9")]
+    #[prost(enumeration="Likelihood", tag="9")]
     pub joy_likelihood: i32,
     /// Sorrow likelihood.
-    #[prost(enumeration = "Likelihood", tag = "10")]
+    #[prost(enumeration="Likelihood", tag="10")]
     pub sorrow_likelihood: i32,
     /// Anger likelihood.
-    #[prost(enumeration = "Likelihood", tag = "11")]
+    #[prost(enumeration="Likelihood", tag="11")]
     pub anger_likelihood: i32,
     /// Surprise likelihood.
-    #[prost(enumeration = "Likelihood", tag = "12")]
+    #[prost(enumeration="Likelihood", tag="12")]
     pub surprise_likelihood: i32,
     /// Under-exposed likelihood.
-    #[prost(enumeration = "Likelihood", tag = "13")]
+    #[prost(enumeration="Likelihood", tag="13")]
     pub under_exposed_likelihood: i32,
     /// Blurred likelihood.
-    #[prost(enumeration = "Likelihood", tag = "14")]
+    #[prost(enumeration="Likelihood", tag="14")]
     pub blurred_likelihood: i32,
     /// Headwear likelihood.
-    #[prost(enumeration = "Likelihood", tag = "15")]
+    #[prost(enumeration="Likelihood", tag="15")]
     pub headwear_likelihood: i32,
 }
 /// Nested message and enum types in `FaceAnnotation`.
@@ -514,10 +512,10 @@ pub mod face_annotation {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Landmark {
         /// Face landmark type.
-        #[prost(enumeration = "landmark::Type", tag = "3")]
+        #[prost(enumeration="landmark::Type", tag="3")]
         pub r#type: i32,
         /// Face landmark position.
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub position: ::core::option::Option<super::Position>,
     }
     /// Nested message and enum types in `Landmark`.
@@ -526,9 +524,7 @@ pub mod face_annotation {
         /// Left and right are defined from the vantage of the viewer of the image
         /// without considering mirror projections typical of photos. So, `LEFT_EYE`,
         /// typically, is the person's right eye.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Type {
             /// Unknown face landmark detected. Should not be filled.
@@ -608,20 +604,20 @@ pub mod face_annotation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationInfo {
     /// lat/long location coordinates.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
 }
 /// A `Property` consists of a user-supplied name/value pair.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Property {
     /// Name of the property.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Value of the property.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub value: ::prost::alloc::string::String,
     /// Value of numeric properties.
-    #[prost(uint64, tag = "3")]
+    #[prost(uint64, tag="3")]
     pub uint64_value: u64,
 }
 /// Set of detected entity features.
@@ -630,45 +626,45 @@ pub struct EntityAnnotation {
     /// Opaque entity ID. Some IDs may be available in
     /// [Google Knowledge Graph Search
     /// API](<https://developers.google.com/knowledge-graph/>).
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub mid: ::prost::alloc::string::String,
     /// The language code for the locale in which the entity textual
     /// `description` is expressed.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub locale: ::prost::alloc::string::String,
     /// Entity textual description, expressed in its `locale` language.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
     /// Overall score of the result. Range [0, 1].
-    #[prost(float, tag = "4")]
+    #[prost(float, tag="4")]
     pub score: f32,
     /// The accuracy of the entity detection in an image.
     /// For example, for an image in which the "Eiffel Tower" entity is detected,
     /// this field represents the confidence that there is a tower in the query
     /// image. Range [0, 1].
-    #[prost(float, tag = "5")]
+    #[prost(float, tag="5")]
     pub confidence: f32,
     /// The relevancy of the ICA (Image Content Annotation) label to the
     /// image. For example, the relevancy of "tower" is likely higher to an image
     /// containing the detected "Eiffel Tower" than to an image containing a
     /// detected distant towering building, even though the confidence that
     /// there is a tower in each image may be the same. Range [0, 1].
-    #[prost(float, tag = "6")]
+    #[prost(float, tag="6")]
     pub topicality: f32,
     /// Image region to which this entity belongs. Not produced
     /// for `LABEL_DETECTION` features.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub bounding_poly: ::core::option::Option<BoundingPoly>,
     /// The location information for the detected entity. Multiple
     /// `LocationInfo` elements can be present because one location may
     /// indicate the location of the scene in the image, and another location
     /// may indicate the location of the place where the image was taken.
     /// Location information is usually present for landmarks.
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag="8")]
     pub locations: ::prost::alloc::vec::Vec<LocationInfo>,
     /// Some entities may have optional user-supplied `Property` (name/value)
     /// fields, such a score or string that qualifies the entity.
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag="9")]
     pub properties: ::prost::alloc::vec::Vec<Property>,
 }
 /// Set of features pertaining to the image, computed by computer vision
@@ -679,34 +675,34 @@ pub struct SafeSearchAnnotation {
     /// Represents the adult content likelihood for the image. Adult content may
     /// contain elements such as nudity, pornographic images or cartoons, or
     /// sexual activities.
-    #[prost(enumeration = "Likelihood", tag = "1")]
+    #[prost(enumeration="Likelihood", tag="1")]
     pub adult: i32,
     /// Spoof likelihood. The likelihood that an modification
     /// was made to the image's canonical version to make it appear
     /// funny or offensive.
-    #[prost(enumeration = "Likelihood", tag = "2")]
+    #[prost(enumeration="Likelihood", tag="2")]
     pub spoof: i32,
     /// Likelihood that this is a medical image.
-    #[prost(enumeration = "Likelihood", tag = "3")]
+    #[prost(enumeration="Likelihood", tag="3")]
     pub medical: i32,
     /// Likelihood that this image contains violent content.
-    #[prost(enumeration = "Likelihood", tag = "4")]
+    #[prost(enumeration="Likelihood", tag="4")]
     pub violence: i32,
     /// Likelihood that the request image contains racy content. Racy content may
     /// include (but is not limited to) skimpy or sheer clothing, strategically
     /// covered nudity, lewd or provocative poses, or close-ups of sensitive
     /// body areas.
-    #[prost(enumeration = "Likelihood", tag = "9")]
+    #[prost(enumeration="Likelihood", tag="9")]
     pub racy: i32,
 }
 /// Rectangle determined by min and max `LatLng` pairs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LatLongRect {
     /// Min lat/long pair.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub min_lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// Max lat/long pair.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub max_lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
 }
 /// Color information consists of RGB channels, score, and the fraction of
@@ -714,28 +710,28 @@ pub struct LatLongRect {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ColorInfo {
     /// RGB components of the color.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub color: ::core::option::Option<super::super::super::r#type::Color>,
     /// Image-specific score for this color. Value in range [0, 1].
-    #[prost(float, tag = "2")]
+    #[prost(float, tag="2")]
     pub score: f32,
     /// The fraction of pixels the color occupies in the image.
     /// Value in range [0, 1].
-    #[prost(float, tag = "3")]
+    #[prost(float, tag="3")]
     pub pixel_fraction: f32,
 }
 /// Set of dominant colors and their corresponding scores.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DominantColorsAnnotation {
     /// RGB color values with their score and pixel fraction.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub colors: ::prost::alloc::vec::Vec<ColorInfo>,
 }
 /// Stores image properties, such as dominant colors.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageProperties {
     /// If present, dominant colors completed successfully.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub dominant_colors: ::core::option::Option<DominantColorsAnnotation>,
 }
 /// Single crop hint that is used to generate a new crop when serving an image.
@@ -743,21 +739,21 @@ pub struct ImageProperties {
 pub struct CropHint {
     /// The bounding polygon for the crop region. The coordinates of the bounding
     /// box are in the original image's scale, as returned in `ImageParams`.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub bounding_poly: ::core::option::Option<BoundingPoly>,
     /// Confidence of this being a salient region.  Range [0, 1].
-    #[prost(float, tag = "2")]
+    #[prost(float, tag="2")]
     pub confidence: f32,
     /// Fraction of importance of this salient region with respect to the original
     /// image.
-    #[prost(float, tag = "3")]
+    #[prost(float, tag="3")]
     pub importance_fraction: f32,
 }
 /// Set of crop hints that are used to generate new crops when serving images.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CropHintsAnnotation {
     /// Crop hint results.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub crop_hints: ::prost::alloc::vec::Vec<CropHint>,
 }
 /// Parameters for crop hints annotation request.
@@ -769,14 +765,14 @@ pub struct CropHintsParams {
     /// best possible crop is returned. The number of provided aspect ratios is
     /// limited to a maximum of 16; any aspect ratios provided after the 16th are
     /// ignored.
-    #[prost(float, repeated, tag = "1")]
+    #[prost(float, repeated, tag="1")]
     pub aspect_ratios: ::prost::alloc::vec::Vec<f32>,
 }
 /// Parameters for web detection request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct WebDetectionParams {
     /// Whether to include results derived from the geo information in the image.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub include_geo_results: bool,
 }
 /// Parameters for text detections. This is used to control TEXT_DETECTION and
@@ -786,14 +782,14 @@ pub struct TextDetectionParams {
     /// By default, Cloud Vision API only includes confidence score for
     /// DOCUMENT_TEXT_DETECTION result. Set the flag to true to include confidence
     /// score for TEXT_DETECTION as well.
-    #[prost(bool, tag = "9")]
+    #[prost(bool, tag="9")]
     pub enable_text_detection_confidence_score: bool,
 }
 /// Image context and/or feature-specific parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImageContext {
     /// lat/long rectangle that specifies the location of the image.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub lat_long_rect: ::core::option::Option<LatLongRect>,
     /// List of languages to use for TEXT_DETECTION. In most cases, an empty value
     /// yields the best results since it enables automatic language detection. For
@@ -803,16 +799,16 @@ pub struct ImageContext {
     /// significant hindrance if the hint is wrong). Text detection returns an
     /// error if one or more of the specified languages is not one of the
     /// [supported languages](<https://cloud.google.com/vision/docs/languages>).
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub language_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Parameters for crop hints annotation request.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub crop_hints_params: ::core::option::Option<CropHintsParams>,
     /// Parameters for web detection.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub web_detection_params: ::core::option::Option<WebDetectionParams>,
     /// Parameters for text detection and document text detection.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag="12")]
     pub text_detection_params: ::core::option::Option<TextDetectionParams>,
 }
 /// Request for performing Google Cloud Vision API tasks over a user-provided
@@ -820,69 +816,69 @@ pub struct ImageContext {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateImageRequest {
     /// The image to be processed.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub image: ::core::option::Option<Image>,
     /// Requested features.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub features: ::prost::alloc::vec::Vec<Feature>,
     /// Additional context that may accompany the image.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub image_context: ::core::option::Option<ImageContext>,
 }
 /// Response to an image annotation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateImageResponse {
     /// If present, face detection has completed successfully.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub face_annotations: ::prost::alloc::vec::Vec<FaceAnnotation>,
     /// If present, landmark detection has completed successfully.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub landmark_annotations: ::prost::alloc::vec::Vec<EntityAnnotation>,
     /// If present, logo detection has completed successfully.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub logo_annotations: ::prost::alloc::vec::Vec<EntityAnnotation>,
     /// If present, label detection has completed successfully.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub label_annotations: ::prost::alloc::vec::Vec<EntityAnnotation>,
     /// If present, text (OCR) detection has completed successfully.
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag="5")]
     pub text_annotations: ::prost::alloc::vec::Vec<EntityAnnotation>,
     /// If present, text (OCR) detection or document (OCR) text detection has
     /// completed successfully.
     /// This annotation provides the structural hierarchy for the OCR detected
     /// text.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag="12")]
     pub full_text_annotation: ::core::option::Option<TextAnnotation>,
     /// If present, safe-search annotation has completed successfully.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub safe_search_annotation: ::core::option::Option<SafeSearchAnnotation>,
     /// If present, image properties were extracted successfully.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub image_properties_annotation: ::core::option::Option<ImageProperties>,
     /// If present, crop hints have completed successfully.
-    #[prost(message, optional, tag = "11")]
+    #[prost(message, optional, tag="11")]
     pub crop_hints_annotation: ::core::option::Option<CropHintsAnnotation>,
     /// If present, web detection has completed successfully.
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag="13")]
     pub web_detection: ::core::option::Option<WebDetection>,
     /// If set, represents the error message for the operation.
     /// Note that filled-in image annotations are guaranteed to be
     /// correct, even when `error` is set.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Multiple image annotation requests are batched into a single service call.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateImagesRequest {
     /// Required. Individual image annotation requests for this batch.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub requests: ::prost::alloc::vec::Vec<AnnotateImageRequest>,
 }
 /// Response to a batch image annotation request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateImagesResponse {
     /// Individual responses to image annotation requests within the batch.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub responses: ::prost::alloc::vec::Vec<AnnotateImageResponse>,
 }
 /// A bucketized representation of likelihood, which is intended to give clients
@@ -903,22 +899,33 @@ pub enum Likelihood {
     /// It is very likely that the image belongs to the specified vertical.
     VeryLikely = 5,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod image_annotator_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Service that performs Google Cloud Vision API detection tasks over client"]
-    #[doc = " images, such as face, landmark, logo, label, and text detection. The"]
-    #[doc = " ImageAnnotator service returns detected entities from the images."]
+    /// Service that performs Google Cloud Vision API detection tasks over client
+    /// images, such as face, landmark, logo, label, and text detection. The
+    /// ImageAnnotator service returns detected entities from the images.
     #[derive(Debug, Clone)]
     pub struct ImageAnnotatorClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl ImageAnnotatorClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> ImageAnnotatorClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -931,41 +938,48 @@ pub mod image_annotator_client {
         ) -> ImageAnnotatorClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             ImageAnnotatorClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Run image detection and annotation for a batch of images."]
+        /// Run image detection and annotation for a batch of images.
         pub async fn batch_annotate_images(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchAnnotateImagesRequest>,
         ) -> Result<tonic::Response<super::BatchAnnotateImagesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vision.v1p1beta1.ImageAnnotator/BatchAnnotateImages",

@@ -2,25 +2,22 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlImageClassification {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlImageClassificationInputs>,
     /// The metadata information.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub metadata: ::core::option::Option<AutoMlImageClassificationMetadata>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlImageClassificationInputs {
-    #[prost(
-        enumeration = "auto_ml_image_classification_inputs::ModelType",
-        tag = "1"
-    )]
+    #[prost(enumeration="auto_ml_image_classification_inputs::ModelType", tag="1")]
     pub model_type: i32,
     /// The ID of the `base` model. If it is specified, the new model will be
     /// trained based on the `base` model. Otherwise, the new model will be
     /// trained from scratch. The `base` model must be in the same
     /// Project and Location as the new Model to train, and have the same
     /// modelType.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub base_model_id: ::prost::alloc::string::String,
     /// The training budget of creating this model, expressed in milli node
     /// hours i.e. 1,000 value in this field means 1 node hour. The actual
@@ -37,19 +34,19 @@ pub struct AutoMlImageClassificationInputs {
     /// 1,000 and 100,000 milli node hours, inclusive.
     /// The default value is 24,000 which represents one day in wall time on a
     /// single node that is used.
-    #[prost(int64, tag = "3")]
+    #[prost(int64, tag="3")]
     pub budget_milli_node_hours: i64,
     /// Use the entire training budget. This disables the early stopping feature.
     /// When false the early stopping feature is enabled, which means that
     /// AutoML Image Classification might stop training before the entire
     /// training budget has been used.
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag="4")]
     pub disable_early_stopping: bool,
     /// If false, a single-label (multi-class) Model will be trained (i.e.
     /// assuming that for each image just up to one annotation may be
     /// applicable). If true, a multi-label Model will be trained (i.e.
     /// assuming that for each image multiple annotations may be applicable).
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag="5")]
     pub multi_label: bool,
 }
 /// Nested message and enum types in `AutoMlImageClassificationInputs`.
@@ -86,14 +83,11 @@ pub struct AutoMlImageClassificationMetadata {
     /// The actual training cost of creating this model, expressed in
     /// milli node hours, i.e. 1,000 value in this field means 1 node hour.
     /// Guaranteed to not exceed inputs.budgetMilliNodeHours.
-    #[prost(int64, tag = "1")]
+    #[prost(int64, tag="1")]
     pub cost_milli_node_hours: i64,
     /// For successful job completions, this is the reason why the job has
     /// finished.
-    #[prost(
-        enumeration = "auto_ml_image_classification_metadata::SuccessfulStopReason",
-        tag = "2"
-    )]
+    #[prost(enumeration="auto_ml_image_classification_metadata::SuccessfulStopReason", tag="2")]
     pub successful_stop_reason: i32,
 }
 /// Nested message and enum types in `AutoMlImageClassificationMetadata`.
@@ -114,18 +108,15 @@ pub mod auto_ml_image_classification_metadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlImageObjectDetection {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlImageObjectDetectionInputs>,
     /// The metadata information
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub metadata: ::core::option::Option<AutoMlImageObjectDetectionMetadata>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlImageObjectDetectionInputs {
-    #[prost(
-        enumeration = "auto_ml_image_object_detection_inputs::ModelType",
-        tag = "1"
-    )]
+    #[prost(enumeration="auto_ml_image_object_detection_inputs::ModelType", tag="1")]
     pub model_type: i32,
     /// The training budget of creating this model, expressed in milli node
     /// hours i.e. 1,000 value in this field means 1 node hour. The actual
@@ -142,13 +133,13 @@ pub struct AutoMlImageObjectDetectionInputs {
     /// the training budget must be between 1,000 and 100,000 milli node hours,
     /// inclusive. The default value is 24,000 which represents one day in
     /// wall time on a single node that is used.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub budget_milli_node_hours: i64,
     /// Use the entire training budget. This disables the early stopping feature.
     /// When false the early stopping feature is enabled, which means that AutoML
     /// Image Object Detection might stop training before the entire training
     /// budget has been used.
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag="3")]
     pub disable_early_stopping: bool,
 }
 /// Nested message and enum types in `AutoMlImageObjectDetectionInputs`.
@@ -189,14 +180,11 @@ pub struct AutoMlImageObjectDetectionMetadata {
     /// The actual training cost of creating this model, expressed in
     /// milli node hours, i.e. 1,000 value in this field means 1 node hour.
     /// Guaranteed to not exceed inputs.budgetMilliNodeHours.
-    #[prost(int64, tag = "1")]
+    #[prost(int64, tag="1")]
     pub cost_milli_node_hours: i64,
     /// For successful job completions, this is the reason why the job has
     /// finished.
-    #[prost(
-        enumeration = "auto_ml_image_object_detection_metadata::SuccessfulStopReason",
-        tag = "2"
-    )]
+    #[prost(enumeration="auto_ml_image_object_detection_metadata::SuccessfulStopReason", tag="2")]
     pub successful_stop_reason: i32,
 }
 /// Nested message and enum types in `AutoMlImageObjectDetectionMetadata`.
@@ -217,18 +205,15 @@ pub mod auto_ml_image_object_detection_metadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlImageSegmentation {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlImageSegmentationInputs>,
     /// The metadata information.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub metadata: ::core::option::Option<AutoMlImageSegmentationMetadata>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlImageSegmentationInputs {
-    #[prost(
-        enumeration = "auto_ml_image_segmentation_inputs::ModelType",
-        tag = "1"
-    )]
+    #[prost(enumeration="auto_ml_image_segmentation_inputs::ModelType", tag="1")]
     pub model_type: i32,
     /// The training budget of creating this model, expressed in milli node
     /// hours i.e. 1,000 value in this field means 1 node hour. The actual
@@ -243,14 +228,14 @@ pub struct AutoMlImageSegmentationInputs {
     /// 20,000 and 2,000,000 milli node hours, inclusive. The default value is
     /// 192,000 which represents one day in wall time
     /// (1000 milli * 24 hours * 8 nodes).
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub budget_milli_node_hours: i64,
     /// The ID of the `base` model. If it is specified, the new model will be
     /// trained based on the `base` model. Otherwise, the new model will be
     /// trained from scratch. The `base` model must be in the same
     /// Project and Location as the new Model to train, and have the same
     /// modelType.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub base_model_id: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `AutoMlImageSegmentationInputs`.
@@ -280,14 +265,11 @@ pub struct AutoMlImageSegmentationMetadata {
     /// The actual training cost of creating this model, expressed in
     /// milli node hours, i.e. 1,000 value in this field means 1 node hour.
     /// Guaranteed to not exceed inputs.budgetMilliNodeHours.
-    #[prost(int64, tag = "1")]
+    #[prost(int64, tag="1")]
     pub cost_milli_node_hours: i64,
     /// For successful job completions, this is the reason why the job has
     /// finished.
-    #[prost(
-        enumeration = "auto_ml_image_segmentation_metadata::SuccessfulStopReason",
-        tag = "2"
-    )]
+    #[prost(enumeration="auto_ml_image_segmentation_metadata::SuccessfulStopReason", tag="2")]
     pub successful_stop_reason: i32,
 }
 /// Nested message and enum types in `AutoMlImageSegmentationMetadata`.
@@ -313,22 +295,22 @@ pub struct ExportEvaluatedDataItemsConfig {
     /// If not specified, then results are exported to the following auto-created
     /// BigQuery table:
     /// <project_id>:export_evaluated_examples_<model_name>_<yyyy_MM_dd'T'HH_mm_ss_SSS'Z'>.evaluated_examples
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub destination_bigquery_uri: ::prost::alloc::string::String,
     /// If true and an export destination is specified, then the contents of the
     /// destination are overwritten. Otherwise, if the export destination already
     /// exists, then the export operation fails.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub override_existing_table: bool,
 }
 /// A TrainingJob that trains and uploads an AutoML Tables Model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlTables {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlTablesInputs>,
     /// The metadata information.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub metadata: ::core::option::Option<AutoMlTablesMetadata>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -340,16 +322,16 @@ pub struct AutoMlTablesInputs {
     ///                  This type is available only to columns that contain
     ///                  semantically numeric values, i.e. integers or floating
     ///                  point number, even if stored as e.g. strings.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub prediction_type: ::prost::alloc::string::String,
     /// The column name of the target column that the model is to predict.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub target_column: ::prost::alloc::string::String,
     /// Each transformation will apply transform function to given input column.
     /// And the result will be used for training.
     /// When creating transformation for BigQuery Struct column, the column should
     /// be flattened using "." as the delimiter.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub transformations: ::prost::alloc::vec::Vec<auto_ml_tables_inputs::Transformation>,
     /// Objective function the model is optimizing towards. The training process
     /// creates a model that maximizes/minimizes the value of the objective
@@ -375,7 +357,7 @@ pub struct AutoMlTablesInputs {
     ///   "minimize-rmse" (default) - Minimize root-mean-squared error (RMSE).
     ///   "minimize-mae" - Minimize mean-absolute error (MAE).
     ///   "minimize-rmsle" - Minimize root-mean-squared log error (RMSLE).
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub optimization_objective: ::prost::alloc::string::String,
     /// Required. The train budget of creating this model, expressed in milli node
     /// hours i.e. 1,000 value in this field means 1 node hour.
@@ -391,12 +373,12 @@ pub struct AutoMlTablesInputs {
     ///
     /// The train budget must be between 1,000 and 72,000 milli node hours,
     /// inclusive.
-    #[prost(int64, tag = "7")]
+    #[prost(int64, tag="7")]
     pub train_budget_milli_node_hours: i64,
     /// Use the entire training budget. This disables the early stopping feature.
     /// By default, the early stopping feature is enabled, which means that AutoML
     /// Tables might stop training before the entire training budget has been used.
-    #[prost(bool, tag = "8")]
+    #[prost(bool, tag="8")]
     pub disable_early_stopping: bool,
     /// Column name that should be used as the weight column.
     /// Higher values in this column give more importance to the row
@@ -404,24 +386,20 @@ pub struct AutoMlTablesInputs {
     /// 10000 inclusively; 0 means the row is ignored for training. If weight
     /// column field is not set, then all rows are assumed to have equal weight
     /// of 1.
-    #[prost(string, tag = "9")]
+    #[prost(string, tag="9")]
     pub weight_column_name: ::prost::alloc::string::String,
     /// Configuration for exporting test set predictions to a BigQuery table. If
     /// this configuration is absent, then the export is not performed.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub export_evaluated_data_items_config: ::core::option::Option<ExportEvaluatedDataItemsConfig>,
     /// Additional experiment flags for the Tables training pipeline.
-    #[prost(string, repeated, tag = "11")]
+    #[prost(string, repeated, tag="11")]
     pub additional_experiments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Additional optimization objective configuration. Required for
     /// `maximize-precision-at-recall` and `maximize-recall-at-precision`,
     /// otherwise unused.
-    #[prost(
-        oneof = "auto_ml_tables_inputs::AdditionalOptimizationObjectiveConfig",
-        tags = "5, 6"
-    )]
-    pub additional_optimization_objective_config:
-        ::core::option::Option<auto_ml_tables_inputs::AdditionalOptimizationObjectiveConfig>,
+    #[prost(oneof="auto_ml_tables_inputs::AdditionalOptimizationObjectiveConfig", tags="5, 6")]
+    pub additional_optimization_objective_config: ::core::option::Option<auto_ml_tables_inputs::AdditionalOptimizationObjectiveConfig>,
 }
 /// Nested message and enum types in `AutoMlTablesInputs`.
 pub mod auto_ml_tables_inputs {
@@ -429,10 +407,7 @@ pub mod auto_ml_tables_inputs {
     pub struct Transformation {
         /// The transformation that the training pipeline will apply to the input
         /// columns.
-        #[prost(
-            oneof = "transformation::TransformationDetail",
-            tags = "1, 2, 3, 4, 5, 6, 7, 8"
-        )]
+        #[prost(oneof="transformation::TransformationDetail", tags="1, 2, 3, 4, 5, 6, 7, 8")]
         pub transformation_detail: ::core::option::Option<transformation::TransformationDetail>,
     }
     /// Nested message and enum types in `Transformation`.
@@ -441,7 +416,7 @@ pub mod auto_ml_tables_inputs {
         /// statistic of dataset.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct AutoTransformation {
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub column_name: ::prost::alloc::string::String,
         }
         /// Training pipeline will perform following transformation functions.
@@ -456,13 +431,13 @@ pub mod auto_ml_tables_inputs {
         /// *  A boolean value that indicates whether the value is valid.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct NumericTransformation {
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub column_name: ::prost::alloc::string::String,
             /// If invalid values is allowed, the training pipeline will create a
             /// boolean feature that indicated whether the value is valid.
             /// Otherwise, the training pipeline will discard the input row from
             /// trainining data.
-            #[prost(bool, tag = "2")]
+            #[prost(bool, tag="2")]
             pub invalid_values_allowed: bool,
         }
         /// Training pipeline will perform following transformation functions.
@@ -476,7 +451,7 @@ pub mod auto_ml_tables_inputs {
         ///    special lookup index and resulting embedding.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CategoricalTransformation {
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub column_name: ::prost::alloc::string::String,
         }
         /// Training pipeline will perform following transformation functions.
@@ -488,7 +463,7 @@ pub mod auto_ml_tables_inputs {
         ///    treatment and are not removed.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TimestampTransformation {
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub column_name: ::prost::alloc::string::String,
             /// The format in which that time field is expressed. The time_format must
             /// either be one of:
@@ -501,13 +476,13 @@ pub mod auto_ml_tables_inputs {
             /// or be written in `strftime` syntax. If time_format is not set, then the
             /// default format is RFC 3339 `date-time` format, where
             /// `time-offset` = `"Z"` (e.g. 1985-04-12T23:20:50.52Z)
-            #[prost(string, tag = "2")]
+            #[prost(string, tag="2")]
             pub time_format: ::prost::alloc::string::String,
             /// If invalid values is allowed, the training pipeline will create a
             /// boolean feature that indicated whether the value is valid.
             /// Otherwise, the training pipeline will discard the input row from
             /// trainining data.
-            #[prost(bool, tag = "3")]
+            #[prost(bool, tag="3")]
             pub invalid_values_allowed: bool,
         }
         /// Training pipeline will perform following transformation functions.
@@ -523,7 +498,7 @@ pub mod auto_ml_tables_inputs {
         /// *  Stop-words receive no special treatment and are not removed.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TextTransformation {
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub column_name: ::prost::alloc::string::String,
         }
         /// Treats the column as numerical array and performs following
@@ -533,13 +508,13 @@ pub mod auto_ml_tables_inputs {
         /// *  The average of empty arrays is treated as zero.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct NumericArrayTransformation {
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub column_name: ::prost::alloc::string::String,
             /// If invalid values is allowed, the training pipeline will create a
             /// boolean feature that indicated whether the value is valid.
             /// Otherwise, the training pipeline will discard the input row from
             /// trainining data.
-            #[prost(bool, tag = "2")]
+            #[prost(bool, tag="2")]
             pub invalid_values_allowed: bool,
         }
         /// Treats the column as categorical array and performs following
@@ -552,7 +527,7 @@ pub mod auto_ml_tables_inputs {
         /// *  Empty arrays treated as an embedding of zeroes.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct CategoricalArrayTransformation {
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub column_name: ::prost::alloc::string::String,
         }
         /// Treats the column as text array and performs following transformation
@@ -564,28 +539,28 @@ pub mod auto_ml_tables_inputs {
         /// *  Empty arrays treated as an empty text.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct TextArrayTransformation {
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub column_name: ::prost::alloc::string::String,
         }
         /// The transformation that the training pipeline will apply to the input
         /// columns.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum TransformationDetail {
-            #[prost(message, tag = "1")]
+            #[prost(message, tag="1")]
             Auto(AutoTransformation),
-            #[prost(message, tag = "2")]
+            #[prost(message, tag="2")]
             Numeric(NumericTransformation),
-            #[prost(message, tag = "3")]
+            #[prost(message, tag="3")]
             Categorical(CategoricalTransformation),
-            #[prost(message, tag = "4")]
+            #[prost(message, tag="4")]
             Timestamp(TimestampTransformation),
-            #[prost(message, tag = "5")]
+            #[prost(message, tag="5")]
             Text(TextTransformation),
-            #[prost(message, tag = "6")]
+            #[prost(message, tag="6")]
             RepeatedNumeric(NumericArrayTransformation),
-            #[prost(message, tag = "7")]
+            #[prost(message, tag="7")]
             RepeatedCategorical(CategoricalArrayTransformation),
-            #[prost(message, tag = "8")]
+            #[prost(message, tag="8")]
             RepeatedText(TextArrayTransformation),
         }
     }
@@ -596,11 +571,11 @@ pub mod auto_ml_tables_inputs {
     pub enum AdditionalOptimizationObjectiveConfig {
         /// Required when optimization_objective is "maximize-precision-at-recall".
         /// Must be between 0 and 1, inclusive.
-        #[prost(float, tag = "5")]
+        #[prost(float, tag="5")]
         OptimizationObjectiveRecallValue(f32),
         /// Required when optimization_objective is "maximize-recall-at-precision".
         /// Must be between 0 and 1, inclusive.
-        #[prost(float, tag = "6")]
+        #[prost(float, tag="6")]
         OptimizationObjectivePrecisionValue(f32),
     }
 }
@@ -610,35 +585,36 @@ pub struct AutoMlTablesMetadata {
     /// Output only. The actual training cost of the model, expressed in milli
     /// node hours, i.e. 1,000 value in this field means 1 node hour. Guaranteed
     /// to not exceed the train budget.
-    #[prost(int64, tag = "1")]
+    #[prost(int64, tag="1")]
     pub train_cost_milli_node_hours: i64,
 }
 /// A TrainingJob that trains and uploads an AutoML Text Classification Model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlTextClassification {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlTextClassificationInputs>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlTextClassificationInputs {
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag="1")]
     pub multi_label: bool,
 }
 /// A TrainingJob that trains and uploads an AutoML Text Extraction Model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlTextExtraction {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlTextExtractionInputs>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AutoMlTextExtractionInputs {}
+pub struct AutoMlTextExtractionInputs {
+}
 /// A TrainingJob that trains and uploads an AutoML Text Sentiment Model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlTextSentiment {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlTextSentimentInputs>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -650,7 +626,7 @@ pub struct AutoMlTextSentimentInputs {
     /// created.
     /// Only the Annotations with this sentimentMax will be used for training.
     /// sentimentMax value must be between 1 and 10 (inclusive).
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub sentiment_max: i32,
 }
 /// A TrainingJob that trains and uploads an AutoML Video Action Recognition
@@ -658,15 +634,12 @@ pub struct AutoMlTextSentimentInputs {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoActionRecognition {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlVideoActionRecognitionInputs>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoActionRecognitionInputs {
-    #[prost(
-        enumeration = "auto_ml_video_action_recognition_inputs::ModelType",
-        tag = "1"
-    )]
+    #[prost(enumeration="auto_ml_video_action_recognition_inputs::ModelType", tag="1")]
     pub model_type: i32,
 }
 /// Nested message and enum types in `AutoMlVideoActionRecognitionInputs`.
@@ -697,15 +670,12 @@ pub mod auto_ml_video_action_recognition_inputs {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoClassification {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlVideoClassificationInputs>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoClassificationInputs {
-    #[prost(
-        enumeration = "auto_ml_video_classification_inputs::ModelType",
-        tag = "1"
-    )]
+    #[prost(enumeration="auto_ml_video_classification_inputs::ModelType", tag="1")]
     pub model_type: i32,
 }
 /// Nested message and enum types in `AutoMlVideoClassificationInputs`.
@@ -732,15 +702,12 @@ pub mod auto_ml_video_classification_inputs {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoObjectTracking {
     /// The input parameters of this TrainingJob.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub inputs: ::core::option::Option<AutoMlVideoObjectTrackingInputs>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoObjectTrackingInputs {
-    #[prost(
-        enumeration = "auto_ml_video_object_tracking_inputs::ModelType",
-        tag = "1"
-    )]
+    #[prost(enumeration="auto_ml_video_object_tracking_inputs::ModelType", tag="1")]
     pub model_type: i32,
 }
 /// Nested message and enum types in `AutoMlVideoObjectTrackingInputs`.

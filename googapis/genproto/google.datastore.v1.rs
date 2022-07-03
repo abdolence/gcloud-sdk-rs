@@ -20,10 +20,10 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionId {
     /// The ID of the project to which the entities belong.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub project_id: ::prost::alloc::string::String,
     /// If not empty, the ID of the namespace to which the entities belong.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub namespace_id: ::prost::alloc::string::String,
 }
 /// A unique identifier for an entity.
@@ -35,7 +35,7 @@ pub struct Key {
     /// Entities are partitioned into subsets, currently identified by a project
     /// ID and namespace ID.
     /// Queries are scoped to a single partition.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub partition_id: ::core::option::Option<PartitionId>,
     /// The entity path.
     /// An entity path consists of one or more elements composed of a kind and a
@@ -53,7 +53,7 @@ pub struct Key {
     /// identifier.
     ///
     /// A path can never be empty, and a path can have at most 100 elements.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub path: ::prost::alloc::vec::Vec<key::PathElement>,
 }
 /// Nested message and enum types in `Key`.
@@ -73,10 +73,10 @@ pub mod key {
         /// Must be valid UTF-8 bytes. Legacy values that are not valid UTF-8 are
         /// encoded as `__bytes<X>__` where `<X>` is the base-64 encoding of the
         /// bytes.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub kind: ::prost::alloc::string::String,
         /// The type of ID.
-        #[prost(oneof = "path_element::IdType", tags = "2, 3")]
+        #[prost(oneof="path_element::IdType", tags="2, 3")]
         pub id_type: ::core::option::Option<path_element::IdType>,
     }
     /// Nested message and enum types in `PathElement`.
@@ -88,7 +88,7 @@ pub mod key {
             ///
             /// Never equal to zero. Values less than zero are discouraged and may not
             /// be supported in the future.
-            #[prost(int64, tag = "2")]
+            #[prost(int64, tag="2")]
             Id(i64),
             /// The name of the entity.
             ///
@@ -99,7 +99,7 @@ pub mod key {
             /// Must be valid UTF-8 bytes. Legacy values that are not valid UTF-8 are
             /// encoded as `__bytes<X>__` where `<X>` is the base-64 encoding of the
             /// bytes.
-            #[prost(string, tag = "3")]
+            #[prost(string, tag="3")]
             Name(::prost::alloc::string::String),
         }
     }
@@ -110,7 +110,7 @@ pub struct ArrayValue {
     /// Values in the array.
     /// The order of values in an array is preserved as long as all values have
     /// identical settings for 'exclude_from_indexes'.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub values: ::prost::alloc::vec::Vec<Value>,
 }
 /// A message that can hold any of the supported value types and associated
@@ -118,17 +118,14 @@ pub struct ArrayValue {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// The `meaning` field should only be populated for backwards compatibility.
-    #[prost(int32, tag = "14")]
+    #[prost(int32, tag="14")]
     pub meaning: i32,
     /// If the value should be excluded from all indexes including those defined
     /// explicitly.
-    #[prost(bool, tag = "19")]
+    #[prost(bool, tag="19")]
     pub exclude_from_indexes: bool,
     /// Must have a value set.
-    #[prost(
-        oneof = "value::ValueType",
-        tags = "11, 1, 2, 3, 10, 5, 17, 18, 8, 6, 9"
-    )]
+    #[prost(oneof="value::ValueType", tags="11, 1, 2, 3, 10, 5, 17, 18, 8, 6, 9")]
     pub value_type: ::core::option::Option<value::ValueType>,
 }
 /// Nested message and enum types in `Value`.
@@ -137,51 +134,51 @@ pub mod value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ValueType {
         /// A null value.
-        #[prost(enumeration = "::prost_types::NullValue", tag = "11")]
+        #[prost(enumeration="::prost_types::NullValue", tag="11")]
         NullValue(i32),
         /// A boolean value.
-        #[prost(bool, tag = "1")]
+        #[prost(bool, tag="1")]
         BooleanValue(bool),
         /// An integer value.
-        #[prost(int64, tag = "2")]
+        #[prost(int64, tag="2")]
         IntegerValue(i64),
         /// A double value.
-        #[prost(double, tag = "3")]
+        #[prost(double, tag="3")]
         DoubleValue(f64),
         /// A timestamp value.
         /// When stored in the Datastore, precise only to microseconds;
         /// any additional precision is rounded down.
-        #[prost(message, tag = "10")]
+        #[prost(message, tag="10")]
         TimestampValue(::prost_types::Timestamp),
         /// A key value.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         KeyValue(super::Key),
         /// A UTF-8 encoded string value.
         /// When `exclude_from_indexes` is false (it is indexed) , may have at most 1500 bytes.
         /// Otherwise, may be set to at most 1,000,000 bytes.
-        #[prost(string, tag = "17")]
+        #[prost(string, tag="17")]
         StringValue(::prost::alloc::string::String),
         /// A blob value.
         /// May have at most 1,000,000 bytes.
         /// When `exclude_from_indexes` is false, may have at most 1500 bytes.
         /// In JSON requests, must be base64-encoded.
-        #[prost(bytes, tag = "18")]
+        #[prost(bytes, tag="18")]
         BlobValue(::prost::alloc::vec::Vec<u8>),
         /// A geo point value representing a point on the surface of Earth.
-        #[prost(message, tag = "8")]
+        #[prost(message, tag="8")]
         GeoPointValue(super::super::super::r#type::LatLng),
         /// An entity value.
         ///
         /// - May have no key.
         /// - May have a key with an incomplete key path.
         /// - May have a reserved/read-only key.
-        #[prost(message, tag = "6")]
+        #[prost(message, tag="6")]
         EntityValue(super::Entity),
         /// An array value.
         /// Cannot contain another array value.
         /// A `Value` instance that sets field `array_value` must not set fields
         /// `meaning` or `exclude_from_indexes`.
-        #[prost(message, tag = "9")]
+        #[prost(message, tag="9")]
         ArrayValue(super::ArrayValue),
     }
 }
@@ -198,7 +195,7 @@ pub struct Entity {
     /// an entity in `Value.entity_value` may have no key).
     /// An entity's kind is its key path's last element's kind,
     /// or null if it has no key.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub key: ::core::option::Option<Key>,
     /// The entity's properties.
     /// The map's keys are property names.
@@ -206,14 +203,14 @@ pub struct Entity {
     /// A reserved property name is forbidden in certain documented contexts.
     /// The name must not contain more than 500 characters.
     /// The name cannot be `""`.
-    #[prost(map = "string, message", tag = "3")]
+    #[prost(map="string, message", tag="3")]
     pub properties: ::std::collections::HashMap<::prost::alloc::string::String, Value>,
 }
 /// The result of fetching an entity from Datastore.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityResult {
     /// The resulting entity.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub entity: ::core::option::Option<Entity>,
     /// The version of the entity, a strictly positive number that monotonically
     /// increases with changes to the entity.
@@ -224,17 +221,17 @@ pub struct EntityResult {
     /// For \[missing][google.datastore.v1.LookupResponse.missing\] entities in `LookupResponse`, this
     /// is the version of the snapshot that was used to look up the entity, and it
     /// is always set except for eventually consistent reads.
-    #[prost(int64, tag = "4")]
+    #[prost(int64, tag="4")]
     pub version: i64,
     /// The time at which the entity was last changed.
     /// This field is set for \[`FULL`][google.datastore.v1.EntityResult.ResultType.FULL\] entity
     /// results.
     /// If this entity is missing, this field will not be set.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A cursor that points to the position after the result entity.
     /// Set only when the `EntityResult` is part of a `QueryResultBatch` message.
-    #[prost(bytes = "vec", tag = "3")]
+    #[prost(bytes="vec", tag="3")]
     pub cursor: ::prost::alloc::vec::Vec<u8>,
 }
 /// Nested message and enum types in `EntityResult`.
@@ -261,51 +258,51 @@ pub mod entity_result {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Query {
     /// The projection to return. Defaults to returning all properties.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub projection: ::prost::alloc::vec::Vec<Projection>,
     /// The kinds to query (if empty, returns entities of all kinds).
     /// Currently at most 1 kind may be specified.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub kind: ::prost::alloc::vec::Vec<KindExpression>,
     /// The filter to apply.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub filter: ::core::option::Option<Filter>,
     /// The order to apply to the query results (if empty, order is unspecified).
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag="5")]
     pub order: ::prost::alloc::vec::Vec<PropertyOrder>,
     /// The properties to make distinct. The query results will contain the first
     /// result for each distinct combination of values for the given properties
     /// (if empty, all results are returned).
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag="6")]
     pub distinct_on: ::prost::alloc::vec::Vec<PropertyReference>,
     /// A starting point for the query results. Query cursors are
     /// returned in query result batches and
     /// [can only be used to continue the same
     /// query](<https://cloud.google.com/datastore/docs/concepts/queries#cursors_limits_and_offsets>).
-    #[prost(bytes = "vec", tag = "7")]
+    #[prost(bytes="vec", tag="7")]
     pub start_cursor: ::prost::alloc::vec::Vec<u8>,
     /// An ending point for the query results. Query cursors are
     /// returned in query result batches and
     /// [can only be used to limit the same
     /// query](<https://cloud.google.com/datastore/docs/concepts/queries#cursors_limits_and_offsets>).
-    #[prost(bytes = "vec", tag = "8")]
+    #[prost(bytes="vec", tag="8")]
     pub end_cursor: ::prost::alloc::vec::Vec<u8>,
     /// The number of results to skip. Applies before limit, but after all other
     /// constraints. Optional. Must be >= 0 if specified.
-    #[prost(int32, tag = "10")]
+    #[prost(int32, tag="10")]
     pub offset: i32,
     /// The maximum number of results to return. Applies after all other
     /// constraints. Optional.
     /// Unspecified is interpreted as no limit.
     /// Must be >= 0 if specified.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag="12")]
     pub limit: ::core::option::Option<i32>,
 }
 /// A representation of a kind.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KindExpression {
     /// The name of the kind.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A reference to a property relative to the kind expressions.
@@ -313,24 +310,24 @@ pub struct KindExpression {
 pub struct PropertyReference {
     /// The name of the property.
     /// If name includes "."s, it may be interpreted as a property name path.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub name: ::prost::alloc::string::String,
 }
 /// A representation of a property in a projection.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Projection {
     /// The property to project.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<PropertyReference>,
 }
 /// The desired order for a specific property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyOrder {
     /// The property to order by.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<PropertyReference>,
     /// The direction to order by. Defaults to `ASCENDING`.
-    #[prost(enumeration = "property_order::Direction", tag = "2")]
+    #[prost(enumeration="property_order::Direction", tag="2")]
     pub direction: i32,
 }
 /// Nested message and enum types in `PropertyOrder`.
@@ -351,7 +348,7 @@ pub mod property_order {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Filter {
     /// The type of filter.
-    #[prost(oneof = "filter::FilterType", tags = "1, 2")]
+    #[prost(oneof="filter::FilterType", tags="1, 2")]
     pub filter_type: ::core::option::Option<filter::FilterType>,
 }
 /// Nested message and enum types in `Filter`.
@@ -360,10 +357,10 @@ pub mod filter {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum FilterType {
         /// A composite filter.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         CompositeFilter(super::CompositeFilter),
         /// A filter on a property.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         PropertyFilter(super::PropertyFilter),
     }
 }
@@ -371,11 +368,11 @@ pub mod filter {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CompositeFilter {
     /// The operator for combining multiple filters.
-    #[prost(enumeration = "composite_filter::Operator", tag = "1")]
+    #[prost(enumeration="composite_filter::Operator", tag="1")]
     pub op: i32,
     /// The list of filters to combine.
     /// Must contain at least one filter.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub filters: ::prost::alloc::vec::Vec<Filter>,
 }
 /// Nested message and enum types in `CompositeFilter`.
@@ -394,13 +391,13 @@ pub mod composite_filter {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertyFilter {
     /// The property to filter by.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub property: ::core::option::Option<PropertyReference>,
     /// The operator to filter by.
-    #[prost(enumeration = "property_filter::Operator", tag = "2")]
+    #[prost(enumeration="property_filter::Operator", tag="2")]
     pub op: i32,
     /// The value to compare the property to.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub value: ::core::option::Option<Value>,
 }
 /// Nested message and enum types in `PropertyFilter`.
@@ -473,35 +470,34 @@ pub mod property_filter {
 pub struct GqlQuery {
     /// A string of the format described
     /// \[here\](<https://cloud.google.com/datastore/docs/apis/gql/gql_reference>).
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub query_string: ::prost::alloc::string::String,
     /// When false, the query string must not contain any literals and instead must
     /// bind all values. For example,
     /// `SELECT * FROM Kind WHERE a = 'string literal'` is not allowed, while
     /// `SELECT * FROM Kind WHERE a = @value` is.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub allow_literals: bool,
     /// For each non-reserved named binding site in the query string, there must be
     /// a named parameter with that name, but not necessarily the inverse.
     ///
     /// Key must match regex `\[A-Za-z_$][A-Za-z_$0-9\]*`, must not match regex
     /// `__.*__`, and must not be `""`.
-    #[prost(map = "string, message", tag = "5")]
-    pub named_bindings:
-        ::std::collections::HashMap<::prost::alloc::string::String, GqlQueryParameter>,
+    #[prost(map="string, message", tag="5")]
+    pub named_bindings: ::std::collections::HashMap<::prost::alloc::string::String, GqlQueryParameter>,
     /// Numbered binding site @1 references the first numbered parameter,
     /// effectively using 1-based indexing, rather than the usual 0.
     ///
     /// For each binding site numbered i in `query_string`, there must be an i-th
     /// numbered parameter. The inverse must also be true.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub positional_bindings: ::prost::alloc::vec::Vec<GqlQueryParameter>,
 }
 /// A binding parameter for a GQL query.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GqlQueryParameter {
     /// The type of parameter.
-    #[prost(oneof = "gql_query_parameter::ParameterType", tags = "2, 3")]
+    #[prost(oneof="gql_query_parameter::ParameterType", tags="2, 3")]
     pub parameter_type: ::core::option::Option<gql_query_parameter::ParameterType>,
 }
 /// Nested message and enum types in `GqlQueryParameter`.
@@ -510,11 +506,11 @@ pub mod gql_query_parameter {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ParameterType {
         /// A value parameter.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         Value(super::Value),
         /// A query cursor. Query cursors are returned in query
         /// result batches.
-        #[prost(bytes, tag = "3")]
+        #[prost(bytes, tag="3")]
         Cursor(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -522,23 +518,23 @@ pub mod gql_query_parameter {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryResultBatch {
     /// The number of results skipped, typically because of an offset.
-    #[prost(int32, tag = "6")]
+    #[prost(int32, tag="6")]
     pub skipped_results: i32,
     /// A cursor that points to the position after the last skipped result.
     /// Will be set when `skipped_results` != 0.
-    #[prost(bytes = "vec", tag = "3")]
+    #[prost(bytes="vec", tag="3")]
     pub skipped_cursor: ::prost::alloc::vec::Vec<u8>,
     /// The result type for every entity in `entity_results`.
-    #[prost(enumeration = "entity_result::ResultType", tag = "1")]
+    #[prost(enumeration="entity_result::ResultType", tag="1")]
     pub entity_result_type: i32,
     /// The results for this batch.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub entity_results: ::prost::alloc::vec::Vec<EntityResult>,
     /// A cursor that points to the position after the last result in the batch.
-    #[prost(bytes = "vec", tag = "4")]
+    #[prost(bytes="vec", tag="4")]
     pub end_cursor: ::prost::alloc::vec::Vec<u8>,
     /// The state of the query after the current batch.
-    #[prost(enumeration = "query_result_batch::MoreResultsType", tag = "5")]
+    #[prost(enumeration="query_result_batch::MoreResultsType", tag="5")]
     pub more_results: i32,
     /// The version number of the snapshot this batch was returned from.
     /// This applies to the range of results from the query's `start_cursor` (or
@@ -549,7 +545,7 @@ pub struct QueryResultBatch {
     /// can have a greater snapshot version number. Each batch's snapshot version
     /// is valid for all preceding batches.
     /// The value will be zero for eventually consistent queries.
-    #[prost(int64, tag = "7")]
+    #[prost(int64, tag="7")]
     pub snapshot_version: i64,
     /// Read timestamp this batch was returned from.
     /// This applies to the range of results from the query's `start_cursor` (or
@@ -561,7 +557,7 @@ pub struct QueryResultBatch {
     /// is valid for all preceding batches.
     /// This value will not be set for eventually consistent queries in Cloud
     /// Datastore.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `QueryResultBatch`.
@@ -587,13 +583,13 @@ pub mod query_result_batch {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LookupRequest {
     /// Required. The ID of the project against which to make the request.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
     /// The options for this lookup request.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub read_options: ::core::option::Option<ReadOptions>,
     /// Required. Keys of entities to look up.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The response for \[Datastore.Lookup][google.datastore.v1.Datastore.Lookup\].
@@ -602,39 +598,39 @@ pub struct LookupResponse {
     /// Entities found as `ResultType.FULL` entities. The order of results in this
     /// field is undefined and has no relation to the order of the keys in the
     /// input.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub found: ::prost::alloc::vec::Vec<EntityResult>,
     /// Entities not found as `ResultType.KEY_ONLY` entities. The order of results
     /// in this field is undefined and has no relation to the order of the keys
     /// in the input.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub missing: ::prost::alloc::vec::Vec<EntityResult>,
     /// A list of keys that were not looked up due to resource constraints. The
     /// order of results in this field is undefined and has no relation to the
     /// order of the keys in the input.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub deferred: ::prost::alloc::vec::Vec<Key>,
     /// The time at which these entities were read or found missing.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for \[Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryRequest {
     /// Required. The ID of the project against which to make the request.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
     /// Entities are partitioned into subsets, identified by a partition ID.
     /// Queries are scoped to a single partition.
     /// This partition ID is normalized with the standard default context
     /// partition ID.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub partition_id: ::core::option::Option<PartitionId>,
     /// The options for this query.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub read_options: ::core::option::Option<ReadOptions>,
     /// The type of query.
-    #[prost(oneof = "run_query_request::QueryType", tags = "3, 7")]
+    #[prost(oneof="run_query_request::QueryType", tags="3, 7")]
     pub query_type: ::core::option::Option<run_query_request::QueryType>,
 }
 /// Nested message and enum types in `RunQueryRequest`.
@@ -643,10 +639,10 @@ pub mod run_query_request {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum QueryType {
         /// The query to run.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         Query(super::Query),
         /// The GQL query to run.
-        #[prost(message, tag = "7")]
+        #[prost(message, tag="7")]
         GqlQuery(super::GqlQuery),
     }
 }
@@ -654,52 +650,53 @@ pub mod run_query_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RunQueryResponse {
     /// A batch of query results (always present).
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub batch: ::core::option::Option<QueryResultBatch>,
     /// The parsed form of the `GqlQuery` from the request, if it was set.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub query: ::core::option::Option<Query>,
 }
 /// The request for \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionRequest {
     /// Required. The ID of the project against which to make the request.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
     /// Options for a new transaction.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub transaction_options: ::core::option::Option<TransactionOptions>,
 }
 /// The response for \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BeginTransactionResponse {
     /// The transaction identifier (always present).
-    #[prost(bytes = "vec", tag = "1")]
+    #[prost(bytes="vec", tag="1")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// The request for \[Datastore.Rollback][google.datastore.v1.Datastore.Rollback\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RollbackRequest {
     /// Required. The ID of the project against which to make the request.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. The transaction identifier, returned by a call to
     /// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
-    #[prost(bytes = "vec", tag = "1")]
+    #[prost(bytes="vec", tag="1")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
 }
 /// The response for \[Datastore.Rollback][google.datastore.v1.Datastore.Rollback\].
 /// (an empty message).
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RollbackResponse {}
+pub struct RollbackResponse {
+}
 /// The request for \[Datastore.Commit][google.datastore.v1.Datastore.Commit\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommitRequest {
     /// Required. The ID of the project against which to make the request.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
     /// The type of commit to perform. Defaults to `TRANSACTIONAL`.
-    #[prost(enumeration = "commit_request::Mode", tag = "5")]
+    #[prost(enumeration="commit_request::Mode", tag="5")]
     pub mode: i32,
     /// The mutations to perform.
     ///
@@ -714,10 +711,10 @@ pub struct CommitRequest {
     ///
     /// When mode is `NON_TRANSACTIONAL`, no two mutations may affect a single
     /// entity.
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag="6")]
     pub mutations: ::prost::alloc::vec::Vec<Mutation>,
     /// Must be set when mode is `TRANSACTIONAL`.
-    #[prost(oneof = "commit_request::TransactionSelector", tags = "1")]
+    #[prost(oneof="commit_request::TransactionSelector", tags="1")]
     pub transaction_selector: ::core::option::Option<commit_request::TransactionSelector>,
 }
 /// Nested message and enum types in `CommitRequest`.
@@ -741,7 +738,7 @@ pub mod commit_request {
         /// The identifier of the transaction associated with the commit. A
         /// transaction identifier is returned by a call to
         /// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
-        #[prost(bytes, tag = "1")]
+        #[prost(bytes, tag="1")]
         Transaction(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -750,25 +747,25 @@ pub mod commit_request {
 pub struct CommitResponse {
     /// The result of performing the mutations.
     /// The i-th mutation result corresponds to the i-th mutation in the request.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub mutation_results: ::prost::alloc::vec::Vec<MutationResult>,
     /// The number of index entries updated during the commit, or zero if none were
     /// updated.
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub index_updates: i32,
     /// The transaction commit timestamp. Not set for non-transactional commits.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for \[Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllocateIdsRequest {
     /// Required. The ID of the project against which to make the request.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. A list of keys with incomplete key paths for which to allocate IDs.
     /// No key may be reserved/read-only.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The response for \[Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds\].
@@ -776,26 +773,27 @@ pub struct AllocateIdsRequest {
 pub struct AllocateIdsResponse {
     /// The keys specified in the request (in the same order), each with
     /// its key path completed with a newly allocated ID.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The request for \[Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReserveIdsRequest {
     /// Required. The ID of the project against which to make the request.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
     /// If not empty, the ID of the database against which to make the request.
-    #[prost(string, tag = "9")]
+    #[prost(string, tag="9")]
     pub database_id: ::prost::alloc::string::String,
     /// Required. A list of keys with complete key paths whose numeric IDs should not be
     /// auto-allocated.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub keys: ::prost::alloc::vec::Vec<Key>,
 }
 /// The response for \[Datastore.ReserveIds][google.datastore.v1.Datastore.ReserveIds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ReserveIdsResponse {}
+pub struct ReserveIdsResponse {
+}
 /// A mutation to apply to an entity.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Mutation {
@@ -807,12 +805,12 @@ pub struct Mutation {
     ///   not even a property in an entity in a value.
     /// - No value in the entity may have meaning 18,
     ///   not even a value in an entity in another value.
-    #[prost(oneof = "mutation::Operation", tags = "4, 5, 6, 7")]
+    #[prost(oneof="mutation::Operation", tags="4, 5, 6, 7")]
     pub operation: ::core::option::Option<mutation::Operation>,
     /// When set, the server will detect whether or not this mutation conflicts
     /// with the current version of the entity on the server. Conflicting mutations
     /// are not applied, and are marked as such in MutationResult.
-    #[prost(oneof = "mutation::ConflictDetectionStrategy", tags = "8, 11")]
+    #[prost(oneof="mutation::ConflictDetectionStrategy", tags="8, 11")]
     pub conflict_detection_strategy: ::core::option::Option<mutation::ConflictDetectionStrategy>,
 }
 /// Nested message and enum types in `Mutation`.
@@ -829,19 +827,19 @@ pub mod mutation {
     pub enum Operation {
         /// The entity to insert. The entity must not already exist.
         /// The entity key's final path element may be incomplete.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         Insert(super::Entity),
         /// The entity to update. The entity must already exist.
         /// Must have a complete key path.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         Update(super::Entity),
         /// The entity to upsert. The entity may or may not already exist.
         /// The entity key's final path element may be incomplete.
-        #[prost(message, tag = "6")]
+        #[prost(message, tag="6")]
         Upsert(super::Entity),
         /// The key of the entity to delete. The entity may or may not already exist.
         /// Must have a complete key path and must not be reserved/read-only.
-        #[prost(message, tag = "7")]
+        #[prost(message, tag="7")]
         Delete(super::Key),
     }
     /// When set, the server will detect whether or not this mutation conflicts
@@ -852,12 +850,12 @@ pub mod mutation {
         /// The version of the entity that this mutation is being applied
         /// to. If this does not match the current version on the server, the
         /// mutation conflicts.
-        #[prost(int64, tag = "8")]
+        #[prost(int64, tag="8")]
         BaseVersion(i64),
         /// The update time of the entity that this mutation is being applied
         /// to. If this does not match the current update time on the server, the
         /// mutation conflicts.
-        #[prost(message, tag = "11")]
+        #[prost(message, tag="11")]
         UpdateTime(::prost_types::Timestamp),
     }
 }
@@ -866,24 +864,24 @@ pub mod mutation {
 pub struct MutationResult {
     /// The automatically allocated key.
     /// Set only when the mutation allocated a key.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub key: ::core::option::Option<Key>,
     /// The version of the entity on the server after processing the mutation. If
     /// the mutation doesn't change anything on the server, then the version will
     /// be the version of the current entity or, if no entity is present, a version
     /// that is strictly greater than the version of any previous entity and less
     /// than the version of any possible future entity.
-    #[prost(int64, tag = "4")]
+    #[prost(int64, tag="4")]
     pub version: i64,
     /// The update time of the entity on the server after processing the mutation.
     /// If the mutation doesn't change anything on the server, then the timestamp
     /// will be the update timestamp of the current entity. This field will not be
     /// set after a 'delete'.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Whether a conflict was detected for this mutation. Always false when a
     /// conflict detection strategy field is not set in the mutation.
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag="5")]
     pub conflict_detected: bool,
 }
 /// The options shared by read requests.
@@ -899,7 +897,7 @@ pub struct ReadOptions {
     /// Explicitly setting `read_consistency`=`EVENTUAL` will result in eventually
     /// consistent lookups & queries in both Cloud Datastore & Cloud Firestore in
     /// Datastore mode.
-    #[prost(oneof = "read_options::ConsistencyType", tags = "1, 2, 4")]
+    #[prost(oneof="read_options::ConsistencyType", tags="1, 2, 4")]
     pub consistency_type: ::core::option::Option<read_options::ConsistencyType>,
 }
 /// Nested message and enum types in `ReadOptions`.
@@ -929,17 +927,17 @@ pub mod read_options {
     pub enum ConsistencyType {
         /// The non-transactional read consistency to use.
         /// Cannot be set to `STRONG` for global queries.
-        #[prost(enumeration = "ReadConsistency", tag = "1")]
+        #[prost(enumeration="ReadConsistency", tag="1")]
         ReadConsistency(i32),
         /// The identifier of the transaction in which to read. A
         /// transaction identifier is returned by a call to
         /// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
-        #[prost(bytes, tag = "2")]
+        #[prost(bytes, tag="2")]
         Transaction(::prost::alloc::vec::Vec<u8>),
         /// Reads entities as they were at the given time. This may not be older
         /// than 270 seconds.  This value is only supported for Cloud Firestore in
         /// Datastore mode.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         ReadTime(::prost_types::Timestamp),
     }
 }
@@ -952,7 +950,7 @@ pub mod read_options {
 pub struct TransactionOptions {
     /// The `mode` of the transaction, indicating whether write operations are
     /// supported.
-    #[prost(oneof = "transaction_options::Mode", tags = "1, 2")]
+    #[prost(oneof="transaction_options::Mode", tags="1, 2")]
     pub mode: ::core::option::Option<transaction_options::Mode>,
 }
 /// Nested message and enum types in `TransactionOptions`.
@@ -961,7 +959,7 @@ pub mod transaction_options {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ReadWrite {
         /// The transaction identifier of the transaction being retried.
-        #[prost(bytes = "vec", tag = "1")]
+        #[prost(bytes="vec", tag="1")]
         pub previous_transaction: ::prost::alloc::vec::Vec<u8>,
     }
     /// Options specific to read-only transactions.
@@ -969,7 +967,7 @@ pub mod transaction_options {
     pub struct ReadOnly {
         /// Reads entities at the given time.
         /// This may not be older than 60 seconds.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub read_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// The `mode` of the transaction, indicating whether write operations are
@@ -977,33 +975,44 @@ pub mod transaction_options {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Mode {
         /// The transaction should allow both reads and writes.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         ReadWrite(ReadWrite),
         /// The transaction should only allow reads.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         ReadOnly(ReadOnly),
     }
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod datastore_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Each RPC normalizes the partition IDs of the keys in its input entities,"]
-    #[doc = " and always returns entities with keys with normalized partition IDs."]
-    #[doc = " This applies to all keys and entities, including those in values, except keys"]
-    #[doc = " with both an empty path and an empty or unset partition ID. Normalization of"]
-    #[doc = " input keys sets the project ID (if not already set) to the project ID from"]
-    #[doc = " the request."]
-    #[doc = ""]
+    /// Each RPC normalizes the partition IDs of the keys in its input entities,
+    /// and always returns entities with keys with normalized partition IDs.
+    /// This applies to all keys and entities, including those in values, except keys
+    /// with both an empty path and an empty or unset partition ID. Normalization of
+    /// input keys sets the project ID (if not already set) to the project ID from
+    /// the request.
+    ///
     #[derive(Debug, Clone)]
     pub struct DatastoreClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl DatastoreClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> DatastoreClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -1016,144 +1025,175 @@ pub mod datastore_client {
         ) -> DatastoreClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             DatastoreClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Looks up entities by key."]
+        /// Looks up entities by key.
         pub async fn lookup(
             &mut self,
             request: impl tonic::IntoRequest<super::LookupRequest>,
         ) -> Result<tonic::Response<super::LookupResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.datastore.v1.Datastore/Lookup");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.datastore.v1.Datastore/Lookup",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Queries for entities."]
+        /// Queries for entities.
         pub async fn run_query(
             &mut self,
             request: impl tonic::IntoRequest<super::RunQueryRequest>,
         ) -> Result<tonic::Response<super::RunQueryResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.datastore.v1.Datastore/RunQuery");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.datastore.v1.Datastore/RunQuery",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Begins a new transaction."]
+        /// Begins a new transaction.
         pub async fn begin_transaction(
             &mut self,
             request: impl tonic::IntoRequest<super::BeginTransactionRequest>,
         ) -> Result<tonic::Response<super::BeginTransactionResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.datastore.v1.Datastore/BeginTransaction",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Commits a transaction, optionally creating, deleting or modifying some"]
-        #[doc = " entities."]
+        /// Commits a transaction, optionally creating, deleting or modifying some
+        /// entities.
         pub async fn commit(
             &mut self,
             request: impl tonic::IntoRequest<super::CommitRequest>,
         ) -> Result<tonic::Response<super::CommitResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.datastore.v1.Datastore/Commit");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.datastore.v1.Datastore/Commit",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Rolls back a transaction."]
+        /// Rolls back a transaction.
         pub async fn rollback(
             &mut self,
             request: impl tonic::IntoRequest<super::RollbackRequest>,
         ) -> Result<tonic::Response<super::RollbackResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.datastore.v1.Datastore/Rollback");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.datastore.v1.Datastore/Rollback",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Allocates IDs for the given keys, which is useful for referencing an entity"]
-        #[doc = " before it is inserted."]
+        /// Allocates IDs for the given keys, which is useful for referencing an entity
+        /// before it is inserted.
         pub async fn allocate_ids(
             &mut self,
             request: impl tonic::IntoRequest<super::AllocateIdsRequest>,
         ) -> Result<tonic::Response<super::AllocateIdsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.datastore.v1.Datastore/AllocateIds");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.datastore.v1.Datastore/AllocateIds",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Prevents the supplied keys' IDs from being auto-allocated by Cloud"]
-        #[doc = " Datastore."]
+        /// Prevents the supplied keys' IDs from being auto-allocated by Cloud
+        /// Datastore.
         pub async fn reserve_ids(
             &mut self,
             request: impl tonic::IntoRequest<super::ReserveIdsRequest>,
         ) -> Result<tonic::Response<super::ReserveIdsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.datastore.v1.Datastore/ReserveIds");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.datastore.v1.Datastore/ReserveIds",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

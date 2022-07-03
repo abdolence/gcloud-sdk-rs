@@ -6,7 +6,7 @@ pub struct Index {
     /// The form of this name for composite indexes will be:
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{composite_index_id}`
     /// For single field indexes, this field will be empty.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Indexes with a collection query scope specified allow queries
     /// against a collection that is the child of a specific document, specified at
@@ -15,7 +15,7 @@ pub struct Index {
     /// Indexes with a collection group query scope specified allow queries against
     /// all collections descended from a specific document, specified at query
     /// time, and that have the same collection id as this index.
-    #[prost(enumeration = "index::QueryScope", tag = "2")]
+    #[prost(enumeration="index::QueryScope", tag="2")]
     pub query_scope: i32,
     /// The fields supported by this index.
     ///
@@ -28,10 +28,10 @@ pub struct Index {
     ///
     /// For single field indexes, this will always be exactly one entry with a
     /// field path equal to the field path of the associated field.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub fields: ::prost::alloc::vec::Vec<index::IndexField>,
     /// Output only. The serving state of the index.
-    #[prost(enumeration = "index::State", tag = "4")]
+    #[prost(enumeration="index::State", tag="4")]
     pub state: i32,
 }
 /// Nested message and enum types in `Index`.
@@ -44,18 +44,16 @@ pub mod index {
         /// Can be __name__.
         /// For single field indexes, this must match the name of the field or may
         /// be omitted.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub field_path: ::prost::alloc::string::String,
         /// How the field value is indexed.
-        #[prost(oneof = "index_field::ValueMode", tags = "2, 3")]
+        #[prost(oneof="index_field::ValueMode", tags="2, 3")]
         pub value_mode: ::core::option::Option<index_field::ValueMode>,
     }
     /// Nested message and enum types in `IndexField`.
     pub mod index_field {
         /// The supported orderings.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Order {
             /// The ordering is unspecified. Not a valid option.
@@ -66,9 +64,7 @@ pub mod index {
             Descending = 2,
         }
         /// The supported array value configurations.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum ArrayConfig {
             /// The index does not support additional array queries.
@@ -81,10 +77,10 @@ pub mod index {
         pub enum ValueMode {
             /// Indicates that this field supports ordering by the specified order or
             /// comparing using =, <, <=, >, >=.
-            #[prost(enumeration = "Order", tag = "2")]
+            #[prost(enumeration="Order", tag="2")]
             Order(i32),
             /// Indicates that this field supports operations on `array_value`s.
-            #[prost(enumeration = "ArrayConfig", tag = "3")]
+            #[prost(enumeration="ArrayConfig", tag="3")]
             ArrayConfig(i32),
         }
     }
@@ -165,13 +161,13 @@ pub struct Field {
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/__default__/fields/*`
     /// Indexes defined on this `Field` will be applied to all fields which do not
     /// have their own `Field` index configuration.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The index configuration for this field. If unset, field indexing will
     /// revert to the configuration defined by the `ancestor_field`. To
     /// explicitly remove all indexes for this field, specify an index config
     /// with an empty list of indexes.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub index_config: ::core::option::Option<field::IndexConfig>,
 }
 /// Nested message and enum types in `Field`.
@@ -180,25 +176,25 @@ pub mod field {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexConfig {
         /// The indexes supported for this field.
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub indexes: ::prost::alloc::vec::Vec<super::Index>,
         /// Output only. When true, the `Field`'s index configuration is set from the
         /// configuration specified by the `ancestor_field`.
         /// When false, the `Field`'s index configuration is defined explicitly.
-        #[prost(bool, tag = "2")]
+        #[prost(bool, tag="2")]
         pub uses_ancestor_config: bool,
         /// Output only. Specifies the resource name of the `Field` from which this field's
         /// index configuration is set (when `uses_ancestor_config` is true),
         /// or from which it *would* be set if this field had no index configuration
         /// (when `uses_ancestor_config` is false).
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub ancestor_field: ::prost::alloc::string::String,
         /// Output only
         /// When true, the `Field`'s index configuration is in the process of being
         /// reverted. Once complete, the index config will transition to the same
         /// state as the field specified by `ancestor_field`, at which point
         /// `uses_ancestor_config` will be `true` and `reverting` will be `false`.
-        #[prost(bool, tag = "4")]
+        #[prost(bool, tag="4")]
         pub reverting: bool,
     }
 }
@@ -207,10 +203,10 @@ pub mod field {
 pub struct CreateIndexRequest {
     /// A parent name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The composite index to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub index: ::core::option::Option<Index>,
 }
 /// The request for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta2.FirestoreAdmin.ListIndexes\].
@@ -218,29 +214,29 @@ pub struct CreateIndexRequest {
 pub struct ListIndexesRequest {
     /// A parent name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter to apply to list results.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// The number of results to return.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub page_size: i32,
     /// A page token, returned from a previous call to
     /// \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta2.FirestoreAdmin.ListIndexes\], that may be used to get the next
     /// page of results.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[FirestoreAdmin.ListIndexes][google.firestore.admin.v1beta2.FirestoreAdmin.ListIndexes\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListIndexesResponse {
     /// The requested indexes.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub indexes: ::prost::alloc::vec::Vec<Index>,
     /// A page token that may be used to request another page of results. If blank,
     /// this is the last page.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.GetIndex][google.firestore.admin.v1beta2.FirestoreAdmin.GetIndex\].
@@ -248,7 +244,7 @@ pub struct ListIndexesResponse {
 pub struct GetIndexRequest {
     /// A name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.DeleteIndex][google.firestore.admin.v1beta2.FirestoreAdmin.DeleteIndex\].
@@ -256,18 +252,18 @@ pub struct GetIndexRequest {
 pub struct DeleteIndexRequest {
     /// A name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.UpdateField][google.firestore.admin.v1beta2.FirestoreAdmin.UpdateField\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateFieldRequest {
     /// The field to be updated.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub field: ::core::option::Option<Field>,
     /// A mask, relative to the field. If specified, only configuration specified
     /// by this field_mask will be updated in the field.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for \[FirestoreAdmin.GetField][google.firestore.admin.v1beta2.FirestoreAdmin.GetField\].
@@ -275,7 +271,7 @@ pub struct UpdateFieldRequest {
 pub struct GetFieldRequest {
     /// A name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\].
@@ -283,33 +279,33 @@ pub struct GetFieldRequest {
 pub struct ListFieldsRequest {
     /// A parent name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The filter to apply to list results. Currently,
     /// \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\] only supports listing fields
     /// that have been explicitly overridden. To issue this query, call
     /// \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\] with the filter set to
     /// `indexConfig.usesAncestorConfig:false`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub filter: ::prost::alloc::string::String,
     /// The number of results to return.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub page_size: i32,
     /// A page token, returned from a previous call to
     /// \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\], that may be used to get the next
     /// page of results.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for \[FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFieldsResponse {
     /// The requested fields.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub fields: ::prost::alloc::vec::Vec<Field>,
     /// A page token that may be used to request another page of results. If blank,
     /// this is the last page.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.ExportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ExportDocuments\].
@@ -317,10 +313,10 @@ pub struct ListFieldsResponse {
 pub struct ExportDocumentsRequest {
     /// Database to export. Should be of the form:
     /// `projects/{project_id}/databases/{database_id}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Which collection ids to export. Unspecified means all collections.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The output URI. Currently only supports Google Cloud Storage URIs of the
     /// form: `gs://BUCKET_NAME\[/NAMESPACE_PATH\]`, where `BUCKET_NAME` is the name
@@ -330,7 +326,7 @@ pub struct ExportDocumentsRequest {
     /// guidelines: <https://cloud.google.com/storage/docs/naming.>
     /// If the URI is a bucket (without a namespace path), a prefix will be
     /// generated based on the start time.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// The request for \[FirestoreAdmin.ImportDocuments][google.firestore.admin.v1beta2.FirestoreAdmin.ImportDocuments\].
@@ -338,35 +334,46 @@ pub struct ExportDocumentsRequest {
 pub struct ImportDocumentsRequest {
     /// Database to import into. Should be of the form:
     /// `projects/{project_id}/databases/{database_id}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Which collection ids to import. Unspecified means all collections included
     /// in the import.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Location of the exported files.
     /// This must match the output_uri_prefix of an ExportDocumentsResponse from
     /// an export that has completed successfully.
     /// See:
     /// \[google.firestore.admin.v1beta2.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1beta2.ExportDocumentsResponse.output_uri_prefix\].
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub input_uri_prefix: ::prost::alloc::string::String,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod firestore_admin_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Operations are created by service `FirestoreAdmin`, but are accessed via"]
-    #[doc = " service `google.longrunning.Operations`."]
+    /// Operations are created by service `FirestoreAdmin`, but are accessed via
+    /// service `google.longrunning.Operations`.
     #[derive(Debug, Clone)]
     pub struct FirestoreAdminClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl FirestoreAdminClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> FirestoreAdminClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -379,33 +386,37 @@ pub mod firestore_admin_client {
         ) -> FirestoreAdminClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             FirestoreAdminClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Creates a composite index. This returns a [google.longrunning.Operation][google.longrunning.Operation]"]
-        #[doc = " which may be used to track the status of the creation. The metadata for"]
-        #[doc = " the operation will be the type [IndexOperationMetadata][google.firestore.admin.v1beta2.IndexOperationMetadata]."]
+        /// Creates a composite index. This returns a [google.longrunning.Operation][google.longrunning.Operation]
+        /// which may be used to track the status of the creation. The metadata for
+        /// the operation will be the type [IndexOperationMetadata][google.firestore.admin.v1beta2.IndexOperationMetadata].
         pub async fn create_index(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateIndexRequest>,
@@ -413,99 +424,114 @@ pub mod firestore_admin_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1beta2.FirestoreAdmin/CreateIndex",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists composite indexes."]
+        /// Lists composite indexes.
         pub async fn list_indexes(
             &mut self,
             request: impl tonic::IntoRequest<super::ListIndexesRequest>,
         ) -> Result<tonic::Response<super::ListIndexesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1beta2.FirestoreAdmin/ListIndexes",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a composite index."]
+        /// Gets a composite index.
         pub async fn get_index(
             &mut self,
             request: impl tonic::IntoRequest<super::GetIndexRequest>,
         ) -> Result<tonic::Response<super::Index>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1beta2.FirestoreAdmin/GetIndex",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a composite index."]
+        /// Deletes a composite index.
         pub async fn delete_index(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteIndexRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1beta2.FirestoreAdmin/DeleteIndex",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets the metadata and configuration for a Field."]
+        /// Gets the metadata and configuration for a Field.
         pub async fn get_field(
             &mut self,
             request: impl tonic::IntoRequest<super::GetFieldRequest>,
         ) -> Result<tonic::Response<super::Field>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1beta2.FirestoreAdmin/GetField",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a field configuration. Currently, field updates apply only to"]
-        #[doc = " single field index configuration. However, calls to"]
-        #[doc = " [FirestoreAdmin.UpdateField][google.firestore.admin.v1beta2.FirestoreAdmin.UpdateField] should provide a field mask to avoid"]
-        #[doc = " changing any configuration that the caller isn't aware of. The field mask"]
-        #[doc = " should be specified as: `{ paths: \"index_config\" }`."]
-        #[doc = ""]
-        #[doc = " This call returns a [google.longrunning.Operation][google.longrunning.Operation] which may be used to"]
-        #[doc = " track the status of the field update. The metadata for"]
-        #[doc = " the operation will be the type [FieldOperationMetadata][google.firestore.admin.v1beta2.FieldOperationMetadata]."]
-        #[doc = ""]
-        #[doc = " To configure the default field settings for the database, use"]
-        #[doc = " the special `Field` with resource name:"]
-        #[doc = " `projects/{project_id}/databases/{database_id}/collectionGroups/__default__/fields/*`."]
+        /// Updates a field configuration. Currently, field updates apply only to
+        /// single field index configuration. However, calls to
+        /// [FirestoreAdmin.UpdateField][google.firestore.admin.v1beta2.FirestoreAdmin.UpdateField] should provide a field mask to avoid
+        /// changing any configuration that the caller isn't aware of. The field mask
+        /// should be specified as: `{ paths: "index_config" }`.
+        ///
+        /// This call returns a [google.longrunning.Operation][google.longrunning.Operation] which may be used to
+        /// track the status of the field update. The metadata for
+        /// the operation will be the type [FieldOperationMetadata][google.firestore.admin.v1beta2.FieldOperationMetadata].
+        ///
+        /// To configure the default field settings for the database, use
+        /// the special `Field` with resource name:
+        /// `projects/{project_id}/databases/{database_id}/collectionGroups/__default__/fields/*`.
         pub async fn update_field(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateFieldRequest>,
@@ -513,48 +539,54 @@ pub mod firestore_admin_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1beta2.FirestoreAdmin/UpdateField",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists the field configuration and metadata for this database."]
-        #[doc = ""]
-        #[doc = " Currently, [FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields] only supports listing fields"]
-        #[doc = " that have been explicitly overridden. To issue this query, call"]
-        #[doc = " [FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields] with the filter set to"]
-        #[doc = " `indexConfig.usesAncestorConfig:false`."]
+        /// Lists the field configuration and metadata for this database.
+        ///
+        /// Currently, [FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields] only supports listing fields
+        /// that have been explicitly overridden. To issue this query, call
+        /// [FirestoreAdmin.ListFields][google.firestore.admin.v1beta2.FirestoreAdmin.ListFields] with the filter set to
+        /// `indexConfig.usesAncestorConfig:false`.
         pub async fn list_fields(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFieldsRequest>,
         ) -> Result<tonic::Response<super::ListFieldsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1beta2.FirestoreAdmin/ListFields",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Exports a copy of all or a subset of documents from Google Cloud Firestore"]
-        #[doc = " to another storage system, such as Google Cloud Storage. Recent updates to"]
-        #[doc = " documents may not be reflected in the export. The export occurs in the"]
-        #[doc = " background and its progress can be monitored and managed via the"]
-        #[doc = " Operation resource that is created. The output of an export may only be"]
-        #[doc = " used once the associated operation is done. If an export operation is"]
-        #[doc = " cancelled before completion it may leave partial data behind in Google"]
-        #[doc = " Cloud Storage."]
+        /// Exports a copy of all or a subset of documents from Google Cloud Firestore
+        /// to another storage system, such as Google Cloud Storage. Recent updates to
+        /// documents may not be reflected in the export. The export occurs in the
+        /// background and its progress can be monitored and managed via the
+        /// Operation resource that is created. The output of an export may only be
+        /// used once the associated operation is done. If an export operation is
+        /// cancelled before completion it may leave partial data behind in Google
+        /// Cloud Storage.
         pub async fn export_documents(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportDocumentsRequest>,
@@ -562,23 +594,26 @@ pub mod firestore_admin_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1beta2.FirestoreAdmin/ExportDocuments",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Imports documents into Google Cloud Firestore. Existing documents with the"]
-        #[doc = " same name are overwritten. The import occurs in the background and its"]
-        #[doc = " progress can be monitored and managed via the Operation resource that is"]
-        #[doc = " created. If an ImportDocuments operation is cancelled, it is possible"]
-        #[doc = " that a subset of the data has already been imported to Cloud Firestore."]
+        /// Imports documents into Google Cloud Firestore. Existing documents with the
+        /// same name are overwritten. The import occurs in the background and its
+        /// progress can be monitored and managed via the Operation resource that is
+        /// created. If an ImportDocuments operation is cancelled, it is possible
+        /// that a subset of the data has already been imported to Cloud Firestore.
         pub async fn import_documents(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportDocumentsRequest>,
@@ -586,12 +621,15 @@ pub mod firestore_admin_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1beta2.FirestoreAdmin/ImportDocuments",
@@ -605,24 +643,24 @@ pub mod firestore_admin_client {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IndexOperationMetadata {
     /// The time this operation started.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time this operation completed. Will be unset if operation still in
     /// progress.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The index resource that this operation is acting on. For example:
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}`
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub index: ::prost::alloc::string::String,
     /// The state of the operation.
-    #[prost(enumeration = "OperationState", tag = "4")]
+    #[prost(enumeration="OperationState", tag="4")]
     pub state: i32,
     /// The progress, in documents, of this operation.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub progress_documents: ::core::option::Option<Progress>,
     /// The progress, in bytes, of this operation.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub progress_bytes: ::core::option::Option<Progress>,
 }
 /// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
@@ -630,28 +668,28 @@ pub struct IndexOperationMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FieldOperationMetadata {
     /// The time this operation started.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time this operation completed. Will be unset if operation still in
     /// progress.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The field resource that this operation is acting on. For example:
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_path}`
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub field: ::prost::alloc::string::String,
     /// A list of \[IndexConfigDelta][google.firestore.admin.v1beta2.FieldOperationMetadata.IndexConfigDelta\], which describe the intent of this
     /// operation.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub index_config_deltas: ::prost::alloc::vec::Vec<field_operation_metadata::IndexConfigDelta>,
     /// The state of the operation.
-    #[prost(enumeration = "OperationState", tag = "5")]
+    #[prost(enumeration="OperationState", tag="5")]
     pub state: i32,
     /// The progress, in documents, of this operation.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub document_progress: ::core::option::Option<Progress>,
     /// The progress, in bytes, of this operation.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub bytes_progress: ::core::option::Option<Progress>,
 }
 /// Nested message and enum types in `FieldOperationMetadata`.
@@ -660,18 +698,16 @@ pub mod field_operation_metadata {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct IndexConfigDelta {
         /// Specifies how the index is changing.
-        #[prost(enumeration = "index_config_delta::ChangeType", tag = "1")]
+        #[prost(enumeration="index_config_delta::ChangeType", tag="1")]
         pub change_type: i32,
         /// The index being changed.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub index: ::core::option::Option<super::Index>,
     }
     /// Nested message and enum types in `IndexConfigDelta`.
     pub mod index_config_delta {
         /// Specifies how the index is changing.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum ChangeType {
             /// The type of change is not specified or known.
@@ -688,26 +724,26 @@ pub mod field_operation_metadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportDocumentsMetadata {
     /// The time this operation started.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time this operation completed. Will be unset if operation still in
     /// progress.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The state of the export operation.
-    #[prost(enumeration = "OperationState", tag = "3")]
+    #[prost(enumeration="OperationState", tag="3")]
     pub operation_state: i32,
     /// The progress, in documents, of this operation.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub progress_documents: ::core::option::Option<Progress>,
     /// The progress, in bytes, of this operation.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub progress_bytes: ::core::option::Option<Progress>,
     /// Which collection ids are being exported.
-    #[prost(string, repeated, tag = "6")]
+    #[prost(string, repeated, tag="6")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Where the entities are being exported to.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// Metadata for \[google.longrunning.Operation][google.longrunning.Operation\] results from
@@ -715,26 +751,26 @@ pub struct ExportDocumentsMetadata {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportDocumentsMetadata {
     /// The time this operation started.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The time this operation completed. Will be unset if operation still in
     /// progress.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The state of the import operation.
-    #[prost(enumeration = "OperationState", tag = "3")]
+    #[prost(enumeration="OperationState", tag="3")]
     pub operation_state: i32,
     /// The progress, in documents, of this operation.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub progress_documents: ::core::option::Option<Progress>,
     /// The progress, in bytes, of this operation.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub progress_bytes: ::core::option::Option<Progress>,
     /// Which collection ids are being imported.
-    #[prost(string, repeated, tag = "6")]
+    #[prost(string, repeated, tag="6")]
     pub collection_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The location of the documents being imported.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub input_uri_prefix: ::prost::alloc::string::String,
 }
 /// Returned in the \[google.longrunning.Operation][google.longrunning.Operation\] response field.
@@ -743,7 +779,7 @@ pub struct ExportDocumentsResponse {
     /// Location of the output files. This can be used to begin an import
     /// into Cloud Firestore (this project or another project) after the operation
     /// completes successfully.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub output_uri_prefix: ::prost::alloc::string::String,
 }
 /// Describes the progress of the operation.
@@ -752,10 +788,10 @@ pub struct ExportDocumentsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Progress {
     /// The amount of work estimated.
-    #[prost(int64, tag = "1")]
+    #[prost(int64, tag="1")]
     pub estimated_work: i64,
     /// The amount of work completed.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub completed_work: i64,
 }
 /// Describes the state of the operation.

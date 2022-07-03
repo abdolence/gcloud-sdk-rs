@@ -3,10 +3,10 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Vertex {
     /// X coordinate.
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub x: i32,
     /// Y coordinate.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub y: i32,
 }
 /// A vertex represents a 2D point in the image.
@@ -15,20 +15,20 @@ pub struct Vertex {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NormalizedVertex {
     /// X coordinate.
-    #[prost(float, tag = "1")]
+    #[prost(float, tag="1")]
     pub x: f32,
     /// Y coordinate.
-    #[prost(float, tag = "2")]
+    #[prost(float, tag="2")]
     pub y: f32,
 }
 /// A bounding polygon for the detected image annotation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BoundingPoly {
     /// The bounding polygon vertices.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub vertices: ::prost::alloc::vec::Vec<Vertex>,
     /// The bounding polygon normalized vertices.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub normalized_vertices: ::prost::alloc::vec::Vec<NormalizedVertex>,
 }
 /// Document represents the canonical document resource in Document Understanding
@@ -41,37 +41,37 @@ pub struct Document {
     /// An IANA published MIME type (also referred to as media type). For more
     /// information, see
     /// <https://www.iana.org/assignments/media-types/media-types.xhtml.>
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub mime_type: ::prost::alloc::string::String,
     /// UTF-8 encoded text in reading order from the document.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub text: ::prost::alloc::string::String,
     /// Styles for the
     /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag="5")]
     pub text_styles: ::prost::alloc::vec::Vec<document::Style>,
     /// Visual page layout for the
     /// \[Document][google.cloud.documentai.v1beta1.Document\].
-    #[prost(message, repeated, tag = "6")]
+    #[prost(message, repeated, tag="6")]
     pub pages: ::prost::alloc::vec::Vec<document::Page>,
     /// A list of entities detected on
     /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\]. For
     /// document shards, entities in this list may cross shard boundaries.
-    #[prost(message, repeated, tag = "7")]
+    #[prost(message, repeated, tag="7")]
     pub entities: ::prost::alloc::vec::Vec<document::Entity>,
     /// Relationship among
     /// \[Document.entities][google.cloud.documentai.v1beta1.Document.entities\].
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag="8")]
     pub entity_relations: ::prost::alloc::vec::Vec<document::EntityRelation>,
     /// Information about the sharding if this document is sharded part of a larger
     /// document. If the document is not sharded, this message is not specified.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub shard_info: ::core::option::Option<document::ShardInfo>,
     /// Any error that occurred while processing this document.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// Original source document from the user.
-    #[prost(oneof = "document::Source", tags = "1, 2")]
+    #[prost(oneof="document::Source", tags="1, 2")]
     pub source: ::core::option::Option<document::Source>,
 }
 /// Nested message and enum types in `Document`.
@@ -82,15 +82,15 @@ pub mod document {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ShardInfo {
         /// The 0-based index of this shard.
-        #[prost(int64, tag = "1")]
+        #[prost(int64, tag="1")]
         pub shard_index: i64,
         /// Total number of shards.
-        #[prost(int64, tag = "2")]
+        #[prost(int64, tag="2")]
         pub shard_count: i64,
         /// The index of the first character in
         /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\] in the
         /// overall document global text.
-        #[prost(int64, tag = "3")]
+        #[prost(int64, tag="3")]
         pub text_offset: i64,
     }
     /// Annotation for common text style attributes. This adheres to CSS
@@ -99,29 +99,29 @@ pub mod document {
     pub struct Style {
         /// Text anchor indexing into the
         /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
         /// Text color.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub color: ::core::option::Option<super::super::super::super::r#type::Color>,
         /// Text background color.
-        #[prost(message, optional, tag = "3")]
+        #[prost(message, optional, tag="3")]
         pub background_color: ::core::option::Option<super::super::super::super::r#type::Color>,
         /// Font weight. Possible values are normal, bold, bolder, and lighter.
         /// <https://www.w3schools.com/cssref/pr_font_weight.asp>
-        #[prost(string, tag = "4")]
+        #[prost(string, tag="4")]
         pub font_weight: ::prost::alloc::string::String,
         /// Text style. Possible values are normal, italic, and oblique.
         /// <https://www.w3schools.com/cssref/pr_font_font-style.asp>
-        #[prost(string, tag = "5")]
+        #[prost(string, tag="5")]
         pub text_style: ::prost::alloc::string::String,
         /// Text decoration. Follows CSS standard.
         /// <text-decoration-line> <text-decoration-color> <text-decoration-style>
         /// <https://www.w3schools.com/cssref/pr_text_text-decoration.asp>
-        #[prost(string, tag = "6")]
+        #[prost(string, tag="6")]
         pub text_decoration: ::prost::alloc::string::String,
         /// Font size.
-        #[prost(message, optional, tag = "7")]
+        #[prost(message, optional, tag="7")]
         pub font_size: ::core::option::Option<style::FontSize>,
     }
     /// Nested message and enum types in `Style`.
@@ -130,10 +130,10 @@ pub mod document {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct FontSize {
             /// Font size for the text.
-            #[prost(float, tag = "1")]
+            #[prost(float, tag="1")]
             pub size: f32,
             /// Unit for the font size. Follows CSS naming (in, px, pt, etc.).
-            #[prost(string, tag = "2")]
+            #[prost(string, tag="2")]
             pub unit: ::prost::alloc::string::String,
         }
     }
@@ -145,43 +145,43 @@ pub mod document {
         /// \[Document][google.cloud.documentai.v1beta1.Document\]. Useful when a page
         /// is taken out of a \[Document][google.cloud.documentai.v1beta1.Document\]
         /// for individual processing.
-        #[prost(int32, tag = "1")]
+        #[prost(int32, tag="1")]
         pub page_number: i32,
         /// Physical dimension of the page.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub dimension: ::core::option::Option<page::Dimension>,
         /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the
         /// page.
-        #[prost(message, optional, tag = "3")]
+        #[prost(message, optional, tag="3")]
         pub layout: ::core::option::Option<page::Layout>,
         /// A list of detected languages together with confidence.
-        #[prost(message, repeated, tag = "4")]
+        #[prost(message, repeated, tag="4")]
         pub detected_languages: ::prost::alloc::vec::Vec<page::DetectedLanguage>,
         /// A list of visually detected text blocks on the page.
         /// A block has a set of lines (collected into paragraphs) that have a common
         /// line-spacing and orientation.
-        #[prost(message, repeated, tag = "5")]
+        #[prost(message, repeated, tag="5")]
         pub blocks: ::prost::alloc::vec::Vec<page::Block>,
         /// A list of visually detected text paragraphs on the page.
         /// A collection of lines that a human would perceive as a paragraph.
-        #[prost(message, repeated, tag = "6")]
+        #[prost(message, repeated, tag="6")]
         pub paragraphs: ::prost::alloc::vec::Vec<page::Paragraph>,
         /// A list of visually detected text lines on the page.
         /// A collection of tokens that a human would perceive as a line.
-        #[prost(message, repeated, tag = "7")]
+        #[prost(message, repeated, tag="7")]
         pub lines: ::prost::alloc::vec::Vec<page::Line>,
         /// A list of visually detected tokens on the page.
-        #[prost(message, repeated, tag = "8")]
+        #[prost(message, repeated, tag="8")]
         pub tokens: ::prost::alloc::vec::Vec<page::Token>,
         /// A list of detected non-text visual elements e.g. checkbox,
         /// signature etc. on the page.
-        #[prost(message, repeated, tag = "9")]
+        #[prost(message, repeated, tag="9")]
         pub visual_elements: ::prost::alloc::vec::Vec<page::VisualElement>,
         /// A list of visually detected tables on the page.
-        #[prost(message, repeated, tag = "10")]
+        #[prost(message, repeated, tag="10")]
         pub tables: ::prost::alloc::vec::Vec<page::Table>,
         /// A list of visually detected form fields on the page.
-        #[prost(message, repeated, tag = "11")]
+        #[prost(message, repeated, tag="11")]
         pub form_fields: ::prost::alloc::vec::Vec<page::FormField>,
     }
     /// Nested message and enum types in `Page`.
@@ -190,13 +190,13 @@ pub mod document {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Dimension {
             /// Page width.
-            #[prost(float, tag = "1")]
+            #[prost(float, tag="1")]
             pub width: f32,
             /// Page height.
-            #[prost(float, tag = "2")]
+            #[prost(float, tag="2")]
             pub height: f32,
             /// Dimension unit.
-            #[prost(string, tag = "3")]
+            #[prost(string, tag="3")]
             pub unit: ::prost::alloc::string::String,
         }
         /// Visual element describing a layout unit on a page.
@@ -204,30 +204,28 @@ pub mod document {
         pub struct Layout {
             /// Text anchor indexing into the
             /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub text_anchor: ::core::option::Option<super::TextAnchor>,
             /// Confidence of the current
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] within
             /// context of the object this layout is for. e.g. confidence can be for a
             /// single token, a table, a visual element, etc. depending on context.
             /// Range [0, 1].
-            #[prost(float, tag = "2")]
+            #[prost(float, tag="2")]
             pub confidence: f32,
             /// The bounding polygon for the
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\].
-            #[prost(message, optional, tag = "3")]
+            #[prost(message, optional, tag="3")]
             pub bounding_poly: ::core::option::Option<super::super::BoundingPoly>,
             /// Detected orientation for the
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\].
-            #[prost(enumeration = "layout::Orientation", tag = "4")]
+            #[prost(enumeration="layout::Orientation", tag="4")]
             pub orientation: i32,
         }
         /// Nested message and enum types in `Layout`.
         pub mod layout {
             /// Detected human reading orientation.
-            #[derive(
-                Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-            )]
+            #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
             #[repr(i32)]
             pub enum Orientation {
                 /// Unspecified orientation.
@@ -251,10 +249,10 @@ pub mod document {
         pub struct Block {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
             /// \[Block][google.cloud.documentai.v1beta1.Document.Page.Block\].
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub layout: ::core::option::Option<Layout>,
             /// A list of detected languages together with confidence.
-            #[prost(message, repeated, tag = "2")]
+            #[prost(message, repeated, tag="2")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// A collection of lines that a human would perceive as a paragraph.
@@ -262,10 +260,10 @@ pub mod document {
         pub struct Paragraph {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
             /// \[Paragraph][google.cloud.documentai.v1beta1.Document.Page.Paragraph\].
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub layout: ::core::option::Option<Layout>,
             /// A list of detected languages together with confidence.
-            #[prost(message, repeated, tag = "2")]
+            #[prost(message, repeated, tag="2")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// A collection of tokens that a human would perceive as a line.
@@ -274,10 +272,10 @@ pub mod document {
         pub struct Line {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
             /// \[Line][google.cloud.documentai.v1beta1.Document.Page.Line\].
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub layout: ::core::option::Option<Layout>,
             /// A list of detected languages together with confidence.
-            #[prost(message, repeated, tag = "2")]
+            #[prost(message, repeated, tag="2")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// A detected token.
@@ -285,14 +283,14 @@ pub mod document {
         pub struct Token {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
             /// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub layout: ::core::option::Option<Layout>,
             /// Detected break at the end of a
             /// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].
-            #[prost(message, optional, tag = "2")]
+            #[prost(message, optional, tag="2")]
             pub detected_break: ::core::option::Option<token::DetectedBreak>,
             /// A list of detected languages together with confidence.
-            #[prost(message, repeated, tag = "3")]
+            #[prost(message, repeated, tag="3")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// Nested message and enum types in `Token`.
@@ -302,15 +300,13 @@ pub mod document {
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct DetectedBreak {
                 /// Detected break type.
-                #[prost(enumeration = "detected_break::Type", tag = "1")]
+                #[prost(enumeration="detected_break::Type", tag="1")]
                 pub r#type: i32,
             }
             /// Nested message and enum types in `DetectedBreak`.
             pub mod detected_break {
                 /// Enum to denote the type of break found.
-                #[derive(
-                    Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-                )]
+                #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
                 #[repr(i32)]
                 pub enum Type {
                     /// Unspecified break type.
@@ -330,14 +326,14 @@ pub mod document {
         pub struct VisualElement {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
             /// \[Token][google.cloud.documentai.v1beta1.Document.Page.Token\].
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub layout: ::core::option::Option<Layout>,
             /// Type of the
             /// \[VisualElement][google.cloud.documentai.v1beta1.Document.Page.VisualElement\].
-            #[prost(string, tag = "2")]
+            #[prost(string, tag="2")]
             pub r#type: ::prost::alloc::string::String,
             /// A list of detected languages together with confidence.
-            #[prost(message, repeated, tag = "3")]
+            #[prost(message, repeated, tag="3")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// A table representation similar to HTML table structure.
@@ -345,16 +341,16 @@ pub mod document {
         pub struct Table {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
             /// \[Table][google.cloud.documentai.v1beta1.Document.Page.Table\].
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub layout: ::core::option::Option<Layout>,
             /// Header rows of the table.
-            #[prost(message, repeated, tag = "2")]
+            #[prost(message, repeated, tag="2")]
             pub header_rows: ::prost::alloc::vec::Vec<table::TableRow>,
             /// Body rows of the table.
-            #[prost(message, repeated, tag = "3")]
+            #[prost(message, repeated, tag="3")]
             pub body_rows: ::prost::alloc::vec::Vec<table::TableRow>,
             /// A list of detected languages together with confidence.
-            #[prost(message, repeated, tag = "4")]
+            #[prost(message, repeated, tag="4")]
             pub detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// Nested message and enum types in `Table`.
@@ -363,7 +359,7 @@ pub mod document {
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct TableRow {
                 /// Cells that make up this row.
-                #[prost(message, repeated, tag = "1")]
+                #[prost(message, repeated, tag="1")]
                 pub cells: ::prost::alloc::vec::Vec<TableCell>,
             }
             /// A cell representation inside the table.
@@ -371,16 +367,16 @@ pub mod document {
             pub struct TableCell {
                 /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for
                 /// \[TableCell][google.cloud.documentai.v1beta1.Document.Page.Table.TableCell\].
-                #[prost(message, optional, tag = "1")]
+                #[prost(message, optional, tag="1")]
                 pub layout: ::core::option::Option<super::Layout>,
                 /// How many rows this cell spans.
-                #[prost(int32, tag = "2")]
+                #[prost(int32, tag="2")]
                 pub row_span: i32,
                 /// How many columns this cell spans.
-                #[prost(int32, tag = "3")]
+                #[prost(int32, tag="3")]
                 pub col_span: i32,
                 /// A list of detected languages together with confidence.
-                #[prost(message, repeated, tag = "4")]
+                #[prost(message, repeated, tag="4")]
                 pub detected_languages: ::prost::alloc::vec::Vec<super::DetectedLanguage>,
             }
         }
@@ -390,18 +386,18 @@ pub mod document {
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the
             /// \[FormField][google.cloud.documentai.v1beta1.Document.Page.FormField\]
             /// name. e.g. `Address`, `Email`, `Grand total`, `Phone number`, etc.
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub field_name: ::core::option::Option<Layout>,
             /// \[Layout][google.cloud.documentai.v1beta1.Document.Page.Layout\] for the
             /// \[FormField][google.cloud.documentai.v1beta1.Document.Page.FormField\]
             /// value.
-            #[prost(message, optional, tag = "2")]
+            #[prost(message, optional, tag="2")]
             pub field_value: ::core::option::Option<Layout>,
             /// A list of detected languages for name together with confidence.
-            #[prost(message, repeated, tag = "3")]
+            #[prost(message, repeated, tag="3")]
             pub name_detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
             /// A list of detected languages for value together with confidence.
-            #[prost(message, repeated, tag = "4")]
+            #[prost(message, repeated, tag="4")]
             pub value_detected_languages: ::prost::alloc::vec::Vec<DetectedLanguage>,
         }
         /// Detected language for a structural component.
@@ -410,10 +406,10 @@ pub mod document {
             /// The BCP-47 language code, such as "en-US" or "sr-Latn". For more
             /// information, see
             /// <http://www.unicode.org/reports/tr35/#Unicode_locale_identifier.>
-            #[prost(string, tag = "1")]
+            #[prost(string, tag="1")]
             pub language_code: ::prost::alloc::string::String,
             /// Confidence of detected language. Range [0, 1].
-            #[prost(float, tag = "2")]
+            #[prost(float, tag="2")]
             pub confidence: f32,
         }
     }
@@ -424,17 +420,17 @@ pub mod document {
         /// Provenance of the entity.
         /// Text anchor indexing into the
         /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
         /// Required. Entity type from a schema e.g. `Address`.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub r#type: ::prost::alloc::string::String,
         /// Text value in the document e.g. `1600 Amphitheatre Pkwy`.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub mention_text: ::prost::alloc::string::String,
         /// Canonical mention name. This will be a unique value in the entity list
         /// for this document.
-        #[prost(string, tag = "4")]
+        #[prost(string, tag="4")]
         pub mention_id: ::prost::alloc::string::String,
     }
     /// Relationship between
@@ -442,13 +438,13 @@ pub mod document {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EntityRelation {
         /// Subject entity mention_id.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub subject_id: ::prost::alloc::string::String,
         /// Object entity mention_id.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub object_id: ::prost::alloc::string::String,
         /// Relationship description.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub relation: ::prost::alloc::string::String,
     }
     /// Text reference indexing into the
@@ -457,7 +453,7 @@ pub mod document {
     pub struct TextAnchor {
         /// The text segments from the
         /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub text_segments: ::prost::alloc::vec::Vec<text_anchor::TextSegment>,
     }
     /// Nested message and enum types in `TextAnchor`.
@@ -472,12 +468,12 @@ pub mod document {
             /// \[TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment\]
             /// start UTF-8 char index in the
             /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
-            #[prost(int64, tag = "1")]
+            #[prost(int64, tag="1")]
             pub start_index: i64,
             /// \[TextSegment][google.cloud.documentai.v1beta1.Document.TextAnchor.TextSegment\]
             /// half open end UTF-8 char index in the
             /// \[Document.text][google.cloud.documentai.v1beta1.Document.text\].
-            #[prost(int64, tag = "2")]
+            #[prost(int64, tag="2")]
             pub end_index: i64,
         }
     }
@@ -489,12 +485,12 @@ pub mod document {
         ///    See [Google Cloud Storage Request
         ///    URIs](<https://cloud.google.com/storage/docs/reference-uris>) for more
         ///    info.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         Uri(::prost::alloc::string::String),
         /// Inline document content, represented as a stream of bytes.
         /// Note: As with all `bytes` fields, protobuffers use a pure binary
         /// representation, whereas JSON representations use base64.
-        #[prost(bytes, tag = "2")]
+        #[prost(bytes, tag="2")]
         Content(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -502,45 +498,45 @@ pub mod document {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchProcessDocumentsRequest {
     /// Required. Individual requests for each document.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub requests: ::prost::alloc::vec::Vec<ProcessDocumentRequest>,
     /// Target project and location to make a call.
     ///
     /// Format: `projects/{project-id}/locations/{location-id}`.
     ///
     /// If no location is specified, a region will be chosen automatically.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub parent: ::prost::alloc::string::String,
 }
 /// Request to process one document.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProcessDocumentRequest {
     /// Required. Information about the input file.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub input_config: ::core::option::Option<InputConfig>,
     /// Required. The desired output location.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub output_config: ::core::option::Option<OutputConfig>,
     /// Specifies a known document type for deeper structure detection. Valid
     /// values are currently "general" and "invoice". If not provided, "general"\
     /// is used as default. If any other value is given, the request is rejected.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub document_type: ::prost::alloc::string::String,
     /// Controls table extraction behavior. If not specified, the system will
     /// decide reasonable defaults.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub table_extraction_params: ::core::option::Option<TableExtractionParams>,
     /// Controls form extraction behavior. If not specified, the system will
     /// decide reasonable defaults.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub form_extraction_params: ::core::option::Option<FormExtractionParams>,
     /// Controls entity extraction behavior. If not specified, the system will
     /// decide reasonable defaults.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub entity_extraction_params: ::core::option::Option<EntityExtractionParams>,
     /// Controls OCR behavior. If not specified, the system will decide reasonable
     /// defaults.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub ocr_params: ::core::option::Option<OcrParams>,
 }
 /// Response to an batch document processing request. This is returned in
@@ -548,7 +544,7 @@ pub struct ProcessDocumentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchProcessDocumentsResponse {
     /// Responses for each individual document.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub responses: ::prost::alloc::vec::Vec<ProcessDocumentResponse>,
 }
 /// Response to a single document processing request.
@@ -556,11 +552,11 @@ pub struct BatchProcessDocumentsResponse {
 pub struct ProcessDocumentResponse {
     /// Information about the input file. This is the same as the corresponding
     /// input config in the request.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub input_config: ::core::option::Option<InputConfig>,
     /// The output location of the parsed responses. The responses are written to
     /// this location as JSON-serialized `Document` objects.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub output_config: ::core::option::Option<OutputConfig>,
 }
 /// Parameters to control Optical Character Recognition (OCR) behavior.
@@ -574,26 +570,26 @@ pub struct OcrParams {
     /// significant hindrance if the hint is wrong). Document processing returns an
     /// error if one or more of the specified languages is not one of the
     /// supported languages.
-    #[prost(string, repeated, tag = "1")]
+    #[prost(string, repeated, tag="1")]
     pub language_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Parameters to control table extraction behavior.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableExtractionParams {
     /// Whether to enable table extraction.
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag="1")]
     pub enabled: bool,
     /// Optional. Table bounding box hints that can be provided to complex cases
     /// which our algorithm cannot locate the table(s) in.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub table_bound_hints: ::prost::alloc::vec::Vec<TableBoundHint>,
     /// Optional. Table header hints. The extraction will bias towards producing
     /// these terms as table headers, which may improve accuracy.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub header_hints: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Model version of the table extraction system. Default is "builtin/stable".
     /// Specify "builtin/latest" for the latest model.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub model_version: ::prost::alloc::string::String,
 }
 /// A hint for a table bounding box on the page for table parsing.
@@ -602,18 +598,18 @@ pub struct TableBoundHint {
     /// Optional. Page number for multi-paged inputs this hint applies to. If not
     /// provided, this hint will apply to all pages by default. This value is
     /// 1-based.
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub page_number: i32,
     /// Bounding box hint for a table on this page. The coordinates must be
     /// normalized to \[0,1\] and the bounding box must be an axis-aligned rectangle.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub bounding_box: ::core::option::Option<BoundingPoly>,
 }
 /// Parameters to control form extraction behavior.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FormExtractionParams {
     /// Whether to enable form extraction.
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag="1")]
     pub enabled: bool,
     /// User can provide pairs of (key text, value type) to improve the parsing
     /// result.
@@ -627,35 +623,35 @@ pub struct FormExtractionParams {
     /// If the value type is unknown, but you want to provide hints for the keys,
     /// you can leave the value_types field blank. e.g. {"key": "Date",
     /// "value_types": []}
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub key_value_pair_hints: ::prost::alloc::vec::Vec<KeyValuePairHint>,
     /// Model version of the form extraction system. Default is
     /// "builtin/stable". Specify "builtin/latest" for the latest model.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub model_version: ::prost::alloc::string::String,
 }
 /// User-provided hint for key value pair.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct KeyValuePairHint {
     /// The key text for the hint.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub key: ::prost::alloc::string::String,
     /// Type of the value. This is case-insensitive, and could be one of:
     /// ADDRESS, LOCATION, ORGANIZATION, PERSON, PHONE_NUMBER,
     /// ID, NUMBER, EMAIL, PRICE, TERMS, DATE, NAME. Types not in this list will
     /// be ignored.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub value_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Parameters to control entity extraction behavior.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EntityExtractionParams {
     /// Whether to enable entity extraction.
-    #[prost(bool, tag = "1")]
+    #[prost(bool, tag="1")]
     pub enabled: bool,
     /// Model version of the entity extraction. Default is
     /// "builtin/stable". Specify "builtin/latest" for the latest model.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub model_version: ::prost::alloc::string::String,
 }
 /// The desired input location and metadata.
@@ -663,10 +659,10 @@ pub struct EntityExtractionParams {
 pub struct InputConfig {
     /// Required. Mimetype of the input. Current supported mimetypes are
     /// application/pdf, image/tiff, and image/gif.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub mime_type: ::prost::alloc::string::String,
     /// Required.
-    #[prost(oneof = "input_config::Source", tags = "1")]
+    #[prost(oneof="input_config::Source", tags="1")]
     pub source: ::core::option::Option<input_config::Source>,
 }
 /// Nested message and enum types in `InputConfig`.
@@ -676,7 +672,7 @@ pub mod input_config {
     pub enum Source {
         /// The Google Cloud Storage location to read the input from. This must be a
         /// single file.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         GcsSource(super::GcsSource),
     }
 }
@@ -700,10 +696,10 @@ pub struct OutputConfig {
     /// <prefix>pages-051-to-100.json
     /// <prefix>pages-101-to-150.json
     /// <prefix>pages-151-to-157.json
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub pages_per_shard: i32,
     /// Required.
-    #[prost(oneof = "output_config::Destination", tags = "1")]
+    #[prost(oneof="output_config::Destination", tags="1")]
     pub destination: ::core::option::Option<output_config::Destination>,
 }
 /// Nested message and enum types in `OutputConfig`.
@@ -712,36 +708,36 @@ pub mod output_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// The Google Cloud Storage location to write the output to.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         GcsDestination(super::GcsDestination),
     }
 }
 /// The Google Cloud Storage location where the input file will be read from.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub uri: ::prost::alloc::string::String,
 }
 /// The Google Cloud Storage location where the output file will be written to.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub uri: ::prost::alloc::string::String,
 }
 /// Contains metadata for the BatchProcessDocuments operation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OperationMetadata {
     /// The state of the current batch processing.
-    #[prost(enumeration = "operation_metadata::State", tag = "1")]
+    #[prost(enumeration="operation_metadata::State", tag="1")]
     pub state: i32,
     /// A message providing more details about the current state of processing.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub state_message: ::prost::alloc::string::String,
     /// The creation time of the operation.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The last update time of the operation.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `OperationMetadata`.
@@ -765,22 +761,33 @@ pub mod operation_metadata {
         Failed = 6,
     }
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod document_understanding_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Service to parse structured information from unstructured or semi-structured"]
-    #[doc = " documents using state-of-the-art Google AI such as natural language,"]
-    #[doc = " computer vision, and translation."]
+    /// Service to parse structured information from unstructured or semi-structured
+    /// documents using state-of-the-art Google AI such as natural language,
+    /// computer vision, and translation.
     #[derive(Debug, Clone)]
     pub struct DocumentUnderstandingServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl DocumentUnderstandingServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> DocumentUnderstandingServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -793,31 +800,37 @@ pub mod document_understanding_service_client {
         ) -> DocumentUnderstandingServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
-            DocumentUnderstandingServiceClient::new(InterceptedService::new(inner, interceptor))
+            DocumentUnderstandingServiceClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " LRO endpoint to batch process many documents."]
+        /// LRO endpoint to batch process many documents.
         pub async fn batch_process_documents(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchProcessDocumentsRequest>,
@@ -825,14 +838,19 @@ pub mod document_understanding_service_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.documentai.v1beta1.DocumentUnderstandingService/BatchProcessDocuments") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.documentai.v1beta1.DocumentUnderstandingService/BatchProcessDocuments",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

@@ -5,13 +5,13 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateProfileRequest {
     /// Parent project to create the profile in.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub parent: ::prost::alloc::string::String,
     /// Deployment details.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub deployment: ::core::option::Option<Deployment>,
     /// One or more profile types that the agent is capable of providing.
-    #[prost(enumeration = "ProfileType", repeated, tag = "2")]
+    #[prost(enumeration="ProfileType", repeated, tag="2")]
     pub profile_type: ::prost::alloc::vec::Vec<i32>,
 }
 /// CreateOfflineProfileRequest describes a profile resource offline creation
@@ -19,38 +19,38 @@ pub struct CreateProfileRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateOfflineProfileRequest {
     /// Parent project to create the profile in.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Contents of the profile to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub profile: ::core::option::Option<Profile>,
 }
 /// UpdateProfileRequest contains the profile to update.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateProfileRequest {
     /// Profile to update
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub profile: ::core::option::Option<Profile>,
     /// Field mask used to specify the fields to be overwritten. Currently only
     /// profile_bytes and labels fields are supported by UpdateProfile, so only
     /// those fields can be specified in the mask. When no mask is provided, all
     /// fields are overwritten.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Profile resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Profile {
     /// Output only. Opaque, server-assigned, unique ID for this profile.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Type of profile.
     /// For offline mode, this must be specified when creating the profile. For
     /// online mode it is assigned and returned by the server.
-    #[prost(enumeration = "ProfileType", tag = "2")]
+    #[prost(enumeration="ProfileType", tag="2")]
     pub profile_type: i32,
     /// Deployment this profile corresponds to.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub deployment: ::core::option::Option<Deployment>,
     /// Duration of the profiling session.
     /// Input (for the offline mode) or output (for the online mode).
@@ -58,25 +58,24 @@ pub struct Profile {
     /// from the effective profiling duration, which is recorded in the profile
     /// data, in case the profiling can't be stopped immediately (e.g. in case
     /// stopping the profiling is handled asynchronously).
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// Input only. Profile bytes, as a gzip compressed serialized proto, the
     /// format is <https://github.com/google/pprof/blob/master/proto/profile.proto.>
-    #[prost(bytes = "vec", tag = "5")]
+    #[prost(bytes="vec", tag="5")]
     pub profile_bytes: ::prost::alloc::vec::Vec<u8>,
     /// Input only. Labels associated to this specific profile. These labels will
     /// get merged with the deployment labels for the final data set.  See
     /// documentation on deployment labels for validation rules and limits.
-    #[prost(map = "string, string", tag = "6")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="6")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Deployment contains the deployment identification information.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
     /// Project ID is the ID of a cloud project.
     /// Validation regex: `^\[a-z][-a-z0-9:.]{4,61}[a-z0-9\]$`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
     /// Target is the service name used to group related deployments:
     /// * Service name for GAE Flex / Standard.
@@ -84,7 +83,7 @@ pub struct Deployment {
     /// * User-specified string for direct GCE profiling (e.g. Java).
     /// * Job name for Dataflow.
     /// Validation regex: `^\[a-z]([-a-z0-9_.]{0,253}[a-z0-9\])?$`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub target: ::prost::alloc::string::String,
     /// Labels identify the deployment within the user universe and same target.
     /// Validation regex for label names: `^\[a-z0-9]([a-z0-9-]{0,61}[a-z0-9\])?$`.
@@ -99,9 +98,8 @@ pub struct Deployment {
     /// should be present describing the deployment location. An example of a zone
     /// is "us-central1-a", an example of a region is "us-central1" or
     /// "us-central".
-    #[prost(map = "string, string", tag = "3")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="3")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// ProfileType is type of profiling data.
 /// NOTE: the enumeration member names are used (in lowercase) as unique string
@@ -132,25 +130,36 @@ pub enum ProfileType {
     /// collection pressure to see if those can be optimized.
     HeapAlloc = 7,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod profiler_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Manage the collection of continuous profiling data provided by profiling"]
-    #[doc = " agents running in the cloud or by an offline provider of profiling data."]
-    #[doc = ""]
-    #[doc = " General guidelines:"]
-    #[doc = " * Profiles for a single deployment must be created in ascending time order."]
-    #[doc = " * Profiles can be created in either online or offline mode, see below."]
+    /// Manage the collection of continuous profiling data provided by profiling
+    /// agents running in the cloud or by an offline provider of profiling data.
+    ///
+    /// General guidelines:
+    /// * Profiles for a single deployment must be created in ascending time order.
+    /// * Profiles can be created in either online or offline mode, see below.
     #[derive(Debug, Clone)]
     pub struct ProfilerServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl ProfilerServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> ProfilerServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -163,92 +172,105 @@ pub mod profiler_service_client {
         ) -> ProfilerServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             ProfilerServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " CreateProfile creates a new profile resource in the online mode."]
-        #[doc = ""]
-        #[doc = " The server ensures that the new profiles are created at a constant rate per"]
-        #[doc = " deployment, so the creation request may hang for some time until the next"]
-        #[doc = " profile session is available."]
-        #[doc = ""]
-        #[doc = " The request may fail with ABORTED error if the creation is not available"]
-        #[doc = " within ~1m, the response will indicate the duration of the backoff the"]
-        #[doc = " client should take before attempting creating a profile again. The backoff"]
-        #[doc = " duration is returned in google.rpc.RetryInfo extension on the response"]
-        #[doc = " status. To a gRPC client, the extension will be return as a"]
-        #[doc = " binary-serialized proto in the trailing metadata item named"]
-        #[doc = " \"google.rpc.retryinfo-bin\"."]
+        /// CreateProfile creates a new profile resource in the online mode.
+        ///
+        /// The server ensures that the new profiles are created at a constant rate per
+        /// deployment, so the creation request may hang for some time until the next
+        /// profile session is available.
+        ///
+        /// The request may fail with ABORTED error if the creation is not available
+        /// within ~1m, the response will indicate the duration of the backoff the
+        /// client should take before attempting creating a profile again. The backoff
+        /// duration is returned in google.rpc.RetryInfo extension on the response
+        /// status. To a gRPC client, the extension will be return as a
+        /// binary-serialized proto in the trailing metadata item named
+        /// "google.rpc.retryinfo-bin".
         pub async fn create_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateProfileRequest>,
         ) -> Result<tonic::Response<super::Profile>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ProfilerService/CreateProfile",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " CreateOfflineProfile creates a new profile resource in the offline mode."]
-        #[doc = " The client provides the profile to create along with the profile bytes, the"]
-        #[doc = " server records it."]
+        /// CreateOfflineProfile creates a new profile resource in the offline mode.
+        /// The client provides the profile to create along with the profile bytes, the
+        /// server records it.
         pub async fn create_offline_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateOfflineProfileRequest>,
         ) -> Result<tonic::Response<super::Profile>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ProfilerService/CreateOfflineProfile",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " UpdateProfile updates the profile bytes and labels on the profile resource"]
-        #[doc = " created in the online mode. Updating the bytes for profiles created in the"]
-        #[doc = " offline mode is currently not supported: the profile content must be"]
-        #[doc = " provided at the time of the profile creation."]
+        /// UpdateProfile updates the profile bytes and labels on the profile resource
+        /// created in the online mode. Updating the bytes for profiles created in the
+        /// offline mode is currently not supported: the profile content must be
+        /// provided at the time of the profile creation.
         pub async fn update_profile(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateProfileRequest>,
         ) -> Result<tonic::Response<super::Profile>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudprofiler.v2.ProfilerService/UpdateProfile",

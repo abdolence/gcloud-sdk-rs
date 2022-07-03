@@ -6,34 +6,34 @@ pub struct SupportAccount {
     /// The resource name for a support account in format
     /// `supportAccounts/{account_id}`.
     /// Output only.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Identifier for this entity that gets persisted in storage system. The
     /// resource name is populated using this field in format
     /// `supportAccounts/{account_id}`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub account_id: ::prost::alloc::string::String,
     /// The Cloud resource with which this support account is associated.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub cloud_resource: ::prost::alloc::string::String,
     /// A user friendly display name assigned to this support account.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub display_name: ::prost::alloc::string::String,
     /// Indicates the current state of an account.
-    #[prost(enumeration = "support_account::State", tag = "5")]
+    #[prost(enumeration="support_account::State", tag="5")]
     pub state: i32,
     /// Time when this account was created.
     /// Output only.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The resource name of a billing account associated with this support
     /// account. For example, `billingAccounts/ABCDEF-012345-567890`.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub billing_account_name: ::prost::alloc::string::String,
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub unify_account_id: ::prost::alloc::string::String,
     /// The PricingModel applicable to this support account.
-    #[prost(enumeration = "support_account::PricingModel", tag = "9")]
+    #[prost(enumeration="support_account::PricingModel", tag="9")]
     pub pricing_model: i32,
 }
 /// Nested message and enum types in `SupportAccount`.
@@ -69,55 +69,55 @@ pub mod support_account {
 pub struct Case {
     /// The resource name for the Case in format
     /// `supportAccounts/{account_id}/cases/{case_id}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The short summary of the issue reported in this case.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
     /// The board description of issue provided with initial summary.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
     /// The product component for which this Case is reported.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub component: ::prost::alloc::string::String,
     /// The product subcomponent for which this Case is reported.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub subcomponent: ::prost::alloc::string::String,
     /// Timezone the client sending this request is in.
     /// It should be in a format IANA recognizes: <https://www.iana.org/time-zone>
     /// There is no additional validation done by the API.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub client_timezone: ::prost::alloc::string::String,
     /// The email addresses that can be copied to receive updates on this case.
     /// Users can specify a maximum of 10 email addresses.
-    #[prost(string, repeated, tag = "7")]
+    #[prost(string, repeated, tag="7")]
     pub cc_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The Google Cloud Platform project ID for which this case is created.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
     /// List of customer issues associated with this case.
-    #[prost(message, repeated, tag = "10")]
+    #[prost(message, repeated, tag="10")]
     pub issues: ::prost::alloc::vec::Vec<CustomerIssue>,
     /// The current priority of this case.
-    #[prost(enumeration = "case::Priority", tag = "11")]
+    #[prost(enumeration="case::Priority", tag="11")]
     pub priority: i32,
     /// The current state of this case.
-    #[prost(enumeration = "case::State", tag = "12")]
+    #[prost(enumeration="case::State", tag="12")]
     pub state: i32,
     /// Time when this case was created.
     /// Output only.
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag="13")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time when this case was last updated.
     /// Output only.
-    #[prost(message, optional, tag = "14")]
+    #[prost(message, optional, tag="14")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Email address of user who created this case.
     /// Output only. It is inferred from credentials supplied during case creation.
-    #[prost(string, tag = "15")]
+    #[prost(string, tag="15")]
     pub creator_email: ::prost::alloc::string::String,
     /// The issue category applicable to this case.
-    #[prost(string, tag = "16")]
+    #[prost(string, tag="16")]
     pub category: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Case`.
@@ -173,23 +173,23 @@ pub mod case {
 pub struct CustomerIssue {
     /// Unique identifier for the internal issue.
     /// Output only.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub issue_id: ::prost::alloc::string::String,
     /// Represents current status of the internal ticket.
     /// Output only.
-    #[prost(enumeration = "customer_issue::IssueState", tag = "2")]
+    #[prost(enumeration="customer_issue::IssueState", tag="2")]
     pub state: i32,
     /// Time when the internal issue was created.
     /// Output only.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time when the internal issue was marked as resolved.
     /// Output only.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub resolve_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time when the internal issue was last updated.
     /// Output only.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `CustomerIssue`.
@@ -217,10 +217,10 @@ pub mod customer_issue {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SupportRole {
     /// Email address of user being added through this Role.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub email: ::prost::alloc::string::String,
     /// The type of role assigned to user.
-    #[prost(enumeration = "support_role::Role", tag = "2")]
+    #[prost(enumeration="support_role::Role", tag="2")]
     pub role: i32,
 }
 /// Nested message and enum types in `SupportRole`.
@@ -246,20 +246,20 @@ pub mod support_role {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Comment {
     /// Text containing a maximum of 3000 characters.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub text: ::prost::alloc::string::String,
     /// Time when this update was created.
     /// Output only.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The email address/name of user who created this comment.
     /// Output only.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub author: ::prost::alloc::string::String,
     /// The resource name for this comment in format
     /// `supportAccounts/{account_id}/cases/{case_id}/{comment_id}`.
     /// Output only.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub name: ::prost::alloc::string::String,
 }
 /// Represents the product component taxonomy that is to be used while creating
@@ -269,9 +269,8 @@ pub struct Comment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IssueTaxonomy {
     /// Map of available categories.
-    #[prost(map = "string, message", tag = "1")]
-    pub categories:
-        ::std::collections::HashMap<::prost::alloc::string::String, issue_taxonomy::Category>,
+    #[prost(map="string, message", tag="1")]
+    pub categories: ::std::collections::HashMap<::prost::alloc::string::String, issue_taxonomy::Category>,
 }
 /// Nested message and enum types in `IssueTaxonomy`.
 pub mod issue_taxonomy {
@@ -285,17 +284,17 @@ pub mod issue_taxonomy {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Component {
         /// User friendly name of this component.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub display_name: ::prost::alloc::string::String,
         /// List of languages in which a support case can be created under this
         /// component. Represented by language codes in ISO_639-1 standard.
-        #[prost(string, repeated, tag = "2")]
+        #[prost(string, repeated, tag="2")]
         pub languages: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Template to be used while filling the description of a support case.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub template: ::prost::alloc::string::String,
         /// List of subcomponents under this component.
-        #[prost(message, repeated, tag = "4")]
+        #[prost(message, repeated, tag="4")]
         pub subcomponents: ::prost::alloc::vec::Vec<Component>,
     }
     /// Represents the category of issue (Technical or Non-Technical)
@@ -303,10 +302,10 @@ pub mod issue_taxonomy {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Category {
         /// User friendly name of this category.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub display_name: ::prost::alloc::string::String,
         /// Map of product components under this category.
-        #[prost(map = "string, message", tag = "2")]
+        #[prost(map="string, message", tag="2")]
         pub components: ::std::collections::HashMap<::prost::alloc::string::String, Component>,
     }
 }

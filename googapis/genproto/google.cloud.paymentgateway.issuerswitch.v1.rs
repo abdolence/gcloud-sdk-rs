@@ -3,13 +3,13 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AccountReference {
     /// IFSC code of a bank's branch.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub ifsc_code: ::prost::alloc::string::String,
     /// Type of account. Examples include SAVINGS, CURRENT, etc.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub account_type: ::prost::alloc::string::String,
     /// Unique number for an account in a bank and branch.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub account_number: ::prost::alloc::string::String,
 }
 /// A participant in a payment settlement transaction processed by the issuer
@@ -18,33 +18,33 @@ pub struct AccountReference {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SettlementParticipant {
     /// The participant information.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub participant: ::core::option::Option<Participant>,
     /// Unique identification of an account according to India's UPI standards.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub account: ::core::option::Option<AccountReference>,
     /// Information about a merchant who is a participant in the payment. This
     /// field will be specified only if the participant is a merchant.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub merchant_info: ::core::option::Option<MerchantInfo>,
     /// Output only. The mobile number of the participant.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub mobile: ::prost::alloc::string::String,
     /// Output only. The device id of the participant.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub device_id: ::prost::alloc::string::String,
 }
 /// A participant in a transaction processed by the issuer switch.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Participant {
     /// The virtual payment address (VPA) of the participant.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub virtual_payment_address: ::prost::alloc::string::String,
     /// The persona of the participant.
-    #[prost(enumeration = "participant::Persona", tag = "2")]
+    #[prost(enumeration="participant::Persona", tag="2")]
     pub persona: i32,
     /// The name of the participant.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub user: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Participant`.
@@ -65,14 +65,14 @@ pub mod participant {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantInfo {
     /// A unique identifier for the merchant.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
     /// The name of the merchant who is a party in the payment. Includes multiple
     /// possible names for the merchant.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub merchant: ::core::option::Option<MerchantName>,
     /// Additional information about the merchant.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub additional_info: ::core::option::Option<MerchantAdditionalInfo>,
 }
 /// The name of a merchant who is a participant in a payment settlement
@@ -80,13 +80,13 @@ pub struct MerchantInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MerchantName {
     /// The brand name of the merchant.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub brand: ::prost::alloc::string::String,
     /// The merchant's legal name.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub legal: ::prost::alloc::string::String,
     /// The franchise name under which the merchant operates.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub franchise: ::prost::alloc::string::String,
 }
 /// Additional merchant information specific to India's UPI requirements.
@@ -94,27 +94,27 @@ pub struct MerchantName {
 pub struct MerchantAdditionalInfo {
     /// Merchant Category Code (MCC) as specified by UPI. This is a four-digit
     /// number listed in ISO 18245 for retail financial services.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub category_code: ::prost::alloc::string::String,
     /// A unique identifier for the merchant store where the payment settlement
     /// transaction occurred.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub store_id: ::prost::alloc::string::String,
     /// A unique identifier for the POS terminal in the store where the payment
     /// settlement transaction occurred.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub terminal_id: ::prost::alloc::string::String,
     /// Indicates the type of merchant.
-    #[prost(enumeration = "merchant_additional_info::Type", tag = "4")]
+    #[prost(enumeration="merchant_additional_info::Type", tag="4")]
     pub r#type: i32,
     /// Indicates the genre of the merchant.
-    #[prost(enumeration = "merchant_additional_info::Genre", tag = "5")]
+    #[prost(enumeration="merchant_additional_info::Genre", tag="5")]
     pub genre: i32,
     /// Indicates the merchant's onboarding type.
-    #[prost(enumeration = "merchant_additional_info::OnboardingType", tag = "6")]
+    #[prost(enumeration="merchant_additional_info::OnboardingType", tag="6")]
     pub onboarding_type: i32,
     /// Indicates the merchant's owner type.
-    #[prost(enumeration = "merchant_additional_info::OwnershipType", tag = "7")]
+    #[prost(enumeration="merchant_additional_info::OwnershipType", tag="7")]
     pub ownership_type: i32,
 }
 /// Nested message and enum types in `MerchantAdditionalInfo`.
@@ -293,18 +293,18 @@ pub struct Complaint {
     /// The name of the complaint. This uniquely identifies the complaint.
     /// Format of name is
     /// projects/{project_id}/complaints/{complaint_id}.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The reason for raising the complaint. This maps adjustment flag
     /// and reason code for the complaint to `reqAdjFlag` and `reqAdjCode` in
     /// complaint request respectively while raising a complaint.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub raise_complaint_adjustment: ::core::option::Option<RaiseComplaintAdjustment>,
     /// Required. Details required for raising / resolving a complaint.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub details: ::core::option::Option<CaseDetails>,
     /// Output only. Response to the raised / resolved complaint.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub response: ::core::option::Option<CaseResponse>,
     /// The reason for resolving the complaint. It provides adjustment values while
     /// resolving and for already resolved complaints. This maps adjustment flag
@@ -313,7 +313,7 @@ pub struct Complaint {
     /// Resolve Complaint API otherwise maps to `respAdjFlag` and `respAdjCode` in
     /// complaint response respectively when a complaint request from UPI is
     /// directly resolved by issuer switch.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub resolve_complaint_adjustment: ::core::option::Option<ResolveComplaintAdjustment>,
 }
 /// Request for the `CreateComplaint` method.
@@ -321,17 +321,17 @@ pub struct Complaint {
 pub struct CreateComplaintRequest {
     /// Required. The parent resource for the complaint. The format is
     /// `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The complaint to be raised.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub complaint: ::core::option::Option<Complaint>,
 }
 /// Request for the `ResolveComplaint` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveComplaintRequest {
     /// Required. The complaint to be resolved.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub complaint: ::core::option::Option<Complaint>,
 }
 /// A dispute processed by the issuer switch.
@@ -340,24 +340,24 @@ pub struct Dispute {
     /// The name of the dispute. This uniquely identifies the dispute.
     /// Format of name is
     /// projects/{project_id}/disputes/{dispute_id}.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The reason for raising the dispute. This maps adjustment flag
     /// and reason code for the dispute to `reqAdjFlag` and `reqAdjCode` in
     /// complaint request respectively while raising a dispute.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub raise_dispute_adjustment: ::core::option::Option<RaiseDisputeAdjustment>,
     /// Required. Details required for raising/resolving dispute.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub details: ::core::option::Option<CaseDetails>,
     /// Output only. Response to the raised/resolved dispute.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub response: ::core::option::Option<CaseResponse>,
     /// The reason for resolving the dispute. It provides adjustment values while
     /// resolving and for already resolved disputes. This maps adjustment flag
     /// and reason code for the dispute to `reqAdjFlag` and `reqAdjCode` in
     /// dispute request respectively while resolving a dispute.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub resolve_dispute_adjustment: ::core::option::Option<ResolveDisputeAdjustment>,
 }
 /// Request for the `CreateDispute` method.
@@ -365,17 +365,17 @@ pub struct Dispute {
 pub struct CreateDisputeRequest {
     /// Required. The parent resource for the dispute. The format is
     /// `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The dispute to be raised.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub dispute: ::core::option::Option<Dispute>,
 }
 /// Request for the `ResolveDispute` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResolveDisputeRequest {
     /// Required. The dispute to be resolved.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub dispute: ::core::option::Option<Dispute>,
 }
 /// Details of original transaction.
@@ -383,36 +383,36 @@ pub struct ResolveDisputeRequest {
 pub struct OriginalTransaction {
     /// Required. Uniquely identifies the original transaction. This maps to the `Txn.Id`
     /// value of the original transaction in India's UPI system.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub transaction_id: ::prost::alloc::string::String,
     /// Required. Retrieval Reference Number (RRN) of the original transaction.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub retrieval_reference_number: ::prost::alloc::string::String,
     /// Timestamp of the original transaction request.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub request_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Details of the complaint or dispute.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CaseDetails {
     /// Required. Details of original transaction.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub original_transaction: ::core::option::Option<OriginalTransaction>,
     /// Required. Initiator of the complaint / dispute.
-    #[prost(enumeration = "TransactionSubType", tag = "2")]
+    #[prost(enumeration="TransactionSubType", tag="2")]
     pub transaction_sub_type: i32,
     /// Required. The adjustment amount in URCS for the complaint / dispute. This
     /// maps to `reqAdjAmount` in complaint request.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub amount: ::core::option::Option<super::super::super::super::r#type::Money>,
     /// The original response code which has been updated in the complaint
     /// Response. This should map to settlement response code currently available
     /// in URCS system.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub original_settlement_response_code: ::prost::alloc::string::String,
     /// Required. Set to true if the complaint / dispute belongs to current settlement cycle,
     /// false otherwise.
-    #[prost(bool, tag = "5")]
+    #[prost(bool, tag="5")]
     pub current_cycle: bool,
 }
 /// Response to the complaint or dispute.
@@ -420,43 +420,43 @@ pub struct CaseDetails {
 pub struct CaseResponse {
     /// Complaint Reference Number(CRN) sent by UPI as a reference against the
     /// generated complaint / dispute.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub complaint_reference_number: ::prost::alloc::string::String,
     /// The adjustment amount of the response. This maps to `adjAmt` in
     /// complaint response.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub amount: ::core::option::Option<super::super::super::super::r#type::Money>,
     /// The adjustment flag in response to the complaint. This maps adjustment flag
     /// in URCS for the complaint transaction to `Resp.Ref.adjFlag` in complaint
     /// response.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub adjustment_flag: ::prost::alloc::string::String,
     /// The adjustment code in response to the complaint. This maps reason code in
     /// URCS for the complaint transaction to `Resp.Ref.adjCode` in complaint
     /// response.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub adjustment_code: ::prost::alloc::string::String,
     /// It defines the Adjustment Reference ID which has been updated in the
     /// complaint response. This maps to `adjRefID` in complaint response.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub adjustment_reference_id: ::prost::alloc::string::String,
     /// Adjustment Remarks. This maps to `adjRemarks` in complaint response.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub adjustment_remarks: ::prost::alloc::string::String,
     /// The Approval Reference Number. This maps to `approvalNum` in complaint
     /// response.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub approval_number: ::prost::alloc::string::String,
     /// Process Status of the transaction. This maps to `procStatus` in complaint
     /// response.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub process_status: ::prost::alloc::string::String,
     /// The adjustment timestamp when bank performs the adjustment for the received
     /// complaint request. This maps to `adjTs` in complaint response.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub adjustment_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The details of the participant of the original financial transaction.
-    #[prost(oneof = "case_response::Participant", tags = "10, 11")]
+    #[prost(oneof="case_response::Participant", tags="10, 11")]
     pub participant: ::core::option::Option<case_response::Participant>,
 }
 /// Nested message and enum types in `CaseResponse`.
@@ -465,10 +465,10 @@ pub mod case_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Participant {
         /// The payer in the original financial transaction.
-        #[prost(message, tag = "10")]
+        #[prost(message, tag="10")]
         Payer(super::SettlementParticipant),
         /// The payee in the original financial transaction.
-        #[prost(message, tag = "11")]
+        #[prost(message, tag="11")]
         Payee(super::SettlementParticipant),
     }
 }
@@ -477,11 +477,11 @@ pub mod case_response {
 pub struct RaiseComplaintAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
     /// `reqAdjFlag` in complaint request and `respAdjFlag` in complaint response.
-    #[prost(enumeration = "raise_complaint_adjustment::AdjustmentFlag", tag = "1")]
+    #[prost(enumeration="raise_complaint_adjustment::AdjustmentFlag", tag="1")]
     pub adjustment_flag: i32,
     /// Required. The adjustment code in URCS for the complaint transaction. This maps to
     /// `reqAdjCode` in complaint request.
-    #[prost(enumeration = "raise_complaint_adjustment::ReasonCode", tag = "2")]
+    #[prost(enumeration="raise_complaint_adjustment::ReasonCode", tag="2")]
     pub adjustment_code: i32,
 }
 /// Nested message and enum types in `RaiseComplaintAdjustment`.
@@ -536,14 +536,11 @@ pub mod raise_complaint_adjustment {
 pub struct ResolveComplaintAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
     /// `reqAdjFlag` in complaint request and `respAdjFlag` in complaint response.
-    #[prost(
-        enumeration = "resolve_complaint_adjustment::AdjustmentFlag",
-        tag = "1"
-    )]
+    #[prost(enumeration="resolve_complaint_adjustment::AdjustmentFlag", tag="1")]
     pub adjustment_flag: i32,
     /// Required. The adjustment code in URCS for the complaint transaction. This maps to
     /// `reqAdjCode` in complaint request.
-    #[prost(enumeration = "resolve_complaint_adjustment::ReasonCode", tag = "2")]
+    #[prost(enumeration="resolve_complaint_adjustment::ReasonCode", tag="2")]
     pub adjustment_code: i32,
 }
 /// Nested message and enum types in `ResolveComplaintAdjustment`.
@@ -625,11 +622,11 @@ pub mod resolve_complaint_adjustment {
 pub struct RaiseDisputeAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
     /// `reqAdjFlag` in dispute request and `respAdjFlag` in dispute response.
-    #[prost(enumeration = "raise_dispute_adjustment::AdjustmentFlag", tag = "1")]
+    #[prost(enumeration="raise_dispute_adjustment::AdjustmentFlag", tag="1")]
     pub adjustment_flag: i32,
     /// Required. The adjustment code in URCS for the complaint transaction. This maps to
     /// `reqAdjCode` in dispute request.
-    #[prost(enumeration = "raise_dispute_adjustment::ReasonCode", tag = "2")]
+    #[prost(enumeration="raise_dispute_adjustment::ReasonCode", tag="2")]
     pub adjustment_code: i32,
 }
 /// Nested message and enum types in `RaiseDisputeAdjustment`.
@@ -741,11 +738,11 @@ pub mod raise_dispute_adjustment {
 pub struct ResolveDisputeAdjustment {
     /// Required. The adjustment flag in URCS for the complaint transaction. This maps to
     /// `reqAdjFlag` in dispute request and `respAdjFlag` in dispute response.
-    #[prost(enumeration = "resolve_dispute_adjustment::AdjustmentFlag", tag = "1")]
+    #[prost(enumeration="resolve_dispute_adjustment::AdjustmentFlag", tag="1")]
     pub adjustment_flag: i32,
     /// Required. The adjustment code in URCS for the complaint transaction. This maps to
     /// `reqAdjCode` in dispute request.
-    #[prost(enumeration = "resolve_dispute_adjustment::ReasonCode", tag = "2")]
+    #[prost(enumeration="resolve_dispute_adjustment::ReasonCode", tag="2")]
     pub adjustment_code: i32,
 }
 /// Nested message and enum types in `ResolveDisputeAdjustment`.
@@ -960,16 +957,20 @@ pub mod resolve_dispute_adjustment {
 }
 /// Metadata for CreateComplaint.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateComplaintMetadata {}
+pub struct CreateComplaintMetadata {
+}
 /// Metadata for ResolveComplaint.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResolveComplaintMetadata {}
+pub struct ResolveComplaintMetadata {
+}
 /// Metadata for CreateDispute.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateDisputeMetadata {}
+pub struct CreateDisputeMetadata {
+}
 /// Metadata for ResolveDispute.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ResolveDisputeMetadata {}
+pub struct ResolveDisputeMetadata {
+}
 /// The subtype of the complaint or dispute.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -981,20 +982,31 @@ pub enum TransactionSubType {
     /// Remitter transaction subtype.
     Remitter = 2,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod issuer_switch_resolutions_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Creates and resolves UPI complaints and disputes."]
+    /// Creates and resolves UPI complaints and disputes.
     #[derive(Debug, Clone)]
     pub struct IssuerSwitchResolutionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl IssuerSwitchResolutionsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> IssuerSwitchResolutionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -1007,35 +1019,41 @@ pub mod issuer_switch_resolutions_client {
         ) -> IssuerSwitchResolutionsClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
-            IssuerSwitchResolutionsClient::new(InterceptedService::new(inner, interceptor))
+            IssuerSwitchResolutionsClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Create a complaint. The returned `Operation` type has"]
-        #[doc = " the following method-specific fields:"]
-        #[doc = ""]
-        #[doc = " - `metadata`: [CreateComplaintMetadata][google.cloud.paymentgateway.issuerswitch.v1.CreateComplaintMetadata]"]
-        #[doc = " - `response`: [Complaint][google.cloud.paymentgateway.issuerswitch.v1.Complaint]"]
+        /// Create a complaint. The returned `Operation` type has
+        /// the following method-specific fields:
+        ///
+        /// - `metadata`: [CreateComplaintMetadata][google.cloud.paymentgateway.issuerswitch.v1.CreateComplaintMetadata]
+        /// - `response`: [Complaint][google.cloud.paymentgateway.issuerswitch.v1.Complaint]
         pub async fn create_complaint(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateComplaintRequest>,
@@ -1043,21 +1061,26 @@ pub mod issuer_switch_resolutions_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/CreateComplaint") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/CreateComplaint",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Resolve a complaint. The returned `Operation` type has"]
-        #[doc = " the following method-specific fields:"]
-        #[doc = ""]
-        #[doc = " - `metadata`: [ResolveComplaintMetadata][google.cloud.paymentgateway.issuerswitch.v1.ResolveComplaintMetadata]"]
-        #[doc = " - `response`: [Complaint][google.cloud.paymentgateway.issuerswitch.v1.Complaint]"]
+        /// Resolve a complaint. The returned `Operation` type has
+        /// the following method-specific fields:
+        ///
+        /// - `metadata`: [ResolveComplaintMetadata][google.cloud.paymentgateway.issuerswitch.v1.ResolveComplaintMetadata]
+        /// - `response`: [Complaint][google.cloud.paymentgateway.issuerswitch.v1.Complaint]
         pub async fn resolve_complaint(
             &mut self,
             request: impl tonic::IntoRequest<super::ResolveComplaintRequest>,
@@ -1065,21 +1088,26 @@ pub mod issuer_switch_resolutions_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/ResolveComplaint") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/ResolveComplaint",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Create a dispute. The returned `Operation` type has"]
-        #[doc = " the following method-specific fields:"]
-        #[doc = ""]
-        #[doc = " - `metadata`: [CreateDisputeMetadata][google.cloud.paymentgateway.issuerswitch.v1.CreateDisputeMetadata]"]
-        #[doc = " - `response`: [Dispute][google.cloud.paymentgateway.issuerswitch.v1.Dispute]"]
+        /// Create a dispute. The returned `Operation` type has
+        /// the following method-specific fields:
+        ///
+        /// - `metadata`: [CreateDisputeMetadata][google.cloud.paymentgateway.issuerswitch.v1.CreateDisputeMetadata]
+        /// - `response`: [Dispute][google.cloud.paymentgateway.issuerswitch.v1.Dispute]
         pub async fn create_dispute(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateDisputeRequest>,
@@ -1087,21 +1115,26 @@ pub mod issuer_switch_resolutions_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/CreateDispute") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/CreateDispute",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Resolve a dispute. The returned `Operation` type has"]
-        #[doc = " the following method-specific fields:"]
-        #[doc = ""]
-        #[doc = " - `metadata`: [ResolveDisputeMetadata][google.cloud.paymentgateway.issuerswitch.v1.ResolveDisputeMetadata]"]
-        #[doc = " - `response`: [Dispute][google.cloud.paymentgateway.issuerswitch.v1.Dispute]"]
+        /// Resolve a dispute. The returned `Operation` type has
+        /// the following method-specific fields:
+        ///
+        /// - `metadata`: [ResolveDisputeMetadata][google.cloud.paymentgateway.issuerswitch.v1.ResolveDisputeMetadata]
+        /// - `response`: [Dispute][google.cloud.paymentgateway.issuerswitch.v1.Dispute]
         pub async fn resolve_dispute(
             &mut self,
             request: impl tonic::IntoRequest<super::ResolveDisputeRequest>,
@@ -1109,14 +1142,19 @@ pub mod issuer_switch_resolutions_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/ResolveDispute") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchResolutions/ResolveDispute",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -1127,20 +1165,20 @@ pub mod issuer_switch_resolutions_client {
 pub struct Rule {
     /// The unique identifier for this resource.
     /// Format: projects/{project}/rules/{rule}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The description of the rule.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub rule_description: ::prost::alloc::string::String,
     /// The API Type for which this rule gets executed. A value of
     /// `API_TYPE_UNSPECIFIED` indicates that the rule is executed for all API
     /// transactions.
-    #[prost(enumeration = "ApiType", tag = "3")]
+    #[prost(enumeration="ApiType", tag="3")]
     pub api_type: i32,
     /// The transaction type for which this rule gets executed. A value of
     /// `TRANSACTION_TYPE_UNSPECIFIED` indicates that the rule is executed for
     /// all transaction types.
-    #[prost(enumeration = "TransactionType", tag = "4")]
+    #[prost(enumeration="TransactionType", tag="4")]
     pub transaction_type: i32,
 }
 /// The metadata associated with a rule. This defines data that are used by the
@@ -1149,13 +1187,13 @@ pub struct Rule {
 pub struct RuleMetadata {
     /// The unique identifier for this resource.
     /// Format: projects/{project}/rules/{rule}/metadata/{metadata}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The description of the rule metadata.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub description: ::prost::alloc::string::String,
     /// Type of rule metadata.
-    #[prost(enumeration = "rule_metadata::Type", tag = "3")]
+    #[prost(enumeration="rule_metadata::Type", tag="3")]
     pub r#type: i32,
 }
 /// Nested message and enum types in `RuleMetadata`.
@@ -1176,7 +1214,7 @@ pub mod rule_metadata {
 pub struct RuleMetadataValue {
     /// Output only. The unique identifier for this resource.
     /// Format: projects/{project}/rules/{rule}/metadata/{metadata}/values/{value}
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The value of the resource which could be of type string or
     /// AccountReference. The metadata values for rules
@@ -1196,7 +1234,7 @@ pub struct RuleMetadataValue {
     /// Device identifier   | 1   | 255   |
     /// Mobile number   | 12   | 12  |
     /// Virtual private address (VPA)   | 3   | 255   |
-    #[prost(oneof = "rule_metadata_value::Value", tags = "2, 3")]
+    #[prost(oneof="rule_metadata_value::Value", tags="2, 3")]
     pub value: ::core::option::Option<rule_metadata_value::Value>,
 }
 /// Nested message and enum types in `RuleMetadataValue`.
@@ -1222,10 +1260,10 @@ pub mod rule_metadata_value {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Value {
         /// The value for string metadata.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         Id(::prost::alloc::string::String),
         /// The value for account reference metadata.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         AccountReference(super::AccountReference),
     }
 }
@@ -1233,64 +1271,64 @@ pub mod rule_metadata_value {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRulesRequest {
     /// Required. The parent resource must have the format of `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of rules to return. The service may return fewer
     /// than this value. If unspecified or if the specified value is less than 50,
     /// at most 50 rules will be returned. The maximum value is 1000; values above
     /// 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListRulesRequest` call.
     /// Specify this parameter to retrieve the next page of rules.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response body for the `ListRules` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRulesResponse {
     /// List of rules satisfying the specified filter criteria.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub rules: ::prost::alloc::vec::Vec<Rule>,
     /// Pass this token in a subsequent `ListRulesRequest` call to continue to list
     /// results. If all results have been returned, this field is an empty string
     /// or not present in the response.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Total number of rules matching request criteria across all pages.
-    #[prost(int64, tag = "3")]
+    #[prost(int64, tag="3")]
     pub total_size: i64,
 }
 /// Request body for the `ListRuleMetadata` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataRequest {
     /// Required. The parent resource. The format is `projects/{project}/rules/{rule}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of rule metadata to return. The service may return fewer
     /// than this value. If unspecified or if the specified value is less than 50,
     /// at most 50 rule metadata will be returned. The maximum value is 1000;
     /// values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListRuleMetadataRequest` call.
     /// Specify this parameter to retrieve the next page of rule metadata.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response body for the `ListRuleMetadata` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataResponse {
     /// List of rule metadata associated with the rule.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub rule_metadata: ::prost::alloc::vec::Vec<RuleMetadata>,
     /// Pass this token in a subsequent `ListRuleMetadataRequest` call to continue
     /// to list results. If all results have been returned, this field is an empty
     /// string or not present in the response.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Total number of rule metadata matching request criteria across all pages.
-    #[prost(int64, tag = "3")]
+    #[prost(int64, tag="3")]
     pub total_size: i64,
 }
 /// Request body for the `ListRuleMetadataValues` method.
@@ -1298,18 +1336,18 @@ pub struct ListRuleMetadataResponse {
 pub struct ListRuleMetadataValuesRequest {
     /// Required. The parent resource. The format is
     /// `projects/{project}/rules/{rule}/metadata/{metadata}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of metadata values to return. The service may return
     /// fewer than this value. If unspecified or if the specified value is less
     /// than 1, at most 50 rule metadata values will be returned. The maximum
     /// value is 1000; values above 1000 will be coerced to 1000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token received from a previous `ListRuleMetadataValuesRequest`
     /// call. Specify this parameter to retrieve the next page of rule metadata
     /// values.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response body for ListRuleMetadataValues. Contains a List of values for a
@@ -1317,12 +1355,12 @@ pub struct ListRuleMetadataValuesRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListRuleMetadataValuesResponse {
     /// List of values for a given rule metadata resource identifier.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub rule_metadata_values: ::prost::alloc::vec::Vec<RuleMetadataValue>,
     /// Pass this token in a subsequent `ListRuleMetadataValuesRequest` call to
     /// continue to list results. If all results have been returned, this field is
     /// an empty string or not present in the response.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request body for the `BatchCreateRuleMetadataValues` method.
@@ -1333,18 +1371,18 @@ pub struct BatchCreateRuleMetadataValuesRequest {
     /// \[CreateRuleMetadataValueRequest.parent][google.cloud.paymentgateway.issuerswitch.v1.CreateRuleMetadataValueRequest.parent\] field in the
     /// \[CreateRuleMetadataValueRequest][google.cloud.paymentgateway.issuerswitch.v1.CreateRuleMetadataValueRequest\] messages contained in this request must
     /// match this field.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The request message specifying the resources to create.
     /// A maximum of 1000 RuleMetadataValues can be created in a batch.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub requests: ::prost::alloc::vec::Vec<CreateRuleMetadataValueRequest>,
 }
 /// Response body for the `BatchCreateRuleMetadataValues` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchCreateRuleMetadataValuesResponse {
     /// List of RuleMetadataValue created.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub rule_metadata_value: ::prost::alloc::vec::Vec<RuleMetadataValue>,
 }
 /// Request for creating a single `RuleMetadataValue`.
@@ -1352,10 +1390,10 @@ pub struct BatchCreateRuleMetadataValuesResponse {
 pub struct CreateRuleMetadataValueRequest {
     /// Required. The parent resource where this RuleMetadataValue will be created. The
     /// format is `projects/{project}/rules/{rule}/metadata/{metadata}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The rule metadata value to create or add to a list.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub rule_metadata_value: ::core::option::Option<RuleMetadataValue>,
 }
 /// Request body for the `BatchDeleteRuleMetadataValues` method.
@@ -1365,28 +1403,39 @@ pub struct BatchDeleteRuleMetadataValuesRequest {
     /// format is `projects/{project}/rules/{rule}/metadata/{metadata}`. If this is
     /// set, the parent of all of the RuleMetadataValues specified in the
     /// list of names must match this field.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The names of the rule metadata values to delete.
     /// A maximum of 1000 RuleMetadataValue can be deleted in a batch.
     /// Format: projects/{project}/rules/{rule}/metadata/{metadata}/values/{value}
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod issuer_switch_rules_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Manages rules used by the issuer switch's rules engine."]
+    /// Manages rules used by the issuer switch's rules engine.
     #[derive(Debug, Clone)]
     pub struct IssuerSwitchRulesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl IssuerSwitchRulesClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> IssuerSwitchRulesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -1399,111 +1448,141 @@ pub mod issuer_switch_rules_client {
         ) -> IssuerSwitchRulesClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             IssuerSwitchRulesClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " List all rules that are applied on transactions by the issuer switch. Rules"]
-        #[doc = " can be filtered on API type and transaction type."]
+        /// List all rules that are applied on transactions by the issuer switch. Rules
+        /// can be filtered on API type and transaction type.
         pub async fn list_rules(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRulesRequest>,
         ) -> Result<tonic::Response<super::ListRulesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/ListRules",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List all rule metadata for a given rule identifier."]
+        /// List all rule metadata for a given rule identifier.
         pub async fn list_rule_metadata(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRuleMetadataRequest>,
         ) -> Result<tonic::Response<super::ListRuleMetadataResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/ListRuleMetadata",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List all metadata values for a rule metadata identifier."]
+        /// List all metadata values for a rule metadata identifier.
         pub async fn list_rule_metadata_values(
             &mut self,
             request: impl tonic::IntoRequest<super::ListRuleMetadataValuesRequest>,
-        ) -> Result<tonic::Response<super::ListRuleMetadataValuesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ListRuleMetadataValuesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/ListRuleMetadataValues") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/ListRuleMetadataValues",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Create (add) multiple values to the list of values under the specified rule"]
-        #[doc = " metadata resource."]
+        /// Create (add) multiple values to the list of values under the specified rule
+        /// metadata resource.
         pub async fn batch_create_rule_metadata_values(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchCreateRuleMetadataValuesRequest>,
-        ) -> Result<tonic::Response<super::BatchCreateRuleMetadataValuesResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::BatchCreateRuleMetadataValuesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/BatchCreateRuleMetadataValues") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/BatchCreateRuleMetadataValues",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Delete (remove) multiple values from the list of values under the specified"]
-        #[doc = " rules metadata resource."]
+        /// Delete (remove) multiple values from the list of values under the specified
+        /// rules metadata resource.
         pub async fn batch_delete_rule_metadata_values(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchDeleteRuleMetadataValuesRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/BatchDeleteRuleMetadataValues") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchRules/BatchDeleteRuleMetadataValues",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
@@ -1515,38 +1594,38 @@ pub mod issuer_switch_rules_client {
 pub struct TransactionInfo {
     /// Output only. An identifier that is mandatorily present in every transaction processed
     /// via UPI. This maps to UPI's transaction ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
     /// Output only. The API type of the transaction.
-    #[prost(enumeration = "ApiType", tag = "2")]
+    #[prost(enumeration="ApiType", tag="2")]
     pub api_type: i32,
     /// Output only. The transaction type.
-    #[prost(enumeration = "TransactionType", tag = "3")]
+    #[prost(enumeration="TransactionType", tag="3")]
     pub transaction_type: i32,
     /// Output only. The transaction sub-type.
-    #[prost(enumeration = "transaction_info::TransactionSubType", tag = "4")]
+    #[prost(enumeration="transaction_info::TransactionSubType", tag="4")]
     pub transaction_sub_type: i32,
     /// Output only. The transaction's state.
-    #[prost(enumeration = "transaction_info::State", tag = "5")]
+    #[prost(enumeration="transaction_info::State", tag="5")]
     pub state: i32,
     /// Output only. Error code of the failed transaction.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub error_code: ::prost::alloc::string::String,
     /// Output only. Error description for the failed transaction.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub error_message: ::prost::alloc::string::String,
     /// Output only. The time at which the transaction resource was created by the
     /// issuer switch.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. List of Request IDs (colon separated) used when
     /// invoking the Bank Adapter APIs for fulfilling a transaction request.
-    #[prost(string, tag = "9")]
+    #[prost(string, tag="9")]
     pub bank_adapter_request_ids: ::prost::alloc::string::String,
     /// Output only. Error code as per the UPI specification. The issuer switch maps the
     /// ErrorCode to an appropriate error code that complies with the UPI
     /// specification.
-    #[prost(string, tag = "10")]
+    #[prost(string, tag="10")]
     pub upi_error_code: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `TransactionInfo`.
@@ -1598,13 +1677,13 @@ pub struct MetadataTransaction {
     /// The name of the metadata transaction. This uniquely identifies the
     /// transaction. Format of name is
     /// projects/{project_id}/metadataTransaction/{metadata_transaction_id}.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Information about the transaction.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub info: ::core::option::Option<TransactionInfo>,
     /// Output only. Virtual Payment Address (VPA) which originated the request.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub origin_vpa: ::prost::alloc::string::String,
 }
 /// A financial API transaction processed by the issuer switch. In UPI, this maps
@@ -1614,24 +1693,24 @@ pub struct FinancialTransaction {
     /// The name of the financial transaction. This uniquely identifies the
     /// transaction. Format of name is
     /// projects/{project_id}/financialTransactions/{financial_transaction_id}.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Information about the transaction.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub info: ::core::option::Option<TransactionInfo>,
     /// Output only. A 12 digit numeric code associated with the request. It could contain
     /// leading 0s. In UPI, this is also known as as the customer reference or the
     /// UPI transaction ID.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub retrieval_reference_number: ::prost::alloc::string::String,
     /// Output only. The payer in the transaction.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub payer: ::core::option::Option<SettlementParticipant>,
     /// Output only. The payee in the transaction.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub payee: ::core::option::Option<SettlementParticipant>,
     /// Output only. The amount for payment settlement in the transaction.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub amount: ::core::option::Option<super::super::super::super::r#type::Money>,
 }
 /// A mandate processed by the issuer switch. In UPI, this maps to the Mandate
@@ -1641,68 +1720,68 @@ pub struct MandateTransaction {
     /// The name of the mandate transaction. This uniquely identifies the
     /// transaction. Format of name is
     /// projects/{project_id}/mandateTransactions/{mandate_transaction_id}.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Information about the transaction.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub transaction_info: ::core::option::Option<TransactionInfo>,
     /// Output only. This maps to Unique Mandate Number (UMN) in UPI specification.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub unique_mandate_number: ::prost::alloc::string::String,
     /// Output only. The virtual payment address (VPA) of the payer.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub payer_vpa: ::prost::alloc::string::String,
     /// Output only. The virtual payment address (VPA) of the payee.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub payee_vpa: ::prost::alloc::string::String,
     /// Output only. A unique identifier for merchant.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub payee_merchant_id: ::prost::alloc::string::String,
     /// Output only. The mobile number of the payer consisting of total twelve digits where
     /// first two digits of country code (for eg. 91 for India) and then ten
     /// digits mobile number. For eg. 911234567890
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub payer_mobile_number: ::prost::alloc::string::String,
     /// Output only. The mobile number of the payer consisting of total twelve digits where
     /// first two digits of country code (for eg. 91 for India) and then ten
     /// digits mobile number. For eg. 911234567890
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub payee_mobile_number: ::prost::alloc::string::String,
     /// Output only. The type of recurrence pattern of the mandate.
-    #[prost(enumeration = "mandate_transaction::RecurrencePatternType", tag = "9")]
+    #[prost(enumeration="mandate_transaction::RecurrencePatternType", tag="9")]
     pub recurrence_pattern: i32,
     /// Output only. The type of recurrence rule of the mandate.
-    #[prost(enumeration = "mandate_transaction::RecurrenceRuleType", tag = "10")]
+    #[prost(enumeration="mandate_transaction::RecurrenceRuleType", tag="10")]
     pub recurrence_rule_type: i32,
     /// Output only. The recurrence rule value of the mandate. This is a value from 1 to 31.
-    #[prost(int32, tag = "11")]
+    #[prost(int32, tag="11")]
     pub recurrence_rule_value: i32,
     /// Output only. The start date of the mandate.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag="12")]
     pub start_date: ::core::option::Option<super::super::super::super::r#type::Date>,
     /// Output only. The end date of the mandate.
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag="13")]
     pub end_date: ::core::option::Option<super::super::super::super::r#type::Date>,
     /// Output only. If true, this specifies mandate can be revoked.
-    #[prost(bool, tag = "14")]
+    #[prost(bool, tag="14")]
     pub revokable: bool,
     /// Output only. The amount of the mandate.
-    #[prost(double, tag = "15")]
+    #[prost(double, tag="15")]
     pub amount: f64,
     /// Output only. The amount rule type of the mandate.
-    #[prost(enumeration = "mandate_transaction::AmountRuleType", tag = "16")]
+    #[prost(enumeration="mandate_transaction::AmountRuleType", tag="16")]
     pub amount_rule: i32,
     /// Output only. The Block funds reference generated by the bank, this will be available
     /// only when Recurrence is ONETIME.
-    #[prost(string, tag = "17")]
+    #[prost(string, tag="17")]
     pub approval_reference: ::prost::alloc::string::String,
     /// Output only. If true, this specifies the mandate transaction requested funds to be
     /// blocked.
-    #[prost(bool, tag = "18")]
+    #[prost(bool, tag="18")]
     pub block_funds: bool,
     /// Output only. The last time at which the mandate resource was modified by the issuer
     /// switch.
-    #[prost(message, optional, tag = "19")]
+    #[prost(message, optional, tag="19")]
     pub last_update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `MandateTransaction`.
@@ -1769,14 +1848,14 @@ pub struct ComplaintTransaction {
     /// The name of the complaint transaction. This uniquely identifies the
     /// transaction. Format of name is
     /// projects/{project_id}/complaintTransactions/{complaint_transaction_id}.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Information about the transaction.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub info: ::core::option::Option<TransactionInfo>,
     /// Information about the complaint transaction. It can be one of Complaint or
     /// Dispute.
-    #[prost(oneof = "complaint_transaction::Case", tags = "3, 4")]
+    #[prost(oneof="complaint_transaction::Case", tags="3, 4")]
     pub case: ::core::option::Option<complaint_transaction::Case>,
 }
 /// Nested message and enum types in `ComplaintTransaction`.
@@ -1786,10 +1865,10 @@ pub mod complaint_transaction {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Case {
         /// Output only. Information about the complaint transaction when it is of type complaint.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         Complaint(super::Complaint),
         /// Output only. Information about the complaint transaction when it is of type dispute.
-        #[prost(message, tag = "4")]
+        #[prost(message, tag="4")]
         Dispute(super::Dispute),
     }
 }
@@ -1799,14 +1878,14 @@ pub mod complaint_transaction {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMetadataTransactionsRequest {
     /// Required. The parent resource. The format is `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of transactions to return. The service may return fewer
     /// than this value. If unspecified or if the specified value is less than 1,
     /// at most 50 transactions will be returned. The maximum value is 1000; values
     /// above 1000 will be coerced to 1000. While paginating, you can specify a new
     /// page size parameter for each page of transactions to be listed.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListMetadataTransactions` call.
     /// Specify this parameter to retrieve the next page of transactions.
@@ -1815,7 +1894,7 @@ pub struct ListMetadataTransactionsRequest {
     /// filter that was specified in the initial call to the
     /// `ListMetadataTransactions` method that returned the page token will be
     /// reused for all further calls where the page token parameter is specified.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// An expression that filters the list of metadata transactions.
     ///
@@ -1860,7 +1939,7 @@ pub struct ListMetadataTransactionsRequest {
     ///   * `(apiType = LIST_ACCOUNTS) AND (create_time <
     ///   \"2021-08-15T14:50:00Z\")` - The API type is _LIST_ACCOUNTS_ and
     ///   the transaction was received before _2021-08-15 14:50:00 UTC_.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Request for the `ListFinancialTransactions` method. Callers can request for
@@ -1869,14 +1948,14 @@ pub struct ListMetadataTransactionsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFinancialTransactionsRequest {
     /// Required. The parent resource. The format is `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of transactions to return. The service may return fewer
     /// than this value. If unspecified or if the specified value is less than 1,
     /// at most 50 transactions will be returned. The maximum value is 1000; values
     /// above 1000 will be coerced to 1000. While paginating, you can specify a new
     /// page size parameter for each page of transactions to be listed.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListFinancialTransactions` call.
     /// Specify this parameter to retrieve the next page of transactions.
@@ -1885,7 +1964,7 @@ pub struct ListFinancialTransactionsRequest {
     /// filter that was specified in the initial call to the
     /// `ListFinancialTransactions` method that returned the page token will be
     /// reused for all further calls where the page token parameter is specified.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// An expression that filters the list of financial transactions.
     ///
@@ -1944,7 +2023,7 @@ pub struct ListFinancialTransactionsRequest {
     ///   * `createTime > "2021-08-15T14:50:00Z" AND createTime <
     ///   "2021-08-16T14:50:00Z"` - The transaction was received between
     ///   _2021-08-15 14:50:00 UTC_ and _2021-08-16 14:50:00 UTC_.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Request for the `ListMandateTransactions` method. Callers can request for
@@ -1953,14 +2032,14 @@ pub struct ListFinancialTransactionsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMandateTransactionsRequest {
     /// Required. The parent resource. The format is `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of transactions to return. The service may return fewer
     /// than this value. If unspecified or if the specified value is less than 1,
     /// at most 50 transactions will be returned. The maximum value is 1000; values
     /// above 1000 will be coerced to 1000. While paginating, you can specify a new
     /// page size parameter for each page of transactions to be listed.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListMandateTransactions` call.
     /// Specify this parameter to retrieve the next page of transactions.
@@ -1969,7 +2048,7 @@ pub struct ListMandateTransactionsRequest {
     /// filter that was specified in the initial call to the
     /// `ListMandateTransactions` method that returned the page token will be
     /// reused for all further calls where the page token parameter is specified.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// An expression that filters the list of mandate transactions.
     ///
@@ -2038,7 +2117,7 @@ pub struct ListMandateTransactionsRequest {
     ///   _2021-08-15 14:50:00 UTC_ and _2021-08-16 14:50:00 UTC_.
     ///   * `startDate > "2021-08-15" AND startDate < "2021-08-17"` - The start
     ///   date for mandate is between _2021-08-15_ and _2021-08-17_.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Request for the `ListComplaintTransactions` method. Callers can request for
@@ -2047,14 +2126,14 @@ pub struct ListMandateTransactionsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComplaintTransactionsRequest {
     /// Required. The parent resource. The format is `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of transactions to return. The service may return fewer
     /// than this value. If unspecified or if the specified value is less than 1,
     /// at most 50 transactions will be returned. The maximum value is 1000; values
     /// above 1000 will be coerced to 1000. While paginating, you can specify a new
     /// page size parameter for each page of transactions to be listed.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token, received from a previous `ListComplaintTransactions` call.
     /// Specify this parameter to retrieve the next page of transactions.
@@ -2063,7 +2142,7 @@ pub struct ListComplaintTransactionsRequest {
     /// filter that was specified in the initial call to the
     /// `ListComplaintTransactions` method that returned the page token will be
     /// reused for all further calls where the page token parameter is specified.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// An expression that filters the list of complaint transactions.
     ///
@@ -2108,7 +2187,7 @@ pub struct ListComplaintTransactionsRequest {
     ///   * `createTime > "2021-08-15T14:50:00Z" AND createTime <
     ///   "2021-08-16T14:50:00Z"` - The transaction was received between
     ///   _2021-08-15 14:50:00 UTC_ and _2021-08-16 14:50:00 UTC_.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// Response for the `ListMetadataTransactions` method.
@@ -2116,48 +2195,48 @@ pub struct ListComplaintTransactionsRequest {
 pub struct ListMetadataTransactionsResponse {
     /// List of non financial metadata transactions satisfying the filtered
     /// request.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub metadata_transactions: ::prost::alloc::vec::Vec<MetadataTransaction>,
     /// Pass this token in the ListMetadataTransactionsRequest to continue to list
     /// results. If all results have been returned, this field is an empty string
     /// or not present in the response.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response for the `ListFinancialTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListFinancialTransactionsResponse {
     /// List of financial transactions satisfying the filtered request.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub financial_transactions: ::prost::alloc::vec::Vec<FinancialTransaction>,
     /// Pass this token in the ListFinancialTransactionsRequest to continue to list
     /// results. If all results have been returned, this field is an empty string
     /// or not present in the response.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response for the `ListMandateTransactionsResponse` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMandateTransactionsResponse {
     /// List of mandate transactions satisfying the filtered request.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub mandate_transactions: ::prost::alloc::vec::Vec<MandateTransaction>,
     /// Pass this token in the ListMandateTransactionsRequest to continue to list
     /// results. If all results have been returned, this field is an empty string
     /// or not present in the response.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Response for the `ListComplaintTransactionsResponse` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListComplaintTransactionsResponse {
     /// List of complaint transactions satisfying the filtered request.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub complaint_transactions: ::prost::alloc::vec::Vec<ComplaintTransaction>,
     /// Pass this token in the ListComplaintTransactionsRequest to continue to list
     /// results. If all results have been returned, this field is an empty string
     /// or not present in the response.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request for the `ExportFinancialTransactions` method.
@@ -2165,7 +2244,7 @@ pub struct ListComplaintTransactionsResponse {
 pub struct ExportFinancialTransactionsRequest {
     /// Required. The parent resource for the transactions. The format is
     /// `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Transaction type for the financial transaction API. The possible values for
     /// transaction type are
@@ -2176,13 +2255,13 @@ pub struct ExportFinancialTransactionsRequest {
     ///
     /// If no transaction type is specified, records of all the above transaction
     /// types will be exported.
-    #[prost(enumeration = "TransactionType", tag = "2")]
+    #[prost(enumeration="TransactionType", tag="2")]
     pub transaction_type: i32,
     /// The start time for the query.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end time for the query.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `ExportMetadataTransactions` method.
@@ -2190,7 +2269,7 @@ pub struct ExportFinancialTransactionsRequest {
 pub struct ExportMetadataTransactionsRequest {
     /// Required. The parent resource for the transactions. The format is
     /// `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// API type of the metadata transaction API. The possible values for API type
     /// are
@@ -2205,13 +2284,13 @@ pub struct ExportMetadataTransactionsRequest {
     ///
     /// If no API type is specified, records of all the above API types will be
     /// exported.
-    #[prost(enumeration = "ApiType", tag = "2")]
+    #[prost(enumeration="ApiType", tag="2")]
     pub api_type: i32,
     /// The start time for the query.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end time for the query.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `ExportMandateTransactions` method.
@@ -2219,7 +2298,7 @@ pub struct ExportMetadataTransactionsRequest {
 pub struct ExportMandateTransactionsRequest {
     /// Required. The parent resource for the transactions. The format is
     /// `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Transaction type for the mandate transaction API.  The possible values for
     /// transaction type are
@@ -2230,13 +2309,13 @@ pub struct ExportMandateTransactionsRequest {
     ///
     /// If no transaction type is specified, records of all the above transaction
     /// types will be exported.
-    #[prost(enumeration = "TransactionType", tag = "2")]
+    #[prost(enumeration="TransactionType", tag="2")]
     pub transaction_type: i32,
     /// The start time for the query.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end time for the query.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Request for the `ExportComplaintTransactions` method.
@@ -2244,7 +2323,7 @@ pub struct ExportMandateTransactionsRequest {
 pub struct ExportComplaintTransactionsRequest {
     /// Required. The parent resource for the transactions. The format is
     /// `projects/{project}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Transaction type for the complaint transaction API. The possible values for
     /// transaction type are
@@ -2258,69 +2337,84 @@ pub struct ExportComplaintTransactionsRequest {
     ///
     /// If no transaction type is specified, records of all the above transaction
     /// types will be exported.
-    #[prost(enumeration = "TransactionType", tag = "2")]
+    #[prost(enumeration="TransactionType", tag="2")]
     pub transaction_type: i32,
     /// The start time for the query.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The end time for the query.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Response for the `ExportFinancialTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportFinancialTransactionsResponse {
     /// URI of the exported file.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub target_uri: ::prost::alloc::string::String,
 }
 /// Response for the `ExportMetadataTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadataTransactionsResponse {
     /// URI of the exported file.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub target_uri: ::prost::alloc::string::String,
 }
 /// Response for the `ExportMandateTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMandateTransactionsResponse {
     /// URI of the exported file.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub target_uri: ::prost::alloc::string::String,
 }
 /// Response for the `ExportComplaintTransactions` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportComplaintTransactionsResponse {
     /// URI of the exported file.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub target_uri: ::prost::alloc::string::String,
 }
 /// Metadata for ExportFinancialTransactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportFinancialTransactionsMetadata {}
+pub struct ExportFinancialTransactionsMetadata {
+}
 /// Metadata for ExportMandateTransactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportMandateTransactionsMetadata {}
+pub struct ExportMandateTransactionsMetadata {
+}
 /// Metadata for ExportMetadataTransactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportMetadataTransactionsMetadata {}
+pub struct ExportMetadataTransactionsMetadata {
+}
 /// Metadata for ExportComplaintTransactions.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ExportComplaintTransactionsMetadata {}
-#[doc = r" Generated client implementations."]
+pub struct ExportComplaintTransactionsMetadata {
+}
+/// Generated client implementations.
 pub mod issuer_switch_transactions_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Lists and exports transactions processed by the issuer switch."]
+    /// Lists and exports transactions processed by the issuer switch.
     #[derive(Debug, Clone)]
     pub struct IssuerSwitchTransactionsClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl IssuerSwitchTransactionsClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> IssuerSwitchTransactionsClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -2333,142 +2427,176 @@ pub mod issuer_switch_transactions_client {
         ) -> IssuerSwitchTransactionsClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
-            IssuerSwitchTransactionsClient::new(InterceptedService::new(inner, interceptor))
+            IssuerSwitchTransactionsClient::new(
+                InterceptedService::new(inner, interceptor),
+            )
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " List metadata transactions that satisfy the specified filter criteria."]
+        /// List metadata transactions that satisfy the specified filter criteria.
         pub async fn list_metadata_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMetadataTransactionsRequest>,
-        ) -> Result<tonic::Response<super::ListMetadataTransactionsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ListMetadataTransactionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListMetadataTransactions") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListMetadataTransactions",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List financial transactions that satisfy specified filter criteria."]
+        /// List financial transactions that satisfy specified filter criteria.
         pub async fn list_financial_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFinancialTransactionsRequest>,
-        ) -> Result<tonic::Response<super::ListFinancialTransactionsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ListFinancialTransactionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListFinancialTransactions") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListFinancialTransactions",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List mandate transactions that satisfy specified filter criteria."]
+        /// List mandate transactions that satisfy specified filter criteria.
         pub async fn list_mandate_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListMandateTransactionsRequest>,
-        ) -> Result<tonic::Response<super::ListMandateTransactionsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ListMandateTransactionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListMandateTransactions") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListMandateTransactions",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " List complaint transactions that satisfy specified filter criteria."]
+        /// List complaint transactions that satisfy specified filter criteria.
         pub async fn list_complaint_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ListComplaintTransactionsRequest>,
-        ) -> Result<tonic::Response<super::ListComplaintTransactionsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ListComplaintTransactionsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListComplaintTransactions") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ListComplaintTransactions",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Export financial transactions received within the specified time range as a"]
-        #[doc = " file into a configured target location. The returned `Operation` type has"]
-        #[doc = " the following method-specific fields:"]
-        #[doc = ""]
-        #[doc = " - `metadata`: [ExportFinancialTransactionsMetadata][google.cloud.paymentgateway.issuerswitch.v1.ExportFinancialTransactionsMetadata]"]
-        #[doc = " - `response`: [ExportFinancialTransactionsResponse][google.cloud.paymentgateway.issuerswitch.v1.ExportFinancialTransactionsResponse]"]
-        #[doc = ""]
-        #[doc = " The exported file will be in the standard CSV format where each row in the"]
-        #[doc = " file represents a transaction. The file has the following fields in order:"]
-        #[doc = ""]
-        #[doc = " - `TransactionID` - UPI transaction ID."]
-        #[doc = " - `TransactionType` - Type of the transaction. This will be one of"]
-        #[doc = " `TRANSACTION_TYPE_CREDIT`, `TRANSACTION_TYPE_DEBIT` or"]
-        #[doc = " `TRANSACTION_TYPE_REVERSAL`."]
-        #[doc = " - `TransactionSubType` - Subtype of the transaction. This will be one"]
-        #[doc = " of `COLLECT`, `DEBIT` or `PAY`."]
-        #[doc = " - `RequestReceivedTimestamp` - Timestamp (in UTC) indicating when the"]
-        #[doc = " transaction API request was received by the issuer switch."]
-        #[doc = " - `CreationTime` - Timestamp (in UTC) indicating when the"]
-        #[doc = " issuer switch created the transaction resource for processing the"]
-        #[doc = " transaction."]
-        #[doc = " - `State` - State of the transaction. This will be one of `FAILED` or"]
-        #[doc = " `SUCCEEDED`."]
-        #[doc = " - `RRN` - Retrieval reference number associated with the transaction."]
-        #[doc = " - `PayerVPA` - Virtual Payment Address (VPA) of the payer."]
-        #[doc = " - `PayerMobileNumber` - Mobile number of the payer."]
-        #[doc = " - `PayerIFSCCode` - IFSC code of the payer's bank account."]
-        #[doc = " - `PayerAccountNumber` - Payer's bank account number."]
-        #[doc = " - `PayerAccountType` - Payer's bank account type."]
-        #[doc = " - `PayeeVPA` - Virtual Payment Address (VPA) of the payee."]
-        #[doc = " - `PayeeMobileNumber` - Payee's mobile number."]
-        #[doc = " - `PayeeIFSCCode` - IFSC code of the payee's bank account."]
-        #[doc = " - `PayeeAccountNumber` - Payee's bank account number."]
-        #[doc = " - `PayeeAccountType` - Payee's bank account type."]
-        #[doc = " - `PayeeMerchantID` - Payee's merchant ID, only if the payee is a merchant."]
-        #[doc = " - `PayeeMerchantName` - Payee's merchant name, only if the payee is a"]
-        #[doc = " merchant."]
-        #[doc = " - `PayeeMCC` - Payee's Merchant Category Code (MCC), only if the payee is a"]
-        #[doc = " merchant."]
-        #[doc = " - `Currency` - Currency of the amount involved in the transaction."]
-        #[doc = " - `Amount` - Amount involved in the transaction."]
-        #[doc = " - `BankAdapterRequestIDs` - List of Request IDs (colon separated) used when"]
-        #[doc = " invoking the Bank Adapter APIs for fulfilling a transaction request."]
-        #[doc = " - `ErrorCode` - Error code of the failed transaction."]
-        #[doc = " - `ErrorMessage` - Error description for the failed transaction."]
-        #[doc = " - `UPIErrorCode` - Error code as per the UPI specification. The issuer"]
-        #[doc = " switch maps the ErrorCode to an appropriate error code that complies with"]
-        #[doc = " the UPI specification."]
+        /// Export financial transactions received within the specified time range as a
+        /// file into a configured target location. The returned `Operation` type has
+        /// the following method-specific fields:
+        ///
+        /// - `metadata`: [ExportFinancialTransactionsMetadata][google.cloud.paymentgateway.issuerswitch.v1.ExportFinancialTransactionsMetadata]
+        /// - `response`: [ExportFinancialTransactionsResponse][google.cloud.paymentgateway.issuerswitch.v1.ExportFinancialTransactionsResponse]
+        ///
+        /// The exported file will be in the standard CSV format where each row in the
+        /// file represents a transaction. The file has the following fields in order:
+        ///
+        /// - `TransactionID` - UPI transaction ID.
+        /// - `TransactionType` - Type of the transaction. This will be one of
+        /// `TRANSACTION_TYPE_CREDIT`, `TRANSACTION_TYPE_DEBIT` or
+        /// `TRANSACTION_TYPE_REVERSAL`.
+        /// - `TransactionSubType` - Subtype of the transaction. This will be one
+        /// of `COLLECT`, `DEBIT` or `PAY`.
+        /// - `RequestReceivedTimestamp` - Timestamp (in UTC) indicating when the
+        /// transaction API request was received by the issuer switch.
+        /// - `CreationTime` - Timestamp (in UTC) indicating when the
+        /// issuer switch created the transaction resource for processing the
+        /// transaction.
+        /// - `State` - State of the transaction. This will be one of `FAILED` or
+        /// `SUCCEEDED`.
+        /// - `RRN` - Retrieval reference number associated with the transaction.
+        /// - `PayerVPA` - Virtual Payment Address (VPA) of the payer.
+        /// - `PayerMobileNumber` - Mobile number of the payer.
+        /// - `PayerIFSCCode` - IFSC code of the payer's bank account.
+        /// - `PayerAccountNumber` - Payer's bank account number.
+        /// - `PayerAccountType` - Payer's bank account type.
+        /// - `PayeeVPA` - Virtual Payment Address (VPA) of the payee.
+        /// - `PayeeMobileNumber` - Payee's mobile number.
+        /// - `PayeeIFSCCode` - IFSC code of the payee's bank account.
+        /// - `PayeeAccountNumber` - Payee's bank account number.
+        /// - `PayeeAccountType` - Payee's bank account type.
+        /// - `PayeeMerchantID` - Payee's merchant ID, only if the payee is a merchant.
+        /// - `PayeeMerchantName` - Payee's merchant name, only if the payee is a
+        /// merchant.
+        /// - `PayeeMCC` - Payee's Merchant Category Code (MCC), only if the payee is a
+        /// merchant.
+        /// - `Currency` - Currency of the amount involved in the transaction.
+        /// - `Amount` - Amount involved in the transaction.
+        /// - `BankAdapterRequestIDs` - List of Request IDs (colon separated) used when
+        /// invoking the Bank Adapter APIs for fulfilling a transaction request.
+        /// - `ErrorCode` - Error code of the failed transaction.
+        /// - `ErrorMessage` - Error description for the failed transaction.
+        /// - `UPIErrorCode` - Error code as per the UPI specification. The issuer
+        /// switch maps the ErrorCode to an appropriate error code that complies with
+        /// the UPI specification.
         pub async fn export_financial_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportFinancialTransactionsRequest>,
@@ -2476,47 +2604,52 @@ pub mod issuer_switch_transactions_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportFinancialTransactions") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportFinancialTransactions",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Export metadata transactions received within the specified time range as a"]
-        #[doc = " file into a configured target location. The returned `Operation` type has"]
-        #[doc = " the following method-specific fields:"]
-        #[doc = ""]
-        #[doc = " - `metadata`: [ExportMetadataTransactionsMetadata][google.cloud.paymentgateway.issuerswitch.v1.ExportMetadataTransactionsMetadata]"]
-        #[doc = " - `response`: [ExportMetadataTransactionsResponse][google.cloud.paymentgateway.issuerswitch.v1.ExportMetadataTransactionsResponse]"]
-        #[doc = ""]
-        #[doc = " The exported file will be in the standard CSV format where each row in the"]
-        #[doc = " file represents a transaction. The file has the following fields in order:"]
-        #[doc = ""]
-        #[doc = " - `TransactionID` - UPI transaction ID."]
-        #[doc = " - `APIType` - The transaction's API type. The value will be of the"]
-        #[doc = " [ApiType][google.cloud.paymentgateway.issuerswitch.v1.ApiType] enum."]
-        #[doc = " - `TransactionType` - Type of the transaction. The value will be of the"]
-        #[doc = " [TransactionType][google.cloud.paymentgateway.issuerswitch.v1.TransactionType] enum."]
-        #[doc = " - `RequestReceivedTimestamp` - Timestamp (in UTC) indicating when the"]
-        #[doc = " transaction's API request was received by the issuer switch."]
-        #[doc = " - `CreationTime` - Timestamp (in UTC) indicating when the"]
-        #[doc = " issuer switch created the transaction resource for processing the"]
-        #[doc = " transaction."]
-        #[doc = " - `State` - State of transaction. This will be one of `FAILED` or"]
-        #[doc = " `SUCCEEDED`."]
-        #[doc = " - `OriginVPA` - Virtual Payment Address (VPA) of the originator of the"]
-        #[doc = " transaction."]
-        #[doc = " - `BankAdapterRequestIDs` - List of Request IDs (colon separated) used when"]
-        #[doc = " invoking the Bank Adapter APIs for fulfilling a transaction request."]
-        #[doc = " - `ErrorCode` - Error code of the failed transaction."]
-        #[doc = " - `ErrorMessage` - Error description for the failed transaction."]
-        #[doc = " - `UPIErrorCode` - Error code as per the UPI specification. The issuer"]
-        #[doc = " switch maps the ErrorCode to an appropriate error code that complies with"]
-        #[doc = " the UPI specification."]
+        /// Export metadata transactions received within the specified time range as a
+        /// file into a configured target location. The returned `Operation` type has
+        /// the following method-specific fields:
+        ///
+        /// - `metadata`: [ExportMetadataTransactionsMetadata][google.cloud.paymentgateway.issuerswitch.v1.ExportMetadataTransactionsMetadata]
+        /// - `response`: [ExportMetadataTransactionsResponse][google.cloud.paymentgateway.issuerswitch.v1.ExportMetadataTransactionsResponse]
+        ///
+        /// The exported file will be in the standard CSV format where each row in the
+        /// file represents a transaction. The file has the following fields in order:
+        ///
+        /// - `TransactionID` - UPI transaction ID.
+        /// - `APIType` - The transaction's API type. The value will be of the
+        /// [ApiType][google.cloud.paymentgateway.issuerswitch.v1.ApiType] enum.
+        /// - `TransactionType` - Type of the transaction. The value will be of the
+        /// [TransactionType][google.cloud.paymentgateway.issuerswitch.v1.TransactionType] enum.
+        /// - `RequestReceivedTimestamp` - Timestamp (in UTC) indicating when the
+        /// transaction's API request was received by the issuer switch.
+        /// - `CreationTime` - Timestamp (in UTC) indicating when the
+        /// issuer switch created the transaction resource for processing the
+        /// transaction.
+        /// - `State` - State of transaction. This will be one of `FAILED` or
+        /// `SUCCEEDED`.
+        /// - `OriginVPA` - Virtual Payment Address (VPA) of the originator of the
+        /// transaction.
+        /// - `BankAdapterRequestIDs` - List of Request IDs (colon separated) used when
+        /// invoking the Bank Adapter APIs for fulfilling a transaction request.
+        /// - `ErrorCode` - Error code of the failed transaction.
+        /// - `ErrorMessage` - Error description for the failed transaction.
+        /// - `UPIErrorCode` - Error code as per the UPI specification. The issuer
+        /// switch maps the ErrorCode to an appropriate error code that complies with
+        /// the UPI specification.
         pub async fn export_metadata_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportMetadataTransactionsRequest>,
@@ -2524,68 +2657,73 @@ pub mod issuer_switch_transactions_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportMetadataTransactions") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportMetadataTransactions",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Export mandate transactions received within the specified time range as a"]
-        #[doc = " file into a configured target location. The returned `Operation` type has"]
-        #[doc = " the following method-specific fields:"]
-        #[doc = ""]
-        #[doc = " - `metadata`: [ExportMandateTransactionsMetadata][google.cloud.paymentgateway.issuerswitch.v1.ExportMandateTransactionsMetadata]"]
-        #[doc = " - `response`: [ExportMandateTransactionsResponse][google.cloud.paymentgateway.issuerswitch.v1.ExportMandateTransactionsResponse]"]
-        #[doc = ""]
-        #[doc = " The exported file will be in the standard CSV format where each row in the"]
-        #[doc = " file represents a transaction. The file has the following fields in order:"]
-        #[doc = ""]
-        #[doc = " - `TransactionID` - UPI transaction ID."]
-        #[doc = " - `UniqueMandateNumber` - UPI Unique Mandate Number."]
-        #[doc = " - `TransactionType` - Type of the transaction. This will be one of"]
-        #[doc = " `TRANSACTION_TYPE_CREATE`, `TRANSACTION_TYPE_REVOKE` or"]
-        #[doc = " `TRANSACTION_TYPE_UPDATE`."]
-        #[doc = " - `RequestReceivedTimestamp` - Timestamp (in UTC) indicating when the"]
-        #[doc = " mandate API request was received by the issuer switch."]
-        #[doc = " - `CreationTime` - Timestamp (in UTC) indicating when the"]
-        #[doc = " issuer switch created the transaction resource for processing the"]
-        #[doc = " transaction."]
-        #[doc = " - `State` - State of the transaction. This will be one of"]
-        #[doc = " `FAILED` or `SUCCEEDED`."]
-        #[doc = " - `PayerVPA` - Virtual Payment Address (VPA) of the payer."]
-        #[doc = " - `PayerMobileNumber` - Mobile number of the payer."]
-        #[doc = " - `PayeeVPA` - Virtual Payment Address (VPA) of the payee."]
-        #[doc = " - `PayeeMobileNumber` - Mobile number of the payee."]
-        #[doc = " - `PayeeMerchantID` - Payee's merchant ID."]
-        #[doc = " - `Amount` - Amount specified in the mandate."]
-        #[doc = " - `RecurrencePattern` - Reccurence pattern of the mandate. The value will"]
-        #[doc = " be of the [MandateTransaction.RecurrencePattern][] enum."]
-        #[doc = " - `RecurrenceRuleType` - Reccurrence rule type of the mandate. The value"]
-        #[doc = " will be of the [MandateTransaction.RecurrenceRuleType][google.cloud.paymentgateway.issuerswitch.v1.MandateTransaction.RecurrenceRuleType] enum."]
-        #[doc = " - `RecurrenceRuleValue` - Recurrence rule value of the mandate."]
-        #[doc = " - `Revokeable` - Boolean value specifying if the mandate is revokable."]
-        #[doc = " - `StartDate` - The start date of the mandate in `YYYY-MM-DD` format."]
-        #[doc = " - `EndDate` - The end date of the mandate in `YYYY-MM-DD` format."]
-        #[doc = " - `AmountRuleType` - The amount rule of the mandate. The value will"]
-        #[doc = " be of the [MandateTransaction.AmountRuleType][google.cloud.paymentgateway.issuerswitch.v1.MandateTransaction.AmountRuleType] enum."]
-        #[doc = " - `ApprovalReference` - The block funds reference generated by the bank,"]
-        #[doc = " if funds have been blocked for the mandate. This column have a value only"]
-        #[doc = " when the RecurrencePattern is ONETIME."]
-        #[doc = " - `BlockFunds` - Boolean value specifying if the mandate transaction"]
-        #[doc = " requested to block funds."]
-        #[doc = " - `LastUpdateTime` - Timestamp (in UTC) indicating when was the last"]
-        #[doc = " modification made to the mandate."]
-        #[doc = " - `BankAdapterRequestIDs` - List of Request IDs (colon separated) used when"]
-        #[doc = " invoking the Bank Adapter APIs for fulfilling a transaction request."]
-        #[doc = " - `ErrorCode` - Error code of the failed transaction."]
-        #[doc = " - `ErrorMessage` - Error description for the failed transaction."]
-        #[doc = " - `UPIErrorCode` - Error code as per the UPI specification. The issuer"]
-        #[doc = " switch maps the ErrorCode to an appropriate error code that complies with"]
-        #[doc = " the UPI specification."]
+        /// Export mandate transactions received within the specified time range as a
+        /// file into a configured target location. The returned `Operation` type has
+        /// the following method-specific fields:
+        ///
+        /// - `metadata`: [ExportMandateTransactionsMetadata][google.cloud.paymentgateway.issuerswitch.v1.ExportMandateTransactionsMetadata]
+        /// - `response`: [ExportMandateTransactionsResponse][google.cloud.paymentgateway.issuerswitch.v1.ExportMandateTransactionsResponse]
+        ///
+        /// The exported file will be in the standard CSV format where each row in the
+        /// file represents a transaction. The file has the following fields in order:
+        ///
+        /// - `TransactionID` - UPI transaction ID.
+        /// - `UniqueMandateNumber` - UPI Unique Mandate Number.
+        /// - `TransactionType` - Type of the transaction. This will be one of
+        /// `TRANSACTION_TYPE_CREATE`, `TRANSACTION_TYPE_REVOKE` or
+        /// `TRANSACTION_TYPE_UPDATE`.
+        /// - `RequestReceivedTimestamp` - Timestamp (in UTC) indicating when the
+        /// mandate API request was received by the issuer switch.
+        /// - `CreationTime` - Timestamp (in UTC) indicating when the
+        /// issuer switch created the transaction resource for processing the
+        /// transaction.
+        /// - `State` - State of the transaction. This will be one of
+        /// `FAILED` or `SUCCEEDED`.
+        /// - `PayerVPA` - Virtual Payment Address (VPA) of the payer.
+        /// - `PayerMobileNumber` - Mobile number of the payer.
+        /// - `PayeeVPA` - Virtual Payment Address (VPA) of the payee.
+        /// - `PayeeMobileNumber` - Mobile number of the payee.
+        /// - `PayeeMerchantID` - Payee's merchant ID.
+        /// - `Amount` - Amount specified in the mandate.
+        /// - `RecurrencePattern` - Reccurence pattern of the mandate. The value will
+        /// be of the [MandateTransaction.RecurrencePattern][] enum.
+        /// - `RecurrenceRuleType` - Reccurrence rule type of the mandate. The value
+        /// will be of the [MandateTransaction.RecurrenceRuleType][google.cloud.paymentgateway.issuerswitch.v1.MandateTransaction.RecurrenceRuleType] enum.
+        /// - `RecurrenceRuleValue` - Recurrence rule value of the mandate.
+        /// - `Revokeable` - Boolean value specifying if the mandate is revokable.
+        /// - `StartDate` - The start date of the mandate in `YYYY-MM-DD` format.
+        /// - `EndDate` - The end date of the mandate in `YYYY-MM-DD` format.
+        /// - `AmountRuleType` - The amount rule of the mandate. The value will
+        /// be of the [MandateTransaction.AmountRuleType][google.cloud.paymentgateway.issuerswitch.v1.MandateTransaction.AmountRuleType] enum.
+        /// - `ApprovalReference` - The block funds reference generated by the bank,
+        /// if funds have been blocked for the mandate. This column have a value only
+        /// when the RecurrencePattern is ONETIME.
+        /// - `BlockFunds` - Boolean value specifying if the mandate transaction
+        /// requested to block funds.
+        /// - `LastUpdateTime` - Timestamp (in UTC) indicating when was the last
+        /// modification made to the mandate.
+        /// - `BankAdapterRequestIDs` - List of Request IDs (colon separated) used when
+        /// invoking the Bank Adapter APIs for fulfilling a transaction request.
+        /// - `ErrorCode` - Error code of the failed transaction.
+        /// - `ErrorMessage` - Error description for the failed transaction.
+        /// - `UPIErrorCode` - Error code as per the UPI specification. The issuer
+        /// switch maps the ErrorCode to an appropriate error code that complies with
+        /// the UPI specification.
         pub async fn export_mandate_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportMandateTransactionsRequest>,
@@ -2593,71 +2731,76 @@ pub mod issuer_switch_transactions_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportMandateTransactions") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportMandateTransactions",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Export complaint transactions received within the specified time range as a"]
-        #[doc = " file into a configured target location. The returned `Operation` type has"]
-        #[doc = " the following method-specific fields:"]
-        #[doc = ""]
-        #[doc = " - `metadata`: [ExportComplaintTransactionsMetadata][google.cloud.paymentgateway.issuerswitch.v1.ExportComplaintTransactionsMetadata]"]
-        #[doc = " - `response`: [ExportComplaintTransactionsResponse][google.cloud.paymentgateway.issuerswitch.v1.ExportComplaintTransactionsResponse]"]
-        #[doc = ""]
-        #[doc = " The exported file will be in the standard CSV format where each row in the"]
-        #[doc = " file represents a transaction. The file has the following fields in order:"]
-        #[doc = ""]
-        #[doc = " - `TransactionID` - UPI transaction ID."]
-        #[doc = " - `TransactionType` - Type of the transaction. This will be one of"]
-        #[doc = " `TRANSACTION_TYPE_CHECK_STATUS`, `TRANSACTION_TYPE_COMPLAINT`,"]
-        #[doc = " `TRANSACTION_TYPE_REVERSAL`, `TRANSACTION_TYPE_DISPUTE`,"]
-        #[doc = " `TRANSACTION_TYPE_REFUND` or `TRANSACTION_TYPE_STATUS_UPDATE`."]
-        #[doc = " - `CreationTime` - Timestamp (in UTC) indicating when the issuer switch"]
-        #[doc = " created the transaction resource for processing the transaction."]
-        #[doc = " - `State` - State of the transaction. This will be one of"]
-        #[doc = " `FAILED` or `SUCCEEDED`."]
-        #[doc = " - `OriginalRRN` - RRN of the original payment transaction."]
-        #[doc = " - `BankType` - The subtype of the transaction based on the bank involved."]
-        #[doc = " - `OriginalTransactionID` - Transaction ID of the original unresolved"]
-        #[doc = " transaction."]
-        #[doc = " - `RaiseComplaintAdjFlag` - Indicates the type of action to raise the"]
-        #[doc = " complaint."]
-        #[doc = " - `RaiseComplaintAdjCode` - Indicates the reason of action to raise the"]
-        #[doc = " complaint."]
-        #[doc = " - `ResolveComplaintAdjFlag` - Indicates the type of action to resolve the"]
-        #[doc = " complaint."]
-        #[doc = " - `ResolveComplaintAdjCode` - Indicates the reason of action to resolve the"]
-        #[doc = " complaint."]
-        #[doc = " - `RaiseDisputeAdjFlag` - Indicates the type of action to raise the"]
-        #[doc = " dispute."]
-        #[doc = " - `RaiseDisputeAdjCode` - Indicates the reason of action to raise the"]
-        #[doc = " dispute."]
-        #[doc = " - `ResolveDisputeAdjFlag` - Indicates the type of action to resolve the"]
-        #[doc = " dispute."]
-        #[doc = " - `ResolveDisputeAdjCode` - Indicates the reason of action to resolve the"]
-        #[doc = " dispute."]
-        #[doc = " - `Amount` - Amount to be resolved."]
-        #[doc = " - `CurrentCycle` - Boolean value specifying if the complaint / dispute"]
-        #[doc = " belongs to current settlement cycle or not."]
-        #[doc = " - `CRN` - Defines the Complaint Reference number."]
-        #[doc = " - `AdjTime` - Indicates the time when the resolution was done."]
-        #[doc = " - `RespAdjFlag` - Indicates the response category type."]
-        #[doc = " - `RespAdjCode` - Indicates the response reason used."]
-        #[doc = " - `AdjRemarks` - Indicates the additional remarks for the complaint /"]
-        #[doc = " dispute."]
-        #[doc = " - `BankAdapterRequestIDs` - List of Request IDs (colon separated) used when"]
-        #[doc = " invoking the Bank Adapter APIs for fulfilling a transaction request."]
-        #[doc = " - `ErrorCode` - Error code of the failed transaction."]
-        #[doc = " - `ErrorMessage` - Error description for the failed transaction."]
-        #[doc = " - `UPIErrorCode` - Error code as per the UPI specification. The issuer"]
-        #[doc = " switch service maps the ErrorCode to an appropriate error code that"]
-        #[doc = " complies with the UPI specification."]
+        /// Export complaint transactions received within the specified time range as a
+        /// file into a configured target location. The returned `Operation` type has
+        /// the following method-specific fields:
+        ///
+        /// - `metadata`: [ExportComplaintTransactionsMetadata][google.cloud.paymentgateway.issuerswitch.v1.ExportComplaintTransactionsMetadata]
+        /// - `response`: [ExportComplaintTransactionsResponse][google.cloud.paymentgateway.issuerswitch.v1.ExportComplaintTransactionsResponse]
+        ///
+        /// The exported file will be in the standard CSV format where each row in the
+        /// file represents a transaction. The file has the following fields in order:
+        ///
+        /// - `TransactionID` - UPI transaction ID.
+        /// - `TransactionType` - Type of the transaction. This will be one of
+        /// `TRANSACTION_TYPE_CHECK_STATUS`, `TRANSACTION_TYPE_COMPLAINT`,
+        /// `TRANSACTION_TYPE_REVERSAL`, `TRANSACTION_TYPE_DISPUTE`,
+        /// `TRANSACTION_TYPE_REFUND` or `TRANSACTION_TYPE_STATUS_UPDATE`.
+        /// - `CreationTime` - Timestamp (in UTC) indicating when the issuer switch
+        /// created the transaction resource for processing the transaction.
+        /// - `State` - State of the transaction. This will be one of
+        /// `FAILED` or `SUCCEEDED`.
+        /// - `OriginalRRN` - RRN of the original payment transaction.
+        /// - `BankType` - The subtype of the transaction based on the bank involved.
+        /// - `OriginalTransactionID` - Transaction ID of the original unresolved
+        /// transaction.
+        /// - `RaiseComplaintAdjFlag` - Indicates the type of action to raise the
+        /// complaint.
+        /// - `RaiseComplaintAdjCode` - Indicates the reason of action to raise the
+        /// complaint.
+        /// - `ResolveComplaintAdjFlag` - Indicates the type of action to resolve the
+        /// complaint.
+        /// - `ResolveComplaintAdjCode` - Indicates the reason of action to resolve the
+        /// complaint.
+        /// - `RaiseDisputeAdjFlag` - Indicates the type of action to raise the
+        /// dispute.
+        /// - `RaiseDisputeAdjCode` - Indicates the reason of action to raise the
+        /// dispute.
+        /// - `ResolveDisputeAdjFlag` - Indicates the type of action to resolve the
+        /// dispute.
+        /// - `ResolveDisputeAdjCode` - Indicates the reason of action to resolve the
+        /// dispute.
+        /// - `Amount` - Amount to be resolved.
+        /// - `CurrentCycle` - Boolean value specifying if the complaint / dispute
+        /// belongs to current settlement cycle or not.
+        /// - `CRN` - Defines the Complaint Reference number.
+        /// - `AdjTime` - Indicates the time when the resolution was done.
+        /// - `RespAdjFlag` - Indicates the response category type.
+        /// - `RespAdjCode` - Indicates the response reason used.
+        /// - `AdjRemarks` - Indicates the additional remarks for the complaint /
+        /// dispute.
+        /// - `BankAdapterRequestIDs` - List of Request IDs (colon separated) used when
+        /// invoking the Bank Adapter APIs for fulfilling a transaction request.
+        /// - `ErrorCode` - Error code of the failed transaction.
+        /// - `ErrorMessage` - Error description for the failed transaction.
+        /// - `UPIErrorCode` - Error code as per the UPI specification. The issuer
+        /// switch service maps the ErrorCode to an appropriate error code that
+        /// complies with the UPI specification.
         pub async fn export_complaint_transactions(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportComplaintTransactionsRequest>,
@@ -2665,14 +2808,19 @@ pub mod issuer_switch_transactions_client {
             tonic::Response<super::super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportComplaintTransactions") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.paymentgateway.issuerswitch.v1.IssuerSwitchTransactions/ExportComplaintTransactions",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

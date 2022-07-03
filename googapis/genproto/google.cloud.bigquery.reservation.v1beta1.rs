@@ -3,7 +3,7 @@
 pub struct Reservation {
     /// The resource name of the reservation, e.g.,
     /// `projects/*/locations/*/reservations/team1-prod`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Minimum slots available to this reservation. A slot is a unit of
     /// computational power in BigQuery, and serves as the unit of parallelism.
@@ -15,12 +15,12 @@ pub struct Reservation {
     /// if total slot capacity of the new reservation and its siblings exceeds the
     /// parent's slot capacity, the request will fail with
     /// `google.rpc.Code.RESOURCE_EXHAUSTED`.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub slot_capacity: i64,
     /// If false, any query using this reservation will use idle slots from other
     /// reservations within the same admin project. If true, a query using this
     /// reservation will execute with the slot capacity specified above at most.
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag="4")]
     pub ignore_idle_slots: bool,
 }
 /// Capacity commitment is a way to purchase compute capacity for BigQuery jobs
@@ -37,28 +37,28 @@ pub struct Reservation {
 pub struct CapacityCommitment {
     /// Output only. The resource name of the capacity commitment, e.g.,
     /// `projects/myproject/locations/US/capacityCommitments/123`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Number of slots in this commitment.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub slot_count: i64,
     /// Capacity commitment commitment plan.
-    #[prost(enumeration = "capacity_commitment::CommitmentPlan", tag = "3")]
+    #[prost(enumeration="capacity_commitment::CommitmentPlan", tag="3")]
     pub plan: i32,
     /// Output only. State of the commitment.
-    #[prost(enumeration = "capacity_commitment::State", tag = "4")]
+    #[prost(enumeration="capacity_commitment::State", tag="4")]
     pub state: i32,
     /// Output only. The end of the current commitment period. It is applicable
     /// only for ACTIVE capacity commitments.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub commitment_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. For FAILED commitment plan, provides the reason of failure.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub failure_status: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// The plan this capacity commitment is converted to after commitment_end_time
     /// passes. Once the plan is changed, committed period is extended according to
     /// commitment plan. Only applicable for ANNUAL commitments.
-    #[prost(enumeration = "capacity_commitment::CommitmentPlan", tag = "8")]
+    #[prost(enumeration="capacity_commitment::CommitmentPlan", tag="8")]
     pub renewal_plan: i32,
 }
 /// Nested message and enum types in `CapacityCommitment`.
@@ -112,14 +112,14 @@ pub mod capacity_commitment {
 pub struct CreateReservationRequest {
     /// Required. Project, location. E.g.,
     /// `projects/myproject/locations/US`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The reservation ID. This field must only contain lower case alphanumeric
     /// characters or dash. Max length is 64 characters.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub reservation_id: ::prost::alloc::string::String,
     /// Content of the new reservation to create.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub reservation: ::core::option::Option<Reservation>,
 }
 /// The request for
@@ -128,20 +128,20 @@ pub struct CreateReservationRequest {
 pub struct ListReservationsRequest {
     /// Required. The parent resource name containing project and location, e.g.:
     ///   `projects/myproject/locations/US`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// Can be used to filter out reservations based on names, capacity, etc, e.g.:
     /// filter="reservation.slot_capacity > 200"
     /// filter="reservation.name = \"*dev/*\""
     /// Advanced filtering syntax can be
     /// \[here\](<https://cloud.google.com/logging/docs/view/advanced-filters>).
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
 }
 /// The response for
@@ -149,11 +149,11 @@ pub struct ListReservationsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListReservationsResponse {
     /// List of reservations visible to the user.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub reservations: ::prost::alloc::vec::Vec<Reservation>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
@@ -162,7 +162,7 @@ pub struct ListReservationsResponse {
 pub struct GetReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
     ///    `projects/myproject/locations/US/reservations/team1-prod`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
@@ -171,7 +171,7 @@ pub struct GetReservationRequest {
 pub struct DeleteReservationRequest {
     /// Required. Resource name of the reservation to retrieve. E.g.,
     ///    `projects/myproject/locations/US/reservations/team1-prod`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
@@ -179,10 +179,10 @@ pub struct DeleteReservationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateReservationRequest {
     /// Content of the reservation to update.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub reservation: ::core::option::Option<Reservation>,
     /// Standard field mask for the set of fields to be updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for
@@ -191,14 +191,14 @@ pub struct UpdateReservationRequest {
 pub struct CreateCapacityCommitmentRequest {
     /// Required. Resource name of the parent reservation. E.g.,
     ///    `projects/myproject/locations/US`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Content of the capacity commitment to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub capacity_commitment: ::core::option::Option<CapacityCommitment>,
     /// If true, fail the request if another project in the organization has a
     /// capacity commitment.
-    #[prost(bool, tag = "4")]
+    #[prost(bool, tag="4")]
     pub enforce_single_admin_project_per_org: bool,
 }
 /// The request for
@@ -207,13 +207,13 @@ pub struct CreateCapacityCommitmentRequest {
 pub struct ListCapacityCommitmentsRequest {
     /// Required. Resource name of the parent reservation. E.g.,
     ///    `projects/myproject/locations/US`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
@@ -221,11 +221,11 @@ pub struct ListCapacityCommitmentsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCapacityCommitmentsResponse {
     /// List of capacity commitments visible to the user.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub capacity_commitments: ::prost::alloc::vec::Vec<CapacityCommitment>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
@@ -234,7 +234,7 @@ pub struct ListCapacityCommitmentsResponse {
 pub struct GetCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to retrieve. E.g.,
     ///    `projects/myproject/locations/US/capacityCommitments/123`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
@@ -243,7 +243,7 @@ pub struct GetCapacityCommitmentRequest {
 pub struct DeleteCapacityCommitmentRequest {
     /// Required. Resource name of the capacity commitment to delete. E.g.,
     ///    `projects/myproject/locations/US/capacityCommitments/123`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
@@ -251,10 +251,10 @@ pub struct DeleteCapacityCommitmentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateCapacityCommitmentRequest {
     /// Content of the capacity commitment to update.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub capacity_commitment: ::core::option::Option<CapacityCommitment>,
     /// Standard field mask for the set of fields to be updated.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// The request for
@@ -263,10 +263,10 @@ pub struct UpdateCapacityCommitmentRequest {
 pub struct SplitCapacityCommitmentRequest {
     /// Required. The resource name e.g.,:
     ///  `projects/myproject/locations/US/capacityCommitments/123`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Number of slots in the capacity commitment after the split.
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub slot_count: i64,
 }
 /// The response for
@@ -274,10 +274,10 @@ pub struct SplitCapacityCommitmentRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SplitCapacityCommitmentResponse {
     /// First capacity commitment, result of a split.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub first: ::core::option::Option<CapacityCommitment>,
     /// Second capacity commitment, result of a split.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub second: ::core::option::Option<CapacityCommitment>,
 }
 /// The request for
@@ -286,12 +286,12 @@ pub struct SplitCapacityCommitmentResponse {
 pub struct MergeCapacityCommitmentsRequest {
     /// Parent resource that identifies admin project and location e.g.,
     ///  `projects/myproject/locations/us`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Ids of capacity commitments to merge.
     /// These capacity commitments must exist under admin project and location
     /// specified in the parent.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub capacity_commitment_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// A Assignment allows a project to submit jobs
@@ -300,17 +300,17 @@ pub struct MergeCapacityCommitmentsRequest {
 pub struct Assignment {
     /// Output only. Name of the resource. E.g.:
     /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The resource which will use the reservation. E.g.
     /// `projects/myproject`, `folders/123`, or `organizations/456`.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub assignee: ::prost::alloc::string::String,
     /// Which type of jobs will use the reservation.
-    #[prost(enumeration = "assignment::JobType", tag = "3")]
+    #[prost(enumeration="assignment::JobType", tag="3")]
     pub job_type: i32,
     /// Output only. State of the assignment.
-    #[prost(enumeration = "assignment::State", tag = "6")]
+    #[prost(enumeration="assignment::State", tag="6")]
     pub state: i32,
 }
 /// Nested message and enum types in `Assignment`.
@@ -350,10 +350,10 @@ pub mod assignment {
 pub struct CreateAssignmentRequest {
     /// Required. The parent resource name of the assignment
     /// E.g. `projects/myproject/locations/US/reservations/team1-prod`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Assignment resource to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub assignment: ::core::option::Option<Assignment>,
 }
 /// The request for
@@ -367,13 +367,13 @@ pub struct ListAssignmentsRequest {
     /// Or:
     ///
     /// `projects/myproject/locations/US/reservations/-`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
@@ -381,11 +381,11 @@ pub struct ListAssignmentsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListAssignmentsResponse {
     /// List of assignments visible to the user.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub assignments: ::prost::alloc::vec::Vec<Assignment>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
@@ -396,7 +396,7 @@ pub struct ListAssignmentsResponse {
 pub struct DeleteAssignmentRequest {
     /// Required. Name of the resource, e.g.
     ///   `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// The request for
@@ -408,7 +408,7 @@ pub struct SearchAssignmentsRequest {
     /// Required. The resource name of the admin project(containing project and
     /// location), e.g.:
     ///   `projects/myproject/locations/US`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Please specify resource name as assignee in the query.
     ///
@@ -417,13 +417,13 @@ pub struct SearchAssignmentsRequest {
     /// * `assignee=projects/myproject`
     /// * `assignee=folders/123`
     /// * `assignee=organizations/456`
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub query: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub page_size: i32,
     /// The next_page_token value returned from a previous List request, if any.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// The response for
@@ -431,11 +431,11 @@ pub struct SearchAssignmentsRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchAssignmentsResponse {
     /// List of assignments visible to the user.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub assignments: ::prost::alloc::vec::Vec<Assignment>,
     /// Token to retrieve the next page of results, or empty if there are no
     /// more results in the list.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request for
@@ -452,11 +452,11 @@ pub struct MoveAssignmentRequest {
     /// Required. The resource name of the assignment,
     /// e.g.
     /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The new reservation ID, e.g.:
     ///   `projects/myotherproject/locations/US/reservations/team2-prod`
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub destination_id: ::prost::alloc::string::String,
 }
 /// Represents a BI Reservation.
@@ -465,13 +465,13 @@ pub struct BiReservation {
     /// The resource name of the singleton BI reservation.
     /// Reservation names have the form
     /// `projects/{project_id}/locations/{location_id}/bireservation`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The last update timestamp of a reservation.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Size of a reservation, in bytes.
-    #[prost(int64, tag = "4")]
+    #[prost(int64, tag="4")]
     pub size: i64,
 }
 /// A request to get a singleton BI reservation.
@@ -479,48 +479,59 @@ pub struct BiReservation {
 pub struct GetBiReservationRequest {
     /// Required. Name of the requested reservation, for example:
     /// `projects/{project_id}/locations/{location_id}/bireservation`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// A request to update a BI reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateBiReservationRequest {
     /// A reservation to update.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub reservation: ::core::option::Option<BiReservation>,
     /// A list of fields to be updated in this request.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod reservation_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Deprecated: Please use the v1 api instead."]
-    #[doc = " This API allows users to manage their flat-rate BigQuery reservations."]
-    #[doc = ""]
-    #[doc = " A reservation provides computational resource guarantees, in the form of"]
-    #[doc = " [slots](https://cloud.google.com/bigquery/docs/slots), to users. A slot is a"]
-    #[doc = " unit of computational power in BigQuery, and serves as the basic unit of"]
-    #[doc = " parallelism. In a scan of a multi-partitioned table, a single slot operates"]
-    #[doc = " on a single partition of the table. A reservation resource exists as a child"]
-    #[doc = " resource of the admin project and location, e.g.:"]
-    #[doc = "   `projects/myproject/locations/US/reservations/reservationName`."]
-    #[doc = ""]
-    #[doc = " A capacity commitment is a way to purchase compute capacity for BigQuery jobs"]
-    #[doc = " (in the form of slots) with some committed period of usage. A capacity"]
-    #[doc = " commitment resource exists as a child resource of the admin project and"]
-    #[doc = " location, e.g.:"]
-    #[doc = "   `projects/myproject/locations/US/capacityCommitments/id`."]
+    /// Deprecated: Please use the v1 api instead.
+    /// This API allows users to manage their flat-rate BigQuery reservations.
+    ///
+    /// A reservation provides computational resource guarantees, in the form of
+    /// [slots](https://cloud.google.com/bigquery/docs/slots), to users. A slot is a
+    /// unit of computational power in BigQuery, and serves as the basic unit of
+    /// parallelism. In a scan of a multi-partitioned table, a single slot operates
+    /// on a single partition of the table. A reservation resource exists as a child
+    /// resource of the admin project and location, e.g.:
+    ///   `projects/myproject/locations/US/reservations/reservationName`.
+    ///
+    /// A capacity commitment is a way to purchase compute capacity for BigQuery jobs
+    /// (in the form of slots) with some committed period of usage. A capacity
+    /// commitment resource exists as a child resource of the admin project and
+    /// location, e.g.:
+    ///   `projects/myproject/locations/US/capacityCommitments/id`.
     #[derive(Debug, Clone)]
     pub struct ReservationServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl ReservationServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> ReservationServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -533,454 +544,533 @@ pub mod reservation_service_client {
         ) -> ReservationServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             ReservationServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Creates a new reservation resource."]
+        /// Creates a new reservation resource.
         pub async fn create_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateReservationRequest>,
         ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateReservation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists all the reservations for the project in the specified location."]
+        /// Lists all the reservations for the project in the specified location.
         pub async fn list_reservations(
             &mut self,
             request: impl tonic::IntoRequest<super::ListReservationsRequest>,
         ) -> Result<tonic::Response<super::ListReservationsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListReservations",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns information about the reservation."]
+        /// Returns information about the reservation.
         pub async fn get_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetReservationRequest>,
         ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetReservation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a reservation."]
-        #[doc = " Returns `google.rpc.Code.FAILED_PRECONDITION` when reservation has"]
-        #[doc = " assignments."]
+        /// Deletes a reservation.
+        /// Returns `google.rpc.Code.FAILED_PRECONDITION` when reservation has
+        /// assignments.
         pub async fn delete_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteReservationRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteReservation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates an existing reservation resource."]
+        /// Updates an existing reservation resource.
         pub async fn update_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateReservationRequest>,
         ) -> Result<tonic::Response<super::Reservation>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateReservation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a new capacity commitment resource."]
+        /// Creates a new capacity commitment resource.
         pub async fn create_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateCapacityCommitmentRequest>,
         ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateCapacityCommitment") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateCapacityCommitment",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists all the capacity commitments for the admin project."]
+        /// Lists all the capacity commitments for the admin project.
         pub async fn list_capacity_commitments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListCapacityCommitmentsRequest>,
-        ) -> Result<tonic::Response<super::ListCapacityCommitmentsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::ListCapacityCommitmentsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListCapacityCommitments") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListCapacityCommitments",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns information about the capacity commitment."]
+        /// Returns information about the capacity commitment.
         pub async fn get_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::GetCapacityCommitmentRequest>,
         ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetCapacityCommitment") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetCapacityCommitment",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a capacity commitment. Attempting to delete capacity commitment"]
-        #[doc = " before its commitment_end_time will fail with the error code"]
-        #[doc = " `google.rpc.Code.FAILED_PRECONDITION`."]
+        /// Deletes a capacity commitment. Attempting to delete capacity commitment
+        /// before its commitment_end_time will fail with the error code
+        /// `google.rpc.Code.FAILED_PRECONDITION`.
         pub async fn delete_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteCapacityCommitmentRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteCapacityCommitment") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteCapacityCommitment",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates an existing capacity commitment."]
-        #[doc = ""]
-        #[doc = " Only `plan` and `renewal_plan` fields can be updated."]
-        #[doc = ""]
-        #[doc = " Plan can only be changed to a plan of a longer commitment period."]
-        #[doc = " Attempting to change to a plan with shorter commitment period will fail"]
-        #[doc = " with the error code `google.rpc.Code.FAILED_PRECONDITION`."]
+        /// Updates an existing capacity commitment.
+        ///
+        /// Only `plan` and `renewal_plan` fields can be updated.
+        ///
+        /// Plan can only be changed to a plan of a longer commitment period.
+        /// Attempting to change to a plan with shorter commitment period will fail
+        /// with the error code `google.rpc.Code.FAILED_PRECONDITION`.
         pub async fn update_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateCapacityCommitmentRequest>,
         ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateCapacityCommitment") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateCapacityCommitment",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Splits capacity commitment to two commitments of the same plan and"]
-        #[doc = " `commitment_end_time`."]
-        #[doc = ""]
-        #[doc = " A common use case is to enable downgrading commitments."]
-        #[doc = ""]
-        #[doc = " For example, in order to downgrade from 10000 slots to 8000, you might"]
-        #[doc = " split a 10000 capacity commitment into commitments of 2000 and 8000. Then,"]
-        #[doc = " you would change the plan of the first one to `FLEX` and then delete it."]
+        /// Splits capacity commitment to two commitments of the same plan and
+        /// `commitment_end_time`.
+        ///
+        /// A common use case is to enable downgrading commitments.
+        ///
+        /// For example, in order to downgrade from 10000 slots to 8000, you might
+        /// split a 10000 capacity commitment into commitments of 2000 and 8000. Then,
+        /// you would change the plan of the first one to `FLEX` and then delete it.
         pub async fn split_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::SplitCapacityCommitmentRequest>,
-        ) -> Result<tonic::Response<super::SplitCapacityCommitmentResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::SplitCapacityCommitmentResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.bigquery.reservation.v1beta1.ReservationService/SplitCapacityCommitment") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1beta1.ReservationService/SplitCapacityCommitment",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Merges capacity commitments of the same plan into a single commitment."]
-        #[doc = ""]
-        #[doc = " The resulting capacity commitment has the greater commitment_end_time"]
-        #[doc = " out of the to-be-merged capacity commitments."]
-        #[doc = ""]
-        #[doc = " Attempting to merge capacity commitments of different plan will fail"]
-        #[doc = " with the error code `google.rpc.Code.FAILED_PRECONDITION`."]
+        /// Merges capacity commitments of the same plan into a single commitment.
+        ///
+        /// The resulting capacity commitment has the greater commitment_end_time
+        /// out of the to-be-merged capacity commitments.
+        ///
+        /// Attempting to merge capacity commitments of different plan will fail
+        /// with the error code `google.rpc.Code.FAILED_PRECONDITION`.
         pub async fn merge_capacity_commitments(
             &mut self,
             request: impl tonic::IntoRequest<super::MergeCapacityCommitmentsRequest>,
         ) -> Result<tonic::Response<super::CapacityCommitment>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.bigquery.reservation.v1beta1.ReservationService/MergeCapacityCommitments") ;
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1beta1.ReservationService/MergeCapacityCommitments",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates an assignment object which allows the given project to submit jobs"]
-        #[doc = " of a certain type using slots from the specified reservation."]
-        #[doc = ""]
-        #[doc = " Currently a"]
-        #[doc = " resource (project, folder, organization) can only have one assignment per"]
-        #[doc = " each (job_type, location) combination, and that reservation will be used"]
-        #[doc = " for all jobs of the matching type."]
-        #[doc = ""]
-        #[doc = " Different assignments can be created on different levels of the"]
-        #[doc = " projects, folders or organization hierarchy.  During query execution,"]
-        #[doc = " the assignment is looked up at the project, folder and organization levels"]
-        #[doc = " in that order. The first assignment found is applied to the query."]
-        #[doc = ""]
-        #[doc = " When creating assignments, it does not matter if other assignments exist at"]
-        #[doc = " higher levels."]
-        #[doc = ""]
-        #[doc = " Example:"]
-        #[doc = ""]
-        #[doc = " * The organization `organizationA` contains two projects, `project1`"]
-        #[doc = "   and `project2`."]
-        #[doc = " * Assignments for all three entities (`organizationA`, `project1`, and"]
-        #[doc = "   `project2`) could all be created and mapped to the same or different"]
-        #[doc = "   reservations."]
-        #[doc = ""]
-        #[doc = " Returns `google.rpc.Code.PERMISSION_DENIED` if user does not have"]
-        #[doc = " 'bigquery.admin' permissions on the project using the reservation"]
-        #[doc = " and the project that owns this reservation."]
-        #[doc = ""]
-        #[doc = " Returns `google.rpc.Code.INVALID_ARGUMENT` when location of the assignment"]
-        #[doc = " does not match location of the reservation."]
+        /// Creates an assignment object which allows the given project to submit jobs
+        /// of a certain type using slots from the specified reservation.
+        ///
+        /// Currently a
+        /// resource (project, folder, organization) can only have one assignment per
+        /// each (job_type, location) combination, and that reservation will be used
+        /// for all jobs of the matching type.
+        ///
+        /// Different assignments can be created on different levels of the
+        /// projects, folders or organization hierarchy.  During query execution,
+        /// the assignment is looked up at the project, folder and organization levels
+        /// in that order. The first assignment found is applied to the query.
+        ///
+        /// When creating assignments, it does not matter if other assignments exist at
+        /// higher levels.
+        ///
+        /// Example:
+        ///
+        /// * The organization `organizationA` contains two projects, `project1`
+        ///   and `project2`.
+        /// * Assignments for all three entities (`organizationA`, `project1`, and
+        ///   `project2`) could all be created and mapped to the same or different
+        ///   reservations.
+        ///
+        /// Returns `google.rpc.Code.PERMISSION_DENIED` if user does not have
+        /// 'bigquery.admin' permissions on the project using the reservation
+        /// and the project that owns this reservation.
+        ///
+        /// Returns `google.rpc.Code.INVALID_ARGUMENT` when location of the assignment
+        /// does not match location of the reservation.
         pub async fn create_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateAssignmentRequest>,
         ) -> Result<tonic::Response<super::Assignment>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/CreateAssignment",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists assignments."]
-        #[doc = ""]
-        #[doc = " Only explicitly created assignments will be returned."]
-        #[doc = ""]
-        #[doc = " Example:"]
-        #[doc = ""]
-        #[doc = " * Organization `organizationA` contains two projects, `project1` and"]
-        #[doc = "   `project2`."]
-        #[doc = " * Reservation `res1` exists and was created previously."]
-        #[doc = " * CreateAssignment was used previously to define the following"]
-        #[doc = "   associations between entities and reservations: `<organizationA, res1>`"]
-        #[doc = "   and `<project1, res1>`"]
-        #[doc = ""]
-        #[doc = " In this example, ListAssignments will just return the above two assignments"]
-        #[doc = " for reservation `res1`, and no expansion/merge will happen."]
-        #[doc = ""]
-        #[doc = " The wildcard \"-\" can be used for"]
-        #[doc = " reservations in the request. In that case all assignments belongs to the"]
-        #[doc = " specified project and location will be listed."]
-        #[doc = ""]
-        #[doc = " **Note** \"-\" cannot be used for projects nor locations."]
+        /// Lists assignments.
+        ///
+        /// Only explicitly created assignments will be returned.
+        ///
+        /// Example:
+        ///
+        /// * Organization `organizationA` contains two projects, `project1` and
+        ///   `project2`.
+        /// * Reservation `res1` exists and was created previously.
+        /// * CreateAssignment was used previously to define the following
+        ///   associations between entities and reservations: `<organizationA, res1>`
+        ///   and `<project1, res1>`
+        ///
+        /// In this example, ListAssignments will just return the above two assignments
+        /// for reservation `res1`, and no expansion/merge will happen.
+        ///
+        /// The wildcard "-" can be used for
+        /// reservations in the request. In that case all assignments belongs to the
+        /// specified project and location will be listed.
+        ///
+        /// **Note** "-" cannot be used for projects nor locations.
         pub async fn list_assignments(
             &mut self,
             request: impl tonic::IntoRequest<super::ListAssignmentsRequest>,
         ) -> Result<tonic::Response<super::ListAssignmentsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/ListAssignments",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a assignment. No expansion will happen."]
-        #[doc = ""]
-        #[doc = " Example:"]
-        #[doc = ""]
-        #[doc = " * Organization `organizationA` contains two projects, `project1` and"]
-        #[doc = "   `project2`."]
-        #[doc = " * Reservation `res1` exists and was created previously."]
-        #[doc = " * CreateAssignment was used previously to define the following"]
-        #[doc = "   associations between entities and reservations: `<organizationA, res1>`"]
-        #[doc = "   and `<project1, res1>`"]
-        #[doc = ""]
-        #[doc = " In this example, deletion of the `<organizationA, res1>` assignment won't"]
-        #[doc = " affect the other assignment `<project1, res1>`. After said deletion,"]
-        #[doc = " queries from `project1` will still use `res1` while queries from"]
-        #[doc = " `project2` will switch to use on-demand mode."]
+        /// Deletes a assignment. No expansion will happen.
+        ///
+        /// Example:
+        ///
+        /// * Organization `organizationA` contains two projects, `project1` and
+        ///   `project2`.
+        /// * Reservation `res1` exists and was created previously.
+        /// * CreateAssignment was used previously to define the following
+        ///   associations between entities and reservations: `<organizationA, res1>`
+        ///   and `<project1, res1>`
+        ///
+        /// In this example, deletion of the `<organizationA, res1>` assignment won't
+        /// affect the other assignment `<project1, res1>`. After said deletion,
+        /// queries from `project1` will still use `res1` while queries from
+        /// `project2` will switch to use on-demand mode.
         pub async fn delete_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteAssignmentRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/DeleteAssignment",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Looks up assignments for a specified resource for a particular region."]
-        #[doc = " If the request is about a project:"]
-        #[doc = ""]
-        #[doc = " 1. Assignments created on the project will be returned if they exist."]
-        #[doc = " 2. Otherwise assignments created on the closest ancestor will be"]
-        #[doc = "    returned."]
-        #[doc = " 3. Assignments for different JobTypes will all be returned."]
-        #[doc = ""]
-        #[doc = " The same logic applies if the request is about a folder."]
-        #[doc = ""]
-        #[doc = " If the request is about an organization, then assignments created on the"]
-        #[doc = " organization will be returned (organization doesn't have ancestors)."]
-        #[doc = ""]
-        #[doc = " Comparing to ListAssignments, there are some behavior"]
-        #[doc = " differences:"]
-        #[doc = ""]
-        #[doc = " 1. permission on the assignee will be verified in this API."]
-        #[doc = " 2. Hierarchy lookup (project->folder->organization) happens in this API."]
-        #[doc = " 3. Parent here is `projects/*/locations/*`, instead of"]
-        #[doc = "    `projects/*/locations/*reservations/*`."]
-        #[doc = ""]
-        #[doc = " **Note** \"-\" cannot be used for projects"]
-        #[doc = " nor locations."]
+        /// Looks up assignments for a specified resource for a particular region.
+        /// If the request is about a project:
+        ///
+        /// 1. Assignments created on the project will be returned if they exist.
+        /// 2. Otherwise assignments created on the closest ancestor will be
+        ///    returned.
+        /// 3. Assignments for different JobTypes will all be returned.
+        ///
+        /// The same logic applies if the request is about a folder.
+        ///
+        /// If the request is about an organization, then assignments created on the
+        /// organization will be returned (organization doesn't have ancestors).
+        ///
+        /// Comparing to ListAssignments, there are some behavior
+        /// differences:
+        ///
+        /// 1. permission on the assignee will be verified in this API.
+        /// 2. Hierarchy lookup (project->folder->organization) happens in this API.
+        /// 3. Parent here is `projects/*/locations/*`, instead of
+        ///    `projects/*/locations/*reservations/*`.
+        ///
+        /// **Note** "-" cannot be used for projects
+        /// nor locations.
         pub async fn search_assignments(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchAssignmentsRequest>,
         ) -> Result<tonic::Response<super::SearchAssignmentsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/SearchAssignments",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Moves an assignment under a new reservation."]
-        #[doc = ""]
-        #[doc = " This differs from removing an existing assignment and recreating a new one"]
-        #[doc = " by providing a transactional change that ensures an assignee always has an"]
-        #[doc = " associated reservation."]
+        /// Moves an assignment under a new reservation.
+        ///
+        /// This differs from removing an existing assignment and recreating a new one
+        /// by providing a transactional change that ensures an assignee always has an
+        /// associated reservation.
         pub async fn move_assignment(
             &mut self,
             request: impl tonic::IntoRequest<super::MoveAssignmentRequest>,
         ) -> Result<tonic::Response<super::Assignment>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/MoveAssignment",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Retrieves a BI reservation."]
+        /// Retrieves a BI reservation.
         pub async fn get_bi_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::GetBiReservationRequest>,
         ) -> Result<tonic::Response<super::BiReservation>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/GetBiReservation",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates a BI reservation."]
-        #[doc = ""]
-        #[doc = " Only fields specified in the `field_mask` are updated."]
-        #[doc = ""]
-        #[doc = " A singleton BI reservation always exists with default size 0."]
-        #[doc = " In order to reserve BI capacity it needs to be updated to an amount"]
-        #[doc = " greater than 0. In order to release BI capacity reservation size"]
-        #[doc = " must be set to 0."]
+        /// Updates a BI reservation.
+        ///
+        /// Only fields specified in the `field_mask` are updated.
+        ///
+        /// A singleton BI reservation always exists with default size 0.
+        /// In order to reserve BI capacity it needs to be updated to an amount
+        /// greater than 0. In order to release BI capacity reservation size
+        /// must be set to 0.
         pub async fn update_bi_reservation(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateBiReservationRequest>,
         ) -> Result<tonic::Response<super::BiReservation>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1beta1.ReservationService/UpdateBiReservation",

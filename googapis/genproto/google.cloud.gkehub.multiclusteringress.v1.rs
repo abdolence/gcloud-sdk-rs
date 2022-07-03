@@ -4,6 +4,6 @@
 pub struct FeatureSpec {
     /// Fully-qualified Membership name which hosts the MultiClusterIngress CRD.
     /// Example: `projects/foo-proj/locations/global/memberships/bar`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub config_membership: ::prost::alloc::string::String,
 }

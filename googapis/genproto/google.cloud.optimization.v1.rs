@@ -2,11 +2,11 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InputConfig {
     /// The input data format that used to store the model in Cloud Storage.
-    #[prost(enumeration = "DataFormat", tag = "2")]
+    #[prost(enumeration="DataFormat", tag="2")]
     pub data_format: i32,
     /// The location of the input model in cloud storage.
     /// Required.
-    #[prost(oneof = "input_config::Source", tags = "1")]
+    #[prost(oneof="input_config::Source", tags="1")]
     pub source: ::core::option::Option<input_config::Source>,
 }
 /// Nested message and enum types in `InputConfig`.
@@ -17,7 +17,7 @@ pub mod input_config {
     pub enum Source {
         /// The Google Cloud Storage location to read the input from. This must be a
         /// single file.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         GcsSource(super::GcsSource),
     }
 }
@@ -25,11 +25,11 @@ pub mod input_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputConfig {
     /// The output data format that used to store the results in Cloud Storage.
-    #[prost(enumeration = "DataFormat", tag = "2")]
+    #[prost(enumeration="DataFormat", tag="2")]
     pub data_format: i32,
     /// The location of the output result in cloud storage.
     /// Required.
-    #[prost(oneof = "output_config::Destination", tags = "1")]
+    #[prost(oneof="output_config::Destination", tags="1")]
     pub destination: ::core::option::Option<output_config::Destination>,
 }
 /// Nested message and enum types in `OutputConfig`.
@@ -39,7 +39,7 @@ pub mod output_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         /// The Google Cloud Storage location to write the output to.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         GcsDestination(super::GcsDestination),
     }
 }
@@ -47,31 +47,31 @@ pub mod output_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     /// Required. URI of the Google Cloud Storage location.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub uri: ::prost::alloc::string::String,
 }
 /// The Google Cloud Storage location where the output file will be written to.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsDestination {
     /// Required. URI of the Google Cloud Storage location.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub uri: ::prost::alloc::string::String,
 }
 /// The long running operation metadata for async model related methods.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsyncModelMetadata {
     /// The state of the current operation.
-    #[prost(enumeration = "async_model_metadata::State", tag = "1")]
+    #[prost(enumeration="async_model_metadata::State", tag="1")]
     pub state: i32,
     /// A message providing more details about the current state of the operation.
     /// For example, the error message if the operation is failed.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub state_message: ::prost::alloc::string::String,
     /// The creation time of the operation.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The last update time of the operation.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `AsyncModelMetadata`.
@@ -112,7 +112,7 @@ pub struct OptimizeToursRequest {
     /// Format: `projects/{project-id}/locations/{location-id}`.
     ///
     /// If no location is specified, a region will be chosen automatically.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// If this timeout is set, the server returns a response before the timeout
     /// period has elapsed or the server deadline for synchronous requests is
@@ -120,13 +120,13 @@ pub struct OptimizeToursRequest {
     ///
     /// For asynchronous requests, the server will generate a solution (if
     /// possible) before the timeout has elapsed.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub timeout: ::core::option::Option<::prost_types::Duration>,
     /// Shipment model to solve.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub model: ::core::option::Option<ShipmentModel>,
     /// By default, the solving mode is `DEFAULT_SOLVE` (0).
-    #[prost(enumeration = "optimize_tours_request::SolvingMode", tag = "4")]
+    #[prost(enumeration="optimize_tours_request::SolvingMode", tag="4")]
     pub solving_mode: i32,
     /// Truncates the number of validation errors returned. Those errors are
     /// typically attached to an INVALID_ARGUMENT error payload as a BadRequest
@@ -135,10 +135,10 @@ pub struct OptimizeToursRequest {
     /// \[OptimizeToursResponse.validation_errors][google.cloud.optimization.v1.OptimizeToursResponse.validation_errors\]
     /// field.
     /// This defaults to 100 and is capped at 10,000.
-    #[prost(int32, optional, tag = "5")]
+    #[prost(int32, optional, tag="5")]
     pub max_validation_errors: ::core::option::Option<i32>,
     /// Search mode used to solve the request.
-    #[prost(enumeration = "optimize_tours_request::SearchMode", tag = "6")]
+    #[prost(enumeration="optimize_tours_request::SearchMode", tag="6")]
     pub search_mode: i32,
     /// Guide the optimization algorithm in finding a first solution that is
     /// similar to a previous solution.
@@ -168,7 +168,7 @@ pub struct OptimizeToursRequest {
     /// If the injected solution is not feasible, a validation error is not
     /// necessarily returned and an error indicating infeasibility may be returned
     /// instead.
-    #[prost(message, repeated, tag = "7")]
+    #[prost(message, repeated, tag="7")]
     pub injected_first_solution_routes: ::prost::alloc::vec::Vec<ShipmentRoute>,
     /// Constrain the optimization algorithm to find a final solution that is
     /// similar to a previous solution. For example, this may be used to freeze
@@ -178,7 +178,7 @@ pub struct OptimizeToursRequest {
     /// If the injected solution is not feasible, a validation error is not
     /// necessarily returned and an error indicating infeasibility may be returned
     /// instead.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub injected_solution_constraint: ::core::option::Option<InjectedSolutionConstraint>,
     /// If non-empty, the given routes will be refreshed, without modifying their
     /// underlying sequence of visits or travel times: only other details will be
@@ -196,7 +196,7 @@ pub struct OptimizeToursRequest {
     /// `Shipment.ignore` and `Vehicle.ignore` have no effect on the behavior.
     /// Polylines are still populated between all visits in all non-empty routes
     /// regardless of whether the related shipments or vehicles are ignored.
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag="9")]
     pub refresh_details_routes: ::prost::alloc::vec::Vec<ShipmentRoute>,
     /// If true:
     ///
@@ -247,7 +247,7 @@ pub struct OptimizeToursRequest {
     /// produced the `OptimizeToursResponse` used in the injected solution and the
     /// current request that includes the injected solution. The uniqueness checks
     /// described above are not enough to guarantee this requirement.
-    #[prost(bool, tag = "10")]
+    #[prost(bool, tag="10")]
     pub interpret_injected_solutions_using_labels: bool,
     /// Consider traffic estimation in calculating `ShipmentRoute` fields
     /// \[Transition.travel_duration][google.cloud.optimization.v1.ShipmentRoute.Transition.travel_duration\],
@@ -255,44 +255,44 @@ pub struct OptimizeToursRequest {
     /// and `vehicle_end_time`; in setting the
     /// \[ShipmentRoute.has_traffic_infeasibilities][google.cloud.optimization.v1.ShipmentRoute.has_traffic_infeasibilities\] field, and in calculating the
     /// \[OptimizeToursResponse.total_cost][google.cloud.optimization.v1.OptimizeToursResponse.total_cost\] field.
-    #[prost(bool, tag = "11")]
+    #[prost(bool, tag="11")]
     pub consider_road_traffic: bool,
     /// If true, polylines will be populated in response `ShipmentRoute`s.
-    #[prost(bool, tag = "12")]
+    #[prost(bool, tag="12")]
     pub populate_polylines: bool,
     /// If true, polylines will be populated in response
     /// \[ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions\].
     /// Note that in this case, the polylines will also be populated in the
     /// deprecated `travel_steps`.
-    #[prost(bool, tag = "13")]
+    #[prost(bool, tag="13")]
     pub populate_transition_polylines: bool,
     /// If this is set, then the request can have a deadline
     /// (see <https://grpc.io/blog/deadlines>) of up to 60 minutes.
     /// Otherwise, the maximum deadline is only 30 minutes.
     /// Note that long-lived requests have a significantly larger (but still small)
     /// risk of interruption.
-    #[prost(bool, tag = "14")]
+    #[prost(bool, tag="14")]
     pub allow_large_deadline_despite_interruption_risk: bool,
     /// If true, travel distances will be computed using geodesic distances instead
     /// of Google Maps distances, and travel times will be computed using geodesic
     /// distances with a speed defined by `geodesic_meters_per_second`.
-    #[prost(bool, tag = "15")]
+    #[prost(bool, tag="15")]
     pub use_geodesic_distances: bool,
     /// When `use_geodesic_distances` is true, this field must be set and defines
     /// the speed applied to compute travel times. Its value must be at least 1.0
     /// meters/seconds.
-    #[prost(double, optional, tag = "16")]
+    #[prost(double, optional, tag="16")]
     pub geodesic_meters_per_second: ::core::option::Option<f64>,
     /// Label that may be used to identify this request, reported back in the
     /// \[OptimizeToursResponse.request_label][google.cloud.optimization.v1.OptimizeToursResponse.request_label\].
-    #[prost(string, tag = "17")]
+    #[prost(string, tag="17")]
     pub label: ::prost::alloc::string::String,
     /// Deprecated: Use \[OptimizeToursRequest.populate_transition_polylines][\] instead.
     /// If true, polylines will be populated in response
     /// \[ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions\]. Note that in this case, the polylines will
     /// also be populated in the deprecated `travel_steps`.
     #[deprecated]
-    #[prost(bool, tag = "20")]
+    #[prost(bool, tag="20")]
     pub populate_travel_step_polylines: bool,
 }
 /// Nested message and enum types in `OptimizeToursRequest`.
@@ -339,29 +339,29 @@ pub mod optimize_tours_request {
 pub struct OptimizeToursResponse {
     /// Routes computed for each vehicle; the i-th route corresponds to the i-th
     /// vehicle in the model.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub routes: ::prost::alloc::vec::Vec<ShipmentRoute>,
     /// Copy of the \[OptimizeToursRequest.label][google.cloud.optimization.v1.OptimizeToursRequest.label\], if a label was specified in the
     /// request.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub request_label: ::prost::alloc::string::String,
     /// The list of all shipments skipped.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub skipped_shipments: ::prost::alloc::vec::Vec<SkippedShipment>,
     /// List of all the validation errors that we were able to detect
     /// independently. See the "MULTIPLE ERRORS" explanation for the
     /// \[OptimizeToursValidationError][google.cloud.optimization.v1.OptimizeToursValidationError\] message.
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag="5")]
     pub validation_errors: ::prost::alloc::vec::Vec<OptimizeToursValidationError>,
     /// Duration, distance and usage metrics for this solution.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub metrics: ::core::option::Option<optimize_tours_response::Metrics>,
     /// Deprecated: Use \[Metrics.total_cost][\] instead.
     /// Total cost of the solution. This takes into account all costs: costs per
     /// per hour and travel hour, fixed vehicle costs, unperformed shipment penalty
     /// costs, global duration cost, etc.
     #[deprecated]
-    #[prost(double, tag = "2")]
+    #[prost(double, tag="2")]
     pub total_cost: f64,
 }
 /// Nested message and enum types in `OptimizeToursResponse`.
@@ -371,23 +371,23 @@ pub mod optimize_tours_response {
     pub struct Metrics {
         /// Aggregated over the routes. Each metric is the sum (or max, for loads)
         /// over all \[ShipmentRoute.metrics][google.cloud.optimization.v1.ShipmentRoute.metrics\] fields of the same name.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub aggregated_route_metrics: ::core::option::Option<super::AggregatedMetrics>,
         /// Number of mandatory shipments skipped.
-        #[prost(int32, tag = "2")]
+        #[prost(int32, tag="2")]
         pub skipped_mandatory_shipment_count: i32,
         /// Number of vehicles used. Note: if a vehicle route is empty and
         /// \[Vehicle.used_if_route_is_empty][google.cloud.optimization.v1.Vehicle.used_if_route_is_empty\] is true, the vehicle is considered
         /// used.
-        #[prost(int32, tag = "3")]
+        #[prost(int32, tag="3")]
         pub used_vehicle_count: i32,
         /// The earliest start time for a used vehicle, computed as the minimum over
         /// all used vehicles of \[ShipmentRoute.vehicle_start_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_start_time\].
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub earliest_vehicle_start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// The latest end time for a used vehicle, computed as the maximum over all
         /// used vehicles of \[ShipmentRoute.vehicle_end_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_end_time\].
-        #[prost(message, optional, tag = "5")]
+        #[prost(message, optional, tag="5")]
         pub latest_vehicle_end_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Cost of the solution, broken down by cost-related request fields.
         /// The keys are proto paths, relative to the input OptimizeToursRequest,
@@ -398,10 +398,10 @@ pub mod optimize_tours_response {
         /// are reported in detail here with the exception of costs related to
         /// TransitionAttributes that are only reported in an aggregated way as of
         /// 2022/01.
-        #[prost(map = "string, double", tag = "10")]
+        #[prost(map="string, double", tag="10")]
         pub costs: ::std::collections::HashMap<::prost::alloc::string::String, f64>,
         /// Total cost of the solution. The sum of all values in the costs map.
-        #[prost(double, tag = "6")]
+        #[prost(double, tag="6")]
         pub total_cost: f64,
     }
 }
@@ -417,11 +417,11 @@ pub struct BatchOptimizeToursRequest {
     /// Format: `projects/{project-id}/locations/{location-id}`.
     ///
     /// If no location is specified, a region will be chosen automatically.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Input/Output information each purchase model, such as file paths and data
     /// formats.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub model_configs: ::prost::alloc::vec::Vec<batch_optimize_tours_request::AsyncModelConfig>,
 }
 /// Nested message and enum types in `BatchOptimizeToursRequest`.
@@ -431,13 +431,13 @@ pub mod batch_optimize_tours_request {
     pub struct AsyncModelConfig {
         /// User defined model name, can be used as alias by users to keep track of
         /// models.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub display_name: ::prost::alloc::string::String,
         /// Required. Information about the input model.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub input_config: ::core::option::Option<super::InputConfig>,
         /// Required. The desired output location information.
-        #[prost(message, optional, tag = "3")]
+        #[prost(message, optional, tag="3")]
         pub output_config: ::core::option::Option<super::OutputConfig>,
         /// If this is set, the model will be solved in the checkpoint mode. In this
         /// mode, the input model can have a deadline longer than 30 mins without the
@@ -447,14 +447,15 @@ pub mod batch_optimize_tours_request {
         /// mode should be preferred over
         /// allow_large_deadline_despite_interruption_risk since it prevents the risk
         /// of interruption.
-        #[prost(bool, tag = "4")]
+        #[prost(bool, tag="4")]
         pub enable_checkpoints: bool,
     }
 }
 /// Response to a `BatchOptimizeToursRequest`. This is returned in
 /// the LRO Operation after the operation is complete.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BatchOptimizeToursResponse {}
+pub struct BatchOptimizeToursResponse {
+}
 /// A shipment model contains a set of shipments which must be performed by a
 /// set of vehicles, while minimizing the overall cost, which is the sum of:
 ///
@@ -465,10 +466,10 @@ pub struct BatchOptimizeToursResponse {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ShipmentModel {
     /// Set of shipments which must be performed in the model.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub shipments: ::prost::alloc::vec::Vec<Shipment>,
     /// Set of vehicles which can be used to perform visits.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub vehicles: ::prost::alloc::vec::Vec<Vehicle>,
     /// Constrains the maximum number of active vehicles. A vehicle is active if
     /// its route performs at least one shipment. This can be used to limit the
@@ -476,7 +477,7 @@ pub struct ShipmentModel {
     /// vehicles and that the fleet of vehicles is heterogeneous. The optimization
     /// will then select the best subset of vehicles to use.
     /// Must be strictly positive.
-    #[prost(int32, optional, tag = "4")]
+    #[prost(int32, optional, tag="4")]
     pub max_active_vehicles: ::core::option::Option<i32>,
     /// Global start and end time of the model: no times outside of this range
     /// can be considered valid.
@@ -489,18 +490,18 @@ pub struct ShipmentModel {
     /// you should set the global time limits to that day).
     /// If unset, 00:00:00 UTC, January 1, 1970 (i.e. seconds: 0, nanos: 0) is used
     /// as default.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub global_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// If unset, 00:00:00 UTC, January 1, 1971 (i.e. seconds: 31536000, nanos: 0)
     /// is used as default.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub global_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The "global duration" of the overall plan is the difference between the
     /// earliest effective start time and the latest effective end time of
     /// all vehicles. Users can assign a cost per hour to that quantity to try
     /// and optimize for earliest job completion, for example. This cost must be in
     /// the same unit as \[Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost\].
-    #[prost(double, tag = "7")]
+    #[prost(double, tag="7")]
     pub global_duration_cost_per_hour: f64,
     /// Specifies duration and distance matrices used in the model. If this field
     /// is empty, Google Maps or geodesic distances will be used instead, depending
@@ -589,9 +590,8 @@ pub struct ShipmentModel {
     ///   }
     /// }
     /// ```
-    #[prost(message, repeated, tag = "8")]
-    pub duration_distance_matrices:
-        ::prost::alloc::vec::Vec<shipment_model::DurationDistanceMatrix>,
+    #[prost(message, repeated, tag="8")]
+    pub duration_distance_matrices: ::prost::alloc::vec::Vec<shipment_model::DurationDistanceMatrix>,
     /// Tags defining the sources of the duration and distance matrices;
     /// `duration_distance_matrices(i).rows(j)` defines durations and distances
     /// from visits with tag `duration_distance_matrix_src_tags(j)` to other visits
@@ -605,7 +605,7 @@ pub struct ShipmentModel {
     /// the same; similarly a `VisitRequest`'s source and destination tags may be
     /// the same. All tags must be different and cannot be empty strings. If this
     /// field is not empty, then `duration_distance_matrices` must not be empty.
-    #[prost(string, repeated, tag = "9")]
+    #[prost(string, repeated, tag="9")]
     pub duration_distance_matrix_src_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Tags defining the destinations of the duration and distance matrices;
     /// `duration_distance_matrices(i).rows(j).durations(k)` (resp.
@@ -622,26 +622,26 @@ pub struct ShipmentModel {
     /// the same; similarly a `VisitRequest`'s source and destination tags may be
     /// the same. All tags must be different and cannot be empty strings. If this
     /// field is not empty, then `duration_distance_matrices` must not be empty.
-    #[prost(string, repeated, tag = "10")]
+    #[prost(string, repeated, tag="10")]
     pub duration_distance_matrix_dst_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Transition attributes added to the model.
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag="11")]
     pub transition_attributes: ::prost::alloc::vec::Vec<TransitionAttributes>,
     /// Sets of incompatible shipment_types (see `ShipmentTypeIncompatibility`).
-    #[prost(message, repeated, tag = "12")]
+    #[prost(message, repeated, tag="12")]
     pub shipment_type_incompatibilities: ::prost::alloc::vec::Vec<ShipmentTypeIncompatibility>,
     /// Sets of `shipment_type` requirements (see `ShipmentTypeRequirement`).
-    #[prost(message, repeated, tag = "13")]
+    #[prost(message, repeated, tag="13")]
     pub shipment_type_requirements: ::prost::alloc::vec::Vec<ShipmentTypeRequirement>,
     /// Set of precedence rules which must be enforced in the model.
-    #[prost(message, repeated, tag = "14")]
+    #[prost(message, repeated, tag="14")]
     pub precedence_rules: ::prost::alloc::vec::Vec<shipment_model::PrecedenceRule>,
     /// Deprecated: No longer used.
     /// Set of break rules used in the model.
     /// Each vehicle specifies the `BreakRule` that applies to it via the
     /// \[Vehicle.break_rule_indices][google.cloud.optimization.v1.Vehicle.break_rule_indices\] field (which must be a singleton).
     #[deprecated]
-    #[prost(message, repeated, tag = "15")]
+    #[prost(message, repeated, tag="15")]
     pub break_rules: ::prost::alloc::vec::Vec<shipment_model::BreakRule>,
 }
 /// Nested message and enum types in `ShipmentModel`.
@@ -652,7 +652,7 @@ pub mod shipment_model {
     pub struct DurationDistanceMatrix {
         /// Specifies the rows of the duration and distance matrix. It must have as
         /// many elements as \[ShipmentModel.duration_distance_matrix_src_tags][google.cloud.optimization.v1.ShipmentModel.duration_distance_matrix_src_tags\].
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub rows: ::prost::alloc::vec::Vec<duration_distance_matrix::Row>,
         /// Tag defining to which vehicles this duration and distance matrix applies.
         /// If empty, this applies to all vehicles, and there can only be a single
@@ -663,7 +663,7 @@ pub mod shipment_model {
         /// (and of that matrix only).
         ///
         /// All matrices must have a different `vehicle_start_tag`.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub vehicle_start_tag: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `DurationDistanceMatrix`.
@@ -673,12 +673,12 @@ pub mod shipment_model {
         pub struct Row {
             /// Duration values for a given row. It must have as many elements as
             /// \[ShipmentModel.duration_distance_matrix_dst_tags][google.cloud.optimization.v1.ShipmentModel.duration_distance_matrix_dst_tags\].
-            #[prost(message, repeated, tag = "1")]
+            #[prost(message, repeated, tag="1")]
             pub durations: ::prost::alloc::vec::Vec<::prost_types::Duration>,
             /// Distance values for a given row. If no costs or constraints refer to
             /// distances in the model, this can be left empty; otherwise it must have
             /// as many elements as `durations`.
-            #[prost(double, repeated, tag = "2")]
+            #[prost(double, repeated, tag="2")]
             pub meters: ::prost::alloc::vec::Vec<f64>,
         }
     }
@@ -695,19 +695,19 @@ pub mod shipment_model {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PrecedenceRule {
         /// Shipment index of the "first" event. This field must be specified.
-        #[prost(int32, optional, tag = "1")]
+        #[prost(int32, optional, tag="1")]
         pub first_index: ::core::option::Option<i32>,
         /// Indicates if the "first" event is a delivery.
-        #[prost(bool, tag = "3")]
+        #[prost(bool, tag="3")]
         pub first_is_delivery: bool,
         /// Shipment index of the "second" event. This field must be specified.
-        #[prost(int32, optional, tag = "2")]
+        #[prost(int32, optional, tag="2")]
         pub second_index: ::core::option::Option<i32>,
         /// Indicates if the "second" event is a delivery.
-        #[prost(bool, tag = "4")]
+        #[prost(bool, tag="4")]
         pub second_is_delivery: bool,
         /// The offset between the "first" and "second" event. It can be negative.
-        #[prost(message, optional, tag = "5")]
+        #[prost(message, optional, tag="5")]
         pub offset_duration: ::core::option::Option<::prost_types::Duration>,
     }
     /// Deprecated: Use top level \[BreakRule][\] instead.
@@ -725,11 +725,11 @@ pub mod shipment_model {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BreakRule {
         /// Sequence of breaks. See the `BreakRequest` message.
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub break_requests: ::prost::alloc::vec::Vec<break_rule::BreakRequest>,
         /// Several `FrequencyConstraint` may apply. They must all be satisfied by
         /// the `BreakRequest`s of this `BreakRule`. See `FrequencyConstraint`.
-        #[prost(message, repeated, tag = "2")]
+        #[prost(message, repeated, tag="2")]
         pub frequency_constraints: ::prost::alloc::vec::Vec<break_rule::FrequencyConstraint>,
     }
     /// Nested message and enum types in `BreakRule`.
@@ -742,13 +742,13 @@ pub mod shipment_model {
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct BreakRequest {
             /// Required. Lower bound (inclusive) on the start of the break.
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub earliest_start_time: ::core::option::Option<::prost_types::Timestamp>,
             /// Required. Upper bound (inclusive) on the start of the break.
-            #[prost(message, optional, tag = "2")]
+            #[prost(message, optional, tag="2")]
             pub latest_start_time: ::core::option::Option<::prost_types::Timestamp>,
             /// Required. Minimum duration of the break. Must be positive.
-            #[prost(message, optional, tag = "3")]
+            #[prost(message, optional, tag="3")]
             pub min_duration: ::core::option::Option<::prost_types::Duration>,
         }
         /// One may further constrain the frequency and duration of the breaks
@@ -788,12 +788,12 @@ pub mod shipment_model {
         pub struct FrequencyConstraint {
             /// Required. Minimum break duration for this constraint. Nonnegative.
             /// See description of `FrequencyConstraint`.
-            #[prost(message, optional, tag = "1")]
+            #[prost(message, optional, tag="1")]
             pub min_break_duration: ::core::option::Option<::prost_types::Duration>,
             /// Required. Maximum allowed span of any interval of time in the route that does not
             /// include at least partially a break of `duration >=
             /// min_break_duration`. Must be positive.
-            #[prost(message, optional, tag = "2")]
+            #[prost(message, optional, tag="2")]
             pub max_inter_break_duration: ::core::option::Option<::prost_types::Duration>,
         }
     }
@@ -807,11 +807,11 @@ pub mod shipment_model {
 pub struct Shipment {
     /// Set of pickup alternatives associated to the shipment. If not specified,
     /// the vehicle only needs to visit a location corresponding to the deliveries.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub pickups: ::prost::alloc::vec::Vec<shipment::VisitRequest>,
     /// Set of delivery alternatives associated to the shipment. If not specified,
     /// the vehicle only needs to visit a location corresponding to the pickups.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub deliveries: ::prost::alloc::vec::Vec<shipment::VisitRequest>,
     /// Load demands of the shipment (for example weight, volume, number of
     /// pallets etc). The keys in the map should be identifiers describing the type
@@ -819,7 +819,7 @@ pub struct Shipment {
     /// For example: "weight_kg", "volume_gallons", "pallet_count", etc.
     /// If a given key does not appear in the map, the corresponding load is
     /// considered as null.
-    #[prost(map = "string, message", tag = "14")]
+    #[prost(map="string, message", tag="14")]
     pub load_demands: ::std::collections::HashMap<::prost::alloc::string::String, shipment::Load>,
     /// If the shipment is not completed, this penalty is added to the overall
     /// cost of the routes. A shipment is considered completed if one of its pickup
@@ -829,12 +829,12 @@ pub struct Shipment {
     ///
     /// *IMPORTANT*: If this penalty is not specified, it is considered infinite,
     /// i.e. the shipment must be completed.
-    #[prost(double, optional, tag = "4")]
+    #[prost(double, optional, tag="4")]
     pub penalty_cost: ::core::option::Option<f64>,
     /// The set of vehicles that may perform this shipment. If empty, all vehicles
     /// may perform it. Vehicles are given by their index in the `ShipmentModel`'s
     /// `vehicles` list.
-    #[prost(int32, repeated, tag = "5")]
+    #[prost(int32, repeated, tag="5")]
     pub allowed_vehicle_indices: ::prost::alloc::vec::Vec<i32>,
     /// Specifies the cost that is incurred when this shipment is delivered by each
     /// vehicle. If specified, it must have EITHER:
@@ -847,13 +847,13 @@ pub struct Shipment {
     ///
     /// These costs must be in the same unit as `penalty_cost` and must not be
     /// negative. Leave this field empty, if there are no such costs.
-    #[prost(double, repeated, tag = "6")]
+    #[prost(double, repeated, tag="6")]
     pub costs_per_vehicle: ::prost::alloc::vec::Vec<f64>,
     /// Indices of the vehicles to which `costs_per_vehicle` applies. If non-empty,
     /// it must have the same number of elements as `costs_per_vehicle`. A vehicle
     /// index may not be specified more than once. If a vehicle is excluded from
     /// `costs_per_vehicle_indices`, its cost is zero.
-    #[prost(int32, repeated, tag = "7")]
+    #[prost(int32, repeated, tag="7")]
     pub costs_per_vehicle_indices: ::prost::alloc::vec::Vec<i32>,
     /// Specifies the maximum relative detour time compared to the shortest path
     /// from pickup to delivery. If specified, it must be nonnegative, and the
@@ -872,7 +872,7 @@ pub struct Shipment {
     /// the more constraining limit is used for each possible pickup/delivery pair.
     /// As of 2017/10, detours are only supported when travel durations do not
     /// depend on vehicles.
-    #[prost(double, optional, tag = "8")]
+    #[prost(double, optional, tag="8")]
     pub pickup_to_delivery_relative_detour_limit: ::core::option::Option<f64>,
     /// Specifies the maximum absolute detour time compared to the shortest path
     /// from pickup to delivery. If specified, it must be nonnegative, and the
@@ -891,7 +891,7 @@ pub struct Shipment {
     /// the more constraining limit is used for each possible pickup/delivery pair.
     /// As of 2017/10, detours are only supported when travel durations do not
     /// depend on vehicles.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub pickup_to_delivery_absolute_detour_limit: ::core::option::Option<::prost_types::Duration>,
     /// Specifies the maximum duration from start of pickup to start of delivery of
     /// a shipment. If specified, it must be nonnegative, and the shipment must
@@ -899,7 +899,7 @@ pub struct Shipment {
     /// alternatives are selected for pickup and delivery, nor on vehicle speed.
     /// This can be specified alongside maximum detour constraints: the solution
     /// will respect both specifications.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub pickup_to_delivery_time_limit: ::core::option::Option<::prost_types::Duration>,
     /// Non-empty string specifying a "type" for this shipment.
     /// This feature can be used to define incompatibilities or requirements
@@ -909,11 +909,11 @@ pub struct Shipment {
     /// Differs from `visit_types` which is specified for a single visit: All
     /// pickup/deliveries belonging to the same shipment share the same
     /// `shipment_type`.
-    #[prost(string, tag = "11")]
+    #[prost(string, tag="11")]
     pub shipment_type: ::prost::alloc::string::String,
     /// Specifies a label for this shipment. This label is reported in the response
     /// in the `shipment_label` of the corresponding \[ShipmentRoute.Visit][google.cloud.optimization.v1.ShipmentRoute.Visit\].
-    #[prost(string, tag = "12")]
+    #[prost(string, tag="12")]
     pub label: ::prost::alloc::string::String,
     /// If true, skip this shipment, but don't apply a `penalty_cost`.
     ///
@@ -924,11 +924,11 @@ pub struct Shipment {
     /// or `injected_solution_constraint` is permitted; the solver removes the
     /// related pickup/delivery visits from the performing route.
     /// `precedence_rules` that reference ignored shipments will also be ignored.
-    #[prost(bool, tag = "13")]
+    #[prost(bool, tag="13")]
     pub ignore: bool,
     /// Deprecated: Use \[Shipment.load_demands][\] instead.
     #[deprecated]
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub demands: ::prost::alloc::vec::Vec<CapacityQuantity>,
 }
 /// Nested message and enum types in `Shipment`.
@@ -942,28 +942,28 @@ pub mod shipment {
         /// The geo-location where the vehicle arrives when performing this
         /// `VisitRequest`. If the shipment model has duration distance matrices,
         /// `arrival_location` must not be specified.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub arrival_location: ::core::option::Option<super::super::super::super::r#type::LatLng>,
         /// The waypoint where the vehicle arrives when performing this
         /// `VisitRequest`. If the shipment model has duration distance matrices,
         /// `arrival_waypoint` must not be specified.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub arrival_waypoint: ::core::option::Option<super::Waypoint>,
         /// The geo-location where the vehicle departs after completing this
         /// `VisitRequest`. Can be omitted if it is the same as `arrival_location`.
         /// If the shipment model has duration distance matrices,
         /// `departure_location` must not be specified.
-        #[prost(message, optional, tag = "3")]
+        #[prost(message, optional, tag="3")]
         pub departure_location: ::core::option::Option<super::super::super::super::r#type::LatLng>,
         /// The waypoint where the vehicle departs after completing this
         /// `VisitRequest`. Can be omitted if it is the same as `arrival_waypoint`.
         /// If the shipment model has duration distance matrices,
         /// `departure_waypoint` must not be specified.
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub departure_waypoint: ::core::option::Option<super::Waypoint>,
         /// Specifies tags attached to the visit request.
         /// Empty or duplicate strings are not allowed.
-        #[prost(string, repeated, tag = "5")]
+        #[prost(string, repeated, tag="5")]
         pub tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Time windows which constrain the arrival time at a visit.
         /// Note that a vehicle may depart outside of the arrival time window, i.e.
@@ -979,40 +979,40 @@ pub mod shipment {
         ///
         /// `cost_per_hour_after_soft_end_time` and `soft_end_time` can only
         /// be set if there is a single time window.
-        #[prost(message, repeated, tag = "6")]
+        #[prost(message, repeated, tag="6")]
         pub time_windows: ::prost::alloc::vec::Vec<super::TimeWindow>,
         /// Duration of the visit, i.e. time spent by the vehicle between arrival
         /// and departure (to be added to the possible waiting time; see
         /// `time_windows`).
-        #[prost(message, optional, tag = "7")]
+        #[prost(message, optional, tag="7")]
         pub duration: ::core::option::Option<::prost_types::Duration>,
         /// Cost to service this visit request on a vehicle route. This can be used
         /// to pay different costs for each alternative pickup or delivery of a
         /// shipment. This cost must be in the same unit as `Shipment.penalty_cost`
         /// and must not be negative.
-        #[prost(double, tag = "8")]
+        #[prost(double, tag="8")]
         pub cost: f64,
         /// Load demands of this visit request. This is just like
         /// \[Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands\] field, except that it only applies to this
         /// \[VisitRequest][google.cloud.optimization.v1.Shipment.VisitRequest\] instead of the whole \[Shipment][google.cloud.optimization.v1.Shipment\].
         /// The demands listed here are added to the demands listed in
         /// \[Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands\].
-        #[prost(map = "string, message", tag = "12")]
+        #[prost(map="string, message", tag="12")]
         pub load_demands: ::std::collections::HashMap<::prost::alloc::string::String, Load>,
         /// Specifies the types of the visit. This may be used to allocate additional
         /// time required for a vehicle to complete this visit (see
         /// \[Vehicle.extra_visit_duration_for_visit_type][google.cloud.optimization.v1.Vehicle.extra_visit_duration_for_visit_type\]).
         ///
         /// A type can only appear once.
-        #[prost(string, repeated, tag = "10")]
+        #[prost(string, repeated, tag="10")]
         pub visit_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Specifies a label for this `VisitRequest`. This label is reported in the
         /// response as `visit_label` in the corresponding \[ShipmentRoute.Visit][google.cloud.optimization.v1.ShipmentRoute.Visit\].
-        #[prost(string, tag = "11")]
+        #[prost(string, tag="11")]
         pub label: ::prost::alloc::string::String,
         /// Deprecated: Use \[VisitRequest.load_demands][\] instead.
         #[deprecated]
-        #[prost(message, repeated, tag = "9")]
+        #[prost(message, repeated, tag="9")]
         pub demands: ::prost::alloc::vec::Vec<super::CapacityQuantity>,
     }
     /// When performing a visit, a predefined amount may be added to the vehicle
@@ -1023,7 +1023,7 @@ pub mod shipment {
         /// The amount by which the load of the vehicle performing the corresponding
         /// visit will vary. Since it is an integer, users are advised to choose an
         /// appropriate unit to avoid loss of precision. Must be ≥ 0.
-        #[prost(int64, tag = "2")]
+        #[prost(int64, tag="2")]
         pub amount: i64,
     }
 }
@@ -1034,13 +1034,10 @@ pub mod shipment {
 pub struct ShipmentTypeIncompatibility {
     /// List of incompatible types. Two shipments having different `shipment_types`
     /// among those listed are "incompatible".
-    #[prost(string, repeated, tag = "1")]
+    #[prost(string, repeated, tag="1")]
     pub types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Mode applied to the incompatibility.
-    #[prost(
-        enumeration = "shipment_type_incompatibility::IncompatibilityMode",
-        tag = "2"
-    )]
+    #[prost(enumeration="shipment_type_incompatibility::IncompatibilityMode", tag="2")]
     pub incompatibility_mode: i32,
 }
 /// Nested message and enum types in `ShipmentTypeIncompatibility`.
@@ -1072,19 +1069,18 @@ pub mod shipment_type_incompatibility {
 pub struct ShipmentTypeRequirement {
     /// List of alternative shipment types required by the
     /// `dependent_shipment_types`.
-    #[prost(string, repeated, tag = "1")]
-    pub required_shipment_type_alternatives:
-        ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag="1")]
+    pub required_shipment_type_alternatives: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// All shipments with a type in the `dependent_shipment_types` field require
     /// at least one shipment of type `required_shipment_type_alternatives` to be
     /// visited on the same route.
     ///
     /// NOTE: Chains of requirements such that a `shipment_type` depends on itself
     /// are not allowed.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub dependent_shipment_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Mode applied to the requirement.
-    #[prost(enumeration = "shipment_type_requirement::RequirementMode", tag = "3")]
+    #[prost(enumeration="shipment_type_requirement::RequirementMode", tag="3")]
     pub requirement_mode: i32,
 }
 /// Nested message and enum types in `ShipmentTypeRequirement`.
@@ -1121,27 +1117,27 @@ pub mod shipment_type_requirement {
 pub struct Vehicle {
     /// The travel mode which affects the roads usable by the vehicle and its
     /// speed. See also `travel_duration_multiple`.
-    #[prost(enumeration = "vehicle::TravelMode", tag = "1")]
+    #[prost(enumeration="vehicle::TravelMode", tag="1")]
     pub travel_mode: i32,
     /// Geographic location where the vehicle starts before picking up any
     /// shipments. If not specified, the vehicle starts at its first pickup.
     /// If the shipment model has duration and distance matrices, `start_location`
     /// must not be specified.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub start_location: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// Waypoint representing a geographic location where the vehicle starts before
     /// picking up any shipments. If neither `start_waypoint` nor `start_location`
     /// is specified, the vehicle starts at its first pickup.
     /// If the shipment model has duration and distance matrices, `start_waypoint`
     /// must not be specified.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub start_waypoint: ::core::option::Option<Waypoint>,
     /// Geographic location where the vehicle ends after it has completed its last
     /// `VisitRequest`. If not specified the vehicle's `ShipmentRoute` ends
     /// immediately when it completes its last `VisitRequest`.
     /// If the shipment model has duration and distance matrices, `end_location`
     /// must not be specified.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub end_location: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// Waypoint representing a geographic location where the vehicle ends after
     /// it has completed its last `VisitRequest`. If neither `end_waypoint` nor
@@ -1149,17 +1145,17 @@ pub struct Vehicle {
     /// when it completes its last `VisitRequest`.
     /// If the shipment model has duration and distance matrices, `end_waypoint`
     /// must not be specified.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub end_waypoint: ::core::option::Option<Waypoint>,
     /// Specifies tags attached to the start of the vehicle's route.
     ///
     /// Empty or duplicate strings are not allowed.
-    #[prost(string, repeated, tag = "7")]
+    #[prost(string, repeated, tag="7")]
     pub start_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Specifies tags attached to the end of the vehicle's route.
     ///
     /// Empty or duplicate strings are not allowed.
-    #[prost(string, repeated, tag = "8")]
+    #[prost(string, repeated, tag="8")]
     pub end_tags: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Time windows during which the vehicle may depart its start location.
     /// They must be within the global time limits (see
@@ -1173,7 +1169,7 @@ pub struct Vehicle {
     ///
     /// `cost_per_hour_after_soft_end_time` and `soft_end_time` can only be set if
     /// there is a single time window.
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag="9")]
     pub start_time_windows: ::prost::alloc::vec::Vec<TimeWindow>,
     /// Time windows during which the vehicle may arrive at its end location.
     /// They must be within the global time limits (see
@@ -1187,7 +1183,7 @@ pub struct Vehicle {
     ///
     /// `cost_per_hour_after_soft_end_time` and `soft_end_time` can only be set if
     /// there is a single time window.
-    #[prost(message, repeated, tag = "10")]
+    #[prost(message, repeated, tag="10")]
     pub end_time_windows: ::prost::alloc::vec::Vec<TimeWindow>,
     /// Specifies a multiplicative factor that can be used to increase or decrease
     /// travel times of this vehicle. For example, setting this to 2.0 means
@@ -1202,10 +1198,10 @@ pub struct Vehicle {
     /// a small multiple may result in a loss of precision.
     ///
     /// See also `extra_visit_duration_for_visit_type` below.
-    #[prost(double, optional, tag = "11")]
+    #[prost(double, optional, tag="11")]
     pub travel_duration_multiple: ::core::option::Option<f64>,
     /// Unloading policy enforced on the vehicle.
-    #[prost(enumeration = "vehicle::UnloadingPolicy", tag = "12")]
+    #[prost(enumeration="vehicle::UnloadingPolicy", tag="12")]
     pub unloading_policy: i32,
     /// Capacities of the vehicle (weight, volume, # of pallets for example).
     /// The keys in the map are the identifiers of the type of load, consistent
@@ -1213,9 +1209,8 @@ pub struct Vehicle {
     /// \[Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands\]
     /// field. If a given key is absent from this map, the corresponding capacity
     /// is considered to be limitless.
-    #[prost(map = "string, message", tag = "30")]
-    pub load_limits:
-        ::std::collections::HashMap<::prost::alloc::string::String, vehicle::LoadLimit>,
+    #[prost(map="string, message", tag="30")]
+    pub load_limits: ::std::collections::HashMap<::prost::alloc::string::String, vehicle::LoadLimit>,
     /// Vehicle costs: all costs add up and must be in the same unit as
     /// \[Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost\].
     ///
@@ -1223,21 +1218,21 @@ pub struct Vehicle {
     /// taken by the route, and includes travel time, waiting time, and visit time.
     /// Using `cost_per_hour` instead of just `cost_per_traveled_hour` may result
     /// in additional latency.
-    #[prost(double, tag = "16")]
+    #[prost(double, tag="16")]
     pub cost_per_hour: f64,
     /// Cost per traveled hour of the vehicle route. This cost is applied only to
     /// travel time taken by the route (i.e., that reported in
     /// \[ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions\]), and excludes waiting time and visit time.
-    #[prost(double, tag = "17")]
+    #[prost(double, tag="17")]
     pub cost_per_traveled_hour: f64,
     /// Cost per kilometer of the vehicle route. This cost is applied to the
     /// distance reported in the \[ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions\] and does not apply
     /// to any distance implicitly traveled from the `arrival_location` to the
     /// `departure_location` of a single `VisitRequest`.
-    #[prost(double, tag = "18")]
+    #[prost(double, tag="18")]
     pub cost_per_kilometer: f64,
     /// Fixed cost applied if this vehicle is used to handle a shipment.
-    #[prost(double, tag = "19")]
+    #[prost(double, tag="19")]
     pub fixed_cost: f64,
     /// This field only applies to vehicles when their route does not serve any
     /// shipments. It indicates if the vehicle should be considered as used or not
@@ -1251,22 +1246,22 @@ pub struct Vehicle {
     /// `break_rule` or delay (from `TransitionAttributes`) are scheduled for this
     /// vehicle. In this case, the vehicle's `ShipmentRoute` doesn't contain any
     /// information except for the vehicle index and label.
-    #[prost(bool, tag = "20")]
+    #[prost(bool, tag="20")]
     pub used_if_route_is_empty: bool,
     /// Limit applied to the total duration of the vehicle's route. In a given
     /// `OptimizeToursResponse`, the route duration of a vehicle is the
     /// difference between its `vehicle_end_time` and `vehicle_start_time`.
-    #[prost(message, optional, tag = "21")]
+    #[prost(message, optional, tag="21")]
     pub route_duration_limit: ::core::option::Option<vehicle::DurationLimit>,
     /// Limit applied to the travel duration of the vehicle's route. In a given
     /// `OptimizeToursResponse`, the route travel duration is the sum of all its
     /// \[transitions.travel_duration][google.cloud.optimization.v1.ShipmentRoute.Transition.travel_duration\].
-    #[prost(message, optional, tag = "22")]
+    #[prost(message, optional, tag="22")]
     pub travel_duration_limit: ::core::option::Option<vehicle::DurationLimit>,
     /// Limit applied to the total distance of the vehicle's route. In a given
     /// `OptimizeToursResponse`, the route distance is the sum of all its
     /// \[transitions.travel_distance_meters][google.cloud.optimization.v1.ShipmentRoute.Transition.travel_distance_meters\].
-    #[prost(message, optional, tag = "23")]
+    #[prost(message, optional, tag="23")]
     pub route_distance_limit: ::core::option::Option<DistanceLimit>,
     /// Specifies a map from visit_types strings to durations. The duration is time
     /// in addition to
@@ -1277,16 +1272,15 @@ pub struct Vehicle {
     ///
     /// If a visit request has multiple types, a duration will be added for each
     /// type in the map.
-    #[prost(map = "string, message", tag = "24")]
-    pub extra_visit_duration_for_visit_type:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Duration>,
+    #[prost(map="string, message", tag="24")]
+    pub extra_visit_duration_for_visit_type: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Duration>,
     /// Describes the break schedule to be enforced on this vehicle.
     /// If empty, no breaks will be scheduled for this vehicle.
-    #[prost(message, optional, tag = "25")]
+    #[prost(message, optional, tag="25")]
     pub break_rule: ::core::option::Option<BreakRule>,
     /// Specifies a label for this vehicle. This label is reported in the response
     /// as the `vehicle_label` of the corresponding \[ShipmentRoute][google.cloud.optimization.v1.ShipmentRoute\].
-    #[prost(string, tag = "27")]
+    #[prost(string, tag="27")]
     pub label: ::prost::alloc::string::String,
     /// If true, `used_if_route_is_empty` must be false, and this vehicle will
     /// remain unused.
@@ -1301,7 +1295,7 @@ pub struct Vehicle {
     /// `RELAX_ALL_AFTER_THRESHOLD`), it is skipped in the response.
     /// If a shipment has a non-empty `allowed_vehicle_indices` field and all of
     /// the allowed vehicles are ignored, it is skipped in the response.
-    #[prost(bool, tag = "28")]
+    #[prost(bool, tag="28")]
     pub ignore: bool,
     /// Deprecated: No longer used.
     /// Indices in the `break_rule` field in the source
@@ -1310,19 +1304,19 @@ pub struct Vehicle {
     ///
     /// As of 2018/03, at most one rule index per vehicle can be specified.
     #[deprecated]
-    #[prost(int32, repeated, packed = "false", tag = "29")]
+    #[prost(int32, repeated, packed="false", tag="29")]
     pub break_rule_indices: ::prost::alloc::vec::Vec<i32>,
     /// Deprecated: Use \[Vehicle.load_limits][\] instead.
     #[deprecated]
-    #[prost(message, repeated, tag = "13")]
+    #[prost(message, repeated, tag="13")]
     pub capacities: ::prost::alloc::vec::Vec<CapacityQuantity>,
     /// Deprecated: Use \[Vehicle.LoadLimit.start_load_interval][\] instead.
     #[deprecated]
-    #[prost(message, repeated, tag = "14")]
+    #[prost(message, repeated, tag="14")]
     pub start_load_intervals: ::prost::alloc::vec::Vec<CapacityQuantityInterval>,
     /// Deprecated: Use \[Vehicle.LoadLimit.end_load_interval][\] instead.
     #[deprecated]
-    #[prost(message, repeated, tag = "15")]
+    #[prost(message, repeated, tag="15")]
     pub end_load_intervals: ::prost::alloc::vec::Vec<CapacityQuantityInterval>,
 }
 /// Nested message and enum types in `Vehicle`.
@@ -1332,22 +1326,22 @@ pub mod vehicle {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LoadLimit {
         /// The maximum acceptable amount of load.
-        #[prost(int64, optional, tag = "1")]
+        #[prost(int64, optional, tag="1")]
         pub max_load: ::core::option::Option<i64>,
         /// A soft limit of the load. See \[cost_per_unit_above_soft_max][google.cloud.optimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max\].
-        #[prost(int64, tag = "2")]
+        #[prost(int64, tag="2")]
         pub soft_max_load: i64,
         /// If the load ever exceeds \[soft_max_load][google.cloud.optimization.v1.Vehicle.LoadLimit.soft_max_load\] along this vehicle's route,
         /// the following cost penalty applies (only once per vehicle):
         /// (load - \[soft_max_load][google.cloud.optimization.v1.Vehicle.LoadLimit.soft_max_load\]) * \[cost_per_unit_above_soft_max][google.cloud.optimization.v1.Vehicle.LoadLimit.cost_per_unit_above_soft_max\]. All costs
         /// add up and must be in the same unit as \[Shipment.penalty_cost][google.cloud.optimization.v1.Shipment.penalty_cost\].
-        #[prost(double, tag = "3")]
+        #[prost(double, tag="3")]
         pub cost_per_unit_above_soft_max: f64,
         /// The acceptable load interval of the vehicle at the start of the route.
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub start_load_interval: ::core::option::Option<load_limit::Interval>,
         /// The acceptable load interval of the vehicle at the end of the route.
-        #[prost(message, optional, tag = "5")]
+        #[prost(message, optional, tag="5")]
         pub end_load_interval: ::core::option::Option<load_limit::Interval>,
     }
     /// Nested message and enum types in `LoadLimit`.
@@ -1357,12 +1351,12 @@ pub mod vehicle {
         pub struct Interval {
             /// A minimum acceptable load. Must be ≥ 0.
             /// If they're both specified, \[min][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.min\] must be ≤ \[max][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.max\].
-            #[prost(int64, tag = "1")]
+            #[prost(int64, tag="1")]
             pub min: i64,
             /// A maximum acceptable load. Must be ≥ 0. If unspecified, the maximum
             /// load is unrestricted by this message.
             /// If they're both specified, \[min][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.min\] must be ≤ \[max][google.cloud.optimization.v1.Vehicle.LoadLimit.Interval.max\].
-            #[prost(int64, optional, tag = "2")]
+            #[prost(int64, optional, tag="2")]
             pub max: ::core::option::Option<i64>,
         }
     }
@@ -1374,7 +1368,7 @@ pub mod vehicle {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct DurationLimit {
         /// A hard limit constraining the duration to be at most max_duration.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub max_duration: ::core::option::Option<::prost_types::Duration>,
         /// A soft limit not enforcing a maximum duration limit, but when violated
         /// makes the route incur a cost. This cost adds up to other costs defined in
@@ -1382,7 +1376,7 @@ pub mod vehicle {
         ///
         /// If defined, `soft_max_duration` must be nonnegative. If max_duration is
         /// also defined, `soft_max_duration` must be less than max_duration.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub soft_max_duration: ::core::option::Option<::prost_types::Duration>,
         /// Cost per hour incurred if the `soft_max_duration` threshold is violated.
         /// The additional cost is 0 if the duration is under the threshold,
@@ -1391,7 +1385,7 @@ pub mod vehicle {
         ///   cost_per_hour_after_soft_max * (duration - soft_max_duration)
         /// ```
         /// The cost must be nonnegative.
-        #[prost(double, optional, tag = "3")]
+        #[prost(double, optional, tag="3")]
         pub cost_per_hour_after_soft_max: ::core::option::Option<f64>,
         /// A soft limit not enforcing a maximum duration limit, but when violated
         /// makes the route incur a cost, quadratic in the duration. This cost adds
@@ -1403,7 +1397,7 @@ pub mod vehicle {
         /// day:
         ///
         ///    `max_duration - quadratic_soft_max_duration <= 86400 seconds`
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub quadratic_soft_max_duration: ::core::option::Option<::prost_types::Duration>,
         /// Cost per square hour incurred if the
         /// `quadratic_soft_max_duration` threshold is violated.
@@ -1417,7 +1411,7 @@ pub mod vehicle {
         /// ```
         ///
         /// The cost must be nonnegative.
-        #[prost(double, optional, tag = "5")]
+        #[prost(double, optional, tag="5")]
         pub cost_per_square_hour_after_quadratic_soft_max: ::core::option::Option<f64>,
     }
     /// Travel modes which can be used by vehicles.
@@ -1472,17 +1466,17 @@ pub mod vehicle {
 pub struct TimeWindow {
     /// The hard time window start time. If unspecified it will be set to
     /// `ShipmentModel.global_start_time`.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The hard time window end time. If unspecified it will be set to
     /// `ShipmentModel.global_end_time`.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The soft start time of the time window.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub soft_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The soft end time of the time window.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub soft_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A cost per hour added to other costs in the model if the event occurs
     /// before soft_start_time, computed as:
@@ -1495,7 +1489,7 @@ pub struct TimeWindow {
     ///
     /// This cost must be positive, and the field can only be set if
     /// soft_start_time has been set.
-    #[prost(double, optional, tag = "5")]
+    #[prost(double, optional, tag="5")]
     pub cost_per_hour_before_soft_start_time: ::core::option::Option<f64>,
     /// A cost per hour added to other costs in the model if the event occurs after
     /// `soft_end_time`, computed as:
@@ -1508,25 +1502,25 @@ pub struct TimeWindow {
     ///
     /// This cost must be positive, and the field can only be set if
     /// `soft_end_time` has been set.
-    #[prost(double, optional, tag = "6")]
+    #[prost(double, optional, tag="6")]
     pub cost_per_hour_after_soft_end_time: ::core::option::Option<f64>,
 }
 /// Deprecated: Use \[Shipment.Load][\], \[Vehicle.LoadLimit][\] and \[ShipmentRoute.VehicleLoad][\] instead.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityQuantity {
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub r#type: ::prost::alloc::string::String,
-    #[prost(int64, tag = "2")]
+    #[prost(int64, tag="2")]
     pub value: i64,
 }
 /// Deprecated: Use \[Vehicle.LoadLimit.Interval][\] instead.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CapacityQuantityInterval {
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub r#type: ::prost::alloc::string::String,
-    #[prost(int64, optional, tag = "2")]
+    #[prost(int64, optional, tag="2")]
     pub min_value: ::core::option::Option<i64>,
-    #[prost(int64, optional, tag = "3")]
+    #[prost(int64, optional, tag="3")]
     pub max_value: ::core::option::Option<i64>,
 }
 /// A limit defining a maximum distance which can be traveled. It can be either
@@ -1538,7 +1532,7 @@ pub struct CapacityQuantityInterval {
 pub struct DistanceLimit {
     /// A hard limit constraining the distance to be at most max_meters. The limit
     /// must be nonnegative.
-    #[prost(int64, optional, tag = "1")]
+    #[prost(int64, optional, tag="1")]
     pub max_meters: ::core::option::Option<i64>,
     /// A soft limit not enforcing a maximum distance limit, but when violated
     /// results in a cost which adds up to other costs defined in the model,
@@ -1546,7 +1540,7 @@ pub struct DistanceLimit {
     ///
     /// If defined soft_max_meters must be less than max_meters and must be
     /// nonnegative.
-    #[prost(int64, optional, tag = "2")]
+    #[prost(int64, optional, tag="2")]
     pub soft_max_meters: ::core::option::Option<i64>,
     /// Cost per kilometer incurred if `soft_max_meters` limit is violated. The
     /// additional cost is 0 if the distance is under the limit, otherwise the
@@ -1556,7 +1550,7 @@ pub struct DistanceLimit {
     ///   cost_per_kilometer_above_soft_max.
     /// ```
     /// The cost must be nonnegative.
-    #[prost(double, optional, tag = "3")]
+    #[prost(double, optional, tag="3")]
     pub cost_per_kilometer_above_soft_max: ::core::option::Option<f64>,
 }
 /// Specifies attributes of transitions between two consecutive visits on a
@@ -1572,43 +1566,43 @@ pub struct TransitionAttributes {
     /// or \[Vehicle.start_tags][google.cloud.optimization.v1.Vehicle.start_tags\]
     /// either contains `src_tag` or does not contain `excluded_src_tag` (depending
     /// on which of these two fields is non-empty).
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub src_tag: ::prost::alloc::string::String,
     /// See `src_tag`. Exactly one of `src_tag` and `excluded_src_tag` must be
     /// non-empty.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub excluded_src_tag: ::prost::alloc::string::String,
     /// A destination visit or vehicle end matches iff its
     /// \[VisitRequest.tags][google.cloud.optimization.v1.Shipment.VisitRequest.tags\]
     /// or \[Vehicle.end_tags][google.cloud.optimization.v1.Vehicle.end_tags\] either contains `dst_tag` or does not contain
     /// `excluded_dst_tag` (depending on which of these two fields is non-empty).
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub dst_tag: ::prost::alloc::string::String,
     /// See `dst_tag`. Exactly one of `dst_tag` and `excluded_dst_tag` must be
     /// non-empty.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub excluded_dst_tag: ::prost::alloc::string::String,
     /// Specifies a cost for performing this transition. This is in the same unit
     /// as all other costs in the model and must not be negative. It is applied on
     /// top of all other existing costs.
-    #[prost(double, tag = "5")]
+    #[prost(double, tag="5")]
     pub cost: f64,
     /// Specifies a cost per kilometer applied to the distance traveled while
     /// performing this transition. It adds up to any
     /// \[Vehicle.cost_per_kilometer][google.cloud.optimization.v1.Vehicle.cost_per_kilometer\] specified on vehicles.
-    #[prost(double, tag = "6")]
+    #[prost(double, tag="6")]
     pub cost_per_kilometer: f64,
     /// Specifies a limit on the distance traveled while performing this
     /// transition.
     ///
     /// As of 2021/06, only soft limits are supported.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub distance_limit: ::core::option::Option<DistanceLimit>,
     /// Specifies a delay incurred when performing this transition.
     ///
     /// This delay always occurs *after* finishing the source visit and *before*
     /// starting the destination visit.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub delay: ::core::option::Option<::prost_types::Duration>,
 }
 /// Encapsulates a waypoint. Waypoints mark arrival and departure locations of
@@ -1621,10 +1615,10 @@ pub struct Waypoint {
     /// stop at the side of road that the location is biased towards from the
     /// center of the road. This option works only for the 'DRIVING' travel mode,
     /// and when the 'location_type' is set to 'location'.
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag="3")]
     pub side_of_road: bool,
     /// Different ways to represent a location.
-    #[prost(oneof = "waypoint::LocationType", tags = "1, 2")]
+    #[prost(oneof="waypoint::LocationType", tags="1, 2")]
     pub location_type: ::core::option::Option<waypoint::LocationType>,
 }
 /// Nested message and enum types in `Waypoint`.
@@ -1634,10 +1628,10 @@ pub mod waypoint {
     pub enum LocationType {
         /// A point specified using geographic coordinates, including an optional
         /// heading.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         Location(super::Location),
         /// The POI Place ID associated with the waypoint.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         PlaceId(::prost::alloc::string::String),
     }
 }
@@ -1645,13 +1639,13 @@ pub mod waypoint {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Location {
     /// The waypoint's geographic coordinates.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub lat_lng: ::core::option::Option<super::super::super::r#type::LatLng>,
     /// The compass heading associated with the direction of the flow of traffic.
     /// This value is used to specify the side of the road to use for pickup and
     /// drop-off. Heading values can be from 0 to 360, where 0 specifies a heading
     /// of due North, 90 specifies a heading of due East, etc.
-    #[prost(int32, optional, tag = "2")]
+    #[prost(int32, optional, tag="2")]
     pub heading: ::core::option::Option<i32>,
 }
 /// Rules to generate time breaks for a vehicle (e.g. lunch breaks). A break
@@ -1667,11 +1661,11 @@ pub struct Location {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BreakRule {
     /// Sequence of breaks. See the `BreakRequest` message.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub break_requests: ::prost::alloc::vec::Vec<break_rule::BreakRequest>,
     /// Several `FrequencyConstraint` may apply. They must all be satisfied by
     /// the `BreakRequest`s of this `BreakRule`. See `FrequencyConstraint`.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub frequency_constraints: ::prost::alloc::vec::Vec<break_rule::FrequencyConstraint>,
 }
 /// Nested message and enum types in `BreakRule`.
@@ -1684,13 +1678,13 @@ pub mod break_rule {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct BreakRequest {
         /// Required. Lower bound (inclusive) on the start of the break.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub earliest_start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Required. Upper bound (inclusive) on the start of the break.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub latest_start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Required. Minimum duration of the break. Must be positive.
-        #[prost(message, optional, tag = "3")]
+        #[prost(message, optional, tag="3")]
         pub min_duration: ::core::option::Option<::prost_types::Duration>,
     }
     /// One may further constrain the frequency and duration of the breaks
@@ -1730,12 +1724,12 @@ pub mod break_rule {
     pub struct FrequencyConstraint {
         /// Required. Minimum break duration for this constraint. Nonnegative.
         /// See description of `FrequencyConstraint`.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub min_break_duration: ::core::option::Option<::prost_types::Duration>,
         /// Required. Maximum allowed span of any interval of time in the route that does not
         /// include at least partially a break of `duration >=
         /// min_break_duration`. Must be positive.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub max_inter_break_duration: ::core::option::Option<::prost_types::Duration>,
     }
 }
@@ -1827,25 +1821,25 @@ pub mod break_rule {
 pub struct ShipmentRoute {
     /// Vehicle performing the route, identified by its index in the source
     /// `ShipmentModel`.
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub vehicle_index: i32,
     /// Label of the vehicle performing this route, equal to
     /// `ShipmentModel.vehicles(vehicle_index).label`, if specified.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub vehicle_label: ::prost::alloc::string::String,
     /// Time at which the vehicle starts its route.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub vehicle_start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time at which the vehicle finishes its route.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub vehicle_end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Ordered sequence of visits representing a route.
     /// visits\[i\] is the i-th visit in the route.
     /// If this field is empty, the vehicle is considered as unused.
-    #[prost(message, repeated, tag = "7")]
+    #[prost(message, repeated, tag="7")]
     pub visits: ::prost::alloc::vec::Vec<shipment_route::Visit>,
     /// Ordered list of transitions for the route.
-    #[prost(message, repeated, tag = "8")]
+    #[prost(message, repeated, tag="8")]
     pub transitions: ::prost::alloc::vec::Vec<shipment_route::Transition>,
     /// When
     /// \[OptimizeToursRequest.consider_road_traffic][google.cloud.optimization.v1.OptimizeToursRequest.consider_road_traffic\],
@@ -1863,23 +1857,23 @@ pub struct ShipmentRoute {
     /// `travel_duration(previous_visit, next_visit)` due to traffic. Also, a break
     /// may be forced to overlap with a visit due to an increase in travel time
     /// estimates and visit or break time window restrictions.
-    #[prost(bool, tag = "9")]
+    #[prost(bool, tag="9")]
     pub has_traffic_infeasibilities: bool,
     /// The encoded polyline representation of the route.
     /// This field is only populated if
     /// \[OptimizeToursRequest.populate_polylines][google.cloud.optimization.v1.OptimizeToursRequest.populate_polylines\]
     /// is set to true.
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub route_polyline: ::core::option::Option<shipment_route::EncodedPolyline>,
     /// Breaks scheduled for the vehicle performing this route.
     /// The `breaks` sequence represents time intervals, each starting at the
     /// corresponding `start_time` and lasting `duration` seconds.
-    #[prost(message, repeated, tag = "11")]
+    #[prost(message, repeated, tag="11")]
     pub breaks: ::prost::alloc::vec::Vec<shipment_route::Break>,
     /// Duration, distance and load metrics for this route. The fields of
     /// \[AggregatedMetrics][google.cloud.optimization.v1.AggregatedMetrics\] are summed over all \[ShipmentRoute.transitions][google.cloud.optimization.v1.ShipmentRoute.transitions\] or
     /// \[ShipmentRoute.visits][google.cloud.optimization.v1.ShipmentRoute.visits\], depending on the context.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag="12")]
     pub metrics: ::core::option::Option<AggregatedMetrics>,
     /// Cost of the route, broken down by cost-related request fields.
     /// The keys are proto paths, relative to the input OptimizeToursRequest, e.g.
@@ -1889,10 +1883,10 @@ pub struct ShipmentRoute {
     /// pickup costs over the route. All costs defined in the model are reported in
     /// detail here with the exception of costs related to TransitionAttributes
     /// that are only reported in an aggregated way as of 2022/01.
-    #[prost(map = "string, double", tag = "17")]
+    #[prost(map="string, double", tag="17")]
     pub route_costs: ::std::collections::HashMap<::prost::alloc::string::String, f64>,
     /// Total cost of the route. The sum of all costs in the cost map.
-    #[prost(double, tag = "18")]
+    #[prost(double, tag="18")]
     pub route_total_cost: f64,
     /// Deprecated: Use \[ShipmentRoute.Transition.loads][\] instead.
     /// Vehicle loads upon arrival at its end location, for each
@@ -1901,12 +1895,12 @@ pub struct ShipmentRoute {
     /// loads for quantity types unconstrained by intervals and that don't have any
     /// non-zero demand on the route.
     #[deprecated]
-    #[prost(message, repeated, tag = "13")]
+    #[prost(message, repeated, tag="13")]
     pub end_loads: ::prost::alloc::vec::Vec<CapacityQuantity>,
     /// Deprecated: Use \[ShipmentRoute.Transition][\] instead.
     /// Ordered list of travel steps for the route.
     #[deprecated]
-    #[prost(message, repeated, tag = "14")]
+    #[prost(message, repeated, tag="14")]
     pub travel_steps: ::prost::alloc::vec::Vec<shipment_route::TravelStep>,
     /// Deprecated: No longer used.
     /// This field will only be populated at the
@@ -1916,13 +1910,13 @@ pub struct ShipmentRoute {
     /// It is equal to `vehicle_end_time` - `vehicle_start_time` - travel duration
     /// from the vehicle's start_location to its `end_location`.
     #[deprecated]
-    #[prost(message, optional, tag = "15")]
+    #[prost(message, optional, tag="15")]
     pub vehicle_detour: ::core::option::Option<::prost_types::Duration>,
     /// Deprecated: Use \[ShipmentRoute.Transition.delay_duration][\] instead.
     /// Delay occurring before the vehicle end. See
     /// \[TransitionAttributes.delay][google.cloud.optimization.v1.TransitionAttributes.delay\].
     #[deprecated]
-    #[prost(message, optional, tag = "16")]
+    #[prost(message, optional, tag="16")]
     pub delay_before_vehicle_end: ::core::option::Option<shipment_route::Delay>,
 }
 /// Nested message and enum types in `ShipmentRoute`.
@@ -1933,10 +1927,10 @@ pub mod shipment_route {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Delay {
         /// Start of the delay.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Duration of the delay.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub duration: ::core::option::Option<::prost_types::Duration>,
     }
     /// A visit performed during a route. This visit corresponds to a pickup or a
@@ -1944,29 +1938,28 @@ pub mod shipment_route {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Visit {
         /// Index of the `shipments` field in the source \[ShipmentModel][google.cloud.optimization.v1.ShipmentModel\].
-        #[prost(int32, tag = "1")]
+        #[prost(int32, tag="1")]
         pub shipment_index: i32,
         /// If true the visit corresponds to a pickup of a `Shipment`. Otherwise, it
         /// corresponds to a delivery.
-        #[prost(bool, tag = "2")]
+        #[prost(bool, tag="2")]
         pub is_pickup: bool,
         /// Index of `VisitRequest` in either the pickup or delivery field of the
         /// `Shipment` (see `is_pickup`).
-        #[prost(int32, tag = "3")]
+        #[prost(int32, tag="3")]
         pub visit_request_index: i32,
         /// Time at which the visit starts. Note that the vehicle may arrive earlier
         /// than this at the visit location. Times are consistent with the
         /// `ShipmentModel`.
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Total visit load demand as the sum of the shipment and the visit request
         /// `load_demands`. The values are negative if the visit is a delivery.
         /// Demands are reported for the same types as the
         /// \[Transition.loads][google.cloud.optimization.v1.ShipmentRoute.Transition\]
         /// (see this field).
-        #[prost(map = "string, message", tag = "11")]
-        pub load_demands:
-            ::std::collections::HashMap<::prost::alloc::string::String, super::shipment::Load>,
+        #[prost(map="string, message", tag="11")]
+        pub load_demands: ::std::collections::HashMap<::prost::alloc::string::String, super::shipment::Load>,
         /// Extra detour time due to the shipments visited on the route before the
         /// visit and to the potential waiting time induced by time windows.
         /// If the visit is a delivery, the detour is computed from the corresponding
@@ -1982,16 +1975,16 @@ pub mod shipment_route {
         /// start_time - vehicle_start_time - travel duration from
         /// the vehicle's `start_location` to the visit.
         /// ```
-        #[prost(message, optional, tag = "6")]
+        #[prost(message, optional, tag="6")]
         pub detour: ::core::option::Option<::prost_types::Duration>,
         /// Copy of the corresponding `Shipment.label`, if specified in the
         /// `Shipment`.
-        #[prost(string, tag = "7")]
+        #[prost(string, tag="7")]
         pub shipment_label: ::prost::alloc::string::String,
         /// Copy of the corresponding
         /// \[VisitRequest.label][google.cloud.optimization.v1.Shipment.VisitRequest.label\],
         /// if specified in the `VisitRequest`.
-        #[prost(string, tag = "8")]
+        #[prost(string, tag="8")]
         pub visit_label: ::prost::alloc::string::String,
         /// Deprecated: Use \[ShipmentRoute.Transition.loads][\] instead.
         /// Vehicle loads upon arrival at the visit location, for each
@@ -2001,15 +1994,15 @@ pub mod shipment_route {
         /// Exception: we omit loads for quantity types unconstrained by intervals
         /// and that don't have any non-zero demand on the route.
         #[deprecated]
-        #[prost(message, repeated, tag = "9")]
+        #[prost(message, repeated, tag="9")]
         pub arrival_loads: ::prost::alloc::vec::Vec<super::CapacityQuantity>,
         /// Deprecated: Use \[ShipmentRoute.Transition.delay_duration][\] instead.
         #[deprecated]
-        #[prost(message, optional, tag = "10")]
+        #[prost(message, optional, tag="10")]
         pub delay_before_start: ::core::option::Option<Delay>,
         /// Deprecated: Use \[Visit.load_demands][\] instead.
         #[deprecated]
-        #[prost(message, repeated, tag = "5")]
+        #[prost(message, repeated, tag="5")]
         pub demands: ::prost::alloc::vec::Vec<super::CapacityQuantity>,
     }
     /// Transition between two events on the route. See the description of
@@ -2020,10 +2013,10 @@ pub mod shipment_route {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Transition {
         /// Travel duration during this transition.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub travel_duration: ::core::option::Option<::prost_types::Duration>,
         /// Distance traveled during the transition.
-        #[prost(double, tag = "2")]
+        #[prost(double, tag="2")]
         pub travel_distance_meters: f64,
         /// When traffic is requested via
         /// \[OptimizeToursRequest.consider_road_traffic\]
@@ -2031,23 +2024,23 @@ pub mod shipment_route {
         /// and the traffic info couldn't be retrieved for a `Transition`, this
         /// boolean is set to true. This may be temporary (rare hiccup in the
         /// realtime traffic servers) or permanent (no data for this location).
-        #[prost(bool, tag = "3")]
+        #[prost(bool, tag="3")]
         pub traffic_info_unavailable: bool,
         /// Sum of the delay durations applied to this transition. If any, the delay
         /// starts exactly `delay_duration` seconds before the next event (visit or
         /// vehicle end). See
         /// \[TransitionAttributes.delay][google.cloud.optimization.v1.TransitionAttributes.delay\].
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub delay_duration: ::core::option::Option<::prost_types::Duration>,
         /// Sum of the duration of the breaks occurring during this transition, if
         /// any. Details about each break's start time and duration are stored in
         /// \[ShipmentRoute.breaks][google.cloud.optimization.v1.ShipmentRoute.breaks\].
-        #[prost(message, optional, tag = "5")]
+        #[prost(message, optional, tag="5")]
         pub break_duration: ::core::option::Option<::prost_types::Duration>,
         /// Time spent waiting during this transition. Wait duration corresponds to
         /// idle time and does not include break time. Also note that this wait time
         /// may be split into several non-contiguous intervals.
-        #[prost(message, optional, tag = "6")]
+        #[prost(message, optional, tag="6")]
         pub wait_duration: ::core::option::Option<::prost_types::Duration>,
         /// Total duration of the transition, provided for convenience. It is equal
         /// to:
@@ -2057,17 +2050,17 @@ pub mod shipment_route {
         /// * if `ShipmentRoute.has_traffic_infeasibilities` is false, the following
         /// additionally holds: `total_duration = travel_duration + delay_duration
         /// + break_duration + wait_duration`.
-        #[prost(message, optional, tag = "7")]
+        #[prost(message, optional, tag="7")]
         pub total_duration: ::core::option::Option<::prost_types::Duration>,
         /// Start time of this transition.
-        #[prost(message, optional, tag = "8")]
+        #[prost(message, optional, tag="8")]
         pub start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// The encoded polyline representation of the route followed during the
         /// transition.
         /// This field is only populated if \[populate_transition_polylines\]
         /// \[google.cloud.optimization.v1.OptimizeToursRequest.populate_transition_polylines\]
         /// is set to true.
-        #[prost(message, optional, tag = "9")]
+        #[prost(message, optional, tag="9")]
         pub route_polyline: ::core::option::Option<EncodedPolyline>,
         /// Vehicle loads during this transition, for each type that either appears
         /// in this vehicle's \[Vehicle.load_limits][google.cloud.optimization.v1.Vehicle.load_limits\], or that have non-zero
@@ -2077,11 +2070,11 @@ pub mod shipment_route {
         /// vehicle route. Then, after each visit, the visit's `load_demands` are
         /// either added or subtracted to get the next transition's loads, depending
         /// on whether the visit was a pickup or a delivery.
-        #[prost(map = "string, message", tag = "11")]
+        #[prost(map="string, message", tag="11")]
         pub vehicle_loads: ::std::collections::HashMap<::prost::alloc::string::String, VehicleLoad>,
         /// Deprecated: Use \[Transition.vehicle_loads][\] instead.
         #[deprecated]
-        #[prost(message, repeated, tag = "10")]
+        #[prost(message, repeated, tag="10")]
         pub loads: ::prost::alloc::vec::Vec<super::CapacityQuantity>,
     }
     /// Reports the actual load of the vehicle at some point along the route,
@@ -2090,7 +2083,7 @@ pub mod shipment_route {
     pub struct VehicleLoad {
         /// The amount of load on the vehicle, for the given type. The unit of load
         /// is usually indicated by the type. See \[Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads\].
-        #[prost(int64, tag = "1")]
+        #[prost(int64, tag="1")]
         pub amount: i64,
     }
     /// The encoded representation of a polyline. More information on polyline
@@ -2100,17 +2093,17 @@ pub mod shipment_route {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct EncodedPolyline {
         /// String representing encoded points of the polyline.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub points: ::prost::alloc::string::String,
     }
     /// Data representing the execution of a break.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Break {
         /// Start time of a break.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub start_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Duration of a break.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub duration: ::core::option::Option<::prost_types::Duration>,
     }
     /// Deprecated: Use \[ShipmentRoute.transitions][\] instead.
@@ -2129,17 +2122,17 @@ pub mod shipment_route {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TravelStep {
         /// Duration of the travel step.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub duration: ::core::option::Option<::prost_types::Duration>,
         /// Distance traveled during the step.
-        #[prost(double, tag = "2")]
+        #[prost(double, tag="2")]
         pub distance_meters: f64,
         /// When traffic is requested via
         /// \[OptimizeToursRequest.consider_road_traffic][google.cloud.optimization.v1.OptimizeToursRequest.consider_road_traffic\],
         /// and the traffic info couldn't be retrieved for a TravelStep, this boolean
         /// is set to true. This may be temporary (rare hiccup in the realtime
         /// traffic servers) or permanent (no data for this location).
-        #[prost(bool, tag = "3")]
+        #[prost(bool, tag="3")]
         pub traffic_info_unavailable: bool,
         /// The encoded polyline representation of the route followed during the
         /// step.
@@ -2147,7 +2140,7 @@ pub mod shipment_route {
         /// This field is only populated if
         /// \[OptimizeToursRequest.populate_travel_step_polylines][google.cloud.optimization.v1.OptimizeToursRequest.populate_travel_step_polylines\]
         /// is set to true.
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub route_polyline: ::core::option::Option<EncodedPolyline>,
     }
 }
@@ -2158,15 +2151,15 @@ pub mod shipment_route {
 pub struct SkippedShipment {
     /// The index corresponds to the index of the shipment in the source
     /// `ShipmentModel`.
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub index: i32,
     /// Copy of the corresponding \[Shipment.label][google.cloud.optimization.v1.Shipment.label\], if specified in the
     /// `Shipment`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub label: ::prost::alloc::string::String,
     /// A list of reasons that explain why the shipment was skipped. See comment
     /// above `Reason`.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub reasons: ::prost::alloc::vec::Vec<skipped_shipment::Reason>,
 }
 /// Nested message and enum types in `SkippedShipment`.
@@ -2200,15 +2193,15 @@ pub mod skipped_shipment {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Reason {
         /// Refer to the comments of Code.
-        #[prost(enumeration = "reason::Code", tag = "1")]
+        #[prost(enumeration="reason::Code", tag="1")]
         pub code: i32,
         /// If the reason is related to a shipment-vehicle incompatibility, this
         /// field provides the index of one relevant vehicle.
-        #[prost(int32, optional, tag = "2")]
+        #[prost(int32, optional, tag="2")]
         pub example_vehicle_index: ::core::option::Option<i32>,
         /// If the reason code is `DEMAND_EXCEEDS_VEHICLE_CAPACITY`, documents one
         /// capacity type that is exceeded.
-        #[prost(string, tag = "3")]
+        #[prost(string, tag="3")]
         pub example_exceeded_capacity_type: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `Reason`.
@@ -2216,9 +2209,7 @@ pub mod skipped_shipment {
         /// Code identifying the reason type. The order here is meaningless. In
         /// particular, it gives no indication of whether a given reason will
         /// appear before another in the solution, if both apply.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Code {
             /// This should never be used. If we are unable to understand why a
@@ -2265,30 +2256,30 @@ pub mod skipped_shipment {
 pub struct AggregatedMetrics {
     /// Number of shipments performed. Note that a pickup and delivery pair only
     /// counts once.
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub performed_shipment_count: i32,
     /// Total travel duration for a route or a solution.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub travel_duration: ::core::option::Option<::prost_types::Duration>,
     /// Total wait duration for a route or a solution.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub wait_duration: ::core::option::Option<::prost_types::Duration>,
     /// Total delay duration for a route or a solution.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub delay_duration: ::core::option::Option<::prost_types::Duration>,
     /// Total break duration for a route or a solution.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub break_duration: ::core::option::Option<::prost_types::Duration>,
     /// Total visit duration for a route or a solution.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub visit_duration: ::core::option::Option<::prost_types::Duration>,
     /// The total duration should be equal to the sum of all durations above.
     /// For routes, it also corresponds to \[ShipmentRoute.vehicle_end_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_end_time\] -
     /// \[ShipmentRoute.vehicle_start_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_start_time\].
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub total_duration: ::core::option::Option<::prost_types::Duration>,
     /// Total travel distance for a route or a solution.
-    #[prost(double, tag = "8")]
+    #[prost(double, tag="8")]
     pub travel_distance_meters: f64,
     /// Maximum load achieved over the entire route (resp. solution), for each of
     /// the quantities on this route (resp. solution), computed as the maximum over
@@ -2296,15 +2287,14 @@ pub struct AggregatedMetrics {
     /// \[Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads\]
     /// (resp.
     /// \[ShipmentRoute.metrics.max_loads][google.cloud.optimization.v1.AggregatedMetrics.max_loads\].
-    #[prost(map = "string, message", tag = "9")]
-    pub max_loads:
-        ::std::collections::HashMap<::prost::alloc::string::String, shipment_route::VehicleLoad>,
+    #[prost(map="string, message", tag="9")]
+    pub max_loads: ::std::collections::HashMap<::prost::alloc::string::String, shipment_route::VehicleLoad>,
     /// Deprecated: Use \[ShipmentRoute.route_costs][\] and \[OptimizeToursResponse.Metrics.costs][\] instead.
-    #[prost(map = "string, double", tag = "10")]
+    #[prost(map="string, double", tag="10")]
     pub costs: ::std::collections::HashMap<::prost::alloc::string::String, f64>,
     /// Deprecated: Use \[ShipmentRoute.route_total_cost][\] and \[OptimizeToursResponse.Metrics.total_cost][\] instead.
     #[deprecated]
-    #[prost(double, tag = "11")]
+    #[prost(double, tag="11")]
     pub total_cost: f64,
 }
 /// Solution injected in the request including information about which visits
@@ -2314,18 +2304,17 @@ pub struct InjectedSolutionConstraint {
     /// Routes of the solution to inject. Some routes may be omitted from the
     /// original solution. The routes and skipped shipments must satisfy the basic
     /// validity assumptions listed for `injected_first_solution_routes`.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub routes: ::prost::alloc::vec::Vec<ShipmentRoute>,
     /// Skipped shipments of the solution to inject. Some may be omitted from the
     /// original solution. See the `routes` field.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub skipped_shipments: ::prost::alloc::vec::Vec<SkippedShipment>,
     /// For zero or more groups of vehicles, specifies when and how much to relax
     /// constraints. If this field is empty, all non-empty vehicle routes are
     /// fully constrained.
-    #[prost(message, repeated, tag = "3")]
-    pub constraint_relaxations:
-        ::prost::alloc::vec::Vec<injected_solution_constraint::ConstraintRelaxation>,
+    #[prost(message, repeated, tag="3")]
+    pub constraint_relaxations: ::prost::alloc::vec::Vec<injected_solution_constraint::ConstraintRelaxation>,
 }
 /// Nested message and enum types in `InjectedSolutionConstraint`.
 pub mod injected_solution_constraint {
@@ -2337,7 +2326,7 @@ pub mod injected_solution_constraint {
     pub struct ConstraintRelaxation {
         /// All the visit constraint relaxations that will apply to visits on
         /// routes with vehicles in `vehicle_indices`.
-        #[prost(message, repeated, tag = "1")]
+        #[prost(message, repeated, tag="1")]
         pub relaxations: ::prost::alloc::vec::Vec<constraint_relaxation::Relaxation>,
         /// Specifies the vehicle indices to which the visit constraint
         /// `relaxations` apply. If empty, this is considered the default and the
@@ -2350,7 +2339,7 @@ pub mod injected_solution_constraint {
         /// A vehicle index is mapped the same as \[ShipmentRoute.vehicle_index][google.cloud.optimization.v1.ShipmentRoute.vehicle_index\], if
         /// `interpret_injected_solutions_using_labels` is true (see `fields`
         /// comment).
-        #[prost(int32, repeated, tag = "2")]
+        #[prost(int32, repeated, tag="2")]
         pub vehicle_indices: ::prost::alloc::vec::Vec<i32>,
     }
     /// Nested message and enum types in `ConstraintRelaxation`.
@@ -2395,10 +2384,10 @@ pub mod injected_solution_constraint {
             /// The constraint relaxation level that applies when the conditions
             /// at or after `threshold_time` AND at least `threshold_visit_count` are
             /// satified.
-            #[prost(enumeration = "relaxation::Level", tag = "1")]
+            #[prost(enumeration="relaxation::Level", tag="1")]
             pub level: i32,
             /// The time at or after which the relaxation `level` may be applied.
-            #[prost(message, optional, tag = "2")]
+            #[prost(message, optional, tag="2")]
             pub threshold_time: ::core::option::Option<::prost_types::Timestamp>,
             /// The number of visits at or after which the relaxation `level` may be
             /// applied. If `threshold_visit_count` is 0 (or unset), the `level` may be
@@ -2407,7 +2396,7 @@ pub mod injected_solution_constraint {
             /// If it is `route.visits_size() + 1`, the `level` may only be applied to
             /// the vehicle end. If it is more than `route.visits_size() + 1`,
             /// `level` is not applied at all for that route.
-            #[prost(int32, tag = "3")]
+            #[prost(int32, tag="3")]
             pub threshold_visit_count: i32,
         }
         /// Nested message and enum types in `Relaxation`.
@@ -2417,9 +2406,7 @@ pub mod injected_solution_constraint {
             /// threshold conditions.
             ///
             /// The enumeration below is in order of increasing relaxation.
-            #[derive(
-                Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-            )]
+            #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
             #[repr(i32)]
             pub enum Level {
                 /// Implicit default relaxation level: no constraints are relaxed,
@@ -2673,10 +2660,10 @@ pub struct OptimizeToursValidationError {
     /// * GRAPH_ARC_ERROR = 58;
     ///     * GRAPH_ARC_DURATION_NEGATIVE_OR_NAN = 5800;
     ///     * GRAPH_ARC_DURATION_EXCEEDS_GLOBAL_DURATION = 5801;
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub code: i32,
     /// The error display name.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
     /// An error context may involve 0, 1 (most of the time) or more fields. For
     /// example, referring to vehicle #4 and shipment #2's first pickup can be
@@ -2687,7 +2674,7 @@ pub struct OptimizeToursValidationError {
     /// ```
     /// Note, however, that the cardinality of `fields` should not change for a
     /// given error code.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub fields: ::prost::alloc::vec::Vec<optimize_tours_validation_error::FieldReference>,
     /// Human-readable string describing the error. There is a 1:1 mapping
     /// between `code` and `error_message` (when code != "UNSPECIFIED").
@@ -2695,12 +2682,12 @@ pub struct OptimizeToursValidationError {
     /// *STABILITY*: Not stable: the error message associated to a given `code` may
     /// change (hopefully to clarify it) over time. Please rely on the
     /// `display_name` and `code` instead.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub error_message: ::prost::alloc::string::String,
     /// May contain the value(s) of the field(s). This is not always available. You
     /// should absolutely not rely on it and use it only for manual model
     /// debugging.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub offending_values: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `OptimizeToursValidationError`.
@@ -2717,12 +2704,12 @@ pub mod optimize_tours_validation_error {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FieldReference {
         /// Name of the field, e.g., "vehicles".
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub name: ::prost::alloc::string::String,
         /// Recursively nested sub-field, if needed.
-        #[prost(message, optional, boxed, tag = "3")]
+        #[prost(message, optional, boxed, tag="3")]
         pub sub_field: ::core::option::Option<::prost::alloc::boxed::Box<FieldReference>>,
-        #[prost(oneof = "field_reference::IndexOrKey", tags = "2, 4")]
+        #[prost(oneof="field_reference::IndexOrKey", tags="2, 4")]
         pub index_or_key: ::core::option::Option<field_reference::IndexOrKey>,
     }
     /// Nested message and enum types in `FieldReference`.
@@ -2730,44 +2717,55 @@ pub mod optimize_tours_validation_error {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum IndexOrKey {
             /// Index of the field if repeated.
-            #[prost(int32, tag = "2")]
+            #[prost(int32, tag="2")]
             Index(i32),
             /// Key if the field is a map.
-            #[prost(string, tag = "4")]
+            #[prost(string, tag="4")]
             Key(::prost::alloc::string::String),
         }
     }
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod fleet_routing_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " A service for optimizing vehicle tours."]
-    #[doc = ""]
-    #[doc = " Validity of certain types of fields:"]
-    #[doc = ""]
-    #[doc = "   * `google.protobuf.Timestamp`"]
-    #[doc = "     * Times are in Unix time: seconds since 1970-01-01T00:00:00+00:00."]
-    #[doc = "     * seconds must be in [0, 253402300799],"]
-    #[doc = "       i.e. in [1970-01-01T00:00:00+00:00, 9999-12-31T23:59:59+00:00]."]
-    #[doc = "     * nanos must be unset or set to 0."]
-    #[doc = "   * `google.protobuf.Duration`"]
-    #[doc = "     * seconds must be in [0, 253402300799],"]
-    #[doc = "       i.e. in [1970-01-01T00:00:00+00:00, 9999-12-31T23:59:59+00:00]."]
-    #[doc = "     * nanos must be unset or set to 0."]
-    #[doc = "   * `google.type.LatLng`"]
-    #[doc = "     * latitude must be in [-90.0, 90.0]."]
-    #[doc = "     * longitude must be in [-180.0, 180.0]."]
-    #[doc = "     * at least one of latitude and longitude must be non-zero."]
+    /// A service for optimizing vehicle tours.
+    ///
+    /// Validity of certain types of fields:
+    ///
+    ///   * `google.protobuf.Timestamp`
+    ///     * Times are in Unix time: seconds since 1970-01-01T00:00:00+00:00.
+    ///     * seconds must be in [0, 253402300799],
+    ///       i.e. in [1970-01-01T00:00:00+00:00, 9999-12-31T23:59:59+00:00].
+    ///     * nanos must be unset or set to 0.
+    ///   * `google.protobuf.Duration`
+    ///     * seconds must be in [0, 253402300799],
+    ///       i.e. in [1970-01-01T00:00:00+00:00, 9999-12-31T23:59:59+00:00].
+    ///     * nanos must be unset or set to 0.
+    ///   * `google.type.LatLng`
+    ///     * latitude must be in [-90.0, 90.0].
+    ///     * longitude must be in [-180.0, 180.0].
+    ///     * at least one of latitude and longitude must be non-zero.
     #[derive(Debug, Clone)]
     pub struct FleetRoutingClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl FleetRoutingClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> FleetRoutingClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -2780,70 +2778,77 @@ pub mod fleet_routing_client {
         ) -> FleetRoutingClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             FleetRoutingClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Sends an `OptimizeToursRequest` containing a `ShipmentModel` and returns an"]
-        #[doc = " `OptimizeToursResponse` containing `ShipmentRoute`s, which are a set of"]
-        #[doc = " routes to be performed by vehicles minimizing the overall cost."]
-        #[doc = ""]
-        #[doc = " A `ShipmentModel` model consists mainly of `Shipment`s that need to be"]
-        #[doc = " carried out and `Vehicle`s that can be used to transport the `Shipment`s."]
-        #[doc = " The `ShipmentRoute`s assign `Shipment`s to `Vehicle`s. More specifically,"]
-        #[doc = " they assign a series of `Visit`s to each vehicle, where a `Visit`"]
-        #[doc = " corresponds to a `VisitRequest`, which is a pickup or delivery for a"]
-        #[doc = " `Shipment`."]
-        #[doc = ""]
-        #[doc = " The goal is to provide an assignment of `ShipmentRoute`s to `Vehicle`s that"]
-        #[doc = " minimizes the total cost where cost has many components defined in the"]
-        #[doc = " `ShipmentModel`."]
+        /// Sends an `OptimizeToursRequest` containing a `ShipmentModel` and returns an
+        /// `OptimizeToursResponse` containing `ShipmentRoute`s, which are a set of
+        /// routes to be performed by vehicles minimizing the overall cost.
+        ///
+        /// A `ShipmentModel` model consists mainly of `Shipment`s that need to be
+        /// carried out and `Vehicle`s that can be used to transport the `Shipment`s.
+        /// The `ShipmentRoute`s assign `Shipment`s to `Vehicle`s. More specifically,
+        /// they assign a series of `Visit`s to each vehicle, where a `Visit`
+        /// corresponds to a `VisitRequest`, which is a pickup or delivery for a
+        /// `Shipment`.
+        ///
+        /// The goal is to provide an assignment of `ShipmentRoute`s to `Vehicle`s that
+        /// minimizes the total cost where cost has many components defined in the
+        /// `ShipmentModel`.
         pub async fn optimize_tours(
             &mut self,
             request: impl tonic::IntoRequest<super::OptimizeToursRequest>,
         ) -> Result<tonic::Response<super::OptimizeToursResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.optimization.v1.FleetRouting/OptimizeTours",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Optimizes vehicle tours for one or more `OptimizeToursRequest`"]
-        #[doc = " messages as a batch."]
-        #[doc = ""]
-        #[doc = " This method is a Long Running Operation (LRO). The inputs for optimization"]
-        #[doc = " (`OptimizeToursRequest` messages) and outputs (`OptimizeToursResponse`"]
-        #[doc = " messages) are read/written from/to Cloud Storage in user-specified"]
-        #[doc = " format. Like the `OptimizeTours` method, each `OptimizeToursRequest`"]
-        #[doc = " contains a `ShipmentModel` and returns an `OptimizeToursResponse`"]
-        #[doc = " containing `ShipmentRoute`s, which are a set of routes to be performed by"]
-        #[doc = " vehicles minimizing the overall cost."]
+        /// Optimizes vehicle tours for one or more `OptimizeToursRequest`
+        /// messages as a batch.
+        ///
+        /// This method is a Long Running Operation (LRO). The inputs for optimization
+        /// (`OptimizeToursRequest` messages) and outputs (`OptimizeToursResponse`
+        /// messages) are read/written from/to Cloud Storage in user-specified
+        /// format. Like the `OptimizeTours` method, each `OptimizeToursRequest`
+        /// contains a `ShipmentModel` and returns an `OptimizeToursResponse`
+        /// containing `ShipmentRoute`s, which are a set of routes to be performed by
+        /// vehicles minimizing the overall cost.
         pub async fn batch_optimize_tours(
             &mut self,
             request: impl tonic::IntoRequest<super::BatchOptimizeToursRequest>,
@@ -2851,12 +2856,15 @@ pub mod fleet_routing_client {
             tonic::Response<super::super::super::super::longrunning::Operation>,
             tonic::Status,
         > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.optimization.v1.FleetRouting/BatchOptimizeTours",

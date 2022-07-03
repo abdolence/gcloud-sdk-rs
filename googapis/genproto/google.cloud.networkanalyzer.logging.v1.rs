@@ -2,38 +2,38 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Report {
     /// The unique identifier of the report.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
     /// Priority of the report.
-    #[prost(enumeration = "report::Priority", tag = "2")]
+    #[prost(enumeration="report::Priority", tag="2")]
     pub priority: i32,
     /// Type of the report.
-    #[prost(enumeration = "report::Type", tag = "3")]
+    #[prost(enumeration="report::Type", tag="3")]
     pub r#type: i32,
     /// Status of the report.
-    #[prost(enumeration = "report::ReportStatus", tag = "4")]
+    #[prost(enumeration="report::ReportStatus", tag="4")]
     pub status: i32,
     /// The timestamp when the report was first discovered by Network Analyzer.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub first_report_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Cause code of the report.
-    #[prost(enumeration = "ReportCauseCode", tag = "12")]
+    #[prost(enumeration="ReportCauseCode", tag="12")]
     pub cause_code: i32,
     /// The resource that are reported with the report.
     /// Contains the fully qualified resource name.
     /// e.g.,
     /// `//compute.googleapis.com/projects/{project_id}/global/networks/{network}`
-    #[prost(string, tag = "15")]
+    #[prost(string, tag="15")]
     pub resource_name: ::prost::alloc::string::String,
     /// Location associated with the report. It can be global or GCP regions
     /// and zones. e.g., <https://cloud.google.com/compute/docs/regions-zones/>
-    #[prost(string, tag = "16")]
+    #[prost(string, tag="16")]
     pub location: ::prost::alloc::string::String,
     /// URI to the documentation of the report.
-    #[prost(string, tag = "17")]
+    #[prost(string, tag="17")]
     pub report_documentation_uri: ::prost::alloc::string::String,
     /// The groups of the report. One report may be present in multiple groups.
-    #[prost(enumeration = "report::ReportGroup", repeated, tag = "18")]
+    #[prost(enumeration="report::ReportGroup", repeated, tag="18")]
     pub report_groups: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `Report`.

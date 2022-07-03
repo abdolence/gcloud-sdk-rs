@@ -3,13 +3,13 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Policy {
     /// Version of the `Policy`. Default version is 0;
-    #[prost(int32, tag = "1")]
+    #[prost(int32, tag="1")]
     pub version: i32,
     /// The name of the `Constraint` the `Policy` is configuring, for example,
     /// `constraints/serviceuser.services`.
     ///
     /// Immutable after creation.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub constraint: ::prost::alloc::string::String,
     /// An opaque tag indicating the current version of the `Policy`, used for
     /// concurrency control.
@@ -26,13 +26,13 @@ pub struct Policy {
     /// read-modify-write loop for concurrency control. Not setting the `etag`in a
     /// `SetOrgPolicy` request will result in an unconditional write of the
     /// `Policy`.
-    #[prost(bytes = "vec", tag = "3")]
+    #[prost(bytes="vec", tag="3")]
     pub etag: ::prost::alloc::vec::Vec<u8>,
     /// The time stamp the `Policy` was previously updated. This is set by the
     /// server, not specified by the caller, and represents the last time a call to
     /// `SetOrgPolicy` was made for that `Policy`. Any value set by the client will
     /// be ignored.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The field to populate is based on the `constraint_type` value in the
     /// `Constraint`.
@@ -46,7 +46,7 @@ pub struct Policy {
     ///
     /// Attempting to set a `Policy` with a `policy_type` not set will result in an
     /// `invalid_argument` error.
-    #[prost(oneof = "policy::PolicyType", tags = "5, 6, 7")]
+    #[prost(oneof="policy::PolicyType", tags="5, 6, 7")]
     pub policy_type: ::core::option::Option<policy::PolicyType>,
 }
 /// Nested message and enum types in `Policy`.
@@ -76,20 +76,20 @@ pub mod policy {
     pub struct ListPolicy {
         /// List of values allowed  at this resource. Can only be set if `all_values`
         /// is set to `ALL_VALUES_UNSPECIFIED`.
-        #[prost(string, repeated, tag = "1")]
+        #[prost(string, repeated, tag="1")]
         pub allowed_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// List of values denied at this resource. Can only be set if `all_values`
         /// is set to `ALL_VALUES_UNSPECIFIED`.
-        #[prost(string, repeated, tag = "2")]
+        #[prost(string, repeated, tag="2")]
         pub denied_values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The policy all_values state.
-        #[prost(enumeration = "list_policy::AllValues", tag = "3")]
+        #[prost(enumeration="list_policy::AllValues", tag="3")]
         pub all_values: i32,
         /// Optional. The Google Cloud Console will try to default to a configuration
         /// that matches the value specified in this `Policy`. If `suggested_value`
         /// is not set, it will inherit the value specified higher in the hierarchy,
         /// unless `inherit_from_parent` is `false`.
-        #[prost(string, tag = "4")]
+        #[prost(string, tag="4")]
         pub suggested_value: ::prost::alloc::string::String,
         /// Determines the inheritance behavior for this `Policy`.
         ///
@@ -188,7 +188,7 @@ pub mod policy {
         ///   `projects/P3`.
         /// The accepted values at `projects/bar` are `organizations/O1`,
         ///   `folders/F1`, `projects/P1`.
-        #[prost(bool, tag = "5")]
+        #[prost(bool, tag="5")]
         pub inherit_from_parent: bool,
     }
     /// Nested message and enum types in `ListPolicy`.
@@ -202,9 +202,7 @@ pub mod policy {
         /// set to either `ALLOW` or `DENY,  `allowed_values` and `denied_values`
         /// must be unset. Setting this to `ALL_VALUES_UNSPECIFIED` allows for
         /// setting `allowed_values` and `denied_values`.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum AllValues {
             /// Indicates that allowed_values or denied_values must be set.
@@ -263,7 +261,7 @@ pub mod policy {
         /// The constraint at `organizations/foo` is enforced.
         /// The constraint at `projects/bar` is not enforced, because
         /// `constraint_default` for the `Constraint` is `ALLOW`.
-        #[prost(bool, tag = "1")]
+        #[prost(bool, tag="1")]
         pub enforced: bool,
     }
     /// Ignores policies set above this resource and restores the
@@ -279,7 +277,8 @@ pub mod policy {
     /// enforcement of the `Constraint` for only those projects, allowing those
     /// projects to have all services activated.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct RestoreDefault {}
+    pub struct RestoreDefault {
+    }
     /// The field to populate is based on the `constraint_type` value in the
     /// `Constraint`.
     ///   `list_constraint` => `list_policy`
@@ -295,14 +294,14 @@ pub mod policy {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum PolicyType {
         /// List of values either allowed or disallowed.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         ListPolicy(ListPolicy),
         /// For boolean `Constraints`, whether to enforce the `Constraint` or not.
-        #[prost(message, tag = "6")]
+        #[prost(message, tag="6")]
         BooleanPolicy(BooleanPolicy),
         /// Restores the default behavior of the constraint; independent of
         /// `Constraint` type.
-        #[prost(message, tag = "7")]
+        #[prost(message, tag="7")]
         RestoreDefault(RestoreDefault),
     }
 }

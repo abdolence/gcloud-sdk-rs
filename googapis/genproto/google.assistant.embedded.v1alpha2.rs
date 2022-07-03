@@ -6,7 +6,7 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssistRequest {
     /// Exactly one of these fields must be specified in each `AssistRequest`.
-    #[prost(oneof = "assist_request::Type", tags = "1, 2")]
+    #[prost(oneof="assist_request::Type", tags="1, 2")]
     pub r#type: ::core::option::Option<assist_request::Type>,
 }
 /// Nested message and enum types in `AssistRequest`.
@@ -17,7 +17,7 @@ pub mod assist_request {
         /// The `config` message provides information to the recognizer that
         /// specifies how to process the request.
         /// The first `AssistRequest` message must contain a `config` message.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         Config(super::AssistConfig),
         /// The audio data to be recognized. Sequential chunks of audio data are sent
         /// in sequential `AssistRequest` messages. The first `AssistRequest`
@@ -27,7 +27,7 @@ pub mod assist_request {
         /// Audio must be sent at approximately real-time (16000 samples per second).
         /// An error will be returned if audio is sent significantly faster or
         /// slower.
-        #[prost(bytes, tag = "2")]
+        #[prost(bytes, tag="2")]
         AudioIn(::prost::alloc::vec::Vec<u8>),
     }
 }
@@ -36,17 +36,17 @@ pub mod assist_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssistResponse {
     /// *Output-only* Indicates the type of event.
-    #[prost(enumeration = "assist_response::EventType", tag = "1")]
+    #[prost(enumeration="assist_response::EventType", tag="1")]
     pub event_type: i32,
     /// *Output-only* The audio containing the Assistant's response to the query.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub audio_out: ::core::option::Option<AudioOut>,
     /// *Output-only* Contains the Assistant's visual response to the query.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub screen_out: ::core::option::Option<ScreenOut>,
     /// *Output-only* Contains the action triggered by the query with the
     /// appropriate payloads and semantic parsing.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub device_action: ::core::option::Option<DeviceAction>,
     /// *Output-only* This repeated list contains zero or more speech recognition
     /// results that correspond to consecutive portions of the audio currently
@@ -55,14 +55,14 @@ pub struct AssistResponse {
     /// recent audio. The strings can be concatenated to view the full
     /// in-progress response. When the speech recognition completes, this list
     /// will contain one item with `stability` of `1.0`.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub speech_results: ::prost::alloc::vec::Vec<SpeechRecognitionResult>,
     /// *Output-only* Contains output related to the user's query.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub dialog_state_out: ::core::option::Option<DialogStateOut>,
     /// *Output-only* Debugging info for developer. Only returned if request set
     /// `return_debug_info` to true.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub debug_info: ::core::option::Option<DebugInfo>,
 }
 /// Nested message and enum types in `AssistResponse`.
@@ -91,29 +91,29 @@ pub struct DebugInfo {
     /// <https://developers.google.com/actions/reference/rest/Shared.Types/AppResponse.>
     /// It will only be populated if the request maker owns the AoG project and the
     /// AoG project is in preview mode.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub aog_agent_to_assistant_json: ::prost::alloc::string::String,
 }
 /// Specifies how to process the `AssistRequest` messages.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssistConfig {
     /// *Required* Specifies how to format the audio that will be returned.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub audio_out_config: ::core::option::Option<AudioOutConfig>,
     /// *Optional* Specifies the desired format to use when server returns a
     /// visual screen response.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub screen_out_config: ::core::option::Option<ScreenOutConfig>,
     /// *Required* Represents the current dialog state.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub dialog_state_in: ::core::option::Option<DialogStateIn>,
     /// Device configuration that uniquely identifies a specific device.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub device_config: ::core::option::Option<DeviceConfig>,
     /// *Optional* Debugging parameters for the whole `Assist` RPC.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub debug_config: ::core::option::Option<DebugConfig>,
-    #[prost(oneof = "assist_config::Type", tags = "1, 6")]
+    #[prost(oneof="assist_config::Type", tags="1, 6")]
     pub r#type: ::core::option::Option<assist_config::Type>,
 }
 /// Nested message and enum types in `AssistConfig`.
@@ -123,11 +123,11 @@ pub mod assist_config {
         /// Specifies how to process the subsequent incoming audio. Required if
         /// \[AssistRequest.audio_in][google.assistant.embedded.v1alpha2.AssistRequest.audio_in\]
         /// bytes will be provided in subsequent requests.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         AudioInConfig(super::AudioInConfig),
         /// The text input to be sent to the Assistant. This can be populated from a
         /// text interface if audio input is not available.
-        #[prost(string, tag = "6")]
+        #[prost(string, tag="6")]
         TextQuery(::prost::alloc::string::String),
     }
 }
@@ -138,14 +138,14 @@ pub mod assist_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AudioInConfig {
     /// *Required* Encoding of audio data sent in all `audio_in` messages.
-    #[prost(enumeration = "audio_in_config::Encoding", tag = "1")]
+    #[prost(enumeration="audio_in_config::Encoding", tag="1")]
     pub encoding: i32,
     /// *Required* Sample rate (in Hertz) of the audio data sent in all `audio_in`
     /// messages. Valid values are from 16000-24000, but 16000 is optimal.
     /// For best results, set the sampling rate of the audio source to 16000 Hz.
     /// If that's not possible, use the native sample rate of the audio source
     /// (instead of re-sampling).
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub sample_rate_hertz: i32,
 }
 /// Nested message and enum types in `AudioInConfig`.
@@ -176,15 +176,15 @@ pub mod audio_in_config {
 pub struct AudioOutConfig {
     /// *Required* The encoding of audio data to be returned in all `audio_out`
     /// messages.
-    #[prost(enumeration = "audio_out_config::Encoding", tag = "1")]
+    #[prost(enumeration="audio_out_config::Encoding", tag="1")]
     pub encoding: i32,
     /// *Required* The sample rate in Hertz of the audio data returned in
     /// `audio_out` messages. Valid values are: 16000-24000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub sample_rate_hertz: i32,
     /// *Required* Current volume setting of the device's audio output.
     /// Valid values are 1 to 100 (corresponding to 1% to 100%).
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub volume_percentage: i32,
 }
 /// Nested message and enum types in `AudioOutConfig`.
@@ -212,7 +212,7 @@ pub mod audio_out_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScreenOutConfig {
     /// Current visual screen-mode for the device while issuing the query.
-    #[prost(enumeration = "screen_out_config::ScreenMode", tag = "1")]
+    #[prost(enumeration="screen_out_config::ScreenMode", tag="1")]
     pub screen_mode: i32,
 }
 /// Nested message and enum types in `ScreenOutConfig`.
@@ -242,7 +242,7 @@ pub struct DialogStateIn {
     /// omitted (field not set) if there was no prior `Assist` RPC because this is
     /// the first `Assist` RPC made by this device after it was first setup and/or
     /// a factory-default reset.
-    #[prost(bytes = "vec", tag = "1")]
+    #[prost(bytes="vec", tag="1")]
     pub conversation_state: ::prost::alloc::vec::Vec<u8>,
     /// *Required* Language of the request in
     /// [IETF BCP 47 syntax](<https://tools.ietf.org/html/bcp47>) (for example,
@@ -253,16 +253,16 @@ pub struct DialogStateIn {
     /// \[Settings\](<https://developers.google.com/assistant/sdk/reference/assistant-app/assistant-settings>)
     /// menu in your phone's Google Assistant app, that selection will override
     /// this value.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub language_code: ::prost::alloc::string::String,
     /// *Optional* Location of the device where the query originated.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub device_location: ::core::option::Option<DeviceLocation>,
     /// *Optional* If true, the server will treat the request as a new conversation
     /// and not use state from the prior request. Set this field to true when the
     /// conversation should be restarted, such as after a device reboot, or after a
     /// significant lapse of time since the prior query.
-    #[prost(bool, tag = "7")]
+    #[prost(bool, tag="7")]
     pub is_new_conversation: bool,
 }
 /// *Required* Fields that identify the device to the Assistant.
@@ -284,12 +284,12 @@ pub struct DeviceConfig {
     /// capabilities of this device. This information should not change across
     /// device reboots. However, it should not be saved across
     /// factory-default resets.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub device_id: ::prost::alloc::string::String,
     /// *Required* Unique identifier for the device model. The combination of
     /// device_model_id and device_id must have been previously associated through
     /// device registration.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub device_model_id: ::prost::alloc::string::String,
 }
 /// The audio containing the Assistant's response to the query. Sequential chunks
@@ -299,7 +299,7 @@ pub struct AudioOut {
     /// *Output-only* The audio data containing the Assistant's response to the
     /// query. Sequential chunks of audio data are received in sequential
     /// `AssistResponse` messages.
-    #[prost(bytes = "vec", tag = "1")]
+    #[prost(bytes="vec", tag="1")]
     pub audio_data: ::prost::alloc::vec::Vec<u8>,
 }
 /// The Assistant's visual output response to query. Enabled by
@@ -307,11 +307,11 @@ pub struct AudioOut {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ScreenOut {
     /// *Output-only* The format of the provided screen data.
-    #[prost(enumeration = "screen_out::Format", tag = "1")]
+    #[prost(enumeration="screen_out::Format", tag="1")]
     pub format: i32,
     /// *Output-only* The raw screen data to be displayed as the result of the
     /// Assistant query.
-    #[prost(bytes = "vec", tag = "2")]
+    #[prost(bytes="vec", tag="2")]
     pub data: ::prost::alloc::vec::Vec<u8>,
 }
 /// Nested message and enum types in `ScreenOut`.
@@ -339,7 +339,7 @@ pub struct DeviceAction {
     /// Device Action grammar. The format is given by the
     /// `action.devices.EXECUTE` intent for a given
     /// \[trait\](<https://developers.google.com/assistant/sdk/reference/traits/>).
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub device_request_json: ::prost::alloc::string::String,
 }
 /// The estimated transcription of a phrase the user has spoken. This could be
@@ -347,13 +347,13 @@ pub struct DeviceAction {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechRecognitionResult {
     /// *Output-only* Transcript text representing the words that the user spoke.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub transcript: ::prost::alloc::string::String,
     /// *Output-only* An estimate of the likelihood that the Assistant will not
     /// change its guess about this result. Values range from 0.0 (completely
     /// unstable) to 1.0 (completely stable and final). The default of 0.0 is a
     /// sentinel value indicating `stability` was not set.
-    #[prost(float, tag = "2")]
+    #[prost(float, tag="2")]
     pub stability: f32,
 }
 /// The dialog state resulting from the user's query. Multiple of these messages
@@ -363,7 +363,7 @@ pub struct DialogStateOut {
     /// *Output-only* Supplemental display text from the Assistant. This could be
     /// the same as the speech spoken in `AssistResponse.audio_out` or it could
     /// be some additional information which aids the user's understanding.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub supplemental_display_text: ::prost::alloc::string::String,
     /// *Output-only* State information for the subsequent `Assist` RPC. This
     /// value should be saved in the client and returned in the
@@ -372,11 +372,11 @@ pub struct DialogStateOut {
     /// value.) This information should be saved across device reboots. However,
     /// this value should be cleared (not saved in the client) during a
     /// factory-default reset.
-    #[prost(bytes = "vec", tag = "2")]
+    #[prost(bytes="vec", tag="2")]
     pub conversation_state: ::prost::alloc::vec::Vec<u8>,
     /// *Output-only* Specifies the mode of the microphone after this `Assist`
     /// RPC is processed.
-    #[prost(enumeration = "dialog_state_out::MicrophoneMode", tag = "3")]
+    #[prost(enumeration="dialog_state_out::MicrophoneMode", tag="3")]
     pub microphone_mode: i32,
     /// *Output-only* Updated volume level. The value will be 0 or omitted
     /// (indicating no change) unless a voice command such as *Increase the volume*
@@ -387,7 +387,7 @@ pub struct DialogStateOut {
     /// supply it in the `AudioOutConfig` of the next `AssistRequest`. (Some
     /// clients may also implement other ways to allow the current volume level to
     /// be changed, for example, by providing a knob that the user can turn.)
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub volume_percentage: i32,
 }
 /// Nested message and enum types in `DialogStateOut`.
@@ -413,7 +413,7 @@ pub struct DebugConfig {
     /// When this field is set to true, the `debug_info` field in `AssistResponse`
     /// may be populated. However it will significantly increase latency of
     /// responses. Do not set this field true in production code.
-    #[prost(bool, tag = "6")]
+    #[prost(bool, tag="6")]
     pub return_debug_info: bool,
 }
 /// There are three sources of locations. They are used with this precedence:
@@ -426,7 +426,7 @@ pub struct DebugConfig {
 ///    above are specified.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeviceLocation {
-    #[prost(oneof = "device_location::Type", tags = "1")]
+    #[prost(oneof="device_location::Type", tags="1")]
     pub r#type: ::core::option::Option<device_location::Type>,
 }
 /// Nested message and enum types in `DeviceLocation`.
@@ -434,24 +434,35 @@ pub mod device_location {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Type {
         /// Latitude and longitude of device.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         Coordinates(super::super::super::super::r#type::LatLng),
     }
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod embedded_assistant_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Service that implements the Google Assistant API."]
+    /// Service that implements the Google Assistant API.
     #[derive(Debug, Clone)]
     pub struct EmbeddedAssistantClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl EmbeddedAssistantClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> EmbeddedAssistantClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -464,91 +475,98 @@ pub mod embedded_assistant_client {
         ) -> EmbeddedAssistantClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             EmbeddedAssistantClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Initiates or continues a conversation with the embedded Assistant Service."]
-        #[doc = " Each call performs one round-trip, sending an audio request to the service"]
-        #[doc = " and receiving the audio response. Uses bidirectional streaming to receive"]
-        #[doc = " results, such as the `END_OF_UTTERANCE` event, while sending audio."]
-        #[doc = ""]
-        #[doc = " A conversation is one or more gRPC connections, each consisting of several"]
-        #[doc = " streamed requests and responses."]
-        #[doc = " For example, the user says *Add to my shopping list* and the Assistant"]
-        #[doc = " responds *What do you want to add?*. The sequence of streamed requests and"]
-        #[doc = " responses in the first gRPC message could be:"]
-        #[doc = ""]
-        #[doc = " *   AssistRequest.config"]
-        #[doc = " *   AssistRequest.audio_in"]
-        #[doc = " *   AssistRequest.audio_in"]
-        #[doc = " *   AssistRequest.audio_in"]
-        #[doc = " *   AssistRequest.audio_in"]
-        #[doc = " *   AssistResponse.event_type.END_OF_UTTERANCE"]
-        #[doc = " *   AssistResponse.speech_results.transcript \"add to my shopping list\""]
-        #[doc = " *   AssistResponse.dialog_state_out.microphone_mode.DIALOG_FOLLOW_ON"]
-        #[doc = " *   AssistResponse.audio_out"]
-        #[doc = " *   AssistResponse.audio_out"]
-        #[doc = " *   AssistResponse.audio_out"]
-        #[doc = ""]
-        #[doc = ""]
-        #[doc = " The user then says *bagels* and the Assistant responds"]
-        #[doc = " *OK, I've added bagels to your shopping list*. This is sent as another gRPC"]
-        #[doc = " connection call to the `Assist` method, again with streamed requests and"]
-        #[doc = " responses, such as:"]
-        #[doc = ""]
-        #[doc = " *   AssistRequest.config"]
-        #[doc = " *   AssistRequest.audio_in"]
-        #[doc = " *   AssistRequest.audio_in"]
-        #[doc = " *   AssistRequest.audio_in"]
-        #[doc = " *   AssistResponse.event_type.END_OF_UTTERANCE"]
-        #[doc = " *   AssistResponse.dialog_state_out.microphone_mode.CLOSE_MICROPHONE"]
-        #[doc = " *   AssistResponse.audio_out"]
-        #[doc = " *   AssistResponse.audio_out"]
-        #[doc = " *   AssistResponse.audio_out"]
-        #[doc = " *   AssistResponse.audio_out"]
-        #[doc = ""]
-        #[doc = " Although the precise order of responses is not guaranteed, sequential"]
-        #[doc = " `AssistResponse.audio_out` messages will always contain sequential portions"]
-        #[doc = " of audio."]
+        /// Initiates or continues a conversation with the embedded Assistant Service.
+        /// Each call performs one round-trip, sending an audio request to the service
+        /// and receiving the audio response. Uses bidirectional streaming to receive
+        /// results, such as the `END_OF_UTTERANCE` event, while sending audio.
+        ///
+        /// A conversation is one or more gRPC connections, each consisting of several
+        /// streamed requests and responses.
+        /// For example, the user says *Add to my shopping list* and the Assistant
+        /// responds *What do you want to add?*. The sequence of streamed requests and
+        /// responses in the first gRPC message could be:
+        ///
+        /// *   AssistRequest.config
+        /// *   AssistRequest.audio_in
+        /// *   AssistRequest.audio_in
+        /// *   AssistRequest.audio_in
+        /// *   AssistRequest.audio_in
+        /// *   AssistResponse.event_type.END_OF_UTTERANCE
+        /// *   AssistResponse.speech_results.transcript "add to my shopping list"
+        /// *   AssistResponse.dialog_state_out.microphone_mode.DIALOG_FOLLOW_ON
+        /// *   AssistResponse.audio_out
+        /// *   AssistResponse.audio_out
+        /// *   AssistResponse.audio_out
+        ///
+        ///
+        /// The user then says *bagels* and the Assistant responds
+        /// *OK, I've added bagels to your shopping list*. This is sent as another gRPC
+        /// connection call to the `Assist` method, again with streamed requests and
+        /// responses, such as:
+        ///
+        /// *   AssistRequest.config
+        /// *   AssistRequest.audio_in
+        /// *   AssistRequest.audio_in
+        /// *   AssistRequest.audio_in
+        /// *   AssistResponse.event_type.END_OF_UTTERANCE
+        /// *   AssistResponse.dialog_state_out.microphone_mode.CLOSE_MICROPHONE
+        /// *   AssistResponse.audio_out
+        /// *   AssistResponse.audio_out
+        /// *   AssistResponse.audio_out
+        /// *   AssistResponse.audio_out
+        ///
+        /// Although the precise order of responses is not guaranteed, sequential
+        /// `AssistResponse.audio_out` messages will always contain sequential portions
+        /// of audio.
         pub async fn assist(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::AssistRequest>,
-        ) -> Result<tonic::Response<tonic::codec::Streaming<super::AssistResponse>>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<tonic::codec::Streaming<super::AssistResponse>>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.assistant.embedded.v1alpha2.EmbeddedAssistant/Assist",
             );
-            self.inner
-                .streaming(request.into_streaming_request(), path, codec)
-                .await
+            self.inner.streaming(request.into_streaming_request(), path, codec).await
         }
     }
 }

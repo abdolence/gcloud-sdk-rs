@@ -3,7 +3,7 @@
 pub struct Job {
     /// The resource name of the job.
     /// Format: `projects/{project_number}/locations/{location}/jobs/{job}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Input only. Specify the `input_uri` to populate empty `uri` fields in each element of
     /// `Job.config.inputs` or `JobTemplate.config.inputs` when using template.
@@ -11,46 +11,45 @@ pub struct Job {
     /// stored in Cloud Storage (for example, `gs://bucket/inputs/file.mp4`). See
     /// [Supported input and output
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub input_uri: ::prost::alloc::string::String,
     /// Input only. Specify the `output_uri` to populate an empty `Job.config.output.uri` or
     /// `JobTemplate.config.output.uri` when using template.
     /// URI for the output file(s). For example, `gs://my-bucket/outputs/`. See
     /// [Supported input and output
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub output_uri: ::prost::alloc::string::String,
     /// Output only. The current state of the job.
-    #[prost(enumeration = "job::ProcessingState", tag = "8")]
+    #[prost(enumeration="job::ProcessingState", tag="8")]
     pub state: i32,
     /// Output only. The time the job was created.
-    #[prost(message, optional, tag = "12")]
+    #[prost(message, optional, tag="12")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the transcoding started.
-    #[prost(message, optional, tag = "13")]
+    #[prost(message, optional, tag="13")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time the transcoding finished.
-    #[prost(message, optional, tag = "14")]
+    #[prost(message, optional, tag="14")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Job time to live value in days, which will be effective after job
     /// completion. Job should be deleted automatically after the given TTL. Enter
     /// a value between 1 and 90. The default is 30.
-    #[prost(int32, tag = "15")]
+    #[prost(int32, tag="15")]
     pub ttl_after_completion_days: i32,
     /// The labels associated with this job. You can use these to organize and
     /// group your jobs.
-    #[prost(map = "string, string", tag = "16")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="16")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. An error object that describes the reason for the failure.
     /// This property is always present when `state` is `FAILED`.
-    #[prost(message, optional, tag = "17")]
+    #[prost(message, optional, tag="17")]
     pub error: ::core::option::Option<super::super::super::super::rpc::Status>,
     /// Specify the `job_config` for the transcoding job. If you don't specify the
     /// `job_config`, the API selects `templateId`; this template ID is set to
     /// `preset/web-hd` by default. When you use a `template_id` to create a job,
     /// the `Job.config` is populated by the `JobTemplate.config`.<br>
-    #[prost(oneof = "job::JobConfig", tags = "4, 5")]
+    #[prost(oneof="job::JobConfig", tags="4, 5")]
     pub job_config: ::core::option::Option<job::JobConfig>,
 }
 /// Nested message and enum types in `Job`.
@@ -85,10 +84,10 @@ pub mod job {
         ///
         /// - User defined JobTemplate:
         ///   `{job_template_id}`
-        #[prost(string, tag = "4")]
+        #[prost(string, tag="4")]
         TemplateId(::prost::alloc::string::String),
         /// The configuration for this job.
-        #[prost(message, tag = "5")]
+        #[prost(message, tag="5")]
         Config(super::JobConfig),
     }
 }
@@ -98,52 +97,51 @@ pub struct JobTemplate {
     /// The resource name of the job template.
     /// Format:
     /// `projects/{project_number}/locations/{location}/jobTemplates/{job_template}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The configuration for this template.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub config: ::core::option::Option<JobConfig>,
     /// The labels associated with this job template. You can use these to organize
     /// and group your job templates.
-    #[prost(map = "string, string", tag = "3")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="3")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Job configuration
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct JobConfig {
     /// List of input assets stored in Cloud Storage.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub inputs: ::prost::alloc::vec::Vec<Input>,
     /// List of `Edit atom`s. Defines the ultimate timeline of the resulting
     /// file or manifest.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub edit_list: ::prost::alloc::vec::Vec<EditAtom>,
     /// List of elementary streams.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub elementary_streams: ::prost::alloc::vec::Vec<ElementaryStream>,
     /// List of multiplexing settings for output streams.
-    #[prost(message, repeated, tag = "4")]
+    #[prost(message, repeated, tag="4")]
     pub mux_streams: ::prost::alloc::vec::Vec<MuxStream>,
     /// List of output manifests.
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag="5")]
     pub manifests: ::prost::alloc::vec::Vec<Manifest>,
     /// Output configuration.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub output: ::core::option::Option<Output>,
     /// List of ad breaks. Specifies where to insert ad break tags in the output
     /// manifests.
-    #[prost(message, repeated, tag = "7")]
+    #[prost(message, repeated, tag="7")]
     pub ad_breaks: ::prost::alloc::vec::Vec<AdBreak>,
     /// Destination on Pub/Sub.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub pubsub_destination: ::core::option::Option<PubsubDestination>,
     /// List of output sprite sheets.
     /// Spritesheets require at least one VideoStream in the Jobconfig.
-    #[prost(message, repeated, tag = "9")]
+    #[prost(message, repeated, tag="9")]
     pub sprite_sheets: ::prost::alloc::vec::Vec<SpriteSheet>,
     /// List of overlays on the output video, in descending Z-order.
-    #[prost(message, repeated, tag = "10")]
+    #[prost(message, repeated, tag="10")]
     pub overlays: ::prost::alloc::vec::Vec<Overlay>,
 }
 /// Input asset.
@@ -151,17 +149,17 @@ pub struct JobConfig {
 pub struct Input {
     /// A unique key for this input. Must be specified when using advanced
     /// mapping and edit lists.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub key: ::prost::alloc::string::String,
     /// URI of the media. Input files must be at least 5 seconds in duration and
     /// stored in Cloud Storage (for example, `gs://bucket/inputs/file.mp4`).
     /// If empty, the value is populated from `Job.input_uri`. See
     /// [Supported input and output
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub uri: ::prost::alloc::string::String,
     /// Preprocessing configurations.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub preprocessing_config: ::core::option::Option<PreprocessingConfig>,
 }
 /// Location of output file(s) in a Cloud Storage bucket.
@@ -171,7 +169,7 @@ pub struct Output {
     /// If empty, the value is populated from `Job.output_uri`. See
     /// [Supported input and output
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub uri: ::prost::alloc::string::String,
 }
 /// Edit atom.
@@ -179,20 +177,20 @@ pub struct Output {
 pub struct EditAtom {
     /// A unique key for this atom. Must be specified when using advanced
     /// mapping.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub key: ::prost::alloc::string::String,
     /// List of `Input.key`s identifying files that should be used in this atom.
     /// The listed `inputs` must have the same timeline.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub inputs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// End time in seconds for the atom, relative to the input file timeline.
     /// When `end_time_offset` is not specified, the `inputs` are used until
     /// the end of the atom.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
     /// Start time in seconds for the atom, relative to the input file timeline.
     /// The default is `0s`.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Ad break.
@@ -200,7 +198,7 @@ pub struct EditAtom {
 pub struct AdBreak {
     /// Start time in seconds for the ad break, relative to the output file
     /// timeline. The default is `0s`.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
 }
 /// Encoding of an input file such as an audio, video, or text track.
@@ -209,10 +207,10 @@ pub struct AdBreak {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ElementaryStream {
     /// A unique key for this elementary stream.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub key: ::prost::alloc::string::String,
     /// Encoding of an audio, video, or text track.
-    #[prost(oneof = "elementary_stream::ElementaryStream", tags = "1, 2, 3")]
+    #[prost(oneof="elementary_stream::ElementaryStream", tags="1, 2, 3")]
     pub elementary_stream: ::core::option::Option<elementary_stream::ElementaryStream>,
 }
 /// Nested message and enum types in `ElementaryStream`.
@@ -221,13 +219,13 @@ pub mod elementary_stream {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ElementaryStream {
         /// Encoding of a video stream.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         VideoStream(super::VideoStream),
         /// Encoding of an audio stream.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         AudioStream(super::AudioStream),
         /// Encoding of a text stream. For example, closed captions or subtitles.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         TextStream(super::TextStream),
     }
 }
@@ -236,14 +234,14 @@ pub mod elementary_stream {
 pub struct MuxStream {
     /// A unique key for this multiplexed stream. HLS media manifests will be
     /// named `MuxStream.key` with the `.m3u8` extension suffix.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub key: ::prost::alloc::string::String,
     /// The name of the generated file. The default is `MuxStream.key` with the
     /// extension suffix corresponding to the `MuxStream.container`.
     ///
     /// Individual segments also have an incremental 10-digit zero-padded suffix
     /// starting from 0 before the extension, such as `mux_stream0000000123.ts`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub file_name: ::prost::alloc::string::String,
     /// The container format. The default is `mp4`
     ///
@@ -257,13 +255,13 @@ pub struct MuxStream {
     /// See also:
     /// [Supported input and output
     /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>)
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub container: ::prost::alloc::string::String,
     /// List of `ElementaryStream.key`s multiplexed in this stream.
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub elementary_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Segment settings for `ts`, `fmp4` and `vtt`.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub segment_settings: ::core::option::Option<SegmentSettings>,
 }
 /// Manifest configuration.
@@ -271,17 +269,17 @@ pub struct MuxStream {
 pub struct Manifest {
     /// The name of the generated file. The default is `manifest` with the
     /// extension suffix corresponding to the `Manifest.type`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub file_name: ::prost::alloc::string::String,
     /// Required. Type of the manifest, can be `HLS` or `DASH`.
-    #[prost(enumeration = "manifest::ManifestType", tag = "2")]
+    #[prost(enumeration="manifest::ManifestType", tag="2")]
     pub r#type: i32,
     /// Required. List of user given `MuxStream.key`s that should appear in this manifest.
     ///
     /// When `Manifest.type` is `HLS`, a media manifest with name `MuxStream.key`
     /// and `.m3u8` extension is generated for each element of the
     /// `Manifest.mux_streams`.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub mux_streams: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `Manifest`.
@@ -303,7 +301,7 @@ pub mod manifest {
 pub struct PubsubDestination {
     /// The name of the Pub/Sub topic to publish job completion notification
     /// to. For example: `projects/{project}/topics/{topic}`.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub topic: ::prost::alloc::string::String,
 }
 /// Sprite sheet configuration.
@@ -314,52 +312,52 @@ pub struct SpriteSheet {
     /// Supported formats:
     ///
     /// - `jpeg`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub format: ::prost::alloc::string::String,
     /// Required. File name prefix for the generated sprite sheets.
     ///
     /// Each sprite sheet has an incremental 10-digit zero-padded suffix starting
     /// from 0 before the extension, such as `sprite_sheet0000000123.jpeg`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub file_prefix: ::prost::alloc::string::String,
     /// Required. The width of sprite in pixels. Must be an even integer. To preserve the
     /// source aspect ratio, set the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\] field or
     /// the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\] field, but not both (the API will
     /// automatically calculate the missing field).
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub sprite_width_pixels: i32,
     /// Required. The height of sprite in pixels. Must be an even integer. To preserve the
     /// source aspect ratio, set the \[SpriteSheet.sprite_height_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_height_pixels\] field or
     /// the \[SpriteSheet.sprite_width_pixels][google.cloud.video.transcoder.v1.SpriteSheet.sprite_width_pixels\] field, but not both (the API will
     /// automatically calculate the missing field).
-    #[prost(int32, tag = "4")]
+    #[prost(int32, tag="4")]
     pub sprite_height_pixels: i32,
     /// The maximum number of sprites per row in a sprite sheet. The default is 0,
     /// which indicates no maximum limit.
-    #[prost(int32, tag = "5")]
+    #[prost(int32, tag="5")]
     pub column_count: i32,
     /// The maximum number of rows per sprite sheet. When the sprite sheet is full,
     /// a new sprite sheet is created. The default is 0, which indicates no maximum
     /// limit.
-    #[prost(int32, tag = "6")]
+    #[prost(int32, tag="6")]
     pub row_count: i32,
     /// Start time in seconds, relative to the output file timeline. Determines the
     /// first sprite to pick. The default is `0s`.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
     /// End time in seconds, relative to the output file timeline. When
     /// `end_time_offset` is not specified, the sprites are generated until the end
     /// of the output file.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
     /// The quality of the generated sprite sheet. Enter a value between 1
     /// and 100, where 1 is the lowest quality and 100 is the highest quality.
     /// The default is 100. A high quality value corresponds to a low image data
     /// compression ratio.
-    #[prost(int32, tag = "11")]
+    #[prost(int32, tag="11")]
     pub quality: i32,
     /// Specify either total number of sprites or interval to create sprites.
-    #[prost(oneof = "sprite_sheet::ExtractionStrategy", tags = "9, 10")]
+    #[prost(oneof="sprite_sheet::ExtractionStrategy", tags="9, 10")]
     pub extraction_strategy: ::core::option::Option<sprite_sheet::ExtractionStrategy>,
 }
 /// Nested message and enum types in `SpriteSheet`.
@@ -370,11 +368,11 @@ pub mod sprite_sheet {
         /// Total number of sprites. Create the specified number of sprites
         /// distributed evenly across the timeline of the output media. The default
         /// is 100.
-        #[prost(int32, tag = "9")]
+        #[prost(int32, tag="9")]
         TotalCount(i32),
         /// Starting from `0s`, create sprites at regular intervals. Specify the
         /// interval value in seconds.
-        #[prost(message, tag = "10")]
+        #[prost(message, tag="10")]
         Interval(::prost_types::Duration),
     }
 }
@@ -382,11 +380,11 @@ pub mod sprite_sheet {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Overlay {
     /// Image overlay.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub image: ::core::option::Option<overlay::Image>,
     /// List of Animations. The list should be chronological, without any time
     /// overlap.
-    #[prost(message, repeated, tag = "2")]
+    #[prost(message, repeated, tag="2")]
     pub animations: ::prost::alloc::vec::Vec<overlay::Animation>,
 }
 /// Nested message and enum types in `Overlay`.
@@ -395,10 +393,10 @@ pub mod overlay {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct NormalizedCoordinate {
         /// Normalized x coordinate.
-        #[prost(double, tag = "1")]
+        #[prost(double, tag="1")]
         pub x: f64,
         /// Normalized y coordinate.
-        #[prost(double, tag = "2")]
+        #[prost(double, tag="2")]
         pub y: f64,
     }
     /// Overlaid jpeg image.
@@ -406,17 +404,17 @@ pub mod overlay {
     pub struct Image {
         /// Required. URI of the JPEG image in Cloud Storage. For example,
         /// `gs://bucket/inputs/image.jpeg`. JPEG is the only supported image type.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub uri: ::prost::alloc::string::String,
         /// Normalized image resolution, based on output video resolution. Valid
         /// values: `0.0`–`1.0`. To respect the original image aspect ratio, set
         /// either `x` or `y` to `0.0`. To use the original image resolution, set
         /// both `x` and `y` to `0.0`.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub resolution: ::core::option::Option<NormalizedCoordinate>,
         /// Target image opacity. Valid values are from  `1.0` (solid, default) to
         /// `0.0` (transparent), exclusive. Set this to a value greater than `0.0`.
-        #[prost(double, tag = "3")]
+        #[prost(double, tag="3")]
         pub alpha: f64,
     }
     /// Display static overlay object.
@@ -427,31 +425,31 @@ pub mod overlay {
         /// object. For example, use the x and y coordinates {0,0} to position the
         /// top-left corner of the overlay animation in the top-left corner of the
         /// output video.
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub xy: ::core::option::Option<NormalizedCoordinate>,
         /// The time to start displaying the overlay object, in seconds. Default: 0
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
     }
     /// Display overlay object with fade animation.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnimationFade {
         /// Required. Type of fade animation: `FADE_IN` or `FADE_OUT`.
-        #[prost(enumeration = "FadeType", tag = "1")]
+        #[prost(enumeration="FadeType", tag="1")]
         pub fade_type: i32,
         /// Normalized coordinates based on output video resolution. Valid
         /// values: `0.0`–`1.0`. `xy` is the upper-left coordinate of the overlay
         /// object. For example, use the x and y coordinates {0,0} to position the
         /// top-left corner of the overlay animation in the top-left corner of the
         /// output video.
-        #[prost(message, optional, tag = "2")]
+        #[prost(message, optional, tag="2")]
         pub xy: ::core::option::Option<NormalizedCoordinate>,
         /// The time to start the fade animation, in seconds. Default: 0
-        #[prost(message, optional, tag = "3")]
+        #[prost(message, optional, tag="3")]
         pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
         /// The time to end the fade animation, in seconds. Default:
         /// `start_time_offset` + 1s
-        #[prost(message, optional, tag = "4")]
+        #[prost(message, optional, tag="4")]
         pub end_time_offset: ::core::option::Option<::prost_types::Duration>,
     }
     /// End previous overlay animation from the video. Without AnimationEnd, the
@@ -460,14 +458,14 @@ pub mod overlay {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AnimationEnd {
         /// The time to end overlay object, in seconds. Default: 0
-        #[prost(message, optional, tag = "1")]
+        #[prost(message, optional, tag="1")]
         pub start_time_offset: ::core::option::Option<::prost_types::Duration>,
     }
     /// Animation types.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Animation {
         /// Animations can be static or fade, or they can end the previous animation.
-        #[prost(oneof = "animation::AnimationType", tags = "1, 2, 3")]
+        #[prost(oneof="animation::AnimationType", tags="1, 2, 3")]
         pub animation_type: ::core::option::Option<animation::AnimationType>,
     }
     /// Nested message and enum types in `Animation`.
@@ -476,13 +474,13 @@ pub mod overlay {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum AnimationType {
             /// Display static overlay object.
-            #[prost(message, tag = "1")]
+            #[prost(message, tag="1")]
             AnimationStatic(super::AnimationStatic),
             /// Display overlay object with fade animation.
-            #[prost(message, tag = "2")]
+            #[prost(message, tag="2")]
             AnimationFade(super::AnimationFade),
             /// End previous animation.
-            #[prost(message, tag = "3")]
+            #[prost(message, tag="3")]
             AnimationEnd(super::AnimationEnd),
         }
     }
@@ -502,22 +500,22 @@ pub mod overlay {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PreprocessingConfig {
     /// Color preprocessing configuration.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub color: ::core::option::Option<preprocessing_config::Color>,
     /// Denoise preprocessing configuration.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub denoise: ::core::option::Option<preprocessing_config::Denoise>,
     /// Deblock preprocessing configuration.
-    #[prost(message, optional, tag = "3")]
+    #[prost(message, optional, tag="3")]
     pub deblock: ::core::option::Option<preprocessing_config::Deblock>,
     /// Audio preprocessing configuration.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub audio: ::core::option::Option<preprocessing_config::Audio>,
     /// Specify the video cropping configuration.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub crop: ::core::option::Option<preprocessing_config::Crop>,
     /// Specify the video pad filter configuration.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub pad: ::core::option::Option<preprocessing_config::Pad>,
 }
 /// Nested message and enum types in `PreprocessingConfig`.
@@ -530,17 +528,17 @@ pub mod preprocessing_config {
         /// Control color saturation of the video. Enter a value between -1 and 1,
         /// where -1 is fully desaturated and 1 is maximum saturation. 0 is no
         /// change. The default is 0.
-        #[prost(double, tag = "1")]
+        #[prost(double, tag="1")]
         pub saturation: f64,
         /// Control black and white contrast of the video. Enter a value between -1
         /// and 1, where -1 is minimum contrast and 1 is maximum contrast. 0 is no
         /// change. The default is 0.
-        #[prost(double, tag = "2")]
+        #[prost(double, tag="2")]
         pub contrast: f64,
         /// Control brightness of the video. Enter a value between -1 and 1, where -1
         /// is minimum brightness and 1 is maximum brightness. 0 is no change. The
         /// default is 0.
-        #[prost(double, tag = "3")]
+        #[prost(double, tag="3")]
         pub brightness: f64,
     }
     /// Denoise preprocessing configuration.
@@ -550,7 +548,7 @@ pub mod preprocessing_config {
     pub struct Denoise {
         /// Set strength of the denoise. Enter a value between 0 and 1. The higher
         /// the value, the smoother the image. 0 is no denoising. The default is 0.
-        #[prost(double, tag = "1")]
+        #[prost(double, tag="1")]
         pub strength: f64,
         /// Set the denoiser mode. The default is `standard`.
         ///
@@ -558,7 +556,7 @@ pub mod preprocessing_config {
         ///
         /// - `standard`
         /// - `grain`
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub tune: ::prost::alloc::string::String,
     }
     /// Deblock preprocessing configuration.
@@ -569,10 +567,10 @@ pub mod preprocessing_config {
         /// Set strength of the deblocker. Enter a value between 0 and 1. The higher
         /// the value, the stronger the block removal. 0 is no deblocking. The
         /// default is 0.
-        #[prost(double, tag = "1")]
+        #[prost(double, tag="1")]
         pub strength: f64,
         /// Enable deblocker. The default is `false`.
-        #[prost(bool, tag = "2")]
+        #[prost(bool, tag="2")]
         pub enabled: bool,
     }
     /// Audio preprocessing configuration.
@@ -589,17 +587,17 @@ pub mod preprocessing_config {
         /// *   -14 is the new online audio standard recommended by Spotify, as well
         ///     as Amazon Echo
         /// *   0 disables normalization
-        #[prost(double, tag = "1")]
+        #[prost(double, tag="1")]
         pub lufs: f64,
         /// Enable boosting high frequency components. The default is `false`.
         ///
         /// **Note:** This field is not supported.
-        #[prost(bool, tag = "2")]
+        #[prost(bool, tag="2")]
         pub high_boost: bool,
         /// Enable boosting low frequency components. The default is `false`.
         ///
         /// **Note:** This field is not supported.
-        #[prost(bool, tag = "3")]
+        #[prost(bool, tag="3")]
         pub low_boost: bool,
     }
     /// Video cropping configuration for the input video. The cropped input video
@@ -607,16 +605,16 @@ pub mod preprocessing_config {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Crop {
         /// The number of pixels to crop from the top. The default is 0.
-        #[prost(int32, tag = "1")]
+        #[prost(int32, tag="1")]
         pub top_pixels: i32,
         /// The number of pixels to crop from the bottom. The default is 0.
-        #[prost(int32, tag = "2")]
+        #[prost(int32, tag="2")]
         pub bottom_pixels: i32,
         /// The number of pixels to crop from the left. The default is 0.
-        #[prost(int32, tag = "3")]
+        #[prost(int32, tag="3")]
         pub left_pixels: i32,
         /// The number of pixels to crop from the right. The default is 0.
-        #[prost(int32, tag = "4")]
+        #[prost(int32, tag="4")]
         pub right_pixels: i32,
     }
     /// Pad filter configuration for the input video. The padded input video
@@ -624,16 +622,16 @@ pub mod preprocessing_config {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Pad {
         /// The number of pixels to add to the top. The default is 0.
-        #[prost(int32, tag = "1")]
+        #[prost(int32, tag="1")]
         pub top_pixels: i32,
         /// The number of pixels to add to the bottom. The default is 0.
-        #[prost(int32, tag = "2")]
+        #[prost(int32, tag="2")]
         pub bottom_pixels: i32,
         /// The number of pixels to add to the left. The default is 0.
-        #[prost(int32, tag = "3")]
+        #[prost(int32, tag="3")]
         pub left_pixels: i32,
         /// The number of pixels to add to the right. The default is 0.
-        #[prost(int32, tag = "4")]
+        #[prost(int32, tag="4")]
         pub right_pixels: i32,
     }
 }
@@ -641,7 +639,7 @@ pub mod preprocessing_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoStream {
     /// Codec settings can be h264, h265, or vp9.
-    #[prost(oneof = "video_stream::CodecSettings", tags = "1, 2, 3")]
+    #[prost(oneof="video_stream::CodecSettings", tags="1, 2, 3")]
     pub codec_settings: ::core::option::Option<video_stream::CodecSettings>,
 }
 /// Nested message and enum types in `VideoStream`.
@@ -652,12 +650,12 @@ pub mod video_stream {
         /// The width of the video in pixels. Must be an even integer.
         /// When not specified, the width is adjusted to match the specified height
         /// and input aspect ratio. If both are omitted, the input width is used.
-        #[prost(int32, tag = "1")]
+        #[prost(int32, tag="1")]
         pub width_pixels: i32,
         /// The height of the video in pixels. Must be an even integer.
         /// When not specified, the height is adjusted to match the specified width
         /// and input aspect ratio. If both are omitted, the input height is used.
-        #[prost(int32, tag = "2")]
+        #[prost(int32, tag="2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be less than
         /// or equal to 120. Will default to the input frame rate if larger than the
@@ -666,11 +664,11 @@ pub mod video_stream {
         /// [Calculating frame
         /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
         /// more information.
-        #[prost(double, tag = "3")]
+        #[prost(double, tag="3")]
         pub frame_rate: f64,
         /// Required. The video bitrate in bits per second. The minimum value is 1,000.
         /// The maximum value is 800,000,000.
-        #[prost(int32, tag = "4")]
+        #[prost(int32, tag="4")]
         pub bitrate_bps: i32,
         /// Pixel format to use. The default is `yuv420p`.
         ///
@@ -685,7 +683,7 @@ pub mod video_stream {
         /// - `yuv420p12` 12-bit HDR pixel format
         /// - `yuv422p12` 12-bit HDR pixel format
         /// - `yuv444p12` 12-bit HDR pixel format
-        #[prost(string, tag = "5")]
+        #[prost(string, tag="5")]
         pub pixel_format: ::prost::alloc::string::String,
         /// Specify the `rate_control_mode`. The default is `vbr`.
         ///
@@ -693,28 +691,28 @@ pub mod video_stream {
         ///
         /// - `vbr` - variable bitrate
         /// - `crf` - constant rate factor
-        #[prost(string, tag = "6")]
+        #[prost(string, tag="6")]
         pub rate_control_mode: ::prost::alloc::string::String,
         /// Target CRF level. Must be between 10 and 36, where 10 is the highest
         /// quality and 36 is the most efficient compression. The default is 21.
-        #[prost(int32, tag = "7")]
+        #[prost(int32, tag="7")]
         pub crf_level: i32,
         /// Specifies whether an open Group of Pictures (GOP) structure should be
         /// allowed or not. The default is `false`.
-        #[prost(bool, tag = "8")]
+        #[prost(bool, tag="8")]
         pub allow_open_gop: bool,
         /// Use two-pass encoding strategy to achieve better video quality.
         /// `VideoStream.rate_control_mode` must be `vbr`. The default is `false`.
-        #[prost(bool, tag = "11")]
+        #[prost(bool, tag="11")]
         pub enable_two_pass: bool,
         /// Size of the Video Buffering Verifier (VBV) buffer in bits. Must be
         /// greater than zero. The default is equal to `VideoStream.bitrate_bps`.
-        #[prost(int32, tag = "12")]
+        #[prost(int32, tag="12")]
         pub vbv_size_bits: i32,
         /// Initial fullness of the Video Buffering Verifier (VBV) buffer in bits.
         /// Must be greater than zero. The default is equal to 90% of
         /// `VideoStream.vbv_size_bits`.
-        #[prost(int32, tag = "13")]
+        #[prost(int32, tag="13")]
         pub vbv_fullness_bits: i32,
         /// The entropy coder to use. The default is `cabac`.
         ///
@@ -722,21 +720,21 @@ pub mod video_stream {
         ///
         /// - `cavlc`
         /// - `cabac`
-        #[prost(string, tag = "14")]
+        #[prost(string, tag="14")]
         pub entropy_coder: ::prost::alloc::string::String,
         /// Allow B-pyramid for reference frame selection. This may not be supported
         /// on all decoders. The default is `false`.
-        #[prost(bool, tag = "15")]
+        #[prost(bool, tag="15")]
         pub b_pyramid: bool,
         /// The number of consecutive B-frames. Must be greater than or equal to
         /// zero. Must be less than `VideoStream.gop_frame_count` if set. The default
         /// is 0.
-        #[prost(int32, tag = "16")]
+        #[prost(int32, tag="16")]
         pub b_frame_count: i32,
         /// Specify the intensity of the adaptive quantizer (AQ). Must be between 0
         /// and 1, where 0 disables the quantizer and 1 maximizes the quantizer. A
         /// higher value equals a lower bitrate but smoother image. The default is 0.
-        #[prost(double, tag = "17")]
+        #[prost(double, tag="17")]
         pub aq_strength: f64,
         /// Enforces the specified codec profile. The following profiles are
         /// supported:
@@ -750,14 +748,14 @@ pub mod video_stream {
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H264CodecSettings`
         /// message.
-        #[prost(string, tag = "18")]
+        #[prost(string, tag="18")]
         pub profile: ::prost::alloc::string::String,
         /// Enforces the specified codec tune. The available options are
         /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.264#Tune>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H264CodecSettings`
         /// message.
-        #[prost(string, tag = "19")]
+        #[prost(string, tag="19")]
         pub tune: ::prost::alloc::string::String,
         /// Enforces the specified codec preset. The default is `veryfast`. The
         /// available options are
@@ -765,10 +763,10 @@ pub mod video_stream {
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H264CodecSettings`
         /// message.
-        #[prost(string, tag = "20")]
+        #[prost(string, tag="20")]
         pub preset: ::prost::alloc::string::String,
         /// GOP mode can be either by frame count or duration.
-        #[prost(oneof = "h264_codec_settings::GopMode", tags = "9, 10")]
+        #[prost(oneof="h264_codec_settings::GopMode", tags="9, 10")]
         pub gop_mode: ::core::option::Option<h264_codec_settings::GopMode>,
     }
     /// Nested message and enum types in `H264CodecSettings`.
@@ -778,14 +776,14 @@ pub mod video_stream {
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count. Must be greater
             /// than zero.
-            #[prost(int32, tag = "9")]
+            #[prost(int32, tag="9")]
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
             /// `3s`. Note that `gopDuration` must be less than or equal to
             /// \[`segmentDuration`\](#SegmentSettings), and
             /// \[`segmentDuration`\](#SegmentSettings) must be divisible by
             /// `gopDuration`.
-            #[prost(message, tag = "10")]
+            #[prost(message, tag="10")]
             GopDuration(::prost_types::Duration),
         }
     }
@@ -795,12 +793,12 @@ pub mod video_stream {
         /// The width of the video in pixels. Must be an even integer.
         /// When not specified, the width is adjusted to match the specified height
         /// and input aspect ratio. If both are omitted, the input width is used.
-        #[prost(int32, tag = "1")]
+        #[prost(int32, tag="1")]
         pub width_pixels: i32,
         /// The height of the video in pixels. Must be an even integer.
         /// When not specified, the height is adjusted to match the specified width
         /// and input aspect ratio. If both are omitted, the input height is used.
-        #[prost(int32, tag = "2")]
+        #[prost(int32, tag="2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be less than
         /// or equal to 120. Will default to the input frame rate if larger than the
@@ -809,11 +807,11 @@ pub mod video_stream {
         /// [Calculating frame
         /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
         /// more information.
-        #[prost(double, tag = "3")]
+        #[prost(double, tag="3")]
         pub frame_rate: f64,
         /// Required. The video bitrate in bits per second. The minimum value is 1,000.
         /// The maximum value is 800,000,000.
-        #[prost(int32, tag = "4")]
+        #[prost(int32, tag="4")]
         pub bitrate_bps: i32,
         /// Pixel format to use. The default is `yuv420p`.
         ///
@@ -828,7 +826,7 @@ pub mod video_stream {
         /// - `yuv420p12` 12-bit HDR pixel format
         /// - `yuv422p12` 12-bit HDR pixel format
         /// - `yuv444p12` 12-bit HDR pixel format
-        #[prost(string, tag = "5")]
+        #[prost(string, tag="5")]
         pub pixel_format: ::prost::alloc::string::String,
         /// Specify the `rate_control_mode`. The default is `vbr`.
         ///
@@ -836,42 +834,42 @@ pub mod video_stream {
         ///
         /// - `vbr` - variable bitrate
         /// - `crf` - constant rate factor
-        #[prost(string, tag = "6")]
+        #[prost(string, tag="6")]
         pub rate_control_mode: ::prost::alloc::string::String,
         /// Target CRF level. Must be between 10 and 36, where 10 is the highest
         /// quality and 36 is the most efficient compression. The default is 21.
-        #[prost(int32, tag = "7")]
+        #[prost(int32, tag="7")]
         pub crf_level: i32,
         /// Specifies whether an open Group of Pictures (GOP) structure should be
         /// allowed or not. The default is `false`.
-        #[prost(bool, tag = "8")]
+        #[prost(bool, tag="8")]
         pub allow_open_gop: bool,
         /// Use two-pass encoding strategy to achieve better video quality.
         /// `VideoStream.rate_control_mode` must be `vbr`. The default is `false`.
-        #[prost(bool, tag = "11")]
+        #[prost(bool, tag="11")]
         pub enable_two_pass: bool,
         /// Size of the Video Buffering Verifier (VBV) buffer in bits. Must be
         /// greater than zero. The default is equal to `VideoStream.bitrate_bps`.
-        #[prost(int32, tag = "12")]
+        #[prost(int32, tag="12")]
         pub vbv_size_bits: i32,
         /// Initial fullness of the Video Buffering Verifier (VBV) buffer in bits.
         /// Must be greater than zero. The default is equal to 90% of
         /// `VideoStream.vbv_size_bits`.
-        #[prost(int32, tag = "13")]
+        #[prost(int32, tag="13")]
         pub vbv_fullness_bits: i32,
         /// Allow B-pyramid for reference frame selection. This may not be supported
         /// on all decoders. The default is `false`.
-        #[prost(bool, tag = "14")]
+        #[prost(bool, tag="14")]
         pub b_pyramid: bool,
         /// The number of consecutive B-frames. Must be greater than or equal to
         /// zero. Must be less than `VideoStream.gop_frame_count` if set. The default
         /// is 0.
-        #[prost(int32, tag = "15")]
+        #[prost(int32, tag="15")]
         pub b_frame_count: i32,
         /// Specify the intensity of the adaptive quantizer (AQ). Must be between 0
         /// and 1, where 0 disables the quantizer and 1 maximizes the quantizer. A
         /// higher value equals a lower bitrate but smoother image. The default is 0.
-        #[prost(double, tag = "16")]
+        #[prost(double, tag="16")]
         pub aq_strength: f64,
         /// Enforces the specified codec profile. The following profiles are
         /// supported:
@@ -900,14 +898,14 @@ pub mod video_stream {
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H265CodecSettings`
         /// message.
-        #[prost(string, tag = "17")]
+        #[prost(string, tag="17")]
         pub profile: ::prost::alloc::string::String,
         /// Enforces the specified codec tune. The available options are
         /// \[FFmpeg-compatible\](<https://trac.ffmpeg.org/wiki/Encode/H.265>).
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H265CodecSettings`
         /// message.
-        #[prost(string, tag = "18")]
+        #[prost(string, tag="18")]
         pub tune: ::prost::alloc::string::String,
         /// Enforces the specified codec preset. The default is `veryfast`. The
         /// available options are
@@ -915,10 +913,10 @@ pub mod video_stream {
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `H265CodecSettings`
         /// message.
-        #[prost(string, tag = "19")]
+        #[prost(string, tag="19")]
         pub preset: ::prost::alloc::string::String,
         /// GOP mode can be either by frame count or duration.
-        #[prost(oneof = "h265_codec_settings::GopMode", tags = "9, 10")]
+        #[prost(oneof="h265_codec_settings::GopMode", tags="9, 10")]
         pub gop_mode: ::core::option::Option<h265_codec_settings::GopMode>,
     }
     /// Nested message and enum types in `H265CodecSettings`.
@@ -928,14 +926,14 @@ pub mod video_stream {
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count. Must be greater
             /// than zero.
-            #[prost(int32, tag = "9")]
+            #[prost(int32, tag="9")]
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
             /// `3s`. Note that `gopDuration` must be less than or equal to
             /// \[`segmentDuration`\](#SegmentSettings), and
             /// \[`segmentDuration`\](#SegmentSettings) must be divisible by
             /// `gopDuration`.
-            #[prost(message, tag = "10")]
+            #[prost(message, tag="10")]
             GopDuration(::prost_types::Duration),
         }
     }
@@ -945,12 +943,12 @@ pub mod video_stream {
         /// The width of the video in pixels. Must be an even integer.
         /// When not specified, the width is adjusted to match the specified height
         /// and input aspect ratio. If both are omitted, the input width is used.
-        #[prost(int32, tag = "1")]
+        #[prost(int32, tag="1")]
         pub width_pixels: i32,
         /// The height of the video in pixels. Must be an even integer.
         /// When not specified, the height is adjusted to match the specified width
         /// and input aspect ratio. If both are omitted, the input height is used.
-        #[prost(int32, tag = "2")]
+        #[prost(int32, tag="2")]
         pub height_pixels: i32,
         /// Required. The target video frame rate in frames per second (FPS). Must be less than
         /// or equal to 120. Will default to the input frame rate if larger than the
@@ -959,11 +957,11 @@ pub mod video_stream {
         /// [Calculating frame
         /// rate](<https://cloud.google.com/transcoder/docs/concepts/frame-rate>) for
         /// more information.
-        #[prost(double, tag = "3")]
+        #[prost(double, tag="3")]
         pub frame_rate: f64,
         /// Required. The video bitrate in bits per second. The minimum value is 1,000.
         /// The maximum value is 480,000,000.
-        #[prost(int32, tag = "4")]
+        #[prost(int32, tag="4")]
         pub bitrate_bps: i32,
         /// Pixel format to use. The default is `yuv420p`.
         ///
@@ -978,20 +976,20 @@ pub mod video_stream {
         /// - `yuv420p12` 12-bit HDR pixel format
         /// - `yuv422p12` 12-bit HDR pixel format
         /// - `yuv444p12` 12-bit HDR pixel format
-        #[prost(string, tag = "5")]
+        #[prost(string, tag="5")]
         pub pixel_format: ::prost::alloc::string::String,
         /// Specify the `rate_control_mode`. The default is `vbr`.
         ///
         /// Supported rate control modes:
         ///
         /// - `vbr` - variable bitrate
-        #[prost(string, tag = "6")]
+        #[prost(string, tag="6")]
         pub rate_control_mode: ::prost::alloc::string::String,
         /// Target CRF level. Must be between 10 and 36, where 10 is the highest
         /// quality and 36 is the most efficient compression. The default is 21.
         ///
         /// **Note:** This field is not supported.
-        #[prost(int32, tag = "7")]
+        #[prost(int32, tag="7")]
         pub crf_level: i32,
         /// Enforces the specified codec profile. The following profiles are
         /// supported:
@@ -1006,10 +1004,10 @@ pub mod video_stream {
         /// Note that certain values for this field may cause the
         /// transcoder to override other fields you set in the `Vp9CodecSettings`
         /// message.
-        #[prost(string, tag = "10")]
+        #[prost(string, tag="10")]
         pub profile: ::prost::alloc::string::String,
         /// GOP mode can be either by frame count or duration.
-        #[prost(oneof = "vp9_codec_settings::GopMode", tags = "8, 9")]
+        #[prost(oneof="vp9_codec_settings::GopMode", tags="8, 9")]
         pub gop_mode: ::core::option::Option<vp9_codec_settings::GopMode>,
     }
     /// Nested message and enum types in `Vp9CodecSettings`.
@@ -1019,14 +1017,14 @@ pub mod video_stream {
         pub enum GopMode {
             /// Select the GOP size based on the specified frame count. Must be greater
             /// than zero.
-            #[prost(int32, tag = "8")]
+            #[prost(int32, tag="8")]
             GopFrameCount(i32),
             /// Select the GOP size based on the specified duration. The default is
             /// `3s`. Note that `gopDuration` must be less than or equal to
             /// \[`segmentDuration`\](#SegmentSettings), and
             /// \[`segmentDuration`\](#SegmentSettings) must be divisible by
             /// `gopDuration`.
-            #[prost(message, tag = "9")]
+            #[prost(message, tag="9")]
             GopDuration(::prost_types::Duration),
         }
     }
@@ -1034,13 +1032,13 @@ pub mod video_stream {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum CodecSettings {
         /// H264 codec settings.
-        #[prost(message, tag = "1")]
+        #[prost(message, tag="1")]
         H264(H264CodecSettings),
         /// H265 codec settings.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         H265(H265CodecSettings),
         /// VP9 codec settings.
-        #[prost(message, tag = "3")]
+        #[prost(message, tag="3")]
         Vp9(Vp9CodecSettings),
     }
 }
@@ -1057,13 +1055,13 @@ pub struct AudioStream {
     /// - `mp3`
     /// - `ac3`
     /// - `eac3`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub codec: ::prost::alloc::string::String,
     /// Required. Audio bitrate in bits per second. Must be between 1 and 10,000,000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub bitrate_bps: i32,
     /// Number of audio channels. Must be between 1 and 6. The default is 2.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub channel_count: i32,
     /// A list of channel names specifying layout of the audio channels.
     /// This only affects the metadata embedded in the container headers, if
@@ -1077,13 +1075,13 @@ pub struct AudioStream {
     /// - `sr` - Side right channel
     /// - `fc` - Front center channel
     /// - `lfe` - Low frequency
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub channel_layout: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The mapping for the `Job.edit_list` atoms with audio `EditAtom.inputs`.
-    #[prost(message, repeated, tag = "5")]
+    #[prost(message, repeated, tag="5")]
     pub mapping: ::prost::alloc::vec::Vec<audio_stream::AudioMapping>,
     /// The audio sample rate in Hertz. The default is 48000 Hertz.
-    #[prost(int32, tag = "6")]
+    #[prost(int32, tag="6")]
     pub sample_rate_hertz: i32,
 }
 /// Nested message and enum types in `AudioStream`.
@@ -1093,23 +1091,23 @@ pub mod audio_stream {
     pub struct AudioMapping {
         /// Required. The `EditAtom.key` that references the atom with audio inputs in the
         /// `Job.edit_list`.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub atom_key: ::prost::alloc::string::String,
         /// Required. The `Input.key` that identifies the input file.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub input_key: ::prost::alloc::string::String,
         /// Required. The zero-based index of the track in the input file.
-        #[prost(int32, tag = "3")]
+        #[prost(int32, tag="3")]
         pub input_track: i32,
         /// Required. The zero-based index of the channel in the input audio stream.
-        #[prost(int32, tag = "4")]
+        #[prost(int32, tag="4")]
         pub input_channel: i32,
         /// Required. The zero-based index of the channel in the output audio stream.
-        #[prost(int32, tag = "5")]
+        #[prost(int32, tag="5")]
         pub output_channel: i32,
         /// Audio volume control in dB. Negative values decrease volume,
         /// positive values increase. The default is 0.
-        #[prost(double, tag = "6")]
+        #[prost(double, tag="6")]
         pub gain_db: f64,
     }
 }
@@ -1125,10 +1123,10 @@ pub struct TextStream {
     /// - `cea608`
     /// - `cea708`
     /// - `webvtt`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub codec: ::prost::alloc::string::String,
     /// The mapping for the `Job.edit_list` atoms with text `EditAtom.inputs`.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub mapping: ::prost::alloc::vec::Vec<text_stream::TextMapping>,
 }
 /// Nested message and enum types in `TextStream`.
@@ -1138,13 +1136,13 @@ pub mod text_stream {
     pub struct TextMapping {
         /// Required. The `EditAtom.key` that references atom with text inputs in the
         /// `Job.edit_list`.
-        #[prost(string, tag = "1")]
+        #[prost(string, tag="1")]
         pub atom_key: ::prost::alloc::string::String,
         /// Required. The `Input.key` that identifies the input file.
-        #[prost(string, tag = "2")]
+        #[prost(string, tag="2")]
         pub input_key: ::prost::alloc::string::String,
         /// Required. The zero-based index of the track in the input file.
-        #[prost(int32, tag = "3")]
+        #[prost(int32, tag="3")]
         pub input_track: i32,
     }
 }
@@ -1155,10 +1153,10 @@ pub struct SegmentSettings {
     /// `segmentDuration` must be greater than or equal to
     /// \[`gopDuration`\](#videostream), and `segmentDuration` must be divisible by
     /// \[`gopDuration`\](#videostream).
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub segment_duration: ::core::option::Option<::prost_types::Duration>,
     /// Required. Create an individual segment file. The default is `false`.
-    #[prost(bool, tag = "3")]
+    #[prost(bool, tag="3")]
     pub individual_segments: bool,
 }
 /// Request message for `TranscoderService.CreateJob`.
@@ -1166,10 +1164,10 @@ pub struct SegmentSettings {
 pub struct CreateJobRequest {
     /// Required. The parent location to create and process this job.
     /// Format: `projects/{project}/locations/{location}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Parameters for creating transcoding job.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub job: ::core::option::Option<Job>,
 }
 /// Request message for `TranscoderService.ListJobs`.
@@ -1177,22 +1175,22 @@ pub struct CreateJobRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsRequest {
     /// Required. Format: `projects/{project}/locations/{location}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// The `next_page_token` value returned from a previous List request, if
     /// any.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// The filter expression, following the syntax outlined in
     /// <https://google.aip.dev/160.>
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
     /// One or more fields to compare and use to sort the output.
     /// See <https://google.aip.dev/132#ordering.>
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.GetJob`.
@@ -1200,7 +1198,7 @@ pub struct ListJobsRequest {
 pub struct GetJobRequest {
     /// Required. The name of the job to retrieve.
     /// Format: `projects/{project}/locations/{location}/jobs/{job}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.DeleteJob`.
@@ -1208,24 +1206,24 @@ pub struct GetJobRequest {
 pub struct DeleteJobRequest {
     /// Required. The name of the job to delete.
     /// Format: `projects/{project}/locations/{location}/jobs/{job}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// If set to true, and the job is not found, the request will succeed but no
     /// action will be taken on the server.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub allow_missing: bool,
 }
 /// Response message for `TranscoderService.ListJobs`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobsResponse {
     /// List of jobs in the specified region.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub jobs: ::prost::alloc::vec::Vec<Job>,
     /// The pagination token.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// List of regions that could not be reached.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request message for `TranscoderService.CreateJobTemplate`.
@@ -1233,17 +1231,17 @@ pub struct ListJobsResponse {
 pub struct CreateJobTemplateRequest {
     /// Required. The parent location to create this job template.
     /// Format: `projects/{project}/locations/{location}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. Parameters for creating job template.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub job_template: ::core::option::Option<JobTemplate>,
     /// Required. The ID to use for the job template, which will become the final component
     /// of the job template's resource name.
     ///
     /// This value should be 4-63 characters, and valid characters must match the
     /// regular expression `\[a-zA-Z][a-zA-Z0-9_-\]*`.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub job_template_id: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.ListJobTemplates`.
@@ -1251,22 +1249,22 @@ pub struct CreateJobTemplateRequest {
 pub struct ListJobTemplatesRequest {
     /// Required. The parent location from which to retrieve the collection of job templates.
     /// Format: `projects/{project}/locations/{location}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of items to return.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// The `next_page_token` value returned from a previous List request, if
     /// any.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
     /// The filter expression, following the syntax outlined in
     /// <https://google.aip.dev/160.>
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub filter: ::prost::alloc::string::String,
     /// One or more fields to compare and use to sort the output.
     /// See <https://google.aip.dev/132#ordering.>
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.GetJobTemplate`.
@@ -1275,7 +1273,7 @@ pub struct GetJobTemplateRequest {
     /// Required. The name of the job template to retrieve.
     /// Format:
     /// `projects/{project}/locations/{location}/jobTemplates/{job_template}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `TranscoderService.DeleteJobTemplate`.
@@ -1283,45 +1281,56 @@ pub struct GetJobTemplateRequest {
 pub struct DeleteJobTemplateRequest {
     /// Required. The name of the job template to delete.
     /// `projects/{project}/locations/{location}/jobTemplates/{job_template}`
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// If set to true, and the job template is not found, the request will succeed
     /// but no action will be taken on the server.
-    #[prost(bool, tag = "2")]
+    #[prost(bool, tag="2")]
     pub allow_missing: bool,
 }
 /// Response message for `TranscoderService.ListJobTemplates`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListJobTemplatesResponse {
     /// List of job templates in the specified region.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub job_templates: ::prost::alloc::vec::Vec<JobTemplate>,
     /// The pagination token.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// List of regions that could not be reached.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod transcoder_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Using the Transcoder API, you can queue asynchronous jobs for transcoding"]
-    #[doc = " media into various output formats. Output formats may include different"]
-    #[doc = " streaming standards such as HTTP Live Streaming (HLS) and Dynamic Adaptive"]
-    #[doc = " Streaming over HTTP (DASH). You can also customize jobs using advanced"]
-    #[doc = " features such as Digital Rights Management (DRM), audio equalization, content"]
-    #[doc = " concatenation, and digital ad-stitch ready content generation."]
+    /// Using the Transcoder API, you can queue asynchronous jobs for transcoding
+    /// media into various output formats. Output formats may include different
+    /// streaming standards such as HTTP Live Streaming (HLS) and Dynamic Adaptive
+    /// Streaming over HTTP (DASH). You can also customize jobs using advanced
+    /// features such as Digital Rights Management (DRM), audio equalization, content
+    /// concatenation, and digital ad-stitch ready content generation.
     #[derive(Debug, Clone)]
     pub struct TranscoderServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl TranscoderServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> TranscoderServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -1334,160 +1343,188 @@ pub mod transcoder_service_client {
         ) -> TranscoderServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             TranscoderServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Creates a job in the specified region."]
+        /// Creates a job in the specified region.
         pub async fn create_job(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobRequest>,
         ) -> Result<tonic::Response<super::Job>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.transcoder.v1.TranscoderService/CreateJob",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists jobs in the specified region."]
+        /// Lists jobs in the specified region.
         pub async fn list_jobs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobsRequest>,
         ) -> Result<tonic::Response<super::ListJobsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.transcoder.v1.TranscoderService/ListJobs",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns the job data."]
+        /// Returns the job data.
         pub async fn get_job(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobRequest>,
         ) -> Result<tonic::Response<super::Job>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.transcoder.v1.TranscoderService/GetJob",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a job."]
+        /// Deletes a job.
         pub async fn delete_job(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteJobRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.transcoder.v1.TranscoderService/DeleteJob",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a job template in the specified region."]
+        /// Creates a job template in the specified region.
         pub async fn create_job_template(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateJobTemplateRequest>,
         ) -> Result<tonic::Response<super::JobTemplate>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.transcoder.v1.TranscoderService/CreateJobTemplate",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists job templates in the specified region."]
+        /// Lists job templates in the specified region.
         pub async fn list_job_templates(
             &mut self,
             request: impl tonic::IntoRequest<super::ListJobTemplatesRequest>,
         ) -> Result<tonic::Response<super::ListJobTemplatesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.transcoder.v1.TranscoderService/ListJobTemplates",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns the job template data."]
+        /// Returns the job template data.
         pub async fn get_job_template(
             &mut self,
             request: impl tonic::IntoRequest<super::GetJobTemplateRequest>,
         ) -> Result<tonic::Response<super::JobTemplate>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.transcoder.v1.TranscoderService/GetJobTemplate",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a job template."]
+        /// Deletes a job template.
         pub async fn delete_job_template(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteJobTemplateRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.video.transcoder.v1.TranscoderService/DeleteJobTemplate",

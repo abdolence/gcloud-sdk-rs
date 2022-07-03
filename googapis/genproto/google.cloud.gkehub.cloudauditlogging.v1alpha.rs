@@ -6,6 +6,6 @@ pub struct FeatureSpec {
     /// already exist, but do not need to have any permissions granted to them.
     /// The customer's entitlements will be checked prior to allowlisting (i.e.
     /// the customer must be an Anthos customer.)
-    #[prost(string, repeated, tag = "1")]
+    #[prost(string, repeated, tag="1")]
     pub allowlisted_service_accounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }

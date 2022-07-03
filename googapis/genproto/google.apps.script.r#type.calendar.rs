@@ -10,22 +10,22 @@ pub struct CalendarAddOnManifest {
     ///
     /// If present, this overrides the configuration from
     /// `addOns.common.homepageTrigger`.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub homepage_trigger: ::core::option::Option<super::HomepageExtensionPoint>,
     /// Defines conference solutions provided by this add-on.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub conference_solution: ::prost::alloc::vec::Vec<ConferenceSolution>,
     /// An endpoint to execute that creates a URL to the add-on's settings page.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub create_settings_url_function: ::prost::alloc::string::String,
     /// An endpoint to trigger when an event is opened (viewed/edited).
-    #[prost(message, optional, tag = "10")]
+    #[prost(message, optional, tag="10")]
     pub event_open_trigger: ::core::option::Option<CalendarExtensionPoint>,
     /// An endpoint to trigger when the open event is updated.
-    #[prost(message, optional, tag = "11")]
+    #[prost(message, optional, tag="11")]
     pub event_update_trigger: ::core::option::Option<CalendarExtensionPoint>,
     /// Define the level of data access when an event addon is triggered.
-    #[prost(enumeration = "calendar_add_on_manifest::EventAccess", tag = "12")]
+    #[prost(enumeration="calendar_add_on_manifest::EventAccess", tag="12")]
     pub current_event_access: i32,
 }
 /// Nested message and enum types in `CalendarAddOnManifest`.
@@ -56,20 +56,20 @@ pub mod calendar_add_on_manifest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConferenceSolution {
     /// Required. The endpoint to call when ConferenceData should be created.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub on_create_function: ::prost::alloc::string::String,
     /// Required. IDs should be unique across ConferenceSolutions within one
     /// add-on, but this is not strictly enforced. It is up to the add-on developer
     /// to assign them uniquely, otherwise the wrong ConferenceSolution may be
     /// used when the add-on is triggered. While the developer may change the
     /// display name of an add-on, the ID should not be changed.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub id: ::prost::alloc::string::String,
     /// Required. The display name of the ConferenceSolution.
-    #[prost(string, tag = "5")]
+    #[prost(string, tag="5")]
     pub name: ::prost::alloc::string::String,
     /// Required. The URL for the logo image of the ConferenceSolution.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub logo_url: ::prost::alloc::string::String,
 }
 /// Common format for declaring a calendar add-on's triggers.
@@ -77,6 +77,6 @@ pub struct ConferenceSolution {
 pub struct CalendarExtensionPoint {
     /// Required. The endpoint to execute when this extension point is
     /// activated.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub run_function: ::prost::alloc::string::String,
 }

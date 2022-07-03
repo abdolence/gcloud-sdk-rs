@@ -41,7 +41,7 @@ pub struct DenyRule {
     ///   principals associated with the specified Google Workspace or Cloud
     ///   Identity customer ID. For example,
     ///   `principalSet://goog/cloudIdentityCustomerId/C01Abc35`.
-    #[prost(string, repeated, tag = "1")]
+    #[prost(string, repeated, tag="1")]
     pub denied_principals: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The identities that are excluded from the deny rule, even if they are
     /// listed in the `denied_principals`. For example, you could add a Google
@@ -51,13 +51,13 @@ pub struct DenyRule {
     /// This field can contain the same values as the `denied_principals` field,
     /// excluding `principalSet://goog/public:all`, which represents all users on
     /// the internet.
-    #[prost(string, repeated, tag = "2")]
+    #[prost(string, repeated, tag="2")]
     pub exception_principals: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The permissions that are explicitly denied by this rule. Each permission
     /// uses the format `{service_fqdn}/{resource}.{verb}`, where `{service_fqdn}`
     /// is the fully qualified domain name for the service. For example,
     /// `iam.googleapis.com/roles.list`.
-    #[prost(string, repeated, tag = "3")]
+    #[prost(string, repeated, tag="3")]
     pub denied_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Specifies the permissions that this rule excludes from the set of denied
     /// permissions given by `denied_permissions`. If a permission appears in
@@ -66,7 +66,7 @@ pub struct DenyRule {
     ///
     /// The excluded permissions can be specified using the same syntax as
     /// `denied_permissions`.
-    #[prost(string, repeated, tag = "4")]
+    #[prost(string, repeated, tag="4")]
     pub exception_permissions: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The condition that determines whether this deny rule applies to a request.
     /// If the condition expression evaluates to `true`, then the deny rule is
@@ -79,7 +79,7 @@ pub struct DenyRule {
     /// [resource
     /// tags](<https://cloud.google.com/iam/help/conditions/resource-tags>). Other
     /// functions and operators are not supported.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub denial_condition: ::core::option::Option<super::super::r#type::Expr>,
 }
 /// Data for an IAM policy.
@@ -97,44 +97,43 @@ pub struct Policy {
     /// For organizations and folders, use the numeric ID in the full resource
     /// name. For projects, requests can use the alphanumeric or the numeric ID.
     /// Responses always contain the numeric ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. The globally unique ID of the `Policy`. Assigned automatically when the
     /// `Policy` is created.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub uid: ::prost::alloc::string::String,
     /// Output only. The kind of the `Policy`. Always contains the value `DenyPolicy`.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub kind: ::prost::alloc::string::String,
     /// A user-specified description of the `Policy`. This value can be up to 63
     /// characters.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub display_name: ::prost::alloc::string::String,
     /// A key-value map to store arbitrary metadata for the `Policy`. Keys
     /// can be up to 63 characters. Values can be up to 255 characters.
-    #[prost(map = "string, string", tag = "5")]
-    pub annotations:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="5")]
+    pub annotations: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// An opaque tag that identifies the current version of the `Policy`. IAM uses
     /// this value to help manage concurrent updates, so they do not cause one
     /// update to be overwritten by another.
     ///
     /// If this field is present in a \[CreatePolicy][\] request, the value is
     /// ignored.
-    #[prost(string, tag = "6")]
+    #[prost(string, tag="6")]
     pub etag: ::prost::alloc::string::String,
     /// Output only. The time when the `Policy` was created.
-    #[prost(message, optional, tag = "7")]
+    #[prost(message, optional, tag="7")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the `Policy` was last updated.
-    #[prost(message, optional, tag = "8")]
+    #[prost(message, optional, tag="8")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the `Policy` was deleted. Empty if the policy is not deleted.
-    #[prost(message, optional, tag = "9")]
+    #[prost(message, optional, tag="9")]
     pub delete_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A list of rules that specify the behavior of the `Policy`. All of the rules
     /// should be of the `kind` specified in the `Policy`.
-    #[prost(message, repeated, tag = "10")]
+    #[prost(message, repeated, tag="10")]
     pub rules: ::prost::alloc::vec::Vec<PolicyRule>,
 }
 /// A single rule in a `Policy`.
@@ -142,9 +141,9 @@ pub struct Policy {
 pub struct PolicyRule {
     /// A user-specified description of the rule. This value can be up to 256
     /// characters.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub description: ::prost::alloc::string::String,
-    #[prost(oneof = "policy_rule::Kind", tags = "2")]
+    #[prost(oneof="policy_rule::Kind", tags="2")]
     pub kind: ::core::option::Option<policy_rule::Kind>,
 }
 /// Nested message and enum types in `PolicyRule`.
@@ -152,7 +151,7 @@ pub mod policy_rule {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Kind {
         /// A rule for a deny policy.
-        #[prost(message, tag = "2")]
+        #[prost(message, tag="2")]
         DenyRule(super::DenyRule),
     }
 }
@@ -171,26 +170,26 @@ pub struct ListPoliciesRequest {
     ///
     /// For organizations and folders, use the numeric ID in the full resource
     /// name. For projects, you can use the alphanumeric or the numeric ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of policies to return. IAM ignores this value and uses
     /// the value 1000.
-    #[prost(int32, tag = "2")]
+    #[prost(int32, tag="2")]
     pub page_size: i32,
     /// A page token received in a \[ListPoliciesResponse][google.iam.v2beta.ListPoliciesResponse\]. Provide this token to
     /// retrieve the next page.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub page_token: ::prost::alloc::string::String,
 }
 /// Response message for `ListPolicies`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPoliciesResponse {
     /// Metadata for the policies that are attached to the resource.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub policies: ::prost::alloc::vec::Vec<Policy>,
     /// A page token that you can use in a \[ListPoliciesRequest][google.iam.v2beta.ListPoliciesRequest\] to retrieve the
     /// next page. If this field is omitted, there are no additional pages.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request message for `GetPolicy`.
@@ -206,7 +205,7 @@ pub struct GetPolicyRequest {
     ///
     /// For organizations and folders, use the numeric ID in the full resource
     /// name. For projects, you can use the alphanumeric or the numeric ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for `CreatePolicy`.
@@ -223,16 +222,16 @@ pub struct CreatePolicyRequest {
     ///
     /// For organizations and folders, use the numeric ID in the full resource
     /// name. For projects, you can use the alphanumeric or the numeric ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The policy to create.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub policy: ::core::option::Option<Policy>,
     /// The ID to use for this policy, which will become the final component of
     /// the policy's resource name. The ID must contain 3 to 63 characters. It can
     /// contain lowercase letters and numbers, as well as dashes (`-`) and periods
     /// (`.`). The first character must be a lowercase letter.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub policy_id: ::prost::alloc::string::String,
 }
 /// Request message for `UpdatePolicy`.
@@ -243,7 +242,7 @@ pub struct UpdatePolicyRequest {
     /// To prevent conflicting updates, the `etag` value must match the value that
     /// is stored in IAM. If the `etag` values do not match, the request fails with
     /// a `409` error code and `ABORTED` status.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub policy: ::core::option::Option<Policy>,
 }
 /// Request message for `DeletePolicy`.
@@ -259,7 +258,7 @@ pub struct DeletePolicyRequest {
     ///
     /// For organizations and folders, use the numeric ID in the full resource
     /// name. For projects, you can use the alphanumeric or the numeric ID.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Optional. The expected `etag` of the policy to delete. If the value does not match
     /// the value that is stored in IAM, the request fails with a `409` error code
@@ -267,30 +266,41 @@ pub struct DeletePolicyRequest {
     ///
     /// If you omit this field, the policy is deleted regardless of its current
     /// `etag`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub etag: ::prost::alloc::string::String,
 }
 /// Metadata for long-running `Policy` operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PolicyOperationMetadata {
     /// Timestamp when the `google.longrunning.Operation` was created.
-    #[prost(message, optional, tag = "1")]
+    #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod policies_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " An interface for managing Identity and Access Management (IAM) policies."]
+    /// An interface for managing Identity and Access Management (IAM) policies.
     #[derive(Debug, Clone)]
     pub struct PoliciesClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl PoliciesClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> PoliciesClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -303,125 +313,155 @@ pub mod policies_client {
         ) -> PoliciesClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             PoliciesClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Retrieves the policies of the specified kind that are attached to a"]
-        #[doc = " resource."]
-        #[doc = ""]
-        #[doc = " The response lists only policy metadata. In particular, policy rules are"]
-        #[doc = " omitted."]
+        /// Retrieves the policies of the specified kind that are attached to a
+        /// resource.
+        ///
+        /// The response lists only policy metadata. In particular, policy rules are
+        /// omitted.
         pub async fn list_policies(
             &mut self,
             request: impl tonic::IntoRequest<super::ListPoliciesRequest>,
         ) -> Result<tonic::Response<super::ListPoliciesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.iam.v2beta.Policies/ListPolicies");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.iam.v2beta.Policies/ListPolicies",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a policy."]
+        /// Gets a policy.
         pub async fn get_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::GetPolicyRequest>,
         ) -> Result<tonic::Response<super::Policy>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.iam.v2beta.Policies/GetPolicy");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.iam.v2beta.Policies/GetPolicy",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a policy."]
+        /// Creates a policy.
         pub async fn create_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::CreatePolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::longrunning::Operation>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.iam.v2beta.Policies/CreatePolicy");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.iam.v2beta.Policies/CreatePolicy",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Updates the specified policy."]
-        #[doc = ""]
-        #[doc = " You can update only the rules and the display name for the policy."]
-        #[doc = ""]
-        #[doc = " To update a policy, you should use a read-modify-write loop:"]
-        #[doc = ""]
-        #[doc = " 1. Use [GetPolicy][google.iam.v2beta.Policies.GetPolicy] to read the current version of the policy."]
-        #[doc = " 2. Modify the policy as needed."]
-        #[doc = " 3. Use `UpdatePolicy` to write the updated policy."]
-        #[doc = ""]
-        #[doc = " This pattern helps prevent conflicts between concurrent updates."]
+        /// Updates the specified policy.
+        ///
+        /// You can update only the rules and the display name for the policy.
+        ///
+        /// To update a policy, you should use a read-modify-write loop:
+        ///
+        /// 1. Use [GetPolicy][google.iam.v2beta.Policies.GetPolicy] to read the current version of the policy.
+        /// 2. Modify the policy as needed.
+        /// 3. Use `UpdatePolicy` to write the updated policy.
+        ///
+        /// This pattern helps prevent conflicts between concurrent updates.
         pub async fn update_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdatePolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::longrunning::Operation>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.iam.v2beta.Policies/UpdatePolicy");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.iam.v2beta.Policies/UpdatePolicy",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a policy. This action is permanent."]
+        /// Deletes a policy. This action is permanent.
         pub async fn delete_policy(
             &mut self,
             request: impl tonic::IntoRequest<super::DeletePolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::longrunning::Operation>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+        ) -> Result<
+            tonic::Response<super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
-            let path =
-                http::uri::PathAndQuery::from_static("/google.iam.v2beta.Policies/DeletePolicy");
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.iam.v2beta.Policies/DeletePolicy",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

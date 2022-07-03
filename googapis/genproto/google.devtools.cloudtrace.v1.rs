@@ -4,22 +4,22 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Trace {
     /// Project ID of the Cloud project where the trace data is stored.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
     /// Globally unique identifier for the trace. This identifier is a 128-bit
     /// numeric value formatted as a 32-byte hex string. For example,
     /// `382d4f4c6b7bb2f4a972559d9085001d`.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub trace_id: ::prost::alloc::string::String,
     /// Collection of spans in the trace.
-    #[prost(message, repeated, tag = "3")]
+    #[prost(message, repeated, tag="3")]
     pub spans: ::prost::alloc::vec::Vec<TraceSpan>,
 }
 /// List of new or updated traces.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Traces {
     /// List of traces.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub traces: ::prost::alloc::vec::Vec<Trace>,
 }
 /// A span represents a single timed event within a trace. Spans can be nested
@@ -31,12 +31,12 @@ pub struct Traces {
 pub struct TraceSpan {
     /// Identifier for the span. Must be a 64-bit integer other than 0 and
     /// unique within a trace. For example, `2205310701640571284`.
-    #[prost(fixed64, tag = "1")]
+    #[prost(fixed64, tag="1")]
     pub span_id: u64,
     /// Distinguishes between spans generated in a particular context. For example,
     /// two spans with the same name may be distinguished using `RPC_CLIENT`
     /// and `RPC_SERVER` to identify queueing latency associated with the span.
-    #[prost(enumeration = "trace_span::SpanKind", tag = "2")]
+    #[prost(enumeration="trace_span::SpanKind", tag="2")]
     pub kind: i32,
     /// Name of the span. Must be less than 128 bytes. The span name is sanitized
     /// and displayed in the Stackdriver Trace tool in the
@@ -45,16 +45,16 @@ pub struct TraceSpan {
     /// For the same executable and the same call point, a best practice is
     /// to use a consistent name, which makes it easier to correlate
     /// cross-trace spans.
-    #[prost(string, tag = "3")]
+    #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
     /// Start time of the span in nanoseconds from the UNIX epoch.
-    #[prost(message, optional, tag = "4")]
+    #[prost(message, optional, tag="4")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End time of the span in nanoseconds from the UNIX epoch.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. ID of the parent span, if any.
-    #[prost(fixed64, tag = "6")]
+    #[prost(fixed64, tag="6")]
     pub parent_span_id: u64,
     /// Collection of labels associated with the span. Label keys must be less than
     /// 128 bytes. Label values must be less than 16 kilobytes (10MB for
@@ -91,9 +91,8 @@ pub struct TraceSpan {
     /// *   `/pid`
     /// *   `/stacktrace`
     /// *   `/tid`
-    #[prost(map = "string, string", tag = "7")]
-    pub labels:
-        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    #[prost(map="string, string", tag="7")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `TraceSpan`.
 pub mod trace_span {
@@ -117,28 +116,28 @@ pub mod trace_span {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTracesRequest {
     /// Required. ID of the Cloud project where the trace data is stored.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
     /// Optional. Type of data returned for traces in the list. Default is
     /// `MINIMAL`.
-    #[prost(enumeration = "list_traces_request::ViewType", tag = "2")]
+    #[prost(enumeration="list_traces_request::ViewType", tag="2")]
     pub view: i32,
     /// Optional. Maximum number of traces to return. If not specified or <= 0, the
     /// implementation selects a reasonable value.  The implementation may
     /// return fewer traces than the requested page size.
-    #[prost(int32, tag = "3")]
+    #[prost(int32, tag="3")]
     pub page_size: i32,
     /// Token identifying the page of results to return. If provided, use the
     /// value of the `next_page_token` field from a previous request.
-    #[prost(string, tag = "4")]
+    #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
     /// Start of the time interval (inclusive) during which the trace data was
     /// collected from the application.
-    #[prost(message, optional, tag = "5")]
+    #[prost(message, optional, tag="5")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// End of the time interval (inclusive) during which the trace data was
     /// collected from the application.
-    #[prost(message, optional, tag = "6")]
+    #[prost(message, optional, tag="6")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Optional. A filter against labels for the request.
     ///
@@ -170,7 +169,7 @@ pub struct ListTracesRequest {
     ///     specified.
     /// *   `method:VALUE`: Equivalent to `/http/method:VALUE`.
     /// *   `url:VALUE`: Equivalent to `/http/url:VALUE`.
-    #[prost(string, tag = "7")]
+    #[prost(string, tag="7")]
     pub filter: ::prost::alloc::string::String,
     /// Optional. Field used to sort the returned traces.
     /// Can be one of the following:
@@ -185,7 +184,7 @@ pub struct ListTracesRequest {
     /// (for example, `name desc`).
     ///
     /// Only one sort field is permitted.
-    #[prost(string, tag = "8")]
+    #[prost(string, tag="8")]
     pub order_by: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `ListTracesRequest`.
@@ -212,52 +211,63 @@ pub mod list_traces_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTracesResponse {
     /// List of trace records as specified by the view parameter.
-    #[prost(message, repeated, tag = "1")]
+    #[prost(message, repeated, tag="1")]
     pub traces: ::prost::alloc::vec::Vec<Trace>,
     /// If defined, indicates that there are more traces that match the request
     /// and that this value should be passed to the next request to continue
     /// retrieving additional traces.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// The request message for the `GetTrace` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetTraceRequest {
     /// Required. ID of the Cloud project where the trace data is stored.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. ID of the trace to return.
-    #[prost(string, tag = "2")]
+    #[prost(string, tag="2")]
     pub trace_id: ::prost::alloc::string::String,
 }
 /// The request message for the `PatchTraces` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchTracesRequest {
     /// Required. ID of the Cloud project where the trace data is stored.
-    #[prost(string, tag = "1")]
+    #[prost(string, tag="1")]
     pub project_id: ::prost::alloc::string::String,
     /// Required. The body of the message.
-    #[prost(message, optional, tag = "2")]
+    #[prost(message, optional, tag="2")]
     pub traces: ::core::option::Option<Traces>,
 }
-#[doc = r" Generated client implementations."]
+/// Generated client implementations.
 pub mod trace_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " This file describes an API for collecting and viewing traces and spans"]
-    #[doc = " within a trace.  A Trace is a collection of spans corresponding to a single"]
-    #[doc = " operation or set of operations for an application. A span is an individual"]
-    #[doc = " timed event which forms a node of the trace tree. Spans for a single trace"]
-    #[doc = " may span multiple services."]
+    /// This file describes an API for collecting and viewing traces and spans
+    /// within a trace.  A Trace is a collection of spans corresponding to a single
+    /// operation or set of operations for an application. A span is an individual
+    /// timed event which forms a node of the trace tree. Spans for a single trace
+    /// may span multiple services.
     #[derive(Debug, Clone)]
     pub struct TraceServiceClient<T> {
         inner: tonic::client::Grpc<T>,
     }
+    impl TraceServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
     impl<T> TraceServiceClient<T>
     where
         T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::ResponseBody: Body + Send + 'static,
         T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
         <T::ResponseBody as Body>::Error: Into<StdError> + Send,
     {
         pub fn new(inner: T) -> Self {
@@ -270,79 +280,92 @@ pub mod trace_service_client {
         ) -> TraceServiceClient<InterceptedService<T, F>>
         where
             F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
             T: tonic::codegen::Service<
                 http::Request<tonic::body::BoxBody>,
                 Response = http::Response<
                     <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
                 >,
             >,
-            <T as tonic::codegen::Service<http::Request<tonic::body::BoxBody>>>::Error:
-                Into<StdError> + Send + Sync,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
         {
             TraceServiceClient::new(InterceptedService::new(inner, interceptor))
         }
-        #[doc = r" Compress requests with `gzip`."]
-        #[doc = r""]
-        #[doc = r" This requires the server to support it otherwise it might respond with an"]
-        #[doc = r" error."]
+        /// Compress requests with `gzip`.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
         pub fn send_gzip(mut self) -> Self {
             self.inner = self.inner.send_gzip();
             self
         }
-        #[doc = r" Enable decompressing responses with `gzip`."]
+        /// Enable decompressing responses with `gzip`.
+        #[must_use]
         pub fn accept_gzip(mut self) -> Self {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Returns of a list of traces that match the specified filter conditions."]
+        /// Returns of a list of traces that match the specified filter conditions.
         pub async fn list_traces(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTracesRequest>,
         ) -> Result<tonic::Response<super::ListTracesResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudtrace.v1.TraceService/ListTraces",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Gets a single trace by its ID."]
+        /// Gets a single trace by its ID.
         pub async fn get_trace(
             &mut self,
             request: impl tonic::IntoRequest<super::GetTraceRequest>,
         ) -> Result<tonic::Response<super::Trace>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudtrace.v1.TraceService/GetTrace",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Sends new traces to Stackdriver Trace or updates existing traces. If the ID"]
-        #[doc = " of a trace that you send matches that of an existing trace, any fields"]
-        #[doc = " in the existing trace and its spans are overwritten by the provided values,"]
-        #[doc = " and any new fields provided are merged with the existing trace data. If the"]
-        #[doc = " ID does not match, a new trace is created."]
+        /// Sends new traces to Stackdriver Trace or updates existing traces. If the ID
+        /// of a trace that you send matches that of an existing trace, any fields
+        /// in the existing trace and its spans are overwritten by the provided values,
+        /// and any new fields provided are merged with the existing trace data. If the
+        /// ID does not match, a new trace is created.
         pub async fn patch_traces(
             &mut self,
             request: impl tonic::IntoRequest<super::PatchTracesRequest>,
         ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.cloudtrace.v1.TraceService/PatchTraces",
