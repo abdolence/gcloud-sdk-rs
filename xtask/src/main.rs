@@ -23,7 +23,7 @@ fn gen() {
     // let gates = gen::feature_gates(&protos);
     // println!("{}", gates);
 
-    let out_dir = PathBuf::from("googapis/genproto");
+    let out_dir = PathBuf::from("gcloud-sdk/genproto");
     let _ = fs::remove_dir_all(out_dir.as_path());
     let _ = fs::create_dir(out_dir.as_path());
     let includes = [proto_root];
@@ -37,7 +37,7 @@ fn gen() {
         .compile_with_config(config, &gen::proto_path(&protos), &includes)
         .unwrap();
 
-    let mut out_path = PathBuf::from("googapis/src/googapis.rs");
+    let mut out_path = PathBuf::from("gcloud-sdk/src/googapis.rs");
     let root = gen::from_protos(protos);
     fs::write(out_path.clone(), root.gen_code()).unwrap();
 

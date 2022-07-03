@@ -12,9 +12,9 @@ pub trait CachedGoogleApiClientBuilder<C> {
 }
 
 pub struct CachedGoogleApiClient<B, C>
-    where
-        B: CachedGoogleApiClientBuilder<C>,
-        C: Clone,
+where
+    B: CachedGoogleApiClientBuilder<C>,
+    C: Clone,
 {
     builder: B,
     google_api_url: &'static str,
@@ -24,24 +24,28 @@ pub struct CachedGoogleApiClient<B, C>
 
 #[derive(Clone)]
 struct CachedGoogleApiClientState<C>
-    where
-        C: Clone,
+where
+    C: Clone,
 {
     cached_at: DateTime<Utc>,
     client: C,
 }
 
 impl<B, C> CachedGoogleApiClient<B, C>
-    where
-        B: CachedGoogleApiClientBuilder<C>,
-        C: Clone,
+where
+    B: CachedGoogleApiClientBuilder<C>,
+    C: Clone,
 {
-    pub fn new(builder: B, google_api_url: &'static str, cloud_resource_prefix_meta: Option<String>) -> Self {
+    pub fn new(
+        builder: B,
+        google_api_url: &'static str,
+        cloud_resource_prefix_meta: Option<String>,
+    ) -> Self {
         Self {
             state: Arc::new(RwLock::new(None)),
             builder: builder,
             google_api_url: google_api_url,
-            cloud_resource_prefix_meta: cloud_resource_prefix_meta
+            cloud_resource_prefix_meta: cloud_resource_prefix_meta,
         }
     }
 
@@ -58,8 +62,7 @@ impl<B, C> CachedGoogleApiClient<B, C>
                 Ok(state.client)
             }
             _ => {
-                let domain_name = self.google_api_url.to_string()
-                    .replace("https://", "");
+                let domain_name = self.google_api_url.to_string().replace("https://", "");
 
                 let tls_config =
                     GoogleConnectorInterceptor::init_google_services_channel_tls_config(
@@ -70,10 +73,12 @@ impl<B, C> CachedGoogleApiClient<B, C>
                     self.google_api_url,
                     &tls_config,
                 )
-                    .await?;
+                .await?;
 
                 let interceptor = GoogleConnectorInterceptor::with_cloud_resource_prefix(
-                    self.cloud_resource_prefix_meta.clone()).await?;
+                    self.cloud_resource_prefix_meta.clone(),
+                )
+                .await?;
 
                 let new_client = self.builder.create_client(channel, interceptor);
                 {

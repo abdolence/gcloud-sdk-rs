@@ -5,7 +5,7 @@ authors = ["mechiru <u9053u6d41@gmail.com>", "me@abdolence.dev"]
 edition = "2018"
 
 [dependencies]
-gcloud-sdk = { path = "./../../googapis", default-features = false, features = ["google-spanner-admin-database-v1"] }
+gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-spanner-admin-database-v1"] }
 tonic = { version = "0.7", features = ["tls"] }
 prost = "0.10"
 prost-types = "0.10"

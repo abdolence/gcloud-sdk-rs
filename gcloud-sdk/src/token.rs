@@ -8,11 +8,7 @@
 //! println!("authorization: {}", token.header_value().unwrap());
 //! ```
 
-use std::{
-    path::PathBuf,
-    sync::Arc,
-    time::Instant,
-};
+use std::{path::PathBuf, sync::Arc, time::Instant};
 use tokio::sync::Mutex;
 
 use crate::source::{self, find_default, from_file, from_json, BoxSource};
