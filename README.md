@@ -73,11 +73,13 @@ the updates and API proto descriptions from Google more frequently and simplify 
 ### Why not to contribute back?
 - Different goals from googapis.
     * This fork focuses on simplicity and provided authentication capabilities natively.
-    * Has direct dependency to tokio runtime and uses synchronisation primitives (such as Mutex) from tokio.
-    * Provides Facade API and caching client implementation
+    * Has direct dependencies to tokio runtime and chrono.
+      Uses synchronisation primitives (such as Mutex) from tokio everywhere.
+    * Provides facade API for the caching async client implementation
+      that hides complexity working with tokens and TLS.
 - Different development cycles - the original development was updated less frequently than it was needed for me.
 
-I'd be glad to contribute all of the changes back if author sees the same goals now.
+I'd be glad to contribute all of the changes back if author sees the same goals.
 
 ## License
 Licensed under either of [Apache License, Version 2.0](./LICENSE-APACHE)
