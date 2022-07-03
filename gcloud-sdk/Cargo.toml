@@ -1,11 +1,11 @@
 [package]
 name = "gcloud-sdk"
-version = "0.7.4"
-authors = ["mechiru <u9053u6d41@gmail.com>", "me@abdolence.dev"]
+version = "0.8.0"
+authors = ["mechiru <u9053u6d41@gmail.com>", "Abdulla Abdurakhmanov <me@abdolence.dev>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
-description = "This library generated from Google API using tonic-build and fork of https://docs.rs/googapis."
-repository = "https://github.com/latestbit/gcloud-sdk"
+description = "This library provides generated from proto Google API, authentication support, caching client."
+repository = "https://github.com/latestbit/gcloud-sdk-rs"
 documentation = "https://docs.rs/gcloud-sdk"
 categories = ["api-bindings"]
 keywords = ["google", "api", "googleapis", "gcloud", "gcp"]
