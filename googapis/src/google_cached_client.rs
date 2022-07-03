@@ -58,7 +58,8 @@ impl<B, C> CachedGoogleApiClient<B, C>
                 Ok(state.client)
             }
             _ => {
-                let domain_name = self.google_api_url.to_string().replace("http://", "");
+                let domain_name = self.google_api_url.to_string()
+                    .replace("https://", "");
 
                 let tls_config =
                     GoogleConnectorInterceptor::init_google_services_channel_tls_config(
