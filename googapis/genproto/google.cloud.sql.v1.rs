@@ -2354,7 +2354,10 @@ pub struct SqlInstancesVerifyExternalSyncSettingsRequest {
     /// Optional. Flag to verify settings required by replication setup only
     #[prost(bool, tag = "5")]
     pub verify_replication_only: bool,
-    #[prost(oneof = "sql_instances_verify_external_sync_settings_request::SyncConfig", tags = "6")]
+    #[prost(
+        oneof = "sql_instances_verify_external_sync_settings_request::SyncConfig",
+        tags = "6"
+    )]
     pub sync_config:
         ::core::option::Option<sql_instances_verify_external_sync_settings_request::SyncConfig>,
 }
@@ -2397,7 +2400,10 @@ pub struct SqlInstancesStartExternalSyncRequest {
     /// Whether to skip the verification step (VESS).
     #[prost(bool, tag = "4")]
     pub skip_verification: bool,
-    #[prost(oneof = "sql_instances_start_external_sync_request::SyncConfig", tags = "6")]
+    #[prost(
+        oneof = "sql_instances_start_external_sync_request::SyncConfig",
+        tags = "6"
+    )]
     pub sync_config: ::core::option::Option<sql_instances_start_external_sync_request::SyncConfig>,
 }
 /// Nested message and enum types in `SqlInstancesStartExternalSyncRequest`.
@@ -2745,7 +2751,7 @@ pub mod database_instance {
         #[prost(message, optional, tag = "2")]
         pub available: ::core::option::Option<bool>,
     }
-    /// Any scheduled maintenancce for this instance.
+    /// Any scheduled maintenance for this instance.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SqlScheduledMaintenance {
         /// The start time of any upcoming scheduled maintenance for this instance.
@@ -2770,7 +2776,11 @@ pub mod database_instance {
         ///   *  the proactive database wellness job for OOD.
         /// *  Readers:
         ///   *  the proactive database wellness job
-        #[prost(enumeration = "sql_out_of_disk_report::SqlOutOfDiskState", optional, tag = "1")]
+        #[prost(
+            enumeration = "sql_out_of_disk_report::SqlOutOfDiskState",
+            optional,
+            tag = "1"
+        )]
         pub sql_out_of_disk_state: ::core::option::Option<i32>,
         /// The minimum recommended increase size in GigaBytes
         /// This field is consumed by the frontend

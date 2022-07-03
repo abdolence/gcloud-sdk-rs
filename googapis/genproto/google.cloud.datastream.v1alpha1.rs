@@ -69,7 +69,10 @@ pub struct ForwardSshTunnelConnectivity {
     /// Port for the SSH tunnel, default value is 22.
     #[prost(int32, tag = "3")]
     pub port: i32,
-    #[prost(oneof = "forward_ssh_tunnel_connectivity::AuthenticationMethod", tags = "100, 101")]
+    #[prost(
+        oneof = "forward_ssh_tunnel_connectivity::AuthenticationMethod",
+        tags = "100, 101"
+    )]
     pub authentication_method:
         ::core::option::Option<forward_ssh_tunnel_connectivity::AuthenticationMethod>,
 }
@@ -223,7 +226,10 @@ pub struct ConnectionProfile {
     #[prost(oneof = "connection_profile::Profile", tags = "100, 101, 102")]
     pub profile: ::core::option::Option<connection_profile::Profile>,
     /// Connectivity options used to establish a connection to the profile.
-    #[prost(oneof = "connection_profile::Connectivity", tags = "200, 201, 202, 203")]
+    #[prost(
+        oneof = "connection_profile::Connectivity",
+        tags = "200, 201, 202, 203"
+    )]
     pub connectivity: ::core::option::Option<connection_profile::Connectivity>,
 }
 /// Nested message and enum types in `ConnectionProfile`.
@@ -716,12 +722,18 @@ pub struct DiscoverConnectionProfileRequest {
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The connection profile on which to run discover.
-    #[prost(oneof = "discover_connection_profile_request::Target", tags = "200, 201")]
+    #[prost(
+        oneof = "discover_connection_profile_request::Target",
+        tags = "200, 201"
+    )]
     pub target: ::core::option::Option<discover_connection_profile_request::Target>,
     #[prost(oneof = "discover_connection_profile_request::Depth", tags = "3, 4")]
     pub depth: ::core::option::Option<discover_connection_profile_request::Depth>,
     /// The data object to enrich with child data objects and metadata.
-    #[prost(oneof = "discover_connection_profile_request::DataObject", tags = "100, 101")]
+    #[prost(
+        oneof = "discover_connection_profile_request::DataObject",
+        tags = "100, 101"
+    )]
     pub data_object: ::core::option::Option<discover_connection_profile_request::DataObject>,
 }
 /// Nested message and enum types in `DiscoverConnectionProfileRequest`.
@@ -760,7 +772,10 @@ pub mod discover_connection_profile_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DiscoverConnectionProfileResponse {
     /// The data object that has been enriched by the discover API call.
-    #[prost(oneof = "discover_connection_profile_response::DataObject", tags = "100, 101")]
+    #[prost(
+        oneof = "discover_connection_profile_response::DataObject",
+        tags = "100, 101"
+    )]
     pub data_object: ::core::option::Option<discover_connection_profile_response::DataObject>,
 }
 /// Nested message and enum types in `DiscoverConnectionProfileResponse`.

@@ -173,7 +173,10 @@ pub struct WorkloadIdentityPoolProvider {
     #[prost(string, tag = "7")]
     pub attribute_condition: ::prost::alloc::string::String,
     /// Identity provider configuration types.
-    #[prost(oneof = "workload_identity_pool_provider::ProviderConfig", tags = "8, 9")]
+    #[prost(
+        oneof = "workload_identity_pool_provider::ProviderConfig",
+        tags = "8, 9"
+    )]
     pub provider_config: ::core::option::Option<workload_identity_pool_provider::ProviderConfig>,
 }
 /// Nested message and enum types in `WorkloadIdentityPoolProvider`.

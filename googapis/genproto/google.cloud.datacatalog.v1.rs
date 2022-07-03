@@ -39,7 +39,10 @@ pub struct CloudSqlBigQueryConnectionSpec {
     #[prost(string, tag = "2")]
     pub database: ::prost::alloc::string::String,
     /// Type of the Cloud SQL database.
-    #[prost(enumeration = "cloud_sql_big_query_connection_spec::DatabaseType", tag = "3")]
+    #[prost(
+        enumeration = "cloud_sql_big_query_connection_spec::DatabaseType",
+        tag = "3"
+    )]
     pub r#type: i32,
 }
 /// Nested message and enum types in `CloudSqlBigQueryConnectionSpec`.
@@ -63,6 +66,16 @@ pub struct BigQueryRoutineSpec {
     #[prost(string, repeated, tag = "1")]
     pub imported_libraries: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// Entry metadata relevant only to the user and private to them.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PersonalDetails {
+    /// True if the entry is starred by the user; false otherwise.
+    #[prost(bool, tag = "1")]
+    pub starred: bool,
+    /// Set if the entry is starred; unset otherwise.
+    #[prost(message, optional, tag = "2")]
+    pub star_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 /// This enum lists all the systems that Data Catalog integrates with.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -75,6 +88,8 @@ pub enum IntegratedSystem {
     CloudPubsub = 2,
     /// Dataproc Metastore.
     DataprocMetastore = 3,
+    /// Dataplex.
+    Dataplex = 4,
 }
 /// Physical location of an entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -87,6 +102,11 @@ pub struct DataSource {
     /// `//bigquery.googleapis.com/projects/{PROJECT_ID}/locations/{LOCATION}/datasets/{DATASET_ID}/tables/{TABLE_ID}`
     #[prost(string, tag = "2")]
     pub resource: ::prost::alloc::string::String,
+    /// Output only. Data Catalog entry name, if applicable.
+    #[prost(string, tag = "3")]
+    pub source_entry: ::prost::alloc::string::String,
+    #[prost(oneof = "data_source::Properties", tags = "4")]
+    pub properties: ::core::option::Option<data_source::Properties>,
 }
 /// Nested message and enum types in `DataSource`.
 pub mod data_source {
@@ -101,6 +121,167 @@ pub mod data_source {
         /// BigQuery service.
         Bigquery = 2,
     }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Properties {
+        /// Detailed properties of the underlying storage.
+        #[prost(message, tag = "4")]
+        StorageProperties(super::StorageProperties),
+    }
+}
+/// Details the properties of the underlying storage.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StorageProperties {
+    /// Patterns to identify a set of files for this fileset.
+    ///
+    /// Examples of a valid `file_pattern`:
+    ///
+    ///  * `gs://bucket_name/dir/*`: matches all files in the `bucket_name/dir`
+    ///                              directory
+    ///  * `gs://bucket_name/dir/**`: matches all files in the `bucket_name/dir`
+    ///                               and all subdirectories recursively
+    ///  * `gs://bucket_name/file*`: matches files prefixed by `file` in
+    ///                              `bucket_name`
+    ///  * `gs://bucket_name/??.txt`: matches files with two characters followed by
+    ///                               `.txt` in `bucket_name`
+    ///  * `gs://bucket_name/\[aeiou\].txt`: matches files that contain a single
+    ///                                    vowel character followed by `.txt` in
+    ///                                    `bucket_name`
+    ///  * `gs://bucket_name/\[a-m\].txt`: matches files that contain `a`, `b`, ...
+    ///                                  or `m` followed by `.txt` in `bucket_name`
+    ///  * `gs://bucket_name/a/*/b`: matches all files in `bucket_name` that match
+    ///                              the `a/*/b` pattern, such as `a/c/b`, `a/d/b`
+    ///  * `gs://another_bucket/a.txt`: matches `gs://another_bucket/a.txt`
+    #[prost(string, repeated, tag = "1")]
+    pub file_pattern: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// File type in MIME format, for example, `text/plain`.
+    #[prost(string, tag = "2")]
+    pub file_type: ::prost::alloc::string::String,
+}
+/// Native schema used by a resource represented as an entry. Used by query
+/// engines for deserializing and parsing source data.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PhysicalSchema {
+    #[prost(oneof = "physical_schema::Schema", tags = "1, 2, 3, 4, 5, 6")]
+    pub schema: ::core::option::Option<physical_schema::Schema>,
+}
+/// Nested message and enum types in `PhysicalSchema`.
+pub mod physical_schema {
+    /// Schema in Avro JSON format.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AvroSchema {
+        /// JSON source of the Avro schema.
+        #[prost(string, tag = "1")]
+        pub text: ::prost::alloc::string::String,
+    }
+    /// Schema in Thrift format.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ThriftSchema {
+        /// Thrift IDL source of the schema.
+        #[prost(string, tag = "1")]
+        pub text: ::prost::alloc::string::String,
+    }
+    /// Schema in protocol buffer format.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProtobufSchema {
+        /// Protocol buffer source of the schema.
+        #[prost(string, tag = "1")]
+        pub text: ::prost::alloc::string::String,
+    }
+    /// Marks a Parquet-encoded data source.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ParquetSchema {}
+    /// Marks an ORC-encoded data source.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OrcSchema {}
+    /// Marks a CSV-encoded data source.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CsvSchema {}
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Schema {
+        /// Schema in Avro JSON format.
+        #[prost(message, tag = "1")]
+        Avro(AvroSchema),
+        /// Schema in Thrift format.
+        #[prost(message, tag = "2")]
+        Thrift(ThriftSchema),
+        /// Schema in protocol buffer format.
+        #[prost(message, tag = "3")]
+        Protobuf(ProtobufSchema),
+        /// Marks a Parquet-encoded data source.
+        #[prost(message, tag = "4")]
+        Parquet(ParquetSchema),
+        /// Marks an ORC-encoded data source.
+        #[prost(message, tag = "5")]
+        Orc(OrcSchema),
+        /// Marks a CSV-encoded data source.
+        #[prost(message, tag = "6")]
+        Csv(CsvSchema),
+    }
+}
+/// Common Dataplex fields.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataplexSpec {
+    /// Fully qualified resource name of an asset in Dataplex, to which the
+    /// underlying data source (Cloud Storage bucket or BigQuery dataset) of the
+    /// entity is attached.
+    #[prost(string, tag = "1")]
+    pub asset: ::prost::alloc::string::String,
+    /// Format of the data.
+    #[prost(message, optional, tag = "2")]
+    pub data_format: ::core::option::Option<PhysicalSchema>,
+    /// Compression format of the data, e.g., zip, gzip etc.
+    #[prost(string, tag = "3")]
+    pub compression_format: ::prost::alloc::string::String,
+    /// Project ID of the underlying Cloud Storage or BigQuery data. Note that
+    /// this may not be the same project as the correspondingly Dataplex lake /
+    /// zone / asset.
+    #[prost(string, tag = "4")]
+    pub project_id: ::prost::alloc::string::String,
+}
+/// Entry specyfication for a Dataplex fileset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataplexFilesetSpec {
+    /// Common Dataplex fields.
+    #[prost(message, optional, tag = "1")]
+    pub dataplex_spec: ::core::option::Option<DataplexSpec>,
+}
+/// Entry specification for a Dataplex table.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataplexTableSpec {
+    /// List of external tables registered by Dataplex in other systems based on
+    /// the same underlying data.
+    ///
+    /// External tables allow to query this data in those systems.
+    #[prost(message, repeated, tag = "1")]
+    pub external_tables: ::prost::alloc::vec::Vec<DataplexExternalTable>,
+    /// Common Dataplex fields.
+    #[prost(message, optional, tag = "2")]
+    pub dataplex_spec: ::core::option::Option<DataplexSpec>,
+    /// Indicates if the table schema is managed by the user or not.
+    #[prost(bool, tag = "3")]
+    pub user_managed: bool,
+}
+/// External table registered by Dataplex.
+/// Dataplex publishes data discovered from an asset into multiple other systems
+/// (BigQuery, DPMS) in form of tables. We call them "external tables". External
+/// tables are also synced into the Data Catalog.
+/// This message contains pointers to
+/// those external tables (fully qualified name, resource name et cetera) within
+/// the Data Catalog.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataplexExternalTable {
+    /// Service in which the external table is registered.
+    #[prost(enumeration = "IntegratedSystem", tag = "1")]
+    pub system: i32,
+    /// Fully qualified name (FQN) of the external table.
+    #[prost(string, tag = "28")]
+    pub fully_qualified_name: ::prost::alloc::string::String,
+    /// Google Cloud resource name of the external table.
+    #[prost(string, tag = "3")]
+    pub google_cloud_resource: ::prost::alloc::string::String,
+    /// Name of the Data Catalog entry representing the external table.
+    #[prost(string, tag = "4")]
+    pub data_catalog_entry: ::prost::alloc::string::String,
 }
 /// Timestamps associated with this resource in a particular system.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -544,33 +725,12 @@ pub struct TagTemplate {
     /// The maximum length is 200 characters.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Indicates whether this is a public tag template.
+    /// Indicates whether tags created with this template are public. Public tags
+    /// do not require tag template access to appear in
+    /// \[ListTags][google.cloud.datacatalog.v1.ListTags\] API response.
     ///
-    /// Every user has view access to a *public* tag template by default.
-    /// This means that:
-    ///
-    ///   * Every user can use this tag template to tag an entry.
-    ///   * If an entry is tagged using the tag template, the tag is always
-    ///     shown in the response to ``ListTags`` called on the entry.
-    ///   * To get the template using the GetTagTemplate method, you
-    ///     need view access either on the project or the organization the tag
-    ///     template resides in but no other permission is needed.
-    ///   * Operations on the tag template other than viewing (for example,
-    ///     editing IAM policies) follow standard IAM structures.
-    ///
-    /// Tags created with a public tag template are referred to as public tags.
-    ///
-    /// You can search for a public tag by value with a
-    /// simple search query instead of using a ``tag:`` predicate.
-    ///
-    /// Public tag templates may not appear in search results depending on scope,
-    /// see:
-    /// \[include_public_tag_templates][google.cloud.datacatalog.v1.SearchCatalogRequest.Scope.include_public_tag_templates\]
-    ///
-    /// Note: If an [IAM domain
-    /// restriction](<https://cloud.google.com/resource-manager/docs/organization-policy/restricting-domains>)
-    /// is configured in the tag template's location, the public access will not be
-    /// enabled but the simple search for tag values will still work.
+    /// Additionally, you can search for a public tag by value with a
+    /// simple search query in addition to using a ``tag:`` predicate.
     #[prost(bool, tag = "5")]
     pub is_publicly_readable: bool,
     /// Required. Map of tag template field IDs to the settings for the field.
@@ -778,6 +938,7 @@ pub struct SearchCatalogRequest {
     ///
     /// * `relevance` that can only be descending
     /// * `last_modified_timestamp \[asc|desc\]` with descending (`desc`) as default
+    /// * `default` that can only be descending
     ///
     /// If this parameter is omitted, it defaults to the descending `relevance`.
     #[prost(string, tag = "5")]
@@ -820,15 +981,14 @@ pub mod search_catalog_request {
         /// value of this parameter.
         #[prost(string, repeated, tag = "16")]
         pub restricted_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-        /// Optional. If `true`, include [public tag
-        /// templates]\[google.cloud.datacatalog.v1.TagTemplate.is_publicly_readable\]
-        /// in the search results. By default, they are included only if you have
-        /// explicit permissions on them to view them. For example, if you are the
-        /// owner.
+        /// Optional. If `true`, search only among starred entries.
         ///
-        /// Other scope fields, for example, `include_org_ids`,
-        /// still restrict the returned public tag templates and at least one of
-        /// them is required.
+        /// By default, all results are returned, starred or not.
+        #[prost(bool, tag = "18")]
+        pub starred_only: bool,
+        /// Optional. This field is deprecated. The search mechanism for public and private tag
+        /// templates is the same.
+        #[deprecated]
         #[prost(bool, tag = "19")]
         pub include_public_tag_templates: bool,
     }
@@ -1155,6 +1315,9 @@ pub struct Entry {
     /// Default value is an empty string.
     #[prost(string, tag = "4")]
     pub description: ::prost::alloc::string::String,
+    /// Business Context of the entry. Not supported for BigQuery datasets
+    #[prost(message, optional, tag = "37")]
+    pub business_context: ::core::option::Option<BusinessContext>,
     /// Schema of the entry. An entry might not have any schema attached to it.
     #[prost(message, optional, tag = "5")]
     pub schema: ::core::option::Option<Schema>,
@@ -1180,6 +1343,9 @@ pub struct Entry {
     /// Output only. Physical location of the entry.
     #[prost(message, optional, tag = "20")]
     pub data_source: ::core::option::Option<DataSource>,
+    /// Output only. Additional information related to the entry. Private to the current user.
+    #[prost(message, optional, tag = "26")]
+    pub personal_details: ::core::option::Option<PersonalDetails>,
     /// Required. Entry type.
     #[prost(oneof = "entry::EntryType", tags = "2, 16")]
     pub entry_type: ::core::option::Option<entry::EntryType>,
@@ -1195,7 +1361,7 @@ pub struct Entry {
     ///
     /// When extending the API with new types and systems, use this field instead
     /// of the legacy `type_spec`.
-    #[prost(oneof = "entry::Spec", tags = "24, 27, 28")]
+    #[prost(oneof = "entry::Spec", tags = "24, 27, 28, 33")]
     pub spec: ::core::option::Option<entry::Spec>,
 }
 /// Nested message and enum types in `Entry`.
@@ -1284,6 +1450,10 @@ pub mod entry {
         /// only for entries with the `ROUTINE` type.
         #[prost(message, tag = "28")]
         RoutineSpec(super::RoutineSpec),
+        /// Specification that applies to a fileset resource. Valid only
+        /// for entries with the `FILESET` type.
+        #[prost(message, tag = "33")]
+        FilesetSpec(super::FilesetSpec),
     }
 }
 /// Specification that applies to a table resource. Valid only
@@ -1293,6 +1463,10 @@ pub struct DatabaseTableSpec {
     /// Type of this table.
     #[prost(enumeration = "database_table_spec::TableType", tag = "1")]
     pub r#type: i32,
+    /// Fields specific to a Dataplex table and present only in the Dataplex table
+    /// entries.
+    #[prost(message, optional, tag = "2")]
+    pub dataplex_table: ::core::option::Option<DataplexTableSpec>,
 }
 /// Nested message and enum types in `DatabaseTableSpec`.
 pub mod database_table_spec {
@@ -1307,6 +1481,15 @@ pub mod database_table_spec {
         /// External table.
         External = 2,
     }
+}
+/// Specification that applies to a fileset. Valid only for entries with the
+/// 'FILESET' type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FilesetSpec {
+    /// Fields specific to a Dataplex fileset and present only in the Dataplex
+    /// fileset entries.
+    #[prost(message, optional, tag = "1")]
+    pub dataplex_fileset: ::core::option::Option<DataplexFilesetSpec>,
 }
 /// Specification that applies to a data source connection. Valid only for
 /// entries with the `DATA_SOURCE_CONNECTION` type.
@@ -1398,6 +1581,50 @@ pub mod routine_spec {
         BigqueryRoutineSpec(super::BigQueryRoutineSpec),
     }
 }
+/// Business Context of the entry.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BusinessContext {
+    /// Entry overview fields for rich text descriptions of entries.
+    #[prost(message, optional, tag = "1")]
+    pub entry_overview: ::core::option::Option<EntryOverview>,
+    /// Contact people for the entry.
+    #[prost(message, optional, tag = "2")]
+    pub contacts: ::core::option::Option<Contacts>,
+}
+/// Entry overview fields for rich text descriptions of entries.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntryOverview {
+    /// Entry overview with support for rich text.
+    ///
+    /// The overview must only contain Unicode characters, and should be
+    /// formatted using HTML.
+    /// The maximum length is 10 MiB as this value holds HTML descriptions
+    /// including encoded images. The maximum length of the text without images
+    /// is 100 KiB.
+    #[prost(string, tag = "1")]
+    pub overview: ::prost::alloc::string::String,
+}
+/// Contact people for the entry.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Contacts {
+    /// The list of contact people for the entry.
+    #[prost(message, repeated, tag = "1")]
+    pub people: ::prost::alloc::vec::Vec<contacts::Person>,
+}
+/// Nested message and enum types in `Contacts`.
+pub mod contacts {
+    /// A contact person for the entry.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Person {
+        /// Designation of the person, for example, Data Steward.
+        #[prost(string, tag = "1")]
+        pub designation: ::prost::alloc::string::String,
+        /// Email of the person in the format of `john.doe@xyz`,
+        /// `<john.doe@xyz>`, or `John Doe<john.doe@xyz>`.
+        #[prost(string, tag = "2")]
+        pub email: ::prost::alloc::string::String,
+    }
+}
 /// Entry group metadata.
 ///
 /// An `EntryGroup` resource represents a logical grouping of zero or more
@@ -1465,9 +1692,7 @@ pub struct UpdateTagTemplateRequest {
     /// request body, their values are emptied.
     ///
     /// Note: Updating the `is_publicly_readable` field may require up to 12
-    /// hours to take effect in search results. Additionally, it also requires
-    /// the `tagTemplates.getIamPolicy` and `tagTemplates.setIamPolicy`
-    /// permissions.
+    /// hours to take effect in search results.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1679,6 +1904,54 @@ pub struct ListEntriesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for
+/// \[StarEntry][google.cloud.datacatalog.v1.DataCatalog.StarEntry\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StarEntryRequest {
+    /// Required. The name of the entry to mark as starred.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[StarEntry][google.cloud.datacatalog.v1.DataCatalog.StarEntry\].
+/// Empty for now
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct StarEntryResponse {}
+/// Request message for
+/// \[UnstarEntry][google.cloud.datacatalog.v1.DataCatalog.UnstarEntry\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnstarEntryRequest {
+    /// Required. The name of the entry to mark as **not** starred.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Response message for
+/// \[UnstarEntry][google.cloud.datacatalog.v1.DataCatalog.UnstarEntry\].
+/// Empty for now
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnstarEntryResponse {}
+/// Request message for
+/// \[ModifyEntryOverview][google.cloud.datacatalog.v1.DataCatalog.ModifyEntryOverview\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModifyEntryOverviewRequest {
+    /// Required. The full resource name of the entry.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The new value for the Entry Overview.
+    #[prost(message, optional, tag = "2")]
+    pub entry_overview: ::core::option::Option<EntryOverview>,
+}
+/// Request message for
+/// \[ModifyEntryContacts][google.cloud.datacatalog.v1.DataCatalog.ModifyEntryContacts\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModifyEntryContactsRequest {
+    /// Required. The full resource name of the entry.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The new value for the Contacts.
+    #[prost(message, optional, tag = "2")]
+    pub contacts: ::core::option::Option<Contacts>,
+}
 /// The enum field that lists all the types of entry resources in Data
 /// Catalog. For example, a BigQuery table entry has the `TABLE` type.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1708,6 +1981,10 @@ pub enum EntryType {
     DataSourceConnection = 8,
     /// Output only. Routine, for example, a BigQuery routine.
     Routine = 9,
+    /// A Dataplex lake.
+    Lake = 10,
+    /// A Dataplex zone.
+    Zone = 11,
     /// A service, for example, a Dataproc Metastore service.
     Service = 14,
 }
@@ -2046,6 +2323,48 @@ pub mod data_catalog_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Modifies entry overview, part of the business context of an"]
+        #[doc = " [Entry][google.cloud.datacatalog.v1.Entry]."]
+        #[doc = ""]
+        #[doc = " To call this method, you must have the `datacatalog.entries.updateOverview`"]
+        #[doc = " IAM permission on the corresponding project."]
+        pub async fn modify_entry_overview(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ModifyEntryOverviewRequest>,
+        ) -> Result<tonic::Response<super::EntryOverview>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.DataCatalog/ModifyEntryOverview",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Modifies contacts, part of the business context of an"]
+        #[doc = " [Entry][google.cloud.datacatalog.v1.Entry]."]
+        #[doc = ""]
+        #[doc = " To call this method, you must have the `datacatalog.entries.updateContacts`"]
+        #[doc = " IAM permission on the corresponding project."]
+        pub async fn modify_entry_contacts(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ModifyEntryContactsRequest>,
+        ) -> Result<tonic::Response<super::Contacts>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.DataCatalog/ModifyEntryContacts",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Creates a tag template."]
         #[doc = ""]
         #[doc = " You must enable the Data Catalog API in the project identified by the"]
@@ -2301,6 +2620,8 @@ pub mod data_catalog_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Lists tags assigned to an [Entry][google.cloud.datacatalog.v1.Entry]."]
+        #[doc = " The [columns][google.cloud.datacatalog.v1.Tag.column] in the response are"]
+        #[doc = " lowercased."]
         pub async fn list_tags(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTagsRequest>,
@@ -2314,6 +2635,42 @@ pub mod data_catalog_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.datacatalog.v1.DataCatalog/ListTags",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Marks an [Entry][google.cloud.datacatalog.v1.Entry] as starred by"]
+        #[doc = " the current user. Starring information is private to each user."]
+        pub async fn star_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::StarEntryRequest>,
+        ) -> Result<tonic::Response<super::StarEntryResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.DataCatalog/StarEntry",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Marks an [Entry][google.cloud.datacatalog.v1.Entry] as NOT starred by"]
+        #[doc = " the current user. Starring information is private to each user."]
+        pub async fn unstar_entry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UnstarEntryRequest>,
+        ) -> Result<tonic::Response<super::UnstarEntryResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.datacatalog.v1.DataCatalog/UnstarEntry",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -2462,6 +2819,8 @@ pub struct Taxonomy {
     /// The name can't start or end with spaces, must contain only Unicode letters,
     /// numbers, underscores, dashes, and spaces, and be at most 200 bytes long
     /// when encoded in UTF-8.
+    ///
+    /// The taxonomy display name must be unique within an organization.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
     /// Optional. Description of this taxonomy. If not set, defaults to empty.
@@ -2479,7 +2838,12 @@ pub struct Taxonomy {
     pub taxonomy_timestamps: ::core::option::Option<SystemTimestamps>,
     /// Optional. A list of policy types that are activated for this taxonomy. If not set,
     /// defaults to an empty list.
-    #[prost(enumeration = "taxonomy::PolicyType", repeated, packed = "false", tag = "6")]
+    #[prost(
+        enumeration = "taxonomy::PolicyType",
+        repeated,
+        packed = "false",
+        tag = "6"
+    )]
     pub activated_policy_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `Taxonomy`.

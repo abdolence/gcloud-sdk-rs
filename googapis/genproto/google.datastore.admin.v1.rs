@@ -86,6 +86,106 @@ pub mod index {
         Error = 4,
     }
 }
+/// An event signifying a change in state of a [migration from Cloud Datastore to
+/// Cloud Firestore in Datastore
+/// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MigrationStateEvent {
+    /// The new state of the migration.
+    #[prost(enumeration = "MigrationState", tag = "1")]
+    pub state: i32,
+}
+/// An event signifying the start of a new step in a [migration from Cloud
+/// Datastore to Cloud Firestore in Datastore
+/// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MigrationProgressEvent {
+    /// The step that is starting.
+    ///
+    /// An event with step set to `START` indicates that the migration
+    /// has been reverted back to the initial pre-migration state.
+    #[prost(enumeration = "MigrationStep", tag = "1")]
+    pub step: i32,
+    /// Details about this step.
+    #[prost(oneof = "migration_progress_event::StepDetails", tags = "2, 3")]
+    pub step_details: ::core::option::Option<migration_progress_event::StepDetails>,
+}
+/// Nested message and enum types in `MigrationProgressEvent`.
+pub mod migration_progress_event {
+    /// Details for the `PREPARE` step.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PrepareStepDetails {
+        /// The concurrency mode this database will use when it reaches the
+        /// `REDIRECT_WRITES` step.
+        #[prost(enumeration = "ConcurrencyMode", tag = "1")]
+        pub concurrency_mode: i32,
+    }
+    /// Details for the `REDIRECT_WRITES` step.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct RedirectWritesStepDetails {
+        /// Ths concurrency mode for this database.
+        #[prost(enumeration = "ConcurrencyMode", tag = "1")]
+        pub concurrency_mode: i32,
+    }
+    /// Concurrency modes for transactions in Cloud Firestore.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConcurrencyMode {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Pessimistic concurrency.
+        Pessimistic = 1,
+        /// Optimistic concurrency.
+        Optimistic = 2,
+        /// Optimistic concurrency with entity groups.
+        OptimisticWithEntityGroups = 3,
+    }
+    /// Details about this step.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum StepDetails {
+        /// Details for the `PREPARE` step.
+        #[prost(message, tag = "2")]
+        PrepareStepDetails(PrepareStepDetails),
+        /// Details for the `REDIRECT_WRITES` step.
+        #[prost(message, tag = "3")]
+        RedirectWritesStepDetails(RedirectWritesStepDetails),
+    }
+}
+/// States for a migration.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MigrationState {
+    /// Unspecified.
+    Unspecified = 0,
+    /// The migration is running.
+    Running = 1,
+    /// The migration is paused.
+    Paused = 2,
+    /// The migration is complete.
+    Complete = 3,
+}
+/// Steps in a migration.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MigrationStep {
+    /// Unspecified.
+    Unspecified = 0,
+    /// Pre-migration: the database is prepared for migration.
+    Prepare = 6,
+    /// Start of migration.
+    Start = 1,
+    /// Writes are applied synchronously to at least one replica.
+    ApplyWritesSynchronously = 7,
+    /// Data is copied to Cloud Firestore and then verified to match the data in
+    /// Cloud Datastore.
+    CopyAndVerify = 2,
+    /// Eventually-consistent reads are redirected to Cloud Firestore.
+    RedirectEventuallyConsistentReads = 3,
+    /// Strongly-consistent reads are redirected to Cloud Firestore.
+    RedirectStronglyConsistentReads = 4,
+    /// Writes are redirected to Cloud Firestore.
+    RedirectWrites = 5,
+}
 /// Metadata common to all Datastore Admin operations.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonMetadata {
@@ -376,6 +476,25 @@ pub struct IndexOperationMetadata {
     #[prost(string, tag = "3")]
     pub index_id: ::prost::alloc::string::String,
 }
+/// Metadata for Datastore to Firestore migration operations.
+///
+/// The DatastoreFirestoreMigration operation is not started by the end-user via
+/// an explicit "creation" method. This is an intentional deviation from the LRO
+/// design pattern.
+///
+/// This singleton resource can be accessed at:
+/// "projects/{project_id}/operations/datastore-firestore-migration"
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DatastoreFirestoreMigrationMetadata {
+    /// The current state of migration from Cloud Datastore to Cloud Firestore in
+    /// Datastore mode.
+    #[prost(enumeration = "MigrationState", tag = "1")]
+    pub migration_state: i32,
+    /// The current step of migration from Cloud Datastore to Cloud Firestore in
+    /// Datastore mode.
+    #[prost(enumeration = "MigrationStep", tag = "2")]
+    pub migration_step: i32,
+}
 /// Operation types.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -651,102 +770,4 @@ pub mod datastore_admin_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
-}
-/// An event signifying a change in state of a [migration from Cloud Datastore to
-/// Cloud Firestore in Datastore
-/// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MigrationStateEvent {
-    /// The new state of the migration.
-    #[prost(enumeration = "MigrationState", tag = "1")]
-    pub state: i32,
-}
-/// An event signifying the start of a new step in a [migration from Cloud
-/// Datastore to Cloud Firestore in Datastore
-/// mode](<https://cloud.google.com/datastore/docs/upgrade-to-firestore>).
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MigrationProgressEvent {
-    /// The step that is starting.
-    ///
-    /// An event with step set to `START` indicates that the migration
-    /// has been reverted back to the initial pre-migration state.
-    #[prost(enumeration = "MigrationStep", tag = "1")]
-    pub step: i32,
-    /// Details about this step.
-    #[prost(oneof = "migration_progress_event::StepDetails", tags = "2, 3")]
-    pub step_details: ::core::option::Option<migration_progress_event::StepDetails>,
-}
-/// Nested message and enum types in `MigrationProgressEvent`.
-pub mod migration_progress_event {
-    /// Details for the `PREPARE` step.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PrepareStepDetails {
-        /// The concurrency mode this database will use when it reaches the
-        /// `REDIRECT_WRITES` step.
-        #[prost(enumeration = "ConcurrencyMode", tag = "1")]
-        pub concurrency_mode: i32,
-    }
-    /// Details for the `REDIRECT_WRITES` step.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct RedirectWritesStepDetails {
-        /// Ths concurrency mode for this database.
-        #[prost(enumeration = "ConcurrencyMode", tag = "1")]
-        pub concurrency_mode: i32,
-    }
-    /// Concurrency modes for transactions in Cloud Firestore.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum ConcurrencyMode {
-        /// Unspecified.
-        Unspecified = 0,
-        /// Pessimistic concurrency.
-        Pessimistic = 1,
-        /// Optimistic concurrency.
-        Optimistic = 2,
-    }
-    /// Details about this step.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum StepDetails {
-        /// Details for the `PREPARE` step.
-        #[prost(message, tag = "2")]
-        PrepareStepDetails(PrepareStepDetails),
-        /// Details for the `REDIRECT_WRITES` step.
-        #[prost(message, tag = "3")]
-        RedirectWritesStepDetails(RedirectWritesStepDetails),
-    }
-}
-/// States for a migration.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum MigrationState {
-    /// Unspecified.
-    Unspecified = 0,
-    /// The migration is running.
-    Running = 1,
-    /// The migration is paused.
-    Paused = 2,
-    /// The migration is complete.
-    Complete = 3,
-}
-/// Steps in a migration.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum MigrationStep {
-    /// Unspecified.
-    Unspecified = 0,
-    /// Pre-migration: the database is prepared for migration.
-    Prepare = 6,
-    /// Start of migration.
-    Start = 1,
-    /// Writes are applied synchronously to at least one replica.
-    ApplyWritesSynchronously = 7,
-    /// Data is copied to Cloud Firestore and then verified to match the data in
-    /// Cloud Datastore.
-    CopyAndVerify = 2,
-    /// Eventually-consistent reads are redirected to Cloud Firestore.
-    RedirectEventuallyConsistentReads = 3,
-    /// Strongly-consistent reads are redirected to Cloud Firestore.
-    RedirectStronglyConsistentReads = 4,
-    /// Writes are redirected to Cloud Firestore.
-    RedirectWrites = 5,
 }

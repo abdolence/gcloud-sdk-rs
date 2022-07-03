@@ -2110,7 +2110,10 @@ pub struct AdGroupExtensionSettingOperation {
     )]
     pub response_content_type: i32,
     /// The mutate operation.
-    #[prost(oneof = "ad_group_extension_setting_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "ad_group_extension_setting_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<ad_group_extension_setting_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupExtensionSettingOperation`.
@@ -3887,7 +3890,10 @@ pub struct BiddingDataExclusionOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "bidding_data_exclusion_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "bidding_data_exclusion_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<bidding_data_exclusion_operation::Operation>,
 }
 /// Nested message and enum types in `BiddingDataExclusionOperation`.
@@ -4064,7 +4070,10 @@ pub struct BiddingSeasonalityAdjustmentOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "bidding_seasonality_adjustment_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "bidding_seasonality_adjustment_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<bidding_seasonality_adjustment_operation::Operation>,
 }
 /// Nested message and enum types in `BiddingSeasonalityAdjustmentOperation`.
@@ -6048,7 +6057,10 @@ pub struct CampaignExtensionSettingOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "campaign_extension_setting_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "campaign_extension_setting_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<campaign_extension_setting_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignExtensionSettingOperation`.
@@ -7279,7 +7291,10 @@ pub struct ConversionCustomVariableOperation {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "conversion_custom_variable_operation::Operation", tags = "1, 2")]
+    #[prost(
+        oneof = "conversion_custom_variable_operation::Operation",
+        tags = "1, 2"
+    )]
     pub operation: ::core::option::Option<conversion_custom_variable_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionCustomVariableOperation`.
@@ -7482,12 +7497,12 @@ pub mod conversion_value_rule_operation {
         /// value rule.
         #[prost(message, tag = "1")]
         Create(super::super::resources::ConversionValueRule),
-        /// Update operation: The conversion action is expected to have a valid
+        /// Update operation: The conversion value rule is expected to have a valid
         /// resource name.
         #[prost(message, tag = "2")]
         Update(super::super::resources::ConversionValueRule),
-        /// Remove operation: A resource name for the removed conversion action is
-        /// expected, in this format:
+        /// Remove operation: A resource name for the removed conversion value rule
+        /// is expected, in this format:
         ///
         /// `customers/{customer_id}/conversionValueRules/{conversion_value_rule_id}`
         #[prost(string, tag = "3")]
@@ -7648,7 +7663,10 @@ pub struct ConversionValueRuleSetOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "conversion_value_rule_set_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "conversion_value_rule_set_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<conversion_value_rule_set_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionValueRuleSetOperation`.
@@ -7660,12 +7678,12 @@ pub mod conversion_value_rule_set_operation {
         /// value rule set.
         #[prost(message, tag = "1")]
         Create(super::super::resources::ConversionValueRuleSet),
-        /// Update operation: The conversion action is expected to have a valid
-        /// resource name.
+        /// Update operation: The conversion value rule set is expected to have a
+        /// valid resource name.
         #[prost(message, tag = "2")]
         Update(super::super::resources::ConversionValueRuleSet),
-        /// Remove operation: A resource name for the removed conversion action is
-        /// expected, in this format:
+        /// Remove operation: A resource name for the removed conversion value rule
+        /// set is expected, in this format:
         ///
         /// `customers/{customer_id}/conversionValueRuleSets/{conversion_value_rule_set_id}`
         #[prost(string, tag = "3")]
@@ -8025,7 +8043,10 @@ pub struct CustomerExtensionSettingOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "customer_extension_setting_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "customer_extension_setting_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<customer_extension_setting_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerExtensionSettingOperation`.
@@ -8621,7 +8642,10 @@ pub struct MutateCustomerNegativeCriteriaRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerNegativeCriterionOperation {
     /// The mutate operation.
-    #[prost(oneof = "customer_negative_criterion_operation::Operation", tags = "1, 2")]
+    #[prost(
+        oneof = "customer_negative_criterion_operation::Operation",
+        tags = "1, 2"
+    )]
     pub operation: ::core::option::Option<customer_negative_criterion_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerNegativeCriterionOperation`.
@@ -10443,7 +10467,10 @@ pub struct KeywordPlanAdGroupKeywordOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "keyword_plan_ad_group_keyword_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "keyword_plan_ad_group_keyword_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<keyword_plan_ad_group_keyword_operation::Operation>,
 }
 /// Nested message and enum types in `KeywordPlanAdGroupKeywordOperation`.
@@ -10830,7 +10857,10 @@ pub struct KeywordPlanCampaignKeywordOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "keyword_plan_campaign_keyword_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "keyword_plan_campaign_keyword_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<keyword_plan_campaign_keyword_operation::Operation>,
 }
 /// Nested message and enum types in `KeywordPlanCampaignKeywordOperation`.
@@ -13050,7 +13080,10 @@ pub struct SearchGoogleAdsRequest {
     /// Determines whether a summary row will be returned. By default, summary row
     /// is not returned. If requested, the summary row will be sent in a response
     /// by itself after all other query results are returned.
-    #[prost(enumeration = "super::enums::summary_row_setting_enum::SummaryRowSetting", tag = "8")]
+    #[prost(
+        enumeration = "super::enums::summary_row_setting_enum::SummaryRowSetting",
+        tag = "8"
+    )]
     pub summary_row_setting: i32,
 }
 /// Response message for \[GoogleAdsService.Search][google.ads.googleads.v8.services.GoogleAdsService.Search\].
@@ -13090,7 +13123,10 @@ pub struct SearchGoogleAdsStreamRequest {
     /// Determines whether a summary row will be returned. By default, summary row
     /// is not returned. If requested, the summary row will be sent in a response
     /// by itself after all other query results are returned.
-    #[prost(enumeration = "super::enums::summary_row_setting_enum::SummaryRowSetting", tag = "3")]
+    #[prost(
+        enumeration = "super::enums::summary_row_setting_enum::SummaryRowSetting",
+        tag = "3"
+    )]
     pub summary_row_setting: i32,
 }
 /// Response message for \[GoogleAdsService.SearchStream][google.ads.googleads.v8.services.GoogleAdsService.SearchStream\].
@@ -14045,7 +14081,9 @@ pub mod google_ads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v8.services.GoogleAdsService/SearchStream",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Creates, updates, or removes resources. This method supports atomic"]
         #[doc = " transactions with multiple types of resources. For example, you can"]
@@ -15508,7 +15546,10 @@ pub struct ConversionAdjustmentResult {
     )]
     pub adjustment_type: i32,
     /// Identifies the conversion that was adjusted.
-    #[prost(oneof = "conversion_adjustment_result::ConversionIdentifier", tags = "1, 6")]
+    #[prost(
+        oneof = "conversion_adjustment_result::ConversionIdentifier",
+        tags = "1, 6"
+    )]
     pub conversion_identifier:
         ::core::option::Option<conversion_adjustment_result::ConversionIdentifier>,
 }
@@ -16903,7 +16944,10 @@ pub struct MutateCustomerUserAccessInvitationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerUserAccessInvitationOperation {
     /// The mutate operation
-    #[prost(oneof = "customer_user_access_invitation_operation::Operation", tags = "1, 2")]
+    #[prost(
+        oneof = "customer_user_access_invitation_operation::Operation",
+        tags = "1, 2"
+    )]
     pub operation: ::core::option::Option<customer_user_access_invitation_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerUserAccessInvitationOperation`.
@@ -18730,7 +18774,10 @@ pub struct ListInvoicesRequest {
     #[prost(string, tag = "3")]
     pub issue_year: ::prost::alloc::string::String,
     /// Required. The issue month to retrieve invoices.
-    #[prost(enumeration = "super::enums::month_of_year_enum::MonthOfYear", tag = "4")]
+    #[prost(
+        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
+        tag = "4"
+    )]
     pub issue_month: i32,
 }
 /// Response message for \[InvoiceService.ListInvoices][google.ads.googleads.v8.services.InvoiceService.ListInvoices\].
@@ -20854,10 +20901,11 @@ pub struct PlannableLocation {
     /// The unique location name in english.
     #[prost(string, optional, tag = "5")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    /// The parent country code, not present if location is a country.
-    /// If present will always be a criterion id: additional information, such as
-    /// country name are returned both via ListPlannableLocations or directly by
-    /// accessing GeoTargetConstantService with the criterion id.
+    /// The parent country, not present if location is a country.
+    /// If present will always be a GeoTargetConstant ID. Additional information,
+    /// such as country name is provided by
+    /// \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v8.services.ReachPlanService.ListPlannableLocations\] or directly by accessing
+    /// \[GeoTargetConstantService.GetGeoTargetConstant][google.ads.googleads.v8.services.GeoTargetConstantService.GetGeoTargetConstant\].
     #[prost(int64, optional, tag = "6")]
     pub parent_country_id: ::core::option::Option<i64>,
 }
@@ -20865,7 +20913,7 @@ pub struct PlannableLocation {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPlannableProductsRequest {
     /// Required. The ID of the selected location for planning. To list the available
-    /// plannable location ids use ListPlannableLocations.
+    /// plannable location ids use \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v8.services.ReachPlanService.ListPlannableLocations\].
     #[prost(string, tag = "2")]
     pub plannable_location_id: ::prost::alloc::string::String,
 }
@@ -20906,6 +20954,9 @@ pub struct PlannableTargeting {
     #[prost(message, repeated, tag = "2")]
     pub genders: ::prost::alloc::vec::Vec<super::common::GenderInfo>,
     /// Targetable devices for the ad product.
+    /// TABLET device targeting is automatically applied to reported metrics
+    /// when MOBILE targeting is selected for CPM_MASTHEAD,
+    /// GOOGLE_PREFERRED_BUMPER and GOOGLE_PREFERRED_SHORT products.
     #[prost(message, repeated, tag = "3")]
     pub devices: ::prost::alloc::vec::Vec<super::common::DeviceInfo>,
     /// Targetable networks for the ad product.
@@ -20923,7 +20974,7 @@ pub struct GenerateProductMixIdeasRequest {
     #[prost(string, tag = "1")]
     pub customer_id: ::prost::alloc::string::String,
     /// Required. The ID of the location, this is one of the ids returned by
-    /// ListPlannableLocations.
+    /// \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v8.services.ReachPlanService.ListPlannableLocations\].
     #[prost(string, tag = "6")]
     pub plannable_location_id: ::prost::alloc::string::String,
     /// Required. Currency code.
@@ -20953,7 +21004,10 @@ pub struct Preferences {
     pub starts_with_sound: ::core::option::Option<bool>,
     /// The length of the ad.
     /// If not set, default is any value.
-    #[prost(enumeration = "super::enums::reach_plan_ad_length_enum::ReachPlanAdLength", tag = "3")]
+    #[prost(
+        enumeration = "super::enums::reach_plan_ad_length_enum::ReachPlanAdLength",
+        tag = "3"
+    )]
     pub ad_length: i32,
     /// True if ad will only show on the top content.
     /// If not set, default is false.
@@ -20977,7 +21031,7 @@ pub struct GenerateProductMixIdeasResponse {
 pub struct ProductAllocation {
     /// Selected product for planning. The product codes returned are within the
     /// set of the ones returned by ListPlannableProducts when using the same
-    /// location id.
+    /// location ID.
     #[prost(string, optional, tag = "3")]
     pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
     /// The value to be allocated for the suggested product in requested currency.
@@ -21012,7 +21066,7 @@ pub struct GenerateReachForecastRequest {
     /// This is equivalent to the frequency cap exposed in Google Ads when creating
     /// a campaign, it represents the maximum number of times an ad can be shown to
     /// the same user during a specified time interval.
-    /// If not specified, no cap is applied.
+    /// If not specified, a default of 0 (no cap) is applied.
     ///
     /// This field replaces the deprecated cookie_frequency_cap field.
     #[prost(message, optional, tag = "8")]
@@ -21076,33 +21130,43 @@ pub struct FrequencyCap {
 /// The targeting for which traffic metrics will be reported.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Targeting {
-    /// Required. The ID of the selected location.
-    /// Plannable locations ID can be obtained from ListPlannableLocations.
+    /// Required. The ID of the selected location. Plannable location IDs can be
+    /// obtained from \[ReachPlanService.ListPlannableLocations][google.ads.googleads.v8.services.ReachPlanService.ListPlannableLocations\].
     #[prost(string, optional, tag = "6")]
     pub plannable_location_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Targeted age range.
-    /// If not specified, targets all age ranges.
-    #[prost(enumeration = "super::enums::reach_plan_age_range_enum::ReachPlanAgeRange", tag = "2")]
+    /// An unset value is equivalent to targeting all ages.
+    #[prost(
+        enumeration = "super::enums::reach_plan_age_range_enum::ReachPlanAgeRange",
+        tag = "2"
+    )]
     pub age_range: i32,
     /// Targeted genders.
-    /// If not specified, targets all genders.
+    /// An unset value is equivalent to targeting MALE and FEMALE.
     #[prost(message, repeated, tag = "3")]
     pub genders: ::prost::alloc::vec::Vec<super::common::GenderInfo>,
     /// Targeted devices.
     /// If not specified, targets all applicable devices. Applicable devices vary
-    /// by product and region and can be obtained from ListPlannableProducts.
+    /// by product and region and can be obtained from
+    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v8.services.ReachPlanService.ListPlannableProducts\].
     #[prost(message, repeated, tag = "4")]
     pub devices: ::prost::alloc::vec::Vec<super::common::DeviceInfo>,
     /// Targetable network for the ad product.
     /// If not specified, targets all applicable networks. Applicable networks vary
-    /// by product and region and can be obtained from ListPlannableProducts.
-    #[prost(enumeration = "super::enums::reach_plan_network_enum::ReachPlanNetwork", tag = "5")]
+    /// by product and region and can be obtained from
+    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v8.services.ReachPlanService.ListPlannableProducts\].
+    #[prost(
+        enumeration = "super::enums::reach_plan_network_enum::ReachPlanNetwork",
+        tag = "5"
+    )]
     pub network: i32,
 }
 /// The duration of a planned campaign.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CampaignDuration {
     /// The duration value in days.
+    ///
+    /// This field cannot be combined with the date_range field.
     #[prost(int32, optional, tag = "2")]
     pub duration_in_days: ::core::option::Option<i32>,
 }
@@ -21111,7 +21175,8 @@ pub struct CampaignDuration {
 pub struct PlannedProduct {
     /// Required. Selected product for planning.
     /// The code associated with the ad product. E.g. Trueview, Bumper
-    /// To list the available plannable product codes use ListPlannableProducts.
+    /// To list the available plannable product codes use
+    /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v8.services.ReachPlanService.ListPlannableProducts\].
     #[prost(string, optional, tag = "3")]
     pub plannable_product_code: ::core::option::Option<::prost::alloc::string::String>,
     /// Required. Maximum budget allocation in micros for the selected product.
@@ -21201,7 +21266,7 @@ pub struct Forecast {
 pub struct PlannedProductReachForecast {
     /// Selected product for planning. The product codes returned are within the
     /// set of the ones returned by ListPlannableProducts when using the same
-    /// location id.
+    /// location ID.
     #[prost(string, tag = "1")]
     pub plannable_product_code: ::prost::alloc::string::String,
     /// The cost in micros. This may differ from the product's input allocation
@@ -22136,9 +22201,12 @@ pub struct SmartCampaignSuggestionInfo {
     #[prost(message, repeated, tag = "7")]
     pub keyword_themes: ::prost::alloc::vec::Vec<super::common::KeywordThemeInfo>,
     /// The business settings to consider when generating suggestions.
-    /// Settings are automatically extracted from the GMB location when provided.
+    /// Settings are automatically extracted from the business when provided.
     /// Otherwise, these settings must be specified explicitly.
-    #[prost(oneof = "smart_campaign_suggestion_info::BusinessSetting", tags = "8, 2")]
+    #[prost(
+        oneof = "smart_campaign_suggestion_info::BusinessSetting",
+        tags = "8, 2"
+    )]
     pub business_setting: ::core::option::Option<smart_campaign_suggestion_info::BusinessSetting>,
     /// The geo target of the campaign, either a list of locations or
     /// a single proximity shall be specified.
@@ -22162,18 +22230,18 @@ pub mod smart_campaign_suggestion_info {
         pub business_name: ::prost::alloc::string::String,
     }
     /// The business settings to consider when generating suggestions.
-    /// Settings are automatically extracted from the GMB location when provided.
+    /// Settings are automatically extracted from the business when provided.
     /// Otherwise, these settings must be specified explicitly.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BusinessSetting {
         /// Optional. Context describing the business to advertise.
         #[prost(message, tag = "8")]
         BusinessContext(BusinessContext),
-        /// Optional. The ID of the Google My Business (GMB) Location.
-        /// The location ID can be fetched by GMB API with its form:
+        /// Optional. The ID of the Business Profile location.
+        /// The location ID can be fetched by Business Profile API with its form:
         /// accounts/{accountId}/locations/{locationId}. The last {locationId}
-        /// component from the GMB API represents the business_location_id.
-        /// See the [Google My Business API]
+        /// component from the Business Profile API represents the
+        /// business_location_id. See the [Business Profile API]
         /// (<https://developers.google.com/my-business/reference/rest/v4/accounts.locations>)
         #[prost(int64, tag = "2")]
         BusinessLocationId(i64),
@@ -22694,7 +22762,6 @@ pub mod user_data_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Service to manage user data uploads."]
-    #[doc = " Accessible only to customers on the allow-list."]
     #[derive(Debug, Clone)]
     pub struct UserDataServiceClient<T> {
         inner: tonic::client::Grpc<T>,

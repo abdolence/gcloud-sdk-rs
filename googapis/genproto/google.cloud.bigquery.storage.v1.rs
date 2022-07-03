@@ -16,7 +16,9 @@ pub struct ArrowRecordBatch {
     /// IPC-serialized Arrow RecordBatch.
     #[prost(bytes = "vec", tag = "1")]
     pub serialized_record_batch: ::prost::alloc::vec::Vec<u8>,
-    /// The count of rows in `serialized_record_batch`.
+    /// \[Deprecated\] The count of rows in `serialized_record_batch`.
+    /// Please use the format-independent ReadRowsResponse.row_count instead.
+    #[deprecated]
     #[prost(int64, tag = "2")]
     pub row_count: i64,
 }
@@ -25,7 +27,10 @@ pub struct ArrowRecordBatch {
 pub struct ArrowSerializationOptions {
     /// The compression codec to use for Arrow buffers in serialized record
     /// batches.
-    #[prost(enumeration = "arrow_serialization_options::CompressionCodec", tag = "2")]
+    #[prost(
+        enumeration = "arrow_serialization_options::CompressionCodec",
+        tag = "2"
+    )]
     pub buffer_compression: i32,
 }
 /// Nested message and enum types in `ArrowSerializationOptions`.
@@ -56,7 +61,9 @@ pub struct AvroRows {
     /// Binary serialized rows in a block.
     #[prost(bytes = "vec", tag = "1")]
     pub serialized_binary_rows: ::prost::alloc::vec::Vec<u8>,
-    /// The count of rows in the returning block.
+    /// \[Deprecated\] The count of rows in the returning block.
+    /// Please use the format-independent ReadRowsResponse.row_count instead.
+    #[deprecated]
     #[prost(int64, tag = "2")]
     pub row_count: i64,
 }
@@ -84,7 +91,9 @@ pub struct ProtoRows {
     #[prost(bytes = "vec", repeated, tag = "1")]
     pub serialized_rows: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
 }
-/// Schema of a table.
+/// Schema of a table. This schema is a subset of
+/// google.cloud.bigquery.v2.TableSchema containing information necessary to
+/// generate valid message to write to BigQuery.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TableSchema {
     /// Describes the fields in a table.
@@ -223,7 +232,7 @@ pub struct ReadSession {
     /// automatically assigned and currently cannot be specified or updated.
     #[prost(message, optional, tag = "2")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Immutable. Data format of the output data.
+    /// Immutable. Data format of the output data. DATA_FORMAT_UNSPECIFIED not supported.
     #[prost(enumeration = "DataFormat", tag = "3")]
     pub data_format: i32,
     /// Immutable. Table that this ReadSession is reading from, in the form
@@ -249,6 +258,14 @@ pub struct ReadSession {
     /// metadata from the table which might be incomplete or stale.
     #[prost(int64, tag = "12")]
     pub estimated_total_bytes_scanned: i64,
+    /// Optional. ID set by client to annotate a session identity.  This does not need
+    /// to be strictly unique, but instead the same ID should be used to group
+    /// logically connected sessions (e.g. All using the same ID for all sessions
+    /// needed to complete a Spark SQL query is reasonable).
+    ///
+    /// Maximum length is 256 bytes.
+    #[prost(string, tag = "13")]
+    pub trace_id: ::prost::alloc::string::String,
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
     /// the selected fields.
@@ -285,7 +302,10 @@ pub mod read_session {
         /// Restricted to a maximum length for 1 MB.
         #[prost(string, tag = "2")]
         pub row_restriction: ::prost::alloc::string::String,
-        #[prost(oneof = "table_read_options::OutputFormatSerializationOptions", tags = "3")]
+        #[prost(
+            oneof = "table_read_options::OutputFormatSerializationOptions",
+            tags = "3"
+        )]
         pub output_format_serialization_options:
             ::core::option::Option<table_read_options::OutputFormatSerializationOptions>,
     }
@@ -347,6 +367,9 @@ pub struct WriteStream {
     /// The table schema could go out of date during the life time of the stream.
     #[prost(message, optional, tag = "5")]
     pub table_schema: ::core::option::Option<TableSchema>,
+    /// Immutable. Mode of the stream.
+    #[prost(enumeration = "write_stream::WriteMode", tag = "7")]
+    pub write_mode: i32,
 }
 /// Nested message and enum types in `WriteStream`.
 pub mod write_stream {
@@ -364,11 +387,22 @@ pub mod write_stream {
         /// Data is only visible up to the offset to which it was flushed.
         Buffered = 3,
     }
+    /// Mode enum of the stream.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum WriteMode {
+        /// Unknown type.
+        Unspecified = 0,
+        /// Insert new records into the table.
+        /// It is the default value if customers do not specify it.
+        Insert = 1,
+    }
 }
 /// Data format for input or output data.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum DataFormat {
+    /// Data format is unspecified.
     Unspecified = 0,
     /// Avro is a standard open source row based file format.
     /// See <https://avro.apache.org/> for more details.
@@ -390,11 +424,13 @@ pub struct CreateReadSessionRequest {
     /// Max initial number of streams. If unset or zero, the server will
     /// provide a value of streams so as to produce reasonable throughput. Must be
     /// non-negative. The number of streams may be lower than the requested number,
-    /// depending on the amount parallelism that is reasonable for the table. Error
-    /// will be returned if the max count is greater than the current system
-    /// max limit of 1,000.
+    /// depending on the amount parallelism that is reasonable for the table.
+    /// There is a default system max limit of 1,000.
     ///
-    /// Streams must be read starting from offset 0.
+    /// This must be greater than or equal to preferred_min_stream_count.
+    /// Typically, clients should either leave this unset to let the system to
+    /// determine an upper bound OR set this a size for the maximum "units of work"
+    /// it can gracefully handle.
     #[prost(int32, tag = "3")]
     pub max_stream_count: i32,
 }
@@ -468,7 +504,7 @@ pub struct ReadRowsResponse {
     pub rows: ::core::option::Option<read_rows_response::Rows>,
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
-    /// the selected fields. This schema is equivelant to the one returned by
+    /// the selected fields. This schema is equivalent to the one returned by
     /// CreateSession. This field is only populated in the first ReadRowsResponse
     /// RPC.
     #[prost(oneof = "read_rows_response::Schema", tags = "7, 8")]
@@ -488,7 +524,7 @@ pub mod read_rows_response {
     }
     /// The schema for the read. If read_options.selected_fields is set, the
     /// schema may be different from the table schema as it will only contain
-    /// the selected fields. This schema is equivelant to the one returned by
+    /// the selected fields. This schema is equivalent to the one returned by
     /// CreateSession. This field is only populated in the first ReadRowsResponse
     /// RPC.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -554,10 +590,12 @@ pub struct AppendRowsRequest {
     /// request.
     ///
     /// For explicitly created write streams, the format is:
-    /// `projects/{project}/datasets/{dataset}/tables/{table}/streams/{id}`
+    ///
+    /// * `projects/{project}/datasets/{dataset}/tables/{table}/streams/{id}`
     ///
     /// For the special default stream, the format is:
-    /// `projects/{project}/datasets/{dataset}/tables/{table}/_default`.
+    ///
+    /// * `projects/{project}/datasets/{dataset}/tables/{table}/streams/_default`.
     #[prost(string, tag = "1")]
     pub write_stream: ::prost::alloc::string::String,
     /// If present, the write is only performed if the next append offset is same
@@ -614,6 +652,11 @@ pub struct AppendRowsResponse {
     /// updates have occurred.
     #[prost(message, optional, tag = "3")]
     pub updated_schema: ::core::option::Option<TableSchema>,
+    /// If a request failed due to corrupted rows, no rows in the batch will be
+    /// appended. The API will return row level error info, so that the caller can
+    /// remove the bad rows and retry the request.
+    #[prost(message, repeated, tag = "4")]
+    pub row_errors: ::prost::alloc::vec::Vec<RowError>,
     #[prost(oneof = "append_rows_response::Response", tags = "1, 2")]
     pub response: ::core::option::Option<append_rows_response::Response>,
 }
@@ -766,6 +809,35 @@ pub mod storage_error {
         /// There is a schema mismatch and it is caused by user schema has extra
         /// field than bigquery schema.
         SchemaMismatchExtraFields = 7,
+        /// Offset already exists.
+        OffsetAlreadyExists = 8,
+        /// Offset out of range.
+        OffsetOutOfRange = 9,
+    }
+}
+/// The message that presents row level error info in a request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RowError {
+    /// Index of the malformed row in the request.
+    #[prost(int64, tag = "1")]
+    pub index: i64,
+    /// Structured error reason for a row error.
+    #[prost(enumeration = "row_error::RowErrorCode", tag = "2")]
+    pub code: i32,
+    /// Description of the issue encountered when processing the row.
+    #[prost(string, tag = "3")]
+    pub message: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `RowError`.
+pub mod row_error {
+    /// Error code for `RowError`.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RowErrorCode {
+        /// Default error.
+        Unspecified = 0,
+        /// One or more fields in the row has errors.
+        FieldsError = 1,
     }
 }
 #[doc = r" Generated client implementations."]
@@ -877,7 +949,9 @@ pub mod big_query_read_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryRead/ReadRows",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Splits a given `ReadStream` into two `ReadStream` objects. These"]
         #[doc = " `ReadStream` objects are referred to as the primary and the residual"]
@@ -1017,6 +1091,13 @@ pub mod big_query_write_client {
         #[doc = " * For PENDING streams, data is not made visible until the stream itself is"]
         #[doc = " finalized (via the `FinalizeWriteStream` rpc), and the stream is explicitly"]
         #[doc = " committed via the `BatchCommitWriteStreams` rpc."]
+        #[doc = ""]
+        #[doc = " Note: For users coding against the gRPC api directly, it may be"]
+        #[doc = " necessary to supply the x-goog-request-params system parameter"]
+        #[doc = " with `write_stream=<full_write_stream_name>`."]
+        #[doc = ""]
+        #[doc = " More information about system parameters:"]
+        #[doc = " https://cloud.google.com/apis/docs/system-parameters"]
         pub async fn append_rows(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::AppendRowsRequest>,
@@ -1034,7 +1115,9 @@ pub mod big_query_write_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1.BigQueryWrite/AppendRows",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Gets information about a write stream."]
         pub async fn get_write_stream(

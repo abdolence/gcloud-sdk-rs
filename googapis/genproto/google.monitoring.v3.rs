@@ -1613,7 +1613,10 @@ pub struct TimeSeries {
     /// metric's descriptor must be auto-created, then this field specifies the
     /// metric kind of the new descriptor and must be either `GAUGE` (the default)
     /// or `CUMULATIVE`.
-    #[prost(enumeration = "super::super::api::metric_descriptor::MetricKind", tag = "3")]
+    #[prost(
+        enumeration = "super::super::api::metric_descriptor::MetricKind",
+        tag = "3"
+    )]
     pub metric_kind: i32,
     /// The value type of the time series. When listing time series, this value
     /// type might be different from the value type of the associated metric if
@@ -1621,7 +1624,10 @@ pub struct TimeSeries {
     ///
     /// When creating a time series, this field is optional. If present, it must be
     /// the same as the type of the data in the `points` field.
-    #[prost(enumeration = "super::super::api::metric_descriptor::ValueType", tag = "4")]
+    #[prost(
+        enumeration = "super::super::api::metric_descriptor::ValueType",
+        tag = "4"
+    )]
     pub value_type: i32,
     /// The data points of this time series. When listing time series, points are
     /// returned in reverse time order.
@@ -1658,7 +1664,10 @@ pub mod time_series_descriptor {
         #[prost(string, tag = "1")]
         pub key: ::prost::alloc::string::String,
         /// The value type.
-        #[prost(enumeration = "super::super::super::api::metric_descriptor::ValueType", tag = "2")]
+        #[prost(
+            enumeration = "super::super::super::api::metric_descriptor::ValueType",
+            tag = "2"
+        )]
         pub value_type: i32,
         /// The value stream kind.
         #[prost(
@@ -4383,8 +4392,9 @@ pub enum GroupResourceType {
 /// The protocol for the `ListUptimeCheckConfigs` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListUptimeCheckConfigsRequest {
-    /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>)
-    /// whose Uptime check configurations are listed. The format is:
+    /// Required. The
+    /// \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) whose
+    /// Uptime check configurations are listed. The format is:
     ///
     ///     projects/\[PROJECT_ID_OR_NUMBER\]
     #[prost(string, tag = "1")]
@@ -4431,8 +4441,9 @@ pub struct GetUptimeCheckConfigRequest {
 /// The protocol for the `CreateUptimeCheckConfig` request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateUptimeCheckConfigRequest {
-    /// Required. The \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) in
-    /// which to create the Uptime check. The format is:
+    /// Required. The
+    /// \[project\](<https://cloud.google.com/monitoring/api/v3#project_name>) in which
+    /// to create the Uptime check. The format is:
     ///
     ///     projects/\[PROJECT_ID_OR_NUMBER\]
     #[prost(string, tag = "1")]

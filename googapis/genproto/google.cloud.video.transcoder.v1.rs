@@ -8,12 +8,16 @@ pub struct Job {
     /// Input only. Specify the `input_uri` to populate empty `uri` fields in each element of
     /// `Job.config.inputs` or `JobTemplate.config.inputs` when using template.
     /// URI of the media. Input files must be at least 5 seconds in duration and
-    /// stored in Cloud Storage (for example, `gs://bucket/inputs/file.mp4`).
+    /// stored in Cloud Storage (for example, `gs://bucket/inputs/file.mp4`). See
+    /// [Supported input and output
+    /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
     #[prost(string, tag = "2")]
     pub input_uri: ::prost::alloc::string::String,
     /// Input only. Specify the `output_uri` to populate an empty `Job.config.output.uri` or
     /// `JobTemplate.config.output.uri` when using template.
-    /// URI for the output file(s). For example, `gs://my-bucket/outputs/`.
+    /// URI for the output file(s). For example, `gs://my-bucket/outputs/`. See
+    /// [Supported input and output
+    /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
     #[prost(string, tag = "3")]
     pub output_uri: ::prost::alloc::string::String,
     /// Output only. The current state of the job.
@@ -33,6 +37,11 @@ pub struct Job {
     /// a value between 1 and 90. The default is 30.
     #[prost(int32, tag = "15")]
     pub ttl_after_completion_days: i32,
+    /// The labels associated with this job. You can use these to organize and
+    /// group your jobs.
+    #[prost(map = "string, string", tag = "16")]
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Output only. An error object that describes the reason for the failure.
     /// This property is always present when `state` is `FAILED`.
     #[prost(message, optional, tag = "17")]
@@ -94,6 +103,11 @@ pub struct JobTemplate {
     /// The configuration for this template.
     #[prost(message, optional, tag = "2")]
     pub config: ::core::option::Option<JobConfig>,
+    /// The labels associated with this job template. You can use these to organize
+    /// and group your job templates.
+    #[prost(map = "string, string", tag = "3")]
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Job configuration
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -125,6 +139,7 @@ pub struct JobConfig {
     #[prost(message, optional, tag = "8")]
     pub pubsub_destination: ::core::option::Option<PubsubDestination>,
     /// List of output sprite sheets.
+    /// Spritesheets require at least one VideoStream in the Jobconfig.
     #[prost(message, repeated, tag = "9")]
     pub sprite_sheets: ::prost::alloc::vec::Vec<SpriteSheet>,
     /// List of overlays on the output video, in descending Z-order.
@@ -140,7 +155,9 @@ pub struct Input {
     pub key: ::prost::alloc::string::String,
     /// URI of the media. Input files must be at least 5 seconds in duration and
     /// stored in Cloud Storage (for example, `gs://bucket/inputs/file.mp4`).
-    /// If empty, the value will be populated from `Job.input_uri`.
+    /// If empty, the value is populated from `Job.input_uri`. See
+    /// [Supported input and output
+    /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
     /// Preprocessing configurations.
@@ -151,7 +168,9 @@ pub struct Input {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Output {
     /// URI for the output file(s). For example, `gs://my-bucket/outputs/`.
-    /// If empty the value is populated from `Job.output_uri`.
+    /// If empty, the value is populated from `Job.output_uri`. See
+    /// [Supported input and output
+    /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>).
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
 }
@@ -234,6 +253,10 @@ pub struct MuxStream {
     /// - `fmp4`- the corresponding file extension is `.m4s`
     /// - `mp4`
     /// - `vtt`
+    ///
+    /// See also:
+    /// [Supported input and output
+    /// formats](<https://cloud.google.com/transcoder/docs/concepts/supported-input-and-output-formats>)
     #[prost(string, tag = "3")]
     pub container: ::prost::alloc::string::String,
     /// List of `ElementaryStream.key`s multiplexed in this stream.
@@ -500,6 +523,8 @@ pub struct PreprocessingConfig {
 /// Nested message and enum types in `PreprocessingConfig`.
 pub mod preprocessing_config {
     /// Color preprocessing configuration.
+    ///
+    /// **Note:** This configuration is not supported.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Color {
         /// Control color saturation of the video. Enter a value between -1 and 1,
@@ -519,6 +544,8 @@ pub mod preprocessing_config {
         pub brightness: f64,
     }
     /// Denoise preprocessing configuration.
+    ///
+    /// **Note:** This configuration is not supported.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Denoise {
         /// Set strength of the denoise. Enter a value between 0 and 1. The higher
@@ -535,6 +562,8 @@ pub mod preprocessing_config {
         pub tune: ::prost::alloc::string::String,
     }
     /// Deblock preprocessing configuration.
+    ///
+    /// **Note:** This configuration is not supported.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Deblock {
         /// Set strength of the deblocker. Enter a value between 0 and 1. The higher
@@ -563,9 +592,13 @@ pub mod preprocessing_config {
         #[prost(double, tag = "1")]
         pub lufs: f64,
         /// Enable boosting high frequency components. The default is `false`.
+        ///
+        /// **Note:** This field is not supported.
         #[prost(bool, tag = "2")]
         pub high_boost: bool,
         /// Enable boosting low frequency components. The default is `false`.
+        ///
+        /// **Note:** This field is not supported.
         #[prost(bool, tag = "3")]
         pub low_boost: bool,
     }
@@ -952,11 +985,12 @@ pub mod video_stream {
         /// Supported rate control modes:
         ///
         /// - `vbr` - variable bitrate
-        /// - `crf` - constant rate factor
         #[prost(string, tag = "6")]
         pub rate_control_mode: ::prost::alloc::string::String,
         /// Target CRF level. Must be between 10 and 36, where 10 is the highest
         /// quality and 36 is the most efficient compression. The default is 21.
+        ///
+        /// **Note:** This field is not supported.
         #[prost(int32, tag = "7")]
         pub crf_level: i32,
         /// Enforces the specified codec profile. The following profiles are

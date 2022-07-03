@@ -23,10 +23,16 @@ pub struct DeliveryPipeline {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Labels are attributes that can be set and used by both the
     /// user and by Google Cloud Deploy. Labels must meet the following
-    /// constraints: Each resource is limited to 64 labels. Keys must conform to
-    /// the regexp: `\[a-zA-Z][a-zA-Z0-9_-\]{0,62}`. Values must conform to the
-    /// regexp: `\[a-zA-Z0-9_-\]{0,63}`. Both keys and values are additionally
-    /// constrained to be <= 128 bytes in size.
+    /// constraints:
+    ///
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    /// underscores, and dashes.
+    /// * All characters must use UTF-8 encoding, and international characters are
+    /// allowed.
+    /// * Keys must start with a lowercase letter or international character.
+    /// * Each resource is limited to a maximum of 64 labels.
+    ///
+    /// Both keys and values are additionally constrained to be <= 128 bytes.
     #[prost(map = "string, string", tag = "5")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -73,9 +79,9 @@ pub struct Stage {
     /// The target_id to which this stage points. This field refers exclusively to
     /// the last segment of a target name. For example, this field would just be
     /// `my-target` (rather than
-    /// `projects/project/deliveryPipelines/pipeline/targets/my-target`). The
-    /// parent `DeliveryPipeline` of the `Target` is inferred to be the parent
-    /// `DeliveryPipeline` of the `Release` in which this `Stage` lives.
+    /// `projects/project/locations/location/targets/my-target`). The location of
+    /// the `Target` is inferred to be the same as the location of the
+    /// `DeliveryPipeline` that contains this `Stage`.
     #[prost(string, tag = "1")]
     pub target_id: ::prost::alloc::string::String,
     /// Skaffold profiles to use when rendering the manifest for this stage's
@@ -142,7 +148,7 @@ pub struct ListDeliveryPipelinesRequest {
     /// the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Filter builds to be returned. See <https://google.aip.dev/160> for more
+    /// Filter pipelines to be returned. See <https://google.aip.dev/160> for more
     /// details.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -289,8 +295,8 @@ pub struct DeleteDeliveryPipelineRequest {
 /// can be deployed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Target {
-    /// Optional. Name of the `Target`. Format is projects/{project}/locations/{location}/
-    /// deliveryPipelines/{deliveryPipeline}/targets/\[a-z][a-z0-9\-\]{0,62}.
+    /// Optional. Name of the `Target`. Format is
+    /// projects/{project}/locations/{location}/targets/\[a-z][a-z0-9\-\]{0,62}.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Resource id of the `Target`.
@@ -311,10 +317,16 @@ pub struct Target {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Optional. Labels are attributes that can be set and used by both the
     /// user and by Google Cloud Deploy. Labels must meet the following
-    /// constraints: Each resource is limited to 64 labels. Keys must conform to
-    /// the regexp: `\[a-zA-Z][a-zA-Z0-9_-\]{0,62}`. Values must conform to the
-    /// regexp: `\[a-zA-Z0-9_-\]{0,63}`. Both keys and values are additionally
-    /// constrained to be <= 128 bytes in size.
+    /// constraints:
+    ///
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    /// underscores, and dashes.
+    /// * All characters must use UTF-8 encoding, and international characters are
+    /// allowed.
+    /// * Keys must start with a lowercase letter or international character.
+    /// * Each resource is limited to a maximum of 64 labels.
+    ///
+    /// Both keys and values are additionally constrained to be <= 128 bytes.
     #[prost(map = "string, string", tag = "6")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -343,7 +355,7 @@ pub struct Target {
     pub execution_configs: ::prost::alloc::vec::Vec<ExecutionConfig>,
     /// Destination to which the Skaffold configuration is applied during a
     /// rollout.
-    #[prost(oneof = "target::DeploymentTarget", tags = "15")]
+    #[prost(oneof = "target::DeploymentTarget", tags = "15, 17")]
     pub deployment_target: ::core::option::Option<target::DeploymentTarget>,
 }
 /// Nested message and enum types in `Target`.
@@ -355,6 +367,9 @@ pub mod target {
         /// Information specifying a GKE Cluster.
         #[prost(message, tag = "15")]
         Gke(super::GkeCluster),
+        /// Information specifying an Anthos Cluster.
+        #[prost(message, tag = "17")]
+        AnthosCluster(super::AnthosCluster),
     }
 }
 /// Configuration of the environment to use when calling Skaffold.
@@ -368,6 +383,23 @@ pub struct ExecutionConfig {
         tag = "1"
     )]
     pub usages: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. The resource name of the `WorkerPool`, with the format
+    /// `projects/{project}/locations/{location}/workerPools/{worker_pool}`.
+    /// If this optional field is unspecified, the default Cloud Build pool will be
+    /// used.
+    #[prost(string, tag = "4")]
+    pub worker_pool: ::prost::alloc::string::String,
+    /// Optional. Google service account to use for execution. If unspecified,
+    /// the project execution service account
+    /// (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) is used.
+    #[prost(string, tag = "5")]
+    pub service_account: ::prost::alloc::string::String,
+    /// Optional. Cloud Storage location in which to store execution outputs. This can
+    /// either be a bucket ("gs://my-bucket") or a path within a bucket
+    /// ("gs://my-bucket/my-dir").
+    /// If unspecified, a default bucket located in the same region will be used.
+    #[prost(string, tag = "6")]
+    pub artifact_storage: ::prost::alloc::string::String,
     /// Details of the environment.
     #[prost(oneof = "execution_config::ExecutionEnvironment", tags = "2, 3")]
     pub execution_environment: ::core::option::Option<execution_config::ExecutionEnvironment>,
@@ -437,6 +469,25 @@ pub struct GkeCluster {
     /// `projects/{project_id}/locations/{location_id}/clusters/{cluster_id}.
     #[prost(string, tag = "1")]
     pub cluster: ::prost::alloc::string::String,
+    /// Optional. If true, `cluster` is accessed using the private IP address of the control
+    /// plane endpoint. Otherwise, the default IP address of the control plane
+    /// endpoint is used. The default IP address is the private IP address for
+    /// clusters with private control-plane endpoints and the public IP address
+    /// otherwise.
+    ///
+    /// Only specify this option when `cluster` is a [private GKE
+    /// cluster](<https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept>).
+    #[prost(bool, tag = "2")]
+    pub internal_ip: bool,
+}
+/// Information specifying an Anthos Cluster.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnthosCluster {
+    /// Membership of the GKE Hub-registered cluster to which to apply the Skaffold
+    /// configuration. Format is
+    /// `projects/{project}/locations/{location}/memberships/{membership_name}`.
+    #[prost(string, tag = "1")]
+    pub membership: ::prost::alloc::string::String,
 }
 /// The request object for `ListTargets`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -457,7 +508,7 @@ pub struct ListTargetsRequest {
     /// the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter builds to be returned. See <https://google.aip.dev/160> for more
+    /// Optional. Filter targets to be returned. See <https://google.aip.dev/160> for more
     /// details.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -620,10 +671,16 @@ pub struct Release {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Labels are attributes that can be set and used by both the
     /// user and by Google Cloud Deploy. Labels must meet the following
-    /// constraints: Each resource is limited to 64 labels. Keys must conform to
-    /// the regexp: `\[a-zA-Z][a-zA-Z0-9_-\]{0,62}`. Values must conform to the
-    /// regexp: `\[a-zA-Z0-9_-\]{0,63}`. Both keys and values are additionally
-    /// constrained to be <= 128 bytes in size.
+    /// constraints:
+    ///
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    /// underscores, and dashes.
+    /// * All characters must use UTF-8 encoding, and international characters are
+    /// allowed.
+    /// * Keys must start with a lowercase letter or international character.
+    /// * Each resource is limited to a maximum of 64 labels.
+    ///
+    /// Both keys and values are additionally constrained to be <= 128 bytes.
     #[prost(map = "string, string", tag = "5")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -648,7 +705,7 @@ pub struct Release {
     /// Output only. Snapshot of the parent pipeline taken at release creation time.
     #[prost(message, optional, tag = "11")]
     pub delivery_pipeline_snapshot: ::core::option::Option<DeliveryPipeline>,
-    /// Output only. Snapshot of the parent pipeline's targets taken at release creation time.
+    /// Output only. Snapshot of the targets taken at release creation time.
     #[prost(message, repeated, tag = "12")]
     pub target_snapshots: ::prost::alloc::vec::Vec<Target>,
     /// Output only. Current state of the render operation.
@@ -689,6 +746,10 @@ pub mod release {
         /// Output only. Current state of the render operation for this Target.
         #[prost(enumeration = "target_render::TargetRenderState", tag = "2")]
         pub rendering_state: i32,
+        /// Output only. Reason this render failed. This will always be unspecified while the
+        /// render in progress.
+        #[prost(enumeration = "target_render::FailureCause", tag = "4")]
+        pub failure_cause: i32,
     }
     /// Nested message and enum types in `TargetRender`.
     pub mod target_render {
@@ -706,6 +767,22 @@ pub mod release {
             Failed = 2,
             /// The render operation is in progress.
             InProgress = 3,
+        }
+        /// Well-known rendering failures.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum FailureCause {
+            /// No reason for failure is specified.
+            Unspecified = 0,
+            /// Cloud Build is not available, either because it is not enabled or
+            /// because Cloud Deploy has insufficient permissions. See [required
+            /// permission](/deploy/docs/cloud-deploy-service-account#required_permissions).
+            CloudBuildUnavailable = 1,
+            /// The render operation did not complete successfully; check Cloud Build
+            /// logs.
+            ExecutionFailed = 2,
         }
     }
     /// Valid states of the render operation.
@@ -775,7 +852,7 @@ pub struct ListReleasesRequest {
     /// the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter builds to be returned. See <https://google.aip.dev/160> for more
+    /// Optional. Filter releases to be returned. See <https://google.aip.dev/160> for more
     /// details.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -865,10 +942,16 @@ pub struct Rollout {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Labels are attributes that can be set and used by both the
     /// user and by Google Cloud Deploy. Labels must meet the following
-    /// constraints: Each resource is limited to 64 labels. Keys must conform to
-    /// the regexp: `\[a-zA-Z][a-zA-Z0-9_-\]{0,62}`. Values must conform to the
-    /// regexp: `\[a-zA-Z0-9_-\]{0,63}`. Both keys and values are additionally
-    /// constrained to be <= 128 bytes in size.
+    /// constraints:
+    ///
+    /// * Keys and values can contain only lowercase letters, numeric characters,
+    /// underscores, and dashes.
+    /// * All characters must use UTF-8 encoding, and international characters are
+    /// allowed.
+    /// * Keys must start with a lowercase letter or international character.
+    /// * Each resource is limited to a maximum of 64 labels.
+    ///
+    /// Both keys and values are additionally constrained to be <= 128 bytes.
     #[prost(map = "string, string", tag = "5")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -909,6 +992,10 @@ pub struct Rollout {
     /// client has an up-to-date value before proceeding.
     #[prost(string, tag = "16")]
     pub etag: ::prost::alloc::string::String,
+    /// Output only. The reason this deploy failed. This will always be unspecified while the
+    /// deploy in progress.
+    #[prost(enumeration = "rollout::FailureCause", tag = "19")]
+    pub deploy_failure_cause: i32,
 }
 /// Nested message and enum types in `Rollout`.
 pub mod rollout {
@@ -949,6 +1036,24 @@ pub mod rollout {
         /// The `Rollout` is waiting for the `Release` to be fully rendered.
         PendingRelease = 7,
     }
+    /// Well-known deployment failures.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum FailureCause {
+        /// No reason for failure is specified.
+        Unspecified = 0,
+        /// Cloud Build is not available, either because it is not enabled or because
+        /// Cloud Deploy has insufficient permissions. See [required
+        /// permission](/deploy/docs/cloud-deploy-service-account#required_permissions).
+        CloudBuildUnavailable = 1,
+        /// The deploy operation did not complete successfully; check Cloud Build
+        /// logs.
+        ExecutionFailed = 2,
+        /// Deployment did not complete within the alloted time.
+        DeadlineExceeded = 3,
+        /// Release is in a failed state.
+        ReleaseFailed = 4,
+    }
 }
 /// ListRolloutsRequest is the request object used by `ListRollouts`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -968,7 +1073,7 @@ pub struct ListRolloutsRequest {
     /// the call that provided the page token.
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
-    /// Optional. Filter builds to be returned. See <https://google.aip.dev/160> for more
+    /// Optional. Filter rollouts to be returned. See <https://google.aip.dev/160> for more
     /// details.
     #[prost(string, tag = "4")]
     pub filter: ::prost::alloc::string::String,
@@ -1488,4 +1593,96 @@ pub mod cloud_deploy_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
     }
+}
+/// Type indicates the type of the log entry and can be used as a filter.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Type {
+    /// Type is unspecified.
+    Unspecified = 0,
+    /// A Pub/Sub notification failed to be sent.
+    PubsubNotificationFailure = 1,
+    /// Release render status changed notification.
+    RenderStatuesChange = 2,
+}
+/// Payload proto for "clouddeploy.googleapis.com/deliverypipeline_notification"
+/// Platform Log event that describes the failure to send delivery pipeline
+/// status change Pub/Sub notification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeliveryPipelineNotificationEvent {
+    /// Debug message for when a notification fails to send.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// The name of the `Delivery Pipeline`.
+    #[prost(string, tag = "2")]
+    pub delivery_pipeline: ::prost::alloc::string::String,
+    /// Type of this notification, e.g. for a Pub/Sub failure.
+    #[prost(enumeration = "Type", tag = "3")]
+    pub r#type: i32,
+}
+/// Payload proto for "clouddeploy.googleapis.com/release_notification"
+/// Platform Log event that describes the failure to send release status change
+/// Pub/Sub notification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReleaseNotificationEvent {
+    /// Debug message for when a notification fails to send.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// The name of the `Release`.
+    #[prost(string, tag = "2")]
+    pub release: ::prost::alloc::string::String,
+    /// Type of this notification, e.g. for a Pub/Sub failure.
+    #[prost(enumeration = "Type", tag = "3")]
+    pub r#type: i32,
+}
+/// Payload proto for "clouddeploy.googleapis.com/release_render"
+/// Platform Log event that describes the render status change.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReleaseRenderEvent {
+    /// Debug message for when a render transition occurs. Provides further
+    /// details as rendering progresses through render states.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// The name of the `Release`.
+    #[prost(string, tag = "2")]
+    pub release: ::prost::alloc::string::String,
+}
+/// Payload proto for "clouddeploy.googleapis.com/rollout_notification"
+/// Platform Log event that describes the failure to send rollout status change
+/// Pub/Sub notification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RolloutNotificationEvent {
+    /// Debug message for when a notification fails to send.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// Unique identifier of the `DeliveryPipeline`.
+    #[prost(string, tag = "2")]
+    pub pipeline_uid: ::prost::alloc::string::String,
+    /// Unique identifier of the `Release`.
+    #[prost(string, tag = "3")]
+    pub release_uid: ::prost::alloc::string::String,
+    /// The name of the `Rollout`.
+    #[prost(string, tag = "4")]
+    pub rollout: ::prost::alloc::string::String,
+    /// Type of this notification, e.g. for a Pub/Sub failure.
+    #[prost(enumeration = "Type", tag = "5")]
+    pub r#type: i32,
+    /// ID of the `Target` that the rollout is deployed to.
+    #[prost(string, tag = "6")]
+    pub target_id: ::prost::alloc::string::String,
+}
+/// Payload proto for "clouddeploy.googleapis.com/target_notification"
+/// Platform Log event that describes the failure to send target status change
+/// Pub/Sub notification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TargetNotificationEvent {
+    /// Debug message for when a notification fails to send.
+    #[prost(string, tag = "1")]
+    pub message: ::prost::alloc::string::String,
+    /// The name of the `Target`.
+    #[prost(string, tag = "2")]
+    pub target: ::prost::alloc::string::String,
+    /// Type of this notification, e.g. for a Pub/Sub failure.
+    #[prost(enumeration = "Type", tag = "3")]
+    pub r#type: i32,
 }

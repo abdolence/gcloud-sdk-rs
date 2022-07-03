@@ -231,7 +231,7 @@ pub mod value_range {
 /// RowFilter.Chain and RowFilter.Interleave documentation.
 ///
 /// The total serialized size of a RowFilter message must not
-/// exceed 4096 bytes, and RowFilters may not be nested within each other
+/// exceed 20480 bytes, and RowFilters may not be nested within each other
 /// (in Chains or Interleaves) to a depth of more than 20.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RowFilter {
@@ -601,14 +601,15 @@ pub struct ReadRowsRequest {
     /// "default" application profile will be used.
     #[prost(string, tag = "5")]
     pub app_profile_id: ::prost::alloc::string::String,
-    /// The row keys and/or ranges to read. If not specified, reads from all rows.
+    /// The row keys and/or ranges to read sequentially. If not specified, reads
+    /// from all rows.
     #[prost(message, optional, tag = "2")]
     pub rows: ::core::option::Option<RowSet>,
     /// The filter to apply to the contents of the specified row(s). If unset,
     /// reads the entirety of each row.
     #[prost(message, optional, tag = "3")]
     pub filter: ::core::option::Option<RowFilter>,
-    /// The read will terminate after committing to N rows' worth of results. The
+    /// The read will stop after committing to N rows' worth of results. The
     /// default (zero) is to return all results.
     #[prost(int64, tag = "4")]
     pub rows_limit: i64,
@@ -863,6 +864,21 @@ pub struct CheckAndMutateRowResponse {
     #[prost(bool, tag = "1")]
     pub predicate_matched: bool,
 }
+/// Request message for client connection keep-alive and warming.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PingAndWarmRequest {
+    /// Required. The unique name of the instance to check permissions for as well as
+    /// respond. Values are of the form `projects/<project>/instances/<instance>`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// This value specifies routing for replication. If not specified, the
+    /// "default" application profile will be used.
+    #[prost(string, tag = "2")]
+    pub app_profile_id: ::prost::alloc::string::String,
+}
+/// Response message for Bigtable.PingAndWarm connection keepalive and warming.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PingAndWarmResponse {}
 /// Request message for Bigtable.ReadModifyWriteRow.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadModifyWriteRowRequest {
@@ -961,7 +977,9 @@ pub mod bigtable_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.bigtable.v2.Bigtable/ReadRows");
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Returns a sample of row keys in the table. The returned row keys will"]
         #[doc = " delimit contiguous sections of the table of approximately equal size,"]
@@ -983,7 +1001,9 @@ pub mod bigtable_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.bigtable.v2.Bigtable/SampleRowKeys");
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Mutates a row atomically. Cells already present in the row are left"]
         #[doc = " unchanged unless explicitly changed by `mutation`."]
@@ -1021,7 +1041,9 @@ pub mod bigtable_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.bigtable.v2.Bigtable/MutateRows");
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Mutates a row atomically based on the output of a predicate Reader filter."]
         pub async fn check_and_mutate_row(
@@ -1038,6 +1060,23 @@ pub mod bigtable_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.v2.Bigtable/CheckAndMutateRow",
             );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Warm up associated instance metadata for this connection."]
+        #[doc = " This call is not required but may be useful for connection keep-alive."]
+        pub async fn ping_and_warm(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PingAndWarmRequest>,
+        ) -> Result<tonic::Response<super::PingAndWarmResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.bigtable.v2.Bigtable/PingAndWarm");
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Modifies a row atomically on the server. The method reads the latest"]

@@ -247,7 +247,11 @@ pub struct StaticMediaPrompt {
     /// If set, request will be made to 3p when a certain media event happens.
     /// If not set, 3p must still handle two default control type, FINISHED and
     /// FAILED.
-    #[prost(enumeration = "static_media_prompt::OptionalMediaControls", repeated, tag = "6")]
+    #[prost(
+        enumeration = "static_media_prompt::OptionalMediaControls",
+        repeated,
+        tag = "6"
+    )]
     pub optional_media_controls: ::prost::alloc::vec::Vec<i32>,
     /// List of media objects.
     #[prost(message, repeated, tag = "7")]

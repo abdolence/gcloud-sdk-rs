@@ -84,7 +84,10 @@ pub struct FinalizeMfaEnrollmentRequest {
     #[prost(string, tag = "5")]
     pub tenant_id: ::prost::alloc::string::String,
     /// MFA enrollment information to be verified.
-    #[prost(oneof = "finalize_mfa_enrollment_request::VerificationInfo", tags = "4")]
+    #[prost(
+        oneof = "finalize_mfa_enrollment_request::VerificationInfo",
+        tags = "4"
+    )]
     pub verification_info:
         ::core::option::Option<finalize_mfa_enrollment_request::VerificationInfo>,
 }
@@ -108,7 +111,10 @@ pub struct FinalizeMfaEnrollmentResponse {
     #[prost(string, tag = "2")]
     pub refresh_token: ::prost::alloc::string::String,
     /// MFA verified enrollment information.
-    #[prost(oneof = "finalize_mfa_enrollment_response::AuxiliaryAuthInfo", tags = "3")]
+    #[prost(
+        oneof = "finalize_mfa_enrollment_response::AuxiliaryAuthInfo",
+        tags = "3"
+    )]
     pub auxiliary_auth_info:
         ::core::option::Option<finalize_mfa_enrollment_response::AuxiliaryAuthInfo>,
 }
@@ -149,7 +155,10 @@ pub mod start_mfa_enrollment_request {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartMfaEnrollmentResponse {
     /// MFA start enrollment response by 2nd factor type.
-    #[prost(oneof = "start_mfa_enrollment_response::EnrollmentResponse", tags = "1")]
+    #[prost(
+        oneof = "start_mfa_enrollment_response::EnrollmentResponse",
+        tags = "1"
+    )]
     pub enrollment_response:
         ::core::option::Option<start_mfa_enrollment_response::EnrollmentResponse>,
 }

@@ -14,13 +14,14 @@ pub struct Bucket {
     pub lifecycle: ::core::option::Option<bucket::Lifecycle>,
     /// The creation time of the bucket in
     /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "4")]
     pub time_created: ::core::option::Option<::prost_types::Timestamp>,
     /// The ID of the bucket. For buckets, the `id` and `name` properties are the
     /// same.
     /// Attempting to update this field after the bucket is created will result in
-    /// an error.
+    /// a \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(string, tag = "5")]
     pub id: ::prost::alloc::string::String,
     /// The name of the bucket.
@@ -29,11 +30,13 @@ pub struct Bucket {
     #[prost(string, tag = "6")]
     pub name: ::prost::alloc::string::String,
     /// The project number of the project the bucket belongs to.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "7")]
     pub project_number: i64,
     /// The metadata generation of this bucket.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "8")]
     pub metageneration: i64,
     /// The bucket's \[<https://www.w3.org/TR/cors/\][Cross-Origin> Resource Sharing]
@@ -57,11 +60,13 @@ pub struct Bucket {
     pub storage_class: ::prost::alloc::string::String,
     /// HTTP 1.1 \[<https://tools.ietf.org/html/rfc7232#section-2.3"\]Entity> tag]
     /// for the bucket.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(string, tag = "12")]
     pub etag: ::prost::alloc::string::String,
     /// The modification time of the bucket.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "13")]
     pub updated: ::core::option::Option<::prost_types::Timestamp>,
     /// The default value for event-based hold on newly created objects in this
@@ -124,11 +129,19 @@ pub struct Bucket {
     pub iam_configuration: ::core::option::Option<bucket::IamConfiguration>,
     /// The zone or zones from which the bucket is intended to use zonal quota.
     /// Requests for data from outside the specified affinities are still allowed
-    /// but won’t be able to use zonal quota. The values are case-insensitive.
+    /// but won't be able to use zonal quota. The values are case-insensitive.
     /// Attempting to update this field after bucket is created will result in an
     /// error.
+    #[deprecated]
     #[prost(string, repeated, tag = "25")]
     pub zone_affinity: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Reserved for future use.
+    #[prost(bool, tag = "26")]
+    pub satisfies_pzs: bool,
+    /// The bucket's autoclass configuration. If there is no configuration, the
+    /// Autoclass feature will be disabled and have no effect on the bucket.
+    #[prost(message, optional, tag = "28")]
+    pub autoclass: ::core::option::Option<bucket::Autoclass>,
 }
 /// Nested message and enum types in `Bucket`.
 pub mod bucket {
@@ -180,6 +193,9 @@ pub mod bucket {
         #[prost(message, optional, tag = "1")]
         pub uniform_bucket_level_access:
             ::core::option::Option<iam_configuration::UniformBucketLevelAccess>,
+        /// Whether IAM will enforce public access prevention.
+        #[prost(enumeration = "iam_configuration::PublicAccessPrevention", tag = "2")]
+        pub public_access_prevention: i32,
     }
     /// Nested message and enum types in `IamConfiguration`.
     pub mod iam_configuration {
@@ -194,6 +210,22 @@ pub mod bucket {
             /// the deadline is passed the field is immutable.
             #[prost(message, optional, tag = "2")]
             pub locked_time: ::core::option::Option<::prost_types::Timestamp>,
+        }
+        /// Public Access Prevention configuration values.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum PublicAccessPrevention {
+            /// No specified PublicAccessPrevention.
+            Unspecified = 0,
+            /// Prevents access from being granted to public members 'allUsers' and
+            /// 'allAuthenticatedUsers'. Prevents attempts to grant new access to
+            /// public members.
+            Enforced = 1,
+            /// This setting is inherited from Org Policy. Does not prevent access from
+            /// being granted to public members 'allUsers' or 'allAuthenticatedUsers'.
+            Inherited = 2,
         }
     }
     /// Lifecycle properties of a bucket.
@@ -223,8 +255,8 @@ pub mod bucket {
             /// An action to take on an object.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Action {
-                /// Type of the action. Currently, only `Delete` and
-                /// `SetStorageClass` are supported.
+                /// Type of the action. Currently, only `Delete`, `SetStorageClass`, and
+                /// `AbortIncompleteMultipartUpload` are supported.
                 #[prost(string, tag = "1")]
                 pub r#type: ::prost::alloc::string::String,
                 /// Target storage class. Required iff the type of the action is
@@ -264,11 +296,39 @@ pub mod bucket {
                 /// A regular expression that satisfies the RE2 syntax. This condition is
                 /// satisfied when the name of the object matches the RE2 pattern.  Note:
                 /// This feature is currently in the "Early Access" launch stage and is
-                /// only available to a whitelisted set of users; that means that this
+                /// only available to an allowlisted set of users; that means that this
                 /// feature may be changed in backward-incompatible ways and that it is
                 /// not guaranteed to be released.
                 #[prost(string, tag = "6")]
                 pub matches_pattern: ::prost::alloc::string::String,
+                /// Number of days that has elapsed since the custom timestamp set on an
+                /// object.
+                #[prost(int32, tag = "7")]
+                pub days_since_custom_time: i32,
+                /// An object matches this condition if the custom timestamp set on the
+                /// object is before this timestamp.
+                #[prost(message, optional, tag = "8")]
+                pub custom_time_before: ::core::option::Option<::prost_types::Timestamp>,
+                /// This condition is relevant only for versioned objects. An object
+                /// version satisfies this condition only if these many days have been
+                /// passed since it became noncurrent. The value of the field must be a
+                /// nonnegative integer. If it's zero, the object version will become
+                /// eligible for Lifecycle action as soon as it becomes noncurrent.
+                #[prost(int32, tag = "9")]
+                pub days_since_noncurrent_time: i32,
+                /// This condition is relevant only for versioned objects. An object
+                /// version satisfies this condition only if it became noncurrent before
+                /// the specified timestamp.
+                #[prost(message, optional, tag = "10")]
+                pub noncurrent_time_before: ::core::option::Option<::prost_types::Timestamp>,
+                /// List of object name prefixes. If any prefix exactly matches the
+                /// beginning of the object name, the condition evaluates to true.
+                #[prost(string, repeated, tag = "11")]
+                pub matches_prefix: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+                /// List of object name suffixes. If any suffix exactly matches the
+                /// end of the object name, the condition evaluates to true.
+                #[prost(string, repeated, tag = "12")]
+                pub matches_suffix: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             }
         }
     }
@@ -327,6 +387,16 @@ pub mod bucket {
         /// result.
         #[prost(string, tag = "2")]
         pub not_found_page: ::prost::alloc::string::String,
+    }
+    /// Configuration for a bucket's Autoclass feature.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Autoclass {
+        /// Enables Autoclass.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
+        /// Latest instant at which the `enabled` bit was flipped.
+        #[prost(message, optional, tag = "2")]
+        pub toggle_time: ::core::option::Option<::prost_types::Timestamp>,
     }
 }
 /// An access-control entry.
@@ -648,12 +718,14 @@ pub struct Object {
     /// preconditions and for detecting changes in metadata. A metageneration
     /// number is only meaningful in the context of a particular generation of a
     /// particular object.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "6")]
     pub metageneration: i64,
     /// The deletion time of the object. Will be returned if and only if this
     /// version of the object has been deleted.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "7")]
     pub time_deleted: ::core::option::Option<::prost_types::Timestamp>,
     /// Content-Type of the object data, matching
@@ -664,16 +736,18 @@ pub struct Object {
     pub content_type: ::prost::alloc::string::String,
     /// Content-Length of the object data in bytes, matching
     /// \[<https://tools.ietf.org/html/rfc7230#section-3.3.2\][RFC> 7230 §3.3.2].
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "9")]
     pub size: i64,
     /// The creation time of the object.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "10")]
     pub time_created: ::core::option::Option<::prost_types::Timestamp>,
     /// CRC32c checksum. For more information about using the CRC32c
     /// checksum, see
-    /// \[<https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI\][Hashes> and
+    /// \[<https://cloud.google.com/storage/docs/hashes-etags#json-api\][Hashes> and
     /// ETags: Best Practices]. This is a server determined value and should not be
     /// supplied by the user when sending an Object. The server will ignore any
     /// value provided. Users should instead use the object_checksums field on the
@@ -682,13 +756,14 @@ pub struct Object {
     pub crc32c: ::core::option::Option<u32>,
     /// Number of underlying components that make up this object. Components are
     /// accumulated by compose operations.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(int32, tag = "12")]
     pub component_count: i32,
     /// MD5 hash of the data; encoded using base64 as per
     /// \[<https://tools.ietf.org/html/rfc4648#section-4\][RFC> 4648 §4]. For more
     /// information about using the MD5 hash, see
-    /// \[<https://cloud.google.com/storage/docs/hashes-etags#_JSONAPI\][Hashes> and
+    /// \[<https://cloud.google.com/storage/docs/hashes-etags#json-api\][Hashes> and
     /// ETags: Best Practices]. This is a server determined value and should not be
     /// supplied by the user when sending an Object. The server will ignore any
     /// value provided. Users should instead use the object_checksums field on the
@@ -697,11 +772,13 @@ pub struct Object {
     pub md5_hash: ::prost::alloc::string::String,
     /// HTTP 1.1 Entity tag for the object. See
     /// \[<https://tools.ietf.org/html/rfc7232#section-2.3\][RFC> 7232 §2.3].
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(string, tag = "14")]
     pub etag: ::prost::alloc::string::String,
     /// The modification time of the object metadata.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "15")]
     pub updated: ::core::option::Option<::prost_types::Timestamp>,
     /// Storage class of the object.
@@ -713,7 +790,8 @@ pub struct Object {
     pub kms_key_name: ::prost::alloc::string::String,
     /// The time at which the object's storage class was last changed. When the
     /// object is initially created, it will be set to time_created.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "18")]
     pub time_storage_class_updated: ::core::option::Option<::prost_types::Timestamp>,
     /// Whether an object is under temporary hold. While this flag is set to true,
@@ -767,17 +845,22 @@ pub struct Object {
     #[prost(string, tag = "25")]
     pub bucket: ::prost::alloc::string::String,
     /// The content generation of this object. Used for object versioning.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(int64, tag = "26")]
     pub generation: i64,
     /// The owner of the object. This will always be the uploader of the object.
-    /// Attempting to set this field will result in an error.
+    /// Attempting to set or update this field will result in a
+    /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "27")]
     pub owner: ::core::option::Option<Owner>,
     /// Metadata of customer-supplied encryption key, if the object is encrypted by
     /// such a key.
     #[prost(message, optional, tag = "28")]
     pub customer_encryption: ::core::option::Option<object::CustomerEncryption>,
+    /// A user-specified timestamp set on an object.
+    #[prost(message, optional, tag = "30")]
+    pub custom_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `Object`.
 pub mod object {
@@ -1766,7 +1849,9 @@ pub struct GetObjectMediaRequest {
     /// A negative `read_offset` value will be interpreted as the number of bytes
     /// back from the end of the object to be returned. For example, if an object's
     /// length is 15 bytes, a GetObjectMediaRequest with `read_offset` = -5 and
-    /// `read_limit` = 3 would return bytes 10 through 12 of the object.
+    /// `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
+    /// a negative offset whose magnitude is larger than the size of the object
+    /// will result in an error.
     #[prost(int64, tag = "4")]
     pub read_offset: i64,
     /// The maximum number of `data` bytes the server is allowed to return in the
@@ -2027,11 +2112,23 @@ pub struct ListObjectsRequest {
     /// Versioning](<https://cloud.google.com/storage/docs/object-versioning>).
     #[prost(bool, tag = "9")]
     pub versions: bool,
+    /// Filter results to objects whose names are lexicographically equal to or
+    /// after lexicographic_start. If lexicographic_end is also set, the objects
+    /// listed have names between lexicographic_start (inclusive) and
+    /// lexicographic_end (exclusive).
+    #[prost(string, tag = "11")]
+    pub lexicographic_start: ::prost::alloc::string::String,
+    /// Filter results to objects whose names are lexicographically before
+    /// lexicographic_end. If lexicographic_start is also set, the objects listed
+    /// have names between lexicographic_start (inclusive) and lexicographic_end
+    /// (exclusive).
+    #[prost(string, tag = "12")]
+    pub lexicographic_end: ::prost::alloc::string::String,
     /// A set of parameters common to all Storage API requests.
     #[prost(message, optional, tag = "10")]
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
-/// Request object for `ByteStream.QueryWriteStatus`.
+/// Request object for `QueryWriteStatus`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusRequest {
     /// Required. The name of the resume token for the object whose write status is being
@@ -2045,7 +2142,7 @@ pub struct QueryWriteStatusRequest {
     #[prost(message, optional, tag = "3")]
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
-/// Response object for `ByteStream.QueryWriteStatus`.
+/// Response object for `QueryWriteStatus`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusResponse {
     /// The number of bytes that have been processed for the given object.
@@ -2055,6 +2152,9 @@ pub struct QueryWriteStatusResponse {
     /// with `finish_write` set to true, and the server has processed that request.
     #[prost(bool, tag = "2")]
     pub complete: bool,
+    /// The metadata for the uploaded object. Only set if `complete` is `true`.
+    #[prost(message, optional, tag = "3")]
+    pub resource: ::core::option::Option<Object>,
 }
 /// Request message for RewriteObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2200,7 +2300,7 @@ pub struct StartResumableWriteRequest {
     #[prost(message, optional, tag = "4")]
     pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
-/// Response object for ByteStream.StartResumableWrite.
+/// Response object for `StartResumableWrite`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResumableWriteResponse {
     /// The upload_id of the newly started resumable write operation. This
@@ -2529,7 +2629,6 @@ pub struct CommonRequestParams {
     /// with applications that run cron jobs on App Engine on a user's behalf.
     /// You can choose any arbitrary string that uniquely identifies a user, but it
     /// is limited to 40 characters.
-    /// Overrides user_ip if both are provided.
     #[prost(string, tag = "2")]
     pub quota_user: ::prost::alloc::string::String,
     /// Subset of fields to include in the response.
@@ -2599,7 +2698,10 @@ pub mod service_constants {
 pub mod storage_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " Manages Google Cloud Storage resources."]
+    #[doc = " This is the API specification for the v1 Google Cloud Storage service. It is"]
+    #[doc = " only used for the message definitions needed by Cloud Audit Logging. The v1"]
+    #[doc = " gRPC service no longer runs and instead Google Cloud Storage only supports v2"]
+    #[doc = " API calls."]
     #[derive(Debug, Clone)]
     pub struct StorageClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -3327,7 +3429,9 @@ pub mod storage_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.storage.v1.Storage/GetObjectMedia");
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Stores a new object and metadata."]
         #[doc = ""]
@@ -3366,7 +3470,9 @@ pub mod storage_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.storage.v1.Storage/InsertObject");
-            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .client_streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Retrieves a list of objects matching the criteria."]
         pub async fn list_objects(
@@ -3480,61 +3586,6 @@ pub mod storage_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.storage.v1.Storage/UpdateObject");
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Gets the IAM policy for the specified object."]
-        pub async fn get_object_iam_policy(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::iam::v1::Policy>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v1.Storage/GetObjectIamPolicy",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Updates an IAM policy for the specified object."]
-        pub async fn set_object_iam_policy(
-            &mut self,
-            request: impl tonic::IntoRequest<super::SetIamPolicyRequest>,
-        ) -> Result<tonic::Response<super::super::super::iam::v1::Policy>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v1.Storage/SetObjectIamPolicy",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Tests a set of permissions on the given object to see which, if"]
-        #[doc = " any, are held by the caller."]
-        pub async fn test_object_iam_permissions(
-            &mut self,
-            request: impl tonic::IntoRequest<super::TestIamPermissionsRequest>,
-        ) -> Result<
-            tonic::Response<super::super::super::iam::v1::TestIamPermissionsResponse>,
-            tonic::Status,
-        > {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.storage.v1.Storage/TestObjectIamPermissions",
-            );
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Watch for changes on all objects in a bucket."]

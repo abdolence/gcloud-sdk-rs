@@ -330,7 +330,10 @@ pub struct LogEntry {
     pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
     /// The severity of the log entry. The default value is
     /// `LogSeverity.DEFAULT`.
-    #[prost(enumeration = "super::super::super::logging::r#type::LogSeverity", tag = "12")]
+    #[prost(
+        enumeration = "super::super::super::logging::r#type::LogSeverity",
+        tag = "12"
+    )]
     pub severity: i32,
     /// Optional. Information about the HTTP request associated with this
     /// log entry, if applicable.

@@ -546,7 +546,9 @@ pub mod embedded_assistant_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.assistant.embedded.v1alpha2.EmbeddedAssistant/Assist",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }

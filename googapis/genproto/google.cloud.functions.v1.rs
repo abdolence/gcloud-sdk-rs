@@ -1,6 +1,5 @@
 /// Describes a Cloud Function that contains user computation executed in
 /// response to an event. It encapsulate function and triggers configurations.
-/// Next tag: 36
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudFunction {
     /// A user-defined name of the function. Function names must be unique
@@ -124,8 +123,9 @@ pub struct CloudFunction {
     /// the `docker_repository` field that was created with the same KMS crypto
     /// key.
     ///
-    /// The following service accounts need to be granted Cloud KMS crypto key
-    /// encrypter/decrypter roles on the key.
+    /// The following service accounts need to be granted the role 'Cloud KMS
+    /// CryptoKey Encrypter/Decrypter (roles/cloudkms.cryptoKeyEncrypterDecrypter)'
+    /// on the Key/KeyRing/Project/Organization (least access preferred).
     ///
     /// 1. Google Cloud Functions service account
     ///    (service-{project_number}@gcf-admin-robot.iam.gserviceaccount.com) -
@@ -191,6 +191,14 @@ pub struct CloudFunction {
     /// Repository format must be 'DOCKER'.
     #[prost(string, tag = "34")]
     pub docker_repository: ::prost::alloc::string::String,
+    /// Docker Registry to use for this deployment.
+    ///
+    /// If `docker_repository` field is specified, this field will be automatically
+    /// set as `ARTIFACT_REGISTRY`.
+    /// If unspecified, it currently defaults to `CONTAINER_REGISTRY`.
+    /// This field may be overridden by the backend for eligible deployments.
+    #[prost(enumeration = "cloud_function::DockerRegistry", tag = "35")]
+    pub docker_registry: i32,
     /// The location of the function source code.
     #[prost(oneof = "cloud_function::SourceCode", tags = "3, 4, 16")]
     pub source_code: ::core::option::Option<cloud_function::SourceCode>,
@@ -231,6 +239,22 @@ pub mod cloud_function {
         AllowInternalOnly = 2,
         /// Allow HTTP traffic from private VPC sources and through GCLB.
         AllowInternalAndGclb = 3,
+    }
+    /// Docker Registry to use for storing function Docker images.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum DockerRegistry {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Docker images will be stored in multi-regional Container Registry
+        /// repositories named `gcf`.
+        ContainerRegistry = 1,
+        /// Docker images will be stored in regional Artifact Registry repositories.
+        /// By default, GCF will create and use repositories named `gcf-artifacts`
+        /// in every region in which a function is deployed. But the repository to
+        /// use can also be specified by the user using the `docker_repository`
+        /// field.
+        ArtifactRegistry = 2,
     }
     /// The location of the function source code.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -400,8 +424,7 @@ pub mod failure_policy {
 }
 /// Configuration for a secret environment variable. It has the information
 /// necessary to fetch the secret value from secret manager and expose it as an
-/// environment variable. Secret value is not a part of the configuration. Secret
-/// values are only fetched when a new clone starts.
+/// environment variable.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SecretEnvVar {
     /// Name of the environment variable.
@@ -418,7 +441,7 @@ pub struct SecretEnvVar {
     pub secret: ::prost::alloc::string::String,
     /// Version of the secret (version number or the string 'latest'). It is
     /// recommended to use a numeric version for secret environment variables as
-    /// any updates to the secret value is not reflected until new clones start.
+    /// any updates to the secret value is not reflected until new instances start.
     #[prost(string, tag = "4")]
     pub version: ::prost::alloc::string::String,
 }
@@ -488,7 +511,7 @@ pub struct UpdateFunctionRequest {
     /// Required. New version of the function.
     #[prost(message, optional, tag = "1")]
     pub function: ::core::option::Option<CloudFunction>,
-    /// Required list of fields to be updated in this request.
+    /// Required. The list of fields in `CloudFunction` that have to be updated.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -576,6 +599,25 @@ pub struct GenerateUploadUrlRequest {
     /// should be generated, specified in the format `projects/*/locations/*`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
+    /// Resource name of a KMS crypto key (managed by the user) used to
+    /// encrypt/decrypt function source code objects in staging Cloud Storage
+    /// buckets. When you generate an upload url and upload your source code, it
+    /// gets copied to a staging Cloud Storage bucket in an internal regional
+    /// project. The source code is then copied to a versioned directory in the
+    /// sources bucket in the consumer project during the function deployment.
+    ///
+    /// It must match the pattern
+    /// `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.
+    ///
+    /// The Google Cloud Functions service account
+    /// (service-{project_number}@gcf-admin-robot.iam.gserviceaccount.com) must be
+    /// granted the role 'Cloud KMS CryptoKey Encrypter/Decrypter
+    /// (roles/cloudkms.cryptoKeyEncrypterDecrypter)' on the
+    /// Key/KeyRing/Project/Organization (least access preferred). GCF will
+    /// delegate access to the Google Storage service account in the internal
+    /// project.
+    #[prost(string, tag = "2")]
+    pub kms_key_name: ::prost::alloc::string::String,
 }
 /// Response of `GenerateSourceUploadUrl` method.
 #[derive(Clone, PartialEq, ::prost::Message)]

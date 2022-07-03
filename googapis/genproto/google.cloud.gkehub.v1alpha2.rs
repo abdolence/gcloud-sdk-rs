@@ -185,6 +185,11 @@ pub struct ResourceOptions {
     /// <1.16.
     #[prost(bool, tag = "2")]
     pub v1beta1_crd: bool,
+    /// Major version of the Kubernetes cluster. This is only used to determine
+    /// which version to use for the CustomResourceDefinition resources,
+    /// `apiextensions/v1beta1` or`apiextensions/v1`.
+    #[prost(string, tag = "3")]
+    pub k8s_version: ::prost::alloc::string::String,
 }
 /// GkeCluster contains information specific to GKE clusters.
 #[derive(Clone, PartialEq, ::prost::Message)]

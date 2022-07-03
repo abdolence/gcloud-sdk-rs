@@ -382,9 +382,30 @@ pub struct ObjectTrackingAnnotation {
     /// Information corresponding to all frames where this object track appears.
     #[prost(message, repeated, tag = "2")]
     pub frames: ::prost::alloc::vec::Vec<ObjectTrackingFrame>,
-    /// Each object track corresponds to one video segment where it appears.
-    #[prost(message, optional, tag = "3")]
-    pub segment: ::core::option::Option<VideoSegment>,
+    /// Different representation of tracking info in non-streaming batch
+    /// and streaming modes.
+    #[prost(oneof = "object_tracking_annotation::TrackInfo", tags = "3, 5")]
+    pub track_info: ::core::option::Option<object_tracking_annotation::TrackInfo>,
+}
+/// Nested message and enum types in `ObjectTrackingAnnotation`.
+pub mod object_tracking_annotation {
+    /// Different representation of tracking info in non-streaming batch
+    /// and streaming modes.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum TrackInfo {
+        /// Non-streaming batch mode ONLY.
+        /// Each object track corresponds to one video segment where it appears.
+        #[prost(message, tag = "3")]
+        Segment(super::VideoSegment),
+        /// Streaming mode ONLY.
+        /// In streaming mode, we do not know the end time of a tracked object
+        /// before it is completed. Hence, there is no VideoSegment info returned.
+        /// Instead, we provide a unique identifiable integer track_id so that
+        /// the customers can correlate the results of the ongoing
+        /// ObjectTrackAnnotation of the same track_id over time.
+        #[prost(int64, tag = "5")]
+        TrackId(i64),
+    }
 }
 /// Video annotation feature.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]

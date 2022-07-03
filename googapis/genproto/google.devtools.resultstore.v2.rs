@@ -2657,7 +2657,9 @@ pub mod result_store_file_download_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.resultstore.v2.ResultStoreFileDownload/GetFile",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Retrieves the tail of a File with the given uri."]
         #[doc = ""]

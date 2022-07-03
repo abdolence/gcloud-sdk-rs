@@ -256,10 +256,10 @@ pub struct Inventory {
     /// Output only. Base level operating system information for the VM.
     #[prost(message, optional, tag = "1")]
     pub os_info: ::core::option::Option<inventory::OsInfo>,
-    /// Output only. Inventory items related to the VM keyed by an opaque unique
-    /// identifier for each inventory item. The identifier is unique to each
-    /// distinct and addressable inventory item and will change, when there is a
-    /// new package version.
+    /// Output only. Inventory items related to the VM keyed by an opaque unique identifier for
+    /// each inventory item. The identifier is unique to each distinct and
+    /// addressable inventory item and will change, when there is a new package
+    /// version.
     #[prost(map = "string, message", tag = "2")]
     pub items: ::std::collections::HashMap<::prost::alloc::string::String, inventory::Item>,
     /// Output only. Timestamp of the last reported inventory for the VM.
@@ -363,7 +363,10 @@ pub mod inventory {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SoftwarePackage {
         /// Information about the different types of software packages.
-        #[prost(oneof = "software_package::Details", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9")]
+        #[prost(
+            oneof = "software_package::Details",
+            tags = "1, 2, 3, 4, 5, 6, 7, 8, 9"
+        )]
         pub details: ::core::option::Option<software_package::Details>,
     }
     /// Nested message and enum types in `SoftwarePackage`.
@@ -515,12 +518,9 @@ pub mod inventory {
         #[prost(message, optional, tag = "5")]
         pub install_time: ::core::option::Option<::prost_types::Timestamp>,
     }
-    /// Contains information about a Windows application as retrieved from the
-    /// Windows Registry. For more information about these fields, see
-    ///
-    /// [Windows Installer Properties for the Uninstall
-    /// Registry](<https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key>){:
-    /// class="external" }
+    /// Contains information about a Windows application that is retrieved from the
+    /// Windows Registry. For more information about these fields, see:
+    /// <https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WindowsApplication {
         /// The name of the application or product.
@@ -566,11 +566,9 @@ pub struct GetInventoryRequest {
 pub struct ListInventoriesRequest {
     /// Required. The parent resource name.
     ///
-    /// Format: `projects/{project}/locations/{location}/instances/{instance}`
+    /// Format: `projects/{project}/locations/{location}/instances/-`
     ///
-    /// For `{project}`, either `project-number` or `project-id` can be
-    /// provided. For `{instance}`, only hyphen or dash character is supported to
-    /// list inventories across VMs.
+    /// For `{project}`, either `project-number` or `project-id` can be provided.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Inventory view indicating what information should be included in the
@@ -651,8 +649,7 @@ pub struct OsPolicy {
 }
 /// Nested message and enum types in `OSPolicy`.
 pub mod os_policy {
-    /// The `OSFilter` is used to specify the OS filtering criteria for the
-    /// resource group.
+    /// Filtering criteria to select VMs based on OS details.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct OsFilter {
         /// This should match OS short name emitted by the OS inventory agent.
@@ -664,6 +661,22 @@ pub mod os_policy {
         /// Prefix matches are supported if asterisk(*) is provided as the
         /// last character. For example, to match all versions with a major
         /// version of `7`, specify the following value for this field `7.*`
+        #[prost(string, tag = "2")]
+        pub os_version: ::prost::alloc::string::String,
+    }
+    /// Filtering criteria to select VMs based on inventory details.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InventoryFilter {
+        /// Required. The OS short name
+        #[prost(string, tag = "1")]
+        pub os_short_name: ::prost::alloc::string::String,
+        /// The OS version
+        ///
+        /// Prefix matches are supported if asterisk(*) is provided as the
+        /// last character. For example, to match all versions with a major
+        /// version of `7`, specify the following value for this field `7.*`
+        ///
+        /// An empty string matches all OS versions.
         #[prost(string, tag = "2")]
         pub os_version: ::prost::alloc::string::String,
     }
@@ -751,7 +764,10 @@ pub mod os_policy {
             #[prost(enumeration = "package_resource::DesiredState", tag = "1")]
             pub desired_state: i32,
             /// A system package.
-            #[prost(oneof = "package_resource::SystemPackage", tags = "2, 3, 4, 5, 6, 7, 8")]
+            #[prost(
+                oneof = "package_resource::SystemPackage",
+                tags = "2, 3, 4, 5, 6, 7, 8"
+            )]
             pub system_package: ::core::option::Option<package_resource::SystemPackage>,
         }
         /// Nested message and enum types in `PackageResource`.
@@ -1061,18 +1077,18 @@ pub mod os_policy {
                 )]
                 #[repr(i32)]
                 pub enum Interpreter {
-                    /// Defaults to NONE.
+                    /// Invalid value, the request will return validation error.
                     Unspecified = 0,
-                    /// If no interpreter is specified the
-                    /// source will be executed directly, which will likely only
-                    /// succeed for executables and scripts with shebang lines.
-                    /// [Wikipedia
-                    /// shebang](<https://en.wikipedia.org/wiki/Shebang_(Unix>)).
+                    /// If an interpreter is not specified, the
+                    /// source is executed directly. This execution, without an
+                    /// interpreter, only succeeds for executables and scripts that have <a
+                    /// href="<https://en.wikipedia.org/wiki/Shebang_(Unix>)"
+                    /// class="external">shebang lines</a>.
                     None = 1,
-                    /// Indicates that the script will be run with /bin/sh on Linux and
-                    /// cmd.exe on windows.
+                    /// Indicates that the script runs with `/bin/sh` on Linux and
+                    /// `cmd.exe` on Windows.
                     Shell = 2,
-                    /// Indicates that the script will be run with powershell.
+                    /// Indicates that the script runs with PowerShell.
                     Powershell = 3,
                 }
                 /// What to execute.
@@ -1173,9 +1189,26 @@ pub mod os_policy {
     /// within the resource group.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ResourceGroup {
+        /// Deprecated. Use the `inventory_filters` field instead.
         /// Used to specify the OS filter for a resource group
+        #[deprecated]
         #[prost(message, optional, tag = "1")]
         pub os_filter: ::core::option::Option<OsFilter>,
+        /// List of inventory filters for the resource group.
+        ///
+        /// The resources in this resource group are applied to the target VM if it
+        /// satisfies at least one of the following inventory filters.
+        ///
+        /// For example, to apply this resource group to VMs running either `RHEL` or
+        /// `CentOS` operating systems, specify 2 items for the list with following
+        /// values:
+        /// inventory_filters\[0\].os_short_name='rhel' and
+        /// inventory_filters\[1\].os_short_name='centos'
+        ///
+        /// If the list is empty, this resource group will be applied to the target
+        /// VM unconditionally.
+        #[prost(message, repeated, tag = "3")]
+        pub inventory_filters: ::prost::alloc::vec::Vec<InventoryFilter>,
         /// Required. List of resources configured for this resource group.
         /// The resources are executed in the exact order specified here.
         #[prost(message, repeated, tag = "2")]
@@ -1194,6 +1227,283 @@ pub mod os_policy {
         /// This mode checks if the configuration resources in the policy are in
         /// their desired state, and if not, enforces the desired state.
         Enforcement = 2,
+    }
+}
+/// Get a report of the OS policy assignment for a VM instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetOsPolicyAssignmentReportRequest {
+    /// Required. API resource name for OS policy assignment report.
+    ///
+    /// Format:
+    /// `/projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}/report`
+    ///
+    /// For `{project}`, either `project-number` or `project-id` can be provided.
+    /// For `{instance_id}`, either Compute Engine `instance-id` or `instance-name`
+    /// can be provided.
+    /// For `{assignment_id}`, the OSPolicyAssignment id must be provided.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// List the OS policy assignment reports for VM instances.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListOsPolicyAssignmentReportsRequest {
+    /// Required. The parent resource name.
+    ///
+    /// Format:
+    /// `projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/{assignment}/reports`
+    ///
+    /// For `{project}`, either `project-number` or `project-id` can be provided.
+    /// For `{instance}`, either `instance-name`, `instance-id`, or `-` can be
+    /// provided. If '-' is provided, the response will include
+    /// OSPolicyAssignmentReports for all instances in the project/location.
+    /// For `{assignment}`, either `assignment-id` or `-` can be provided. If '-'
+    /// is provided, the response will include OSPolicyAssignmentReports for all
+    /// OSPolicyAssignments in the project/location.
+    /// Either {instance} or {assignment} must be `-`.
+    ///
+    /// For example:
+    /// `projects/{project}/locations/{location}/instances/{instance}/osPolicyAssignments/-/reports`
+    ///  returns all reports for the instance
+    /// `projects/{project}/locations/{location}/instances/-/osPolicyAssignments/{assignment-id}/reports`
+    ///  returns all the reports for the given assignment across all instances.
+    /// `projects/{project}/locations/{location}/instances/-/osPolicyAssignments/-/reports`
+    ///  returns all the reports for all assignments across all instances.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of results to return.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// If provided, this field specifies the criteria that must be met by the
+    /// `OSPolicyAssignmentReport` API resource that is included in the response.
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+    /// A pagination token returned from a previous call to the
+    /// `ListOSPolicyAssignmentReports` method that indicates where this listing
+    /// should continue from.
+    #[prost(string, tag = "4")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// A response message for listing OS Policy assignment reports including the
+/// page of results and page token.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListOsPolicyAssignmentReportsResponse {
+    /// List of OS policy assignment reports.
+    #[prost(message, repeated, tag = "1")]
+    pub os_policy_assignment_reports: ::prost::alloc::vec::Vec<OsPolicyAssignmentReport>,
+    /// The pagination token to retrieve the next page of OS policy assignment
+    /// report objects.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// A report of the OS policy assignment status for a given instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OsPolicyAssignmentReport {
+    /// The `OSPolicyAssignmentReport` API resource name.
+    ///
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/instances/{instance_id}/osPolicyAssignments/{os_policy_assignment_id}/report`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The Compute Engine VM instance name.
+    #[prost(string, tag = "2")]
+    pub instance: ::prost::alloc::string::String,
+    /// Reference to the `OSPolicyAssignment` API resource that the `OSPolicy`
+    /// belongs to.
+    ///
+    /// Format:
+    /// `projects/{project_number}/locations/{location}/osPolicyAssignments/{os_policy_assignment_id@revision_id}`
+    #[prost(string, tag = "3")]
+    pub os_policy_assignment: ::prost::alloc::string::String,
+    /// Compliance data for each `OSPolicy` that is applied to the VM.
+    #[prost(message, repeated, tag = "4")]
+    pub os_policy_compliances:
+        ::prost::alloc::vec::Vec<os_policy_assignment_report::OsPolicyCompliance>,
+    /// Timestamp for when the report was last generated.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Unique identifier of the last attempted run to apply the OS policies
+    /// associated with this assignment on the VM.
+    ///
+    /// This ID is logged by the OS Config agent while applying the OS
+    /// policies associated with this assignment on the VM.
+    /// NOTE: If the service is unable to successfully connect to the agent for
+    /// this run, then this id will not be available in the agent logs.
+    #[prost(string, tag = "6")]
+    pub last_run_id: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `OSPolicyAssignmentReport`.
+pub mod os_policy_assignment_report {
+    /// Compliance data for an OS policy
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct OsPolicyCompliance {
+        /// The OS policy id
+        #[prost(string, tag = "1")]
+        pub os_policy_id: ::prost::alloc::string::String,
+        /// The compliance state of the OS policy.
+        #[prost(enumeration = "os_policy_compliance::ComplianceState", tag = "2")]
+        pub compliance_state: i32,
+        /// The reason for the OS policy to be in an unknown compliance state.
+        /// This field is always populated when `compliance_state` is `UNKNOWN`.
+        ///
+        /// If populated, the field can contain one of the following values:
+        ///
+        /// * `vm-not-running`: The VM was not running.
+        /// * `os-policies-not-supported-by-agent`: The version of the OS Config
+        /// agent running on the VM does not support running OS policies.
+        /// * `no-agent-detected`: The OS Config agent is not detected for the VM.
+        /// * `resource-execution-errors`: The OS Config agent encountered errors
+        /// while executing one or more resources in the policy. See
+        /// `os_policy_resource_compliances` for details.
+        /// * `task-timeout`: The task sent to the agent to apply the policy timed
+        /// out.
+        /// * `unexpected-agent-state`: The OS Config agent did not report the final
+        /// status of the task that attempted to apply the policy. Instead, the agent
+        /// unexpectedly started working on a different task. This mostly happens
+        /// when the agent or VM unexpectedly restarts while applying OS policies.
+        /// * `internal-service-errors`: Internal service errors were encountered
+        /// while attempting to apply the policy.
+        #[prost(string, tag = "3")]
+        pub compliance_state_reason: ::prost::alloc::string::String,
+        /// Compliance data for each resource within the policy that is applied to
+        /// the VM.
+        #[prost(message, repeated, tag = "4")]
+        pub os_policy_resource_compliances:
+            ::prost::alloc::vec::Vec<os_policy_compliance::OsPolicyResourceCompliance>,
+    }
+    /// Nested message and enum types in `OSPolicyCompliance`.
+    pub mod os_policy_compliance {
+        /// Compliance data for an OS policy resource.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct OsPolicyResourceCompliance {
+            /// The ID of the OS policy resource.
+            #[prost(string, tag = "1")]
+            pub os_policy_resource_id: ::prost::alloc::string::String,
+            /// Ordered list of configuration completed by the agent for the OS policy
+            /// resource.
+            #[prost(message, repeated, tag = "2")]
+            pub config_steps:
+                ::prost::alloc::vec::Vec<os_policy_resource_compliance::OsPolicyResourceConfigStep>,
+            /// The compliance state of the resource.
+            #[prost(
+                enumeration = "os_policy_resource_compliance::ComplianceState",
+                tag = "3"
+            )]
+            pub compliance_state: i32,
+            /// A reason for the resource to be in the given compliance state.
+            /// This field is always populated when `compliance_state` is `UNKNOWN`.
+            ///
+            /// The following values are supported when `compliance_state == UNKNOWN`
+            ///
+            /// * `execution-errors`: Errors were encountered by the agent while
+            /// executing the resource and the compliance state couldn't be
+            /// determined.
+            /// * `execution-skipped-by-agent`: Resource execution was skipped by the
+            /// agent because errors were encountered while executing prior resources
+            /// in the OS policy.
+            /// * `os-policy-execution-attempt-failed`: The execution of the OS policy
+            /// containing this resource failed and the compliance state couldn't be
+            /// determined.
+            #[prost(string, tag = "4")]
+            pub compliance_state_reason: ::prost::alloc::string::String,
+            /// Resource specific output.
+            #[prost(oneof = "os_policy_resource_compliance::Output", tags = "5")]
+            pub output: ::core::option::Option<os_policy_resource_compliance::Output>,
+        }
+        /// Nested message and enum types in `OSPolicyResourceCompliance`.
+        pub mod os_policy_resource_compliance {
+            /// Step performed by the OS Config agent for configuring an
+            /// `OSPolicy` resource to its desired state.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct OsPolicyResourceConfigStep {
+                /// Configuration step type.
+                #[prost(enumeration = "os_policy_resource_config_step::Type", tag = "1")]
+                pub r#type: i32,
+                /// An error message recorded during the execution of this step.
+                /// Only populated if errors were encountered during this step execution.
+                #[prost(string, tag = "2")]
+                pub error_message: ::prost::alloc::string::String,
+            }
+            /// Nested message and enum types in `OSPolicyResourceConfigStep`.
+            pub mod os_policy_resource_config_step {
+                /// Supported configuration step types
+                #[derive(
+                    Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+                )]
+                #[repr(i32)]
+                pub enum Type {
+                    /// Default value. This value is unused.
+                    Unspecified = 0,
+                    /// Checks for resource conflicts such as schema errors.
+                    Validation = 1,
+                    /// Checks the current status of the desired state for a resource.
+                    DesiredStateCheck = 2,
+                    /// Enforces the desired state for a resource that is not in desired
+                    /// state.
+                    DesiredStateEnforcement = 3,
+                    /// Re-checks the status of the desired state. This check is done
+                    /// for a resource after the enforcement of all OS policies.
+                    ///
+                    /// This step is used to determine the final desired state status for
+                    /// the resource. It accounts for any resources that might have drifted
+                    /// from their desired state due to side effects from executing other
+                    /// resources.
+                    DesiredStateCheckPostEnforcement = 4,
+                }
+            }
+            /// ExecResource specific output.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct ExecResourceOutput {
+                /// Output from enforcement phase output file (if run).
+                /// Output size is limited to 100K bytes.
+                #[prost(bytes = "vec", tag = "2")]
+                pub enforcement_output: ::prost::alloc::vec::Vec<u8>,
+            }
+            /// Possible compliance states for a resource.
+            #[derive(
+                Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+            )]
+            #[repr(i32)]
+            pub enum ComplianceState {
+                /// The resource is in an unknown compliance state.
+                ///
+                /// To get more details about why the policy is in this state, review
+                /// the output of the `compliance_state_reason` field.
+                Unknown = 0,
+                /// Resource is compliant.
+                Compliant = 1,
+                /// Resource is non-compliant.
+                NonCompliant = 2,
+            }
+            /// Resource specific output.
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Output {
+                /// ExecResource specific output.
+                #[prost(message, tag = "5")]
+                ExecResourceOutput(ExecResourceOutput),
+            }
+        }
+        /// Possible compliance states for an os policy.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum ComplianceState {
+            /// The policy is in an unknown compliance state.
+            ///
+            /// Refer to the field `compliance_state_reason` to learn the exact reason
+            /// for the policy to be in this compliance state.
+            Unknown = 0,
+            /// Policy is compliant.
+            ///
+            /// The policy is compliant if all the underlying resources are also
+            /// compliant.
+            Compliant = 1,
+            /// Policy is non-compliant.
+            ///
+            /// The policy is non-compliant if one or more underlying resources are
+            /// non-compliant.
+            NonCompliant = 2,
+        }
     }
 }
 /// Message encapsulating a value that can be either absolute ("fixed") or
@@ -1267,6 +1577,10 @@ pub struct OsPolicyAssignment {
     /// Output only. The timestamp that the revision was created.
     #[prost(message, optional, tag = "7")]
     pub revision_create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The etag for this OS policy assignment.
+    /// If this is provided on update, it must match the server's etag.
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
     /// Output only. OS policy assignment rollout state
     #[prost(enumeration = "os_policy_assignment::RolloutState", tag = "9")]
     pub rollout_state: i32,
@@ -1312,15 +1626,20 @@ pub mod os_policy_assignment {
             ::prost::alloc::string::String,
         >,
     }
-    /// Message to represent the filters to select VMs for an assignment
+    /// Filters to select target VMs for an assignment.
+    ///
+    /// If more than one filter criteria is specified below, a VM will be selected
+    /// if and only if it satisfies all of them.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstanceFilter {
         /// Target all VMs in the project. If true, no other criteria is
         /// permitted.
         #[prost(bool, tag = "1")]
         pub all: bool,
-        /// A VM is included if it's OS short name matches with any of the
+        /// Deprecated. Use the `inventories` field instead.
+        /// A VM is selected if it's OS short name matches with any of the
         /// values provided in this list.
+        #[deprecated]
         #[prost(string, repeated, tag = "2")]
         pub os_short_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// List of label sets used for VM inclusion.
@@ -1333,12 +1652,33 @@ pub mod os_policy_assignment {
         ///
         /// If the list has more than one label set, the VM is excluded if any
         /// of the label sets are applicable for the VM.
-        ///
-        /// This filter is applied last in the filtering chain and therefore a
-        /// VM is guaranteed to be excluded if it satisfies one of the below
-        /// label sets.
         #[prost(message, repeated, tag = "4")]
         pub exclusion_labels: ::prost::alloc::vec::Vec<LabelSet>,
+        /// List of inventories to select VMs.
+        ///
+        /// A VM is selected if its inventory data matches at least one of the
+        /// following inventories.
+        #[prost(message, repeated, tag = "5")]
+        pub inventories: ::prost::alloc::vec::Vec<instance_filter::Inventory>,
+    }
+    /// Nested message and enum types in `InstanceFilter`.
+    pub mod instance_filter {
+        /// VM inventory details.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Inventory {
+            /// Required. The OS short name
+            #[prost(string, tag = "1")]
+            pub os_short_name: ::prost::alloc::string::String,
+            /// The OS version
+            ///
+            /// Prefix matches are supported if asterisk(*) is provided as the
+            /// last character. For example, to match all versions with a major
+            /// version of `7`, specify the following value for this field `7.*`
+            ///
+            /// An empty string matches all OS versions.
+            #[prost(string, tag = "2")]
+            pub os_version: ::prost::alloc::string::String,
+        }
     }
     /// Message to configure the rollout at the zonal level for the OS policy
     /// assignment.
@@ -1383,10 +1723,16 @@ pub struct OsPolicyAssignmentOperationMetadata {
     #[prost(string, tag = "1")]
     pub os_policy_assignment: ::prost::alloc::string::String,
     /// The OS policy assignment API method.
-    #[prost(enumeration = "os_policy_assignment_operation_metadata::ApiMethod", tag = "2")]
+    #[prost(
+        enumeration = "os_policy_assignment_operation_metadata::ApiMethod",
+        tag = "2"
+    )]
     pub api_method: i32,
     /// State of the rollout
-    #[prost(enumeration = "os_policy_assignment_operation_metadata::RolloutState", tag = "3")]
+    #[prost(
+        enumeration = "os_policy_assignment_operation_metadata::RolloutState",
+        tag = "3"
+    )]
     pub rollout_state: i32,
     /// Rollout start time
     #[prost(message, optional, tag = "4")]
@@ -1541,8 +1887,8 @@ pub struct VulnerabilityReport {
     /// Output only. List of vulnerabilities affecting the VM.
     #[prost(message, repeated, tag = "2")]
     pub vulnerabilities: ::prost::alloc::vec::Vec<vulnerability_report::Vulnerability>,
-    /// Output only. The timestamp for when the last vulnerability report was
-    /// generated for the VM.
+    /// Output only. The timestamp for when the last vulnerability report was generated for the
+    /// VM.
     #[prost(message, optional, tag = "3")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -1560,6 +1906,7 @@ pub mod vulnerability_report {
         /// If the vulnerability report was not updated after the VM inventory
         /// update, these values might not display in VM inventory. For some distros,
         /// this field may be empty.
+        #[deprecated]
         #[prost(string, repeated, tag = "2")]
         pub installed_inventory_item_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// Corresponds to the `AVAILABLE_PACKAGE` inventory item on the VM.
@@ -1568,6 +1915,7 @@ pub mod vulnerability_report {
         /// available fix, the field is empty. The `inventory_item` value specifies
         /// the latest `SoftwarePackage` available to the VM that fixes the
         /// vulnerability.
+        #[deprecated]
         #[prost(string, repeated, tag = "3")]
         pub available_inventory_item_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         /// The timestamp for when the vulnerability was first detected.
@@ -1576,6 +1924,9 @@ pub mod vulnerability_report {
         /// The timestamp for when the vulnerability was last modified.
         #[prost(message, optional, tag = "5")]
         pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// List of items affected by the vulnerability.
+        #[prost(message, repeated, tag = "6")]
+        pub items: ::prost::alloc::vec::Vec<vulnerability::Item>,
     }
     /// Nested message and enum types in `Vulnerability`.
     pub mod vulnerability {
@@ -1613,7 +1964,37 @@ pub mod vulnerability_report {
                 /// The url of the reference.
                 #[prost(string, tag = "1")]
                 pub url: ::prost::alloc::string::String,
+                /// The source of the reference e.g. NVD.
+                #[prost(string, tag = "2")]
+                pub source: ::prost::alloc::string::String,
             }
+        }
+        /// OS inventory item that is affected by a vulnerability or fixed as a
+        /// result of a vulnerability.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct Item {
+            /// Corresponds to the `INSTALLED_PACKAGE` inventory item on the VM.
+            /// This field displays the inventory items affected by this vulnerability.
+            /// If the vulnerability report was not updated after the VM inventory
+            /// update, these values might not display in VM inventory. For some
+            /// operating systems, this field might be empty.
+            #[prost(string, tag = "1")]
+            pub installed_inventory_item_id: ::prost::alloc::string::String,
+            /// Corresponds to the `AVAILABLE_PACKAGE` inventory item on the VM.
+            /// If the vulnerability report was not updated after the VM inventory
+            /// update, these values might not display in VM inventory. If there is no
+            /// available fix, the field is empty. The `inventory_item` value specifies
+            /// the latest `SoftwarePackage` available to the VM that fixes the
+            /// vulnerability.
+            #[prost(string, tag = "2")]
+            pub available_inventory_item_id: ::prost::alloc::string::String,
+            /// The recommended [CPE URI](<https://cpe.mitre.org/specification/>) update
+            /// that contains a fix for this vulnerability.
+            #[prost(string, tag = "3")]
+            pub fixed_cpe_uri: ::prost::alloc::string::String,
+            /// The upstream OS patch, packages or KB that fixes the vulnerability.
+            #[prost(string, tag = "4")]
+            pub upstream_fix: ::prost::alloc::string::String,
         }
     }
 }
@@ -1637,11 +2018,9 @@ pub struct GetVulnerabilityReportRequest {
 pub struct ListVulnerabilityReportsRequest {
     /// Required. The parent resource name.
     ///
-    /// Format: `projects/{project}/locations/{location}/instances/{instance}`
+    /// Format: `projects/{project}/locations/{location}/instances/-`
     ///
     /// For `{project}`, either `project-number` or `project-id` can be provided.
-    /// For `{instance}`, only `-` character is supported to list vulnerability
-    /// reports across VMs.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of results to return.
@@ -2054,6 +2433,43 @@ pub mod os_config_zonal_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.osconfig.v1alpha.OsConfigZonalService/ListInstanceOSPoliciesCompliances") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Get the OS policy asssignment report for the specified Compute Engine VM"]
+        #[doc = " instance."]
+        pub async fn get_os_policy_assignment_report(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetOsPolicyAssignmentReportRequest>,
+        ) -> Result<tonic::Response<super::OsPolicyAssignmentReport>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.v1alpha.OsConfigZonalService/GetOSPolicyAssignmentReport",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " List OS policy asssignment reports for all Compute Engine VM instances in"]
+        #[doc = " the specified zone."]
+        pub async fn list_os_policy_assignment_reports(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListOsPolicyAssignmentReportsRequest>,
+        ) -> Result<tonic::Response<super::ListOsPolicyAssignmentReportsResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.v1alpha.OsConfigZonalService/ListOSPolicyAssignmentReports",
+            );
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Get inventory data for the specified VM instance. If the VM has no"]

@@ -112,7 +112,7 @@ pub enum Product {
 }
 /// The task configuration details. This is not the implementation of Task.
 /// There might be multiple TaskConfigs for the same Task.
-/// Next available id: 12
+/// (-- Next available id: 12 --)
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TaskConfig {
     /// Optional. The name for the task.
@@ -373,7 +373,10 @@ pub mod execution_info {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct EventExecutionDetails {
     /// The execution state of this event.
-    #[prost(enumeration = "event_execution_details::EventExecutionState", tag = "1")]
+    #[prost(
+        enumeration = "event_execution_details::EventExecutionState",
+        tag = "1"
+    )]
     pub event_execution_state: i32,
     /// After snapshot migration, this field will no longer be populated, but old
     /// execution snapshots will still be accessible.

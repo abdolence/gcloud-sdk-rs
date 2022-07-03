@@ -52,7 +52,10 @@ pub struct BuildEvent {
     /// //////////////////////////////////////////////////////////////////////////
     /// Events that indicate a state change of a build request in the build
     /// queue.
-    #[prost(oneof = "build_event::Event", tags = "51, 52, 53, 55, 56, 59, 60, 61, 62")]
+    #[prost(
+        oneof = "build_event::Event",
+        tags = "51, 52, 53, 55, 56, 59, 60, 61, 62"
+    )]
     pub event: ::core::option::Option<build_event::Event>,
 }
 /// Nested message and enum types in `BuildEvent`.
@@ -237,7 +240,10 @@ pub enum ConsoleOutputStream {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PublishLifecycleEventRequest {
     /// The interactivity of this build.
-    #[prost(enumeration = "publish_lifecycle_event_request::ServiceLevel", tag = "1")]
+    #[prost(
+        enumeration = "publish_lifecycle_event_request::ServiceLevel",
+        tag = "1"
+    )]
     pub service_level: i32,
     /// Required. The lifecycle build event. If this is a build tool event, the RPC
     /// will fail with INVALID_REQUEST.
@@ -261,6 +267,14 @@ pub struct PublishLifecycleEventRequest {
     /// PublishLifecycleEvent (containing a BuildEnqueued message).
     #[prost(string, tag = "6")]
     pub project_id: ::prost::alloc::string::String,
+    /// Whether to require a previously received matching parent lifecycle event
+    /// for the current request's event before continuing processing.
+    /// - InvocationAttemptStarted and BuildFinished events require a BuildEnqueued
+    ///   parent event.
+    /// - InvocationAttemptFinished events require an InvocationAttemptStarted
+    ///   parent event.
+    #[prost(bool, tag = "7")]
+    pub check_preceding_lifecycle_events_present: bool,
 }
 /// Nested message and enum types in `PublishLifecycleEventRequest`.
 pub mod publish_lifecycle_event_request {
@@ -322,6 +336,12 @@ pub struct PublishBuildToolEventStreamRequest {
     /// PublishLifecycleEvent (containing a BuildEnqueued message).
     #[prost(string, tag = "6")]
     pub project_id: ::prost::alloc::string::String,
+    /// Whether to require a previously received matching InvocationAttemptStarted
+    /// event before continuing event processing for the event in the current
+    /// request. BES only performs this check for events with sequence_number 1
+    /// i.e. the first event in the stream.
+    #[prost(bool, tag = "7")]
+    pub check_preceding_lifecycle_events_present: bool,
 }
 #[doc = r" Generated client implementations."]
 pub mod publish_build_event_client {
@@ -434,7 +454,9 @@ pub mod publish_build_event_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.devtools.build.v1.PublishBuildEvent/PublishBuildToolEventStream",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }

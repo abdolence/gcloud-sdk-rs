@@ -126,7 +126,10 @@ pub mod inventory {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SoftwarePackage {
         /// Information about the different types of software packages.
-        #[prost(oneof = "software_package::Details", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9")]
+        #[prost(
+            oneof = "software_package::Details",
+            tags = "1, 2, 3, 4, 5, 6, 7, 8, 9"
+        )]
         pub details: ::core::option::Option<software_package::Details>,
     }
     /// Nested message and enum types in `SoftwarePackage`.
@@ -278,12 +281,9 @@ pub mod inventory {
         #[prost(message, optional, tag = "5")]
         pub install_time: ::core::option::Option<::prost_types::Timestamp>,
     }
-    /// Contains information about a Windows application as retrieved from the
-    /// Windows Registry. For more information about these fields, see
-    ///
-    /// [Windows Installer Properties for the Uninstall
-    /// Registry](<https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key>){:
-    /// class="external" }
+    /// Contains information about a Windows application that is retrieved from the
+    /// Windows Registry. For more information about these fields, see:
+    /// <https://docs.microsoft.com/en-us/windows/win32/msi/uninstall-registry-key>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct WindowsApplication {
         /// The name of the application or product.
@@ -512,7 +512,10 @@ pub mod os_policy {
             #[prost(enumeration = "package_resource::DesiredState", tag = "1")]
             pub desired_state: i32,
             /// A system package.
-            #[prost(oneof = "package_resource::SystemPackage", tags = "2, 3, 4, 5, 6, 7, 8")]
+            #[prost(
+                oneof = "package_resource::SystemPackage",
+                tags = "2, 3, 4, 5, 6, 7, 8"
+            )]
             pub system_package: ::core::option::Option<package_resource::SystemPackage>,
         }
         /// Nested message and enum types in `PackageResource`.
@@ -822,7 +825,7 @@ pub mod os_policy {
                 )]
                 #[repr(i32)]
                 pub enum Interpreter {
-                    /// Defaults to NONE.
+                    /// Invalid value, the request will return validation error.
                     Unspecified = 0,
                     /// If an interpreter is not specified, the
                     /// source is executed directly. This execution, without an
@@ -1124,7 +1127,10 @@ pub mod os_policy_assignment_report {
             pub config_steps:
                 ::prost::alloc::vec::Vec<os_policy_resource_compliance::OsPolicyResourceConfigStep>,
             /// The compliance state of the resource.
-            #[prost(enumeration = "os_policy_resource_compliance::ComplianceState", tag = "3")]
+            #[prost(
+                enumeration = "os_policy_resource_compliance::ComplianceState",
+                tag = "3"
+            )]
             pub compliance_state: i32,
             /// A reason for the resource to be in the given compliance state.
             /// This field is always populated when `compliance_state` is `UNKNOWN`.
@@ -1455,10 +1461,16 @@ pub struct OsPolicyAssignmentOperationMetadata {
     #[prost(string, tag = "1")]
     pub os_policy_assignment: ::prost::alloc::string::String,
     /// The OS policy assignment API method.
-    #[prost(enumeration = "os_policy_assignment_operation_metadata::ApiMethod", tag = "2")]
+    #[prost(
+        enumeration = "os_policy_assignment_operation_metadata::ApiMethod",
+        tag = "2"
+    )]
     pub api_method: i32,
     /// State of the rollout
-    #[prost(enumeration = "os_policy_assignment_operation_metadata::RolloutState", tag = "3")]
+    #[prost(
+        enumeration = "os_policy_assignment_operation_metadata::RolloutState",
+        tag = "3"
+    )]
     pub rollout_state: i32,
     /// Rollout start time
     #[prost(message, optional, tag = "4")]
@@ -1895,6 +1907,9 @@ pub struct PatchConfig {
     /// The `ExecStep` to run after the patch update.
     #[prost(message, optional, tag = "9")]
     pub post_step: ::core::option::Option<ExecStep>,
+    /// Allows the patch job to run on Managed instance groups (MIGs).
+    #[prost(bool, tag = "10")]
+    pub mig_instances_allowed: bool,
 }
 /// Nested message and enum types in `PatchConfig`.
 pub mod patch_config {
@@ -2058,7 +2073,11 @@ pub struct ZypperSettings {
 pub struct WindowsUpdateSettings {
     /// Only apply updates of these windows update classifications. If empty, all
     /// updates are applied.
-    #[prost(enumeration = "windows_update_settings::Classification", repeated, tag = "1")]
+    #[prost(
+        enumeration = "windows_update_settings::Classification",
+        repeated,
+        tag = "1"
+    )]
     pub classifications: ::prost::alloc::vec::Vec<i32>,
     /// List of KBs to exclude from update.
     #[prost(string, repeated, tag = "2")]
@@ -2331,12 +2350,27 @@ pub struct PatchDeployment {
     /// Optional. Rollout strategy of the patch job.
     #[prost(message, optional, tag = "11")]
     pub rollout: ::core::option::Option<PatchRollout>,
+    /// Output only. Current state of the patch deployment.
+    #[prost(enumeration = "patch_deployment::State", tag = "12")]
+    pub state: i32,
     /// Schedule for the patch.
     #[prost(oneof = "patch_deployment::Schedule", tags = "6, 7")]
     pub schedule: ::core::option::Option<patch_deployment::Schedule>,
 }
 /// Nested message and enum types in `PatchDeployment`.
 pub mod patch_deployment {
+    /// Represents state of patch peployment.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The default value. This value is used if the state is omitted.
+        Unspecified = 0,
+        /// Active value means that patch deployment generates Patch Jobs.
+        Active = 1,
+        /// Paused value means that patch deployment does not generate
+        /// Patch jobs. Requires user action to move in and out from this state.
+        Paused = 2,
+    }
     /// Schedule for the patch.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schedule {
@@ -2396,14 +2430,14 @@ pub mod recurring_schedule {
     pub enum Frequency {
         /// Invalid. A frequency must be specified.
         Unspecified = 0,
-        /// Indicates that the frequency should be expressed in terms of
-        /// weeks.
+        /// Indicates that the frequency of recurrence should be expressed in terms
+        /// of weeks.
         Weekly = 1,
-        /// Indicates that the frequency should be expressed in terms of
-        /// months.
+        /// Indicates that the frequency of recurrence should be expressed in terms
+        /// of months.
         Monthly = 2,
-        /// Indicates that the frequency should be expressed in terms of
-        /// days.
+        /// Indicates that the frequency of recurrence should be expressed in terms
+        /// of days.
         Daily = 3,
     }
     /// Configurations for this recurring schedule.
@@ -2459,6 +2493,15 @@ pub struct WeekDayOfMonth {
     /// Required. A day of the week.
     #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "2")]
     pub day_of_week: i32,
+    /// Optional. Represents the number of days before or after the given week day
+    /// of month that the patch deployment is scheduled for. For example if
+    /// `week_ordinal` and `day_of_week` values point to the second day of the
+    /// month and this `day_offset` value is set to `3`, the patch deployment takes
+    /// place three days after the second Tuesday of the month. If this value is
+    /// negative, for example -5, the patches are deployed five days before before
+    /// the second Tuesday of the month. Allowed values are in range [-30, 30].
+    #[prost(int32, tag = "3")]
+    pub day_offset: i32,
 }
 /// A request message for creating a patch deployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2518,6 +2561,33 @@ pub struct ListPatchDeploymentsResponse {
 /// A request message for deleting a patch deployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePatchDeploymentRequest {
+    /// Required. The resource name of the patch deployment in the form
+    /// `projects/*/patchDeployments/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request message for updating a patch deployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePatchDeploymentRequest {
+    /// Required. The patch deployment to Update.
+    #[prost(message, optional, tag = "1")]
+    pub patch_deployment: ::core::option::Option<PatchDeployment>,
+    /// Optional. Field mask that controls which fields of the patch deployment
+    /// should be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// A request message for pausing a patch deployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PausePatchDeploymentRequest {
+    /// Required. The resource name of the patch deployment in the form
+    /// `projects/*/patchDeployments/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request message for resuming a patch deployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResumePatchDeploymentRequest {
     /// Required. The resource name of the patch deployment in the form
     /// `projects/*/patchDeployments/*`.
     #[prost(string, tag = "1")]
@@ -2729,6 +2799,59 @@ pub mod os_config_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1.OsConfigService/DeletePatchDeployment",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Update an OS Config patch deployment."]
+        pub async fn update_patch_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePatchDeploymentRequest>,
+        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.v1.OsConfigService/UpdatePatchDeployment",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Change state of patch deployment to \"PAUSED\"."]
+        #[doc = " Patch deployment in paused state doesn't generate patch jobs."]
+        pub async fn pause_patch_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PausePatchDeploymentRequest>,
+        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.v1.OsConfigService/PausePatchDeployment",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Change state of patch deployment back to \"ACTIVE\"."]
+        #[doc = " Patch deployment in active state continues to generate patch jobs."]
+        pub async fn resume_patch_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResumePatchDeploymentRequest>,
+        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.v1.OsConfigService/ResumePatchDeployment",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

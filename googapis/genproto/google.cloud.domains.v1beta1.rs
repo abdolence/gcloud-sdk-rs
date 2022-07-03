@@ -33,7 +33,12 @@ pub struct Registration {
     #[prost(enumeration = "registration::State", tag = "7")]
     pub state: i32,
     /// Output only. The set of issues with the `Registration` that require attention.
-    #[prost(enumeration = "registration::Issue", repeated, packed = "false", tag = "8")]
+    #[prost(
+        enumeration = "registration::Issue",
+        repeated,
+        packed = "false",
+        tag = "8"
+    )]
     pub issues: ::prost::alloc::vec::Vec<i32>,
     /// Set of labels associated with the `Registration`.
     #[prost(map = "string, string", tag = "9")]

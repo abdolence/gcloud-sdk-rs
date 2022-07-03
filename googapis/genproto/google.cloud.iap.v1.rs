@@ -1,3 +1,101 @@
+/// The request to ListTunnelDestGroups.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTunnelDestGroupsRequest {
+    /// Required. Google Cloud Project ID and location.
+    /// In the following format:
+    /// `projects/{project_number/id}/iap_tunnel/locations/{location}`.
+    /// A `-` can be used for the location to group across all locations.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of groups to return. The service might return fewer than
+    /// this value.
+    /// If unspecified, at most 100 groups are returned.
+    /// The maximum value is 1000; values above 1000 are coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListTunnelDestGroups`
+    /// call. Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to
+    /// `ListTunnelDestGroups` must match the call that provided the page
+    /// token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response from ListTunnelDestGroups.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTunnelDestGroupsResponse {
+    /// TunnelDestGroup existing in the project.
+    #[prost(message, repeated, tag = "1")]
+    pub tunnel_dest_groups: ::prost::alloc::vec::Vec<TunnelDestGroup>,
+    /// A token that you can send as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request to CreateTunnelDestGroup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateTunnelDestGroupRequest {
+    /// Required. Google Cloud Project ID and location.
+    /// In the following format:
+    /// `projects/{project_number/id}/iap_tunnel/locations/{location}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The TunnelDestGroup to create.
+    #[prost(message, optional, tag = "2")]
+    pub tunnel_dest_group: ::core::option::Option<TunnelDestGroup>,
+    /// Required. The ID to use for the TunnelDestGroup, which becomes the final component of
+    /// the resource name.
+    ///
+    /// This value must be 4-63 characters, and valid characters
+    /// are `\[a-z][0-9\]-`.
+    #[prost(string, tag = "3")]
+    pub tunnel_dest_group_id: ::prost::alloc::string::String,
+}
+/// The request to GetTunnelDestGroup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetTunnelDestGroupRequest {
+    /// Required. Name of the TunnelDestGroup to be fetched.
+    /// In the following format:
+    /// `projects/{project_number/id}/iap_tunnel/locations/{location}/destGroups/{dest_group}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to DeleteTunnelDestGroup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteTunnelDestGroupRequest {
+    /// Required. Name of the TunnelDestGroup to delete.
+    /// In the following format:
+    /// `projects/{project_number/id}/iap_tunnel/locations/{location}/destGroups/{dest_group}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to UpdateTunnelDestGroup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateTunnelDestGroupRequest {
+    /// Required. The new values for the TunnelDestGroup.
+    #[prost(message, optional, tag = "1")]
+    pub tunnel_dest_group: ::core::option::Option<TunnelDestGroup>,
+    /// A field mask that specifies which IAP settings to update.
+    /// If omitted, then all of the settings are updated. See
+    /// <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask>
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// A TunnelDestGroup.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TunnelDestGroup {
+    /// Required. Immutable. Identifier for the TunnelDestGroup. Must be unique within the
+    /// project.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// null List of CIDRs that this group applies to.
+    #[prost(string, repeated, tag = "2")]
+    pub cidrs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// null List of FQDNs that this group applies to.
+    #[prost(string, repeated, tag = "3")]
+    pub fqdns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// The request sent to GetIapSettings.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetIapSettingsRequest {
@@ -46,6 +144,9 @@ pub struct AccessSettings {
     /// Settings to configure IAP's OAuth behavior.
     #[prost(message, optional, tag = "3")]
     pub oauth_settings: ::core::option::Option<OAuthSettings>,
+    /// Settings to configure reauthentication policies in IAP.
+    #[prost(message, optional, tag = "6")]
+    pub reauth_settings: ::core::option::Option<ReauthSettings>,
 }
 /// Allows customers to configure tenant_id for GCIP instance per-app.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -84,6 +185,53 @@ pub struct OAuthSettings {
     /// since access behavior is managed by IAM policies.
     #[prost(message, optional, tag = "2")]
     pub login_hint: ::core::option::Option<::prost::alloc::string::String>,
+}
+/// Configuration for IAP reauthentication policies.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ReauthSettings {
+    /// Reauth method required by the policy.
+    #[prost(enumeration = "reauth_settings::Method", tag = "1")]
+    pub method: i32,
+    /// Reauth session lifetime, how long before a user has to reauthenticate
+    /// again.
+    #[prost(message, optional, tag = "2")]
+    pub max_age: ::core::option::Option<::prost_types::Duration>,
+    /// How IAP determines the effective policy in cases of hierarchial policies.
+    /// Policies are merged from higher in the hierarchy to lower in the hierarchy.
+    #[prost(enumeration = "reauth_settings::PolicyType", tag = "3")]
+    pub policy_type: i32,
+}
+/// Nested message and enum types in `ReauthSettings`.
+pub mod reauth_settings {
+    /// Types of reauthentication methods supported by IAP.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Method {
+        /// Reauthentication disabled.
+        Unspecified = 0,
+        /// Mimics the behavior as if the user had logged out and tried to log in
+        /// again. Users with 2SV (2-step verification) enabled see their 2SV
+        /// challenges if they did not opt to have their second factor responses
+        /// saved. Apps Core (GSuites) admins can configure settings to disable 2SV
+        /// cookies and require 2SV for all Apps Core users in their domains.
+        Login = 1,
+        /// User must type their password.
+        Password = 2,
+        /// User must use their secure key 2nd factor device.
+        SecureKey = 3,
+    }
+    /// Type of policy in the case of hierarchial policies.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PolicyType {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// This policy acts as a minimum to other policies, lower in the hierarchy.
+        /// Effective policy may only be the same or stricter.
+        Minimum = 1,
+        /// This policy acts as a default if no other reauth policy is set.
+        Default = 2,
+    }
 }
 /// Wrapper over application specific settings for IAP.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -416,6 +564,93 @@ pub mod identity_aware_proxy_admin_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Lists the existing TunnelDestGroups. To group across all locations, use a"]
+        #[doc = " `-` as the location ID. For example:"]
+        #[doc = " `/v1/projects/123/iap_tunnel/locations/-/destGroups`"]
+        pub async fn list_tunnel_dest_groups(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTunnelDestGroupsRequest>,
+        ) -> Result<tonic::Response<super::ListTunnelDestGroupsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/ListTunnelDestGroups",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a new TunnelDestGroup."]
+        pub async fn create_tunnel_dest_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateTunnelDestGroupRequest>,
+        ) -> Result<tonic::Response<super::TunnelDestGroup>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/CreateTunnelDestGroup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Retrieves an existing TunnelDestGroup."]
+        pub async fn get_tunnel_dest_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetTunnelDestGroupRequest>,
+        ) -> Result<tonic::Response<super::TunnelDestGroup>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/GetTunnelDestGroup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes a TunnelDestGroup."]
+        pub async fn delete_tunnel_dest_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteTunnelDestGroupRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/DeleteTunnelDestGroup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a TunnelDestGroup."]
+        pub async fn update_tunnel_dest_group(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateTunnelDestGroupRequest>,
+        ) -> Result<tonic::Response<super::TunnelDestGroup>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.iap.v1.IdentityAwareProxyAdminService/UpdateTunnelDestGroup",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
 }
 #[doc = r" Generated client implementations."]
@@ -489,11 +724,12 @@ pub mod identity_aware_proxy_o_auth_service_client {
         }
         #[doc = " Constructs a new OAuth brand for the project if one does not exist."]
         #[doc = " The created brand is \"internal only\", meaning that OAuth clients created"]
-        #[doc = " under it only accept requests from users who belong to the same G Suite"]
-        #[doc = " organization as the project. The brand is created in an un-reviewed status."]
-        #[doc = " NOTE: The \"internal only\" status can be manually changed in the Google"]
-        #[doc = " Cloud console. Requires that a brand does not already exist for the"]
-        #[doc = " project, and that the specified support email is owned by the caller."]
+        #[doc = " under it only accept requests from users who belong to the same Google"]
+        #[doc = " Workspace organization as the project. The brand is created in an"]
+        #[doc = " un-reviewed status. NOTE: The \"internal only\" status can be manually"]
+        #[doc = " changed in the Google Cloud Console. Requires that a brand does not already"]
+        #[doc = " exist for the project, and that the specified support email is owned by the"]
+        #[doc = " caller."]
         pub async fn create_brand(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBrandRequest>,

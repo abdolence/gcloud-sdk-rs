@@ -52,7 +52,10 @@ pub mod inventory {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SoftwarePackage {
         /// Information about the different types of software packages.
-        #[prost(oneof = "software_package::Details", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9")]
+        #[prost(
+            oneof = "software_package::Details",
+            tags = "1, 2, 3, 4, 5, 6, 7, 8, 9"
+        )]
         pub details: ::core::option::Option<software_package::Details>,
     }
     /// Nested message and enum types in `SoftwarePackage`.
@@ -117,25 +120,6 @@ pub mod inventory {
         /// The version of the package.
         #[prost(string, tag = "3")]
         pub version: ::prost::alloc::string::String,
-    }
-    /// Information related to a Quick Fix Engineering package.
-    /// Fields are taken from Windows QuickFixEngineering Interface and match
-    /// the source names:
-    /// <https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering>
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct WindowsQuickFixEngineeringPackage {
-        /// A short textual description of the QFE update.
-        #[prost(string, tag = "1")]
-        pub caption: ::prost::alloc::string::String,
-        /// A textual description of the QFE update.
-        #[prost(string, tag = "2")]
-        pub description: ::prost::alloc::string::String,
-        /// Unique identifier associated with a particular QFE update.
-        #[prost(string, tag = "3")]
-        pub hot_fix_id: ::prost::alloc::string::String,
-        /// Date that the QFE update was installed.  Mapped from installed_on field.
-        #[prost(message, optional, tag = "4")]
-        pub install_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Details related to a Zypper Patch.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -203,6 +187,25 @@ pub mod inventory {
             #[prost(string, tag = "2")]
             pub name: ::prost::alloc::string::String,
         }
+    }
+    /// Information related to a Quick Fix Engineering package.
+    /// Fields are taken from Windows QuickFixEngineering Interface and match
+    /// the source names:
+    /// <https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-quickfixengineering>
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WindowsQuickFixEngineeringPackage {
+        /// A short textual description of the QFE update.
+        #[prost(string, tag = "1")]
+        pub caption: ::prost::alloc::string::String,
+        /// A textual description of the QFE update.
+        #[prost(string, tag = "2")]
+        pub description: ::prost::alloc::string::String,
+        /// Unique identifier associated with a particular QFE update.
+        #[prost(string, tag = "3")]
+        pub hot_fix_id: ::prost::alloc::string::String,
+        /// Date that the QFE update was installed.  Mapped from installed_on field.
+        #[prost(message, optional, tag = "4")]
+        pub install_time: ::core::option::Option<::prost_types::Timestamp>,
     }
     /// Details about Windows Application - based on Windows Registry.
     /// All fields in this message are taken from:
@@ -374,8 +377,8 @@ pub mod os_policy {
             /// Specifies a file available via some URI.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Remote {
-                /// Required. URI from which to fetch the object. It should contain both
-                /// the protocol and path following the format `{protocol}://{location}`.
+                /// Required. URI from which to fetch the object. It should contain both the
+                /// protocol and path following the format `{protocol}://{location}`.
                 #[prost(string, tag = "1")]
                 pub uri: ::prost::alloc::string::String,
                 /// SHA256 checksum of the remote file.
@@ -412,12 +415,15 @@ pub mod os_policy {
         /// A resource that manages a system package.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct PackageResource {
-            /// Required. The desired state the agent should maintain for this package.
-            /// The default is to ensure the package is installed.
+            /// Required. The desired state the agent should maintain for this package. The
+            /// default is to ensure the package is installed.
             #[prost(enumeration = "package_resource::DesiredState", tag = "1")]
             pub desired_state: i32,
             /// A system package.
-            #[prost(oneof = "package_resource::SystemPackage", tags = "2, 3, 4, 5, 6, 7, 8")]
+            #[prost(
+                oneof = "package_resource::SystemPackage",
+                tags = "2, 3, 4, 5, 6, 7, 8"
+            )]
             pub system_package: ::core::option::Option<package_resource::SystemPackage>,
         }
         /// Nested message and enum types in `PackageResource`.
@@ -551,8 +557,8 @@ pub mod os_policy {
             /// /etc/apt/sources.list.d/google_osconfig.list.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct AptRepository {
-                /// Required. Type of archive files in this repository. The default
-                /// behavior is DEB.
+                /// Required. Type of archive files in this repository. The default behavior is
+                /// DEB.
                 #[prost(enumeration = "apt_repository::ArchiveType", tag = "1")]
                 pub archive_type: i32,
                 /// Required. URI for this repository.
@@ -561,8 +567,8 @@ pub mod os_policy {
                 /// Required. Distribution of this repository.
                 #[prost(string, tag = "3")]
                 pub distribution: ::prost::alloc::string::String,
-                /// Required. List of components for this repository. Must contain at
-                /// least one item.
+                /// Required. List of components for this repository. Must contain at least one
+                /// item.
                 #[prost(string, repeated, tag = "4")]
                 pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
                 /// URI of the key file for this repository. The agent maintains a
@@ -591,8 +597,8 @@ pub mod os_policy {
             /// `/etc/yum.repos.d/google_osconfig.repo`.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct YumRepository {
-                /// Required. A one word, unique name for this repository. This is  the
-                /// `repo id` in the yum config file and also the `display_name` if
+                /// Required. A one word, unique name for this repository. This is  the `repo
+                /// id` in the yum config file and also the `display_name` if
                 /// `display_name` is omitted. This id is also used as the unique
                 /// identifier when checking for resource conflicts.
                 #[prost(string, tag = "1")]
@@ -612,8 +618,8 @@ pub mod os_policy {
             /// `/etc/zypp/repos.d/google_osconfig.repo`.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct ZypperRepository {
-                /// Required. A one word, unique name for this repository. This is the
-                /// `repo id` in the zypper config file and also the `display_name` if
+                /// Required. A one word, unique name for this repository. This is the `repo
+                /// id` in the zypper config file and also the `display_name` if
                 /// `display_name` is omitted. This id is also used as the unique
                 /// identifier when checking for GuestPolicy conflicts.
                 #[prost(string, tag = "1")]
@@ -660,10 +666,10 @@ pub mod os_policy {
         /// A resource that contains custom validation and enforcement steps.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ExecResource {
-            /// Required. What to run to validate this resource is in the desired
-            /// state. An exit code of 100 indicates "in desired state", and exit code
-            /// of 101 indicates "not in desired state". Any other exit code indicates
-            /// a failure running validate.
+            /// Required. What to run to validate this resource is in the desired state.
+            /// An exit code of 100 indicates "in desired state", and exit code of 101
+            /// indicates "not in desired state". Any other exit code indicates a
+            /// failure running validate.
             #[prost(message, optional, tag = "1")]
             pub validate: ::core::option::Option<exec_resource::Exec>,
             /// What to run to bring this resource into the desired state.
@@ -703,7 +709,7 @@ pub mod os_policy {
                 )]
                 #[repr(i32)]
                 pub enum Interpreter {
-                    /// Defaults to NONE.
+                    /// Invalid value, the request will return validation error.
                     Unspecified = 0,
                     /// If no interpreter is specified the
                     /// source will be executed directly, which will likely only
@@ -851,6 +857,9 @@ pub struct PatchConfig {
     /// The ExecStep to run after the patch update.
     #[prost(message, optional, tag = "9")]
     pub post_step: ::core::option::Option<ExecStep>,
+    /// Allows the patch job to run on Managed instance groups (MIGs).
+    #[prost(bool, tag = "10")]
+    pub mig_instances_allowed: bool,
 }
 /// Nested message and enum types in `PatchConfig`.
 pub mod patch_config {
@@ -962,7 +971,11 @@ pub struct ZypperSettings {
 pub struct WindowsUpdateSettings {
     /// Only apply updates of these windows update classifications. If empty, all
     /// updates will be applied.
-    #[prost(enumeration = "windows_update_settings::Classification", repeated, tag = "1")]
+    #[prost(
+        enumeration = "windows_update_settings::Classification",
+        repeated,
+        tag = "1"
+    )]
     pub classifications: ::prost::alloc::vec::Vec<i32>,
     /// List of KBs to exclude from update.
     #[prost(string, repeated, tag = "2")]
@@ -1061,10 +1074,12 @@ pub mod exec_step_config {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Interpreter {
+        /// Deprecated, defaults to NONE for compatibility reasons.
+        Unspecified = 0,
         /// Invalid for a Windows ExecStepConfig. For a Linux ExecStepConfig, the
         /// interpreter will be parsed from the shebang line of the script if
         /// unspecified.
-        Unspecified = 0,
+        None = 3,
         /// Indicates that the script will be run with /bin/sh on Linux and cmd
         /// on windows.
         Shell = 1,
@@ -1229,8 +1244,7 @@ pub struct ExecStepTaskOutput {
     /// Required. The final state of the exec step.
     #[prost(enumeration = "exec_step_task_output::State", tag = "1")]
     pub state: i32,
-    /// Required. The exit code received from the script which ran as part of the
-    /// exec step.
+    /// Required. The exit code received from the script which ran as part of the exec step.
     #[prost(int32, tag = "2")]
     pub exit_code: i32,
 }
@@ -1546,13 +1560,13 @@ pub struct ReportInventoryRequest {
     /// where the audience is 'osconfig.googleapis.com' and the format is 'full'.
     #[prost(string, tag = "1")]
     pub instance_id_token: ::prost::alloc::string::String,
-    /// Required. This is a client created checksum that should be generated based
-    /// on the contents of the reported inventory.  This will be used by the
-    /// service to determine if it has the latest version of inventory.
+    /// Required. This is a client created checksum that should be generated based on the
+    /// contents of the reported inventory.  This will be used by the service to
+    /// determine if it has the latest version of inventory.
     #[prost(string, tag = "2")]
     pub inventory_checksum: ::prost::alloc::string::String,
-    /// Optional. This is the details of the inventory.  Should only be provided if
-    /// the inventory has changed since the last report, or if instructed by the
+    /// Optional. This is the details of the inventory.  Should only be provided if the
+    /// inventory has changed since the last report, or if instructed by the
     /// service to provide full inventory.
     #[prost(message, optional, tag = "3")]
     pub inventory: ::core::option::Option<Inventory>,
@@ -1630,7 +1644,9 @@ pub mod agent_endpoint_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.osconfig.agentendpoint.v1.AgentEndpointService/ReceiveTaskNotification") ;
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Signals the start of a task execution and returns the task info."]
         pub async fn start_next_task(

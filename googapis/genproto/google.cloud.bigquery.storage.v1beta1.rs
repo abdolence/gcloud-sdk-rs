@@ -461,7 +461,9 @@ pub mod big_query_storage_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1beta1.BigQueryStorage/ReadRows",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Creates additional streams for a ReadSession. This API can be used to"]
         #[doc = " dynamically adjust the parallelism of a batch processing task upwards by"]

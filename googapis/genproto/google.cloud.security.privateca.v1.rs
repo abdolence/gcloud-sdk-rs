@@ -12,7 +12,7 @@ pub struct CertificateAuthority {
     /// Required. Immutable. The config used to create a self-signed X.509 certificate or CSR.
     #[prost(message, optional, tag = "3")]
     pub config: ::core::option::Option<CertificateConfig>,
-    /// Required. The desired lifetime of the CA certificate. Used to create the
+    /// Required. Immutable. The desired lifetime of the CA certificate. Used to create the
     /// "not_before_time" and "not_after_time" fields inside an X.509
     /// certificate.
     #[prost(message, optional, tag = "4")]
@@ -163,7 +163,7 @@ pub mod certificate_authority {
     /// \[CryptoKeyVersionAlgorithm][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionAlgorithm\]
     /// values. For RSA signing algorithms, the PSS algorithms should be preferred,
     /// use PKCS1 algorithms if required for compatibility. For further
-    /// recommandations, see
+    /// recommendations, see
     /// <https://cloud.google.com/kms/docs/algorithms#algorithm_recommendations.>
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -305,14 +305,14 @@ pub mod ca_pool {
             /// a \[CaPool][google.cloud.security.privateca.v1.CaPool\].
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct RsaKeyType {
-                /// Optional. The minimum allowed RSA modulus size, in bits. If this is not set,
-                /// or if set to zero, the service-level min RSA modulus size will
-                /// continue to apply.
+                /// Optional. The minimum allowed RSA modulus size (inclusive), in bits. If this is
+                /// not set, or if set to zero, the service-level min RSA modulus size
+                /// will continue to apply.
                 #[prost(int64, tag = "1")]
                 pub min_modulus_size: i64,
-                /// Optional. The maximum allowed RSA modulus size, in bits. If this is not set,
-                /// or if set to zero, the service will not enforce an explicit upper
-                /// bound on RSA modulus sizes.
+                /// Optional. The maximum allowed RSA modulus size (inclusive), in bits. If this is
+                /// not set, or if set to zero, the service will not enforce an explicit
+                /// upper bound on RSA modulus sizes.
                 #[prost(int64, tag = "2")]
                 pub max_modulus_size: i64,
             }
@@ -649,10 +649,9 @@ pub mod subordinate_config {
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SubordinateConfig {
-        /// Required. This can refer to a \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] in the same project that
-        /// was used to create a subordinate \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]. This field
-        /// is used for information and usability purposes only. The resource name
-        /// is in the format
+        /// Required. This can refer to a \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\] that was used to create a
+        /// subordinate \[CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority\]. This field is used for information
+        /// and usability purposes only. The resource name is in the format
         /// `projects/*/locations/*/caPools/*/certificateAuthorities/*`.
         #[prost(string, tag = "1")]
         CertificateAuthority(::prost::alloc::string::String),
@@ -964,6 +963,8 @@ pub struct SubjectAltNames {
     #[prost(string, repeated, tag = "4")]
     pub ip_addresses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Contains additional subject alternative name values.
+    /// For each custom_san, the `value` field must contain an ASN.1 encoded
+    /// UTF8String.
     #[prost(message, repeated, tag = "5")]
     pub custom_sans: ::prost::alloc::vec::Vec<X509Extension>,
 }
@@ -1117,11 +1118,11 @@ pub struct CreateCertificateRequest {
     /// already been completed. The server will guarantee that for at least 60
     /// minutes since the first request.
     ///
-    /// For example, consider a situation where you make an initial request and t
-    /// he request times out. If you make the request again with the same request
-    /// ID, the server can check if original operation with the same request ID
-    /// was received, and if so, will ignore the second request. This prevents
-    /// clients from accidentally creating duplicate commitments.
+    /// For example, consider a situation where you make an initial request and the
+    /// request times out. If you make the request again with the same request ID,
+    /// the server can check if original operation with the same request ID was
+    /// received, and if so, will ignore the second request. This prevents clients
+    /// from accidentally creating duplicate commitments.
     ///
     /// The request ID must be a valid UUID with the exception that zero UUID is
     /// not supported (00000000-0000-0000-0000-000000000000).
@@ -1485,6 +1486,11 @@ pub struct DeleteCertificateAuthorityRequest {
     /// active certs. Active certs include both unrevoked and unexpired certs.
     #[prost(bool, tag = "4")]
     pub ignore_active_certificates: bool,
+    /// Optional. If this flag is set, the Certificate Authority will be deleted as soon as
+    /// possible without a 30-day grace period where undeletion would have been
+    /// allowed. If you proceed, there will be no way to recover this CA.
+    #[prost(bool, tag = "5")]
+    pub skip_grace_period: bool,
 }
 /// Request message for
 /// \[CertificateAuthorityService.UpdateCertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthorityService.UpdateCertificateAuthority\].

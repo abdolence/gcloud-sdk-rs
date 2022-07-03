@@ -1,3 +1,34 @@
+/// Represents an access event.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Access {
+    /// Associated email, such as "foo@google.com".
+    #[prost(string, tag = "1")]
+    pub principal_email: ::prost::alloc::string::String,
+    /// Caller's IP address, such as "1.1.1.1".
+    #[prost(string, tag = "2")]
+    pub caller_ip: ::prost::alloc::string::String,
+    /// The caller IP's geolocation, which identifies where the call came from.
+    #[prost(message, optional, tag = "3")]
+    pub caller_ip_geo: ::core::option::Option<Geolocation>,
+    /// What kind of user agent is associated, e.g. operating system shells,
+    /// embedded or stand-alone applications, etc.
+    #[prost(string, tag = "4")]
+    pub user_agent_family: ::prost::alloc::string::String,
+    /// This is the API service that the service account made a call to, e.g.
+    /// "iam.googleapis.com"
+    #[prost(string, tag = "5")]
+    pub service_name: ::prost::alloc::string::String,
+    /// The method that the service account called, e.g. "SetIamPolicy".
+    #[prost(string, tag = "6")]
+    pub method_name: ::prost::alloc::string::String,
+}
+/// Represents a geographical location for a given access.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Geolocation {
+    /// A CLDR.
+    #[prost(string, tag = "1")]
+    pub region_code: ::prost::alloc::string::String,
+}
 /// Message that contains the resource name and display name of a folder
 /// resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -149,11 +180,175 @@ pub mod asset {
         pub policy_blob: ::prost::alloc::string::String,
     }
 }
+/// Configures how to deliver Findings to BigQuery Instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigQueryExport {
+    /// The relative resource name of this export. See:
+    /// <https://cloud.google.com/apis/design/resource_names#relative_resource_name.>
+    /// Example format:
+    /// "organizations/{organization_id}/bigQueryExports/{export_id}" Example
+    /// format: "folders/{folder_id}/bigQueryExports/{export_id}" Example format:
+    /// "projects/{project_id}/bigQueryExports/{export_id}"
+    /// This field is provided in responses, and is ignored when provided in create
+    /// requests.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The description of the export (max of 1024 characters).
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Expression that defines the filter to apply across create/update events
+    /// of findings. The expression is a list of zero or more restrictions combined
+    /// via logical operators `AND` and `OR`. Parentheses are supported, and `OR`
+    /// has higher precedence than `AND`.
+    ///
+    /// Restrictions have the form `<field> <operator> <value>` and may have a
+    /// `-` character in front of them to indicate negation. The fields map to
+    /// those defined in the corresponding resource.
+    ///
+    /// The supported operators are:
+    ///
+    /// * `=` for all value types.
+    /// * `>`, `<`, `>=`, `<=` for integer values.
+    /// * `:`, meaning substring matching, for strings.
+    ///
+    /// The supported value types are:
+    ///
+    /// * string literals in quotes.
+    /// * integer literals without quotes.
+    /// * boolean literals `true` and `false` without quotes.
+    #[prost(string, tag = "3")]
+    pub filter: ::prost::alloc::string::String,
+    /// The dataset to write findings' updates to. Its format is
+    /// "projects/\[project_id]/datasets/[bigquery_dataset_id\]".
+    /// BigQuery Dataset unique ID  must contain only letters (a-z, A-Z), numbers
+    /// (0-9), or underscores (_).
+    #[prost(string, tag = "4")]
+    pub dataset: ::prost::alloc::string::String,
+    /// Output only. The time at which the big query export was created.
+    /// This field is set by the server and will be ignored if provided on export
+    /// on creation.
+    #[prost(message, optional, tag = "5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The most recent time at which the big export was updated.
+    /// This field is set by the server and will be ignored if provided on export
+    /// creation or update.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. Email address of the user who last edited the big query export.
+    /// This field is set by the server and will be ignored if provided on export
+    /// creation or update.
+    #[prost(string, tag = "7")]
+    pub most_recent_editor: ::prost::alloc::string::String,
+    /// Output only. The service account that needs permission to create table, upload data to
+    /// the big query dataset.
+    #[prost(string, tag = "8")]
+    pub principal: ::prost::alloc::string::String,
+}
+/// Contains compliance information about a security standard indicating unmet
+/// recommendations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Compliance {
+    /// Refers to industry wide standards or benchmarks e.g. "cis", "pci", "owasp",
+    /// etc.
+    #[prost(string, tag = "1")]
+    pub standard: ::prost::alloc::string::String,
+    /// Version of the standard/benchmark e.g. 1.1
+    #[prost(string, tag = "2")]
+    pub version: ::prost::alloc::string::String,
+    /// Policies within the standard/benchmark e.g. A.12.4.1
+    #[prost(string, repeated, tag = "3")]
+    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Contains information about the IP connection associated with the finding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Connection {
+    /// Destination IP address. Not present for sockets that are listening and not
+    /// connected.
+    #[prost(string, tag = "1")]
+    pub destination_ip: ::prost::alloc::string::String,
+    /// Destination port. Not present for sockets that are listening and not
+    /// connected.
+    #[prost(int32, tag = "2")]
+    pub destination_port: i32,
+    /// Source IP address.
+    #[prost(string, tag = "3")]
+    pub source_ip: ::prost::alloc::string::String,
+    /// Source port.
+    #[prost(int32, tag = "4")]
+    pub source_port: i32,
+    /// IANA Internet Protocol Number such as TCP(6) and UDP(17).
+    #[prost(enumeration = "connection::Protocol", tag = "5")]
+    pub protocol: i32,
+}
+/// Nested message and enum types in `Connection`.
+pub mod connection {
+    /// IANA Internet Protocol Number such as TCP(6) and UDP(17).
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Protocol {
+        /// Unspecified protocol (not HOPOPT).
+        Unspecified = 0,
+        /// Internet Control Message Protocol.
+        Icmp = 1,
+        /// Transmission Control Protocol.
+        Tcp = 6,
+        /// User Datagram Protocol.
+        Udp = 17,
+        /// Generic Routing Encapsulation.
+        Gre = 47,
+        /// Encap Security Payload.
+        Esp = 50,
+    }
+}
+/// The details pertaining to specific contacts
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ContactDetails {
+    /// A list of contacts
+    #[prost(message, repeated, tag = "1")]
+    pub contacts: ::prost::alloc::vec::Vec<Contact>,
+}
+/// Representa a single contact's email address
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Contact {
+    /// An email address e.g. "person123@company.com"
+    #[prost(string, tag = "1")]
+    pub email: ::prost::alloc::string::String,
+}
+/// Exfiltration represents a data exfiltration attempt of one or more
+/// sources to one or more targets.  Sources represent the source
+/// of data that is exfiltrated, and Targets represents the destination the
+/// data was copied to.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Exfiltration {
+    /// If there are multiple sources, then the data is considered "joined" between
+    /// them. For instance, BigQuery can join multiple tables, and each
+    /// table would be considered a source.
+    #[prost(message, repeated, tag = "1")]
+    pub sources: ::prost::alloc::vec::Vec<ExfilResource>,
+    /// If there are multiple targets, each target would get a complete copy of the
+    /// "joined" source data.
+    #[prost(message, repeated, tag = "2")]
+    pub targets: ::prost::alloc::vec::Vec<ExfilResource>,
+}
+/// Resource that has been exfiltrated or exfiltrated_to.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExfilResource {
+    /// Resource's URI (<https://google.aip.dev/122#full-resource-names>)
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Subcomponents of the asset that is exfiltrated - these could be
+    /// URIs used during exfiltration, table names, databases, filenames, etc.
+    /// For example, multiple tables may be exfiltrated from the same CloudSQL
+    /// instance, or multiple files from the same Cloud Storage bucket.
+    #[prost(string, repeated, tag = "2")]
+    pub components: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// Representation of third party SIEM/SOAR fields within SCC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExternalSystem {
     /// External System Name e.g. jira, demisto, etc.
-    ///  e.g.: `organizations/1234/sources/5678/findings/123456/externalSystems/jira`
+    ///  e.g.:
+    ///  `organizations/1234/sources/5678/findings/123456/externalSystems/jira`
     /// `folders/1234/sources/5678/findings/123456/externalSystems/jira`
     /// `projects/1234/sources/5678/findings/123456/externalSystems/jira`
     #[prost(string, tag = "1")]
@@ -173,6 +368,64 @@ pub struct ExternalSystem {
     #[prost(message, optional, tag = "5")]
     pub external_system_update_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// File information about the related binary/library used by an executable, or
+/// the script used by a script interpreter
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct File {
+    /// Absolute path of the file as a JSON encoded string.
+    #[prost(string, tag = "1")]
+    pub path: ::prost::alloc::string::String,
+    /// Size of the file in bytes.
+    #[prost(int64, tag = "2")]
+    pub size: i64,
+    /// SHA256 hash of the first hashed_size bytes of the file encoded as a
+    /// hex string.  If hashed_size == size, sha256 represents the SHA256 hash
+    /// of the entire file.
+    #[prost(string, tag = "3")]
+    pub sha256: ::prost::alloc::string::String,
+    /// The length in bytes of the file prefix that was hashed.  If
+    /// hashed_size == size, any hashes reported represent the entire
+    /// file.
+    #[prost(int64, tag = "4")]
+    pub hashed_size: i64,
+    /// True when the hash covers only a prefix of the file.
+    #[prost(bool, tag = "5")]
+    pub partially_hashed: bool,
+    /// Prefix of the file contents as a JSON encoded string.
+    /// (Currently only populated for Malicious Script Executed findings.)
+    #[prost(string, tag = "6")]
+    pub contents: ::prost::alloc::string::String,
+}
+/// Represents a particular IAM binding, which captures a member's role addition,
+/// removal, or state.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IamBinding {
+    /// The action that was performed on a Binding.
+    #[prost(enumeration = "iam_binding::Action", tag = "1")]
+    pub action: i32,
+    /// Role that is assigned to "members".
+    /// For example, "roles/viewer", "roles/editor", or "roles/owner".
+    #[prost(string, tag = "2")]
+    pub role: ::prost::alloc::string::String,
+    /// A single identity requesting access for a Cloud Platform resource,
+    /// e.g. "foo@google.com".
+    #[prost(string, tag = "3")]
+    pub member: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `IamBinding`.
+pub mod iam_binding {
+    /// The type of action performed on a Binding in a policy.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Action {
+        /// Unspecified.
+        Unspecified = 0,
+        /// Addition of a Binding.
+        Add = 1,
+        /// Removal of a Binding.
+        Remove = 2,
+    }
+}
 /// Represents what's commonly known as an Indicator of compromise (IoC) in
 /// computer forensics. This is an artifact observed on a network or in an
 /// operating system that, with high confidence, indicates a computer intrusion.
@@ -185,6 +438,248 @@ pub struct Indicator {
     /// List of domains associated to the Finding.
     #[prost(string, repeated, tag = "2")]
     pub domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The list of matched signatures indicating that the given
+    /// process is present in the environment.
+    #[prost(message, repeated, tag = "3")]
+    pub signatures: ::prost::alloc::vec::Vec<indicator::ProcessSignature>,
+}
+/// Nested message and enum types in `Indicator`.
+pub mod indicator {
+    /// Indicates what signature matched this process.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ProcessSignature {
+        #[prost(oneof = "process_signature::Signature", tags = "6, 7")]
+        pub signature: ::core::option::Option<process_signature::Signature>,
+    }
+    /// Nested message and enum types in `ProcessSignature`.
+    pub mod process_signature {
+        /// A signature corresponding to memory page hashes.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct MemoryHashSignature {
+            /// The binary family.
+            #[prost(string, tag = "1")]
+            pub binary_family: ::prost::alloc::string::String,
+            /// The list of memory hash detections contributing to the binary family
+            /// match.
+            #[prost(message, repeated, tag = "4")]
+            pub detections: ::prost::alloc::vec::Vec<memory_hash_signature::Detection>,
+        }
+        /// Nested message and enum types in `MemoryHashSignature`.
+        pub mod memory_hash_signature {
+            /// Memory hash detection contributing to the binary family match.
+            #[derive(Clone, PartialEq, ::prost::Message)]
+            pub struct Detection {
+                /// The name of the binary associated with the memory hash
+                /// signature detection.
+                #[prost(string, tag = "2")]
+                pub binary: ::prost::alloc::string::String,
+                /// The percentage of memory page hashes in the signature
+                /// that were matched.
+                #[prost(double, tag = "3")]
+                pub percent_pages_matched: f64,
+            }
+        }
+        /// A signature corresponding to a YARA rule.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct YaraRuleSignature {
+            /// The name of the YARA rule.
+            #[prost(string, tag = "5")]
+            pub yara_rule: ::prost::alloc::string::String,
+        }
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum Signature {
+            /// Signature indicating that a binary family was matched.
+            #[prost(message, tag = "6")]
+            MemoryHashSignature(MemoryHashSignature),
+            /// Signature indicating that a YARA rule was matched.
+            #[prost(message, tag = "7")]
+            YaraRuleSignature(YaraRuleSignature),
+        }
+    }
+}
+/// MITRE ATT&CK tactics and techniques related to this finding.
+/// See: <https://attack.mitre.org>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MitreAttack {
+    /// The MITRE ATT&CK tactic most closely represented by this finding, if any.
+    #[prost(enumeration = "mitre_attack::Tactic", tag = "1")]
+    pub primary_tactic: i32,
+    /// The MITRE ATT&CK technique most closely represented by this finding, if
+    /// any. primary_techniques is a repeated field because there are multiple
+    /// levels of MITRE ATT&CK techniques.  If the technique most closely
+    /// represented by this finding is a sub-technique (e.g. `SCANNING_IP_BLOCKS`),
+    /// both the sub-technique and its parent technique(s) will be listed (e.g.
+    /// `SCANNING_IP_BLOCKS`, `ACTIVE_SCANNING`).
+    #[prost(enumeration = "mitre_attack::Technique", repeated, tag = "2")]
+    pub primary_techniques: ::prost::alloc::vec::Vec<i32>,
+    /// Additional MITRE ATT&CK tactics related to this finding, if any.
+    #[prost(enumeration = "mitre_attack::Tactic", repeated, tag = "3")]
+    pub additional_tactics: ::prost::alloc::vec::Vec<i32>,
+    /// Additional MITRE ATT&CK techniques related to this finding, if any, along
+    /// with any of their respective parent techniques.
+    #[prost(enumeration = "mitre_attack::Technique", repeated, tag = "4")]
+    pub additional_techniques: ::prost::alloc::vec::Vec<i32>,
+    /// The MITRE ATT&CK version referenced by the above fields. E.g. "8".
+    #[prost(string, tag = "5")]
+    pub version: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `MitreAttack`.
+pub mod mitre_attack {
+    /// MITRE ATT&CK tactics that can be referenced by SCC findings.
+    /// See: <https://attack.mitre.org/tactics/enterprise/>
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Tactic {
+        /// Unspecified value.
+        Unspecified = 0,
+        /// TA0043
+        Reconnaissance = 1,
+        /// TA0042
+        ResourceDevelopment = 2,
+        /// TA0001
+        InitialAccess = 5,
+        /// TA0002
+        Execution = 3,
+        /// TA0003
+        Persistence = 6,
+        /// TA0004
+        PrivilegeEscalation = 8,
+        /// TA0005
+        DefenseEvasion = 7,
+        /// TA0006
+        CredentialAccess = 9,
+        /// TA0007
+        Discovery = 10,
+        /// TA0008
+        LateralMovement = 11,
+        /// TA0009
+        Collection = 12,
+        /// TA0011
+        CommandAndControl = 4,
+        /// TA0010
+        Exfiltration = 13,
+        /// TA0040
+        Impact = 14,
+    }
+    /// MITRE ATT&CK techniques that can be referenced by SCC findings.
+    /// See: <https://attack.mitre.org/techniques/enterprise/>
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Technique {
+        /// Unspecified value.
+        Unspecified = 0,
+        /// T1595
+        ActiveScanning = 1,
+        /// T1595.001
+        ScanningIpBlocks = 2,
+        /// T1105
+        IngressToolTransfer = 3,
+        /// T1106
+        NativeApi = 4,
+        /// T1129
+        SharedModules = 5,
+        /// T1059
+        CommandAndScriptingInterpreter = 6,
+        /// T1059.004
+        UnixShell = 7,
+        /// T1496
+        ResourceHijacking = 8,
+        /// T1090
+        Proxy = 9,
+        /// T1090.002
+        ExternalProxy = 10,
+        /// T1090.003
+        MultiHopProxy = 11,
+        /// T1568
+        DynamicResolution = 12,
+        /// T1552
+        UnsecuredCredentials = 13,
+        /// T1078
+        ValidAccounts = 14,
+        /// T1078.003
+        LocalAccounts = 15,
+        /// T1078.004
+        CloudAccounts = 16,
+        /// T1498
+        NetworkDenialOfService = 17,
+        /// T1069
+        PermissionGroupsDiscovery = 18,
+        /// T1069.003
+        CloudGroups = 19,
+        /// T1567
+        ExfiltrationOverWebService = 20,
+        /// T1567.002
+        ExfiltrationToCloudStorage = 21,
+        /// T1098
+        AccountManipulation = 22,
+        /// T1098.004
+        SshAuthorizedKeys = 23,
+        /// T1543
+        CreateOrModifySystemProcess = 24,
+        /// T1539
+        StealWebSessionCookie = 25,
+        /// T1578
+        ModifyCloudComputeInfrastructure = 26,
+        /// T1190
+        ExploitPublicFacingApplication = 27,
+        /// T1556
+        ModifyAuthenticationProcess = 28,
+        /// T1485
+        DataDestruction = 29,
+        /// T1484
+        DomainPolicyModification = 30,
+        /// T1562
+        ImpairDefenses = 31,
+    }
+}
+/// Represents an operating system process.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Process {
+    /// The process name visible in utilities like `top` and `ps`; it can
+    /// be accessed via `/proc/\[pid\]/comm` and changed with `prctl(PR_SET_NAME)`.
+    #[prost(string, tag = "12")]
+    pub name: ::prost::alloc::string::String,
+    /// File information for the process executable.
+    #[prost(message, optional, tag = "3")]
+    pub binary: ::core::option::Option<File>,
+    /// File information for libraries loaded by the process.
+    #[prost(message, repeated, tag = "4")]
+    pub libraries: ::prost::alloc::vec::Vec<File>,
+    /// When the process represents the invocation of a script,
+    /// `binary` provides information about the interpreter while `script`
+    /// provides information about the script file provided to the
+    /// interpreter.
+    #[prost(message, optional, tag = "5")]
+    pub script: ::core::option::Option<File>,
+    /// Process arguments as JSON encoded strings.
+    #[prost(string, repeated, tag = "6")]
+    pub args: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// True if `args` is incomplete.
+    #[prost(bool, tag = "7")]
+    pub arguments_truncated: bool,
+    /// Process environment variables.
+    #[prost(message, repeated, tag = "8")]
+    pub env_variables: ::prost::alloc::vec::Vec<EnvironmentVariable>,
+    /// True if `env_variables` is incomplete.
+    #[prost(bool, tag = "9")]
+    pub env_variables_truncated: bool,
+    /// The process id.
+    #[prost(int64, tag = "10")]
+    pub pid: i64,
+    /// The parent process id.
+    #[prost(int64, tag = "11")]
+    pub parent_pid: i64,
+}
+/// EnvironmentVariable is a name-value pair to store environment variables for
+/// Process.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnvironmentVariable {
+    /// Environment variable name as a JSON encoded string.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Environment variable value as a JSON encoded string.
+    #[prost(string, tag = "2")]
+    pub val: ::prost::alloc::string::String,
 }
 /// Refers to common vulnerability fields e.g. cve, cvss, cwe etc.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -209,6 +704,9 @@ pub struct Cve {
     /// <https://www.first.org/cvss/v3.1/specification-document>
     #[prost(message, optional, tag = "3")]
     pub cvssv3: ::core::option::Option<Cvssv3>,
+    /// Whether upstream fix is available for the CVE.
+    #[prost(bool, tag = "4")]
+    pub upstream_fix_available: bool,
 }
 /// Additional Links
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -426,11 +924,12 @@ pub struct Finding {
     /// to the finding.
     #[prost(message, optional, tag = "8")]
     pub security_marks: ::core::option::Option<SecurityMarks>,
-    /// The time at which the event took place, or when an update to the finding
-    /// occurred. For example, if the finding represents an open firewall it would
-    /// capture the time the detector believes the firewall became open. The
-    /// accuracy is determined by the detector. If the finding were to be resolved
-    /// afterward, this time would reflect when the finding was resolved. Must not
+    /// The time the finding was first detected. If an existing finding is updated,
+    /// then this is the time the update occurred.
+    /// For example, if the finding represents an open firewall, this property
+    /// captures the time the detector believes the firewall became open. The
+    /// accuracy is determined by the detector. If the finding is later resolved,
+    /// then this time reflects when the finding was resolved. This must not
     /// be set to a value greater than the current timestamp.
     #[prost(message, optional, tag = "9")]
     pub event_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -449,8 +948,9 @@ pub struct Finding {
     /// finding.
     #[prost(string, tag = "14")]
     pub canonical_name: ::prost::alloc::string::String,
-    /// Indicates the mute state of a finding (either unspecified, muted, unmuted
-    /// or undefined).
+    /// Indicates the mute state of a finding (either muted, unmuted
+    /// or undefined). Unlike other attributes of a finding, a finding provider
+    /// shouldn't set the value of mute.
     #[prost(enumeration = "finding::Mute", tag = "15")]
     pub mute: i32,
     /// The class of the finding.
@@ -476,11 +976,61 @@ pub struct Finding {
     #[prost(map = "string, message", tag = "22")]
     pub external_systems:
         ::std::collections::HashMap<::prost::alloc::string::String, ExternalSystem>,
+    /// MITRE ATT&CK tactics and techniques related to this finding.
+    /// See: <https://attack.mitre.org>
+    #[prost(message, optional, tag = "25")]
+    pub mitre_attack: ::core::option::Option<MitreAttack>,
+    /// Access details associated to the Finding, such as more information on the
+    /// caller, which method was accessed, from where, etc.
+    #[prost(message, optional, tag = "26")]
+    pub access: ::core::option::Option<Access>,
+    /// Contains information about the IP connection associated with the finding.
+    #[prost(message, repeated, tag = "31")]
+    pub connections: ::prost::alloc::vec::Vec<Connection>,
     /// First known as mute_annotation. Records additional information about the
     /// mute operation e.g. mute config that muted the finding, user who muted the
-    /// finding, etc.
+    /// finding, etc. Unlike other attributes of a finding, a finding provider
+    /// shouldn't set the value of mute.
     #[prost(string, tag = "28")]
     pub mute_initiator: ::prost::alloc::string::String,
+    /// Represents operating system processes associated with the Finding.
+    #[prost(message, repeated, tag = "30")]
+    pub processes: ::prost::alloc::vec::Vec<Process>,
+    /// Output only. Map containing the point of contacts for the given finding. The key
+    /// represents the type of contact, while the value contains a list of all the
+    /// contacts that pertain. Please refer to:
+    /// <https://cloud.google.com/resource-manager/docs/managing-notification-contacts#notification-categories>
+    ///
+    ///     {
+    ///       "security": {
+    ///         "contacts": [
+    ///           {
+    ///             "email": "person1@company.com"
+    ///           },
+    ///           {
+    ///             "email": "person2@company.com"
+    ///           }
+    ///         ]
+    ///       }
+    ///     }
+    #[prost(map = "string, message", tag = "33")]
+    pub contacts: ::std::collections::HashMap<::prost::alloc::string::String, ContactDetails>,
+    /// Contains compliance information for security standards associated to the
+    /// finding.
+    #[prost(message, repeated, tag = "34")]
+    pub compliances: ::prost::alloc::vec::Vec<Compliance>,
+    /// Contains more detail about the finding.
+    #[prost(string, tag = "37")]
+    pub description: ::prost::alloc::string::String,
+    /// Represents exfiltration associated with the Finding.
+    #[prost(message, optional, tag = "38")]
+    pub exfiltration: ::core::option::Option<Exfiltration>,
+    /// Represents IAM bindings associated with the Finding.
+    #[prost(message, repeated, tag = "39")]
+    pub iam_bindings: ::prost::alloc::vec::Vec<IamBinding>,
+    /// Next steps associate to the finding.
+    #[prost(string, tag = "40")]
+    pub next_steps: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -542,7 +1092,7 @@ pub mod finding {
         /// access data or execute unauthorized code.
         Medium = 3,
         /// Vulnerability:
-        /// A low risk vulnerability hampers a security organization’s ability to
+        /// A low risk vulnerability hampers a security organization's ability to
         /// detect vulnerabilities or active threats in their deployment, or prevents
         /// the root cause investigation of security issues. An example is monitoring
         /// and logs being disabled for resource configurations and access.
@@ -581,6 +1131,8 @@ pub mod finding {
         Misconfiguration = 3,
         /// Describes a security observation that is for informational purposes.
         Observation = 4,
+        /// Describes an error that prevents some SCC functionality.
+        SccError = 5,
     }
 }
 /// A mute config is a Cloud SCC resource that contains the configuration
@@ -710,10 +1262,16 @@ pub struct Resource {
     /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// The human readable name of the resource.
+    #[prost(string, tag = "8")]
+    pub display_name: ::prost::alloc::string::String,
+    /// The full resource type of the resource.
+    #[prost(string, tag = "6")]
+    pub r#type: ::prost::alloc::string::String,
     /// The full resource name of project that the resource belongs to.
     #[prost(string, tag = "2")]
     pub project: ::prost::alloc::string::String,
-    /// The human readable name of project that the resource belongs to.
+    /// The project ID that the resource belongs to.
     #[prost(string, tag = "3")]
     pub project_display_name: ::prost::alloc::string::String,
     /// The full resource name of resource's parent.
@@ -722,17 +1280,11 @@ pub struct Resource {
     /// The human readable name of resource's parent.
     #[prost(string, tag = "5")]
     pub parent_display_name: ::prost::alloc::string::String,
-    /// The full resource type of the resource.
-    #[prost(string, tag = "6")]
-    pub r#type: ::prost::alloc::string::String,
     /// Output only. Contains a Folder message for each folder in the assets ancestry.
     /// The first folder is the deepest nested folder, and the last folder is the
     /// folder directly under the Organization.
     #[prost(message, repeated, tag = "7")]
     pub folders: ::prost::alloc::vec::Vec<Folder>,
-    /// The human readable name of the resource.
-    #[prost(string, tag = "8")]
-    pub display_name: ::prost::alloc::string::String,
 }
 /// Cloud SCC's Notification
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1009,6 +1561,16 @@ pub struct DeleteMuteConfigRequest {
 pub struct DeleteNotificationConfigRequest {
     /// Required. Name of the notification config to delete. Its format is
     /// "organizations/\[organization_id]/notificationConfigs/[config_id\]".
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for retrieving a big query export.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBigQueryExportRequest {
+    /// Required. Name of the big query export to retrieve. Its format is
+    /// organizations/{organization}/bigQueryExports/{export_id},
+    /// folders/{folder}/bigQueryExports/{export_id}, or
+    /// projects/{project}/bigQueryExports/{export_id}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1847,10 +2409,16 @@ pub mod list_findings_response {
             /// <https://cloud.google.com/apis/design/resource_names#full_resource_name>
             #[prost(string, tag = "1")]
             pub name: ::prost::alloc::string::String,
+            /// The human readable name of the resource.
+            #[prost(string, tag = "8")]
+            pub display_name: ::prost::alloc::string::String,
+            /// The full resource type of the resource.
+            #[prost(string, tag = "6")]
+            pub r#type: ::prost::alloc::string::String,
             /// The full resource name of project that the resource belongs to.
             #[prost(string, tag = "2")]
             pub project_name: ::prost::alloc::string::String,
-            /// The human readable name of project that the resource belongs to.
+            /// The project ID that the resource belongs to.
             #[prost(string, tag = "3")]
             pub project_display_name: ::prost::alloc::string::String,
             /// The full resource name of resource's parent.
@@ -1859,17 +2427,11 @@ pub mod list_findings_response {
             /// The human readable name of resource's parent.
             #[prost(string, tag = "5")]
             pub parent_display_name: ::prost::alloc::string::String,
-            /// The full resource type of the resource.
-            #[prost(string, tag = "6")]
-            pub r#type: ::prost::alloc::string::String,
             /// Contains a Folder message for each folder in the assets ancestry.
             /// The first folder is the deepest nested folder, and the last folder is
             /// the folder directly under the Organization.
             #[prost(message, repeated, tag = "7")]
             pub folders: ::prost::alloc::vec::Vec<super::super::Folder>,
-            /// The human readable name of the resource.
-            #[prost(string, tag = "8")]
-            pub display_name: ::prost::alloc::string::String,
         }
         /// The change in state of the finding.
         ///
@@ -2034,9 +2596,82 @@ pub struct UpdateSecurityMarksRequest {
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The time at which the updated SecurityMarks take effect.
     /// If not set uses current server time.  Updates will be applied to the
-    /// SecurityMarks that are active immediately preceding this time.
+    /// SecurityMarks that are active immediately preceding this time. Must be
+    /// earlier or equal to the server time.
     #[prost(message, optional, tag = "3")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for creating a big query export.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateBigQueryExportRequest {
+    /// Required. Resource name of the new big query export's parent. Its format is
+    /// "organizations/\[organization_id\]", "folders/\[folder_id\]", or
+    /// "projects/\[project_id\]".
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The big query export being created.
+    #[prost(message, optional, tag = "2")]
+    pub big_query_export: ::core::option::Option<BigQueryExport>,
+    /// Required. Unique identifier provided by the client within the parent scope.
+    /// It must consist of lower case letters, numbers, and hyphen, with the first
+    /// character a letter, the last a letter or a number, and a 63 character
+    /// maximum.
+    #[prost(string, tag = "3")]
+    pub big_query_export_id: ::prost::alloc::string::String,
+}
+/// Request message for updating a BigQuery export.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateBigQueryExportRequest {
+    /// Required. The BigQuery export being updated.
+    #[prost(message, optional, tag = "1")]
+    pub big_query_export: ::core::option::Option<BigQueryExport>,
+    /// The list of fields to be updated.
+    /// If empty all mutable fields will be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for listing  BigQuery exports at a given scope e.g.
+/// organization, folder or project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBigQueryExportsRequest {
+    /// Required. The parent, which owns the collection of BigQuery exports. Its format is
+    /// "organizations/\[organization_id\]", "folders/\[folder_id\]",
+    /// "projects/\[project_id\]".
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of configs to return. The service may return fewer than
+    /// this value.
+    /// If unspecified, at most 10 configs will be returned.
+    /// The maximum value is 1000; values above 1000 will be coerced to 1000.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListBigQueryExports` call.
+    /// Provide this to retrieve the subsequent page.
+    /// When paginating, all other parameters provided to `ListBigQueryExports`
+    /// must match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for listing BigQuery exports.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBigQueryExportsResponse {
+    /// The BigQuery exports from the specified parent.
+    #[prost(message, repeated, tag = "1")]
+    pub big_query_exports: ::prost::alloc::vec::Vec<BigQueryExport>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for deleting a big query export.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBigQueryExportRequest {
+    /// Required. Name of the big query export to delete. Its format is
+    /// organizations/{organization}/bigQueryExports/{export_id},
+    /// folders/{folder}/bigQueryExports/{export_id}, or
+    /// projects/{project}/bigQueryExports/{export_id}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod security_center_client {
@@ -2210,6 +2845,23 @@ pub mod security_center_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/DeleteNotificationConfig",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets a big query export."]
+        pub async fn get_big_query_export(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBigQueryExportRequest>,
+        ) -> Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/GetBigQueryExport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -2647,6 +3299,78 @@ pub mod security_center_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.securitycenter.v1.SecurityCenter/UpdateSecurityMarks",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a big query export."]
+        pub async fn create_big_query_export(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateBigQueryExportRequest>,
+        ) -> Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/CreateBigQueryExport",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes an existing big query export."]
+        pub async fn delete_big_query_export(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBigQueryExportRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/DeleteBigQueryExport",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a BigQuery export."]
+        pub async fn update_big_query_export(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateBigQueryExportRequest>,
+        ) -> Result<tonic::Response<super::BigQueryExport>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/UpdateBigQueryExport",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists BigQuery exports. Note that when requesting BigQuery exports at a"]
+        #[doc = " given level all exports under that level are also returned e.g. if"]
+        #[doc = " requesting BigQuery exports under a folder, then all BigQuery exports"]
+        #[doc = " immediately under the folder plus the ones created under the projects"]
+        #[doc = " within the folder are returned."]
+        pub async fn list_big_query_exports(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBigQueryExportsRequest>,
+        ) -> Result<tonic::Response<super::ListBigQueryExportsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.securitycenter.v1.SecurityCenter/ListBigQueryExports",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

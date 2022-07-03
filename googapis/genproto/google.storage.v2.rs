@@ -1,3 +1,312 @@
+/// Request message for DeleteBucket.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteBucketRequest {
+    /// Required. Name of a bucket to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// If set, only deletes the bucket if its metageneration matches this value.
+    #[prost(int64, optional, tag = "2")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// If set, only deletes the bucket if its metageneration does not match this
+    /// value.
+    #[prost(int64, optional, tag = "3")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+}
+/// Request message for GetBucket.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetBucketRequest {
+    /// Required. Name of a bucket.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// If set, and if the bucket's current metageneration does not match the
+    /// specified value, the request will return an error.
+    #[prost(int64, optional, tag = "2")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// If set, and if the bucket's current metageneration matches the specified
+    /// value, the request will return an error.
+    #[prost(int64, optional, tag = "3")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// Mask specifying which fields to read.
+    /// A "*" field may be used to indicate all fields.
+    /// If no mask is specified, will default to all fields.
+    #[prost(message, optional, tag = "5")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for CreateBucket.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateBucketRequest {
+    /// Required. The project to which this bucket will belong.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Properties of the new bucket being inserted.
+    /// The project and name of the bucket are specified in the parent and
+    /// bucket_id fields, respectively. Populating those fields in `bucket` will
+    /// result in an error.
+    #[prost(message, optional, tag = "2")]
+    pub bucket: ::core::option::Option<Bucket>,
+    /// Required. The ID to use for this bucket, which will become the final component of
+    /// the bucket's resource name. For example, the value `foo` might result in
+    /// a bucket with the name `projects/123456/buckets/foo`.
+    #[prost(string, tag = "3")]
+    pub bucket_id: ::prost::alloc::string::String,
+    /// Apply a predefined set of access controls to this bucket.
+    /// Valid values are "authenticatedRead", "private", "projectPrivate",
+    /// "publicRead", or "publicReadWrite".
+    #[prost(string, tag = "6")]
+    pub predefined_acl: ::prost::alloc::string::String,
+    /// Apply a predefined set of default object access controls to this bucket.
+    /// Valid values are "authenticatedRead", "bucketOwnerFullControl",
+    /// "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+    #[prost(string, tag = "7")]
+    pub predefined_default_object_acl: ::prost::alloc::string::String,
+}
+/// Request message for ListBuckets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBucketsRequest {
+    /// Required. The project whose buckets we are listing.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of buckets to return in a single response. The service will
+    /// use this parameter or 1,000 items, whichever is smaller. If "acl" is
+    /// present in the read_mask, the service will use this parameter of 200 items,
+    /// whichever is smaller.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A previously-returned page token representing part of the larger set of
+    /// results to view.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Filter results to buckets whose names begin with this prefix.
+    #[prost(string, tag = "4")]
+    pub prefix: ::prost::alloc::string::String,
+    /// Mask specifying which fields to read from each result.
+    /// If no mask is specified, will default to all fields except items.owner,
+    /// items.acl, and items.default_object_acl.
+    /// * may be used to mean "all fields".
+    #[prost(message, optional, tag = "5")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The result of a call to Buckets.ListBuckets
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListBucketsResponse {
+    /// The list of items.
+    #[prost(message, repeated, tag = "1")]
+    pub buckets: ::prost::alloc::vec::Vec<Bucket>,
+    /// The continuation token, used to page through large result sets. Provide
+    /// this value in a subsequent request to return the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for LockBucketRetentionPolicyRequest.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LockBucketRetentionPolicyRequest {
+    /// Required. Name of a bucket.
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Makes the operation conditional on whether bucket's current metageneration
+    /// matches the given value. Must be positive.
+    #[prost(int64, tag = "2")]
+    pub if_metageneration_match: i64,
+}
+/// Request for UpdateBucket method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateBucketRequest {
+    /// The bucket to update.
+    /// The bucket's `name` field will be used to identify the bucket.
+    #[prost(message, optional, tag = "1")]
+    pub bucket: ::core::option::Option<Bucket>,
+    /// If set, will only modify the bucket if its metageneration matches this
+    /// value.
+    #[prost(int64, optional, tag = "2")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// If set, will only modify the bucket if its metageneration does not match
+    /// this value.
+    #[prost(int64, optional, tag = "3")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// Apply a predefined set of access controls to this bucket.
+    /// Valid values are "authenticatedRead", "private", "projectPrivate",
+    /// "publicRead", or "publicReadWrite".
+    #[prost(string, tag = "8")]
+    pub predefined_acl: ::prost::alloc::string::String,
+    /// Apply a predefined set of default object access controls to this bucket.
+    /// Valid values are "authenticatedRead", "bucketOwnerFullControl",
+    /// "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+    #[prost(string, tag = "9")]
+    pub predefined_default_object_acl: ::prost::alloc::string::String,
+    /// List of fields to be updated.
+    ///
+    /// To specify ALL fields, equivalent to the JSON API's "update" function,
+    /// specify a single field with the value `*`. Note: not recommended. If a new
+    /// field is introduced at a later time, an older client updating with the `*`
+    /// may accidentally reset the new field's value.
+    ///
+    /// Not specifying any fields is an error.
+    /// Not specifying a field while setting that field to a non-default value is
+    /// an error.
+    #[prost(message, optional, tag = "6")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for DeleteNotification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteNotificationRequest {
+    /// Required. The parent bucket of the notification.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for GetNotification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetNotificationRequest {
+    /// Required. The parent bucket of the notification.
+    /// Format:
+    /// `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for CreateNotification.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateNotificationRequest {
+    /// Required. The bucket to which this notification belongs.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. Properties of the notification to be inserted.
+    #[prost(message, optional, tag = "2")]
+    pub notification: ::core::option::Option<Notification>,
+}
+/// Request message for ListNotifications.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNotificationsRequest {
+    /// Required. Name of a Google Cloud Storage bucket.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of notifications to return. The service may return fewer
+    /// than this value.
+    /// The default value is 100. Specifying a value above 100 will result in a
+    /// page_size of 100.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListNotifications` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListNotifications` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The result of a call to Notifications.ListNotifications
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListNotificationsResponse {
+    /// The list of items.
+    #[prost(message, repeated, tag = "1")]
+    pub notifications: ::prost::alloc::vec::Vec<Notification>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for ComposeObject.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ComposeObjectRequest {
+    /// Required. Properties of the resulting object.
+    #[prost(message, optional, tag = "1")]
+    pub destination: ::core::option::Option<Object>,
+    /// The list of source objects that will be concatenated into a single object.
+    #[prost(message, repeated, tag = "2")]
+    pub source_objects: ::prost::alloc::vec::Vec<compose_object_request::SourceObject>,
+    /// Apply a predefined set of access controls to the destination object.
+    /// Valid values are "authenticatedRead", "bucketOwnerFullControl",
+    /// "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+    #[prost(string, tag = "9")]
+    pub destination_predefined_acl: ::prost::alloc::string::String,
+    /// Makes the operation conditional on whether the object's current generation
+    /// matches the given value. Setting to 0 makes the operation succeed only if
+    /// there are no live versions of the object.
+    #[prost(int64, optional, tag = "4")]
+    pub if_generation_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration matches the given value.
+    #[prost(int64, optional, tag = "5")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// Resource name of the Cloud KMS key, of the form
+    /// `projects/my-project/locations/my-location/keyRings/my-kr/cryptoKeys/my-key`,
+    /// that will be used to encrypt the object. Overrides the object
+    /// metadata's `kms_key_name` value, if any.
+    #[prost(string, tag = "6")]
+    pub kms_key: ::prost::alloc::string::String,
+    /// A set of parameters common to Storage API requests concerning an object.
+    #[prost(message, optional, tag = "7")]
+    pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
+}
+/// Nested message and enum types in `ComposeObjectRequest`.
+pub mod compose_object_request {
+    /// Description of a source object for a composition request.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SourceObject {
+        /// Required. The source object's name. All source objects must reside in the same
+        /// bucket.
+        #[prost(string, tag = "1")]
+        pub name: ::prost::alloc::string::String,
+        /// The generation of this object to use as the source.
+        #[prost(int64, tag = "2")]
+        pub generation: i64,
+        /// Conditions that must be met for this operation to execute.
+        #[prost(message, optional, tag = "3")]
+        pub object_preconditions: ::core::option::Option<source_object::ObjectPreconditions>,
+    }
+    /// Nested message and enum types in `SourceObject`.
+    pub mod source_object {
+        /// Preconditions for a source object of a composition request.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct ObjectPreconditions {
+            /// Only perform the composition if the generation of the source object
+            /// that would be used matches this value.  If this value and a generation
+            /// are both specified, they must be the same value or the call will fail.
+            #[prost(int64, optional, tag = "1")]
+            pub if_generation_match: ::core::option::Option<i64>,
+        }
+    }
+}
+/// Message for deleting an object.
+/// Either `bucket` and `object` *or* `upload_id` **must** be set (but not both).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteObjectRequest {
+    /// Required. Name of the bucket in which the object resides.
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Required. The name of the object to delete (when not using a resumable write).
+    #[prost(string, tag = "2")]
+    pub object: ::prost::alloc::string::String,
+    /// The resumable upload_id of the object to delete (when deleting an
+    /// in-progress resumable write). This should be copied from the `upload_id`
+    /// field of `StartResumableWriteResponse`.
+    #[prost(string, tag = "3")]
+    pub upload_id: ::prost::alloc::string::String,
+    /// If present, permanently deletes a specific revision of this object (as
+    /// opposed to the latest version, the default).
+    #[prost(int64, tag = "4")]
+    pub generation: i64,
+    /// Makes the operation conditional on whether the object's current generation
+    /// matches the given value. Setting to 0 makes the operation succeed only if
+    /// there are no live versions of the object.
+    #[prost(int64, optional, tag = "5")]
+    pub if_generation_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's live generation
+    /// does not match the given value. If no live object exists, the precondition
+    /// fails. Setting to 0 makes the operation succeed only if there is a live
+    /// version of the object.
+    #[prost(int64, optional, tag = "6")]
+    pub if_generation_not_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration matches the given value.
+    #[prost(int64, optional, tag = "7")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration does not match the given value.
+    #[prost(int64, optional, tag = "8")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// A set of parameters common to Storage API requests concerning an object.
+    #[prost(message, optional, tag = "10")]
+    pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
+}
 /// Request message for ReadObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadObjectRequest {
@@ -18,8 +327,8 @@ pub struct ReadObjectRequest {
     /// back from the end of the object to be returned. For example, if an object's
     /// length is 15 bytes, a ReadObjectRequest with `read_offset` = -5 and
     /// `read_limit` = 3 would return bytes 10 through 12 of the object. Requesting
-    /// a negative offset whose magnitude is larger than the size of the object
-    /// will result in an error.
+    /// a negative offset with magnitude larger than the size of the object will
+    /// return the entire object.
     #[prost(int64, tag = "4")]
     pub read_offset: i64,
     /// The maximum number of `data` bytes the server is allowed to return in the
@@ -36,7 +345,7 @@ pub struct ReadObjectRequest {
     /// there are no live versions of the object.
     #[prost(int64, optional, tag = "6")]
     pub if_generation_match: ::core::option::Option<i64>,
-    /// Makes the operation conditional on whether the object's current generation
+    /// Makes the operation conditional on whether the object's live generation
     /// does not match the given value. If no live object exists, the precondition
     /// fails. Setting to 0 makes the operation succeed only if there is a live
     /// version of the object.
@@ -53,9 +362,6 @@ pub struct ReadObjectRequest {
     /// A set of parameters common to Storage API requests concerning an object.
     #[prost(message, optional, tag = "10")]
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
-    /// A set of parameters common to all Storage API requests.
-    #[prost(message, optional, tag = "11")]
-    pub common_request_params: ::core::option::Option<CommonRequestParams>,
     /// Mask specifying which fields to read.
     /// The checksummed_data field and its children will always be present.
     /// If no mask is specified, will default to all fields except metadata.owner
@@ -64,7 +370,49 @@ pub struct ReadObjectRequest {
     #[prost(message, optional, tag = "12")]
     pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Response message for GetObject.
+/// Request message for GetObject.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetObjectRequest {
+    /// Required. Name of the bucket in which the object resides.
+    #[prost(string, tag = "1")]
+    pub bucket: ::prost::alloc::string::String,
+    /// Required. Name of the object.
+    #[prost(string, tag = "2")]
+    pub object: ::prost::alloc::string::String,
+    /// If present, selects a specific revision of this object (as opposed to the
+    /// latest version, the default).
+    #[prost(int64, tag = "3")]
+    pub generation: i64,
+    /// Makes the operation conditional on whether the object's current generation
+    /// matches the given value. Setting to 0 makes the operation succeed only if
+    /// there are no live versions of the object.
+    #[prost(int64, optional, tag = "4")]
+    pub if_generation_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's live generation
+    /// does not match the given value. If no live object exists, the precondition
+    /// fails. Setting to 0 makes the operation succeed only if there is a live
+    /// version of the object.
+    #[prost(int64, optional, tag = "5")]
+    pub if_generation_not_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration matches the given value.
+    #[prost(int64, optional, tag = "6")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration does not match the given value.
+    #[prost(int64, optional, tag = "7")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// A set of parameters common to Storage API requests concerning an object.
+    #[prost(message, optional, tag = "8")]
+    pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
+    /// Mask specifying which fields to read.
+    /// If no mask is specified, will default to all fields except metadata.acl and
+    /// metadata.owner.
+    /// * may be used to mean "all fields".
+    #[prost(message, optional, tag = "10")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Response message for ReadObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadObjectResponse {
     /// A portion of the data for the object. The service **may** leave `data`
@@ -95,14 +443,16 @@ pub struct WriteObjectSpec {
     #[prost(message, optional, tag = "1")]
     pub resource: ::core::option::Option<Object>,
     /// Apply a predefined set of access controls to this object.
-    #[prost(enumeration = "PredefinedObjectAcl", tag = "2")]
-    pub predefined_acl: i32,
+    /// Valid values are "authenticatedRead", "bucketOwnerFullControl",
+    /// "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+    #[prost(string, tag = "7")]
+    pub predefined_acl: ::prost::alloc::string::String,
     /// Makes the operation conditional on whether the object's current
     /// generation matches the given value. Setting to 0 makes the operation
     /// succeed only if there are no live versions of the object.
     #[prost(int64, optional, tag = "3")]
     pub if_generation_match: ::core::option::Option<i64>,
-    /// Makes the operation conditional on whether the object's current
+    /// Makes the operation conditional on whether the object's live
     /// generation does not match the given value. If no live object exists, the
     /// precondition fails. Setting to 0 makes the operation succeed only if
     /// there is a live version of the object.
@@ -152,9 +502,6 @@ pub struct WriteObjectRequest {
     /// A set of parameters common to Storage API requests concerning an object.
     #[prost(message, optional, tag = "8")]
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
-    /// A set of parameters common to all Storage API requests.
-    #[prost(message, optional, tag = "9")]
-    pub common_request_params: ::core::option::Option<CommonRequestParams>,
     /// The first message of each stream should set one of the following.
     #[prost(oneof = "write_object_request::FirstMessage", tags = "1, 2")]
     pub first_message: ::core::option::Option<write_object_request::FirstMessage>,
@@ -207,6 +554,63 @@ pub mod write_object_response {
         Resource(super::Object),
     }
 }
+/// Request message for ListObjects.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListObjectsRequest {
+    /// Required. Name of the bucket in which to look for objects.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Maximum number of `items` plus `prefixes` to return
+    /// in a single page of responses. As duplicate `prefixes` are
+    /// omitted, fewer total results may be returned than requested. The service
+    /// will use this parameter or 1,000 items, whichever is smaller.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A previously-returned page token representing part of the larger set of
+    /// results to view.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// If set, returns results in a directory-like mode. `items` will contain
+    /// only objects whose names, aside from the `prefix`, do not
+    /// contain `delimiter`. Objects whose names, aside from the
+    /// `prefix`, contain `delimiter` will have their name,
+    /// truncated after the `delimiter`, returned in
+    /// `prefixes`. Duplicate `prefixes` are omitted.
+    #[prost(string, tag = "4")]
+    pub delimiter: ::prost::alloc::string::String,
+    /// If true, objects that end in exactly one instance of `delimiter`
+    /// will have their metadata included in `items` in addition to
+    /// `prefixes`.
+    #[prost(bool, tag = "5")]
+    pub include_trailing_delimiter: bool,
+    /// Filter results to objects whose names begin with this prefix.
+    #[prost(string, tag = "6")]
+    pub prefix: ::prost::alloc::string::String,
+    /// If `true`, lists all versions of an object as distinct results.
+    /// For more information, see
+    /// [Object
+    /// Versioning](<https://cloud.google.com/storage/docs/object-versioning>).
+    #[prost(bool, tag = "7")]
+    pub versions: bool,
+    /// Mask specifying which fields to read from each result.
+    /// If no mask is specified, will default to all fields except items.acl and
+    /// items.owner.
+    /// * may be used to mean "all fields".
+    #[prost(message, optional, tag = "8")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// Filter results to objects whose names are lexicographically equal to or
+    /// after lexicographic_start. If lexicographic_end is also set, the objects
+    /// listed have names between lexicographic_start (inclusive) and
+    /// lexicographic_end (exclusive).
+    #[prost(string, tag = "10")]
+    pub lexicographic_start: ::prost::alloc::string::String,
+    /// Filter results to objects whose names are lexicographically before
+    /// lexicographic_end. If lexicographic_start is also set, the objects listed
+    /// have names between lexicographic_start (inclusive) and lexicographic_end
+    /// (exclusive).
+    #[prost(string, tag = "11")]
+    pub lexicographic_end: ::prost::alloc::string::String,
+}
 /// Request object for `QueryWriteStatus`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct QueryWriteStatusRequest {
@@ -217,9 +621,6 @@ pub struct QueryWriteStatusRequest {
     /// A set of parameters common to Storage API requests concerning an object.
     #[prost(message, optional, tag = "2")]
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
-    /// A set of parameters common to all Storage API requests.
-    #[prost(message, optional, tag = "3")]
-    pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Response object for `QueryWriteStatus`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -245,6 +646,153 @@ pub mod query_write_status_response {
         Resource(super::Object),
     }
 }
+/// Request message for RewriteObject.
+/// If the source object is encrypted using a Customer-Supplied Encryption Key
+/// the key information must be provided in the copy_source_encryption_algorithm,
+/// copy_source_encryption_key_bytes, and copy_source_encryption_key_sha256_bytes
+/// fields. If the destination object should be encrypted the keying information
+/// should be provided in the encryption_algorithm, encryption_key_bytes, and
+/// encryption_key_sha256_bytes fields of the
+/// common_object_request_params.customer_encryption field.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RewriteObjectRequest {
+    /// Immutable. The name of the destination object. Nearly any sequence of unicode
+    /// characters is valid. See
+    /// \[Guidelines\](<https://cloud.google.com/storage/docs/naming-objects>).
+    /// Example: `test.txt`
+    /// The `name` field by itself does not uniquely identify a Cloud Storage
+    /// object. A Cloud Storage object is uniquely identified by the tuple of
+    /// (bucket, object, generation).
+    #[prost(string, tag = "24")]
+    pub destination_name: ::prost::alloc::string::String,
+    /// Immutable. The name of the bucket containing The name of the destination object.
+    #[prost(string, tag = "25")]
+    pub destination_bucket: ::prost::alloc::string::String,
+    /// The name of the Cloud KMS key that will be used to encrypt the destination
+    /// object. The Cloud KMS key must be located in same location as the object.
+    /// If the parameter is not specified, the request uses the destination
+    /// bucket's default encryption key, if any, or else the Google-managed
+    /// encryption key.
+    #[prost(string, tag = "27")]
+    pub destination_kms_key: ::prost::alloc::string::String,
+    /// Properties of the destination, post-rewrite object.
+    /// The `name`, `bucket` and `kms_key` fields must not be populated (these
+    /// values are specified in the `destination_name`, `destination_bucket`, and
+    /// `destination_kms_key` fields).
+    /// If `destination` is present it will be used to construct the destination
+    /// object's metadata; otherwise the destination object's metadata will be
+    /// copied from the source object.
+    #[prost(message, optional, tag = "1")]
+    pub destination: ::core::option::Option<Object>,
+    /// Required. Name of the bucket in which to find the source object.
+    #[prost(string, tag = "2")]
+    pub source_bucket: ::prost::alloc::string::String,
+    /// Required. Name of the source object.
+    #[prost(string, tag = "3")]
+    pub source_object: ::prost::alloc::string::String,
+    /// If present, selects a specific revision of the source object (as opposed to
+    /// the latest version, the default).
+    #[prost(int64, tag = "4")]
+    pub source_generation: i64,
+    /// Include this field (from the previous rewrite response) on each rewrite
+    /// request after the first one, until the rewrite response 'done' flag is
+    /// true. Calls that provide a rewriteToken can omit all other request fields,
+    /// but if included those fields must match the values provided in the first
+    /// rewrite request.
+    #[prost(string, tag = "5")]
+    pub rewrite_token: ::prost::alloc::string::String,
+    /// Apply a predefined set of access controls to the destination object.
+    /// Valid values are "authenticatedRead", "bucketOwnerFullControl",
+    /// "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+    #[prost(string, tag = "28")]
+    pub destination_predefined_acl: ::prost::alloc::string::String,
+    /// Makes the operation conditional on whether the object's current generation
+    /// matches the given value. Setting to 0 makes the operation succeed only if
+    /// there are no live versions of the object.
+    #[prost(int64, optional, tag = "7")]
+    pub if_generation_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's live generation
+    /// does not match the given value. If no live object exists, the precondition
+    /// fails. Setting to 0 makes the operation succeed only if there is a live
+    /// version of the object.
+    #[prost(int64, optional, tag = "8")]
+    pub if_generation_not_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the destination object's current
+    /// metageneration matches the given value.
+    #[prost(int64, optional, tag = "9")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the destination object's current
+    /// metageneration does not match the given value.
+    #[prost(int64, optional, tag = "10")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the source object's live
+    /// generation matches the given value.
+    #[prost(int64, optional, tag = "11")]
+    pub if_source_generation_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the source object's live
+    /// generation does not match the given value.
+    #[prost(int64, optional, tag = "12")]
+    pub if_source_generation_not_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the source object's current
+    /// metageneration matches the given value.
+    #[prost(int64, optional, tag = "13")]
+    pub if_source_metageneration_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the source object's current
+    /// metageneration does not match the given value.
+    #[prost(int64, optional, tag = "14")]
+    pub if_source_metageneration_not_match: ::core::option::Option<i64>,
+    /// The maximum number of bytes that will be rewritten per rewrite request.
+    /// Most callers
+    /// shouldn't need to specify this parameter - it is primarily in place to
+    /// support testing. If specified the value must be an integral multiple of
+    /// 1 MiB (1048576). Also, this only applies to requests where the source and
+    /// destination span locations and/or storage classes. Finally, this value must
+    /// not change across rewrite calls else you'll get an error that the
+    /// `rewriteToken` is invalid.
+    #[prost(int64, tag = "15")]
+    pub max_bytes_rewritten_per_call: i64,
+    /// The algorithm used to encrypt the source object, if any. Used if the source
+    /// object was encrypted with a Customer-Supplied Encryption Key.
+    #[prost(string, tag = "16")]
+    pub copy_source_encryption_algorithm: ::prost::alloc::string::String,
+    /// The raw bytes (not base64-encoded) AES-256 encryption key used to encrypt
+    /// the source object, if it was encrypted with a Customer-Supplied Encryption
+    /// Key.
+    #[prost(bytes = "vec", tag = "21")]
+    pub copy_source_encryption_key_bytes: ::prost::alloc::vec::Vec<u8>,
+    /// The raw bytes (not base64-encoded) SHA256 hash of the encryption key used
+    /// to encrypt the source object, if it was encrypted with a Customer-Supplied
+    /// Encryption Key.
+    #[prost(bytes = "vec", tag = "22")]
+    pub copy_source_encryption_key_sha256_bytes: ::prost::alloc::vec::Vec<u8>,
+    /// A set of parameters common to Storage API requests concerning an object.
+    #[prost(message, optional, tag = "19")]
+    pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
+}
+/// A rewrite response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RewriteResponse {
+    /// The total bytes written so far, which can be used to provide a waiting user
+    /// with a progress indicator. This property is always present in the response.
+    #[prost(int64, tag = "1")]
+    pub total_bytes_rewritten: i64,
+    /// The total size of the object being copied in bytes. This property is always
+    /// present in the response.
+    #[prost(int64, tag = "2")]
+    pub object_size: i64,
+    /// `true` if the copy is finished; otherwise, `false` if
+    /// the copy is in progress. This property is always present in the response.
+    #[prost(bool, tag = "3")]
+    pub done: bool,
+    /// A token to use in subsequent requests to continue copying data. This token
+    /// is present in the response only when there is more data to copy.
+    #[prost(string, tag = "4")]
+    pub rewrite_token: ::prost::alloc::string::String,
+    /// A resource containing the metadata for the copied-to object. This property
+    /// is present in the response only when copying completes.
+    #[prost(message, optional, tag = "5")]
+    pub resource: ::core::option::Option<Object>,
+}
 /// Request message StartResumableWrite.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StartResumableWriteRequest {
@@ -254,9 +802,6 @@ pub struct StartResumableWriteRequest {
     /// A set of parameters common to Storage API requests concerning an object.
     #[prost(message, optional, tag = "3")]
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
-    /// A set of parameters common to all Storage API requests.
-    #[prost(message, optional, tag = "4")]
-    pub common_request_params: ::core::option::Option<CommonRequestParams>,
 }
 /// Response object for `StartResumableWrite`.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -266,27 +811,162 @@ pub struct StartResumableWriteResponse {
     #[prost(string, tag = "1")]
     pub upload_id: ::prost::alloc::string::String,
 }
+/// Request message for UpdateObject.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateObjectRequest {
+    /// The object to update.
+    /// The object's bucket and name fields are used to identify the object to
+    /// update. If present, the object's generation field selects a specific
+    /// revision of this object whose metadata should be updated. Otherwise,
+    /// assumes the live version of the object.
+    #[prost(message, optional, tag = "1")]
+    pub object: ::core::option::Option<Object>,
+    /// Makes the operation conditional on whether the object's current generation
+    /// matches the given value. Setting to 0 makes the operation succeed only if
+    /// there are no live versions of the object.
+    #[prost(int64, optional, tag = "2")]
+    pub if_generation_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's live generation
+    /// does not match the given value. If no live object exists, the precondition
+    /// fails. Setting to 0 makes the operation succeed only if there is a live
+    /// version of the object.
+    #[prost(int64, optional, tag = "3")]
+    pub if_generation_not_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration matches the given value.
+    #[prost(int64, optional, tag = "4")]
+    pub if_metageneration_match: ::core::option::Option<i64>,
+    /// Makes the operation conditional on whether the object's current
+    /// metageneration does not match the given value.
+    #[prost(int64, optional, tag = "5")]
+    pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// Apply a predefined set of access controls to this object.
+    /// Valid values are "authenticatedRead", "bucketOwnerFullControl",
+    /// "bucketOwnerRead", "private", "projectPrivate", or "publicRead".
+    #[prost(string, tag = "10")]
+    pub predefined_acl: ::prost::alloc::string::String,
+    /// List of fields to be updated.
+    ///
+    /// To specify ALL fields, equivalent to the JSON API's "update" function,
+    /// specify a single field with the value `*`. Note: not recommended. If a new
+    /// field is introduced at a later time, an older client updating with the `*`
+    /// may accidentally reset the new field's value.
+    ///
+    /// Not specifying any fields is an error.
+    /// Not specifying a field while setting that field to a non-default value is
+    /// an error.
+    #[prost(message, optional, tag = "7")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+    /// A set of parameters common to Storage API requests concerning an object.
+    #[prost(message, optional, tag = "8")]
+    pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
+}
+/// Request message for GetServiceAccount.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetServiceAccountRequest {
+    /// Required. Project ID.
+    #[prost(string, tag = "1")]
+    pub project: ::prost::alloc::string::String,
+}
+/// Request message for CreateHmacKey.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateHmacKeyRequest {
+    /// Required. The project that the HMAC-owning service account lives in.
+    #[prost(string, tag = "1")]
+    pub project: ::prost::alloc::string::String,
+    /// Required. The service account to create the HMAC for.
+    #[prost(string, tag = "2")]
+    pub service_account_email: ::prost::alloc::string::String,
+}
+/// Create hmac response.  The only time the secret for an HMAC will be returned.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateHmacKeyResponse {
+    /// Key metadata.
+    #[prost(message, optional, tag = "1")]
+    pub metadata: ::core::option::Option<HmacKeyMetadata>,
+    /// HMAC key secret material.
+    /// In raw bytes format (not base64-encoded).
+    #[prost(bytes = "vec", tag = "3")]
+    pub secret_key_bytes: ::prost::alloc::vec::Vec<u8>,
+}
+/// Request object to delete a given HMAC key.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteHmacKeyRequest {
+    /// Required. The identifying key for the HMAC to delete.
+    #[prost(string, tag = "1")]
+    pub access_id: ::prost::alloc::string::String,
+    /// Required. The project id the HMAC key lies in.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+}
+/// Request object to get metadata on a given HMAC key.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetHmacKeyRequest {
+    /// Required. The identifying key for the HMAC to delete.
+    #[prost(string, tag = "1")]
+    pub access_id: ::prost::alloc::string::String,
+    /// Required. The project id the HMAC key lies in.
+    #[prost(string, tag = "2")]
+    pub project: ::prost::alloc::string::String,
+}
+/// Request to fetch a list of HMAC keys under a given project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListHmacKeysRequest {
+    /// Required. The project id to list HMAC keys for.
+    #[prost(string, tag = "1")]
+    pub project: ::prost::alloc::string::String,
+    /// Optional. The maximum number of keys to return.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// Optional. A previously returned token from ListHmacKeysResponse to get the next page.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+    /// Optional. If set, filters to only return HMAC keys for specified service account.
+    #[prost(string, tag = "4")]
+    pub service_account_email: ::prost::alloc::string::String,
+    /// Optional. If set, return deleted keys that have not yet been wiped out.
+    #[prost(bool, tag = "5")]
+    pub show_deleted_keys: bool,
+}
+/// Hmac key list response with next page information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListHmacKeysResponse {
+    /// The list of items.
+    #[prost(message, repeated, tag = "1")]
+    pub hmac_keys: ::prost::alloc::vec::Vec<HmacKeyMetadata>,
+    /// The continuation token, used to page through large result sets. Provide
+    /// this value in a subsequent request to return the next page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request object to update an HMAC key state.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateHmacKeyRequest {
+    /// Required. The HMAC key to update.
+    /// If present, the hmac_key's `id` field will be used to identify the key.
+    /// Otherwise, the hmac_key's access_id and project fields will be used to
+    /// identify the key.
+    #[prost(message, optional, tag = "1")]
+    pub hmac_key: ::core::option::Option<HmacKeyMetadata>,
+    /// Update mask for hmac_key.
+    #[prost(message, optional, tag = "3")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
 /// Parameters that can be passed to any object request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CommonObjectRequestParams {
-    /// Encryption algorithm used with Customer-Supplied Encryption Keys feature.
+    /// Encryption algorithm used with the Customer-Supplied Encryption Keys
+    /// feature.
     #[prost(string, tag = "1")]
     pub encryption_algorithm: ::prost::alloc::string::String,
-    /// Encryption key used with Customer-Supplied Encryption Keys feature.
+    /// Encryption key used with the Customer-Supplied Encryption Keys feature.
     /// In raw bytes format (not base64-encoded).
     #[prost(bytes = "vec", tag = "4")]
     pub encryption_key_bytes: ::prost::alloc::vec::Vec<u8>,
-    /// SHA256 hash of encryption key used with Customer-Supplied Encryption Keys
-    /// feature.
+    /// SHA256 hash of encryption key used with the Customer-Supplied Encryption
+    /// Keys feature.
     #[prost(bytes = "vec", tag = "5")]
     pub encryption_key_sha256_bytes: ::prost::alloc::vec::Vec<u8>,
-}
-/// Parameters that can be passed to any request.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CommonRequestParams {
-    /// Required. Required when using buckets with Requestor Pays feature enabled.
-    #[prost(string, tag = "1")]
-    pub user_project: ::prost::alloc::string::String,
 }
 /// Shared constants.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -358,6 +1038,11 @@ pub struct Bucket {
     /// name" of other Cloud Storage APIs. Example: "pub".
     #[prost(string, tag = "2")]
     pub bucket_id: ::prost::alloc::string::String,
+    /// The etag of the bucket.
+    /// If included in the metadata of an UpdateBucketRequest, the operation will
+    /// only be performed if the etag matches that of the bucket.
+    #[prost(string, tag = "29")]
+    pub etag: ::prost::alloc::string::String,
     /// Immutable. The project which owns this bucket.
     #[prost(string, tag = "3")]
     pub project: ::prost::alloc::string::String,
@@ -384,6 +1069,14 @@ pub struct Bucket {
     /// <https://developers.google.com/storage/docs/storage-classes.>
     #[prost(string, tag = "7")]
     pub storage_class: ::prost::alloc::string::String,
+    /// The recovery point objective for cross-region replication of the bucket.
+    /// Applicable only for dual- and multi-region buckets. "DEFAULT" uses default
+    /// replication. "ASYNC_TURBO" enables turbo replication, valid for dual-region
+    /// buckets only. If rpo is not specified when the bucket is created, it
+    /// defaults to "DEFAULT". For more information, see
+    /// <https://cloud.google.com/storage/docs/turbo-replication.>
+    #[prost(string, tag = "27")]
+    pub rpo: ::prost::alloc::string::String,
     /// Access controls on the bucket.
     /// If iamConfig.uniformBucketLevelAccess is enabled on this bucket,
     /// requests to set, read, or modify acl is an error.
@@ -399,8 +1092,7 @@ pub struct Bucket {
     /// for more information.
     #[prost(message, optional, tag = "10")]
     pub lifecycle: ::core::option::Option<bucket::Lifecycle>,
-    /// Output only. The creation time of the bucket in
-    /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
+    /// Output only. The creation time of the bucket.
     /// Attempting to set or update this field will result in a
     /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "11")]
@@ -469,17 +1161,17 @@ pub struct Bucket {
     /// The bucket's IAM config.
     #[prost(message, optional, tag = "23")]
     pub iam_config: ::core::option::Option<bucket::IamConfig>,
-    /// Immutable. The zone or zones from which the bucket is intended to use zonal quota.
-    /// Requests for data from outside the specified affinities are still allowed
-    /// but won't be able to use zonal quota. The values are case-insensitive.
-    /// Attempting to update this field after bucket is created will result in an
-    /// error.
-    #[deprecated]
-    #[prost(string, repeated, tag = "24")]
-    pub zone_affinity: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Reserved for future use.
     #[prost(bool, tag = "25")]
     pub satisfies_pzs: bool,
+    /// Configuration that, if present, specifies the data placement for a Custom
+    /// Dual Region.
+    #[prost(message, optional, tag = "26")]
+    pub custom_placement_config: ::core::option::Option<bucket::CustomPlacementConfig>,
+    /// The bucket's Autoclass configuration. If there is no configuration, the
+    /// Autoclass feature will be disabled and have no effect on the bucket.
+    #[prost(message, optional, tag = "28")]
+    pub autoclass: ::core::option::Option<bucket::Autoclass>,
 }
 /// Nested message and enum types in `Bucket`.
 pub mod bucket {
@@ -520,8 +1212,8 @@ pub mod bucket {
     /// Encryption properties of a bucket.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Encryption {
-        /// A Cloud KMS key that will be used to encrypt objects inserted into this
-        /// bucket, if no encryption method is specified.
+        /// The name of the Cloud KMS key that will be used to encrypt objects
+        /// inserted into this bucket, if no encryption method is specified.
         #[prost(string, tag = "1")]
         pub default_kms_key: ::prost::alloc::string::String,
     }
@@ -532,9 +1224,10 @@ pub mod bucket {
         #[prost(message, optional, tag = "1")]
         pub uniform_bucket_level_access:
             ::core::option::Option<iam_config::UniformBucketLevelAccess>,
-        /// Whether IAM will enforce public access prevention.
-        #[prost(enumeration = "iam_config::PublicAccessPrevention", tag = "2")]
-        pub public_access_prevention: i32,
+        /// Whether IAM will enforce public access prevention. Valid values are
+        /// "enforced" or "inherited".
+        #[prost(string, tag = "3")]
+        pub public_access_prevention: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `IamConfig`.
     pub mod iam_config {
@@ -546,27 +1239,10 @@ pub mod bucket {
             #[prost(bool, tag = "1")]
             pub enabled: bool,
             /// The deadline time for changing
-            /// `iamConfig.uniformBucketLevelAccess.enabled` from
-            /// true to false in [RFC 3339](<https://tools.ietf.org/html/rfc3339>).
+            /// `iamConfig.uniformBucketLevelAccess.enabled` from `true` to `false`.
             /// Mutable until the specified deadline is reached, but not afterward.
             #[prost(message, optional, tag = "2")]
             pub lock_time: ::core::option::Option<::prost_types::Timestamp>,
-        }
-        /// Public Access Prevention config values.
-        #[derive(
-            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
-        )]
-        #[repr(i32)]
-        pub enum PublicAccessPrevention {
-            /// No specified PublicAccessPrevention.
-            Unspecified = 0,
-            /// Prevents access from being granted to public members 'allUsers' and
-            /// 'allAuthenticatedUsers'. Prevents attempts to grant new access to
-            /// public members.
-            Enforced = 1,
-            /// This setting is inherited from Org Policy. Does not prevent access from
-            /// being granted to public members 'allUsers' or 'allAuthenticatedUsers'.
-            Inherited = 2,
         }
     }
     /// Lifecycle properties of a bucket.
@@ -596,8 +1272,8 @@ pub mod bucket {
             /// An action to take on an object.
             #[derive(Clone, PartialEq, ::prost::Message)]
             pub struct Action {
-                /// Type of the action. Currently, only `Delete` and
-                /// `SetStorageClass` are supported.
+                /// Type of the action. Currently, only `Delete`, `SetStorageClass`, and
+                /// `AbortIncompleteMultipartUpload` are supported.
                 #[prost(string, tag = "1")]
                 pub r#type: ::prost::alloc::string::String,
                 /// Target storage class. Required iff the type of the action is
@@ -658,13 +1334,22 @@ pub mod bucket {
                 #[prost(message, optional, tag = "10")]
                 pub noncurrent_time_before:
                     ::core::option::Option<super::super::super::super::super::r#type::Date>,
+                /// List of object name prefixes. If any prefix exactly matches the
+                /// beginning of the object name, the condition evaluates to true.
+                #[prost(string, repeated, tag = "11")]
+                pub matches_prefix: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+                /// List of object name suffixes. If any suffix exactly matches the
+                /// end of the object name, the condition evaluates to true.
+                #[prost(string, repeated, tag = "12")]
+                pub matches_suffix: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             }
         }
     }
     /// Logging-related properties of a bucket.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Logging {
-        /// The destination bucket where the current bucket's logs should be placed.
+        /// The destination bucket where the current bucket's logs should be placed,
+        /// using path format (like `projects/123456/buckets/foo`).
         #[prost(string, tag = "1")]
         pub log_bucket: ::prost::alloc::string::String,
         /// A prefix for log object names.
@@ -675,8 +1360,7 @@ pub mod bucket {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct RetentionPolicy {
         /// Server-determined value that indicates the time from which policy was
-        /// enforced and effective. This value is in
-        /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
+        /// enforced and effective.
         #[prost(message, optional, tag = "1")]
         pub effective_time: ::core::option::Option<::prost_types::Timestamp>,
         /// Once locked, an object retention policy cannot be modified.
@@ -717,6 +1401,28 @@ pub mod bucket {
         #[prost(string, tag = "2")]
         pub not_found_page: ::prost::alloc::string::String,
     }
+    /// Configuration for Custom Dual Regions.  It should specify precisely two
+    /// eligible regions within the same Multiregion. More information on regions
+    /// may be found \[<https://cloud.google.com/storage/docs/locations][here\].>
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CustomPlacementConfig {
+        /// List of locations to use for data placement.
+        #[prost(string, repeated, tag = "1")]
+        pub data_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Configuration for a bucket's Autoclass feature.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Autoclass {
+        /// Enables Autoclass.
+        #[prost(bool, tag = "1")]
+        pub enabled: bool,
+        /// Output only. Latest instant at which the `enabled` field was set to true after being
+        /// disabled/unconfigured or set to false after being enabled. If Autoclass
+        /// is enabled when the bucket is created, the toggle_time is set to the
+        /// bucket creation time.
+        #[prost(message, optional, tag = "2")]
+        pub toggle_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
 }
 /// An access-control entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -747,6 +1453,12 @@ pub struct BucketAccessControl {
     /// The ID for the entity, if any.
     #[prost(string, tag = "4")]
     pub entity_id: ::prost::alloc::string::String,
+    /// The etag of the BucketAccessControl.
+    /// If included in the metadata of an update or delete request message, the
+    /// operation operation will only be performed if the etag matches that of the
+    /// bucket's BucketAccessControl.
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
     /// The email address associated with the entity, if any.
     #[prost(string, tag = "5")]
     pub email: ::prost::alloc::string::String,
@@ -787,6 +1499,81 @@ pub struct ObjectChecksums {
     #[prost(bytes = "vec", tag = "2")]
     pub md5_hash: ::prost::alloc::vec::Vec<u8>,
 }
+/// Hmac Key Metadata, which includes all information other than the secret.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HmacKeyMetadata {
+    /// Resource name ID of the key in the format <projectId>/<accessId>.
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    /// Globally unique id for keys.
+    #[prost(string, tag = "2")]
+    pub access_id: ::prost::alloc::string::String,
+    /// The project ID that the hmac key is contained in.
+    #[prost(string, tag = "3")]
+    pub project: ::prost::alloc::string::String,
+    /// Email of the service account the key authenticates as.
+    #[prost(string, tag = "4")]
+    pub service_account_email: ::prost::alloc::string::String,
+    /// State of the key. One of ACTIVE, INACTIVE, or DELETED.
+    #[prost(string, tag = "5")]
+    pub state: ::prost::alloc::string::String,
+    /// The creation time of the HMAC key.
+    #[prost(message, optional, tag = "6")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The last modification time of the HMAC key metadata.
+    #[prost(message, optional, tag = "7")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The etag of the HMAC key.
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// A directive to publish Pub/Sub notifications upon changes to a bucket.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Notification {
+    /// Required. The resource name of this notification.
+    /// Format:
+    /// `projects/{project}/buckets/{bucket}/notificationConfigs/{notification}`
+    /// The `{project}` portion may be `_` for globally unique buckets.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The Pub/Sub topic to which this subscription publishes. Formatted as:
+    /// '//pubsub.googleapis.com/projects/{project-identifier}/topics/{my-topic}'
+    #[prost(string, tag = "2")]
+    pub topic: ::prost::alloc::string::String,
+    /// The etag of the Notification.
+    /// If included in the metadata of GetNotificationRequest, the operation will
+    /// only be performed if the etag matches that of the Notification.
+    #[prost(string, tag = "7")]
+    pub etag: ::prost::alloc::string::String,
+    /// Optional. If present, only send notifications about listed event types. If empty,
+    /// sent notifications for all event types.
+    #[prost(string, repeated, tag = "3")]
+    pub event_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// Optional. An optional list of additional attributes to attach to each Pub/Sub
+    /// message published for this notification subscription.
+    #[prost(map = "string, string", tag = "4")]
+    pub custom_attributes:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Optional. If present, only apply this notification config to object names that
+    /// begin with this prefix.
+    #[prost(string, tag = "5")]
+    pub object_name_prefix: ::prost::alloc::string::String,
+    /// Required. The desired content of the Payload.
+    #[prost(string, tag = "6")]
+    pub payload_format: ::prost::alloc::string::String,
+}
+/// Describes the Customer-Supplied Encryption Key mechanism used to store an
+/// Object's data at rest.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerEncryption {
+    /// The encryption algorithm.
+    #[prost(string, tag = "1")]
+    pub encryption_algorithm: ::prost::alloc::string::String,
+    /// SHA256 hash value of the encryption key.
+    /// In raw bytes format (not base64-encoded).
+    #[prost(bytes = "vec", tag = "3")]
+    pub key_sha256_bytes: ::prost::alloc::vec::Vec<u8>,
+}
 /// An object.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Object {
@@ -802,6 +1589,12 @@ pub struct Object {
     /// Immutable. The name of the bucket containing this object.
     #[prost(string, tag = "2")]
     pub bucket: ::prost::alloc::string::String,
+    /// The etag of the object.
+    /// If included in the metadata of an update or delete request message, the
+    /// operation will only be performed if the etag matches that of the live
+    /// object.
+    #[prost(string, tag = "27")]
+    pub etag: ::prost::alloc::string::String,
     /// Immutable. The content generation of this object. Used for object versioning.
     /// Attempting to set or update this field will result in a
     /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
@@ -896,8 +1689,7 @@ pub struct Object {
     #[prost(bool, tag = "20")]
     pub temporary_hold: bool,
     /// A server-determined value that specifies the earliest time that the
-    /// object's retention period expires. This value is in
-    /// \[<https://tools.ietf.org/html/rfc3339\][RFC> 3339] format.
+    /// object's retention period expires.
     /// Note 1: This field is not provided for objects with an active event-based
     /// hold, since retention expiration is unknown until the hold is removed.
     /// Note 2: This value can be provided even when temporary hold is set (so that
@@ -927,27 +1719,13 @@ pub struct Object {
     /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag = "24")]
     pub owner: ::core::option::Option<Owner>,
-    /// Metadata of customer-supplied encryption key, if the object is encrypted by
+    /// Metadata of Customer-Supplied Encryption Key, if the object is encrypted by
     /// such a key.
     #[prost(message, optional, tag = "25")]
-    pub customer_encryption: ::core::option::Option<object::CustomerEncryption>,
+    pub customer_encryption: ::core::option::Option<CustomerEncryption>,
     /// A user-specified timestamp set on an object.
     #[prost(message, optional, tag = "26")]
     pub custom_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Nested message and enum types in `Object`.
-pub mod object {
-    /// Describes the customer-specified mechanism used to store the data at rest.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct CustomerEncryption {
-        /// The encryption algorithm.
-        #[prost(string, tag = "1")]
-        pub encryption_algorithm: ::prost::alloc::string::String,
-        /// SHA256 hash value of the encryption key.
-        /// In raw bytes format (not base64-encoded).
-        #[prost(bytes = "vec", tag = "3")]
-        pub key_sha256_bytes: ::prost::alloc::vec::Vec<u8>,
-    }
 }
 /// An access-control entry.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -978,6 +1756,12 @@ pub struct ObjectAccessControl {
     /// The ID for the entity, if any.
     #[prost(string, tag = "4")]
     pub entity_id: ::prost::alloc::string::String,
+    /// The etag of the ObjectAccessControl.
+    /// If included in the metadata of an update or delete request message, the
+    /// operation will only be performed if the etag matches that of the live
+    /// object's ObjectAccessControl.
+    #[prost(string, tag = "8")]
+    pub etag: ::prost::alloc::string::String,
     /// The email address associated with the entity, if any.
     #[prost(string, tag = "5")]
     pub email: ::prost::alloc::string::String,
@@ -988,6 +1772,21 @@ pub struct ObjectAccessControl {
     #[prost(message, optional, tag = "7")]
     pub project_team: ::core::option::Option<ProjectTeam>,
 }
+/// The result of a call to Objects.ListObjects
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListObjectsResponse {
+    /// The list of items.
+    #[prost(message, repeated, tag = "1")]
+    pub objects: ::prost::alloc::vec::Vec<Object>,
+    /// The list of prefixes of objects matching-but-not-listed up to and including
+    /// the requested delimiter.
+    #[prost(string, repeated, tag = "2")]
+    pub prefixes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The continuation token, used to page through large result sets. Provide
+    /// this value in a subsequent request to return the next page of results.
+    #[prost(string, tag = "3")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 /// Represents the Viewers, Editors, or Owners of a given project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProjectTeam {
@@ -997,6 +1796,15 @@ pub struct ProjectTeam {
     /// The team.
     #[prost(string, tag = "2")]
     pub team: ::prost::alloc::string::String,
+}
+/// A service account, owned by Cloud Storage, which may be used when taking
+/// action on behalf of a given project, for example to publish Pub/Sub
+/// notifications or to retrieve security keys.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ServiceAccount {
+    /// The ID of the notification.
+    #[prost(string, tag = "1")]
+    pub email_address: ::prost::alloc::string::String,
 }
 /// The owner of a specific resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1021,39 +1829,15 @@ pub struct ContentRange {
     #[prost(int64, tag = "3")]
     pub complete_length: i64,
 }
-/// Predefined or "canned" aliases for sets of specific object ACL entries.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum PredefinedObjectAcl {
-    /// No predefined ACL.
-    Unspecified = 0,
-    /// Object owner gets `OWNER` access, and
-    /// `allAuthenticatedUsers` get `READER` access.
-    ObjectAclAuthenticatedRead = 1,
-    /// Object owner gets `OWNER` access, and project team owners get
-    /// `OWNER` access.
-    ObjectAclBucketOwnerFullControl = 2,
-    /// Object owner gets `OWNER` access, and project team owners get
-    /// `READER` access.
-    ObjectAclBucketOwnerRead = 3,
-    /// Object owner gets `OWNER` access.
-    ObjectAclPrivate = 4,
-    /// Object owner gets `OWNER` access, and project team members get
-    /// access according to their roles.
-    ObjectAclProjectPrivate = 5,
-    /// Object owner gets `OWNER` access, and `allUsers`
-    /// get `READER` access.
-    ObjectAclPublicRead = 6,
-}
 #[doc = r" Generated client implementations."]
 pub mod storage_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " ## API Overview and Naming Syntax"]
     #[doc = ""]
-    #[doc = " The GCS gRPC API allows applications to read and write data through the"]
-    #[doc = " abstractions of buckets and objects. For a description of these abstractions"]
-    #[doc = " please see https://cloud.google.com/storage/docs."]
+    #[doc = " The Cloud Storage gRPC API allows applications to read and write data through"]
+    #[doc = " the abstractions of buckets and objects. For a description of these"]
+    #[doc = " abstractions please see https://cloud.google.com/storage/docs."]
     #[doc = ""]
     #[doc = " Resources are named as follows:"]
     #[doc = "   - Projects are referred to as they are defined by the Resource Manager API,"]
@@ -1115,6 +1899,275 @@ pub mod storage_client {
             self.inner = self.inner.accept_gzip();
             self
         }
+        #[doc = " Permanently deletes an empty bucket."]
+        pub async fn delete_bucket(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteBucketRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/DeleteBucket");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Returns metadata for the specified bucket."]
+        pub async fn get_bucket(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetBucketRequest>,
+        ) -> Result<tonic::Response<super::Bucket>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/GetBucket");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a new bucket."]
+        pub async fn create_bucket(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateBucketRequest>,
+        ) -> Result<tonic::Response<super::Bucket>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/CreateBucket");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Retrieves a list of buckets for a given project."]
+        pub async fn list_buckets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListBucketsRequest>,
+        ) -> Result<tonic::Response<super::ListBucketsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/ListBuckets");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Locks retention policy on a bucket."]
+        pub async fn lock_bucket_retention_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::LockBucketRetentionPolicyRequest>,
+        ) -> Result<tonic::Response<super::Bucket>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.v2.Storage/LockBucketRetentionPolicy",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets the IAM policy for a specified bucket."]
+        pub async fn get_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::super::super::iam::v1::GetIamPolicyRequest>,
+        ) -> Result<tonic::Response<super::super::super::iam::v1::Policy>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/GetIamPolicy");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates an IAM policy for the specified bucket."]
+        pub async fn set_iam_policy(
+            &mut self,
+            request: impl tonic::IntoRequest<super::super::super::iam::v1::SetIamPolicyRequest>,
+        ) -> Result<tonic::Response<super::super::super::iam::v1::Policy>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/SetIamPolicy");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Tests a set of permissions on the given bucket to see which, if"]
+        #[doc = " any, are held by the caller."]
+        pub async fn test_iam_permissions(
+            &mut self,
+            request: impl tonic::IntoRequest<super::super::super::iam::v1::TestIamPermissionsRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::iam::v1::TestIamPermissionsResponse>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.v2.Storage/TestIamPermissions",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a bucket. Equivalent to JSON API's storage.buckets.patch method."]
+        pub async fn update_bucket(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateBucketRequest>,
+        ) -> Result<tonic::Response<super::Bucket>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/UpdateBucket");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Permanently deletes a notification subscription."]
+        pub async fn delete_notification(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteNotificationRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.v2.Storage/DeleteNotification",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " View a notification config."]
+        pub async fn get_notification(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetNotificationRequest>,
+        ) -> Result<tonic::Response<super::Notification>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/GetNotification");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a notification subscription for a given bucket."]
+        #[doc = " These notifications, when triggered, publish messages to the specified"]
+        #[doc = " Pub/Sub topics."]
+        #[doc = " See https://cloud.google.com/storage/docs/pubsub-notifications."]
+        pub async fn create_notification(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateNotificationRequest>,
+        ) -> Result<tonic::Response<super::Notification>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.v2.Storage/CreateNotification",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Retrieves a list of notification subscriptions for a given bucket."]
+        pub async fn list_notifications(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListNotificationsRequest>,
+        ) -> Result<tonic::Response<super::ListNotificationsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.v2.Storage/ListNotifications",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Concatenates a list of existing objects into a new object in the same"]
+        #[doc = " bucket."]
+        pub async fn compose_object(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ComposeObjectRequest>,
+        ) -> Result<tonic::Response<super::Object>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/ComposeObject");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes an object and its metadata. Deletions are permanent if versioning"]
+        #[doc = " is not enabled for the bucket, or if the `generation` parameter"]
+        #[doc = " is used."]
+        pub async fn delete_object(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteObjectRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/DeleteObject");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Retrieves an object's metadata."]
+        pub async fn get_object(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetObjectRequest>,
+        ) -> Result<tonic::Response<super::Object>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/GetObject");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         #[doc = " Reads an object's data."]
         pub async fn read_object(
             &mut self,
@@ -1132,7 +2185,26 @@ pub mod storage_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/ReadObject");
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
+        }
+        #[doc = " Updates an object's metadata."]
+        #[doc = " Equivalent to JSON API's storage.objects.patch."]
+        pub async fn update_object(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateObjectRequest>,
+        ) -> Result<tonic::Response<super::Object>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/UpdateObject");
+            self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Stores a new object and metadata."]
         #[doc = ""]
@@ -1144,13 +2216,37 @@ pub mod storage_client {
         #[doc = " true, or else it is an error."]
         #[doc = ""]
         #[doc = " For a resumable write, the client should instead call"]
-        #[doc = " `StartResumableWrite()` and provide that method an `WriteObjectSpec.`"]
+        #[doc = " `StartResumableWrite()`, populating a `WriteObjectSpec` into that request."]
         #[doc = " They should then attach the returned `upload_id` to the first message of"]
-        #[doc = " each following call to `Create`. If there is an error or the connection is"]
-        #[doc = " broken during the resumable `Create()`, the client should check the status"]
-        #[doc = " of the `Create()` by calling `QueryWriteStatus()` and continue writing from"]
-        #[doc = " the returned `persisted_size`. This may be less than the amount of data the"]
-        #[doc = " client previously sent."]
+        #[doc = " each following call to `WriteObject`. If the stream is closed before"]
+        #[doc = " finishing the upload (either explicitly by the client or due to a network"]
+        #[doc = " error or an error response from the server), the client should do as"]
+        #[doc = " follows:"]
+        #[doc = "   - Check the result Status of the stream, to determine if writing can be"]
+        #[doc = "     resumed on this stream or must be restarted from scratch (by calling"]
+        #[doc = "     `StartResumableWrite()`). The resumable errors are DEADLINE_EXCEEDED,"]
+        #[doc = "     INTERNAL, and UNAVAILABLE. For each case, the client should use binary"]
+        #[doc = "     exponential backoff before retrying.  Additionally, writes can be"]
+        #[doc = "     resumed after RESOURCE_EXHAUSTED errors, but only after taking"]
+        #[doc = "     appropriate measures, which may include reducing aggregate send rate"]
+        #[doc = "     across clients and/or requesting a quota increase for your project."]
+        #[doc = "   - If the call to `WriteObject` returns `ABORTED`, that indicates"]
+        #[doc = "     concurrent attempts to update the resumable write, caused either by"]
+        #[doc = "     multiple racing clients or by a single client where the previous"]
+        #[doc = "     request was timed out on the client side but nonetheless reached the"]
+        #[doc = "     server. In this case the client should take steps to prevent further"]
+        #[doc = "     concurrent writes (e.g., increase the timeouts, stop using more than"]
+        #[doc = "     one process to perform the upload, etc.), and then should follow the"]
+        #[doc = "     steps below for resuming the upload."]
+        #[doc = "   - For resumable errors, the client should call `QueryWriteStatus()` and"]
+        #[doc = "     then continue writing from the returned `persisted_size`. This may be"]
+        #[doc = "     less than the amount of data the client previously sent. Note also that"]
+        #[doc = "     it is acceptable to send data starting at an offset earlier than the"]
+        #[doc = "     returned `persisted_size`; in this case, the service will skip data at"]
+        #[doc = "     offsets that were already persisted (without checking that it matches"]
+        #[doc = "     the previously written data), and write only the data starting from the"]
+        #[doc = "     persisted offset. This behavior can make client-side handling simpler"]
+        #[doc = "     in some cases."]
         #[doc = ""]
         #[doc = " The service will not view the object as complete until the client has"]
         #[doc = " sent a `WriteObjectRequest` with `finish_write` set to `true`. Sending any"]
@@ -1158,6 +2254,10 @@ pub mod storage_client {
         #[doc = " `true` will cause an error. The client **should** check the response it"]
         #[doc = " receives to determine how much data the service was able to commit and"]
         #[doc = " whether the service views the object as complete."]
+        #[doc = ""]
+        #[doc = " Attempting to resume an already finalized object will result in an OK"]
+        #[doc = " status, with a WriteObjectResponse containing the finalized object's"]
+        #[doc = " metadata."]
         pub async fn write_object(
             &mut self,
             request: impl tonic::IntoStreamingRequest<Message = super::WriteObjectRequest>,
@@ -1171,7 +2271,42 @@ pub mod storage_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/WriteObject");
-            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .client_streaming(request.into_streaming_request(), path, codec)
+                .await
+        }
+        #[doc = " Retrieves a list of objects matching the criteria."]
+        pub async fn list_objects(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListObjectsRequest>,
+        ) -> Result<tonic::Response<super::ListObjectsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/ListObjects");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Rewrites a source object to a destination object. Optionally overrides"]
+        #[doc = " metadata."]
+        pub async fn rewrite_object(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RewriteObjectRequest>,
+        ) -> Result<tonic::Response<super::RewriteResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/RewriteObject");
+            self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Starts a resumable write. How long the write operation remains valid, and"]
         #[doc = " what happens when the write operation becomes invalid, are"]
@@ -1218,6 +2353,103 @@ pub mod storage_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/QueryWriteStatus");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Retrieves the name of a project's Google Cloud Storage service account."]
+        pub async fn get_service_account(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetServiceAccountRequest>,
+        ) -> Result<tonic::Response<super::ServiceAccount>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.v2.Storage/GetServiceAccount",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a new HMAC key for the given service account."]
+        pub async fn create_hmac_key(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateHmacKeyRequest>,
+        ) -> Result<tonic::Response<super::CreateHmacKeyResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/CreateHmacKey");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes a given HMAC key.  Key must be in an INACTIVE state."]
+        pub async fn delete_hmac_key(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteHmacKeyRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/DeleteHmacKey");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets an existing HMAC key metadata for the given id."]
+        pub async fn get_hmac_key(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetHmacKeyRequest>,
+        ) -> Result<tonic::Response<super::HmacKeyMetadata>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/GetHmacKey");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists HMAC keys under a given project with the additional filters provided."]
+        pub async fn list_hmac_keys(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListHmacKeysRequest>,
+        ) -> Result<tonic::Response<super::ListHmacKeysResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/ListHmacKeys");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a given HMAC key state between ACTIVE and INACTIVE."]
+        pub async fn update_hmac_key(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateHmacKeyRequest>,
+        ) -> Result<tonic::Response<super::HmacKeyMetadata>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/google.storage.v2.Storage/UpdateHmacKey");
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

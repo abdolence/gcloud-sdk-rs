@@ -434,7 +434,10 @@ pub struct GameServerClusterConnectionInfo {
     #[prost(string, tag = "5")]
     pub namespace: ::prost::alloc::string::String,
     /// The location of the Kubernetes cluster.
-    #[prost(oneof = "game_server_cluster_connection_info::ClusterReference", tags = "7")]
+    #[prost(
+        oneof = "game_server_cluster_connection_info::ClusterReference",
+        tags = "7"
+    )]
     pub cluster_reference:
         ::core::option::Option<game_server_cluster_connection_info::ClusterReference>,
 }

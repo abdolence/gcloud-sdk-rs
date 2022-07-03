@@ -895,7 +895,10 @@ pub struct GetServiceIdentityResponse {
     #[prost(message, optional, tag = "1")]
     pub identity: ::core::option::Option<ServiceIdentity>,
     /// Service identity state.
-    #[prost(enumeration = "get_service_identity_response::IdentityState", tag = "2")]
+    #[prost(
+        enumeration = "get_service_identity_response::IdentityState",
+        tag = "2"
+    )]
     pub state: i32,
 }
 /// Nested message and enum types in `GetServiceIdentityResponse`.

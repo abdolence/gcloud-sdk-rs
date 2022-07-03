@@ -142,7 +142,9 @@ pub mod connection_api_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firebase.fcm.connection.v1alpha1.ConnectionApi/Connect",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }

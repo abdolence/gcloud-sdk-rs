@@ -79,6 +79,38 @@ pub struct EnvelopeSignature {
     #[prost(string, tag = "2")]
     pub keyid: ::prost::alloc::string::String,
 }
+/// Indicates the location at which a package was found.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileLocation {
+    /// For jars that are contained inside .war files, this filepath
+    /// can indicate the path to war file combined with the path to jar file.
+    #[prost(string, tag = "1")]
+    pub file_path: ::prost::alloc::string::String,
+}
+/// License information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct License {
+    /// Often a single license can be used to represent the licensing terms.
+    /// Sometimes it is necessary to include a choice of one or more licenses
+    /// or some combination of license identifiers.
+    /// Examples: "LGPL-2.1-only OR MIT", "LGPL-2.1-only AND MIT",
+    /// "GPL-2.0-or-later WITH Bison-exception-2.2".
+    #[prost(string, tag = "1")]
+    pub expression: ::prost::alloc::string::String,
+    /// Comments
+    #[prost(string, tag = "2")]
+    pub comments: ::prost::alloc::string::String,
+}
+/// Digest information.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Digest {
+    /// `SHA1`, `SHA512` etc.
+    #[prost(string, tag = "1")]
+    pub algo: ::prost::alloc::string::String,
+    /// Value of the digest.
+    #[prost(bytes = "vec", tag = "2")]
+    pub digest_bytes: ::prost::alloc::vec::Vec<u8>,
+}
 /// Kind represents the kinds of notes supported.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -180,441 +212,6 @@ pub struct AttestationOccurrence {
     /// implementations.  The JWT itself is opaque to Grafeas.
     #[prost(message, repeated, tag = "3")]
     pub jwts: ::prost::alloc::vec::Vec<Jwt>,
-}
-/// Common Vulnerability Scoring System version 3.
-/// For details, see <https://www.first.org/cvss/specification-document>
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CvsSv3 {
-    /// The base score is a function of the base metric scores.
-    #[prost(float, tag = "1")]
-    pub base_score: f32,
-    #[prost(float, tag = "2")]
-    pub exploitability_score: f32,
-    #[prost(float, tag = "3")]
-    pub impact_score: f32,
-    /// Base Metrics
-    /// Represents the intrinsic characteristics of a vulnerability that are
-    /// constant over time and across user environments.
-    #[prost(enumeration = "cvs_sv3::AttackVector", tag = "5")]
-    pub attack_vector: i32,
-    #[prost(enumeration = "cvs_sv3::AttackComplexity", tag = "6")]
-    pub attack_complexity: i32,
-    #[prost(enumeration = "cvs_sv3::PrivilegesRequired", tag = "7")]
-    pub privileges_required: i32,
-    #[prost(enumeration = "cvs_sv3::UserInteraction", tag = "8")]
-    pub user_interaction: i32,
-    #[prost(enumeration = "cvs_sv3::Scope", tag = "9")]
-    pub scope: i32,
-    #[prost(enumeration = "cvs_sv3::Impact", tag = "10")]
-    pub confidentiality_impact: i32,
-    #[prost(enumeration = "cvs_sv3::Impact", tag = "11")]
-    pub integrity_impact: i32,
-    #[prost(enumeration = "cvs_sv3::Impact", tag = "12")]
-    pub availability_impact: i32,
-}
-/// Nested message and enum types in `CVSSv3`.
-pub mod cvs_sv3 {
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum AttackVector {
-        Unspecified = 0,
-        Network = 1,
-        Adjacent = 2,
-        Local = 3,
-        Physical = 4,
-    }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum AttackComplexity {
-        Unspecified = 0,
-        Low = 1,
-        High = 2,
-    }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum PrivilegesRequired {
-        Unspecified = 0,
-        None = 1,
-        Low = 2,
-        High = 3,
-    }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum UserInteraction {
-        Unspecified = 0,
-        None = 1,
-        Required = 2,
-    }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum Scope {
-        Unspecified = 0,
-        Unchanged = 1,
-        Changed = 2,
-    }
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum Impact {
-        Unspecified = 0,
-        High = 1,
-        Low = 2,
-        None = 3,
-    }
-}
-/// This represents a particular channel of distribution for a given package.
-/// E.g., Debian's jessie-backports dpkg mirror.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Distribution {
-    /// Required. The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
-    /// denoting the package manager version distributing a package.
-    #[prost(string, tag = "1")]
-    pub cpe_uri: ::prost::alloc::string::String,
-    /// The CPU architecture for which packages in this distribution channel were
-    /// built.
-    #[prost(enumeration = "Architecture", tag = "2")]
-    pub architecture: i32,
-    /// The latest available version of this package in this distribution channel.
-    #[prost(message, optional, tag = "3")]
-    pub latest_version: ::core::option::Option<Version>,
-    /// A freeform string denoting the maintainer of this package.
-    #[prost(string, tag = "4")]
-    pub maintainer: ::prost::alloc::string::String,
-    /// The distribution channel-specific homepage for this package.
-    #[prost(string, tag = "5")]
-    pub url: ::prost::alloc::string::String,
-    /// The distribution channel-specific description of this package.
-    #[prost(string, tag = "6")]
-    pub description: ::prost::alloc::string::String,
-}
-/// An occurrence of a particular package installation found within a system's
-/// filesystem. E.g., glibc was found in `/var/lib/dpkg/status`.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Location {
-    /// Required. The CPE URI in [CPE format](<https://cpe.mitre.org/specification/>)
-    /// denoting the package manager version distributing a package.
-    #[prost(string, tag = "1")]
-    pub cpe_uri: ::prost::alloc::string::String,
-    /// The version installed at this location.
-    #[prost(message, optional, tag = "2")]
-    pub version: ::core::option::Option<Version>,
-    /// The path from which we gathered that this package/version is installed.
-    #[prost(string, tag = "3")]
-    pub path: ::prost::alloc::string::String,
-}
-/// This represents a particular package that is distributed over various
-/// channels. E.g., glibc (aka libc6) is distributed by many, at various
-/// versions.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PackageNote {
-    /// Required. Immutable. The name of the package.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// The various channels by which a package is distributed.
-    #[prost(message, repeated, tag = "10")]
-    pub distribution: ::prost::alloc::vec::Vec<Distribution>,
-}
-/// Details on how a particular software package was installed on a system.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PackageOccurrence {
-    /// Output only. The name of the installed package.
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Required. All of the places within the filesystem versions of this package
-    /// have been found.
-    #[prost(message, repeated, tag = "2")]
-    pub location: ::prost::alloc::vec::Vec<Location>,
-}
-/// Version contains structured information about the version of a package.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Version {
-    /// Used to correct mistakes in the version numbering scheme.
-    #[prost(int32, tag = "1")]
-    pub epoch: i32,
-    /// Required only when version kind is NORMAL. The main part of the version
-    /// name.
-    #[prost(string, tag = "2")]
-    pub name: ::prost::alloc::string::String,
-    /// The iteration of the package build from the above version.
-    #[prost(string, tag = "3")]
-    pub revision: ::prost::alloc::string::String,
-    /// Whether this version is specifying part of an inclusive range. Grafeas
-    /// does not have the capability to specify version ranges; instead we have
-    /// fields that specify start version and end versions. At times this is
-    /// insufficient - we also need to specify whether the version is included in
-    /// the range or is excluded from the range. This boolean is expected to be set
-    /// to true when the version is included in a range.
-    #[prost(bool, tag = "6")]
-    pub inclusive: bool,
-    /// Required. Distinguishes between sentinel MIN/MAX versions and normal
-    /// versions.
-    #[prost(enumeration = "version::VersionKind", tag = "4")]
-    pub kind: i32,
-    /// Human readable version string. This string is of the form
-    /// <epoch>:<name>-<revision> and is only set when kind is NORMAL.
-    #[prost(string, tag = "5")]
-    pub full_name: ::prost::alloc::string::String,
-}
-/// Nested message and enum types in `Version`.
-pub mod version {
-    /// Whether this is an ordinary package version or a sentinel MIN/MAX version.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum VersionKind {
-        /// Unknown.
-        Unspecified = 0,
-        /// A standard package version.
-        Normal = 1,
-        /// A special version representing negative infinity.
-        Minimum = 2,
-        /// A special version representing positive infinity.
-        Maximum = 3,
-    }
-}
-/// Instruction set architectures supported by various package managers.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum Architecture {
-    /// Unknown architecture.
-    Unspecified = 0,
-    /// X86 architecture.
-    X86 = 1,
-    /// X64 architecture.
-    X64 = 2,
-}
-/// A security vulnerability that can be found in resources.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VulnerabilityNote {
-    /// The CVSS score of this vulnerability. CVSS score is on a scale of 0 - 10
-    /// where 0 indicates low severity and 10 indicates high severity.
-    #[prost(float, tag = "1")]
-    pub cvss_score: f32,
-    /// The note provider assigned severity of this vulnerability.
-    #[prost(enumeration = "Severity", tag = "2")]
-    pub severity: i32,
-    /// Details of all known distros and packages affected by this vulnerability.
-    #[prost(message, repeated, tag = "3")]
-    pub details: ::prost::alloc::vec::Vec<vulnerability_note::Detail>,
-    /// The full description of the CVSSv3 for this vulnerability.
-    #[prost(message, optional, tag = "4")]
-    pub cvss_v3: ::core::option::Option<CvsSv3>,
-    /// Windows details get their own format because the information format and
-    /// model don't match a normal detail. Specifically Windows updates are done as
-    /// patches, thus Windows vulnerabilities really are a missing package, rather
-    /// than a package being at an incorrect version.
-    #[prost(message, repeated, tag = "5")]
-    pub windows_details: ::prost::alloc::vec::Vec<vulnerability_note::WindowsDetail>,
-    /// The time this information was last changed at the source. This is an
-    /// upstream timestamp from the underlying information source - e.g. Ubuntu
-    /// security tracker.
-    #[prost(message, optional, tag = "6")]
-    pub source_update_time: ::core::option::Option<::prost_types::Timestamp>,
-}
-/// Nested message and enum types in `VulnerabilityNote`.
-pub mod vulnerability_note {
-    /// A detail for a distro and package affected by this vulnerability and its
-    /// associated fix (if one is available).
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Detail {
-        /// The distro assigned severity of this vulnerability.
-        #[prost(string, tag = "1")]
-        pub severity_name: ::prost::alloc::string::String,
-        /// A vendor-specific description of this vulnerability.
-        #[prost(string, tag = "2")]
-        pub description: ::prost::alloc::string::String,
-        /// The type of package; whether native or non native (e.g., ruby gems,
-        /// node.js packages, etc.).
-        #[prost(string, tag = "3")]
-        pub package_type: ::prost::alloc::string::String,
-        /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
-        /// vulnerability affects.
-        #[prost(string, tag = "4")]
-        pub affected_cpe_uri: ::prost::alloc::string::String,
-        /// Required. The package this vulnerability affects.
-        #[prost(string, tag = "5")]
-        pub affected_package: ::prost::alloc::string::String,
-        /// The version number at the start of an interval in which this
-        /// vulnerability exists. A vulnerability can affect a package between
-        /// version numbers that are disjoint sets of intervals (example:
-        /// \[1.0.0-1.1.0\], \[2.4.6-2.4.8\] and \[4.5.6-4.6.8\]) each of which will be
-        /// represented in its own Detail. If a specific affected version is provided
-        /// by a vulnerability database, affected_version_start and
-        /// affected_version_end will be the same in that Detail.
-        #[prost(message, optional, tag = "6")]
-        pub affected_version_start: ::core::option::Option<super::Version>,
-        /// The version number at the end of an interval in which this vulnerability
-        /// exists. A vulnerability can affect a package between version numbers
-        /// that are disjoint sets of intervals (example: \[1.0.0-1.1.0\],
-        /// \[2.4.6-2.4.8\] and \[4.5.6-4.6.8\]) each of which will be represented in its
-        /// own Detail. If a specific affected version is provided by a vulnerability
-        /// database, affected_version_start and affected_version_end will be the
-        /// same in that Detail.
-        #[prost(message, optional, tag = "7")]
-        pub affected_version_end: ::core::option::Option<super::Version>,
-        /// The distro recommended [CPE URI](<https://cpe.mitre.org/specification/>)
-        /// to update to that contains a fix for this vulnerability. It is possible
-        /// for this to be different from the affected_cpe_uri.
-        #[prost(string, tag = "8")]
-        pub fixed_cpe_uri: ::prost::alloc::string::String,
-        /// The distro recommended package to update to that contains a fix for this
-        /// vulnerability. It is possible for this to be different from the
-        /// affected_package.
-        #[prost(string, tag = "9")]
-        pub fixed_package: ::prost::alloc::string::String,
-        /// The distro recommended version to update to that contains a
-        /// fix for this vulnerability. Setting this to VersionKind.MAXIMUM means no
-        /// such version is yet available.
-        #[prost(message, optional, tag = "10")]
-        pub fixed_version: ::core::option::Option<super::Version>,
-        /// Whether this detail is obsolete. Occurrences are expected not to point to
-        /// obsolete details.
-        #[prost(bool, tag = "11")]
-        pub is_obsolete: bool,
-        /// The time this information was last changed at the source. This is an
-        /// upstream timestamp from the underlying information source - e.g. Ubuntu
-        /// security tracker.
-        #[prost(message, optional, tag = "12")]
-        pub source_update_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// The source from which the information in this Detail was obtained.
-        #[prost(string, tag = "13")]
-        pub source: ::prost::alloc::string::String,
-        /// The name of the vendor of the product.
-        #[prost(string, tag = "14")]
-        pub vendor: ::prost::alloc::string::String,
-    }
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct WindowsDetail {
-        /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
-        /// vulnerability affects.
-        #[prost(string, tag = "1")]
-        pub cpe_uri: ::prost::alloc::string::String,
-        /// Required. The name of this vulnerability.
-        #[prost(string, tag = "2")]
-        pub name: ::prost::alloc::string::String,
-        /// The description of this vulnerability.
-        #[prost(string, tag = "3")]
-        pub description: ::prost::alloc::string::String,
-        /// Required. The names of the KBs which have hotfixes to mitigate this
-        /// vulnerability. Note that there may be multiple hotfixes (and thus
-        /// multiple KBs) that mitigate a given vulnerability. Currently any listed
-        /// KBs presence is considered a fix.
-        #[prost(message, repeated, tag = "4")]
-        pub fixing_kbs: ::prost::alloc::vec::Vec<windows_detail::KnowledgeBase>,
-    }
-    /// Nested message and enum types in `WindowsDetail`.
-    pub mod windows_detail {
-        #[derive(Clone, PartialEq, ::prost::Message)]
-        pub struct KnowledgeBase {
-            /// The KB name (generally of the form KB\[0-9\]+ (e.g., KB123456)).
-            #[prost(string, tag = "1")]
-            pub name: ::prost::alloc::string::String,
-            /// A link to the KB in the [Windows update catalog]
-            /// (<https://www.catalog.update.microsoft.com/>).
-            #[prost(string, tag = "2")]
-            pub url: ::prost::alloc::string::String,
-        }
-    }
-}
-/// An occurrence of a severity vulnerability on a resource.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VulnerabilityOccurrence {
-    /// The type of package; whether native or non native (e.g., ruby gems, node.js
-    /// packages, etc.).
-    #[prost(string, tag = "1")]
-    pub r#type: ::prost::alloc::string::String,
-    /// Output only. The note provider assigned severity of this vulnerability.
-    #[prost(enumeration = "Severity", tag = "2")]
-    pub severity: i32,
-    /// Output only. The CVSS score of this vulnerability. CVSS score is on a
-    /// scale of 0 - 10 where 0 indicates low severity and 10 indicates high
-    /// severity.
-    #[prost(float, tag = "3")]
-    pub cvss_score: f32,
-    /// The cvss v3 score for the vulnerability.
-    #[prost(message, optional, tag = "10")]
-    pub cvssv3: ::core::option::Option<vulnerability_occurrence::Cvssv3>,
-    /// Required. The set of affected locations and their fixes (if available)
-    /// within the associated resource.
-    #[prost(message, repeated, tag = "4")]
-    pub package_issue: ::prost::alloc::vec::Vec<vulnerability_occurrence::PackageIssue>,
-    /// Output only. A one sentence description of this vulnerability.
-    #[prost(string, tag = "5")]
-    pub short_description: ::prost::alloc::string::String,
-    /// Output only. A detailed description of this vulnerability.
-    #[prost(string, tag = "6")]
-    pub long_description: ::prost::alloc::string::String,
-    /// Output only. URLs related to this vulnerability.
-    #[prost(message, repeated, tag = "7")]
-    pub related_urls: ::prost::alloc::vec::Vec<RelatedUrl>,
-    /// The distro assigned severity for this vulnerability when it is available,
-    /// otherwise this is the note provider assigned severity.
-    ///
-    /// When there are multiple PackageIssues for this vulnerability, they can have
-    /// different effective severities because some might be provided by the distro
-    /// while others are provided by the language ecosystem for a language pack.
-    /// For this reason, it is advised to use the effective severity on the
-    /// PackageIssue level. In the case where multiple PackageIssues have differing
-    /// effective severities, this field should be the highest severity for any of
-    /// the PackageIssues.
-    #[prost(enumeration = "Severity", tag = "8")]
-    pub effective_severity: i32,
-    /// Output only. Whether at least one of the affected packages has a fix
-    /// available.
-    #[prost(bool, tag = "9")]
-    pub fix_available: bool,
-}
-/// Nested message and enum types in `VulnerabilityOccurrence`.
-pub mod vulnerability_occurrence {
-    /// The CVSS v3 score for this vulnerability.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct Cvssv3 {
-        /// The base score for for this vulnerability according to cvss v3.
-        #[prost(float, tag = "1")]
-        pub base_score: f32,
-        /// The severity rating assigned to this vulnerability by vulnerability
-        /// provider.
-        #[prost(enumeration = "super::Severity", tag = "2")]
-        pub severity: i32,
-    }
-    /// A detail for a distro and package this vulnerability occurrence was found
-    /// in and its associated fix (if one is available).
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct PackageIssue {
-        /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
-        /// vulnerability was found in.
-        #[prost(string, tag = "1")]
-        pub affected_cpe_uri: ::prost::alloc::string::String,
-        /// Required. The package this vulnerability was found in.
-        #[prost(string, tag = "2")]
-        pub affected_package: ::prost::alloc::string::String,
-        /// Required. The version of the package that is installed on the resource
-        /// affected by this vulnerability.
-        #[prost(message, optional, tag = "3")]
-        pub affected_version: ::core::option::Option<super::Version>,
-        /// The [CPE URI](<https://cpe.mitre.org/specification/>) this vulnerability
-        /// was fixed in. It is possible for this to be different from the
-        /// affected_cpe_uri.
-        #[prost(string, tag = "4")]
-        pub fixed_cpe_uri: ::prost::alloc::string::String,
-        /// The package this vulnerability was fixed in. It is possible for this to
-        /// be different from the affected_package.
-        #[prost(string, tag = "5")]
-        pub fixed_package: ::prost::alloc::string::String,
-        /// Required. The version of the package this vulnerability was fixed in.
-        /// Setting this to VersionKind.MAXIMUM means no fix is yet available.
-        #[prost(message, optional, tag = "6")]
-        pub fixed_version: ::core::option::Option<super::Version>,
-        /// Output only. Whether a fix is available for this package.
-        #[prost(bool, tag = "7")]
-        pub fix_available: bool,
-        /// The type of package (e.g. OS, MAVEN, GO).
-        #[prost(string, tag = "8")]
-        pub package_type: ::prost::alloc::string::String,
-        /// The distro or language system assigned severity for this vulnerability
-        /// when that is available and note provider assigned severity when it is not
-        /// available.
-        #[prost(enumeration = "super::Severity", tag = "9")]
-        pub effective_severity: i32,
-    }
 }
 /// Note provider assigned severity/impact ranking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -859,6 +456,93 @@ pub mod slsa_provenance {
         >,
     }
 }
+/// See full explanation of fields at slsa.dev/provenance/v0.2.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SlsaProvenanceZeroTwo {
+    #[prost(message, optional, tag = "1")]
+    pub builder: ::core::option::Option<slsa_provenance_zero_two::SlsaBuilder>,
+    #[prost(string, tag = "2")]
+    pub build_type: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "3")]
+    pub invocation: ::core::option::Option<slsa_provenance_zero_two::SlsaInvocation>,
+    #[prost(message, optional, tag = "4")]
+    pub build_config: ::core::option::Option<::prost_types::Struct>,
+    #[prost(message, optional, tag = "5")]
+    pub metadata: ::core::option::Option<slsa_provenance_zero_two::SlsaMetadata>,
+    #[prost(message, repeated, tag = "6")]
+    pub materials: ::prost::alloc::vec::Vec<slsa_provenance_zero_two::SlsaMaterial>,
+}
+/// Nested message and enum types in `SlsaProvenanceZeroTwo`.
+pub mod slsa_provenance_zero_two {
+    /// Identifies the entity that executed the recipe, which is trusted to have
+    /// correctly performed the operation and populated this provenance.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SlsaBuilder {
+        #[prost(string, tag = "1")]
+        pub id: ::prost::alloc::string::String,
+    }
+    /// The collection of artifacts that influenced the build including sources,
+    /// dependencies, build tools, base images, and so on.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SlsaMaterial {
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        #[prost(map = "string, string", tag = "2")]
+        pub digest: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+    }
+    /// Identifies the event that kicked off the build.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SlsaInvocation {
+        #[prost(message, optional, tag = "1")]
+        pub config_source: ::core::option::Option<SlsaConfigSource>,
+        #[prost(message, optional, tag = "2")]
+        pub parameters: ::core::option::Option<::prost_types::Struct>,
+        #[prost(message, optional, tag = "3")]
+        pub environment: ::core::option::Option<::prost_types::Struct>,
+    }
+    /// Describes where the config file that kicked off the build came from.
+    /// This is effectively a pointer to the source where buildConfig came from.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SlsaConfigSource {
+        #[prost(string, tag = "1")]
+        pub uri: ::prost::alloc::string::String,
+        #[prost(map = "string, string", tag = "2")]
+        pub digest: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
+        #[prost(string, tag = "3")]
+        pub entry_point: ::prost::alloc::string::String,
+    }
+    /// Other properties of the build.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SlsaMetadata {
+        #[prost(string, tag = "1")]
+        pub build_invocation_id: ::prost::alloc::string::String,
+        #[prost(message, optional, tag = "2")]
+        pub build_started_on: ::core::option::Option<::prost_types::Timestamp>,
+        #[prost(message, optional, tag = "3")]
+        pub build_finished_on: ::core::option::Option<::prost_types::Timestamp>,
+        #[prost(message, optional, tag = "4")]
+        pub completeness: ::core::option::Option<SlsaCompleteness>,
+        #[prost(bool, tag = "5")]
+        pub reproducible: bool,
+    }
+    /// Indicates that the builder claims certain fields in this message to be
+    /// complete.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SlsaCompleteness {
+        #[prost(bool, tag = "1")]
+        pub parameters: bool,
+        #[prost(bool, tag = "2")]
+        pub environment: bool,
+        #[prost(bool, tag = "3")]
+        pub materials: bool,
+    }
+}
 /// Spec defined at
 /// <https://github.com/in-toto/attestation/tree/main/spec#statement> The
 /// serialized InTotoStatement will be stored as Envelope.payload.
@@ -873,7 +557,7 @@ pub struct InTotoStatement {
     /// `<https://slsa.dev/provenance/v0.1`> for SlsaProvenance.
     #[prost(string, tag = "3")]
     pub predicate_type: ::prost::alloc::string::String,
-    #[prost(oneof = "in_toto_statement::Predicate", tags = "4, 5")]
+    #[prost(oneof = "in_toto_statement::Predicate", tags = "4, 5, 6")]
     pub predicate: ::core::option::Option<in_toto_statement::Predicate>,
 }
 /// Nested message and enum types in `InTotoStatement`.
@@ -884,6 +568,8 @@ pub mod in_toto_statement {
         Provenance(super::InTotoProvenance),
         #[prost(message, tag = "5")]
         SlsaProvenance(super::SlsaProvenance),
+        #[prost(message, tag = "6")]
+        SlsaProvenanceZeroTwo(super::SlsaProvenanceZeroTwo),
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1275,6 +961,10 @@ pub struct ComplianceVersion {
     /// applicable to.
     #[prost(string, tag = "1")]
     pub cpe_uri: ::prost::alloc::string::String,
+    /// The name of the document that defines this benchmark, e.g. "CIS
+    /// Container-Optimized OS".
+    #[prost(string, tag = "3")]
+    pub benchmark_document: ::prost::alloc::string::String,
     /// The version of the benchmark. This is set to the version of the OS-specific
     /// CIS document the benchmark is defined in.
     #[prost(string, tag = "2")]
@@ -1305,6 +995,178 @@ pub struct NonCompliantFile {
     /// Explains why a file is non compliant for a CIS check.
     #[prost(string, tag = "3")]
     pub reason: ::prost::alloc::string::String,
+}
+/// Common Vulnerability Scoring System version 3.
+/// For details, see <https://www.first.org/cvss/specification-document>
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CvsSv3 {
+    /// The base score is a function of the base metric scores.
+    #[prost(float, tag = "1")]
+    pub base_score: f32,
+    #[prost(float, tag = "2")]
+    pub exploitability_score: f32,
+    #[prost(float, tag = "3")]
+    pub impact_score: f32,
+    /// Base Metrics
+    /// Represents the intrinsic characteristics of a vulnerability that are
+    /// constant over time and across user environments.
+    #[prost(enumeration = "cvs_sv3::AttackVector", tag = "5")]
+    pub attack_vector: i32,
+    #[prost(enumeration = "cvs_sv3::AttackComplexity", tag = "6")]
+    pub attack_complexity: i32,
+    #[prost(enumeration = "cvs_sv3::PrivilegesRequired", tag = "7")]
+    pub privileges_required: i32,
+    #[prost(enumeration = "cvs_sv3::UserInteraction", tag = "8")]
+    pub user_interaction: i32,
+    #[prost(enumeration = "cvs_sv3::Scope", tag = "9")]
+    pub scope: i32,
+    #[prost(enumeration = "cvs_sv3::Impact", tag = "10")]
+    pub confidentiality_impact: i32,
+    #[prost(enumeration = "cvs_sv3::Impact", tag = "11")]
+    pub integrity_impact: i32,
+    #[prost(enumeration = "cvs_sv3::Impact", tag = "12")]
+    pub availability_impact: i32,
+}
+/// Nested message and enum types in `CVSSv3`.
+pub mod cvs_sv3 {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AttackVector {
+        Unspecified = 0,
+        Network = 1,
+        Adjacent = 2,
+        Local = 3,
+        Physical = 4,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AttackComplexity {
+        Unspecified = 0,
+        Low = 1,
+        High = 2,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PrivilegesRequired {
+        Unspecified = 0,
+        None = 1,
+        Low = 2,
+        High = 3,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum UserInteraction {
+        Unspecified = 0,
+        None = 1,
+        Required = 2,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Scope {
+        Unspecified = 0,
+        Unchanged = 1,
+        Changed = 2,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Impact {
+        Unspecified = 0,
+        High = 1,
+        Low = 2,
+        None = 3,
+    }
+}
+/// Common Vulnerability Scoring System.
+/// For details, see <https://www.first.org/cvss/specification-document>
+/// This is a message we will try to use for storing various versions of CVSS
+/// rather than making a separate proto for storing a specific version.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Cvss {
+    /// The base score is a function of the base metric scores.
+    #[prost(float, tag = "1")]
+    pub base_score: f32,
+    #[prost(float, tag = "2")]
+    pub exploitability_score: f32,
+    #[prost(float, tag = "3")]
+    pub impact_score: f32,
+    /// Base Metrics
+    /// Represents the intrinsic characteristics of a vulnerability that are
+    /// constant over time and across user environments.
+    #[prost(enumeration = "cvss::AttackVector", tag = "4")]
+    pub attack_vector: i32,
+    #[prost(enumeration = "cvss::AttackComplexity", tag = "5")]
+    pub attack_complexity: i32,
+    #[prost(enumeration = "cvss::Authentication", tag = "6")]
+    pub authentication: i32,
+    #[prost(enumeration = "cvss::PrivilegesRequired", tag = "7")]
+    pub privileges_required: i32,
+    #[prost(enumeration = "cvss::UserInteraction", tag = "8")]
+    pub user_interaction: i32,
+    #[prost(enumeration = "cvss::Scope", tag = "9")]
+    pub scope: i32,
+    #[prost(enumeration = "cvss::Impact", tag = "10")]
+    pub confidentiality_impact: i32,
+    #[prost(enumeration = "cvss::Impact", tag = "11")]
+    pub integrity_impact: i32,
+    #[prost(enumeration = "cvss::Impact", tag = "12")]
+    pub availability_impact: i32,
+}
+/// Nested message and enum types in `CVSS`.
+pub mod cvss {
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AttackVector {
+        Unspecified = 0,
+        Network = 1,
+        Adjacent = 2,
+        Local = 3,
+        Physical = 4,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AttackComplexity {
+        Unspecified = 0,
+        Low = 1,
+        High = 2,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Authentication {
+        Unspecified = 0,
+        Multiple = 1,
+        Single = 2,
+        None = 3,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PrivilegesRequired {
+        Unspecified = 0,
+        None = 1,
+        Low = 2,
+        High = 3,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum UserInteraction {
+        Unspecified = 0,
+        None = 1,
+        Required = 2,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Scope {
+        Unspecified = 0,
+        Unchanged = 1,
+        Changed = 2,
+    }
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Impact {
+        Unspecified = 0,
+        High = 1,
+        Low = 2,
+        None = 3,
+    }
 }
 /// An artifact that can be deployed in some runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1385,6 +1247,9 @@ pub struct DiscoveryOccurrence {
     /// The last time this resource was scanned.
     #[prost(message, optional, tag = "5")]
     pub last_scan_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The time occurrences related to this discovery occurrence were archived.
+    #[prost(message, optional, tag = "6")]
+    pub archive_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `DiscoveryOccurrence`.
 pub mod discovery_occurrence {
@@ -1526,6 +1391,177 @@ pub struct ImageOccurrence {
     #[prost(string, tag = "4")]
     pub base_resource_url: ::prost::alloc::string::String,
 }
+/// This represents a particular channel of distribution for a given package.
+/// E.g., Debian's jessie-backports dpkg mirror.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Distribution {
+    /// The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
+    /// denoting the package manager version distributing a package.
+    #[prost(string, tag = "1")]
+    pub cpe_uri: ::prost::alloc::string::String,
+    /// The CPU architecture for which packages in this distribution channel were
+    /// built.
+    #[prost(enumeration = "Architecture", tag = "2")]
+    pub architecture: i32,
+    /// The latest available version of this package in this distribution channel.
+    #[prost(message, optional, tag = "3")]
+    pub latest_version: ::core::option::Option<Version>,
+    /// A freeform string denoting the maintainer of this package.
+    #[prost(string, tag = "4")]
+    pub maintainer: ::prost::alloc::string::String,
+    /// The distribution channel-specific homepage for this package.
+    #[prost(string, tag = "5")]
+    pub url: ::prost::alloc::string::String,
+    /// The distribution channel-specific description of this package.
+    #[prost(string, tag = "6")]
+    pub description: ::prost::alloc::string::String,
+}
+/// An occurrence of a particular package installation found within a system's
+/// filesystem. E.g., glibc was found in `/var/lib/dpkg/status`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Location {
+    /// Deprecated.
+    /// The CPE URI in [CPE format](<https://cpe.mitre.org/specification/>)
+    #[prost(string, tag = "1")]
+    pub cpe_uri: ::prost::alloc::string::String,
+    /// Deprecated.
+    /// The version installed at this location.
+    #[prost(message, optional, tag = "2")]
+    pub version: ::core::option::Option<Version>,
+    /// The path from which we gathered that this package/version is installed.
+    #[prost(string, tag = "3")]
+    pub path: ::prost::alloc::string::String,
+}
+/// PackageNote represents a particular package version.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PackageNote {
+    /// The name of the package.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Deprecated.
+    /// The various channels by which a package is distributed.
+    #[prost(message, repeated, tag = "10")]
+    pub distribution: ::prost::alloc::vec::Vec<Distribution>,
+    /// The type of package; whether native or non native (e.g., ruby gems,
+    /// node.js packages, etc.).
+    #[prost(string, tag = "11")]
+    pub package_type: ::prost::alloc::string::String,
+    /// The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
+    /// denoting the package manager version distributing a package.
+    /// The cpe_uri will be blank for language packages.
+    #[prost(string, tag = "12")]
+    pub cpe_uri: ::prost::alloc::string::String,
+    /// The CPU architecture for which packages in this distribution channel were
+    /// built. Architecture will be blank for language packages.
+    #[prost(enumeration = "Architecture", tag = "13")]
+    pub architecture: i32,
+    /// The version of the package.
+    #[prost(message, optional, tag = "14")]
+    pub version: ::core::option::Option<Version>,
+    /// A freeform text denoting the maintainer of this package.
+    #[prost(string, tag = "15")]
+    pub maintainer: ::prost::alloc::string::String,
+    /// The homepage for this package.
+    #[prost(string, tag = "16")]
+    pub url: ::prost::alloc::string::String,
+    /// The description of this package.
+    #[prost(string, tag = "17")]
+    pub description: ::prost::alloc::string::String,
+    /// Licenses that have been declared by the authors of the package.
+    #[prost(message, optional, tag = "18")]
+    pub license: ::core::option::Option<License>,
+    /// Hash value, typically a file digest, that allows unique
+    /// identification a specific package.
+    #[prost(message, repeated, tag = "19")]
+    pub digest: ::prost::alloc::vec::Vec<Digest>,
+}
+/// Details on how a particular software package was installed on a system.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PackageOccurrence {
+    /// The name of the installed package.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// All of the places within the filesystem versions of this package
+    /// have been found.
+    #[prost(message, repeated, tag = "2")]
+    pub location: ::prost::alloc::vec::Vec<Location>,
+    /// The type of package; whether native or non native (e.g., ruby gems,
+    /// node.js packages, etc.).
+    #[prost(string, tag = "3")]
+    pub package_type: ::prost::alloc::string::String,
+    /// The cpe_uri in [CPE format](<https://cpe.mitre.org/specification/>)
+    /// denoting the package manager version distributing a package.
+    /// The cpe_uri will be blank for language packages.
+    #[prost(string, tag = "4")]
+    pub cpe_uri: ::prost::alloc::string::String,
+    /// The CPU architecture for which packages in this distribution channel were
+    /// built. Architecture will be blank for language packages.
+    #[prost(enumeration = "Architecture", tag = "5")]
+    pub architecture: i32,
+    /// Licenses that have been declared by the authors of the package.
+    #[prost(message, optional, tag = "6")]
+    pub license: ::core::option::Option<License>,
+    /// The version of the package.
+    #[prost(message, optional, tag = "7")]
+    pub version: ::core::option::Option<Version>,
+}
+/// Version contains structured information about the version of a package.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Version {
+    /// Used to correct mistakes in the version numbering scheme.
+    #[prost(int32, tag = "1")]
+    pub epoch: i32,
+    /// Required only when version kind is NORMAL. The main part of the version
+    /// name.
+    #[prost(string, tag = "2")]
+    pub name: ::prost::alloc::string::String,
+    /// The iteration of the package build from the above version.
+    #[prost(string, tag = "3")]
+    pub revision: ::prost::alloc::string::String,
+    /// Whether this version is specifying part of an inclusive range. Grafeas
+    /// does not have the capability to specify version ranges; instead we have
+    /// fields that specify start version and end versions. At times this is
+    /// insufficient - we also need to specify whether the version is included in
+    /// the range or is excluded from the range. This boolean is expected to be set
+    /// to true when the version is included in a range.
+    #[prost(bool, tag = "6")]
+    pub inclusive: bool,
+    /// Required. Distinguishes between sentinel MIN/MAX versions and normal
+    /// versions.
+    #[prost(enumeration = "version::VersionKind", tag = "4")]
+    pub kind: i32,
+    /// Human readable version string. This string is of the form
+    /// <epoch>:<name>-<revision> and is only set when kind is NORMAL.
+    #[prost(string, tag = "5")]
+    pub full_name: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Version`.
+pub mod version {
+    /// Whether this is an ordinary package version or a sentinel MIN/MAX version.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum VersionKind {
+        /// Unknown.
+        Unspecified = 0,
+        /// A standard package version.
+        Normal = 1,
+        /// A special version representing negative infinity.
+        Minimum = 2,
+        /// A special version representing positive infinity.
+        Maximum = 3,
+    }
+}
+/// Instruction set architectures supported by various package managers.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum Architecture {
+    /// Unknown architecture.
+    Unspecified = 0,
+    /// X86 architecture.
+    X86 = 1,
+    /// X64 architecture.
+    X64 = 2,
+}
 /// An Upgrade Note represents a potential upgrade of a package to a given
 /// version. For each package version combination (i.e. bash 4.0, bash 4.1,
 /// bash 4.1.2), there will be an Upgrade Note. For Windows, windows_update field
@@ -1643,6 +1679,233 @@ pub struct UpgradeOccurrence {
     #[prost(message, optional, tag = "5")]
     pub windows_update: ::core::option::Option<WindowsUpdate>,
 }
+/// A security vulnerability that can be found in resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VulnerabilityNote {
+    /// The CVSS score of this vulnerability. CVSS score is on a scale of 0 - 10
+    /// where 0 indicates low severity and 10 indicates high severity.
+    #[prost(float, tag = "1")]
+    pub cvss_score: f32,
+    /// The note provider assigned severity of this vulnerability.
+    #[prost(enumeration = "Severity", tag = "2")]
+    pub severity: i32,
+    /// Details of all known distros and packages affected by this vulnerability.
+    #[prost(message, repeated, tag = "3")]
+    pub details: ::prost::alloc::vec::Vec<vulnerability_note::Detail>,
+    /// The full description of the CVSSv3 for this vulnerability.
+    #[prost(message, optional, tag = "4")]
+    pub cvss_v3: ::core::option::Option<CvsSv3>,
+    /// Windows details get their own format because the information format and
+    /// model don't match a normal detail. Specifically Windows updates are done as
+    /// patches, thus Windows vulnerabilities really are a missing package, rather
+    /// than a package being at an incorrect version.
+    #[prost(message, repeated, tag = "5")]
+    pub windows_details: ::prost::alloc::vec::Vec<vulnerability_note::WindowsDetail>,
+    /// The time this information was last changed at the source. This is an
+    /// upstream timestamp from the underlying information source - e.g. Ubuntu
+    /// security tracker.
+    #[prost(message, optional, tag = "6")]
+    pub source_update_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Nested message and enum types in `VulnerabilityNote`.
+pub mod vulnerability_note {
+    /// A detail for a distro and package affected by this vulnerability and its
+    /// associated fix (if one is available).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Detail {
+        /// The distro assigned severity of this vulnerability.
+        #[prost(string, tag = "1")]
+        pub severity_name: ::prost::alloc::string::String,
+        /// A vendor-specific description of this vulnerability.
+        #[prost(string, tag = "2")]
+        pub description: ::prost::alloc::string::String,
+        /// The type of package; whether native or non native (e.g., ruby gems,
+        /// node.js packages, etc.).
+        #[prost(string, tag = "3")]
+        pub package_type: ::prost::alloc::string::String,
+        /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
+        /// vulnerability affects.
+        #[prost(string, tag = "4")]
+        pub affected_cpe_uri: ::prost::alloc::string::String,
+        /// Required. The package this vulnerability affects.
+        #[prost(string, tag = "5")]
+        pub affected_package: ::prost::alloc::string::String,
+        /// The version number at the start of an interval in which this
+        /// vulnerability exists. A vulnerability can affect a package between
+        /// version numbers that are disjoint sets of intervals (example:
+        /// \[1.0.0-1.1.0\], \[2.4.6-2.4.8\] and \[4.5.6-4.6.8\]) each of which will be
+        /// represented in its own Detail. If a specific affected version is provided
+        /// by a vulnerability database, affected_version_start and
+        /// affected_version_end will be the same in that Detail.
+        #[prost(message, optional, tag = "6")]
+        pub affected_version_start: ::core::option::Option<super::Version>,
+        /// The version number at the end of an interval in which this vulnerability
+        /// exists. A vulnerability can affect a package between version numbers
+        /// that are disjoint sets of intervals (example: \[1.0.0-1.1.0\],
+        /// \[2.4.6-2.4.8\] and \[4.5.6-4.6.8\]) each of which will be represented in its
+        /// own Detail. If a specific affected version is provided by a vulnerability
+        /// database, affected_version_start and affected_version_end will be the
+        /// same in that Detail.
+        #[prost(message, optional, tag = "7")]
+        pub affected_version_end: ::core::option::Option<super::Version>,
+        /// The distro recommended [CPE URI](<https://cpe.mitre.org/specification/>)
+        /// to update to that contains a fix for this vulnerability. It is possible
+        /// for this to be different from the affected_cpe_uri.
+        #[prost(string, tag = "8")]
+        pub fixed_cpe_uri: ::prost::alloc::string::String,
+        /// The distro recommended package to update to that contains a fix for this
+        /// vulnerability. It is possible for this to be different from the
+        /// affected_package.
+        #[prost(string, tag = "9")]
+        pub fixed_package: ::prost::alloc::string::String,
+        /// The distro recommended version to update to that contains a
+        /// fix for this vulnerability. Setting this to VersionKind.MAXIMUM means no
+        /// such version is yet available.
+        #[prost(message, optional, tag = "10")]
+        pub fixed_version: ::core::option::Option<super::Version>,
+        /// Whether this detail is obsolete. Occurrences are expected not to point to
+        /// obsolete details.
+        #[prost(bool, tag = "11")]
+        pub is_obsolete: bool,
+        /// The time this information was last changed at the source. This is an
+        /// upstream timestamp from the underlying information source - e.g. Ubuntu
+        /// security tracker.
+        #[prost(message, optional, tag = "12")]
+        pub source_update_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The source from which the information in this Detail was obtained.
+        #[prost(string, tag = "13")]
+        pub source: ::prost::alloc::string::String,
+        /// The name of the vendor of the product.
+        #[prost(string, tag = "14")]
+        pub vendor: ::prost::alloc::string::String,
+    }
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WindowsDetail {
+        /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
+        /// vulnerability affects.
+        #[prost(string, tag = "1")]
+        pub cpe_uri: ::prost::alloc::string::String,
+        /// Required. The name of this vulnerability.
+        #[prost(string, tag = "2")]
+        pub name: ::prost::alloc::string::String,
+        /// The description of this vulnerability.
+        #[prost(string, tag = "3")]
+        pub description: ::prost::alloc::string::String,
+        /// Required. The names of the KBs which have hotfixes to mitigate this
+        /// vulnerability. Note that there may be multiple hotfixes (and thus
+        /// multiple KBs) that mitigate a given vulnerability. Currently any listed
+        /// KBs presence is considered a fix.
+        #[prost(message, repeated, tag = "4")]
+        pub fixing_kbs: ::prost::alloc::vec::Vec<windows_detail::KnowledgeBase>,
+    }
+    /// Nested message and enum types in `WindowsDetail`.
+    pub mod windows_detail {
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct KnowledgeBase {
+            /// The KB name (generally of the form KB\[0-9\]+ (e.g., KB123456)).
+            #[prost(string, tag = "1")]
+            pub name: ::prost::alloc::string::String,
+            /// A link to the KB in the [Windows update catalog]
+            /// (<https://www.catalog.update.microsoft.com/>).
+            #[prost(string, tag = "2")]
+            pub url: ::prost::alloc::string::String,
+        }
+    }
+}
+/// An occurrence of a severity vulnerability on a resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VulnerabilityOccurrence {
+    /// The type of package; whether native or non native (e.g., ruby gems, node.js
+    /// packages, etc.).
+    #[prost(string, tag = "1")]
+    pub r#type: ::prost::alloc::string::String,
+    /// Output only. The note provider assigned severity of this vulnerability.
+    #[prost(enumeration = "Severity", tag = "2")]
+    pub severity: i32,
+    /// Output only. The CVSS score of this vulnerability. CVSS score is on a
+    /// scale of 0 - 10 where 0 indicates low severity and 10 indicates high
+    /// severity.
+    #[prost(float, tag = "3")]
+    pub cvss_score: f32,
+    /// The cvss v3 score for the vulnerability.
+    #[prost(message, optional, tag = "10")]
+    pub cvssv3: ::core::option::Option<Cvss>,
+    /// Required. The set of affected locations and their fixes (if available)
+    /// within the associated resource.
+    #[prost(message, repeated, tag = "4")]
+    pub package_issue: ::prost::alloc::vec::Vec<vulnerability_occurrence::PackageIssue>,
+    /// Output only. A one sentence description of this vulnerability.
+    #[prost(string, tag = "5")]
+    pub short_description: ::prost::alloc::string::String,
+    /// Output only. A detailed description of this vulnerability.
+    #[prost(string, tag = "6")]
+    pub long_description: ::prost::alloc::string::String,
+    /// Output only. URLs related to this vulnerability.
+    #[prost(message, repeated, tag = "7")]
+    pub related_urls: ::prost::alloc::vec::Vec<RelatedUrl>,
+    /// The distro assigned severity for this vulnerability when it is available,
+    /// otherwise this is the note provider assigned severity.
+    ///
+    /// When there are multiple PackageIssues for this vulnerability, they can have
+    /// different effective severities because some might be provided by the distro
+    /// while others are provided by the language ecosystem for a language pack.
+    /// For this reason, it is advised to use the effective severity on the
+    /// PackageIssue level. In the case where multiple PackageIssues have differing
+    /// effective severities, this field should be the highest severity for any of
+    /// the PackageIssues.
+    #[prost(enumeration = "Severity", tag = "8")]
+    pub effective_severity: i32,
+    /// Output only. Whether at least one of the affected packages has a fix
+    /// available.
+    #[prost(bool, tag = "9")]
+    pub fix_available: bool,
+}
+/// Nested message and enum types in `VulnerabilityOccurrence`.
+pub mod vulnerability_occurrence {
+    /// A detail for a distro and package this vulnerability occurrence was found
+    /// in and its associated fix (if one is available).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PackageIssue {
+        /// Required. The [CPE URI](<https://cpe.mitre.org/specification/>) this
+        /// vulnerability was found in.
+        #[prost(string, tag = "1")]
+        pub affected_cpe_uri: ::prost::alloc::string::String,
+        /// Required. The package this vulnerability was found in.
+        #[prost(string, tag = "2")]
+        pub affected_package: ::prost::alloc::string::String,
+        /// Required. The version of the package that is installed on the resource
+        /// affected by this vulnerability.
+        #[prost(message, optional, tag = "3")]
+        pub affected_version: ::core::option::Option<super::Version>,
+        /// The [CPE URI](<https://cpe.mitre.org/specification/>) this vulnerability
+        /// was fixed in. It is possible for this to be different from the
+        /// affected_cpe_uri.
+        #[prost(string, tag = "4")]
+        pub fixed_cpe_uri: ::prost::alloc::string::String,
+        /// The package this vulnerability was fixed in. It is possible for this to
+        /// be different from the affected_package.
+        #[prost(string, tag = "5")]
+        pub fixed_package: ::prost::alloc::string::String,
+        /// Required. The version of the package this vulnerability was fixed in.
+        /// Setting this to VersionKind.MAXIMUM means no fix is yet available.
+        #[prost(message, optional, tag = "6")]
+        pub fixed_version: ::core::option::Option<super::Version>,
+        /// Output only. Whether a fix is available for this package.
+        #[prost(bool, tag = "7")]
+        pub fix_available: bool,
+        /// The type of package (e.g. OS, MAVEN, GO).
+        #[prost(string, tag = "8")]
+        pub package_type: ::prost::alloc::string::String,
+        /// The distro or language system assigned severity for this vulnerability
+        /// when that is available and note provider assigned severity when it is not
+        /// available.
+        #[prost(enumeration = "super::Severity", tag = "9")]
+        pub effective_severity: i32,
+        /// The location at which this package was found.
+        #[prost(message, repeated, tag = "10")]
+        pub file_location: ::prost::alloc::vec::Vec<super::FileLocation>,
+    }
+}
 /// An instance of an analysis type that has been found on a resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Occurrence {
@@ -1678,7 +1941,10 @@ pub struct Occurrence {
     pub envelope: ::core::option::Option<Envelope>,
     /// Required. Immutable. Describes the details of the note kind found on this
     /// resource.
-    #[prost(oneof = "occurrence::Details", tags = "8, 9, 10, 11, 12, 13, 14, 15, 16, 17")]
+    #[prost(
+        oneof = "occurrence::Details",
+        tags = "8, 9, 10, 11, 12, 13, 14, 15, 16, 17"
+    )]
     pub details: ::core::option::Option<occurrence::Details>,
 }
 /// Nested message and enum types in `Occurrence`.

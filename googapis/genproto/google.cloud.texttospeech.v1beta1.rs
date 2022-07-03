@@ -5,11 +5,10 @@ pub struct ListVoicesRequest {
     /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
     /// If not specified, the API will return all supported voices.
     /// If specified, the ListVoices call will only return voices that can be used
-    /// to synthesize this language_code. E.g. when specifying `"en-NZ"`, you will
-    /// get supported `"en-NZ"` voices; when specifying `"no"`, you will get
-    /// supported `"no-\*"` (Norwegian) and `"nb-\*"` (Norwegian Bokmal) voices;
-    /// specifying `"zh"` will also get supported `"cmn-\*"` voices; specifying
-    /// `"zh-hk"` will also get supported `"yue-hk"` voices.
+    /// to synthesize this language_code. For example, if you specify `"en-NZ"`,
+    /// all `"en-NZ"` voices will be returned. If you specify `"no"`, both
+    /// `"no-\*"` (Norwegian) and `"nb-\*"` (Norwegian Bokmal) voices will be
+    /// returned.
     #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -51,7 +50,11 @@ pub struct SynthesizeSpeechRequest {
     #[prost(message, optional, tag = "3")]
     pub audio_config: ::core::option::Option<AudioConfig>,
     /// Whether and what timepoints are returned in the response.
-    #[prost(enumeration = "synthesize_speech_request::TimepointType", repeated, tag = "4")]
+    #[prost(
+        enumeration = "synthesize_speech_request::TimepointType",
+        repeated,
+        tag = "4"
+    )]
     pub enable_time_pointing: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `SynthesizeSpeechRequest`.

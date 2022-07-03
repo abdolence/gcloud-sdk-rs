@@ -3446,13 +3446,13 @@ pub mod feed_error_enum {
         TooManyAttributes = 17,
         /// The business account is not valid.
         InvalidBusinessAccount = 18,
-        /// Business account cannot access Google My Business account.
+        /// Business account cannot access Business Profile.
         BusinessAccountCannotAccessLocationAccount = 19,
         /// Invalid chain ID provided for affiliate location feed.
         InvalidAffiliateChainId = 20,
         /// There is already a feed with the given system feed generation data.
         DuplicateSystemFeed = 21,
-        /// An error occurred accessing GMB account.
+        /// An error occurred accessing Business Profile.
         GmbAccessError = 22,
         /// A customer cannot have both LOCATION and AFFILIATE_LOCATION feeds.
         CannotHaveLocationAndAffiliateLocationFeeds = 23,
@@ -4546,7 +4546,7 @@ pub mod manager_link_error_enum {
         AlreadyManagedByThisManager = 6,
         /// Client is already managed in hierarchy.
         AlreadyManagedInHierarchy = 7,
-        /// Manger and sub-manager to be linked have duplicate client.
+        /// Manager and sub-manager to be linked have duplicate client.
         DuplicateChildFound = 8,
         /// Client has no active user that can access the client account.
         ClientHasNoAdminUser = 9,
@@ -5976,7 +5976,7 @@ pub mod url_field_error_enum {
         FinalUrlSuffixMalformed = 50,
         /// The final url suffix cannot contain {lpurl} related or {ignore} tags.
         InvalidTagInFinalUrlSuffix = 51,
-        /// The top level domain is invalid, e.g, not a public top level domain
+        /// The top level domain is invalid, e.g. not a public top level domain
         /// listed in publicsuffix.org.
         InvalidTopLevelDomain = 53,
         /// Malformed top level domain in URL.
@@ -6174,7 +6174,10 @@ pub mod error_code {
         #[prost(enumeration = "super::url_field_error_enum::UrlFieldError", tag = "3")]
         UrlFieldError(i32),
         /// An error with a list operation.
-        #[prost(enumeration = "super::list_operation_error_enum::ListOperationError", tag = "4")]
+        #[prost(
+            enumeration = "super::list_operation_error_enum::ListOperationError",
+            tag = "4"
+        )]
         ListOperationError(i32),
         /// An error with an AWQL query
         #[prost(enumeration = "super::query_error_enum::QueryError", tag = "5")]
@@ -6183,10 +6186,16 @@ pub mod error_code {
         #[prost(enumeration = "super::mutate_error_enum::MutateError", tag = "7")]
         MutateError(i32),
         /// An error with a field mask
-        #[prost(enumeration = "super::field_mask_error_enum::FieldMaskError", tag = "8")]
+        #[prost(
+            enumeration = "super::field_mask_error_enum::FieldMaskError",
+            tag = "8"
+        )]
         FieldMaskError(i32),
         /// An error encountered when trying to authorize a user.
-        #[prost(enumeration = "super::authorization_error_enum::AuthorizationError", tag = "9")]
+        #[prost(
+            enumeration = "super::authorization_error_enum::AuthorizationError",
+            tag = "9"
+        )]
         AuthorizationError(i32),
         /// An unexpected server-side error.
         #[prost(enumeration = "super::internal_error_enum::InternalError", tag = "10")]
@@ -6210,7 +6219,10 @@ pub mod error_code {
         #[prost(enumeration = "super::campaign_error_enum::CampaignError", tag = "15")]
         CampaignError(i32),
         /// Indicates failure to properly authenticate user.
-        #[prost(enumeration = "super::authentication_error_enum::AuthenticationError", tag = "17")]
+        #[prost(
+            enumeration = "super::authentication_error_enum::AuthenticationError",
+            tag = "17"
+        )]
         AuthenticationError(i32),
         /// The reasons for the ad group criterion customizer error.
         #[prost(
@@ -6231,13 +6243,22 @@ pub mod error_code {
         )]
         AdGroupCustomizerError(i32),
         /// The reasons for the ad customizer error
-        #[prost(enumeration = "super::ad_customizer_error_enum::AdCustomizerError", tag = "19")]
+        #[prost(
+            enumeration = "super::ad_customizer_error_enum::AdCustomizerError",
+            tag = "19"
+        )]
         AdCustomizerError(i32),
         /// The reasons for the ad group ad error
-        #[prost(enumeration = "super::ad_group_ad_error_enum::AdGroupAdError", tag = "21")]
+        #[prost(
+            enumeration = "super::ad_group_ad_error_enum::AdGroupAdError",
+            tag = "21"
+        )]
         AdGroupAdError(i32),
         /// The reasons for the ad sharing error
-        #[prost(enumeration = "super::ad_sharing_error_enum::AdSharingError", tag = "24")]
+        #[prost(
+            enumeration = "super::ad_sharing_error_enum::AdSharingError",
+            tag = "24"
+        )]
         AdSharingError(i32),
         /// The reasons for the adx error
         #[prost(enumeration = "super::adx_error_enum::AdxError", tag = "25")]
@@ -6258,7 +6279,10 @@ pub mod error_code {
         )]
         AssetGroupListingGroupFilterError(i32),
         /// The reasons for the asset group error
-        #[prost(enumeration = "super::asset_group_error_enum::AssetGroupError", tag = "148")]
+        #[prost(
+            enumeration = "super::asset_group_error_enum::AssetGroupError",
+            tag = "148"
+        )]
         AssetGroupError(i32),
         /// The reasons for the asset set asset error
         #[prost(
@@ -6267,10 +6291,16 @@ pub mod error_code {
         )]
         AssetSetAssetError(i32),
         /// The reasons for the asset set link error
-        #[prost(enumeration = "super::asset_set_link_error_enum::AssetSetLinkError", tag = "154")]
+        #[prost(
+            enumeration = "super::asset_set_link_error_enum::AssetSetLinkError",
+            tag = "154"
+        )]
         AssetSetLinkError(i32),
         /// The reasons for the asset set error
-        #[prost(enumeration = "super::asset_set_error_enum::AssetSetError", tag = "152")]
+        #[prost(
+            enumeration = "super::asset_set_error_enum::AssetSetError",
+            tag = "152"
+        )]
         AssetSetError(i32),
         /// The reasons for the bidding errors
         #[prost(enumeration = "super::bidding_error_enum::BiddingError", tag = "26")]
@@ -6294,10 +6324,16 @@ pub mod error_code {
         )]
         CollectionSizeError(i32),
         /// The reasons for the country code error
-        #[prost(enumeration = "super::country_code_error_enum::CountryCodeError", tag = "109")]
+        #[prost(
+            enumeration = "super::country_code_error_enum::CountryCodeError",
+            tag = "109"
+        )]
         CountryCodeError(i32),
         /// The reasons for the criterion error
-        #[prost(enumeration = "super::criterion_error_enum::CriterionError", tag = "32")]
+        #[prost(
+            enumeration = "super::criterion_error_enum::CriterionError",
+            tag = "32"
+        )]
         CriterionError(i32),
         /// The reasons for the custom conversion goal error
         #[prost(
@@ -6324,7 +6360,10 @@ pub mod error_code {
         #[prost(enumeration = "super::date_error_enum::DateError", tag = "33")]
         DateError(i32),
         /// The reasons for the date range error
-        #[prost(enumeration = "super::date_range_error_enum::DateRangeError", tag = "34")]
+        #[prost(
+            enumeration = "super::date_range_error_enum::DateRangeError",
+            tag = "34"
+        )]
         DateRangeError(i32),
         /// The reasons for the distinct error
         #[prost(enumeration = "super::distinct_error_enum::DistinctError", tag = "35")]
@@ -6351,16 +6390,28 @@ pub mod error_code {
         #[prost(enumeration = "super::image_error_enum::ImageError", tag = "40")]
         ImageError(i32),
         /// The reasons for the language code error
-        #[prost(enumeration = "super::language_code_error_enum::LanguageCodeError", tag = "110")]
+        #[prost(
+            enumeration = "super::language_code_error_enum::LanguageCodeError",
+            tag = "110"
+        )]
         LanguageCodeError(i32),
         /// The reasons for the media bundle error
-        #[prost(enumeration = "super::media_bundle_error_enum::MediaBundleError", tag = "42")]
+        #[prost(
+            enumeration = "super::media_bundle_error_enum::MediaBundleError",
+            tag = "42"
+        )]
         MediaBundleError(i32),
         /// The reasons for media uploading errors.
-        #[prost(enumeration = "super::media_upload_error_enum::MediaUploadError", tag = "116")]
+        #[prost(
+            enumeration = "super::media_upload_error_enum::MediaUploadError",
+            tag = "116"
+        )]
         MediaUploadError(i32),
         /// The reasons for the media file error
-        #[prost(enumeration = "super::media_file_error_enum::MediaFileError", tag = "86")]
+        #[prost(
+            enumeration = "super::media_file_error_enum::MediaFileError",
+            tag = "86"
+        )]
         MediaFileError(i32),
         /// Container for enum describing possible merchant center errors.
         #[prost(
@@ -6369,7 +6420,10 @@ pub mod error_code {
         )]
         MerchantCenterError(i32),
         /// The reasons for the multiplier error
-        #[prost(enumeration = "super::multiplier_error_enum::MultiplierError", tag = "44")]
+        #[prost(
+            enumeration = "super::multiplier_error_enum::MultiplierError",
+            tag = "44"
+        )]
         MultiplierError(i32),
         /// The reasons for the new resource creation error
         #[prost(
@@ -6390,19 +6444,31 @@ pub mod error_code {
         #[prost(enumeration = "super::range_error_enum::RangeError", tag = "49")]
         RangeError(i32),
         /// The reasons for error in applying a recommendation
-        #[prost(enumeration = "super::recommendation_error_enum::RecommendationError", tag = "58")]
+        #[prost(
+            enumeration = "super::recommendation_error_enum::RecommendationError",
+            tag = "58"
+        )]
         RecommendationError(i32),
         /// The reasons for the region code error
-        #[prost(enumeration = "super::region_code_error_enum::RegionCodeError", tag = "51")]
+        #[prost(
+            enumeration = "super::region_code_error_enum::RegionCodeError",
+            tag = "51"
+        )]
         RegionCodeError(i32),
         /// The reasons for the setting error
         #[prost(enumeration = "super::setting_error_enum::SettingError", tag = "52")]
         SettingError(i32),
         /// The reasons for the string format error
-        #[prost(enumeration = "super::string_format_error_enum::StringFormatError", tag = "53")]
+        #[prost(
+            enumeration = "super::string_format_error_enum::StringFormatError",
+            tag = "53"
+        )]
         StringFormatError(i32),
         /// The reasons for the string length error
-        #[prost(enumeration = "super::string_length_error_enum::StringLengthError", tag = "54")]
+        #[prost(
+            enumeration = "super::string_length_error_enum::StringLengthError",
+            tag = "54"
+        )]
         StringLengthError(i32),
         /// The reasons for the operation access denied error
         #[prost(
@@ -6441,7 +6507,10 @@ pub mod error_code {
         #[prost(enumeration = "super::field_error_enum::FieldError", tag = "61")]
         FieldError(i32),
         /// The reasons for the shared set error
-        #[prost(enumeration = "super::shared_set_error_enum::SharedSetError", tag = "62")]
+        #[prost(
+            enumeration = "super::shared_set_error_enum::SharedSetError",
+            tag = "62"
+        )]
         SharedSetError(i32),
         /// The reasons for the shared criterion error
         #[prost(
@@ -6498,13 +6567,19 @@ pub mod error_code {
         #[prost(enumeration = "super::database_error_enum::DatabaseError", tag = "67")]
         DatabaseError(i32),
         /// The reasons for the policy finding error.
-        #[prost(enumeration = "super::policy_finding_error_enum::PolicyFindingError", tag = "68")]
+        #[prost(
+            enumeration = "super::policy_finding_error_enum::PolicyFindingError",
+            tag = "68"
+        )]
         PolicyFindingError(i32),
         /// The reason for enum error.
         #[prost(enumeration = "super::enum_error_enum::EnumError", tag = "70")]
         EnumError(i32),
         /// The reason for keyword plan error.
-        #[prost(enumeration = "super::keyword_plan_error_enum::KeywordPlanError", tag = "71")]
+        #[prost(
+            enumeration = "super::keyword_plan_error_enum::KeywordPlanError",
+            tag = "71"
+        )]
         KeywordPlanError(i32),
         /// The reason for keyword plan campaign error.
         #[prost(
@@ -6546,10 +6621,16 @@ pub mod error_code {
         #[prost(enumeration = "super::user_list_error_enum::UserListError", tag = "78")]
         UserListError(i32),
         /// The reasons for the change event error
-        #[prost(enumeration = "super::change_event_error_enum::ChangeEventError", tag = "136")]
+        #[prost(
+            enumeration = "super::change_event_error_enum::ChangeEventError",
+            tag = "136"
+        )]
         ChangeEventError(i32),
         /// The reasons for the change status error
-        #[prost(enumeration = "super::change_status_error_enum::ChangeStatusError", tag = "79")]
+        #[prost(
+            enumeration = "super::change_status_error_enum::ChangeStatusError",
+            tag = "79"
+        )]
         ChangeStatusError(i32),
         /// The reasons for the feed error
         #[prost(enumeration = "super::feed_error_enum::FeedError", tag = "80")]
@@ -6561,7 +6642,10 @@ pub mod error_code {
         )]
         GeoTargetConstantSuggestionError(i32),
         /// The reasons for the campaign draft error
-        #[prost(enumeration = "super::campaign_draft_error_enum::CampaignDraftError", tag = "82")]
+        #[prost(
+            enumeration = "super::campaign_draft_error_enum::CampaignDraftError",
+            tag = "82"
+        )]
         CampaignDraftError(i32),
         /// The reasons for the feed item error
         #[prost(enumeration = "super::feed_item_error_enum::FeedItemError", tag = "83")]
@@ -6570,7 +6654,10 @@ pub mod error_code {
         #[prost(enumeration = "super::label_error_enum::LabelError", tag = "84")]
         LabelError(i32),
         /// The reasons for the billing setup error
-        #[prost(enumeration = "super::billing_setup_error_enum::BillingSetupError", tag = "87")]
+        #[prost(
+            enumeration = "super::billing_setup_error_enum::BillingSetupError",
+            tag = "87"
+        )]
         BillingSetupError(i32),
         /// The reasons for the customer client link error
         #[prost(
@@ -6585,16 +6672,28 @@ pub mod error_code {
         )]
         CustomerManagerLinkError(i32),
         /// The reasons for the feed mapping error
-        #[prost(enumeration = "super::feed_mapping_error_enum::FeedMappingError", tag = "92")]
+        #[prost(
+            enumeration = "super::feed_mapping_error_enum::FeedMappingError",
+            tag = "92"
+        )]
         FeedMappingError(i32),
         /// The reasons for the customer feed error
-        #[prost(enumeration = "super::customer_feed_error_enum::CustomerFeedError", tag = "93")]
+        #[prost(
+            enumeration = "super::customer_feed_error_enum::CustomerFeedError",
+            tag = "93"
+        )]
         CustomerFeedError(i32),
         /// The reasons for the ad group feed error
-        #[prost(enumeration = "super::ad_group_feed_error_enum::AdGroupFeedError", tag = "94")]
+        #[prost(
+            enumeration = "super::ad_group_feed_error_enum::AdGroupFeedError",
+            tag = "94"
+        )]
         AdGroupFeedError(i32),
         /// The reasons for the campaign feed error
-        #[prost(enumeration = "super::campaign_feed_error_enum::CampaignFeedError", tag = "96")]
+        #[prost(
+            enumeration = "super::campaign_feed_error_enum::CampaignFeedError",
+            tag = "96"
+        )]
         CampaignFeedError(i32),
         /// The reasons for the custom interest error
         #[prost(
@@ -6615,7 +6714,10 @@ pub mod error_code {
         )]
         ExtensionFeedItemError(i32),
         /// The reasons for the ad parameter error
-        #[prost(enumeration = "super::ad_parameter_error_enum::AdParameterError", tag = "101")]
+        #[prost(
+            enumeration = "super::ad_parameter_error_enum::AdParameterError",
+            tag = "101"
+        )]
         AdParameterError(i32),
         /// The reasons for the feed item validation error
         #[prost(
@@ -6630,7 +6732,10 @@ pub mod error_code {
         )]
         ExtensionSettingError(i32),
         /// The reasons for the feed item set error
-        #[prost(enumeration = "super::feed_item_set_error_enum::FeedItemSetError", tag = "140")]
+        #[prost(
+            enumeration = "super::feed_item_set_error_enum::FeedItemSetError",
+            tag = "140"
+        )]
         FeedItemSetError(i32),
         /// The reasons for the feed item set link error
         #[prost(
@@ -6663,7 +6768,10 @@ pub mod error_code {
         )]
         PolicyValidationParameterError(i32),
         /// The reasons for the size limit error
-        #[prost(enumeration = "super::size_limit_error_enum::SizeLimitError", tag = "118")]
+        #[prost(
+            enumeration = "super::size_limit_error_enum::SizeLimitError",
+            tag = "118"
+        )]
         SizeLimitError(i32),
         /// The reasons for the offline user data job error.
         #[prost(
@@ -6678,10 +6786,16 @@ pub mod error_code {
         )]
         NotAllowlistedError(i32),
         /// The reasons for the manager link error
-        #[prost(enumeration = "super::manager_link_error_enum::ManagerLinkError", tag = "121")]
+        #[prost(
+            enumeration = "super::manager_link_error_enum::ManagerLinkError",
+            tag = "121"
+        )]
         ManagerLinkError(i32),
         /// The reasons for the currency code error
-        #[prost(enumeration = "super::currency_code_error_enum::CurrencyCodeError", tag = "122")]
+        #[prost(
+            enumeration = "super::currency_code_error_enum::CurrencyCodeError",
+            tag = "122"
+        )]
         CurrencyCodeError(i32),
         /// The reasons for the access invitation error
         #[prost(
@@ -6690,7 +6804,10 @@ pub mod error_code {
         )]
         AccessInvitationError(i32),
         /// The reasons for the reach plan error
-        #[prost(enumeration = "super::reach_plan_error_enum::ReachPlanError", tag = "125")]
+        #[prost(
+            enumeration = "super::reach_plan_error_enum::ReachPlanError",
+            tag = "125"
+        )]
         ReachPlanError(i32),
         /// The reasons for the invoice error
         #[prost(enumeration = "super::invoice_error_enum::InvoiceError", tag = "126")]
@@ -6702,19 +6819,34 @@ pub mod error_code {
         )]
         PaymentsAccountError(i32),
         /// The reasons for the time zone error
-        #[prost(enumeration = "super::time_zone_error_enum::TimeZoneError", tag = "128")]
+        #[prost(
+            enumeration = "super::time_zone_error_enum::TimeZoneError",
+            tag = "128"
+        )]
         TimeZoneError(i32),
         /// The reasons for the asset link error
-        #[prost(enumeration = "super::asset_link_error_enum::AssetLinkError", tag = "129")]
+        #[prost(
+            enumeration = "super::asset_link_error_enum::AssetLinkError",
+            tag = "129"
+        )]
         AssetLinkError(i32),
         /// The reasons for the user data error.
-        #[prost(enumeration = "super::user_data_error_enum::UserDataError", tag = "130")]
+        #[prost(
+            enumeration = "super::user_data_error_enum::UserDataError",
+            tag = "130"
+        )]
         UserDataError(i32),
         /// The reasons for the batch job error
-        #[prost(enumeration = "super::batch_job_error_enum::BatchJobError", tag = "131")]
+        #[prost(
+            enumeration = "super::batch_job_error_enum::BatchJobError",
+            tag = "131"
+        )]
         BatchJobError(i32),
         /// The reasons for the account link status change error
-        #[prost(enumeration = "super::account_link_error_enum::AccountLinkError", tag = "134")]
+        #[prost(
+            enumeration = "super::account_link_error_enum::AccountLinkError",
+            tag = "134"
+        )]
         AccountLinkError(i32),
         /// The reasons for the third party app analytics link mutate error
         #[prost(
@@ -6852,7 +6984,10 @@ pub struct ResourceCountDetails {
     #[prost(int32, tag = "2")]
     pub limit: i32,
     /// The resource limit type which was exceeded.
-    #[prost(enumeration = "super::enums::resource_limit_type_enum::ResourceLimitType", tag = "3")]
+    #[prost(
+        enumeration = "super::enums::resource_limit_type_enum::ResourceLimitType",
+        tag = "3"
+    )]
     pub limit_type: i32,
     /// The count of existing entities.
     #[prost(int32, tag = "4")]

@@ -526,7 +526,10 @@ pub struct ConnectionProfile {
     #[prost(enumeration = "DatabaseProvider", tag = "8")]
     pub provider: i32,
     /// The connection profile definition.
-    #[prost(oneof = "connection_profile::ConnectionProfile", tags = "100, 101, 102")]
+    #[prost(
+        oneof = "connection_profile::ConnectionProfile",
+        tags = "100, 101, 102"
+    )]
     pub connection_profile: ::core::option::Option<connection_profile::ConnectionProfile>,
 }
 /// Nested message and enum types in `ConnectionProfile`.

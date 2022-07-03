@@ -10,6 +10,9 @@ pub mod continuous_validation_event {
     /// An auditing event for one Pod.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ContinuousValidationPodEvent {
+        /// The k8s namespace of the Pod.
+        #[prost(string, tag = "7")]
+        pub pod_namespace: ::prost::alloc::string::String,
         /// The name of the Pod.
         #[prost(string, tag = "1")]
         pub pod: ::prost::alloc::string::String,

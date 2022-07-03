@@ -579,7 +579,10 @@ pub struct VideoTrueViewDiscoveryAdInfo {
     #[prost(string, tag = "6")]
     pub description2: ::prost::alloc::string::String,
     /// Video thumbnail image to use.
-    #[prost(enumeration = "super::enums::video_thumbnail_enum::VideoThumbnail", tag = "7")]
+    #[prost(
+        enumeration = "super::enums::video_thumbnail_enum::VideoThumbnail",
+        tag = "7"
+    )]
     pub thumbnail: i32,
 }
 /// A video ad.
@@ -1060,7 +1063,10 @@ pub struct KeywordInfo {
     #[prost(string, optional, tag = "3")]
     pub text: ::core::option::Option<::prost::alloc::string::String>,
     /// The match type of the keyword.
-    #[prost(enumeration = "super::enums::keyword_match_type_enum::KeywordMatchType", tag = "2")]
+    #[prost(
+        enumeration = "super::enums::keyword_match_type_enum::KeywordMatchType",
+        tag = "2"
+    )]
     pub match_type: i32,
 }
 /// A placement criterion. This can be used to modify bids for sites when
@@ -1131,7 +1137,10 @@ pub struct PreferredContentInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListingGroupInfo {
     /// Type of the listing group.
-    #[prost(enumeration = "super::enums::listing_group_type_enum::ListingGroupType", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::listing_group_type_enum::ListingGroupType",
+        tag = "1"
+    )]
     pub r#type: i32,
     /// Dimension value with which this listing group is refining its parent.
     /// Undefined for the root group.
@@ -1274,7 +1283,10 @@ pub struct ProductBrandInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductChannelInfo {
     /// Value of the locality.
-    #[prost(enumeration = "super::enums::product_channel_enum::ProductChannel", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::product_channel_enum::ProductChannel",
+        tag = "1"
+    )]
     pub channel: i32,
 }
 /// Availability of a product offer.
@@ -1291,7 +1303,10 @@ pub struct ProductChannelExclusivityInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProductConditionInfo {
     /// Value of the condition.
-    #[prost(enumeration = "super::enums::product_condition_enum::ProductCondition", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::product_condition_enum::ProductCondition",
+        tag = "1"
+    )]
     pub condition: i32,
 }
 /// Custom attribute of a product offer.
@@ -1321,7 +1336,10 @@ pub struct ProductTypeInfo {
     #[prost(string, optional, tag = "3")]
     pub value: ::core::option::Option<::prost::alloc::string::String>,
     /// Level of the type.
-    #[prost(enumeration = "super::enums::product_type_level_enum::ProductTypeLevel", tag = "2")]
+    #[prost(
+        enumeration = "super::enums::product_type_level_enum::ProductTypeLevel",
+        tag = "2"
+    )]
     pub level: i32,
 }
 /// Unknown listing dimension.
@@ -1378,7 +1396,10 @@ pub struct HotelCheckInDayInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct InteractionTypeInfo {
     /// The interaction type.
-    #[prost(enumeration = "super::enums::interaction_type_enum::InteractionType", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::interaction_type_enum::InteractionType",
+        tag = "1"
+    )]
     pub r#type: i32,
 }
 /// Represents an AdSchedule criterion.
@@ -1393,14 +1414,20 @@ pub struct AdScheduleInfo {
     ///
     /// This field is required for CREATE operations and is prohibited on UPDATE
     /// operations.
-    #[prost(enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour",
+        tag = "1"
+    )]
     pub start_minute: i32,
     /// Minutes after the end hour at which this schedule ends. The schedule is
     /// exclusive of the end minute.
     ///
     /// This field is required for CREATE operations and is prohibited on UPDATE
     /// operations.
-    #[prost(enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour", tag = "2")]
+    #[prost(
+        enumeration = "super::enums::minute_of_hour_enum::MinuteOfHour",
+        tag = "2"
+    )]
     pub end_minute: i32,
     /// Starting hour in 24 hour time.
     /// This field must be between 0 and 23, inclusive.
@@ -1427,7 +1454,10 @@ pub struct AdScheduleInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AgeRangeInfo {
     /// Type of the age range.
-    #[prost(enumeration = "super::enums::age_range_type_enum::AgeRangeType", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::age_range_type_enum::AgeRangeType",
+        tag = "1"
+    )]
     pub r#type: i32,
 }
 /// A gender criterion.
@@ -1441,7 +1471,10 @@ pub struct GenderInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IncomeRangeInfo {
     /// Type of the income range.
-    #[prost(enumeration = "super::enums::income_range_type_enum::IncomeRangeType", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::income_range_type_enum::IncomeRangeType",
+        tag = "1"
+    )]
     pub r#type: i32,
 }
 /// A parental status criterion.
@@ -1576,7 +1609,10 @@ pub struct IpBlockInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ContentLabelInfo {
     /// Content label type, required for CREATE operations.
-    #[prost(enumeration = "super::enums::content_label_type_enum::ContentLabelType", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::content_label_type_enum::ContentLabelType",
+        tag = "1"
+    )]
     pub r#type: i32,
 }
 /// Represents a Carrier Criterion.
@@ -2188,7 +2224,10 @@ pub struct MobileAppAsset {
     #[prost(string, tag = "1")]
     pub app_id: ::prost::alloc::string::String,
     /// Required. The application store that distributes this specific app.
-    #[prost(enumeration = "super::enums::mobile_app_vendor_enum::MobileAppVendor", tag = "2")]
+    #[prost(
+        enumeration = "super::enums::mobile_app_vendor_enum::MobileAppVendor",
+        tag = "2"
+    )]
     pub app_store: i32,
     /// Required. The visible text displayed when the link is rendered in an ad.
     /// The length of this string should be between 1 and 25, inclusive.
@@ -2298,7 +2337,10 @@ pub struct PriceOffering {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CallToActionAsset {
     /// Call to action.
-    #[prost(enumeration = "super::enums::call_to_action_type_enum::CallToActionType", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::call_to_action_type_enum::CallToActionType",
+        tag = "1"
+    )]
     pub call_to_action: i32,
 }
 // Proto file describing bidding schemes.
@@ -2625,7 +2667,10 @@ pub struct YearMonth {
     #[prost(int64, tag = "1")]
     pub year: i64,
     /// The month of the year. (e.g. FEBRUARY).
-    #[prost(enumeration = "super::enums::month_of_year_enum::MonthOfYear", tag = "2")]
+    #[prost(
+        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
+        tag = "2"
+    )]
     pub month: i32,
 }
 // Proto file describing ExplorerAutoOptimizerSetting
@@ -3082,7 +3127,10 @@ pub struct FrequencyCapEntry {
 pub struct FrequencyCapKey {
     /// The level on which the cap is to be applied (e.g. ad group ad, ad group).
     /// The cap is applied to all the entities of this level.
-    #[prost(enumeration = "super::enums::frequency_cap_level_enum::FrequencyCapLevel", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::frequency_cap_level_enum::FrequencyCapLevel",
+        tag = "1"
+    )]
     pub level: i32,
     /// The type of event that the cap applies to (e.g. impression).
     #[prost(
@@ -3153,7 +3201,10 @@ pub struct MonthlySearchVolume {
     #[prost(int64, optional, tag = "4")]
     pub year: ::core::option::Option<i64>,
     /// The month of the search volume.
-    #[prost(enumeration = "super::enums::month_of_year_enum::MonthOfYear", tag = "2")]
+    #[prost(
+        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
+        tag = "2"
+    )]
     pub month: i32,
     /// Approximate number of searches for the month.
     /// A null value indicates the search volume is unavailable for
@@ -4289,7 +4340,10 @@ pub struct Segments {
     )]
     pub ad_destination_type: i32,
     /// Ad network type.
-    #[prost(enumeration = "super::enums::ad_network_type_enum::AdNetworkType", tag = "3")]
+    #[prost(
+        enumeration = "super::enums::ad_network_type_enum::AdNetworkType",
+        tag = "3"
+    )]
     pub ad_network_type: i32,
     /// Budget campaign association status.
     #[prost(message, optional, tag = "134")]
@@ -4423,10 +4477,16 @@ pub struct Segments {
     #[prost(string, optional, tag = "86")]
     pub hotel_rate_rule_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Hotel rate type.
-    #[prost(enumeration = "super::enums::hotel_rate_type_enum::HotelRateType", tag = "74")]
+    #[prost(
+        enumeration = "super::enums::hotel_rate_type_enum::HotelRateType",
+        tag = "74"
+    )]
     pub hotel_rate_type: i32,
     /// Hotel price bucket.
-    #[prost(enumeration = "super::enums::hotel_price_bucket_enum::HotelPriceBucket", tag = "78")]
+    #[prost(
+        enumeration = "super::enums::hotel_price_bucket_enum::HotelPriceBucket",
+        tag = "78"
+    )]
     pub hotel_price_bucket: i32,
     /// Hotel state.
     #[prost(string, optional, tag = "87")]
@@ -4447,13 +4507,19 @@ pub struct Segments {
     #[prost(string, optional, tag = "90")]
     pub month: ::core::option::Option<::prost::alloc::string::String>,
     /// Month of the year, e.g., January.
-    #[prost(enumeration = "super::enums::month_of_year_enum::MonthOfYear", tag = "18")]
+    #[prost(
+        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
+        tag = "18"
+    )]
     pub month_of_year: i32,
     /// Partner hotel ID.
     #[prost(string, optional, tag = "91")]
     pub partner_hotel_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Placeholder type. This is only used with feed item metrics.
-    #[prost(enumeration = "super::enums::placeholder_type_enum::PlaceholderType", tag = "20")]
+    #[prost(
+        enumeration = "super::enums::placeholder_type_enum::PlaceholderType",
+        tag = "20"
+    )]
     pub placeholder_type: i32,
     /// Aggregator ID of the product.
     #[prost(int64, optional, tag = "132")]
@@ -4477,7 +4543,10 @@ pub struct Segments {
     #[prost(string, optional, tag = "97")]
     pub product_brand: ::core::option::Option<::prost::alloc::string::String>,
     /// Channel of the product.
-    #[prost(enumeration = "super::enums::product_channel_enum::ProductChannel", tag = "30")]
+    #[prost(
+        enumeration = "super::enums::product_channel_enum::ProductChannel",
+        tag = "30"
+    )]
     pub product_channel: i32,
     /// Channel exclusivity of the product.
     #[prost(
@@ -4486,7 +4555,10 @@ pub struct Segments {
     )]
     pub product_channel_exclusivity: i32,
     /// Condition of the product.
-    #[prost(enumeration = "super::enums::product_condition_enum::ProductCondition", tag = "32")]
+    #[prost(
+        enumeration = "super::enums::product_condition_enum::ProductCondition",
+        tag = "32"
+    )]
     pub product_condition: i32,
     /// Resource name of the geo target constant for the country of sale of the
     /// product.
@@ -4778,7 +4850,10 @@ pub struct CpcBidSimulationPoint {
     /// cpc_bid_micros is set.
     /// When SimulationModificationMethod = SCALING,
     /// cpc_bid_scaling_modifier is set.
-    #[prost(oneof = "cpc_bid_simulation_point::CpcSimulationKeyValue", tags = "15, 16")]
+    #[prost(
+        oneof = "cpc_bid_simulation_point::CpcSimulationKeyValue",
+        tags = "15, 16"
+    )]
     pub cpc_simulation_key_value:
         ::core::option::Option<cpc_bid_simulation_point::CpcSimulationKeyValue>,
 }
@@ -4852,7 +4927,10 @@ pub struct TargetCpaSimulationPoint {
     /// target_cpa_micros is set.
     /// When SimulationModificationMethod = SCALING,
     /// target_cpa_scaling_modifier is set.
-    #[prost(oneof = "target_cpa_simulation_point::TargetCpaSimulationKeyValue", tags = "17, 18")]
+    #[prost(
+        oneof = "target_cpa_simulation_point::TargetCpaSimulationKeyValue",
+        tags = "17, 18"
+    )]
     pub target_cpa_simulation_key_value:
         ::core::option::Option<target_cpa_simulation_point::TargetCpaSimulationKeyValue>,
 }
@@ -5010,7 +5088,10 @@ pub struct TargetImpressionShareSimulationPoint {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TagSnippet {
     /// The type of the generated tag snippets for tracking conversions.
-    #[prost(enumeration = "super::enums::tracking_code_type_enum::TrackingCodeType", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::tracking_code_type_enum::TrackingCodeType",
+        tag = "1"
+    )]
     pub r#type: i32,
     /// The format of the web page where the tracking tag and snippet will be
     /// installed, e.g. HTML.
@@ -5050,7 +5131,10 @@ pub struct TargetingSetting {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetRestriction {
     /// The targeting dimension that these settings apply to.
-    #[prost(enumeration = "super::enums::targeting_dimension_enum::TargetingDimension", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::targeting_dimension_enum::TargetingDimension",
+        tag = "1"
+    )]
     pub targeting_dimension: i32,
     /// Indicates whether to restrict your ads to show only for the criteria you
     /// have selected for this targeting_dimension, or to target all values for
@@ -5172,7 +5256,10 @@ pub struct UserListRuleInfo {
     ///
     /// Currently AND of ORs (conjunctive normal form) is only supported for
     /// ExpressionRuleUserList.
-    #[prost(enumeration = "super::enums::user_list_rule_type_enum::UserListRuleType", tag = "1")]
+    #[prost(
+        enumeration = "super::enums::user_list_rule_type_enum::UserListRuleType",
+        tag = "1"
+    )]
     pub rule_type: i32,
     /// List of rule item groups that defines this rule.
     /// Rule item groups are grouped together based on rule_type.
@@ -5350,7 +5437,10 @@ pub struct RuleBasedUserListInfo {
     )]
     pub prepopulation_status: i32,
     /// Subtypes of rule based user lists.
-    #[prost(oneof = "rule_based_user_list_info::RuleBasedUserList", tags = "2, 3, 4")]
+    #[prost(
+        oneof = "rule_based_user_list_info::RuleBasedUserList",
+        tags = "2, 3, 4"
+    )]
     pub rule_based_user_list: ::core::option::Option<rule_based_user_list_info::RuleBasedUserList>,
 }
 /// Nested message and enum types in `RuleBasedUserListInfo`.

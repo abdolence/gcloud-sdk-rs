@@ -3,6 +3,9 @@
 pub struct Reservation {
     /// The resource name of the reservation, e.g.,
     /// `projects/*/locations/*/reservations/team1-prod`.
+    /// The reservation_id must only contain lower case alphanumeric characters or
+    /// dashes. It must start with a letter and must not end with a dash. Its
+    /// maximum length is 64 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Minimum slots available to this reservation. A slot is a unit of
@@ -11,10 +14,14 @@ pub struct Reservation {
     /// Queries using this reservation might use more slots during runtime if
     /// ignore_idle_slots is set to false.
     ///
-    /// If the new reservation's slot capacity exceed the parent's slot capacity or
-    /// if total slot capacity of the new reservation and its siblings exceeds the
-    /// parent's slot capacity, the request will fail with
+    /// If the new reservation's slot capacity exceeds the project's slot capacity
+    /// or if total slot capacity of the new reservation and its siblings exceeds
+    /// the project's slot capacity, the request will fail with
     /// `google.rpc.Code.RESOURCE_EXHAUSTED`.
+    ///
+    /// NOTE: for reservations in US or EU multi-regions, slot capacity constraints
+    /// are checked separately for default and auxiliary regions. See
+    /// multi_region_auxiliary flag for more details.
     #[prost(int64, tag = "2")]
     pub slot_capacity: i64,
     /// If false, any query or pipeline job using this reservation will use idle
@@ -23,12 +30,27 @@ pub struct Reservation {
     /// capacity specified in the slot_capacity field at most.
     #[prost(bool, tag = "4")]
     pub ignore_idle_slots: bool,
+    /// Maximum number of queries that are allowed to run concurrently in this
+    /// reservation. This is a soft limit due to asynchronous nature of the system
+    /// and various optimizations for small queries.
+    /// Default value is 0 which means that concurrency will be automatically set
+    /// based on the reservation size.
+    #[prost(int64, tag = "16")]
+    pub concurrency: i64,
     /// Output only. Creation time of the reservation.
     #[prost(message, optional, tag = "8")]
     pub creation_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Last update time of the reservation.
     #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Applicable only for reservations located within one of the BigQuery
+    /// multi-regions (US or EU).
+    ///
+    /// If set to true, this reservation is placed in the organization's
+    /// secondary region which is designated for disaster recovery purposes.
+    /// If false, this reservation is placed in the organization's default region.
+    #[prost(bool, tag = "14")]
+    pub multi_region_auxiliary: bool,
 }
 /// Capacity commitment is a way to purchase compute capacity for BigQuery jobs
 /// (in the form of slots) with some committed period of usage. Annual
@@ -44,6 +66,9 @@ pub struct Reservation {
 pub struct CapacityCommitment {
     /// Output only. The resource name of the capacity commitment, e.g.,
     /// `projects/myproject/locations/US/capacityCommitments/123`
+    /// The commitment_id must only contain lower case alphanumeric characters or
+    /// dashes. It must start with a letter and must not end
+    /// with a dash. Its maximum length is 64 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Number of slots in this commitment.
@@ -71,6 +96,14 @@ pub struct CapacityCommitment {
     /// commitment plan. Only applicable for ANNUAL and TRIAL commitments.
     #[prost(enumeration = "capacity_commitment::CommitmentPlan", tag = "8")]
     pub renewal_plan: i32,
+    /// Applicable only for commitments located within one of the BigQuery
+    /// multi-regions (US or EU).
+    ///
+    /// If set to true, this commitment is placed in the organization's
+    /// secondary region which is designated for disaster recovery purposes.
+    /// If false, this commitment is placed in the organization's default region.
+    #[prost(bool, tag = "10")]
+    pub multi_region_auxiliary: bool,
 }
 /// Nested message and enum types in `CapacityCommitment`.
 pub mod capacity_commitment {
@@ -108,10 +141,10 @@ pub mod capacity_commitment {
         /// Invalid state value.
         Unspecified = 0,
         /// Capacity commitment is pending provisioning. Pending capacity commitment
-        /// does not contribute to the parent's slot_capacity.
+        /// does not contribute to the project's slot_capacity.
         Pending = 1,
         /// Once slots are provisioned, capacity commitment becomes active.
-        /// slot_count is added to the parent's slot_capacity.
+        /// slot_count is added to the project's slot_capacity.
         Active = 2,
         /// Capacity commitment is failed to be activated by the backend.
         Failed = 3,
@@ -124,8 +157,9 @@ pub struct CreateReservationRequest {
     /// `projects/myproject/locations/US`
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
-    /// The reservation ID. This field must only contain lower case alphanumeric
-    /// characters or dash. Max length is 64 characters.
+    /// The reservation ID. It must only contain lower case alphanumeric
+    /// characters or dashes. It must start with a letter and must not end
+    /// with a dash. Its maximum length is 64 characters.
     #[prost(string, tag = "2")]
     pub reservation_id: ::prost::alloc::string::String,
     /// Definition of the new reservation to create.
@@ -199,8 +233,8 @@ pub struct CreateCapacityCommitmentRequest {
     pub enforce_single_admin_project_per_org: bool,
     /// The optional capacity commitment ID. Capacity commitment name will be
     /// generated automatically if this field is empty.
-    /// This field must only contain lower case alphanumeric characters or dash.
-    /// Max length is 64 characters.
+    /// This field must only contain lower case alphanumeric characters or dashes.
+    /// The first and last character cannot be a dash. Max length is 64 characters.
     /// NOTE: this ID won't be kept if the capacity commitment is split or merged.
     #[prost(string, tag = "5")]
     pub capacity_commitment_id: ::prost::alloc::string::String,
@@ -297,12 +331,14 @@ pub struct MergeCapacityCommitmentsRequest {
     #[prost(string, repeated, tag = "2")]
     pub capacity_commitment_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// A Assignment allows a project to submit jobs
+/// An assignment allows a project to submit jobs
 /// of a certain type using slots from the specified reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Assignment {
     /// Output only. Name of the resource. E.g.:
     /// `projects/myproject/locations/US/reservations/team1-prod/assignments/123`.
+    /// The assignment_id must only contain lower case alphanumeric characters or
+    /// dashes and the max length is 64 characters.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// The resource which will use the reservation. E.g.
@@ -362,7 +398,7 @@ pub struct CreateAssignmentRequest {
     pub assignment: ::core::option::Option<Assignment>,
     /// The optional assignment ID. Assignment name will be generated automatically
     /// if this field is empty.
-    /// This field must only contain lower case alphanumeric characters or dash.
+    /// This field must only contain lower case alphanumeric characters or dashes.
     /// Max length is 64 characters.
     #[prost(string, tag = "4")]
     pub assignment_id: ::prost::alloc::string::String,
@@ -504,6 +540,30 @@ pub struct MoveAssignmentRequest {
     #[prost(string, tag = "3")]
     pub destination_id: ::prost::alloc::string::String,
 }
+/// The request for \[ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAssignmentRequest {
+    /// Content of the assignment to update.
+    #[prost(message, optional, tag = "1")]
+    pub assignment: ::core::option::Option<Assignment>,
+    /// Standard field mask for the set of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Fully qualified reference to BigQuery table.
+/// Internally stored as google.cloud.bi.v1.BqTableReference.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableReference {
+    /// The assigned project ID of the project.
+    #[prost(string, tag = "1")]
+    pub project_id: ::prost::alloc::string::String,
+    /// The ID of the dataset in the above project.
+    #[prost(string, tag = "2")]
+    pub dataset_id: ::prost::alloc::string::String,
+    /// The ID of the table in the above dataset.
+    #[prost(string, tag = "3")]
+    pub table_id: ::prost::alloc::string::String,
+}
 /// Represents a BI Reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BiReservation {
@@ -518,6 +578,9 @@ pub struct BiReservation {
     /// Size of a reservation, in bytes.
     #[prost(int64, tag = "4")]
     pub size: i64,
+    /// Preferred tables to use BI capacity for.
+    #[prost(message, repeated, tag = "5")]
+    pub preferred_tables: ::prost::alloc::vec::Vec<TableReference>,
 }
 /// A request to get a singleton BI reservation.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -789,7 +852,7 @@ pub mod reservation_service_client {
         #[doc = ""]
         #[doc = " For example, in order to downgrade from 10000 slots to 8000, you might"]
         #[doc = " split a 10000 capacity commitment into commitments of 2000 and 8000. Then,"]
-        #[doc = " you would change the plan of the first one to `FLEX` and then delete it."]
+        #[doc = " you delete the first one after the commitment end time passes."]
         pub async fn split_capacity_commitment(
             &mut self,
             request: impl tonic::IntoRequest<super::SplitCapacityCommitmentRequest>,
@@ -949,8 +1012,8 @@ pub mod reservation_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deprecated: Looks up assignments for a specified resource for a particular region."]
-        #[doc = " If the request is about a project:"]
+        #[doc = " Deprecated: Looks up assignments for a specified resource for a particular"]
+        #[doc = " region. If the request is about a project:"]
         #[doc = ""]
         #[doc = " 1. Assignments created on the project will be returned if they exist."]
         #[doc = " 2. Otherwise assignments created on the closest ancestor will be"]
@@ -1042,6 +1105,25 @@ pub mod reservation_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.reservation.v1.ReservationService/MoveAssignment",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates an existing assignment."]
+        #[doc = ""]
+        #[doc = " Only the `priority` field can be updated."]
+        pub async fn update_assignment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAssignmentRequest>,
+        ) -> Result<tonic::Response<super::Assignment>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateAssignment",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

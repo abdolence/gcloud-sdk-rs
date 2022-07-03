@@ -379,6 +379,11 @@ pub struct Application {
     /// @OutputOnly
     #[prost(string, tag = "12")]
     pub default_bucket: ::prost::alloc::string::String,
+    /// The service account associated with the application.
+    /// This is the app-level default identity. If no identity provided during
+    /// create version, Admin API will fallback to this one.
+    #[prost(string, tag = "13")]
+    pub service_account: ::prost::alloc::string::String,
     #[prost(message, optional, tag = "14")]
     pub iap: ::core::option::Option<application::IdentityAwareProxy>,
     /// The Google Container Registry domain used for storing managed build docker
@@ -907,6 +912,113 @@ pub mod instance {
         Dynamic = 2,
     }
 }
+/// A NetworkSettings resource is a container for ingress settings for a version
+/// or service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkSettings {
+    /// The ingress settings for version or service.
+    #[prost(enumeration = "network_settings::IngressTrafficAllowed", tag = "1")]
+    pub ingress_traffic_allowed: i32,
+}
+/// Nested message and enum types in `NetworkSettings`.
+pub mod network_settings {
+    /// If unspecified, INGRESS_TRAFFIC_ALLOWED_ALL will be used.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum IngressTrafficAllowed {
+        /// Unspecified
+        Unspecified = 0,
+        /// Allow HTTP traffic from public and private sources.
+        All = 1,
+        /// Allow HTTP traffic from only private VPC sources.
+        InternalOnly = 2,
+        /// Allow HTTP traffic from private VPC sources and through load balancers.
+        InternalAndLb = 3,
+    }
+}
+/// A Service resource is a logical component of an application that can share
+/// state and communicate in a secure fashion with other services.
+/// For example, an application that handles customer requests might
+/// include separate services to handle tasks such as backend data
+/// analysis or API requests from mobile devices. Each service has a
+/// collection of versions that define a specific set of code used to
+/// implement the functionality of that service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Service {
+    /// Full path to the Service resource in the API.
+    /// Example: `apps/myapp/services/default`.
+    ///
+    /// @OutputOnly
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Relative name of the service within the application.
+    /// Example: `default`.
+    ///
+    /// @OutputOnly
+    #[prost(string, tag = "2")]
+    pub id: ::prost::alloc::string::String,
+    /// Mapping that defines fractional HTTP traffic diversion to
+    /// different versions within the service.
+    #[prost(message, optional, tag = "3")]
+    pub split: ::core::option::Option<TrafficSplit>,
+    /// A set of labels to apply to this service. Labels are key/value pairs that
+    /// describe the service and all resources that belong to it (e.g.,
+    /// versions). The labels can be used to search and group resources, and are
+    /// propagated to the usage and billing reports, enabling fine-grain analysis
+    /// of costs. An example of using labels is to tag resources belonging to
+    /// different environments (e.g., "env=prod", "env=qa").
+    ///
+    /// <p>Label keys and values can be no longer than 63 characters and can only
+    /// contain lowercase letters, numeric characters, underscores, dashes, and
+    /// international characters. Label keys must start with a lowercase letter
+    /// or an international character. Each service can have at most 32 labels.
+    #[prost(map = "string, string", tag = "4")]
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Ingress settings for this service. Will apply to all versions.
+    #[prost(message, optional, tag = "6")]
+    pub network_settings: ::core::option::Option<NetworkSettings>,
+}
+/// Traffic routing configuration for versions within a single service. Traffic
+/// splits define how traffic directed to the service is assigned to versions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrafficSplit {
+    /// Mechanism used to determine which version a request is sent to.
+    /// The traffic selection algorithm will
+    /// be stable for either type until allocations are changed.
+    #[prost(enumeration = "traffic_split::ShardBy", tag = "1")]
+    pub shard_by: i32,
+    /// Mapping from version IDs within the service to fractional
+    /// (0.000, 1] allocations of traffic for that version. Each version can
+    /// be specified only once, but some versions in the service may not
+    /// have any traffic allocation. Services that have traffic allocated
+    /// cannot be deleted until either the service is deleted or
+    /// their traffic allocation is removed. Allocations must sum to 1.
+    /// Up to two decimal place precision is supported for IP-based splits and
+    /// up to three decimal places is supported for cookie-based splits.
+    #[prost(map = "string, double", tag = "2")]
+    pub allocations: ::std::collections::HashMap<::prost::alloc::string::String, f64>,
+}
+/// Nested message and enum types in `TrafficSplit`.
+pub mod traffic_split {
+    /// Available sharding mechanisms.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ShardBy {
+        /// Diversion method unspecified.
+        Unspecified = 0,
+        /// Diversion based on a specially named cookie, "GOOGAPPUID." The cookie
+        /// must be set by the application itself or no diversion will occur.
+        Cookie = 1,
+        /// Diversion based on applying the modulus operation to a fingerprint
+        /// of the IP address.
+        Ip = 2,
+        /// Diversion based on weighted random assignment. An incoming request is
+        /// randomly routed to a version in the traffic split, with probability
+        /// proportional to the version's traffic share.
+        Random = 3,
+    }
+}
 /// Code and application artifacts used to deploy a version to App Engine.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Deployment {
@@ -992,30 +1104,6 @@ pub struct ZipInfo {
     #[prost(int32, tag = "4")]
     pub files_count: i32,
 }
-/// A NetworkSettings resource is a container for ingress settings for a version
-/// or service.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct NetworkSettings {
-    /// The ingress settings for version or service.
-    #[prost(enumeration = "network_settings::IngressTrafficAllowed", tag = "1")]
-    pub ingress_traffic_allowed: i32,
-}
-/// Nested message and enum types in `NetworkSettings`.
-pub mod network_settings {
-    /// If unspecified, INGRESS_TRAFFIC_ALLOWED_ALL will be used.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum IngressTrafficAllowed {
-        /// Unspecified
-        Unspecified = 0,
-        /// Allow HTTP traffic from public and private sources.
-        All = 1,
-        /// Allow HTTP traffic from only private VPC sources.
-        InternalOnly = 2,
-        /// Allow HTTP traffic from private VPC sources and through load balancers.
-        InternalAndLb = 3,
-    }
-}
 /// A Version resource is a specific set of source code and configuration files
 /// that are deployed into a service.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1069,6 +1157,10 @@ pub struct Version {
     /// Whether to deploy this version in a container on a virtual machine.
     #[prost(bool, tag = "12")]
     pub vm: bool,
+    /// Allows App Engine second generation runtimes to access the legacy bundled
+    /// services.
+    #[prost(bool, tag = "128")]
+    pub app_engine_apis: bool,
     /// Metadata settings that are supplied to this version to enable
     /// beta runtime features.
     #[prost(map = "string, string", tag = "13")]
@@ -1530,6 +1622,26 @@ pub struct VpcAccessConnector {
     /// /projects/my-project/locations/us-central1/connectors/c1.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// The egress setting for the connector, controlling what traffic is diverted
+    /// through it.
+    #[prost(enumeration = "vpc_access_connector::EgressSetting", tag = "2")]
+    pub egress_setting: i32,
+}
+/// Nested message and enum types in `VpcAccessConnector`.
+pub mod vpc_access_connector {
+    /// Available egress settings.
+    ///
+    /// This controls what traffic is diverted through the VPC Access Connector
+    /// resource. By default PRIVATE_IP_RANGES will be used.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum EgressSetting {
+        Unspecified = 0,
+        /// Force the use of VPC Access for all egress traffic from the function.
+        AllTraffic = 1,
+        /// Use the VPC Access Connector for private IP space from RFC1918.
+        PrivateIpRanges = 2,
+    }
 }
 /// The entrypoint for the application.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1586,75 +1698,6 @@ pub enum ServingStatus {
     /// to `SERVING`.
     Stopped = 2,
 }
-/// A Service resource is a logical component of an application that can share
-/// state and communicate in a secure fashion with other services.
-/// For example, an application that handles customer requests might
-/// include separate services to handle tasks such as backend data
-/// analysis or API requests from mobile devices. Each service has a
-/// collection of versions that define a specific set of code used to
-/// implement the functionality of that service.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Service {
-    /// Full path to the Service resource in the API.
-    /// Example: `apps/myapp/services/default`.
-    ///
-    /// @OutputOnly
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Relative name of the service within the application.
-    /// Example: `default`.
-    ///
-    /// @OutputOnly
-    #[prost(string, tag = "2")]
-    pub id: ::prost::alloc::string::String,
-    /// Mapping that defines fractional HTTP traffic diversion to
-    /// different versions within the service.
-    #[prost(message, optional, tag = "3")]
-    pub split: ::core::option::Option<TrafficSplit>,
-    /// Ingress settings for this service. Will apply to all versions.
-    #[prost(message, optional, tag = "6")]
-    pub network_settings: ::core::option::Option<NetworkSettings>,
-}
-/// Traffic routing configuration for versions within a single service. Traffic
-/// splits define how traffic directed to the service is assigned to versions.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TrafficSplit {
-    /// Mechanism used to determine which version a request is sent to.
-    /// The traffic selection algorithm will
-    /// be stable for either type until allocations are changed.
-    #[prost(enumeration = "traffic_split::ShardBy", tag = "1")]
-    pub shard_by: i32,
-    /// Mapping from version IDs within the service to fractional
-    /// (0.000, 1] allocations of traffic for that version. Each version can
-    /// be specified only once, but some versions in the service may not
-    /// have any traffic allocation. Services that have traffic allocated
-    /// cannot be deleted until either the service is deleted or
-    /// their traffic allocation is removed. Allocations must sum to 1.
-    /// Up to two decimal place precision is supported for IP-based splits and
-    /// up to three decimal places is supported for cookie-based splits.
-    #[prost(map = "string, double", tag = "2")]
-    pub allocations: ::std::collections::HashMap<::prost::alloc::string::String, f64>,
-}
-/// Nested message and enum types in `TrafficSplit`.
-pub mod traffic_split {
-    /// Available sharding mechanisms.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum ShardBy {
-        /// Diversion method unspecified.
-        Unspecified = 0,
-        /// Diversion based on a specially named cookie, "GOOGAPPUID." The cookie
-        /// must be set by the application itself or no diversion will occur.
-        Cookie = 1,
-        /// Diversion based on applying the modulus operation to a fingerprint
-        /// of the IP address.
-        Ip = 2,
-        /// Diversion based on weighted random assignment. An incoming request is
-        /// randomly routed to a version in the traffic split, with probability
-        /// proportional to the version's traffic share.
-        Random = 3,
-    }
-}
 /// Request message for `Applications.GetApplication`.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetApplicationRequest {
@@ -1678,7 +1721,7 @@ pub struct UpdateApplicationRequest {
     /// An Application containing the updated resource.
     #[prost(message, optional, tag = "2")]
     pub application: ::core::option::Option<Application>,
-    /// Standard field mask for the set of fields to be updated.
+    /// Required. Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1729,7 +1772,7 @@ pub struct UpdateServiceRequest {
     /// field mask will be updated.
     #[prost(message, optional, tag = "2")]
     pub service: ::core::option::Option<Service>,
-    /// Standard field mask for the set of fields to be updated.
+    /// Required. Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// Set to `true` to gradually shift traffic to one or more versions that you
@@ -2130,7 +2173,7 @@ pub struct UpdateDomainMappingRequest {
     /// in the field mask will be updated.
     #[prost(message, optional, tag = "2")]
     pub domain_mapping: ::core::option::Option<DomainMapping>,
-    /// Standard field mask for the set of fields to be updated.
+    /// Required. Standard field mask for the set of fields to be updated.
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -2279,6 +2322,7 @@ pub mod applications_client {
         #[doc = ""]
         #[doc = " * `auth_domain` - Google authentication domain for controlling user access to the application."]
         #[doc = " * `default_cookie_expiration` - Cookie expiration policy for the application."]
+        #[doc = " * `iap` - Identity-Aware Proxy properties for the application."]
         pub async fn update_application(
             &mut self,
             request: impl tonic::IntoRequest<super::UpdateApplicationRequest>,

@@ -1610,7 +1610,10 @@ pub struct MutateAdGroupCriterionCustomizersRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AdGroupCriterionCustomizerOperation {
     /// The mutate operation.
-    #[prost(oneof = "ad_group_criterion_customizer_operation::Operation", tags = "1, 2")]
+    #[prost(
+        oneof = "ad_group_criterion_customizer_operation::Operation",
+        tags = "1, 2"
+    )]
     pub operation: ::core::option::Option<ad_group_criterion_customizer_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupCriterionCustomizerOperation`.
@@ -2413,7 +2416,10 @@ pub struct AdGroupExtensionSettingOperation {
     )]
     pub response_content_type: i32,
     /// The mutate operation.
-    #[prost(oneof = "ad_group_extension_setting_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "ad_group_extension_setting_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<ad_group_extension_setting_operation::Operation>,
 }
 /// Nested message and enum types in `AdGroupExtensionSettingOperation`.
@@ -4134,7 +4140,10 @@ pub struct AssetGroupListingGroupFilterOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "asset_group_listing_group_filter_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "asset_group_listing_group_filter_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<asset_group_listing_group_filter_operation::Operation>,
 }
 /// Nested message and enum types in `AssetGroupListingGroupFilterOperation`.
@@ -4960,7 +4969,10 @@ pub struct BiddingDataExclusionOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "bidding_data_exclusion_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "bidding_data_exclusion_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<bidding_data_exclusion_operation::Operation>,
 }
 /// Nested message and enum types in `BiddingDataExclusionOperation`.
@@ -5137,7 +5149,10 @@ pub struct BiddingSeasonalityAdjustmentOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "bidding_seasonality_adjustment_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "bidding_seasonality_adjustment_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<bidding_seasonality_adjustment_operation::Operation>,
 }
 /// Nested message and enum types in `BiddingSeasonalityAdjustmentOperation`.
@@ -7531,7 +7546,10 @@ pub struct CampaignExtensionSettingOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "campaign_extension_setting_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "campaign_extension_setting_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<campaign_extension_setting_operation::Operation>,
 }
 /// Nested message and enum types in `CampaignExtensionSettingOperation`.
@@ -8762,7 +8780,10 @@ pub struct ConversionCustomVariableOperation {
     #[prost(message, optional, tag = "3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "conversion_custom_variable_operation::Operation", tags = "1, 2")]
+    #[prost(
+        oneof = "conversion_custom_variable_operation::Operation",
+        tags = "1, 2"
+    )]
     pub operation: ::core::option::Option<conversion_custom_variable_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionCustomVariableOperation`.
@@ -8940,7 +8961,10 @@ pub struct ConversionGoalCampaignConfigOperation {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "conversion_goal_campaign_config_operation::Operation", tags = "1")]
+    #[prost(
+        oneof = "conversion_goal_campaign_config_operation::Operation",
+        tags = "1"
+    )]
     pub operation: ::core::option::Option<conversion_goal_campaign_config_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionGoalCampaignConfigOperation`.
@@ -9103,12 +9127,12 @@ pub mod conversion_value_rule_operation {
         /// value rule.
         #[prost(message, tag = "1")]
         Create(super::super::resources::ConversionValueRule),
-        /// Update operation: The conversion action is expected to have a valid
+        /// Update operation: The conversion value rule is expected to have a valid
         /// resource name.
         #[prost(message, tag = "2")]
         Update(super::super::resources::ConversionValueRule),
-        /// Remove operation: A resource name for the removed conversion action is
-        /// expected, in this format:
+        /// Remove operation: A resource name for the removed conversion value rule
+        /// is expected, in this format:
         ///
         /// `customers/{customer_id}/conversionValueRules/{conversion_value_rule_id}`
         #[prost(string, tag = "3")]
@@ -9269,7 +9293,10 @@ pub struct ConversionValueRuleSetOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "conversion_value_rule_set_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "conversion_value_rule_set_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<conversion_value_rule_set_operation::Operation>,
 }
 /// Nested message and enum types in `ConversionValueRuleSetOperation`.
@@ -9281,12 +9308,12 @@ pub mod conversion_value_rule_set_operation {
         /// value rule set.
         #[prost(message, tag = "1")]
         Create(super::super::resources::ConversionValueRuleSet),
-        /// Update operation: The conversion action is expected to have a valid
-        /// resource name.
+        /// Update operation: The conversion value rule set is expected to have a
+        /// valid resource name.
         #[prost(message, tag = "2")]
         Update(super::super::resources::ConversionValueRuleSet),
-        /// Remove operation: A resource name for the removed conversion action is
-        /// expected, in this format:
+        /// Remove operation: A resource name for the removed conversion value rule
+        /// set is expected, in this format:
         ///
         /// `customers/{customer_id}/conversionValueRuleSets/{conversion_value_rule_set_id}`
         #[prost(string, tag = "3")]
@@ -9433,7 +9460,10 @@ pub struct CustomConversionGoalOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "custom_conversion_goal_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "custom_conversion_goal_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<custom_conversion_goal_operation::Operation>,
 }
 /// Nested message and enum types in `CustomConversionGoalOperation`.
@@ -10051,7 +10081,10 @@ pub struct CustomerExtensionSettingOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "customer_extension_setting_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "customer_extension_setting_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<customer_extension_setting_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerExtensionSettingOperation`.
@@ -10647,7 +10680,10 @@ pub struct MutateCustomerNegativeCriteriaRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerNegativeCriterionOperation {
     /// The mutate operation.
-    #[prost(oneof = "customer_negative_criterion_operation::Operation", tags = "1, 2")]
+    #[prost(
+        oneof = "customer_negative_criterion_operation::Operation",
+        tags = "1, 2"
+    )]
     pub operation: ::core::option::Option<customer_negative_criterion_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerNegativeCriterionOperation`.
@@ -12629,7 +12665,10 @@ pub struct KeywordPlanAdGroupKeywordOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "keyword_plan_ad_group_keyword_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "keyword_plan_ad_group_keyword_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<keyword_plan_ad_group_keyword_operation::Operation>,
 }
 /// Nested message and enum types in `KeywordPlanAdGroupKeywordOperation`.
@@ -13016,7 +13055,10 @@ pub struct KeywordPlanCampaignKeywordOperation {
     #[prost(message, optional, tag = "4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     /// The mutate operation.
-    #[prost(oneof = "keyword_plan_campaign_keyword_operation::Operation", tags = "1, 2, 3")]
+    #[prost(
+        oneof = "keyword_plan_campaign_keyword_operation::Operation",
+        tags = "1, 2, 3"
+    )]
     pub operation: ::core::option::Option<keyword_plan_campaign_keyword_operation::Operation>,
 }
 /// Nested message and enum types in `KeywordPlanCampaignKeywordOperation`.
@@ -15236,7 +15278,10 @@ pub struct SearchGoogleAdsRequest {
     /// Determines whether a summary row will be returned. By default, summary row
     /// is not returned. If requested, the summary row will be sent in a response
     /// by itself after all other query results are returned.
-    #[prost(enumeration = "super::enums::summary_row_setting_enum::SummaryRowSetting", tag = "8")]
+    #[prost(
+        enumeration = "super::enums::summary_row_setting_enum::SummaryRowSetting",
+        tag = "8"
+    )]
     pub summary_row_setting: i32,
 }
 /// Response message for \[GoogleAdsService.Search][google.ads.googleads.v9.services.GoogleAdsService.Search\].
@@ -15276,7 +15321,10 @@ pub struct SearchGoogleAdsStreamRequest {
     /// Determines whether a summary row will be returned. By default, summary row
     /// is not returned. If requested, the summary row will be sent in a response
     /// by itself after all other query results are returned.
-    #[prost(enumeration = "super::enums::summary_row_setting_enum::SummaryRowSetting", tag = "3")]
+    #[prost(
+        enumeration = "super::enums::summary_row_setting_enum::SummaryRowSetting",
+        tag = "3"
+    )]
     pub summary_row_setting: i32,
 }
 /// Response message for \[GoogleAdsService.SearchStream][google.ads.googleads.v9.services.GoogleAdsService.SearchStream\].
@@ -16376,7 +16424,9 @@ pub mod google_ads_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.ads.googleads.v9.services.GoogleAdsService/SearchStream",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Creates, updates, or removes resources. This method supports atomic"]
         #[doc = " transactions with multiple types of resources. For example, you can"]
@@ -19232,7 +19282,10 @@ pub struct MutateCustomerUserAccessInvitationRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CustomerUserAccessInvitationOperation {
     /// The mutate operation
-    #[prost(oneof = "customer_user_access_invitation_operation::Operation", tags = "1, 2")]
+    #[prost(
+        oneof = "customer_user_access_invitation_operation::Operation",
+        tags = "1, 2"
+    )]
     pub operation: ::core::option::Option<customer_user_access_invitation_operation::Operation>,
 }
 /// Nested message and enum types in `CustomerUserAccessInvitationOperation`.
@@ -21059,7 +21112,10 @@ pub struct ListInvoicesRequest {
     #[prost(string, tag = "3")]
     pub issue_year: ::prost::alloc::string::String,
     /// Required. The issue month to retrieve invoices.
-    #[prost(enumeration = "super::enums::month_of_year_enum::MonthOfYear", tag = "4")]
+    #[prost(
+        enumeration = "super::enums::month_of_year_enum::MonthOfYear",
+        tag = "4"
+    )]
     pub issue_month: i32,
 }
 /// Response message for \[InvoiceService.ListInvoices][google.ads.googleads.v9.services.InvoiceService.ListInvoices\].
@@ -23306,7 +23362,10 @@ pub struct Preferences {
     pub starts_with_sound: ::core::option::Option<bool>,
     /// The length of the ad.
     /// If not set, default is any value.
-    #[prost(enumeration = "super::enums::reach_plan_ad_length_enum::ReachPlanAdLength", tag = "3")]
+    #[prost(
+        enumeration = "super::enums::reach_plan_ad_length_enum::ReachPlanAdLength",
+        tag = "3"
+    )]
     pub ad_length: i32,
     /// True if ad will only show on the top content.
     /// If not set, default is false.
@@ -23435,7 +23494,10 @@ pub struct Targeting {
     pub plannable_location_id: ::core::option::Option<::prost::alloc::string::String>,
     /// Targeted age range.
     /// An unset value is equivalent to targeting all ages.
-    #[prost(enumeration = "super::enums::reach_plan_age_range_enum::ReachPlanAgeRange", tag = "2")]
+    #[prost(
+        enumeration = "super::enums::reach_plan_age_range_enum::ReachPlanAgeRange",
+        tag = "2"
+    )]
     pub age_range: i32,
     /// Targeted genders.
     /// An unset value is equivalent to targeting MALE and FEMALE.
@@ -23451,7 +23513,10 @@ pub struct Targeting {
     /// If not specified, targets all applicable networks. Applicable networks vary
     /// by product and region and can be obtained from
     /// \[ReachPlanService.ListPlannableProducts][google.ads.googleads.v9.services.ReachPlanService.ListPlannableProducts\].
-    #[prost(enumeration = "super::enums::reach_plan_network_enum::ReachPlanNetwork", tag = "5")]
+    #[prost(
+        enumeration = "super::enums::reach_plan_network_enum::ReachPlanNetwork",
+        tag = "5"
+    )]
     pub network: i32,
 }
 /// The duration of a planned campaign.
@@ -24502,9 +24567,12 @@ pub struct SmartCampaignSuggestionInfo {
     #[prost(message, repeated, tag = "7")]
     pub keyword_themes: ::prost::alloc::vec::Vec<super::common::KeywordThemeInfo>,
     /// The business settings to consider when generating suggestions.
-    /// Settings are automatically extracted from the GMB location when provided.
+    /// Settings are automatically extracted from the business when provided.
     /// Otherwise, these settings must be specified explicitly.
-    #[prost(oneof = "smart_campaign_suggestion_info::BusinessSetting", tags = "8, 2")]
+    #[prost(
+        oneof = "smart_campaign_suggestion_info::BusinessSetting",
+        tags = "8, 2"
+    )]
     pub business_setting: ::core::option::Option<smart_campaign_suggestion_info::BusinessSetting>,
     /// The geo target of the campaign, either a list of locations or
     /// a single proximity shall be specified.
@@ -24528,18 +24596,18 @@ pub mod smart_campaign_suggestion_info {
         pub business_name: ::prost::alloc::string::String,
     }
     /// The business settings to consider when generating suggestions.
-    /// Settings are automatically extracted from the GMB location when provided.
+    /// Settings are automatically extracted from the business when provided.
     /// Otherwise, these settings must be specified explicitly.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum BusinessSetting {
         /// Optional. Context describing the business to advertise.
         #[prost(message, tag = "8")]
         BusinessContext(BusinessContext),
-        /// Optional. The ID of the Google My Business (GMB) Location.
-        /// The location ID can be fetched by GMB API with its form:
+        /// Optional. The ID of the Business Profile location.
+        /// The location ID can be fetched by Business Profile API with its form:
         /// accounts/{accountId}/locations/{locationId}. The last {locationId}
-        /// component from the GMB API represents the business_location_id.
-        /// See the [Google My Business API]
+        /// component from the Business Profile API represents the
+        /// business_location_id. See the [Business Profile API]
         /// (<https://developers.google.com/my-business/reference/rest/v4/accounts.locations>)
         #[prost(int64, tag = "2")]
         BusinessLocationId(i64),

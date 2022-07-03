@@ -452,7 +452,10 @@ pub struct LoadBalancerBackend {
     #[prost(string, tag = "2")]
     pub uri: ::prost::alloc::string::String,
     /// State of the health check firewall configuration.
-    #[prost(enumeration = "load_balancer_backend::HealthCheckFirewallState", tag = "3")]
+    #[prost(
+        enumeration = "load_balancer_backend::HealthCheckFirewallState",
+        tag = "3"
+    )]
     pub health_check_firewall_state: i32,
     /// A list of firewall rule URIs allowing probes from health check IP ranges.
     #[prost(string, repeated, tag = "4")]
@@ -652,6 +655,11 @@ pub struct AbortInfo {
     /// URI of the resource that caused the abort.
     #[prost(string, tag = "2")]
     pub resource_uri: ::prost::alloc::string::String,
+    /// List of project IDs that the user has specified in the request but does
+    /// not have permission to access network configs. Analysis is aborted in this
+    /// case with the PERMISSION_DENIED cause.
+    #[prost(string, repeated, tag = "3")]
+    pub projects_missing_permission: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `AbortInfo`.
 pub mod abort_info {

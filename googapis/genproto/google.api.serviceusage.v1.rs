@@ -133,7 +133,10 @@ pub struct DisableServiceRequest {
     #[prost(bool, tag = "2")]
     pub disable_dependent_services: bool,
     /// Defines the behavior for checking service usage when disabling a service.
-    #[prost(enumeration = "disable_service_request::CheckIfServiceHasUsage", tag = "3")]
+    #[prost(
+        enumeration = "disable_service_request::CheckIfServiceHasUsage",
+        tag = "3"
+    )]
     pub check_if_service_has_usage: i32,
 }
 /// Nested message and enum types in `DisableServiceRequest`.

@@ -23,7 +23,10 @@ pub struct TrafficDirectorLogEntry {
     #[prost(string, tag = "6")]
     pub client_version: ::prost::alloc::string::String,
     /// The xDS API version used by xDS clients connecting to Traffic Director.
-    #[prost(enumeration = "traffic_director_log_entry::TransportApiVersion", tag = "7")]
+    #[prost(
+        enumeration = "traffic_director_log_entry::TransportApiVersion",
+        tag = "7"
+    )]
     pub transport_api_version: i32,
 }
 /// Nested message and enum types in `TrafficDirectorLogEntry`.

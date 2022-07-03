@@ -14,7 +14,10 @@ pub struct AuditData {
     #[prost(oneof = "audit_data::Request", tags = "1, 16, 2, 3, 4, 5, 6, 7, 8, 20")]
     pub request: ::core::option::Option<audit_data::Request>,
     /// Response data for each BigQuery method.
-    #[prost(oneof = "audit_data::Response", tags = "9, 10, 11, 12, 18, 13, 14, 15, 21")]
+    #[prost(
+        oneof = "audit_data::Response",
+        tags = "9, 10, 11, 12, 18, 13, 14, 15, 21"
+    )]
     pub response: ::core::option::Option<audit_data::Response>,
 }
 /// Nested message and enum types in `AuditData`.

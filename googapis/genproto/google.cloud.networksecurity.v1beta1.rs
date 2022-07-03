@@ -59,19 +59,23 @@ pub mod authorization_policy {
             /// Optional. List of peer identities to match for authorization. At least one
             /// principal should match. Each peer can be an exact match, or a prefix
             /// match (example, "namespace/*") or a suffix match (example, //
-            /// */service-account") or a presence match "*".
+            /// */service-account") or a presence match "*". Authorization based on the
+            /// principal name without certificate validation (configured by
+            /// ServerTlsPolicy resource) is considered insecure.
             #[prost(string, repeated, tag = "1")]
             pub principals: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
             /// Optional. List of CIDR ranges to match based on source IP address. At least one
             /// IP block should match. Single IP (e.g., "1.2.3.4") and CIDR (e.g.,
-            /// "1.2.3.0/24") are supported.
+            /// "1.2.3.0/24") are supported. Authorization based on source IP alone
+            /// should be avoided. The IP addresses of any load balancers or proxies
+            /// should be considered untrusted.
             #[prost(string, repeated, tag = "2")]
             pub ip_blocks: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         }
         /// Specification of traffic destination attributes.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Destination {
-            /// Required. List of host names to match. Matched against HOST header in
+            /// Required. List of host names to match. Matched against the ":authority" header in
             /// http requests. At least one host should match. Each host can be an
             /// exact match, or a prefix match (example "mydomain.*") or a suffix
             /// match (example // *.myorg.com") or a presence(any) match "*".
@@ -84,9 +88,11 @@ pub mod authorization_policy {
             /// match. Should not be set for gRPC services.
             #[prost(string, repeated, tag = "4")]
             pub methods: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-            /// Optional. Match against key:value pair in http header. Provides a
-            /// flexible match based on HTTP headers, for potentially
-            /// advanced use cases. At least one header should match.
+            /// Optional. Match against key:value pair in http header. Provides a flexible match
+            /// based on HTTP headers, for potentially advanced use cases. At least one
+            /// header should match. Avoid using header matches to make authorization
+            /// decisions unless there is a strong guarantee that requests arrive
+            /// through a trusted client or proxy.
             #[prost(message, optional, tag = "5")]
             pub http_header_match: ::core::option::Option<destination::HttpHeaderMatch>,
         }
@@ -130,6 +136,8 @@ pub mod authorization_policy {
         /// Grant access.
         Allow = 1,
         /// Deny access.
+        /// Deny rules should be avoided unless they are used to provide a default
+        /// "deny all" fallback.
         Deny = 2,
     }
 }
@@ -423,13 +431,14 @@ pub struct OperationMetadata {
 /// ServerTlsPolicy is a resource that specifies how a server should authenticate
 /// incoming requests. This resource itself does not affect configuration unless
 /// it is attached to a target https proxy or endpoint config selector resource.
+///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServerTlsPolicy {
     /// Required. Name of the ServerTlsPolicy resource. It matches the pattern
     /// `projects/*/locations/{location}/serverTlsPolicies/{server_tls_policy}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Optional. Free-text description of the resource.
+    /// Free-text description of the resource.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Output only. The timestamp when the resource was created.
@@ -438,27 +447,31 @@ pub struct ServerTlsPolicy {
     /// Output only. The timestamp when the resource was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Optional. Set of label tags associated with the resource.
+    /// Set of label tags associated with the resource.
     #[prost(map = "string, string", tag = "5")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Optional. Determines if server allows plaintext connections. If set to true, server
+    ///
+    /// Determines if server allows plaintext connections. If set to true, server
     /// allows plain text connections. By default, it is set to false. This setting
-    /// is not exclusive of other encryption modes. For example, if allow_open and
-    /// mtls_policy are set, server allows both plain text and mTLS connections.
-    /// See documentation of other encryption modes to confirm compatibility.
+    /// is not exclusive of other encryption modes. For example, if `allow_open`
+    /// and `mtls_policy` are set, server allows both plain text and mTLS
+    /// connections. See documentation of other encryption modes to confirm
+    /// compatibility.
     #[prost(bool, tag = "6")]
     pub allow_open: bool,
-    /// Optional. Defines a mechanism to provision server identity (public and private keys).
-    /// Cannot be combined with allow_open as a permissive mode that allows both
+    ///
+    /// Defines a mechanism to provision server identity (public and private keys).
+    /// Cannot be combined with `allow_open` as a permissive mode that allows both
     /// plain text and TLS is not supported.
     #[prost(message, optional, tag = "7")]
     pub server_certificate: ::core::option::Option<CertificateProvider>,
-    /// Optional. Defines a mechanism to provision peer validation certificates for peer to
+    ///
+    /// Defines a mechanism to provision peer validation certificates for peer to
     /// peer authentication (Mutual TLS - mTLS). If not specified, client
     /// certificate will not be requested. The connection is treated as TLS and not
-    /// mTLS. If allow_open and mtls_policy are set, server allows both plain text
-    /// and mTLS connections.
+    /// mTLS. If `allow_open` and `mtls_policy` are set, server allows both plain
+    /// text and mTLS connections.
     #[prost(message, optional, tag = "8")]
     pub mtls_policy: ::core::option::Option<server_tls_policy::MtlsPolicy>,
 }
@@ -467,7 +480,8 @@ pub mod server_tls_policy {
     /// Specification of the MTLSPolicy.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct MtlsPolicy {
-        /// Required. Defines the mechanism to obtain the Certificate Authority certificate to
+        ///
+        /// Defines the mechanism to obtain the Certificate Authority certificate to
         /// validate the client certificate.
         #[prost(message, repeated, tag = "1")]
         pub client_validation_ca: ::prost::alloc::vec::Vec<super::ValidationCa>,
@@ -553,6 +567,9 @@ pub struct DeleteServerTlsPolicyRequest {
 pub mod network_security_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
+    #[doc = " Network Security API provides resources to configure authentication and"]
+    #[doc = " authorization policies. Refer to per API resource documentation for more"]
+    #[doc = " information."]
     #[derive(Debug, Clone)]
     pub struct NetworkSecurityClient<T> {
         inner: tonic::client::Grpc<T>,

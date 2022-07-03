@@ -16,13 +16,30 @@ pub struct AnnotateAssessmentRequest {
     /// "projects/{project_number}/assessments/{assessment_id}".
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. The annotation that will be assigned to the Event.
+    /// Optional. The annotation that will be assigned to the Event. This field can be left
+    /// empty to provide reasons that apply to an event without concluding whether
+    /// the event is legitimate or fraudulent.
     #[prost(enumeration = "annotate_assessment_request::Annotation", tag = "2")]
     pub annotation: i32,
+    /// Optional. Optional reasons for the annotation that will be assigned to the Event.
+    #[prost(
+        enumeration = "annotate_assessment_request::Reason",
+        repeated,
+        packed = "false",
+        tag = "3"
+    )]
+    pub reasons: ::prost::alloc::vec::Vec<i32>,
+    /// Optional. Optional unique stable hashed user identifier to apply to the assessment.
+    /// This is an alternative to setting the hashed_account_id in
+    /// CreateAssessment, for example when the account identifier is not yet known
+    /// in the initial request. It is recommended that the identifier is hashed
+    /// using hmac-sha256 with stable secret.
+    #[prost(bytes = "vec", tag = "4")]
+    pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
 }
 /// Nested message and enum types in `AnnotateAssessmentRequest`.
 pub mod annotate_assessment_request {
-    /// Enum that reprensents the types of annotations.
+    /// Enum that represents the types of annotations.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Annotation {
@@ -32,11 +49,71 @@ pub mod annotate_assessment_request {
         Legitimate = 1,
         /// Provides information that the event turned out to be fraudulent.
         Fraudulent = 2,
+        /// Provides information that the event was related to a login event in which
+        /// the user typed the correct password. Deprecated, prefer indicating
+        /// CORRECT_PASSWORD through the reasons field instead.
+        PasswordCorrect = 3,
+        /// Provides information that the event was related to a login event in which
+        /// the user typed the incorrect password. Deprecated, prefer indicating
+        /// INCORRECT_PASSWORD through the reasons field instead.
+        PasswordIncorrect = 4,
+    }
+    /// Enum that represents potential reasons for annotating an assessment.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Reason {
+        /// Default unspecified reason.
+        Unspecified = 0,
+        /// Indicates a chargeback issued for the transaction with no other details.
+        /// When possible, specify the type by using CHARGEBACK_FRAUD or
+        /// CHARGEBACK_DISPUTE instead.
+        Chargeback = 1,
+        /// Indicates a chargeback related to an alleged unauthorized transaction
+        /// from the cardholder's perspective (for example, the card number was
+        /// stolen).
+        ChargebackFraud = 8,
+        /// Indicates a chargeback related to the cardholder having provided their
+        /// card details but allegedly not being satisfied with the purchase
+        /// (for example, misrepresentation, attempted cancellation).
+        ChargebackDispute = 9,
+        /// Indicates the transaction associated with the assessment is suspected of
+        /// being fraudulent based on the payment method, billing details, shipping
+        /// address or other transaction information.
+        PaymentHeuristics = 2,
+        /// Indicates that the user was served a 2FA challenge. An old assessment
+        /// with `ENUM_VALUES.INITIATED_TWO_FACTOR` reason that has not been
+        /// overwritten with `PASSED_TWO_FACTOR` is treated as an abandoned 2FA flow.
+        /// This is equivalent to `FAILED_TWO_FACTOR`.
+        InitiatedTwoFactor = 7,
+        /// Indicates that the user passed a 2FA challenge.
+        PassedTwoFactor = 3,
+        /// Indicates that the user failed a 2FA challenge.
+        FailedTwoFactor = 4,
+        /// Indicates the user provided the correct password.
+        CorrectPassword = 5,
+        /// Indicates the user provided an incorrect password.
+        IncorrectPassword = 6,
     }
 }
 /// Empty response for AnnotateAssessment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotateAssessmentResponse {}
+/// Password leak verification info.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PasswordLeakVerification {
+    /// Optional. Scrypt hash of the username+password that the customer wants to verify
+    /// against a known password leak.
+    #[prost(bytes = "vec", tag = "1")]
+    pub hashed_user_credentials: ::prost::alloc::vec::Vec<u8>,
+    /// Output only. Whether or not the user's credentials are present in a known leak.
+    #[prost(bool, tag = "2")]
+    pub credentials_leaked: bool,
+    /// Optional. The username part of the user credentials for which we want to trigger a
+    /// leak check in canonicalized form. This is the same data used to create the
+    /// hashed_user_credentials on the customer side.
+    #[prost(string, tag = "3")]
+    pub canonicalized_username: ::prost::alloc::string::String,
+}
 /// A recaptcha assessment resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Assessment {
@@ -63,10 +140,19 @@ pub struct Assessment {
         tag = "5"
     )]
     pub reasons: ::prost::alloc::vec::Vec<i32>,
+    /// Information about the user's credentials used to check for leaks.
+    /// This feature is part of the Early Access Program (EAP). Exercise caution,
+    /// and do not deploy integrations based on this feature in a production
+    /// environment.
+    #[prost(message, optional, tag = "7")]
+    pub password_leak_verification: ::core::option::Option<PasswordLeakVerification>,
+    /// Assessment returned by Account Defender when a hashed_account_id is
+    /// provided.
+    #[prost(message, optional, tag = "8")]
+    pub account_defender_assessment: ::core::option::Option<AccountDefenderAssessment>,
 }
 /// Nested message and enum types in `Assessment`.
 pub mod assessment {
-    /// LINT.IfChange(classification_reason)
     /// Reasons contributing to the risk analysis verdict.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -109,10 +195,18 @@ pub struct Event {
     /// integrated with recaptcha enterprise.
     #[prost(string, tag = "5")]
     pub expected_action: ::prost::alloc::string::String,
+    /// Optional. Optional unique stable hashed user identifier for the request. The
+    /// identifier should ideally be hashed using sha256 with stable secret.
+    #[prost(bytes = "vec", tag = "6")]
+    pub hashed_account_id: ::prost::alloc::vec::Vec<u8>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TokenProperties {
-    /// Whether the provided user response token is valid.
+    /// Whether the provided user response token is valid. When valid = false, the
+    /// reason could be specified in invalid_reason or it could also be due to
+    /// a user failing to solve a challenge or a sitekey mismatch (i.e the sitekey
+    /// used to generate the token was different than the one specified in the
+    /// assessment).
     #[prost(bool, tag = "1")]
     pub valid: bool,
     /// Reason associated with the response when valid = false.
@@ -130,7 +224,6 @@ pub struct TokenProperties {
 }
 /// Nested message and enum types in `TokenProperties`.
 pub mod token_properties {
-    /// LINT.IfChange
     /// Enum that represents the types of invalid token reasons.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -152,180 +245,43 @@ pub mod token_properties {
         SiteMismatch = 5,
         /// The user verification token was not present.  It is a required input.
         Missing = 6,
+        /// A retriable error (such as network failure) occurred on the browser.
+        /// Could easily be simulated by an attacker.
+        BrowserError = 7,
     }
 }
-/// The create key request message.
+/// Account Defender risk assessment.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateKeyRequest {
-    /// Required. The name of the project in which the key will be created, in the
-    /// format "projects/{project_number}".
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Required. Information to create a reCAPTCHA Enterprise key.
-    #[prost(message, optional, tag = "2")]
-    pub key: ::core::option::Option<Key>,
+pub struct AccountDefenderAssessment {
+    /// Labels for this request.
+    #[prost(
+        enumeration = "account_defender_assessment::AccountDefenderLabel",
+        repeated,
+        tag = "1"
+    )]
+    pub labels: ::prost::alloc::vec::Vec<i32>,
 }
-/// The list keys request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListKeysRequest {
-    /// Required. The name of the project that contains the keys that will be
-    /// listed, in the format "projects/{project_number}".
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of keys to return. Default is 10. Max limit is
-    /// 1000.
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// Optional. The next_page_token value returned from a previous.
-    /// ListKeysRequest, if any.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Response to request to list keys in a project.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListKeysResponse {
-    /// Key details.
-    #[prost(message, repeated, tag = "1")]
-    pub keys: ::prost::alloc::vec::Vec<Key>,
-    /// Token to retrieve the next page of results. It is set to empty if no keys
-    /// remain in results.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// The get key request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetKeyRequest {
-    /// Required. The name of the requested key, in the format
-    /// "projects/{project_number}/keys/{key_id}".
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// The update key request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateKeyRequest {
-    /// Required. The key to update.
-    #[prost(message, optional, tag = "1")]
-    pub key: ::core::option::Option<Key>,
-    /// Optional. The mask to control which field of the key get updated. If the mask is not
-    /// present, all fields will be updated.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// The delete key request message.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteKeyRequest {
-    /// Required. The name of the key to be deleted, in the format
-    /// "projects/{project_number}/keys/{key_id}".
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// A key used to identify and configure applications (web and/or mobile) that
-/// use reCAPTCHA Enterprise.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Key {
-    /// The resource name for the Key in the format
-    /// "projects/{project_number}/keys/{key_id}".
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Human-readable display name of this key. Modifiable by user.
-    #[prost(string, tag = "2")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Platform specific settings for this key. The key can only be used on one
-    /// platform, the one it has settings for.
-    #[prost(oneof = "key::PlatformSettings", tags = "3, 4, 5")]
-    pub platform_settings: ::core::option::Option<key::PlatformSettings>,
-}
-/// Nested message and enum types in `Key`.
-pub mod key {
-    /// Platform specific settings for this key. The key can only be used on one
-    /// platform, the one it has settings for.
-    #[derive(Clone, PartialEq, ::prost::Oneof)]
-    pub enum PlatformSettings {
-        /// Settings for keys that can be used by websites.
-        #[prost(message, tag = "3")]
-        WebSettings(super::WebKeySettings),
-        /// Settings for keys that can be used by Android apps.
-        #[prost(message, tag = "4")]
-        AndroidSettings(super::AndroidKeySettings),
-        /// Settings for keys that can be used by iOS apps.
-        #[prost(message, tag = "5")]
-        IosSettings(super::IosKeySettings),
-    }
-}
-/// Settings specific to keys that can be used by websites.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WebKeySettings {
-    /// Whether allowed_domains is enforced or not.
-    #[prost(bool, tag = "3")]
-    pub enforce_allowed_domains: bool,
-    /// Domains or subdomains of websites allowed to use the key. All subdomains
-    /// of an allowed domain are automatically allowed. A valid domain requires a
-    /// host and must not include any path, port, query or fragment.
-    /// Examples: 'example.com' or 'subdomain.example.com'
-    #[prost(string, repeated, tag = "1")]
-    pub allowed_domains: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Whether this key can be used on AMP (Accelerated Mobile Pages) websites.
-    #[prost(bool, tag = "2")]
-    pub allow_amp_traffic: bool,
-    /// Required. Describes how this key is integrated with the website.
-    #[prost(enumeration = "web_key_settings::IntegrationType", tag = "4")]
-    pub integration_type: i32,
-    /// Settings for the frequency and difficulty at which this key triggers
-    /// captcha challenges. This should only be specified for IntegrationTypes
-    /// CHECKBOX_CHALLENGE and INVISIBLE_CHALLENGE.
-    #[prost(enumeration = "web_key_settings::ChallengeSecurityPreference", tag = "5")]
-    pub challenge_security_preference: i32,
-}
-/// Nested message and enum types in `WebKeySettings`.
-pub mod web_key_settings {
-    /// Enum that represents the integration types for web keys.
+/// Nested message and enum types in `AccountDefenderAssessment`.
+pub mod account_defender_assessment {
+    /// Labels returned by Account Defender for this request.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
-    pub enum IntegrationType {
-        /// Default type that indicates this enum hasn't been specified. This is not
-        /// a valid IntegrationType, one of the other types must be specified
-        /// instead.
+    pub enum AccountDefenderLabel {
+        /// Default unspecified type.
         Unspecified = 0,
-        /// Only used to produce scores. It doesn't display the "I'm not a robot"
-        /// checkbox and never shows captcha challenges.
-        ScoreOnly = 1,
-        /// Displays the "I'm not a robot" checkbox and may show captcha challenges
-        /// after it is checked.
-        CheckboxChallenge = 2,
-        /// Doesn't display the "I'm not a robot" checkbox, but may show captcha
-        /// challenges after risk analysis.
-        InvisibleChallenge = 3,
+        /// The request matches a known good profile for the user.
+        ProfileMatch = 1,
+        /// The request is potentially a suspicious login event and should be further
+        /// verified either via multi-factor authentication or another system.
+        SuspiciousLoginActivity = 2,
+        /// The request matched a profile that previously had suspicious account
+        /// creation behavior. This could mean this is a fake account.
+        SuspiciousAccountCreation = 3,
+        /// The account in the request has a high number of related accounts. It does
+        /// not necessarily imply that the account is bad but could require
+        /// investigating.
+        RelatedAccountsNumberHigh = 4,
     }
-    /// Enum that represents the possible challenge frequency and difficulty
-    /// configurations for a web key.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum ChallengeSecurityPreference {
-        /// Default type that indicates this enum hasn't been specified.
-        Unspecified = 0,
-        /// Key tends to show fewer and easier challenges.
-        Usability = 1,
-        /// Key tends to show balanced (in amount and difficulty) challenges.
-        Balanced = 2,
-        /// Key tends to show more and harder challenges.
-        Security = 3,
-    }
-}
-/// Settings specific to keys that can be used by Android apps.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AndroidKeySettings {
-    /// Android package names of apps allowed to use the key.
-    /// Example: 'com.companyname.appname'
-    #[prost(string, repeated, tag = "1")]
-    pub allowed_package_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Settings specific to keys that can be used by iOS apps.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IosKeySettings {
-    /// iOS bundle ids of apps allowed to use the key.
-    /// Example: 'com.companyname.productname.appname'
-    #[prost(string, repeated, tag = "1")]
-    pub allowed_bundle_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 #[doc = r" Generated client implementations."]
 pub mod recaptcha_enterprise_service_v1_beta1_client {
@@ -409,81 +365,6 @@ pub mod recaptcha_enterprise_service_v1_beta1_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1/AnnotateAssessment") ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates a new reCAPTCHA Enterprise key."]
-        pub async fn create_key(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateKeyRequest>,
-        ) -> Result<tonic::Response<super::Key>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1/CreateKey") ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Returns the list of all keys that belong to a project."]
-        pub async fn list_keys(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListKeysRequest>,
-        ) -> Result<tonic::Response<super::ListKeysResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1/ListKeys") ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Returns the specified key."]
-        pub async fn get_key(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetKeyRequest>,
-        ) -> Result<tonic::Response<super::Key>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1/GetKey") ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Updates the specified key."]
-        pub async fn update_key(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateKeyRequest>,
-        ) -> Result<tonic::Response<super::Key>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1/UpdateKey") ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Deletes the specified key."]
-        pub async fn delete_key(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteKeyRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.recaptchaenterprise.v1beta1.RecaptchaEnterpriseServiceV1Beta1/DeleteKey") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
     }

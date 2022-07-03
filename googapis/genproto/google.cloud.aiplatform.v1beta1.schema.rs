@@ -444,7 +444,10 @@ pub mod prediction_result {
     pub struct Error {
         /// Error status. This will be serialized into the enum name e.g.
         /// "NOT_FOUND".
-        #[prost(enumeration = "super::super::super::super::super::rpc::Code", tag = "1")]
+        #[prost(
+            enumeration = "super::super::super::super::super::rpc::Code",
+            tag = "1"
+        )]
         pub status: i32,
         /// Error message with additional details.
         #[prost(string, tag = "2")]

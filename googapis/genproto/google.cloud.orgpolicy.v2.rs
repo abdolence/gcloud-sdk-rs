@@ -2,11 +2,11 @@
 /// example, you could enforce a constraint that controls which cloud services
 /// can be activated across an organization, or whether a Compute Engine instance
 /// can have serial port connections established. `Constraints` can be configured
-/// by the organization's policy adminstrator to fit the needs of the organzation
-/// by setting a `policy` that includes `constraints` at different locations in
-/// the organization's resource hierarchy. Policies are inherited down the
-/// resource hierarchy from higher levels, but can also be overridden. For
-/// details about the inheritance rules please read about
+/// by the organization's policy administrator to fit the needs of the
+/// organization by setting a `policy` that includes `constraints` at different
+/// locations in the organization's resource hierarchy. Policies are inherited
+/// down the resource hierarchy from higher levels, but can also be overridden.
+/// For details about the inheritance rules please read about
 /// \[`policies`][google.cloud.OrgPolicy.v2.Policy\].
 ///
 /// `Constraints` have a default behavior determined by the `constraint_default`
@@ -119,10 +119,8 @@ pub struct Policy {
     /// Basic information about the Organization Policy.
     #[prost(message, optional, tag = "2")]
     pub spec: ::core::option::Option<PolicySpec>,
-    /// An alternate policy configuration that will be used instead of the baseline
-    /// policy configurations as determined by the launch.
-    /// Currently the only way the launch can trigger the alternate configuration
-    /// is via dry-run/darklaunch.
+    /// Deprecated.
+    #[deprecated]
     #[prost(message, optional, tag = "3")]
     pub alternate: ::core::option::Option<AlternatePolicySpec>,
 }
@@ -198,11 +196,14 @@ pub mod policy_spec {
         /// in the evaluation of the policy. When set, the `expression` field in
         /// the `Expr' must include from 1 to 10 subexpressions, joined by the "||"
         /// or "&&" operators. Each subexpression must be of the form
-        /// "resource.matchLabels(key_name, value_name)",
-        /// where key_name and value_name are the resource names for Label Keys
-        /// and Values. These names are available from the Label Manager Service. An
-        /// example expression is:
-        /// "resource.matchLabels('labelKeys/123, 'labelValues/456')".
+        /// "resource.matchTag('<ORG_ID>/tag_key_short_name,
+        /// 'tag_value_short_name')". or "resource.matchTagId('tagKeys/key_id',
+        /// 'tagValues/value_id')". where key_name and value_name are the resource
+        /// names for Label Keys and Values. These names are available from the Tag
+        /// Manager Service. An example expression is:
+        /// "resource.matchTag('123456789/environment,
+        /// 'prod')". or "resource.matchTagId('tagKeys/123',
+        /// 'tagValues/456')".
         #[prost(message, optional, tag = "5")]
         pub condition: ::core::option::Option<super::super::super::super::r#type::Expr>,
         #[prost(oneof = "policy_rule::Kind", tags = "1, 2, 3, 4")]

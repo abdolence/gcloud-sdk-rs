@@ -190,7 +190,10 @@ pub struct MembershipFeatureState {
     /// The high-level state of this Feature for a single membership.
     #[prost(message, optional, tag = "1")]
     pub state: ::core::option::Option<FeatureState>,
-    #[prost(oneof = "membership_feature_state::FeatureState", tags = "100, 104, 106")]
+    #[prost(
+        oneof = "membership_feature_state::FeatureState",
+        tags = "100, 104, 106"
+    )]
     pub feature_state: ::core::option::Option<membership_feature_state::FeatureState>,
 }
 /// Nested message and enum types in `MembershipFeatureState`.

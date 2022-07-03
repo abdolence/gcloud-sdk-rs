@@ -17,7 +17,7 @@ pub struct EngineCallLog {
     /// The name of the target of the call, truncated if necessary.
     #[prost(string, tag = "5")]
     pub callee: ::prost::alloc::string::String,
-    #[prost(oneof = "engine_call_log::Details", tags = "6, 7, 8")]
+    #[prost(oneof = "engine_call_log::Details", tags = "6, 7, 8, 9")]
     pub details: ::core::option::Option<engine_call_log::Details>,
 }
 /// Nested message and enum types in `EngineCallLog`.
@@ -33,9 +33,17 @@ pub mod engine_call_log {
     /// Information about the start of a call.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Begun {
-        /// The arguments passed to the function.
+        /// The arguments passed to the function. Only one of 'args' and 'named_args'
+        /// will be populated.
         #[prost(message, repeated, tag = "1")]
         pub args: ::prost::alloc::vec::Vec<CallArg>,
+        /// The arguments passed to the function, as a map with the argument names as
+        /// the keys. The values may be JSON values or they may be the serialized
+        /// string forms of the arguments truncated for size reasons. Only one of
+        /// 'args' and 'named_args' will be populated.
+        #[prost(map = "string, message", tag = "2")]
+        pub named_args:
+            ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
     }
     /// Information about the end of a successful call.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -62,6 +70,20 @@ pub mod engine_call_log {
         #[prost(string, tag = "3")]
         pub origin: ::prost::alloc::string::String,
     }
+    /// Information about an exception which was handled.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ExceptionHandled {
+        /// The time when the call started.
+        #[prost(message, optional, tag = "1")]
+        pub call_start_time: ::core::option::Option<::prost_types::Timestamp>,
+        /// The exception message which was handled, truncated if necessary.
+        #[prost(string, tag = "2")]
+        pub exception: ::prost::alloc::string::String,
+        /// The name of the step where the failure originates, if known. Truncated
+        /// if necessary.
+        #[prost(string, tag = "3")]
+        pub origin: ::prost::alloc::string::String,
+    }
     /// The state of a function call.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -74,6 +96,8 @@ pub mod engine_call_log {
         Succeeded = 2,
         /// Function call did not succeed because an exception was raised.
         ExceptionRaised = 3,
+        /// Function call handled an exception and is continuing.
+        ExceptionHandled = 4,
     }
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Details {
@@ -86,6 +110,9 @@ pub mod engine_call_log {
         /// Appears when a call returns because an exception was raised.
         #[prost(message, tag = "8")]
         ExceptionRaised(ExceptionRaised),
+        /// Appears when an exception is handled and normal execution resumes.
+        #[prost(message, tag = "9")]
+        ExceptionHandled(ExceptionHandled),
     }
 }
 /// Logged during the lifetime of Workflow Execution.

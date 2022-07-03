@@ -341,7 +341,9 @@ pub mod embedded_assistant_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.assistant.embedded.v1alpha1.EmbeddedAssistant/Converse",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }

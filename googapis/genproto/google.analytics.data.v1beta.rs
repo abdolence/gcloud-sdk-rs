@@ -31,8 +31,8 @@ pub struct MinuteRange {
     ///
     /// If unspecified, `startMinutesAgo` is defaulted to 29. Standard Analytics
     /// properties can request up to the last 30 minutes of event data
-    /// (`startMinutesAgo <= 29`), and 360 Analytics properties can request up to
-    /// the last 60 minutes of event data (`startMinutesAgo <= 59`).
+    /// (`startMinutesAgo <= 29`), and Google Analytics 360 properties can request
+    /// up to the last 60 minutes of event data (`startMinutesAgo <= 59`).
     #[prost(int32, optional, tag = "1")]
     pub start_minutes_ago: ::core::option::Option<i32>,
     /// The inclusive end minute for the query as a number of minutes before now.
@@ -42,8 +42,8 @@ pub struct MinuteRange {
     ///
     /// If unspecified, `endMinutesAgo` is defaulted to 0. Standard Analytics
     /// properties can request any minute in the last 30 minutes of event data
-    /// (`endMinutesAgo <= 29`), and 360 Analytics properties can request any
-    /// minute in the last 60 minutes of event data (`endMinutesAgo <= 59`).
+    /// (`endMinutesAgo <= 29`), and Google Analytics 360 properties can request
+    /// any minute in the last 60 minutes of event data (`endMinutesAgo <= 59`).
     #[prost(int32, optional, tag = "2")]
     pub end_minutes_ago: ::core::option::Option<i32>,
     /// Assigns a name to this minute range. The dimension `dateRange` is valued to
@@ -649,7 +649,11 @@ pub mod response_meta_data {
             #[prost(string, optional, tag = "1")]
             pub metric_name: ::core::option::Option<::prost::alloc::string::String>,
             /// The reason for this metric's restriction.
-            #[prost(enumeration = "super::super::RestrictedMetricType", repeated, tag = "2")]
+            #[prost(
+                enumeration = "super::super::RestrictedMetricType",
+                repeated,
+                tag = "2"
+            )]
             pub restricted_metric_types: ::prost::alloc::vec::Vec<i32>,
         }
     }

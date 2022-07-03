@@ -136,14 +136,22 @@ pub struct DevicePolicy {
     #[prost(bool, tag = "1")]
     pub require_screenlock: bool,
     /// Allowed encryptions statuses, an empty list allows all statuses.
-    #[prost(enumeration = "super::r#type::DeviceEncryptionStatus", repeated, tag = "2")]
+    #[prost(
+        enumeration = "super::r#type::DeviceEncryptionStatus",
+        repeated,
+        tag = "2"
+    )]
     pub allowed_encryption_statuses: ::prost::alloc::vec::Vec<i32>,
     /// Allowed OS versions, an empty list allows all types and all versions.
     #[prost(message, repeated, tag = "3")]
     pub os_constraints: ::prost::alloc::vec::Vec<OsConstraint>,
     /// Allowed device management levels, an empty list allows all management
     /// levels.
-    #[prost(enumeration = "super::r#type::DeviceManagementLevel", repeated, tag = "6")]
+    #[prost(
+        enumeration = "super::r#type::DeviceManagementLevel",
+        repeated,
+        tag = "6"
+    )]
     pub allowed_device_management_levels: ::prost::alloc::vec::Vec<i32>,
     /// Whether the device needs to be approved by the customer admin.
     #[prost(bool, tag = "7")]

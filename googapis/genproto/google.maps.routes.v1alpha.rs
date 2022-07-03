@@ -151,7 +151,9 @@ pub mod routes_alpha_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.maps.routes.v1alpha.RoutesAlpha/ComputeRouteMatrix",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Given a set of terminal and intermediate waypoints, and a route objective,"]
         #[doc = " computes the best route for the route objective. Also returns fastest route"]

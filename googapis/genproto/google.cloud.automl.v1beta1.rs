@@ -1782,7 +1782,10 @@ pub mod model_export_output_config {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportEvaluatedExamplesOutputConfig {
     /// Required. The destination of the output.
-    #[prost(oneof = "export_evaluated_examples_output_config::Destination", tags = "2")]
+    #[prost(
+        oneof = "export_evaluated_examples_output_config::Destination",
+        tags = "2"
+    )]
     pub destination: ::core::option::Option<export_evaluated_examples_output_config::Destination>,
 }
 /// Nested message and enum types in `ExportEvaluatedExamplesOutputConfig`.
@@ -2872,7 +2875,10 @@ pub struct Dataset {
     pub etag: ::prost::alloc::string::String,
     /// Required.
     /// The dataset metadata that is specific to the problem type.
-    #[prost(oneof = "dataset::DatasetMetadata", tags = "23, 24, 25, 26, 31, 29, 28, 30, 33")]
+    #[prost(
+        oneof = "dataset::DatasetMetadata",
+        tags = "23, 24, 25, 26, 31, 29, 28, 30, 33"
+    )]
     pub dataset_metadata: ::core::option::Option<dataset::DatasetMetadata>,
 }
 /// Nested message and enum types in `Dataset`.
@@ -2940,7 +2946,10 @@ pub struct Model {
     /// Required.
     /// The model metadata that is specific to the problem type.
     /// Must match the metadata type of the dataset used to train the model.
-    #[prost(oneof = "model::ModelMetadata", tags = "15, 13, 14, 20, 23, 21, 19, 24, 22")]
+    #[prost(
+        oneof = "model::ModelMetadata",
+        tags = "15, 13, 14, 20, 23, 21, 19, 24, 22"
+    )]
     pub model_metadata: ::core::option::Option<model::ModelMetadata>,
 }
 /// Nested message and enum types in `Model`.
@@ -3096,7 +3105,10 @@ pub struct OperationMetadata {
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Ouptut only. Details of specific operation. Even if this field is empty,
     /// the presence allows to distinguish different types of operations.
-    #[prost(oneof = "operation_metadata::Details", tags = "8, 24, 25, 10, 15, 16, 21, 22, 26")]
+    #[prost(
+        oneof = "operation_metadata::Details",
+        tags = "8, 24, 25, 10, 15, 16, 21, 22, 26"
+    )]
     pub details: ::core::option::Option<operation_metadata::Details>,
 }
 /// Nested message and enum types in `OperationMetadata`.

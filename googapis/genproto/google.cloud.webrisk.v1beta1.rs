@@ -36,7 +36,10 @@ pub mod compute_threat_list_diff_request {
 pub struct ComputeThreatListDiffResponse {
     /// The type of response. This may indicate that an action must be taken by the
     /// client when the response is received.
-    #[prost(enumeration = "compute_threat_list_diff_response::ResponseType", tag = "4")]
+    #[prost(
+        enumeration = "compute_threat_list_diff_response::ResponseType",
+        tag = "4"
+    )]
     pub response_type: i32,
     /// A set of entries to add to a local threat type's list.
     #[prost(message, optional, tag = "5")]

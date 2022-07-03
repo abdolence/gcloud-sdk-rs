@@ -1,3 +1,97 @@
+/// A Cloud Firestore Database.
+/// Currently only one database is allowed per cloud project; this database
+/// must have a `database_id` of '(default)'.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Database {
+    /// The resource name of the Database.
+    /// Format: `projects/{project}/databases/{database}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The location of the database. Available databases are listed at
+    /// <https://cloud.google.com/firestore/docs/locations.>
+    #[prost(string, tag = "9")]
+    pub location_id: ::prost::alloc::string::String,
+    /// The type of the database.
+    /// See <https://cloud.google.com/datastore/docs/firestore-or-datastore> for
+    /// information about how to choose.
+    #[prost(enumeration = "database::DatabaseType", tag = "10")]
+    pub r#type: i32,
+    /// The concurrency control mode to use for this database.
+    #[prost(enumeration = "database::ConcurrencyMode", tag = "15")]
+    pub concurrency_mode: i32,
+    /// The App Engine integration mode to use for this database.
+    #[prost(enumeration = "database::AppEngineIntegrationMode", tag = "19")]
+    pub app_engine_integration_mode: i32,
+    /// Output only. The key_prefix for this database. This key_prefix is used, in combination
+    /// with the project id ("<key prefix>~<project id>") to construct the
+    /// application id that is returned from the Cloud Datastore APIs in Google App
+    /// Engine first generation runtimes.
+    ///
+    /// This value may be empty in which case the appid to use for URL-encoded keys
+    /// is the project_id (eg: foo instead of v~foo).
+    #[prost(string, tag = "20")]
+    pub key_prefix: ::prost::alloc::string::String,
+    /// This checksum is computed by the server based on the value of other
+    /// fields, and may be sent on update and delete requests to ensure the
+    /// client has an up-to-date value before proceeding.
+    #[prost(string, tag = "99")]
+    pub etag: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `Database`.
+pub mod database {
+    /// The type of the database.
+    /// See <https://cloud.google.com/datastore/docs/firestore-or-datastore> for
+    /// information about how to choose.
+    ///
+    /// Mode changes are only allowed if the database is empty.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum DatabaseType {
+        /// The default value. This value is used if the database type is omitted.
+        Unspecified = 0,
+        /// Firestore Native Mode
+        FirestoreNative = 1,
+        /// Firestore in Datastore Mode.
+        DatastoreMode = 2,
+    }
+    /// The type of concurrency control mode for transactions.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConcurrencyMode {
+        /// Not used.
+        Unspecified = 0,
+        /// Use optimistic concurrency control by default. This mode is available
+        /// for Cloud Firestore databases.
+        Optimistic = 1,
+        /// Use pessimistic concurrency control by default. This mode is available
+        /// for Cloud Firestore databases.
+        ///
+        /// This is the default setting for Cloud Firestore.
+        Pessimistic = 2,
+        /// Use optimistic concurrency control with entity groups by default.
+        ///
+        /// This is the only available mode for Cloud Datastore.
+        ///
+        /// This mode is also available for Cloud Firestore with Datastore Mode but
+        /// is not recommended.
+        OptimisticWithEntityGroups = 3,
+    }
+    /// The type of App Engine integration mode.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AppEngineIntegrationMode {
+        /// Not used.
+        Unspecified = 0,
+        /// If an App Engine application exists in the same region as this database,
+        /// App Engine configuration will impact this database. This includes
+        /// disabling of the application & database, as well as disabling writes to
+        /// the database.
+        Enabled = 1,
+        /// Appengine has no affect on the ability of this database to serve
+        /// requests.
+        Disabled = 2,
+    }
+}
 /// Cloud Firestore indexes enable simple and complex queries against
 /// documents in a database.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -80,7 +174,7 @@ pub mod index {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum ValueMode {
             /// Indicates that this field supports ordering by the specified order or
-            /// comparing using =, <, <=, >, >=.
+            /// comparing using =, !=, <, <=, >, >=.
             #[prost(enumeration = "Order", tag = "2")]
             Order(i32),
             /// Indicates that this field supports operations on `array_value`s.
@@ -139,7 +233,7 @@ pub mod index {
 /// collections in the database with the same id.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Field {
-    /// A field name of the form
+    /// Required. A field name of the form
     /// `projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_path}`
     ///
     /// A field path may be a simple field name, e.g. `address` or a path to fields
@@ -173,6 +267,11 @@ pub struct Field {
     /// with an empty list of indexes.
     #[prost(message, optional, tag = "2")]
     pub index_config: ::core::option::Option<field::IndexConfig>,
+    /// The TTL configuration for this `Field`.
+    /// Setting or unsetting this will enable or disable the TTL for
+    /// documents that have this `Field`.
+    #[prost(message, optional, tag = "3")]
+    pub ttl_config: ::core::option::Option<field::TtlConfig>,
 }
 /// Nested message and enum types in `Field`.
 pub mod field {
@@ -201,7 +300,79 @@ pub mod field {
         #[prost(bool, tag = "4")]
         pub reverting: bool,
     }
+    /// The TTL (time-to-live) configuration for documents that have this `Field`
+    /// set.
+    /// Storing a timestamp value into a TTL-enabled field will be treated as
+    /// the document's absolute expiration time. Using any other data type or
+    /// leaving the field absent will disable the TTL for the individual document.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TtlConfig {
+        /// Output only. The state of the TTL configuration.
+        #[prost(enumeration = "ttl_config::State", tag = "1")]
+        pub state: i32,
+    }
+    /// Nested message and enum types in `TtlConfig`.
+    pub mod ttl_config {
+        /// The state of applying the TTL configuration to all documents.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum State {
+            /// The state is unspecified or unknown.
+            Unspecified = 0,
+            /// The TTL is being applied. There is an active long-running operation to
+            /// track the change. Newly written documents will have TTLs applied as
+            /// requested. Requested TTLs on existing documents are still being
+            /// processed. When TTLs on all existing documents have been processed, the
+            /// state will move to 'ACTIVE'.
+            Creating = 1,
+            /// The TTL is active for all documents.
+            Active = 2,
+            /// The TTL configuration could not be enabled for all existing documents.
+            /// Newly written documents will continue to have their TTL applied.
+            /// The LRO returned when last attempting to enable TTL for this `Field`
+            /// has failed, and may have more details.
+            NeedsRepair = 3,
+        }
+    }
 }
+/// A request to list the Firestore Databases in all locations for a project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDatabasesRequest {
+    /// Required. A parent name of the form
+    /// `projects/{project_id}`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+}
+/// The list of databases for a project.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDatabasesResponse {
+    /// The databases in the project.
+    #[prost(message, repeated, tag = "1")]
+    pub databases: ::prost::alloc::vec::Vec<Database>,
+}
+/// The request for \[FirestoreAdmin.GetDatabase][google.firestore.admin.v1.FirestoreAdmin.GetDatabase\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDatabaseRequest {
+    /// Required. A name of the form
+    /// `projects/{project_id}/databases/{database_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request for \[FirestoreAdmin.UpdateDatabase][google.firestore.admin.v1.FirestoreAdmin.UpdateDatabase\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDatabaseRequest {
+    /// Required. The database to update.
+    #[prost(message, optional, tag = "1")]
+    pub database: ::core::option::Option<Database>,
+    /// The list of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Metadata related to the update database operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDatabaseMetadata {}
 /// The request for \[FirestoreAdmin.CreateIndex][google.firestore.admin.v1.FirestoreAdmin.CreateIndex\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateIndexRequest {
@@ -288,8 +459,8 @@ pub struct ListFieldsRequest {
     /// The filter to apply to list results. Currently,
     /// \[FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields\] only supports listing fields
     /// that have been explicitly overridden. To issue this query, call
-    /// \[FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields\] with the filter set to
-    /// `indexConfig.usesAncestorConfig:false`.
+    /// \[FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields\] with a filter that includes
+    /// `indexConfig.usesAncestorConfig:false` .
     #[prost(string, tag = "2")]
     pub filter: ::prost::alloc::string::String,
     /// The number of results to return.
@@ -356,6 +527,32 @@ pub struct ImportDocumentsRequest {
 pub mod firestore_admin_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
+    #[doc = " The Cloud Firestore Admin API."]
+    #[doc = ""]
+    #[doc = " This API provides several administrative services for Cloud Firestore."]
+    #[doc = ""]
+    #[doc = " Project, Database, Namespace, Collection, Collection Group, and Document are"]
+    #[doc = " used as defined in the Google Cloud Firestore API."]
+    #[doc = ""]
+    #[doc = " Operation: An Operation represents work being performed in the background."]
+    #[doc = ""]
+    #[doc = " The index service manages Cloud Firestore indexes."]
+    #[doc = ""]
+    #[doc = " Index creation is performed asynchronously."]
+    #[doc = " An Operation resource is created for each such asynchronous operation."]
+    #[doc = " The state of the operation (including any errors encountered)"]
+    #[doc = " may be queried via the Operation resource."]
+    #[doc = ""]
+    #[doc = " The Operations collection provides a record of actions performed for the"]
+    #[doc = " specified Project (including any Operations in progress). Operations are not"]
+    #[doc = " created directly but through calls on other collections or resources."]
+    #[doc = ""]
+    #[doc = " An Operation that is done may be deleted so that it is no longer listed as"]
+    #[doc = " part of the Operation collection. Operations are garbage collected after"]
+    #[doc = " 30 days. By default, ListOperations will only return in progress and failed"]
+    #[doc = " operations. To list completed operation, issue a ListOperations request with"]
+    #[doc = " the filter `done: true`."]
+    #[doc = ""]
     #[doc = " Operations are created by service `FirestoreAdmin`, but are accessed via"]
     #[doc = " service `google.longrunning.Operations`."]
     #[derive(Debug, Clone)]
@@ -530,7 +727,7 @@ pub mod firestore_admin_client {
         #[doc = " Currently, [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields] only supports listing fields"]
         #[doc = " that have been explicitly overridden. To issue this query, call"]
         #[doc = " [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields] with the filter set to"]
-        #[doc = " `indexConfig.usesAncestorConfig:false`."]
+        #[doc = " `indexConfig.usesAncestorConfig:false` ."]
         pub async fn list_fields(
             &mut self,
             request: impl tonic::IntoRequest<super::ListFieldsRequest>,
@@ -555,6 +752,9 @@ pub mod firestore_admin_client {
         #[doc = " used once the associated operation is done. If an export operation is"]
         #[doc = " cancelled before completion it may leave partial data behind in Google"]
         #[doc = " Cloud Storage."]
+        #[doc = ""]
+        #[doc = " For more details on export behavior and output format, refer to:"]
+        #[doc = " https://cloud.google.com/firestore/docs/manage-data/export-import"]
         pub async fn export_documents(
             &mut self,
             request: impl tonic::IntoRequest<super::ExportDocumentsRequest>,
@@ -595,6 +795,60 @@ pub mod firestore_admin_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.admin.v1.FirestoreAdmin/ImportDocuments",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets information about a database."]
+        pub async fn get_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDatabaseRequest>,
+        ) -> Result<tonic::Response<super::Database>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/GetDatabase",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " List all the databases in the project."]
+        pub async fn list_databases(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDatabasesRequest>,
+        ) -> Result<tonic::Response<super::ListDatabasesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/ListDatabases",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a database."]
+        pub async fn update_database(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDatabaseRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.firestore.admin.v1.FirestoreAdmin/UpdateDatabase",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -656,6 +910,9 @@ pub struct FieldOperationMetadata {
     /// The progress, in bytes, of this operation.
     #[prost(message, optional, tag = "7")]
     pub progress_bytes: ::core::option::Option<Progress>,
+    /// Describes the deltas of TTL configuration.
+    #[prost(message, optional, tag = "8")]
+    pub ttl_config_delta: ::core::option::Option<field_operation_metadata::TtlConfigDelta>,
 }
 /// Nested message and enum types in `FieldOperationMetadata`.
 pub mod field_operation_metadata {
@@ -682,6 +939,29 @@ pub mod field_operation_metadata {
             /// The single field index is being added.
             Add = 1,
             /// The single field index is being removed.
+            Remove = 2,
+        }
+    }
+    /// Information about an TTL configuration change.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TtlConfigDelta {
+        /// Specifies how the TTL configuration is changing.
+        #[prost(enumeration = "ttl_config_delta::ChangeType", tag = "1")]
+        pub change_type: i32,
+    }
+    /// Nested message and enum types in `TtlConfigDelta`.
+    pub mod ttl_config_delta {
+        /// Specifies how the TTL config is changing.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum ChangeType {
+            /// The type of change is not specified or known.
+            Unspecified = 0,
+            /// The TTL config is being added.
+            Add = 1,
+            /// The TTL config is being removed.
             Remove = 2,
         }
     }

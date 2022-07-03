@@ -33,16 +33,13 @@ fn gen() {
 
     tonic_build::configure()
         .build_server(false)
-        .format(false)
         .out_dir(out_dir.clone())
         .compile_with_config(config, &gen::proto_path(&protos), &includes)
         .unwrap();
-    tonic_build::fmt(out_dir.to_str().unwrap());
 
     let mut out_path = PathBuf::from("googapis/src/googapis.rs");
     let root = gen::from_protos(protos);
     fs::write(out_path.clone(), root.gen_code()).unwrap();
 
     out_path.pop();
-    tonic_build::fmt(out_path.to_str().unwrap());
 }

@@ -826,7 +826,10 @@ pub struct LogoRecognitionAnnotation {
 pub struct StreamingAnnotateVideoRequest {
     /// *Required* The streaming request, which is either a streaming config or
     /// video content.
-    #[prost(oneof = "streaming_annotate_video_request::StreamingRequest", tags = "1, 2")]
+    #[prost(
+        oneof = "streaming_annotate_video_request::StreamingRequest",
+        tags = "1, 2"
+    )]
     pub streaming_request:
         ::core::option::Option<streaming_annotate_video_request::StreamingRequest>,
 }
@@ -863,7 +866,10 @@ pub struct StreamingVideoConfig {
     #[prost(message, optional, tag = "30")]
     pub storage_config: ::core::option::Option<StreamingStorageConfig>,
     /// Config for requested annotation feature.
-    #[prost(oneof = "streaming_video_config::StreamingConfig", tags = "2, 3, 4, 5, 23, 21, 22")]
+    #[prost(
+        oneof = "streaming_video_config::StreamingConfig",
+        tags = "2, 3, 4, 5, 23, 21, 22"
+    )]
     pub streaming_config: ::core::option::Option<streaming_video_config::StreamingConfig>,
 }
 /// Nested message and enum types in `StreamingVideoConfig`.
@@ -1216,7 +1222,9 @@ pub mod streaming_video_intelligence_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.videointelligence.v1p3beta1.StreamingVideoIntelligenceService/StreamingAnnotateVideo") ;
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }

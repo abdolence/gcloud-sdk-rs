@@ -83,7 +83,10 @@ pub struct ComponentSettings {
     #[prost(message, optional, tag = "6")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Component specific settings.  This must match the component value.
-    #[prost(oneof = "component_settings::SpecificSettings", tags = "41, 42, 44, 40")]
+    #[prost(
+        oneof = "component_settings::SpecificSettings",
+        tags = "41, 42, 44, 40"
+    )]
     pub specific_settings: ::core::option::Option<component_settings::SpecificSettings>,
 }
 /// Nested message and enum types in `ComponentSettings`.

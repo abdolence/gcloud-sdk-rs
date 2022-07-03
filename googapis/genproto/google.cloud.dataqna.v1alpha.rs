@@ -547,7 +547,11 @@ pub struct HumanReadable {
 pub struct InterpretationStructure {
     /// List of possible visualization types to apply for this interpretation. The
     /// order has no relevance.
-    #[prost(enumeration = "interpretation_structure::VisualizationType", repeated, tag = "1")]
+    #[prost(
+        enumeration = "interpretation_structure::VisualizationType",
+        repeated,
+        tag = "1"
+    )]
     pub visualization_types: ::prost::alloc::vec::Vec<i32>,
     /// Information about the output columns, that is, the columns that will be
     /// returned by the backend.

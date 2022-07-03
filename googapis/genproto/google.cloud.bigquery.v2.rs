@@ -852,7 +852,10 @@ pub mod model {
             #[prost(message, optional, tag = "32")]
             pub wals_alpha: ::core::option::Option<f64>,
             /// The method used to initialize the centroids for kmeans algorithm.
-            #[prost(enumeration = "super::kmeans_enums::KmeansInitializationMethod", tag = "33")]
+            #[prost(
+                enumeration = "super::kmeans_enums::KmeansInitializationMethod",
+                tag = "33"
+            )]
             pub kmeans_initialization_method: i32,
             /// The column used to provide the initial centroids for kmeans algorithm
             /// when kmeans_initialization_method is CUSTOM.

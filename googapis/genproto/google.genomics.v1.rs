@@ -1714,7 +1714,10 @@ pub struct ImportReadGroupSetsRequest {
     pub source_uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// The partition strategy describes how read groups are partitioned into read
     /// group sets.
-    #[prost(enumeration = "import_read_group_sets_request::PartitionStrategy", tag = "5")]
+    #[prost(
+        enumeration = "import_read_group_sets_request::PartitionStrategy",
+        tag = "5"
+    )]
     pub partition_strategy: i32,
 }
 /// Nested message and enum types in `ImportReadGroupSetsRequest`.
@@ -2042,7 +2045,9 @@ pub mod streaming_read_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.StreamingReadService/StreamReads",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
     }
 }
@@ -3377,7 +3382,9 @@ pub mod streaming_variant_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.genomics.v1.StreamingVariantService/StreamVariants",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
     }
 }

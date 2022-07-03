@@ -303,6 +303,10 @@ pub struct SdkHarnessContainerImage {
     /// to the current SDK Harness.
     #[prost(string, tag = "3")]
     pub environment_id: ::prost::alloc::string::String,
+    /// The set of capabilities enumerated in the above Environment proto. See also
+    /// <https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/beam_runner_api.proto>
+    #[prost(string, repeated, tag = "4")]
+    pub capabilities: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Describes one particular pool of Cloud Dataflow workers to be
 /// instantiated by the Cloud Dataflow service in order to perform the
@@ -554,7 +558,7 @@ pub struct Snapshot {
     /// State of the snapshot.
     #[prost(enumeration = "SnapshotState", tag = "6")]
     pub state: i32,
-    /// PubSub snapshot metadata.
+    /// Pub/Sub snapshot metadata.
     #[prost(message, repeated, tag = "7")]
     pub pubsub_metadata: ::prost::alloc::vec::Vec<PubsubSnapshotMetadata>,
     /// User specified description of the snapshot. Maybe empty.
@@ -739,7 +743,6 @@ pub mod snapshots_v1_beta3_client {
     }
 }
 /// Defines a job to be run by the Cloud Dataflow service.
-/// nextID: 26
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Job {
     /// The unique ID of this job.
@@ -759,7 +762,7 @@ pub struct Job {
     /// existing Job.
     ///
     /// The name must match the regular expression
-    /// `\[a-z]([-a-z0-9]{0,38}[a-z0-9\])?`
+    /// `\[a-z]([-a-z0-9]{0,1022}[a-z0-9\])?`
     #[prost(string, tag = "3")]
     pub name: ::prost::alloc::string::String,
     /// The type of Cloud Dataflow job.
@@ -925,7 +928,7 @@ pub struct FileIoDetails {
     #[prost(string, tag = "1")]
     pub file_pattern: ::prost::alloc::string::String,
 }
-/// Metadata for a Cloud BigTable connector used by the job.
+/// Metadata for a Cloud Bigtable connector used by the job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BigTableIoDetails {
     /// ProjectId accessed in the connection.
@@ -1012,10 +1015,10 @@ pub struct JobMetadata {
     /// Identification of a BigQuery source used in the Dataflow job.
     #[prost(message, repeated, tag = "3")]
     pub bigquery_details: ::prost::alloc::vec::Vec<BigQueryIoDetails>,
-    /// Identification of a Cloud BigTable source used in the Dataflow job.
+    /// Identification of a Cloud Bigtable source used in the Dataflow job.
     #[prost(message, repeated, tag = "4")]
     pub big_table_details: ::prost::alloc::vec::Vec<BigTableIoDetails>,
-    /// Identification of a PubSub source used in the Dataflow job.
+    /// Identification of a Pub/Sub source used in the Dataflow job.
     #[prost(message, repeated, tag = "5")]
     pub pubsub_details: ::prost::alloc::vec::Vec<PubSubIoDetails>,
     /// Identification of a File source used in the Dataflow job.
@@ -1816,8 +1819,7 @@ pub struct AutoscalingEvent {
     /// num_workers value.
     #[prost(message, optional, tag = "5")]
     pub time: ::core::option::Option<::prost_types::Timestamp>,
-    /// A short and friendly name for the worker pool this event refers to,
-    /// populated from the value of PoolStageRelation::user_pool_name.
+    /// A short and friendly name for the worker pool this event refers to.
     #[prost(string, tag = "7")]
     pub worker_pool: ::prost::alloc::string::String,
 }
@@ -2825,6 +2827,27 @@ pub struct FlexTemplateRuntimeEnvironment {
     /// only valid for portable pipelines.
     #[prost(string, tag = "18")]
     pub sdk_container_image: ::prost::alloc::string::String,
+    /// Worker disk size, in gigabytes.
+    #[prost(int32, tag = "20")]
+    pub disk_size_gb: i32,
+    /// The algorithm to use for autoscaling
+    #[prost(enumeration = "AutoscalingAlgorithm", tag = "21")]
+    pub autoscaling_algorithm: i32,
+    /// If true, save a heap dump before killing a thread or process which is GC
+    /// thrashing or out of memory. The location of the heap file will either be
+    /// echoed back to the user, or the user will be given the opportunity to
+    /// download the heap file.
+    #[prost(bool, tag = "22")]
+    pub dump_heap_on_oom: bool,
+    /// Cloud Storage bucket (directory) to upload heap dumps to the given
+    /// location. Enabling this implies that heap dumps should be generated on OOM
+    /// (dump_heap_on_oom is set to true).
+    #[prost(string, tag = "23")]
+    pub save_heap_dumps_to_gcs_path: ::prost::alloc::string::String,
+    /// The machine type to use for launching the job. The default is
+    /// n1-standard-1.
+    #[prost(string, tag = "24")]
+    pub launcher_machine_type: ::prost::alloc::string::String,
 }
 /// A request to launch a Cloud Dataflow job from a FlexTemplate.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2876,7 +2899,8 @@ pub struct RuntimeEnvironment {
     /// template if not specified.
     #[prost(string, tag = "6")]
     pub machine_type: ::prost::alloc::string::String,
-    /// Additional experiment flags for the job.
+    /// Additional experiment flags for the job, specified with the
+    /// `--experiments` option.
     #[prost(string, repeated, tag = "7")]
     pub additional_experiments: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Network to which VMs will be assigned.  If empty or unspecified,

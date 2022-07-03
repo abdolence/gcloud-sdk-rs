@@ -1997,36 +1997,6 @@ pub struct SafeSearchAnnotation {
     /// body areas.
     #[prost(enumeration = "Likelihood", tag = "9")]
     pub racy: i32,
-    /// Confidence of adult_score. Range [0, 1]. 0 means not confident, 1 means
-    /// very confident.
-    #[deprecated]
-    #[prost(float, tag = "16")]
-    pub adult_confidence: f32,
-    /// Confidence of spoof_score. Range [0, 1]. 0 means not confident, 1 means
-    /// very confident.
-    #[deprecated]
-    #[prost(float, tag = "18")]
-    pub spoof_confidence: f32,
-    /// Confidence of medical_score. Range [0, 1]. 0 means not confident, 1 means
-    /// very confident.
-    #[deprecated]
-    #[prost(float, tag = "20")]
-    pub medical_confidence: f32,
-    /// Confidence of violence_score. Range [0, 1]. 0 means not confident, 1 means
-    /// very confident.
-    #[deprecated]
-    #[prost(float, tag = "22")]
-    pub violence_confidence: f32,
-    /// Confidence of racy_score. Range [0, 1]. 0 means not confident, 1 means very
-    /// confident.
-    #[deprecated]
-    #[prost(float, tag = "24")]
-    pub racy_confidence: f32,
-    /// Confidence of nsfw_score. Range [0, 1]. 0 means not confident, 1 means very
-    /// confident.
-    #[deprecated]
-    #[prost(float, tag = "26")]
-    pub nsfw_confidence: f32,
 }
 /// Rectangle determined by min and max `LatLng` pairs.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2305,8 +2275,8 @@ pub struct AnnotateFileResponse {
 /// A list of requests to annotate files using the BatchAnnotateFiles API.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct BatchAnnotateFilesRequest {
-    /// Required. The list of file annotation requests. Right now we support only
-    /// one AnnotateFileRequest in BatchAnnotateFilesRequest.
+    /// Required. The list of file annotation requests. Right now we support only one
+    /// AnnotateFileRequest in BatchAnnotateFilesRequest.
     #[prost(message, repeated, tag = "1")]
     pub requests: ::prost::alloc::vec::Vec<AnnotateFileRequest>,
     /// Optional. Target project and location to make a call.

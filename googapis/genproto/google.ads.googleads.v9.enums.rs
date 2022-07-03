@@ -2861,8 +2861,8 @@ pub mod placeholder_type_enum {
         /// Lets you provide users with a link that points to a mobile app in
         /// addition to a website.
         App = 4,
-        /// Lets you show locations of businesses from your Google My Business
-        /// account in your ad. This helps people find your locations by showing your
+        /// Lets you show locations of businesses from your Business Profile
+        /// in your ad. This helps people find your locations by showing your
         /// ads with your address, a map to your location, or the distance to your
         /// business. This extension type is useful to draw customers to your
         /// brick-and-mortar location.
@@ -7443,8 +7443,7 @@ pub mod location_source_type_enum {
         Unspecified = 0,
         /// Used for return value only. Represents value unknown in this version.
         Unknown = 1,
-        /// Locations associated with the customer's linked Google My Business
-        /// account.
+        /// Locations associated with the customer's linked Business Profile.
         GoogleMyBusiness = 2,
         /// Affiliate (chain) store locations. For example, Best Buy store locations.
         Affiliate = 3,

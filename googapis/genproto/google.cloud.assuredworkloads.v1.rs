@@ -8,8 +8,8 @@ pub struct CreateWorkloadRequest {
     /// Required. Assured Workload to create
     #[prost(message, optional, tag = "2")]
     pub workload: ::core::option::Option<Workload>,
-    /// Optional. A identifier associated with the workload and underlying projects which
-    /// allows for the break down of billing costs for a workload. The value
+    /// Optional. A identifier associated with the workload and underlying projects
+    /// which allows for the break down of billing costs for a workload. The value
     /// provided for the identifier will add a label to the workload and contained
     /// projects with the identifier as the value.
     #[prost(string, tag = "3")]
@@ -44,8 +44,8 @@ pub struct DeleteWorkloadRequest {
 /// Request for fetching a workload.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadRequest {
-    /// Required. The resource name of the Workload to fetch. This is the workloads's
-    /// relative path in the API, formatted as
+    /// Required. The resource name of the Workload to fetch. This is the
+    /// workloads's relative path in the API, formatted as
     /// "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
     /// For example,
     /// "organizations/123/locations/us-east1/workloads/assured-workload-1".
@@ -131,24 +131,36 @@ pub struct Workload {
     #[prost(map = "string, string", tag = "10")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Input only. The parent resource for the resources managed by this Assured Workload. May
-    /// be either empty or a folder resource which is a child of the
+    /// Input only. The parent resource for the resources managed by this Assured
+    /// Workload. May be either empty or a folder resource which is a child of the
     /// Workload parent. If not specified all resources are created under the
     /// parent organization.
     /// Format:
     /// folders/{folder_id}
     #[prost(string, tag = "13")]
     pub provisioned_resources_parent: ::prost::alloc::string::String,
-    /// Input only. Settings used to create a CMEK crypto key. When set a project with a KMS
-    /// CMEK key is provisioned. This field is mandatory for a subset of Compliance
-    /// Regimes.
+    /// Input only. Settings used to create a CMEK crypto key. When set a project
+    /// with a KMS CMEK key is provisioned. This field is mandatory for a subset of
+    /// Compliance Regimes.
     #[prost(message, optional, tag = "14")]
     pub kms_settings: ::core::option::Option<workload::KmsSettings>,
-    /// Input only. Resource properties that are used to customize workload resources.
-    /// These properties (such as custom project id) will be used to create
-    /// workload resources if possible. This field is optional.
+    /// Input only. Resource properties that are used to customize workload
+    /// resources. These properties (such as custom project id) will be used to
+    /// create workload resources if possible. This field is optional.
     #[prost(message, repeated, tag = "15")]
     pub resource_settings: ::prost::alloc::vec::Vec<workload::ResourceSettings>,
+    /// Output only. Represents the KAJ enrollment state of the given workload.
+    #[prost(enumeration = "workload::KajEnrollmentState", tag = "17")]
+    pub kaj_enrollment_state: i32,
+    /// Optional. Indicates the sovereignty status of the given workload.
+    /// Currently meant to be used by Europe/Canada customers.
+    #[prost(bool, tag = "18")]
+    pub enable_sovereign_controls: bool,
+    /// Output only. Represents the SAA enrollment response of the given workload.
+    /// SAA enrollment response is queried during GetWorkload call.
+    /// In failure cases, user friendly error message is shown in SAA details page.
+    #[prost(message, optional, tag = "20")]
+    pub saa_enrollment_response: ::core::option::Option<workload::SaaEnrollmentResponse>,
 }
 /// Nested message and enum types in `Workload`.
 pub mod workload {
@@ -184,13 +196,14 @@ pub mod workload {
     /// Settings specific to the Key Management Service.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KmsSettings {
-        /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
-        /// new version of the crypto key and mark it as the primary.
+        /// Required. Input only. Immutable. The time at which the Key Management
+        /// Service will automatically create a new version of the crypto key and
+        /// mark it as the primary.
         #[prost(message, optional, tag = "1")]
         pub next_rotation_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Required. Input only. Immutable. \[next_rotation_time\] will be advanced by this period when the Key
-        /// Management Service automatically rotates a key. Must be at least 24 hours
-        /// and at most 876,000 hours.
+        /// Required. Input only. Immutable. \[next_rotation_time\] will be advanced by
+        /// this period when the Key Management Service automatically rotates a key.
+        /// Must be at least 24 hours and at most 876,000 hours.
         #[prost(message, optional, tag = "2")]
         pub rotation_period: ::core::option::Option<::prost_types::Duration>,
     }
@@ -212,6 +225,60 @@ pub mod workload {
         /// name.
         #[prost(string, tag = "3")]
         pub display_name: ::prost::alloc::string::String,
+    }
+    /// Signed Access Approvals (SAA) enrollment response.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SaaEnrollmentResponse {
+        /// Indicates SAA enrollment status of a given workload.
+        #[prost(
+            enumeration = "saa_enrollment_response::SetupState",
+            optional,
+            tag = "1"
+        )]
+        pub setup_status: ::core::option::Option<i32>,
+        /// Indicates SAA enrollment setup error if any.
+        #[prost(
+            enumeration = "saa_enrollment_response::SetupError",
+            repeated,
+            tag = "2"
+        )]
+        pub setup_errors: ::prost::alloc::vec::Vec<i32>,
+    }
+    /// Nested message and enum types in `SaaEnrollmentResponse`.
+    pub mod saa_enrollment_response {
+        /// Setup state of SAA enrollment.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum SetupState {
+            /// Unspecified.
+            Unspecified = 0,
+            /// SAA enrollment pending.
+            StatusPending = 1,
+            /// SAA enrollment comopleted.
+            StatusComplete = 2,
+        }
+        /// Setup error of SAA enrollment.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum SetupError {
+            /// Unspecified.
+            Unspecified = 0,
+            /// Invalid states for all customers, to be redirected to AA UI for
+            /// additional details.
+            ErrorInvalidBaseSetup = 1,
+            /// Returned when there is not an EKM key configured.
+            ErrorMissingExternalSigningKey = 2,
+            /// Returned when there are no enrolled services or the customer is
+            /// enrolled in CAA only for a subset of services.
+            ErrorNotAllServicesEnrolled = 3,
+            /// Returned when exception was encountered during evaluation of other
+            /// criteria.
+            ErrorSetupCheckFailed = 4,
+        }
     }
     /// Supported Compliance Regimes.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -237,6 +304,19 @@ pub mod workload {
         EuRegionsAndSupport = 8,
         /// Assured Workloads For Canada Regions and Support controls
         CaRegionsAndSupport = 9,
+        /// International Traffic in Arms Regulations
+        Itar = 10,
+    }
+    /// Key Access Justifications(KAJ) Enrollment State.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum KajEnrollmentState {
+        /// Default State for KAJ Enrollment.
+        Unspecified = 0,
+        /// Pending State for KAJ Enrollment.
+        Pending = 1,
+        /// Complete State for KAJ Enrollment.
+        Complete = 2,
     }
 }
 /// Operation metadata to give request details of CreateWorkload.
@@ -251,8 +331,8 @@ pub struct CreateWorkloadOperationMetadata {
     /// Optional. The parent of the workload.
     #[prost(string, tag = "3")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Compliance controls that should be applied to the resources managed by
-    /// the workload.
+    /// Optional. Compliance controls that should be applied to the resources
+    /// managed by the workload.
     #[prost(enumeration = "workload::ComplianceRegime", tag = "4")]
     pub compliance_regime: i32,
 }

@@ -29,6 +29,13 @@ pub struct ScheduleOptions {
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
+/// Information about a user.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserInfo {
+    /// E-mail address of the user.
+    #[prost(string, optional, tag = "1")]
+    pub email: ::core::option::Option<::prost::alloc::string::String>,
+}
 /// Represents a data transfer configuration. A transfer configuration
 /// contains all metadata needed to perform a data transfer. For example,
 /// `destination_dataset_id` specifies where data should be stored.
@@ -68,7 +75,9 @@ pub struct TransferConfig {
     /// `first sunday of quarter 00:00`.
     /// See more explanation about the format here:
     /// <https://cloud.google.com/appengine/docs/flexible/python/scheduling-jobs-with-cron-yaml#the_schedule_format>
-    /// NOTE: the granularity should be at least 8 hours, or less frequent.
+    ///
+    /// NOTE: The minimum interval time between recurring transfers depends on the
+    /// data source; refer to the documentation for your data source.
     #[prost(string, tag = "7")]
     pub schedule: ::prost::alloc::string::String,
     /// Options customizing the data transfer schedule.
@@ -112,6 +121,11 @@ pub struct TransferConfig {
     /// to the email address of the user who owns this transfer config.
     #[prost(message, optional, tag = "18")]
     pub email_preferences: ::core::option::Option<EmailPreferences>,
+    /// Output only. Information about the user whose credentials are used to transfer data.
+    /// Populated only for `transferConfigs.get` requests. In case the user
+    /// information is not available, this field will not be populated.
+    #[prost(message, optional, tag = "27")]
+    pub owner_info: ::core::option::Option<UserInfo>,
     /// The desination of the transfer config.
     #[prost(oneof = "transfer_config::Destination", tags = "2")]
     pub destination: ::core::option::Option<transfer_config::Destination>,
@@ -263,12 +277,7 @@ pub enum TransferState {
     /// Data transfer is cancelled (6).
     Cancelled = 6,
 }
-/// Represents a data source parameter with validation rules, so that
-/// parameters can be rendered in the UI. These parameters are given to us by
-/// supported data sources, and include all needed information for rendering
-/// and validation.
-/// Thus, whoever uses this api can decide to generate either generic ui,
-/// or custom data source specific forms.
+/// A parameter used to define custom fields in a data source definition.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSourceParameter {
     /// Parameter identifier.
@@ -345,8 +354,7 @@ pub mod data_source_parameter {
         PlusPage = 6,
     }
 }
-/// Represents data source metadata. Metadata is sufficient to
-/// render UI and request proper OAuth tokens.
+/// Defines the properties and custom parameters for a data source.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DataSource {
     /// Output only. Data source resource name.
@@ -497,9 +505,9 @@ pub struct ListDataSourcesResponse {
 /// A request to create a data transfer configuration. If new credentials are
 /// needed for this transfer configuration, an authorization code must be
 /// provided. If an authorization code is provided, the transfer configuration
-/// will be associated with the user id corresponding to the
-/// authorization code. Otherwise, the transfer configuration will be associated
-/// with the calling user.
+/// will be associated with the user id corresponding to the authorization code.
+/// Otherwise, the transfer configuration will be associated with the calling
+/// user.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTransferConfigRequest {
     /// Required. The BigQuery project id where the transfer configuration should be created.
@@ -660,9 +668,7 @@ pub struct ListTransferConfigsResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
-/// A request to list data transfer runs. UI can use this method to show/filter
-/// specific data transfer runs. The data source can use this method to request
-/// all scheduled transfer runs.
+/// A request to list data transfer runs.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListTransferRunsRequest {
     /// Required. Name of transfer configuration for which transfer runs should be retrieved.
@@ -846,14 +852,24 @@ pub struct StartManualTransferRunsResponse {
     #[prost(message, repeated, tag = "1")]
     pub runs: ::prost::alloc::vec::Vec<TransferRun>,
 }
+/// A request to enroll a set of data sources so they are visible in the
+/// BigQuery UI's `Transfer` tab.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EnrollDataSourcesRequest {
+    /// The name of the project resource in the form:
+    /// `projects/{project_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Data sources that are enrolled. It is required to provide at least one
+    /// data source id.
+    #[prost(string, repeated, tag = "2")]
+    pub data_source_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 #[doc = r" Generated client implementations."]
 pub mod data_transfer_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
-    #[doc = " The Google BigQuery Data Transfer Service API enables BigQuery users to"]
-    #[doc = " configure the transfer of their data from other Google Products into"]
-    #[doc = " BigQuery. This service contains methods that are end user exposed. It backs"]
-    #[doc = " up the frontend."]
+    #[doc = " This API allows users to manage their data transfers into BigQuery."]
     #[derive(Debug, Clone)]
     pub struct DataTransferServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -899,8 +915,7 @@ pub mod data_transfer_service_client {
             self.inner = self.inner.accept_gzip();
             self
         }
-        #[doc = " Retrieves a supported data source and returns its settings,"]
-        #[doc = " which can be used for UI rendering."]
+        #[doc = " Retrieves a supported data source and returns its settings."]
         pub async fn get_data_source(
             &mut self,
             request: impl tonic::IntoRequest<super::GetDataSourceRequest>,
@@ -917,8 +932,7 @@ pub mod data_transfer_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lists supported data sources and returns their settings,"]
-        #[doc = " which can be used for UI rendering."]
+        #[doc = " Lists supported data sources and returns their settings."]
         pub async fn list_data_sources(
             &mut self,
             request: impl tonic::IntoRequest<super::ListDataSourcesRequest>,
@@ -970,8 +984,8 @@ pub mod data_transfer_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Deletes a data transfer configuration,"]
-        #[doc = " including any associated transfer runs and logs."]
+        #[doc = " Deletes a data transfer configuration, including any associated transfer"]
+        #[doc = " runs and logs."]
         pub async fn delete_transfer_config(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteTransferConfigRequest>,
@@ -1097,7 +1111,7 @@ pub mod data_transfer_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns information about running and completed jobs."]
+        #[doc = " Returns information about running and completed transfer runs."]
         pub async fn list_transfer_runs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTransferRunsRequest>,
@@ -1114,7 +1128,7 @@ pub mod data_transfer_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Returns user facing log messages for the data transfer run."]
+        #[doc = " Returns log messages for the transfer run."]
         pub async fn list_transfer_logs(
             &mut self,
             request: impl tonic::IntoRequest<super::ListTransferLogsRequest>,
@@ -1133,10 +1147,6 @@ pub mod data_transfer_service_client {
         }
         #[doc = " Returns true if valid credentials exist for the given data source and"]
         #[doc = " requesting user."]
-        #[doc = " Some data sources doesn't support service account, so we need to talk to"]
-        #[doc = " them on behalf of the end user. This API just checks whether we have OAuth"]
-        #[doc = " token for the particular user, which is a pre-requisite before user can"]
-        #[doc = " create a transfer config."]
         pub async fn check_valid_creds(
             &mut self,
             request: impl tonic::IntoRequest<super::CheckValidCredsRequest>,
@@ -1150,6 +1160,28 @@ pub mod data_transfer_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.datatransfer.v1.DataTransferService/CheckValidCreds",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Enroll data sources in a user project. This allows users to create transfer"]
+        #[doc = " configurations for these data sources. They will also appear in the"]
+        #[doc = " ListDataSources RPC and as such, will appear in the BigQuery UI"]
+        #[doc = " 'https://bigquery.cloud.google.com' (and the documents can be found at"]
+        #[doc = " https://cloud.google.com/bigquery/bigquery-web-ui and"]
+        #[doc = " https://cloud.google.com/bigquery/docs/working-with-transfers)."]
+        pub async fn enroll_data_sources(
+            &mut self,
+            request: impl tonic::IntoRequest<super::EnrollDataSourcesRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.bigquery.datatransfer.v1.DataTransferService/EnrollDataSources",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

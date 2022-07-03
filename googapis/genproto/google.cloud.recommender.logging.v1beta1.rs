@@ -5,7 +5,10 @@ pub struct ActionLog {
     #[prost(string, tag = "1")]
     pub actor: ::prost::alloc::string::String,
     /// Required. State change that was made by the actor. Eg, SUCCEEDED.
-    #[prost(enumeration = "super::super::v1beta1::recommendation_state_info::State", tag = "2")]
+    #[prost(
+        enumeration = "super::super::v1beta1::recommendation_state_info::State",
+        tag = "2"
+    )]
     pub state: i32,
     /// Optional. Metadata that was included with the action that was taken.
     #[prost(map = "string, string", tag = "3")]
@@ -23,7 +26,10 @@ pub struct InsightActionLog {
     #[prost(string, tag = "1")]
     pub actor: ::prost::alloc::string::String,
     /// Required. State change that was made by the actor. Eg, ACCEPTED.
-    #[prost(enumeration = "super::super::v1beta1::insight_state_info::State", tag = "2")]
+    #[prost(
+        enumeration = "super::super::v1beta1::insight_state_info::State",
+        tag = "2"
+    )]
     pub state: i32,
     /// Optional. Metadata that was included with the action that was taken.
     #[prost(map = "string, string", tag = "3")]

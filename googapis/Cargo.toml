@@ -1,12 +1,12 @@
 [package]
-name = "googapis"
-version = "0.6.0"
-authors = ["mechiru <u9053u6d41@gmail.com>"]
-edition = "2018"
+name = "gcloud-sdk"
+version = "0.7.0"
+authors = ["mechiru <u9053u6d41@gmail.com>", "me@abdolence.dev"]
+edition = "2021"
 license = "MIT OR Apache-2.0"
-description = "This library generated from Google API using tonic-build."
-repository = "https://github.com/mechiru/googapis"
-documentation = "https://docs.rs/googapis"
+description = "This library generated from Google API using tonic-build and fork of https://docs.rs/googapis."
+repository = "https://github.com/latestbit/gcloud-sdk"
+documentation = "https://docs.rs/gcloud-sdk"
 categories = ["api-bindings"]
 keywords = ["google", "api", "googleapis", "gcloud", "gcp"]
 readme = "./../README.md"
@@ -390,6 +390,6 @@ grafeas-v1beta1-source = []
 maps-fleetengine-v1 = []
 
 [dependencies]
-tonic = "0.6.1"
-prost = "0.9.0"
-prost-types = "0.9.0"
+tonic = "0.7"
+prost = "0.10"
+prost-types = "0.10"

@@ -422,7 +422,10 @@ pub struct ValidateAttestationOccurrenceRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ValidateAttestationOccurrenceResponse {
     /// The result of the Attestation validation.
-    #[prost(enumeration = "validate_attestation_occurrence_response::Result", tag = "1")]
+    #[prost(
+        enumeration = "validate_attestation_occurrence_response::Result",
+        tag = "1"
+    )]
     pub result: i32,
     /// The reason for denial if the Attestation couldn't be validated.
     #[prost(string, tag = "2")]

@@ -55,6 +55,9 @@ pub struct Conversation {
     #[prost(map = "string, message", tag = "18")]
     pub dialogflow_intents:
         ::std::collections::HashMap<::prost::alloc::string::String, DialogflowIntent>,
+    /// Obfuscated user ID which the customer sent to us.
+    #[prost(string, tag = "21")]
+    pub obfuscated_user_id: ::prost::alloc::string::String,
     /// Metadata that applies to the conversation.
     #[prost(oneof = "conversation::Metadata", tags = "7")]
     pub metadata: ::core::option::Option<conversation::Metadata>,
@@ -301,6 +304,7 @@ pub mod analysis_result {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct IssueModelResult {
     /// Issue model that generates the result.
+    /// Format: projects/{project}/locations/{location}/issueModels/{issue_model}
     #[prost(string, tag = "1")]
     pub issue_model: ::prost::alloc::string::String,
     /// All the matched issues.
@@ -774,7 +778,10 @@ pub mod phrase_matcher {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PhraseMatchRuleGroup {
     /// Required. The type of this phrase match rule group.
-    #[prost(enumeration = "phrase_match_rule_group::PhraseMatchRuleGroupType", tag = "1")]
+    #[prost(
+        enumeration = "phrase_match_rule_group::PhraseMatchRuleGroupType",
+        tag = "1"
+    )]
     pub r#type: i32,
     /// A list of phase match rules that are included in this group.
     #[prost(message, repeated, tag = "2")]
@@ -988,9 +995,9 @@ pub struct ArticleSuggestionData {
     #[prost(map = "string, string", tag = "4")]
     pub metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Name of the query record.
+    /// The name of the answer record.
     /// Format:
-    /// projects/{project}/locations/{location}/queryRecords/{query_record}
+    /// projects/{project}/locations/{location}/answerRecords/{answer_record}
     #[prost(string, tag = "5")]
     pub query_record: ::prost::alloc::string::String,
     /// The knowledge document that this answer was extracted from.
@@ -1018,9 +1025,9 @@ pub struct FaqAnswerData {
     #[prost(map = "string, string", tag = "4")]
     pub metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Name of the query record.
+    /// The name of the answer record.
     /// Format:
-    /// projects/{project}/locations/{location}/queryRecords/{query_record}.
+    /// projects/{project}/locations/{location}/answerRecords/{answer_record}
     #[prost(string, tag = "5")]
     pub query_record: ::prost::alloc::string::String,
     /// The knowledge document that this answer was extracted from.
@@ -1045,9 +1052,9 @@ pub struct SmartReplyData {
     #[prost(map = "string, string", tag = "3")]
     pub metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Name of the query record.
+    /// The name of the answer record.
     /// Format:
-    /// projects/{project}/locations/{location}/queryRecords/{query_record}
+    /// projects/{project}/locations/{location}/answerRecords/{answer_record}
     #[prost(string, tag = "4")]
     pub query_record: ::prost::alloc::string::String,
 }
@@ -1067,9 +1074,9 @@ pub struct SmartComposeSuggestionData {
     #[prost(map = "string, string", tag = "3")]
     pub metadata:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Name of the query record.
+    /// The name of the answer record.
     /// Format:
-    /// projects/{project}/locations/{location}/queryRecords/{query_record}
+    /// projects/{project}/locations/{location}/answerRecords/{answer_record}
     #[prost(string, tag = "4")]
     pub query_record: ::prost::alloc::string::String,
 }
@@ -1130,6 +1137,27 @@ pub mod conversation_participant {
         #[prost(string, tag = "6")]
         UserId(::prost::alloc::string::String),
     }
+}
+/// The View resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct View {
+    /// Immutable. The resource name of the view.
+    /// Format:
+    /// projects/{project}/locations/{location}/views/{view}
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The human-readable display name of the view.
+    #[prost(string, tag = "2")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Output only. The time at which this view was created.
+    #[prost(message, optional, tag = "3")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The most recent time at which the view was updated.
+    #[prost(message, optional, tag = "4")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// String with specific view properties.
+    #[prost(string, tag = "5")]
+    pub value: ::prost::alloc::string::String,
 }
 /// The request for calculating conversation statistics.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1384,6 +1412,12 @@ pub struct ExportInsightsDataRequest {
     /// projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}/cryptoKeyVersions/{version}
     #[prost(string, tag = "4")]
     pub kms_key: ::prost::alloc::string::String,
+    /// Options for what to do if the destination table already exists.
+    #[prost(
+        enumeration = "export_insights_data_request::WriteDisposition",
+        tag = "5"
+    )]
+    pub write_disposition: i32,
     /// Exporter destination.
     #[prost(oneof = "export_insights_data_request::Destination", tags = "2")]
     pub destination: ::core::option::Option<export_insights_data_request::Destination>,
@@ -1408,6 +1442,18 @@ pub mod export_insights_data_request {
         /// error.
         #[prost(string, tag = "2")]
         pub table: ::prost::alloc::string::String,
+    }
+    /// Specifies the action that occurs if the destination table already exists.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum WriteDisposition {
+        /// Write disposition is not specified. Defaults to WRITE_TRUNCATE.
+        Unspecified = 0,
+        /// If the table already exists, BigQuery will overwrite the table data and
+        /// use the schema from the load.
+        WriteTruncate = 1,
+        /// If the table already exists, BigQuery will append data to the table.
+        WriteAppend = 2,
     }
     /// Exporter destination.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -1690,17 +1736,85 @@ pub struct UpdateSettingsRequest {
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-/// Represents the options for views of a conversation.
+/// The request to create a view.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateViewRequest {
+    /// Required. The parent resource of the view. Required. The location to create
+    /// a view for.
+    /// Format: `projects/<Project ID>/locations/<Location ID>` or
+    /// `projects/<Project Number>/locations/<Location ID>`
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The view resource to create.
+    #[prost(message, optional, tag = "2")]
+    pub view: ::core::option::Option<View>,
+}
+/// The request to get a view.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetViewRequest {
+    /// Required. The name of the view to get.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// The request to list views.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListViewsRequest {
+    /// Required. The parent resource of the views.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of views to return in the response. If this
+    /// value is zero, the service will select a default size. A call may return
+    /// fewer objects than requested. A non-empty `next_page_token` in the response
+    /// indicates that more data is available.
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// The value returned by the last `ListViewsResponse`; indicates
+    /// that this is a continuation of a prior `ListViews` call and
+    /// the system should return the next page of data.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// The response of listing views.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListViewsResponse {
+    /// The views that match the request.
+    #[prost(message, repeated, tag = "1")]
+    pub views: ::prost::alloc::vec::Vec<View>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// The request to update a view.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateViewRequest {
+    /// Required. The new view.
+    #[prost(message, optional, tag = "1")]
+    pub view: ::core::option::Option<View>,
+    /// The list of fields to be updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// The request to delete a view.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteViewRequest {
+    /// Required. The name of the view to delete.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Represents the options for viewing a conversation.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum ConversationView {
-    /// Not specified. Defaults to FULL on GetConversationRequest and BASIC for
-    /// ListConversationsRequest.
+    /// The conversation view is not specified.
+    ///
+    /// * Defaults to `FULL` in `GetConversationRequest`.
+    /// * Defaults to `BASIC` in `ListConversationsRequest`.
     Unspecified = 0,
-    /// Transcript field is not populated in the response.
-    Basic = 1,
-    /// All fields are populated.
+    /// Populates all fields in the conversation.
     Full = 2,
+    /// Populates all fields in the conversation except the transcript.
+    Basic = 1,
 }
 #[doc = r" Generated client implementations."]
 pub mod contact_center_insights_client {
@@ -2262,6 +2376,91 @@ pub mod contact_center_insights_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateSettings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a view."]
+        pub async fn create_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateViewRequest>,
+        ) -> Result<tonic::Response<super::View>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/CreateView",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Gets a view."]
+        pub async fn get_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetViewRequest>,
+        ) -> Result<tonic::Response<super::View>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/GetView",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists views."]
+        pub async fn list_views(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListViewsRequest>,
+        ) -> Result<tonic::Response<super::ListViewsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/ListViews",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a view."]
+        pub async fn update_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateViewRequest>,
+        ) -> Result<tonic::Response<super::View>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/UpdateView",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes a view."]
+        pub async fn delete_view(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteViewRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.contactcenterinsights.v1.ContactCenterInsights/DeleteView",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

@@ -7,6 +7,14 @@ pub struct AlertChart {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
+/// A widget that groups the other widgets. All widgets that are within
+/// the area spanned by the grouping widget are considered member widgets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CollapsibleGroup {
+    /// The collapsed state of the widget on first page load.
+    #[prost(bool, tag = "1")]
+    pub collapsed: bool,
+}
 /// Describes how to combine multiple time series to provide a different view of
 /// the data.  Aggregation of time series is done in two steps. First, each time
 /// series in the set is _aligned_ to the same time interval boundaries, then the
@@ -410,6 +418,65 @@ pub mod statistical_time_series_filter {
         ClusterOutlier = 1,
     }
 }
+/// A filter to reduce the amount of data charted in relevant widgets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DashboardFilter {
+    /// Required. The key for the label
+    #[prost(string, tag = "1")]
+    pub label_key: ::prost::alloc::string::String,
+    /// The placeholder text that can be referenced in a filter string or MQL
+    /// query. If omitted, the dashboard filter will be applied to all relevant
+    /// widgets in the dashboard.
+    #[prost(string, tag = "3")]
+    pub template_variable: ::prost::alloc::string::String,
+    /// The specified filter type
+    #[prost(enumeration = "dashboard_filter::FilterType", tag = "5")]
+    pub filter_type: i32,
+    /// The default value used in the filter comparison
+    #[prost(oneof = "dashboard_filter::DefaultValue", tags = "4")]
+    pub default_value: ::core::option::Option<dashboard_filter::DefaultValue>,
+}
+/// Nested message and enum types in `DashboardFilter`.
+pub mod dashboard_filter {
+    /// The type for the dashboard filter
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum FilterType {
+        /// Filter type is unspecified. This is not valid in a well-formed request.
+        Unspecified = 0,
+        /// Filter on a resource label value
+        ResourceLabel = 1,
+        /// Filter on a metrics label value
+        MetricLabel = 2,
+        /// Filter on a user metadata label value
+        UserMetadataLabel = 3,
+        /// Filter on a system metadata label value
+        SystemMetadataLabel = 4,
+        /// Filter on a group id
+        Group = 5,
+    }
+    /// The default value used in the filter comparison
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DefaultValue {
+        /// A variable-length string value.
+        #[prost(string, tag = "4")]
+        StringValue(::prost::alloc::string::String),
+    }
+}
+/// A widget that displays a stream of log.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LogsPanel {
+    /// A filter that chooses which log entries to return.  See [Advanced Logs
+    /// Queries](<https://cloud.google.com/logging/docs/view/advanced-queries>).
+    /// Only log entries that match the filter are returned.  An empty filter
+    /// matches all log entries.
+    #[prost(string, tag = "1")]
+    pub filter: ::prost::alloc::string::String,
+    /// The names of logging resources to collect logs for. Currently only projects
+    /// are supported. If empty, the widget will default to the host project.
+    #[prost(string, repeated, tag = "2")]
+    pub resource_names: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
 /// TimeSeriesQuery collects the set of supported methods for querying time
 /// series data from the Stackdriver metrics API.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -543,6 +610,10 @@ pub struct Threshold {
     /// XyChart.
     #[prost(enumeration = "threshold::Direction", tag = "4")]
     pub direction: i32,
+    /// The target axis to use for plotting the threshold. Target axis is not
+    /// allowed in a Scorecard.
+    #[prost(enumeration = "threshold::TargetAxis", tag = "5")]
+    pub target_axis: i32,
 }
 /// Nested message and enum types in `Threshold`.
 pub mod threshold {
@@ -572,6 +643,17 @@ pub mod threshold {
         /// The threshold will be considered crossed if the actual value is below
         /// the threshold value.
         Below = 2,
+    }
+    /// An axis identifier.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum TargetAxis {
+        /// The target axis was not specified. Defaults to Y1.
+        Unspecified = 0,
+        /// The y_axis (the right axis of chart).
+        Y1 = 1,
+        /// The y2_axis (the left axis of chart).
+        Y2 = 2,
     }
 }
 /// Defines the possible types of spark chart supported by the `Scorecard`.
@@ -680,6 +762,48 @@ pub mod scorecard {
         SparkChartView(SparkChartView),
     }
 }
+/// Table display options that can be reused.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableDisplayOptions {
+    /// Optional. Columns to display in the table. Leave empty to display all available
+    /// columns. Note: This field is for future features and is not currently used.
+    #[prost(string, repeated, tag = "1")]
+    pub shown_columns: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// A table that displays time series data.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimeSeriesTable {
+    /// Required. The data displayed in this table.
+    #[prost(message, repeated, tag = "1")]
+    pub data_sets: ::prost::alloc::vec::Vec<time_series_table::TableDataSet>,
+}
+/// Nested message and enum types in `TimeSeriesTable`.
+pub mod time_series_table {
+    /// Groups a time series query definition with table options.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TableDataSet {
+        /// Required. Fields for querying time series data from the
+        /// Stackdriver metrics API.
+        #[prost(message, optional, tag = "1")]
+        pub time_series_query: ::core::option::Option<super::TimeSeriesQuery>,
+        /// Optional. A template string for naming `TimeSeries` in the resulting data set.
+        /// This should be a string with interpolations of the form `${label_name}`,
+        /// which will resolve to the label's value i.e.
+        /// "${resource.labels.project_id}."
+        #[prost(string, tag = "2")]
+        pub table_template: ::prost::alloc::string::String,
+        /// Optional. The lower bound on data point frequency for this data set, implemented by
+        /// specifying the minimum alignment period to use in a time series query
+        /// For example, if the data is published once every 10 minutes, the
+        /// `min_alignment_period` should be at least 10 minutes. It would not
+        /// make sense to fetch and align data at one minute intervals.
+        #[prost(message, optional, tag = "3")]
+        pub min_alignment_period: ::core::option::Option<::prost_types::Duration>,
+        /// Optional. Table display options for configuring how the table is rendered.
+        #[prost(message, optional, tag = "4")]
+        pub table_display_options: ::core::option::Option<super::TableDisplayOptions>,
+    }
+}
 /// A widget that displays textual content.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Text {
@@ -726,6 +850,9 @@ pub struct XyChart {
     /// The properties applied to the Y axis.
     #[prost(message, optional, tag = "7")]
     pub y_axis: ::core::option::Option<xy_chart::Axis>,
+    /// The properties applied to the Y2 axis.
+    #[prost(message, optional, tag = "9")]
+    pub y2_axis: ::core::option::Option<xy_chart::Axis>,
     /// Display options for the chart.
     #[prost(message, optional, tag = "8")]
     pub chart_options: ::core::option::Option<ChartOptions>,
@@ -754,6 +881,9 @@ pub mod xy_chart {
         /// make sense to fetch and align data at one minute intervals.
         #[prost(message, optional, tag = "4")]
         pub min_alignment_period: ::core::option::Option<::prost_types::Duration>,
+        /// Optional. The target axis to use for plotting the metric.
+        #[prost(enumeration = "data_set::TargetAxis", tag = "5")]
+        pub target_axis: i32,
     }
     /// Nested message and enum types in `DataSet`.
     pub mod data_set {
@@ -782,6 +912,19 @@ pub mod xy_chart {
             /// is displayed as a color. This type is not currently available in the
             /// Stackdriver Monitoring application.
             Heatmap = 4,
+        }
+        /// An axis identifier.
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum TargetAxis {
+            /// The target axis was not specified. Defaults to Y1.
+            Unspecified = 0,
+            /// The y_axis (the right axis of chart).
+            Y1 = 1,
+            /// The y2_axis (the left axis of chart).
+            Y2 = 2,
         }
     }
     /// A chart axis.
@@ -845,7 +988,7 @@ pub struct Widget {
     #[prost(string, tag = "1")]
     pub title: ::prost::alloc::string::String,
     /// Content defines the component used to populate the widget.
-    #[prost(oneof = "widget::Content", tags = "2, 3, 4, 5, 7")]
+    #[prost(oneof = "widget::Content", tags = "2, 3, 4, 5, 7, 8, 9, 10")]
     pub content: ::core::option::Option<widget::Content>,
 }
 /// Nested message and enum types in `Widget`.
@@ -868,6 +1011,16 @@ pub mod widget {
         /// A chart of alert policy data.
         #[prost(message, tag = "7")]
         AlertChart(super::AlertChart),
+        /// A widget that displays time series data in a tabular format.
+        #[prost(message, tag = "8")]
+        TimeSeriesTable(super::TimeSeriesTable),
+        /// A widget that groups the other widgets. All widgets that are within
+        /// the area spanned by the grouping widget are considered member widgets.
+        #[prost(message, tag = "9")]
+        CollapsibleGroup(super::CollapsibleGroup),
+        /// A widget that shows a stream of logs.
+        #[prost(message, tag = "10")]
+        LogsPanel(super::LogsPanel),
     }
 }
 /// A basic layout divides the available space into vertical columns of equal
@@ -990,6 +1143,13 @@ pub struct Dashboard {
     /// dashboard creation.
     #[prost(string, tag = "4")]
     pub etag: ::prost::alloc::string::String,
+    /// Filters to reduce the amount of data charted based on the filter criteria.
+    #[prost(message, repeated, tag = "11")]
+    pub dashboard_filters: ::prost::alloc::vec::Vec<DashboardFilter>,
+    /// Labels applied to the dashboard
+    #[prost(map = "string, string", tag = "12")]
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// A dashboard's root container element that defines the layout style.
     #[prost(oneof = "dashboard::Layout", tags = "5, 6, 8, 9")]
     pub layout: ::core::option::Option<dashboard::Layout>,

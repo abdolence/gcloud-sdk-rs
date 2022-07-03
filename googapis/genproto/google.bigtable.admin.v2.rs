@@ -93,13 +93,8 @@ pub mod instance {
         /// An instance meant for production use. `serve_nodes` must be set
         /// on the cluster.
         Production = 1,
-        /// The instance is meant for development and testing purposes only; it has
-        /// no performance or uptime guarantees and is not covered by SLA.
-        /// After a development instance is created, it can be upgraded by
-        /// updating the instance to type `PRODUCTION`. An instance created
-        /// as a production instance cannot be changed to a development instance.
-        /// When creating a development instance, `serve_nodes` on the cluster must
-        /// not be set.
+        /// DEPRECATED: Prefer PRODUCTION for all use cases, as it no longer enforces
+        /// a higher minimum node count than DEVELOPMENT.
         Development = 2,
     }
 }
@@ -108,9 +103,18 @@ pub mod instance {
 pub struct AutoscalingTargets {
     /// The cpu utilization that the Autoscaler should be trying to achieve.
     /// This number is on a scale from 0 (no utilization) to
-    /// 100 (total utilization).
+    /// 100 (total utilization), and is limited between 10 and 80, otherwise it
+    /// will return INVALID_ARGUMENT error.
     #[prost(int32, tag = "2")]
     pub cpu_utilization_percent: i32,
+    /// The storage utilization that the Autoscaler should be trying to achieve.
+    /// This number is limited between 2560 (2.5TiB) and 5120 (5TiB) for a SSD
+    /// cluster and between 8192 (8TiB) and 16384 (16TiB) for an HDD cluster;
+    /// otherwise it will return INVALID_ARGUMENT error. If this value is set to 0,
+    /// it will be treated as if it were set to the default value: 2560 for SSD,
+    /// 8192 for HDD.
+    #[prost(int32, tag = "3")]
+    pub storage_utilization_gib_per_node: i32,
 }
 /// Limits for the number of nodes a Cluster can autoscale up/down to.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -131,22 +135,20 @@ pub struct Cluster {
     /// `projects/{project}/instances/{instance}/clusters/\[a-z][-a-z0-9\]*`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// (`CreationOnly`)
-    /// The location where this cluster's nodes and storage reside. For best
+    /// Immutable. The location where this cluster's nodes and storage reside. For best
     /// performance, clients should be located as close as possible to this
     /// cluster. Currently only zones are supported, so values should be of the
     /// form `projects/{project}/locations/{zone}`.
     #[prost(string, tag = "2")]
     pub location: ::prost::alloc::string::String,
-    /// The current state of the cluster.
+    /// Output only. The current state of the cluster.
     #[prost(enumeration = "cluster::State", tag = "3")]
     pub state: i32,
     /// The number of nodes allocated to this cluster. More nodes enable higher
     /// throughput and more consistent performance.
     #[prost(int32, tag = "4")]
     pub serve_nodes: i32,
-    /// (`CreationOnly`)
-    /// The type of storage used by this cluster to serve its
+    /// Immutable. The type of storage used by this cluster to serve its
     /// parent instance's tables, unless explicitly overridden.
     #[prost(enumeration = "StorageType", tag = "5")]
     pub default_storage_type: i32,
@@ -186,7 +188,9 @@ pub mod cluster {
         ///  `cloudkms.cryptoKeyEncrypterDecrypter` role on the CMEK key.
         ///  2) Only regional keys can be used and the region of the CMEK key must
         ///  match the region of the cluster.
-        /// 3) All clusters within an instance must use the same CMEK key.
+        ///  3) All clusters within an instance must use the same CMEK key.
+        /// Values are of the form
+        /// `projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}`
         #[prost(string, tag = "1")]
         pub kms_key_name: ::prost::alloc::string::String,
     }
@@ -223,7 +227,6 @@ pub mod cluster {
 /// from a particular end user application.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AppProfile {
-    /// (`OutputOnly`)
     /// The unique name of the app profile. Values are of the form
     /// `projects/{project}/instances/{instance}/appProfiles/\[_a-zA-Z0-9][-_.a-zA-Z0-9\]*`.
     #[prost(string, tag = "1")]
@@ -238,7 +241,7 @@ pub struct AppProfile {
     /// details.
     #[prost(string, tag = "2")]
     pub etag: ::prost::alloc::string::String,
-    /// Optional long form description of the use case for this AppProfile.
+    /// Long form description of the use case for this AppProfile.
     #[prost(string, tag = "3")]
     pub description: ::prost::alloc::string::String,
     /// The routing policy for all read/write requests that use this app profile.
@@ -285,6 +288,40 @@ pub mod app_profile {
         #[prost(message, tag = "6")]
         SingleClusterRouting(SingleClusterRouting),
     }
+}
+/// A tablet is a defined by a start and end key and is explained in
+/// <https://cloud.google.com/bigtable/docs/overview#architecture> and
+/// <https://cloud.google.com/bigtable/docs/performance#optimization.>
+/// A Hot tablet is a tablet that exhibits high average cpu usage during the time
+/// interval from start time to end time.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HotTablet {
+    /// The unique name of the hot tablet. Values are of the form
+    /// `projects/{project}/instances/{instance}/clusters/{cluster}/hotTablets/\[a-zA-Z0-9_-\]*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Name of the table that contains the tablet. Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/\[_a-zA-Z0-9][-_.a-zA-Z0-9\]*`.
+    #[prost(string, tag = "2")]
+    pub table_name: ::prost::alloc::string::String,
+    /// Output only. The start time of the hot tablet.
+    #[prost(message, optional, tag = "3")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The end time of the hot tablet.
+    #[prost(message, optional, tag = "4")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Tablet Start Key (inclusive).
+    #[prost(string, tag = "5")]
+    pub start_key: ::prost::alloc::string::String,
+    /// Tablet End Key (inclusive).
+    #[prost(string, tag = "6")]
+    pub end_key: ::prost::alloc::string::String,
+    /// Output only. The average CPU usage spent by a node on this tablet over the start_time to
+    /// end_time time range. The percentage is the amount of CPU used by the node
+    /// to serve the tablet, from 0% (tablet was not interacted with) to 100% (the
+    /// node spent all cycles serving the hot tablet).
+    #[prost(float, tag = "7")]
+    pub node_cpu_usage_percent: f32,
 }
 /// Request message for BigtableInstanceAdmin.CreateInstance.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -468,6 +505,56 @@ pub struct CreateClusterMetadata {
     /// The time at which the operation failed or was completed successfully.
     #[prost(message, optional, tag = "3")]
     pub finish_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Keys: the full `name` of each table that existed in the instance when
+    /// CreateCluster was first called, i.e.
+    /// `projects/<project>/instances/<instance>/tables/<table>`. Any table added
+    /// to the instance by a later API call will be created in the new cluster by
+    /// that API call, not this one.
+    ///
+    /// Values: information on how much of a table's data has been copied to the
+    /// newly-created cluster so far.
+    #[prost(map = "string, message", tag = "4")]
+    pub tables: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        create_cluster_metadata::TableProgress,
+    >,
+}
+/// Nested message and enum types in `CreateClusterMetadata`.
+pub mod create_cluster_metadata {
+    /// Progress info for copying a table's data to the new cluster.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TableProgress {
+        /// Estimate of the size of the table to be copied.
+        #[prost(int64, tag = "2")]
+        pub estimated_size_bytes: i64,
+        /// Estimate of the number of bytes copied so far for this table.
+        /// This will eventually reach 'estimated_size_bytes' unless the table copy
+        /// is CANCELLED.
+        #[prost(int64, tag = "3")]
+        pub estimated_copied_bytes: i64,
+        #[prost(enumeration = "table_progress::State", tag = "4")]
+        pub state: i32,
+    }
+    /// Nested message and enum types in `TableProgress`.
+    pub mod table_progress {
+        #[derive(
+            Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration,
+        )]
+        #[repr(i32)]
+        pub enum State {
+            Unspecified = 0,
+            /// The table has not yet begun copying to the new cluster.
+            Pending = 1,
+            /// The table is actively being copied to the new cluster.
+            Copying = 2,
+            /// The table has been fully copied to the new cluster.
+            Completed = 3,
+            /// The table was deleted before it finished copying to the new cluster.
+            /// Note that tables deleted after completion will stay marked as
+            /// COMPLETED, not CANCELLED.
+            Cancelled = 4,
+        }
+    }
 }
 /// The metadata for the Operation returned by UpdateCluster.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -606,6 +693,56 @@ pub struct DeleteAppProfileRequest {
 /// The metadata for the Operation returned by UpdateAppProfile.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateAppProfileMetadata {}
+/// Request message for BigtableInstanceAdmin.ListHotTablets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListHotTabletsRequest {
+    /// Required. The cluster name to list hot tablets.
+    /// Value is in the following form:
+    /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The start time to list hot tablets. The hot tablets in the response will
+    /// have start times between the requested start time and end time. Start time
+    /// defaults to Now if it is unset, and end time defaults to Now - 24 hours if
+    /// it is unset. The start time should be less than the end time, and the
+    /// maximum allowed time range between start time and end time is 48 hours.
+    /// Start time and end time should have values between Now and Now - 14 days.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The end time to list hot tablets.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Maximum number of results per page.
+    ///
+    /// A page_size that is empty or zero lets the server choose the number of
+    /// items to return. A page_size which is strictly positive will return at most
+    /// that many items. A negative page_size will cause an error.
+    ///
+    /// Following the first request, subsequent paginated calls do not need a
+    /// page_size field. If a page_size is set in subsequent calls, it must match
+    /// the page_size given in the first request.
+    #[prost(int32, tag = "4")]
+    pub page_size: i32,
+    /// The value of `next_page_token` returned by a previous call.
+    #[prost(string, tag = "5")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for BigtableInstanceAdmin.ListHotTablets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListHotTabletsResponse {
+    /// List of hot tablets in the tables of the requested cluster that fall
+    /// within the requested time range. Hot tablets are ordered by node cpu usage
+    /// percent. If there are multiple hot tablets that correspond to the same
+    /// tablet within a 15-minute interval, only the hot tablet with the highest
+    /// node cpu usage will be included in the response.
+    #[prost(message, repeated, tag = "1")]
+    pub hot_tablets: ::prost::alloc::vec::Vec<HotTablet>,
+    /// Set if not all hot tablets could be returned in a single response.
+    /// Pass this value to `page_token` in another request to get the next
+    /// page of results.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
 #[doc = r" Generated client implementations."]
 pub mod bigtable_instance_admin_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -1055,6 +1192,24 @@ pub mod bigtable_instance_admin_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Lists hot tablets in a cluster, within the time range provided. Hot"]
+        #[doc = " tablets are ordered based on CPU usage."]
+        pub async fn list_hot_tablets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListHotTabletsRequest>,
+        ) -> Result<tonic::Response<super::ListHotTabletsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableInstanceAdmin/ListHotTablets",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
 }
 /// Information about a table restore.
@@ -1095,20 +1250,18 @@ pub struct Table {
     #[prost(map = "string, message", tag = "2")]
     pub cluster_states:
         ::std::collections::HashMap<::prost::alloc::string::String, table::ClusterState>,
-    /// (`CreationOnly`)
     /// The column families configured for this table, mapped by column family ID.
     /// Views: `SCHEMA_VIEW`, `FULL`
     #[prost(map = "string, message", tag = "3")]
     pub column_families: ::std::collections::HashMap<::prost::alloc::string::String, ColumnFamily>,
-    /// (`CreationOnly`)
-    /// The granularity (i.e. `MILLIS`) at which timestamps are stored in
-    /// this table. Timestamps not matching the granularity will be rejected.
+    /// Immutable. The granularity (i.e. `MILLIS`) at which timestamps are stored in this
+    /// table. Timestamps not matching the granularity will be rejected.
     /// If unspecified at creation time, the value will be set to `MILLIS`.
     /// Views: `SCHEMA_VIEW`, `FULL`.
     #[prost(enumeration = "table::TimestampGranularity", tag = "4")]
     pub granularity: i32,
-    /// Output only. If this table was restored from another data source (e.g. a
-    /// backup), this field will be populated with information about the restore.
+    /// Output only. If this table was restored from another data source (e.g. a backup), this
+    /// field will be populated with information about the restore.
     #[prost(message, optional, tag = "6")]
     pub restore_info: ::core::option::Option<RestoreInfo>,
 }
@@ -1182,7 +1335,7 @@ pub mod table {
         /// Only populates `name` and fields related to the table's replication
         /// state.
         ReplicationView = 3,
-        /// Only populates 'name' and fields related to the table's encryption state.
+        /// Only populates `name` and fields related to the table's encryption state.
         EncryptionView = 5,
         /// Populates all fields.
         Full = 4,
@@ -1251,13 +1404,12 @@ pub struct EncryptionInfo {
     /// Output only. The type of encryption used to protect this resource.
     #[prost(enumeration = "encryption_info::EncryptionType", tag = "3")]
     pub encryption_type: i32,
-    /// Output only. The status of encrypt/decrypt calls on underlying data for
-    /// this resource. Regardless of status, the existing data is always encrypted
-    /// at rest.
+    /// Output only. The status of encrypt/decrypt calls on underlying data for this resource.
+    /// Regardless of status, the existing data is always encrypted at rest.
     #[prost(message, optional, tag = "4")]
     pub encryption_status: ::core::option::Option<super::super::super::rpc::Status>,
-    /// Output only. The version of the Cloud KMS key specified in the parent
-    /// cluster that is in use for the data underlying this table.
+    /// Output only. The version of the Cloud KMS key specified in the parent cluster that is
+    /// in use for the data underlying this table.
     #[prost(string, tag = "2")]
     pub kms_key_version: ::prost::alloc::string::String,
 }
@@ -1340,7 +1492,7 @@ pub mod snapshot {
 /// A backup of a Cloud Bigtable table.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {
-    /// Output only. A globally unique identifier for the backup which cannot be
+    /// A globally unique identifier for the backup which cannot be
     /// changed. Values are of the form
     /// `projects/{project}/instances/{instance}/clusters/{cluster}/
     ///    backups/\[_a-zA-Z0-9][-_.a-zA-Z0-9\]*`
@@ -1352,8 +1504,8 @@ pub struct Backup {
     /// `projects/{project}/instances/{instance}/clusters/{cluster}`.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Required. Immutable. Name of the table from which this backup was created.
-    /// This needs to be in the same instance as the backup. Values are of the form
+    /// Required. Immutable. Name of the table from which this backup was created. This needs
+    /// to be in the same instance as the backup. Values are of the form
     /// `projects/{project}/instances/{instance}/tables/{source_table}`.
     #[prost(string, tag = "2")]
     pub source_table: ::prost::alloc::string::String,
@@ -1366,9 +1518,8 @@ pub struct Backup {
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. `start_time` is the time that the backup was started
     /// (i.e. approximately the time the
-    /// \[CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup\]
-    /// request is received).  The row data in this backup will be no older than
-    /// this timestamp.
+    /// \[CreateBackup][google.bigtable.admin.v2.BigtableTableAdmin.CreateBackup\] request is received).  The
+    /// row data in this backup will be no older than this timestamp.
     #[prost(message, optional, tag = "4")]
     pub start_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. `end_time` is the time that the backup was finished. The row
@@ -1671,6 +1822,30 @@ pub struct DeleteTableRequest {
     pub name: ::prost::alloc::string::String,
 }
 /// Request message for
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeleteTableRequest {
+    /// Required. The unique name of the table to be restored.
+    /// Values are of the form
+    /// `projects/{project}/instances/{instance}/tables/{table}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Metadata type for the operation returned by
+/// \[google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.UndeleteTable\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UndeleteTableMetadata {
+    /// The name of the table being restored.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// The time at which this operation started.
+    #[prost(message, optional, tag = "2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// If set, the time at which this operation finished or was cancelled.
+    #[prost(message, optional, tag = "3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Request message for
 /// \[google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies][google.bigtable.admin.v2.BigtableTableAdmin.ModifyColumnFamilies\]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModifyColumnFamiliesRequest {
@@ -1694,13 +1869,13 @@ pub mod modify_column_families_request {
         /// The ID of the column family to be modified.
         #[prost(string, tag = "1")]
         pub id: ::prost::alloc::string::String,
-        /// Column familiy modifications.
+        /// Column family modifications.
         #[prost(oneof = "modification::Mod", tags = "2, 3, 4")]
         pub r#mod: ::core::option::Option<modification::Mod>,
     }
     /// Nested message and enum types in `Modification`.
     pub mod modification {
-        /// Column familiy modifications.
+        /// Column family modifications.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum Mod {
             /// Create a new column family with the specified schema, or fail if
@@ -2210,6 +2385,26 @@ pub mod bigtable_table_admin_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Restores a specified table which was accidentally deleted."]
+        pub async fn undelete_table(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UndeleteTableRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/UndeleteTable",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

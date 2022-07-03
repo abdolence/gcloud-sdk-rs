@@ -115,7 +115,10 @@ pub struct Value {
     #[prost(bool, tag = "19")]
     pub exclude_from_indexes: bool,
     /// Must have a value set.
-    #[prost(oneof = "value::ValueType", tags = "11, 1, 2, 3, 10, 5, 17, 18, 8, 6, 9")]
+    #[prost(
+        oneof = "value::ValueType",
+        tags = "11, 1, 2, 3, 10, 5, 17, 18, 8, 6, 9"
+    )]
     pub value_type: ::core::option::Option<value::ValueType>,
 }
 /// Nested message and enum types in `Value`.

@@ -75,7 +75,10 @@ pub mod endpoint_matcher {
         /// If there is more than one best match, (for example, if a
         /// config P4 with selector <A:1,D:1> exists and if a client with
         /// label <A:1,B:1,D:1> connects), an error will be thrown.
-        #[prost(enumeration = "metadata_label_matcher::MetadataLabelMatchCriteria", tag = "1")]
+        #[prost(
+            enumeration = "metadata_label_matcher::MetadataLabelMatchCriteria",
+            tag = "1"
+        )]
         pub metadata_label_match_criteria: i32,
         /// The list of label value pairs that must match labels in the
         /// provided metadata based on filterMatchCriteria This list can

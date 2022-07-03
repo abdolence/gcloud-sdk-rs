@@ -1178,7 +1178,10 @@ pub mod complete_query_response {
         #[prost(string, tag = "1")]
         pub suggestion: ::prost::alloc::string::String,
         /// The completion topic.
-        #[prost(enumeration = "super::complete_query_request::CompletionType", tag = "2")]
+        #[prost(
+            enumeration = "super::complete_query_request::CompletionType",
+            tag = "2"
+        )]
         pub r#type: i32,
         /// The URI of the company image for
         /// \[COMPANY_NAME][google.cloud.talent.v4.CompleteQueryRequest.CompletionType.COMPANY_NAME\].
@@ -1556,8 +1559,24 @@ pub struct JobQuery {
     ///  Currently we don't support sorting by commute time.
     #[prost(message, optional, tag = "5")]
     pub commute_filter: ::core::option::Option<CommuteFilter>,
-    /// This filter specifies the exact company \[Company.display_name][google.cloud.talent.v4.Company.display_name\]
-    /// of the jobs to search against.
+    /// This filter specifies the company \[Company.display_name][google.cloud.talent.v4.Company.display_name\]
+    /// of the jobs to search against. The company name must match the value
+    /// exactly.
+    ///
+    /// Alternatively, the value being searched for can be wrapped in different
+    /// match operators.
+    /// `SUBSTRING_MATCH(\[value\])`
+    /// The company name must contain a case insensitive substring match of the
+    /// value. Using this function may increase latency.
+    ///
+    /// Sample Value: `SUBSTRING_MATCH(google)`
+    ///
+    /// `MULTI_WORD_TOKEN_MATCH(\[value\])`
+    /// The value will be treated as a multi word token and the company name must
+    /// contain a case insensitive match of the value. Using this function may
+    /// increase latency.
+    ///
+    /// Sample Value: `MULTI_WORD_TOKEN_MATCH(google)`
     ///
     /// If a value isn't specified, jobs within the search results are
     /// associated with any company.
@@ -1674,13 +1693,15 @@ pub struct LocationFilter {
     pub distance_in_miles: f64,
     /// Allows the client to return jobs without a
     /// set location, specifically, telecommuting jobs (telecommuting is considered
-    /// by the service as a special location.
+    /// by the service as a special location).
     /// \[Job.posting_region][google.cloud.talent.v4.Job.posting_region\] indicates if a job permits telecommuting.
     /// If this field is set to \[TelecommutePreference.TELECOMMUTE_ALLOWED][google.cloud.talent.v4.LocationFilter.TelecommutePreference.TELECOMMUTE_ALLOWED\],
     /// telecommuting jobs are searched, and \[address][google.cloud.talent.v4.LocationFilter.address\] and \[lat_lng][google.cloud.talent.v4.LocationFilter.lat_lng\] are
     /// ignored. If not set or set to
-    /// \[TelecommutePreference.TELECOMMUTE_EXCLUDED][google.cloud.talent.v4.LocationFilter.TelecommutePreference.TELECOMMUTE_EXCLUDED\], telecommute job are not
-    /// searched.
+    /// \[TelecommutePreference.TELECOMMUTE_EXCLUDED][google.cloud.talent.v4.LocationFilter.TelecommutePreference.TELECOMMUTE_EXCLUDED\], the telecommute status of
+    /// the jobs is ignored. Jobs that have \[PostingRegion.TELECOMMUTE][google.cloud.talent.v4.PostingRegion.TELECOMMUTE\] and have
+    /// additional \[Job.addresses][google.cloud.talent.v4.Job.addresses\] may still be matched based on other location
+    /// filters using \[address][google.cloud.talent.v4.LocationFilter.address\] or \[latlng][\].
     ///
     /// This filter can be used by itself to search exclusively for telecommuting
     /// jobs, or it can be combined with another location
@@ -1701,10 +1722,13 @@ pub mod location_filter {
     pub enum TelecommutePreference {
         /// Default value if the telecommute preference isn't specified.
         Unspecified = 0,
-        /// Exclude telecommute jobs.
+        /// Deprecated: Ignore telecommute status of jobs. Use
+        /// TELECOMMUTE_JOBS_EXCLUDED if want to exclude telecommute jobs.
         TelecommuteExcluded = 1,
         /// Allow telecommute jobs.
         TelecommuteAllowed = 2,
+        /// Exclude telecommute jobs.
+        TelecommuteJobsExcluded = 3,
     }
 }
 /// Filter on job compensation type and amount.
@@ -2326,6 +2350,8 @@ pub struct SearchJobsRequest {
     /// for each distinct attribute value.
     /// * `count(numeric_histogram_facet, list of buckets)`: Count the number of
     /// matching entities within each bucket.
+    ///
+    /// A maximum of 200 histogram buckets are supported.
     ///
     /// Data types:
     ///

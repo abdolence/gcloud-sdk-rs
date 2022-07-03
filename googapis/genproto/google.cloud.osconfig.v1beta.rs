@@ -322,7 +322,7 @@ pub mod package_repository {
 ///
 /// If a recipe is assigned to an instance and there is a recipe with the same
 /// name but a lower version already installed and the assigned state
-/// of the recipe is `INSTALLED_KEEP_UPDATED`, then the recipe is updated to
+/// of the recipe is `UPDATED`, then the recipe is updated to
 /// the new version.
 ///
 /// Script Working Directories
@@ -362,10 +362,9 @@ pub struct SoftwareRecipe {
     ///
     /// INSTALLED: The software recipe is installed on the instance but
     ///            won't be updated to new versions.
-    /// INSTALLED_KEEP_UPDATED: The software recipe is installed on the
-    ///                         instance. The recipe is updated to a higher
-    ///                         version, if a higher version of the recipe is
-    ///                         assigned to this instance.
+    /// UPDATED: The software recipe is installed on the instance. The recipe is
+    ///          updated to a higher version, if a higher version of the recipe is
+    ///          assigned to this instance.
     /// REMOVE: Remove is unsupported for software recipes and attempts to
     ///         create or update a recipe to the REMOVE state is rejected.
     #[prost(enumeration = "DesiredState", tag = "6")]
@@ -797,8 +796,29 @@ pub enum DesiredState {
     /// if detected.
     Removed = 3,
 }
-/// A request message to initiate patching across Google Compute Engine
-/// instances.
+/// Message encapsulating a value that can be either absolute ("fixed") or
+/// relative ("percent") to a value.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FixedOrPercent {
+    /// Type of the value.
+    #[prost(oneof = "fixed_or_percent::Mode", tags = "1, 2")]
+    pub mode: ::core::option::Option<fixed_or_percent::Mode>,
+}
+/// Nested message and enum types in `FixedOrPercent`.
+pub mod fixed_or_percent {
+    /// Type of the value.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Mode {
+        /// Specifies a fixed value.
+        #[prost(int32, tag = "1")]
+        Fixed(i32),
+        /// Specifies the relative value defined as a percentage, which will be
+        /// multiplied by a reference value.
+        #[prost(int32, tag = "2")]
+        Percent(i32),
+    }
+}
+/// A request message to initiate patching across Compute Engine instances.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExecutePatchJobRequest {
     /// Required. The project in which to run this patch in the form `projects/*`
@@ -827,6 +847,9 @@ pub struct ExecutePatchJobRequest {
     /// Display name for this patch job. This does not have to be unique.
     #[prost(string, tag = "8")]
     pub display_name: ::prost::alloc::string::String,
+    /// Rollout strategy of the patch job.
+    #[prost(message, optional, tag = "9")]
+    pub rollout: ::core::option::Option<PatchRollout>,
 }
 /// Request to get an active or completed patch job.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -867,7 +890,7 @@ pub struct ListPatchJobInstanceDetailsResponse {
 /// Patch details for a VM instance. For more information about reviewing VM
 /// instance details, see
 /// [Listing all VM instance details for a specific patch
-/// job](/compute/docs/os-patch-management/manage-patch-jobs#list-instance-details).
+/// job](<https://cloud.google.com/compute/docs/os-patch-management/manage-patch-jobs#list-instance-details>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchJobInstanceDetails {
     /// The instance name in the form `projects/*/zones/*/instances/*`
@@ -919,11 +942,12 @@ pub struct ListPatchJobsResponse {
 /// A high level representation of a patch job that is either in progress
 /// or has completed.
 ///
-/// Instances details are not included in the job. To paginate through instance
-/// details, use ListPatchJobInstanceDetails.
+/// Instance details are not included in the job. To paginate through instance
+/// details, use `ListPatchJobInstanceDetails`.
 ///
 /// For more information about patch jobs, see
-/// [Creating patch jobs](/compute/docs/os-patch-management/create-patch-job).
+/// [Creating patch
+/// jobs](<https://cloud.google.com/compute/docs/os-patch-management/create-patch-job>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchJob {
     /// Unique identifier for this patch job in the form
@@ -943,7 +967,7 @@ pub struct PatchJob {
     /// Last time this patch job was updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The current state of the PatchJob .
+    /// The current state of the PatchJob.
     #[prost(enumeration = "patch_job::State", tag = "5")]
     pub state: i32,
     /// Instances to patch.
@@ -974,6 +998,9 @@ pub struct PatchJob {
     /// Output only. Name of the patch deployment that created this patch job.
     #[prost(string, tag = "15")]
     pub patch_deployment: ::prost::alloc::string::String,
+    /// Rollout strategy being applied.
+    #[prost(message, optional, tag = "16")]
+    pub rollout: ::core::option::Option<PatchRollout>,
 }
 /// Nested message and enum types in `PatchJob`.
 pub mod patch_job {
@@ -1086,6 +1113,9 @@ pub struct PatchConfig {
     /// The `ExecStep` to run after the patch update.
     #[prost(message, optional, tag = "9")]
     pub post_step: ::core::option::Option<ExecStep>,
+    /// Allows the patch job to run on Managed instance groups (MIGs).
+    #[prost(bool, tag = "10")]
+    pub mig_instances_allowed: bool,
 }
 /// Nested message and enum types in `PatchConfig`.
 pub mod patch_config {
@@ -1249,7 +1279,11 @@ pub struct ZypperSettings {
 pub struct WindowsUpdateSettings {
     /// Only apply updates of these windows update classifications. If empty, all
     /// updates are applied.
-    #[prost(enumeration = "windows_update_settings::Classification", repeated, tag = "1")]
+    #[prost(
+        enumeration = "windows_update_settings::Classification",
+        repeated,
+        tag = "1"
+    )]
     pub classifications: ::prost::alloc::vec::Vec<i32>,
     /// List of KBs to exclude from update.
     #[prost(string, repeated, tag = "2")]
@@ -1412,8 +1446,8 @@ pub mod patch_instance_filter {
     /// labels, for example "env=prod and app=web".
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct GroupLabel {
-        /// Google Compute Engine instance labels that must be present for a VM
-        /// instance to be targeted by this filter.
+        /// Compute Engine instance labels that must be present for a VM instance to
+        /// be targeted by this filter.
         #[prost(map = "string, string", tag = "1")]
         pub labels: ::std::collections::HashMap<
             ::prost::alloc::string::String,
@@ -1421,11 +1455,63 @@ pub mod patch_instance_filter {
         >,
     }
 }
+/// Patch rollout configuration specifications. Contains details on the
+/// concurrency control when applying patch(es) to all targeted VMs.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PatchRollout {
+    /// Mode of the patch rollout.
+    #[prost(enumeration = "patch_rollout::Mode", tag = "1")]
+    pub mode: i32,
+    /// The maximum number (or percentage) of VMs per zone to disrupt at any given
+    /// moment. The number of VMs calculated from multiplying the percentage by the
+    /// total number of VMs in a zone is rounded up.
+    ///
+    /// During patching, a VM is considered disrupted from the time the agent is
+    /// notified to begin until patching has completed. This disruption time
+    /// includes the time to complete reboot and any post-patch steps.
+    ///
+    /// A VM contributes to the disruption budget if its patching operation fails
+    /// either when applying the patches, running pre or post patch steps, or if it
+    /// fails to respond with a success notification before timing out. VMs that
+    /// are not running or do not have an active agent do not count toward this
+    /// disruption budget.
+    ///
+    /// For zone-by-zone rollouts, if the disruption budget in a zone is exceeded,
+    /// the patch job stops, because continuing to the next zone requires
+    /// completion of the patch process in the previous zone.
+    ///
+    /// For example, if the disruption budget has a fixed value of `10`, and 8 VMs
+    /// fail to patch in the current zone, the patch job continues to patch 2 VMs
+    /// at a time until the zone is completed. When that zone is completed
+    /// successfully, patching begins with 10 VMs at a time in the next zone. If 10
+    /// VMs in the next zone fail to patch, the patch job stops.
+    #[prost(message, optional, tag = "2")]
+    pub disruption_budget: ::core::option::Option<FixedOrPercent>,
+}
+/// Nested message and enum types in `PatchRollout`.
+pub mod patch_rollout {
+    /// Type of the rollout.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Mode {
+        /// Mode must be specified.
+        Unspecified = 0,
+        /// Patches are applied one zone at a time. The patch job begins in the
+        /// region with the lowest number of targeted VMs. Within the region,
+        /// patching begins in the zone with the lowest number of targeted VMs. If
+        /// multiple regions (or zones within a region) have the same number of
+        /// targeted VMs, a tie-breaker is achieved by sorting the regions or zones
+        /// in alphabetical order.
+        ZoneByZone = 1,
+        /// Patches are applied to VMs in all zones at the same time.
+        ConcurrentZones = 2,
+    }
+}
 /// Patch deployments are configurations that individual patch jobs use to
 /// complete a patch. These configurations include instance filter, package
 /// repository settings, and a schedule. For more information about creating and
 /// managing patch deployments, see [Scheduling patch
-/// jobs](/compute/docs/os-patch-management/schedule-patch-jobs).
+/// jobs](<https://cloud.google.com/compute/docs/os-patch-management/schedule-patch-jobs>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PatchDeployment {
     /// Unique name for the patch deployment resource in a project. The patch
@@ -1448,27 +1534,42 @@ pub struct PatchDeployment {
     #[prost(message, optional, tag = "5")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
     /// Output only. Time the patch deployment was created. Timestamp is in
-    /// <a href="<https://www.ietf.org/rfc/rfc3339.txt"> target="_blank">RFC3339</a>
-    /// text format.
+    /// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(message, optional, tag = "8")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time the patch deployment was last updated. Timestamp is in
-    /// <a href="<https://www.ietf.org/rfc/rfc3339.txt"> target="_blank">RFC3339</a>
-    /// text format.
+    /// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
     #[prost(message, optional, tag = "9")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last time a patch job was started by this deployment.
-    /// Timestamp is in
-    /// <a href="<https://www.ietf.org/rfc/rfc3339.txt"> target="_blank">RFC3339</a>
-    /// text format.
+    /// Timestamp is in \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text
+    /// format.
     #[prost(message, optional, tag = "10")]
     pub last_execute_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Optional. Rollout strategy of the patch job.
+    #[prost(message, optional, tag = "11")]
+    pub rollout: ::core::option::Option<PatchRollout>,
+    /// Output only. Current state of the patch deployment.
+    #[prost(enumeration = "patch_deployment::State", tag = "12")]
+    pub state: i32,
     /// Schedule for the patch.
     #[prost(oneof = "patch_deployment::Schedule", tags = "6, 7")]
     pub schedule: ::core::option::Option<patch_deployment::Schedule>,
 }
 /// Nested message and enum types in `PatchDeployment`.
 pub mod patch_deployment {
+    /// Represents state of patch peployment.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The default value. This value is used if the state is omitted.
+        Unspecified = 0,
+        /// Active value means that patch deployment generates Patch Jobs.
+        Active = 1,
+        /// Paused value means that patch deployment does not generate
+        /// Patch jobs. Requires user action to move in and out from this state.
+        Paused = 2,
+    }
     /// Schedule for the patch.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Schedule {
@@ -1481,8 +1582,7 @@ pub mod patch_deployment {
     }
 }
 /// Sets the time for a one time patch deployment. Timestamp is in
-/// <a href="<https://www.ietf.org/rfc/rfc3339.txt"> target="_blank">RFC3339</a>
-/// text format.
+/// \[RFC3339\](<https://www.ietf.org/rfc/rfc3339.txt>) text format.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OneTimeSchedule {
     /// Required. The desired patch job execution time.
@@ -1529,14 +1629,14 @@ pub mod recurring_schedule {
     pub enum Frequency {
         /// Invalid. A frequency must be specified.
         Unspecified = 0,
-        /// Indicates that the frequency should be expressed in terms of
-        /// weeks.
+        /// Indicates that the frequency of recurrence should be expressed in terms
+        /// of weeks.
         Weekly = 1,
-        /// Indicates that the frequency should be expressed in terms of
-        /// months.
+        /// Indicates that the frequency of recurrence should be expressed in terms
+        /// of months.
         Monthly = 2,
-        /// Indicates that the frequency should be expressed in terms of
-        /// days.
+        /// Indicates that the frequency of recurrence should be expressed in terms
+        /// of days.
         Daily = 3,
     }
     /// Configurations for this recurring schedule.
@@ -1592,6 +1692,15 @@ pub struct WeekDayOfMonth {
     /// Required. A day of the week.
     #[prost(enumeration = "super::super::super::r#type::DayOfWeek", tag = "2")]
     pub day_of_week: i32,
+    /// Optional. Represents the number of days before or after the given week day of month
+    /// that the patch deployment is scheduled for. For example if `week_ordinal`
+    /// and `day_of_week` values point to the second day of the month and this
+    /// `day_offset` value is set to `3`, the patch deployment takes place three
+    /// days after the second Tuesday of the month. If this value is negative, for
+    /// example -5, the patches  are deployed five days before before the second
+    /// Tuesday of the month. Allowed values are in range `[-30, 30]`.
+    #[prost(int32, tag = "3")]
+    pub day_offset: i32,
 }
 /// A request message for creating a patch deployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1648,6 +1757,33 @@ pub struct ListPatchDeploymentsResponse {
 /// A request message for deleting a patch deployment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePatchDeploymentRequest {
+    /// Required. The resource name of the patch deployment in the form
+    /// `projects/*/patchDeployments/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request message for updating a patch deployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdatePatchDeploymentRequest {
+    /// Required. The patch deployment to Update.
+    #[prost(message, optional, tag = "1")]
+    pub patch_deployment: ::core::option::Option<PatchDeployment>,
+    /// Optional. Field mask that controls which fields of the patch deployment should be
+    /// updated.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// A request message for pausing a patch deployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PausePatchDeploymentRequest {
+    /// Required. The resource name of the patch deployment in the form
+    /// `projects/*/patchDeployments/*`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// A request message for resuming a patch deployment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResumePatchDeploymentRequest {
     /// Required. The resource name of the patch deployment in the form
     /// `projects/*/patchDeployments/*`.
     #[prost(string, tag = "1")]
@@ -1859,6 +1995,59 @@ pub mod os_config_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.osconfig.v1beta.OsConfigService/DeletePatchDeployment",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Update an OS Config patch deployment."]
+        pub async fn update_patch_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdatePatchDeploymentRequest>,
+        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.v1beta.OsConfigService/UpdatePatchDeployment",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Change state of patch deployment to \"PAUSED\"."]
+        #[doc = " Patch deployment in paused state doesn't generate patch jobs."]
+        pub async fn pause_patch_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PausePatchDeploymentRequest>,
+        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.v1beta.OsConfigService/PausePatchDeployment",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Change state of patch deployment back to \"ACTIVE\"."]
+        #[doc = " Patch deployment in active state continues to generate patch jobs."]
+        pub async fn resume_patch_deployment(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResumePatchDeploymentRequest>,
+        ) -> Result<tonic::Response<super::PatchDeployment>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.osconfig.v1beta.OsConfigService/ResumePatchDeployment",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

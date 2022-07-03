@@ -1,10 +1,13 @@
 # googapis
 
-[![ci](https://github.com/mechiru/googapis/workflows/ci/badge.svg)](https://github.com/mechiru/googapis/actions?query=workflow:ci)
-[![Rust Documentation](https://docs.rs/googapis/badge.svg)](https://mechiru.github.io/googapis/googapis/index.html)
-[![Latest Version](https://img.shields.io/crates/v/googapis.svg)](https://crates.io/crates/googapis)
+[![ci](https://github.com/latestbit/gcloud-sdk/workflows/ci/badge.svg)](https://github.com/mechiru/googapis/actions?query=workflow:ci)
+[![Rust Documentation](https://docs.rs/gcloud-sdk/badge.svg)](https://mechiru.github.io/googapis/googapis/index.html)
+[![Latest Version](https://img.shields.io/crates/v/gcloud-sdk.svg)](https://crates.io/crates/googapis)
 
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
+
+The library is a fork of [mechiru/googapis](https://github.com/mechiru/googapis) to keep up with 
+the dependency updates and API proto descriptions from Google more frequently.
 
 ## Overview
 This library contains all the code generated from the Google API.
@@ -53,12 +56,7 @@ The list of available features can be found [here](./googapis/Cargo.toml#L22-L31
 ## Version matrices
 | googapis | tonic | tonic-build |
 |----------|-------|-------------|
-| 0.1.x    | 0.2.x | 0.2.x       |
-| 0.2.x    | 0.2.x | 0.2.x       |
-| 0.3.x    | 0.3.x | 0.3.x       |
-| 0.4.x    | 0.4.x | 0.4.x       |
-| 0.5.x    | 0.5.x | 0.5.x       |
-| 0.6.x    | 0.6.x | 0.6.x       |
+| 0.7.x    | 0.7.x | 0.7.x       |
 
 ## Example
 The complete code can be found [here](./examples/spanner-admin).
@@ -66,7 +64,7 @@ The complete code can be found [here](./examples/spanner-admin).
 Cargo.toml:
 ```toml
 [dependencies]
-googapis = { version = "0.6", features = ["google-spanner-admin-database-v1"] }
+gcloud-sdk = { version = "0.7", features = ["google-spanner-admin-database-v1"] }
 gouth = { version = "0.2" }
 tonic = { version = "0.6", features = ["tls"] }
 prost = "0.9"

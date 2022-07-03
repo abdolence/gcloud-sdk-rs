@@ -452,7 +452,10 @@ pub mod action {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ActionDetail {
     /// Data describing the type and additional information of an action.
-    #[prost(oneof = "action_detail::ActionDetail", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13")]
+    #[prost(
+        oneof = "action_detail::ActionDetail",
+        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 12, 13"
+    )]
     pub action_detail: ::core::option::Option<action_detail::ActionDetail>,
 }
 /// Nested message and enum types in `ActionDetail`.

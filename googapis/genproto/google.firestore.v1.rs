@@ -52,7 +52,10 @@ pub struct Document {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// Must have a value set.
-    #[prost(oneof = "value::ValueType", tags = "11, 1, 2, 3, 10, 17, 18, 5, 8, 9, 6")]
+    #[prost(
+        oneof = "value::ValueType",
+        tags = "11, 1, 2, 3, 10, 17, 18, 5, 8, 9, 6"
+    )]
     pub value_type: ::core::option::Option<value::ValueType>,
 }
 /// Nested message and enum types in `Value`.
@@ -224,7 +227,10 @@ pub mod structured_query {
         #[prost(enumeration = "composite_filter::Operator", tag = "1")]
         pub op: i32,
         /// The list of filters to combine.
-        /// Must contain at least one filter.
+        ///
+        /// Requires:
+        ///
+        /// * At least one filter is present.
         #[prost(message, repeated, tag = "2")]
         pub filters: ::prost::alloc::vec::Vec<Filter>,
     }
@@ -238,7 +244,7 @@ pub mod structured_query {
         pub enum Operator {
             /// Unspecified. This value must not be used.
             Unspecified = 0,
-            /// The results are required to satisfy each of the combined filters.
+            /// Documents are required to satisfy all of the combined filters.
             And = 1,
         }
     }
@@ -454,7 +460,7 @@ pub mod precondition {
         #[prost(bool, tag = "1")]
         Exists(bool),
         /// When set, the target document must exist and have been last updated at
-        /// that time.
+        /// that time. Timestamp must be microsecond aligned.
         #[prost(message, tag = "2")]
         UpdateTime(::prost_types::Timestamp),
     }
@@ -949,7 +955,10 @@ pub struct BatchGetDocumentsRequest {
     pub mask: ::core::option::Option<DocumentMask>,
     /// The consistency mode for this transaction.
     /// If not set, defaults to strong consistency.
-    #[prost(oneof = "batch_get_documents_request::ConsistencySelector", tags = "4, 5, 7")]
+    #[prost(
+        oneof = "batch_get_documents_request::ConsistencySelector",
+        tags = "4, 5, 7"
+    )]
     pub consistency_selector:
         ::core::option::Option<batch_get_documents_request::ConsistencySelector>,
 }
@@ -1100,7 +1109,9 @@ pub mod run_query_request {
     /// If not set, defaults to strong consistency.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConsistencySelector {
-        /// Reads documents in a transaction.
+        /// Run the query within an already active transaction.
+        ///
+        /// The value here is the opaque transaction ID to execute the query in.
         #[prost(bytes, tag = "5")]
         Transaction(::prost::alloc::vec::Vec<u8>),
         /// Starts a new transaction and reads the documents.
@@ -1124,8 +1135,7 @@ pub struct RunQueryResponse {
     /// If set, no other fields will be set in this response.
     #[prost(bytes = "vec", tag = "2")]
     pub transaction: ::prost::alloc::vec::Vec<u8>,
-    /// A query result.
-    /// Not set when reporting partial progress.
+    /// A query result, not set when reporting partial progress.
     #[prost(message, optional, tag = "1")]
     pub document: ::core::option::Option<Document>,
     /// The time at which the document was read. This may be monotonically
@@ -1141,6 +1151,24 @@ pub struct RunQueryResponse {
     /// the last response and the current response.
     #[prost(int32, tag = "4")]
     pub skipped_results: i32,
+    /// The continuation mode for the query. If present, it indicates the current
+    /// query response stream has finished. This can be set with or without a
+    /// `document` present, but when set, no more results are returned.
+    #[prost(oneof = "run_query_response::ContinuationSelector", tags = "6")]
+    pub continuation_selector: ::core::option::Option<run_query_response::ContinuationSelector>,
+}
+/// Nested message and enum types in `RunQueryResponse`.
+pub mod run_query_response {
+    /// The continuation mode for the query. If present, it indicates the current
+    /// query response stream has finished. This can be set with or without a
+    /// `document` present, but when set, no more results are returned.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ContinuationSelector {
+        /// If present, Firestore has completely finished the request and no more
+        /// documents will be returned.
+        #[prost(bool, tag = "6")]
+        Done(bool),
+    }
 }
 /// The request for \[Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1188,6 +1216,10 @@ pub struct PartitionQueryRequest {
     /// The query to partition.
     #[prost(oneof = "partition_query_request::QueryType", tags = "2")]
     pub query_type: ::core::option::Option<partition_query_request::QueryType>,
+    /// The consistency mode for this request.
+    /// If not set, defaults to strong consistency.
+    #[prost(oneof = "partition_query_request::ConsistencySelector", tags = "6")]
+    pub consistency_selector: ::core::option::Option<partition_query_request::ConsistencySelector>,
 }
 /// Nested message and enum types in `PartitionQueryRequest`.
 pub mod partition_query_request {
@@ -1200,6 +1232,15 @@ pub mod partition_query_request {
         /// cursors are not supported.
         #[prost(message, tag = "2")]
         StructuredQuery(super::StructuredQuery),
+    }
+    /// The consistency mode for this request.
+    /// If not set, defaults to strong consistency.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ConsistencySelector {
+        /// Reads documents as they were at the given time.
+        /// This may not be older than 270 seconds.
+        #[prost(message, tag = "6")]
+        ReadTime(::prost_types::Timestamp),
     }
 }
 /// The response for \[Firestore.PartitionQuery][google.firestore.v1.Firestore.PartitionQuery\].
@@ -1532,6 +1573,23 @@ pub struct ListCollectionIdsRequest {
     /// \[ListCollectionIdsResponse][google.firestore.v1.ListCollectionIdsResponse\].
     #[prost(string, tag = "3")]
     pub page_token: ::prost::alloc::string::String,
+    /// The consistency mode for this request.
+    /// If not set, defaults to strong consistency.
+    #[prost(oneof = "list_collection_ids_request::ConsistencySelector", tags = "4")]
+    pub consistency_selector:
+        ::core::option::Option<list_collection_ids_request::ConsistencySelector>,
+}
+/// Nested message and enum types in `ListCollectionIdsRequest`.
+pub mod list_collection_ids_request {
+    /// The consistency mode for this request.
+    /// If not set, defaults to strong consistency.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ConsistencySelector {
+        /// Reads documents as they were at the given time.
+        /// This may not be older than 270 seconds.
+        #[prost(message, tag = "4")]
+        ReadTime(::prost_types::Timestamp),
+    }
 }
 /// The response from \[Firestore.ListCollectionIds][google.firestore.v1.Firestore.ListCollectionIds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1723,7 +1781,9 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1.Firestore/BatchGetDocuments",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Starts a new transaction."]
         pub async fn begin_transaction(
@@ -1789,7 +1849,9 @@ pub mod firestore_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.firestore.v1.Firestore/RunQuery");
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Partitions a query by returning partition cursors that can be used to run"]
         #[doc = " the query in parallel. The returned partition cursors are split points that"]
@@ -1824,7 +1886,9 @@ pub mod firestore_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/google.firestore.v1.Firestore/Write");
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Listens to changes."]
         pub async fn listen(
@@ -1841,7 +1905,9 @@ pub mod firestore_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.firestore.v1.Firestore/Listen");
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Lists all the collection IDs underneath a document."]
         pub async fn list_collection_ids(

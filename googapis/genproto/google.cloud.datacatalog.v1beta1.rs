@@ -1799,7 +1799,12 @@ pub struct Taxonomy {
     pub description: ::prost::alloc::string::String,
     /// Optional. A list of policy types that are activated for this taxonomy. If not set,
     /// defaults to an empty list.
-    #[prost(enumeration = "taxonomy::PolicyType", repeated, packed = "false", tag = "6")]
+    #[prost(
+        enumeration = "taxonomy::PolicyType",
+        repeated,
+        packed = "false",
+        tag = "6"
+    )]
     pub activated_policy_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `Taxonomy`.

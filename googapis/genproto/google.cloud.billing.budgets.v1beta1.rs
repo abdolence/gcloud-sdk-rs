@@ -14,9 +14,9 @@ pub struct Budget {
     /// Validation: <= 60 chars.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
-    /// Optional. Filters that define which resources are used to compute the
-    /// actual spend against the budget amount, such as projects, services, and the
-    /// budget's time period, as well as other filters.
+    /// Optional. Filters that define which resources are used to compute the actual spend
+    /// against the budget amount, such as projects, services, and the budget's
+    /// time period, as well as other filters.
     #[prost(message, optional, tag = "3")]
     pub budget_filter: ::core::option::Option<Filter>,
     /// Required. Budgeted amount.
@@ -24,10 +24,13 @@ pub struct Budget {
     pub amount: ::core::option::Option<BudgetAmount>,
     /// Optional. Rules that trigger alerts (notifications of thresholds
     /// being crossed) when spend exceeds the specified percentages of the budget.
+    ///
+    /// Optional for `pubsubTopic` notifications.
+    ///
+    /// Required if using email notifications.
     #[prost(message, repeated, tag = "5")]
     pub threshold_rules: ::prost::alloc::vec::Vec<ThresholdRule>,
-    /// Optional. Rules to apply to notifications sent based on budget spend and
-    /// thresholds.
+    /// Optional. Rules to apply to notifications sent based on budget spend and thresholds.
     #[prost(message, optional, tag = "6")]
     pub all_updates_rule: ::core::option::Option<AllUpdatesRule>,
     /// Optional. Etag to validate that the object is unchanged for a
@@ -57,31 +60,43 @@ pub mod budget_amount {
         SpecifiedAmount(super::super::super::super::super::r#type::Money),
         /// Use the last period's actual spend as the budget for the present period.
         /// LastPeriodAmount can only be set when the budget's time period is a
-        /// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\].
-        /// It cannot be set in combination with
+        /// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\]. It cannot be set in combination with
         /// \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
         #[prost(message, tag = "2")]
         LastPeriodAmount(super::LastPeriodAmount),
     }
 }
-/// Describes a budget amount targeted to the last
-/// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\]
+/// Describes a budget amount targeted to the last \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\]
 /// spend. At this time, the amount is automatically 100% of the last calendar
 /// period's spend; that is, there are no other options yet.
 /// Future configuration options will be described here (for example, configuring
 /// a percentage of last period's spend).
 /// LastPeriodAmount cannot be set for a budget configured with
-/// a
-/// \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
+/// a \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LastPeriodAmount {}
-/// ThresholdRule contains a definition of a threshold which triggers
-/// an alert (a notification of a threshold being crossed) to be sent when
-/// spend goes above the specified amount.
-/// Alerts are automatically e-mailed to users with the Billing Account
-/// Administrator role or the Billing Account User role.
-/// The thresholds here have no effect on notifications sent to anything
-/// configured under `Budget.all_updates_rule`.
+/// ThresholdRule contains the definition of a threshold. Threshold rules define
+/// the triggering events used to generate a budget notification email. When a
+/// threshold is crossed (spend exceeds the specified percentages of the
+/// budget), budget alert emails are sent to the email recipients you specify
+/// in the
+/// \[NotificationsRule\](#notificationsrule).
+///
+/// Threshold rules also affect the fields included in the
+/// [JSON data
+/// object](<https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format>)
+/// sent to a Pub/Sub topic.
+///
+/// Threshold rules are _required_ if using email notifications.
+///
+/// Threshold rules are _optional_ if only setting a
+/// [`pubsubTopic` NotificationsRule](#NotificationsRule),
+/// unless you want your JSON data object to include data about the thresholds
+/// you set.
+///
+/// For more information, see
+/// [set budget threshold rules and
+/// actions](<https://cloud.google.com/billing/docs/how-to/budgets#budget-actions>).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThresholdRule {
     /// Required. Send an alert when this threshold is exceeded.
@@ -107,8 +122,7 @@ pub mod threshold_rule {
         /// Use forecasted spend for the period as the basis for comparison against
         /// the threshold.
         /// FORECASTED_SPEND can only be set when the budget's time period is a
-        /// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\].
-        /// It cannot be set in combination with
+        /// \[Filter.calendar_period][google.cloud.billing.budgets.v1beta1.Filter.calendar_period\].  It cannot be set in combination with
         /// \[Filter.custom_period][google.cloud.billing.budgets.v1beta1.Filter.custom_period\].
         ForecastedSpend = 2,
     }
@@ -117,10 +131,10 @@ pub mod threshold_rule {
 /// and thresholds.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AllUpdatesRule {
-    /// Optional. The name of the Pub/Sub topic where budget related messages will
-    /// be published, in the form `projects/{project_id}/topics/{topic_id}`.
-    /// Updates are sent at regular intervals to the topic. The topic needs to be
-    /// created before the budget is created; see
+    /// Optional. The name of the Pub/Sub topic where budget related messages will be
+    /// published, in the form `projects/{project_id}/topics/{topic_id}`. Updates
+    /// are sent at regular intervals to the topic.
+    /// The topic needs to be created before the budget is created; see
     /// <https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications>
     /// for more details.
     /// Caller is expected to have
@@ -130,28 +144,25 @@ pub struct AllUpdatesRule {
     /// for more details on Pub/Sub roles and permissions.
     #[prost(string, tag = "1")]
     pub pubsub_topic: ::prost::alloc::string::String,
-    /// Optional. Required when
-    /// \[AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\]
-    /// is set. The schema version of the notification sent to
-    /// \[AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\].
-    /// Only "1.0" is accepted. It represents the JSON schema as defined in
+    /// Optional. Required when \[AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\] is set. The schema version of
+    /// the notification sent to \[AllUpdatesRule.pubsub_topic][google.cloud.billing.budgets.v1beta1.AllUpdatesRule.pubsub_topic\]. Only "1.0" is
+    /// accepted. It represents the JSON schema as defined in
     /// <https://cloud.google.com/billing/docs/how-to/budgets-programmatic-notifications#notification_format.>
     #[prost(string, tag = "2")]
     pub schema_version: ::prost::alloc::string::String,
-    /// Optional. Targets to send notifications to when a threshold is exceeded.
-    /// This is in addition to default recipients who have billing account IAM
-    /// roles. The value is the full REST resource name of a monitoring
-    /// notification channel with the form
+    /// Optional. Targets to send notifications to when a threshold is exceeded. This is in
+    /// addition to default recipients who have billing account IAM roles.
+    /// The value is the full REST resource name of a monitoring notification
+    /// channel with the form
     /// `projects/{project_id}/notificationChannels/{channel_id}`. A maximum of 5
     /// channels are allowed. See
     /// <https://cloud.google.com/billing/docs/how-to/budgets-notification-recipients>
     /// for more details.
     #[prost(string, repeated, tag = "3")]
     pub monitoring_notification_channels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. When set to true, disables default notifications sent when a
-    /// threshold is exceeded. Default notifications are sent to those with Billing
-    /// Account Administrator and Billing Account User IAM roles for the target
-    /// account.
+    /// Optional. When set to true, disables default notifications sent when a threshold is
+    /// exceeded. Default notifications are sent to those with Billing Account
+    /// Administrator and Billing Account User IAM roles for the target account.
     #[prost(bool, tag = "4")]
     pub disable_default_iam_recipients: bool,
 }
@@ -165,16 +176,14 @@ pub struct Filter {
     /// Only zero or one project can be specified currently.
     #[prost(string, repeated, tag = "1")]
     pub projects: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. If
-    /// \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\]
-    /// is INCLUDE_SPECIFIED_CREDITS, this is a list of credit types to be
-    /// subtracted from gross cost to determine the spend for threshold
-    /// calculations. See [a list of acceptable credit type
+    /// Optional. If \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\] is INCLUDE_SPECIFIED_CREDITS, this is
+    /// a list of credit types to be subtracted from gross cost to determine the
+    /// spend for threshold calculations. See
+    /// [a list of acceptable credit type
     /// values](<https://cloud.google.com/billing/docs/how-to/export-data-bigquery-tables#credits-type>).
     ///
-    /// If
-    /// \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\]
-    /// is **not** INCLUDE_SPECIFIED_CREDITS, this field must be empty.
+    /// If \[Filter.credit_types_treatment][google.cloud.billing.budgets.v1beta1.Filter.credit_types_treatment\] is **not** INCLUDE_SPECIFIED_CREDITS,
+    /// this field must be empty.
     #[prost(string, repeated, tag = "7")]
     pub credit_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// Optional. If not set, default behavior is `INCLUDE_ALL_CREDITS`.
@@ -188,24 +197,29 @@ pub struct Filter {
     /// <https://cloud.google.com/billing/v1/how-tos/catalog-api.>
     #[prost(string, repeated, tag = "3")]
     pub services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`,
-    /// specifying that usage from only this set of subaccounts should be included
-    /// in the budget. If a subaccount is set to the name of the parent account,
+    /// Optional. A set of subaccounts of the form `billingAccounts/{account_id}`, specifying
+    /// that usage from only this set of subaccounts should be included in the
+    /// budget. If a subaccount is set to the name of the parent account,
     /// usage from the parent account will be included. If omitted, the
     /// report will include usage from the parent account and all
     /// subaccounts, if they exist.
     #[prost(string, repeated, tag = "5")]
     pub subaccounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    /// Optional. A single label and value pair specifying that usage from only
-    /// this set of labeled resources should be included in the budget. Currently,
-    /// multiple entries or multiple values per entry are not allowed. If omitted,
-    /// the report will include all labeled and unlabeled usage.
+    /// Optional. A single label and value pair specifying that usage from only this set of
+    /// labeled resources should be included in the budget. If omitted, the
+    /// report will include all labeled and unlabeled usage.
+    ///
+    /// An object containing a single `"key": value` pair. Example: `{ "name":
+    /// "wrench" }`.
+    ///
+    ///  _Currently, multiple entries or multiple values per entry are not
+    ///  allowed._
     #[prost(map = "string, message", tag = "6")]
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::ListValue>,
     /// Multiple options to choose the budget's time period, specifying that only
     /// usage that occurs during this time period should be included in the budget.
-    /// If not set, the `usage_period` defaults to CalendarPeriod.MONTH.
+    /// If not set, the <code>usage_period</code> defaults to CalendarPeriod.MONTH.
     #[prost(oneof = "filter::UsagePeriod", tags = "8, 9")]
     pub usage_period: ::core::option::Option<filter::UsagePeriod>,
 }
@@ -234,7 +248,7 @@ pub mod filter {
     }
     /// Multiple options to choose the budget's time period, specifying that only
     /// usage that occurs during this time period should be included in the budget.
-    /// If not set, the `usage_period` defaults to CalendarPeriod.MONTH.
+    /// If not set, the <code>usage_period</code> defaults to CalendarPeriod.MONTH.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum UsagePeriod {
         /// Optional. Specifies to track usage for recurring calendar period.
@@ -245,8 +259,8 @@ pub mod filter {
         /// so on.
         #[prost(enumeration = "super::CalendarPeriod", tag = "8")]
         CalendarPeriod(i32),
-        /// Optional. Specifies to track usage from any start date (required) to any
-        /// end date (optional). This time period is static, it does not recur.
+        /// Optional. Specifies to track usage from any start date (required) to any end date
+        /// (optional). This time period is static, it does not recur.
         #[prost(message, tag = "9")]
         CustomPeriod(super::CustomPeriod),
     }
@@ -257,9 +271,9 @@ pub struct CustomPeriod {
     /// Required. The start date must be after January 1, 2017.
     #[prost(message, optional, tag = "1")]
     pub start_date: ::core::option::Option<super::super::super::super::r#type::Date>,
-    /// Optional. The end date of the time period. Budgets with elapsed end date
-    /// won't be processed. If unset, specifies to track all usage incurred since
-    /// the start_date.
+    /// Optional. The end date of the time period. Budgets with elapsed end date won't be
+    /// processed. If unset, specifies to track all usage
+    /// incurred since the start_date.
     #[prost(message, optional, tag = "2")]
     pub end_date: ::core::option::Option<super::super::super::super::r#type::Date>,
 }
@@ -270,6 +284,8 @@ pub struct CustomPeriod {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum CalendarPeriod {
+    /// Calendar period is unset. This is the default if the budget is for a
+    /// custom time period (CustomPeriod).
     Unspecified = 0,
     /// A month. Month starts on the first day of each month, such as January 1,
     /// February 1, March 1, and so on.
@@ -403,7 +419,7 @@ pub mod budget_service_client {
             self
         }
         #[doc = " Creates a new budget. See"]
-        #[doc = " <a href=\"https://cloud.google.com/billing/quotas\">Quotas and limits</a>"]
+        #[doc = " [Quotas and limits](https://cloud.google.com/billing/quotas)"]
         #[doc = " for more information on the limits of the number of budgets you can create."]
         pub async fn create_budget(
             &mut self,

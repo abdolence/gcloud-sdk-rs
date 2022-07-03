@@ -783,7 +783,9 @@ pub mod big_query_read_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1beta2.BigQueryRead/ReadRows",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Splits a given `ReadStream` into two `ReadStream` objects. These"]
         #[doc = " `ReadStream` objects are referred to as the primary and the residual"]
@@ -925,7 +927,9 @@ pub mod big_query_write_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.bigquery.storage.v1beta2.BigQueryWrite/AppendRows",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Gets a write stream."]
         pub async fn get_write_stream(

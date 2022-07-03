@@ -16,8 +16,7 @@
 ///
 /// Foreign partition IDs (in which the project ID does
 /// not match the context project ID ) are discouraged.
-/// Reads and writes of foreign partition IDs may fail if the project is not in
-/// an active state.
+/// Reads and writes of foreign partition IDs may fail if the project is not in an active state.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PartitionId {
     /// The ID of the project to which the entities belong.
@@ -66,9 +65,14 @@ pub mod key {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct PathElement {
         /// The kind of the entity.
+        ///
         /// A kind matching regex `__.*__` is reserved/read-only.
         /// A kind must not contain more than 1500 bytes when UTF-8 encoded.
         /// Cannot be `""`.
+        ///
+        /// Must be valid UTF-8 bytes. Legacy values that are not valid UTF-8 are
+        /// encoded as `__bytes<X>__` where `<X>` is the base-64 encoding of the
+        /// bytes.
         #[prost(string, tag = "1")]
         pub kind: ::prost::alloc::string::String,
         /// The type of ID.
@@ -81,14 +85,20 @@ pub mod key {
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum IdType {
             /// The auto-allocated ID of the entity.
+            ///
             /// Never equal to zero. Values less than zero are discouraged and may not
             /// be supported in the future.
             #[prost(int64, tag = "2")]
             Id(i64),
             /// The name of the entity.
+            ///
             /// A name matching regex `__.*__` is reserved/read-only.
             /// A name must not be more than 1500 bytes when UTF-8 encoded.
             /// Cannot be `""`.
+            ///
+            /// Must be valid UTF-8 bytes. Legacy values that are not valid UTF-8 are
+            /// encoded as `__bytes<X>__` where `<X>` is the base-64 encoding of the
+            /// bytes.
             #[prost(string, tag = "3")]
             Name(::prost::alloc::string::String),
         }
@@ -115,7 +125,10 @@ pub struct Value {
     #[prost(bool, tag = "19")]
     pub exclude_from_indexes: bool,
     /// Must have a value set.
-    #[prost(oneof = "value::ValueType", tags = "11, 1, 2, 3, 10, 5, 17, 18, 8, 6, 9")]
+    #[prost(
+        oneof = "value::ValueType",
+        tags = "11, 1, 2, 3, 10, 5, 17, 18, 8, 6, 9"
+    )]
     pub value_type: ::core::option::Option<value::ValueType>,
 }
 /// Nested message and enum types in `Value`.
@@ -144,8 +157,8 @@ pub mod value {
         #[prost(message, tag = "5")]
         KeyValue(super::Key),
         /// A UTF-8 encoded string value.
-        /// When `exclude_from_indexes` is false (it is indexed), may have at most
-        /// 1500 bytes. Otherwise, may be set to at most 1,000,000 bytes.
+        /// When `exclude_from_indexes` is false (it is indexed) , may have at most 1500 bytes.
+        /// Otherwise, may be set to at most 1,000,000 bytes.
         #[prost(string, tag = "17")]
         StringValue(::prost::alloc::string::String),
         /// A blob value.
@@ -213,6 +226,12 @@ pub struct EntityResult {
     /// is always set except for eventually consistent reads.
     #[prost(int64, tag = "4")]
     pub version: i64,
+    /// The time at which the entity was last changed.
+    /// This field is set for \[`FULL`][google.datastore.v1.EntityResult.ResultType.FULL\] entity
+    /// results.
+    /// If this entity is missing, this field will not be set.
+    #[prost(message, optional, tag = "5")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// A cursor that points to the position after the result entity.
     /// Set only when the `EntityResult` is part of a `QueryResultBatch` message.
     #[prost(bytes = "vec", tag = "3")]
@@ -392,18 +411,60 @@ pub mod property_filter {
     pub enum Operator {
         /// Unspecified. This value must not be used.
         Unspecified = 0,
-        /// Less than.
+        /// The given `property` is less than the given `value`.
+        ///
+        /// Requires:
+        ///
+        /// * That `property` comes first in `order_by`.
         LessThan = 1,
-        /// Less than or equal.
+        /// The given `property` is less than or equal to the given `value`.
+        ///
+        /// Requires:
+        ///
+        /// * That `property` comes first in `order_by`.
         LessThanOrEqual = 2,
-        /// Greater than.
+        /// The given `property` is greater than the given `value`.
+        ///
+        /// Requires:
+        ///
+        /// * That `property` comes first in `order_by`.
         GreaterThan = 3,
-        /// Greater than or equal.
+        /// The given `property` is greater than or equal to the given `value`.
+        ///
+        /// Requires:
+        ///
+        /// * That `property` comes first in `order_by`.
         GreaterThanOrEqual = 4,
-        /// Equal.
+        /// The given `property` is equal to the given `value`.
         Equal = 5,
-        /// Has ancestor.
+        /// The given `property` is equal to at least one value in the given array.
+        ///
+        /// Requires:
+        ///
+        /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+        /// * No other `IN` or `NOT_IN` is in the same query.
+        In = 6,
+        /// The given `property` is not equal to the given `value`.
+        ///
+        /// Requires:
+        ///
+        /// * No other `NOT_EQUAL` or `NOT_IN` is in the same query.
+        /// * That `property` comes first in the `order_by`.
+        NotEqual = 9,
+        /// Limit the result set to the given entity and its descendants.
+        ///
+        /// Requires:
+        ///
+        /// * That `value` is an entity key.
         HasAncestor = 11,
+        /// The value of the `property` is not in the given array.
+        ///
+        /// Requires:
+        ///
+        /// * That `value` is a non-empty `ArrayValue` with at most 10 values.
+        /// * No other `IN`, `NOT_IN`, `NOT_EQUAL` is in the same query.
+        /// * That `field` comes first in the `order_by`.
+        NotIn = 13,
     }
 }
 /// A [GQL
@@ -490,6 +551,18 @@ pub struct QueryResultBatch {
     /// The value will be zero for eventually consistent queries.
     #[prost(int64, tag = "7")]
     pub snapshot_version: i64,
+    /// Read timestamp this batch was returned from.
+    /// This applies to the range of results from the query's `start_cursor` (or
+    /// the beginning of the query if no cursor was given) to this batch's
+    /// `end_cursor` (not the query's `end_cursor`).
+    ///
+    /// In a single transaction, subsequent query result batches for the same query
+    /// can have a greater timestamp. Each batch's read timestamp
+    /// is valid for all preceding batches.
+    /// This value will not be set for eventually consistent queries in Cloud
+    /// Datastore.
+    #[prost(message, optional, tag = "8")]
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Nested message and enum types in `QueryResultBatch`.
 pub mod query_result_batch {
@@ -541,6 +614,9 @@ pub struct LookupResponse {
     /// order of the keys in the input.
     #[prost(message, repeated, tag = "3")]
     pub deferred: ::prost::alloc::vec::Vec<Key>,
+    /// The time at which these entities were read or found missing.
+    #[prost(message, optional, tag = "7")]
+    pub read_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for \[Datastore.RunQuery][google.datastore.v1.Datastore.RunQuery\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -680,6 +756,9 @@ pub struct CommitResponse {
     /// updated.
     #[prost(int32, tag = "4")]
     pub index_updates: i32,
+    /// The transaction commit timestamp. Not set for non-transactional commits.
+    #[prost(message, optional, tag = "8")]
+    pub commit_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// The request for \[Datastore.AllocateIds][google.datastore.v1.Datastore.AllocateIds\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -733,7 +812,7 @@ pub struct Mutation {
     /// When set, the server will detect whether or not this mutation conflicts
     /// with the current version of the entity on the server. Conflicting mutations
     /// are not applied, and are marked as such in MutationResult.
-    #[prost(oneof = "mutation::ConflictDetectionStrategy", tags = "8")]
+    #[prost(oneof = "mutation::ConflictDetectionStrategy", tags = "8, 11")]
     pub conflict_detection_strategy: ::core::option::Option<mutation::ConflictDetectionStrategy>,
 }
 /// Nested message and enum types in `Mutation`.
@@ -770,10 +849,16 @@ pub mod mutation {
     /// are not applied, and are marked as such in MutationResult.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConflictDetectionStrategy {
-        /// The version of the entity that this mutation is being applied to. If this
-        /// does not match the current version on the server, the mutation conflicts.
+        /// The version of the entity that this mutation is being applied
+        /// to. If this does not match the current version on the server, the
+        /// mutation conflicts.
         #[prost(int64, tag = "8")]
         BaseVersion(i64),
+        /// The update time of the entity that this mutation is being applied
+        /// to. If this does not match the current update time on the server, the
+        /// mutation conflicts.
+        #[prost(message, tag = "11")]
+        UpdateTime(::prost_types::Timestamp),
     }
 }
 /// The result of applying a mutation.
@@ -790,6 +875,12 @@ pub struct MutationResult {
     /// than the version of any possible future entity.
     #[prost(int64, tag = "4")]
     pub version: i64,
+    /// The update time of the entity on the server after processing the mutation.
+    /// If the mutation doesn't change anything on the server, then the timestamp
+    /// will be the update timestamp of the current entity. This field will not be
+    /// set after a 'delete'.
+    #[prost(message, optional, tag = "6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Whether a conflict was detected for this mutation. Always false when a
     /// conflict detection strategy field is not set in the mutation.
     #[prost(bool, tag = "5")]
@@ -798,10 +889,17 @@ pub struct MutationResult {
 /// The options shared by read requests.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadOptions {
-    /// If not specified, lookups and ancestor queries default to
-    /// `read_consistency`=`STRONG`, global queries default to
-    /// `read_consistency`=`EVENTUAL`.
-    #[prost(oneof = "read_options::ConsistencyType", tags = "1, 2")]
+    /// For Cloud Datastore, if read_consistency is not specified, then lookups and
+    /// ancestor queries default to `read_consistency`=`STRONG`, global queries
+    /// default to `read_consistency`=`EVENTUAL`.
+    ///
+    /// For Cloud Firestore in Datastore mode, if read_consistency is not specified
+    /// then lookups and all queries default to `read_consistency`=`STRONG`.
+    ///
+    /// Explicitly setting `read_consistency`=`EVENTUAL` will result in eventually
+    /// consistent lookups & queries in both Cloud Datastore & Cloud Firestore in
+    /// Datastore mode.
+    #[prost(oneof = "read_options::ConsistencyType", tags = "1, 2, 4")]
     pub consistency_type: ::core::option::Option<read_options::ConsistencyType>,
 }
 /// Nested message and enum types in `ReadOptions`.
@@ -817,9 +915,16 @@ pub mod read_options {
         /// Eventual consistency.
         Eventual = 2,
     }
-    /// If not specified, lookups and ancestor queries default to
-    /// `read_consistency`=`STRONG`, global queries default to
-    /// `read_consistency`=`EVENTUAL`.
+    /// For Cloud Datastore, if read_consistency is not specified, then lookups and
+    /// ancestor queries default to `read_consistency`=`STRONG`, global queries
+    /// default to `read_consistency`=`EVENTUAL`.
+    ///
+    /// For Cloud Firestore in Datastore mode, if read_consistency is not specified
+    /// then lookups and all queries default to `read_consistency`=`STRONG`.
+    ///
+    /// Explicitly setting `read_consistency`=`EVENTUAL` will result in eventually
+    /// consistent lookups & queries in both Cloud Datastore & Cloud Firestore in
+    /// Datastore mode.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConsistencyType {
         /// The non-transactional read consistency to use.
@@ -831,6 +936,11 @@ pub mod read_options {
         /// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
         #[prost(bytes, tag = "2")]
         Transaction(::prost::alloc::vec::Vec<u8>),
+        /// Reads entities as they were at the given time. This may not be older
+        /// than 270 seconds.  This value is only supported for Cloud Firestore in
+        /// Datastore mode.
+        #[prost(message, tag = "4")]
+        ReadTime(::prost_types::Timestamp),
     }
 }
 /// Options for beginning a new transaction.
@@ -856,7 +966,12 @@ pub mod transaction_options {
     }
     /// Options specific to read-only transactions.
     #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct ReadOnly {}
+    pub struct ReadOnly {
+        /// Reads entities at the given time.
+        /// This may not be older than 60 seconds.
+        #[prost(message, optional, tag = "1")]
+        pub read_time: ::core::option::Option<::prost_types::Timestamp>,
+    }
     /// The `mode` of the transaction, indicating whether write operations are
     /// supported.
     #[derive(Clone, PartialEq, ::prost::Oneof)]

@@ -133,7 +133,10 @@ pub struct Document {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Value {
     /// Must have a value set.
-    #[prost(oneof = "value::ValueType", tags = "11, 1, 2, 3, 10, 17, 18, 5, 8, 9, 6")]
+    #[prost(
+        oneof = "value::ValueType",
+        tags = "11, 1, 2, 3, 10, 17, 18, 5, 8, 9, 6"
+    )]
     pub value_type: ::core::option::Option<value::ValueType>,
 }
 /// Nested message and enum types in `Value`.
@@ -949,7 +952,10 @@ pub struct BatchGetDocumentsRequest {
     pub mask: ::core::option::Option<DocumentMask>,
     /// The consistency mode for this transaction.
     /// If not set, defaults to strong consistency.
-    #[prost(oneof = "batch_get_documents_request::ConsistencySelector", tags = "4, 5, 7")]
+    #[prost(
+        oneof = "batch_get_documents_request::ConsistencySelector",
+        tags = "4, 5, 7"
+    )]
     pub consistency_selector:
         ::core::option::Option<batch_get_documents_request::ConsistencySelector>,
 }
@@ -1724,7 +1730,9 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1beta1.Firestore/BatchGetDocuments",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Starts a new transaction."]
         pub async fn begin_transaction(
@@ -1792,7 +1800,9 @@ pub mod firestore_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.firestore.v1beta1.Firestore/RunQuery",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Partitions a query by returning partition cursors that can be used to run"]
         #[doc = " the query in parallel. The returned partition cursors are split points that"]
@@ -1828,7 +1838,9 @@ pub mod firestore_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.firestore.v1beta1.Firestore/Write");
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Listens to changes."]
         pub async fn listen(
@@ -1845,7 +1857,9 @@ pub mod firestore_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.firestore.v1beta1.Firestore/Listen");
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Lists all the collection IDs underneath a document."]
         pub async fn list_collection_ids(

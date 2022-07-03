@@ -343,6 +343,47 @@ pub struct ListInstancesResponse {
     #[prost(string, repeated, tag = "3")]
     pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+/// A Cloud Filestore snapshot.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Snapshot {
+    /// Output only. The resource name of the snapshot, in the format
+    /// `projects/{project_id}/locations/{location_id}/instances/{instance_id}/snapshots/{snapshot_id}`.
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// A description of the snapshot with 2048 characters or less.
+    /// Requests with longer descriptions will be rejected.
+    #[prost(string, tag = "2")]
+    pub description: ::prost::alloc::string::String,
+    /// Output only. The snapshot state.
+    #[prost(enumeration = "snapshot::State", tag = "3")]
+    pub state: i32,
+    /// Output only. The time when the snapshot was created.
+    #[prost(message, optional, tag = "4")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Resource labels to represent user provided metadata.
+    #[prost(map = "string, string", tag = "5")]
+    pub labels:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Output only. The amount of bytes needed to allocate a full copy of the snapshot content
+    #[prost(int64, tag = "12")]
+    pub filesystem_used_bytes: i64,
+}
+/// Nested message and enum types in `Snapshot`.
+pub mod snapshot {
+    /// The snapshot state.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// State not set.
+        Unspecified = 0,
+        /// Snapshot is being created.
+        Creating = 1,
+        /// Snapshot is available for use.
+        Ready = 3,
+        /// Snapshot is being deleted.
+        Deleting = 4,
+    }
+}
 /// A Cloud Filestore backup.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Backup {

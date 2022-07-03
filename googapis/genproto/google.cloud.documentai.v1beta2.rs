@@ -450,7 +450,7 @@ pub mod document {
         /// Text anchor indexing into the \[Document.text][google.cloud.documentai.v1beta2.Document.text\].
         #[prost(message, optional, tag = "1")]
         pub text_anchor: ::core::option::Option<TextAnchor>,
-        /// Entity type from a schema e.g. `Address`.
+        /// Required. Entity type from a schema e.g. `Address`.
         #[prost(string, tag = "2")]
         pub r#type: ::prost::alloc::string::String,
         /// Text value in the document e.g. `1600 Amphitheatre Pkwy`.
@@ -470,10 +470,6 @@ pub mod document {
         /// for this document.
         #[prost(string, tag = "7")]
         pub id: ::prost::alloc::string::String,
-        /// Optional. Temporary field to store the bounding poly for short-term POCs. Used by
-        /// the frontend only. Do not use before you talk to ybo@ and lukasr@.
-        #[prost(message, optional, tag = "8")]
-        pub bounding_poly_for_demo_frontend: ::core::option::Option<super::BoundingPoly>,
     }
     /// Relationship between \[Entities][google.cloud.documentai.v1beta2.Document.Entity\].
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -494,6 +490,10 @@ pub mod document {
         /// The text segments from the \[Document.text][google.cloud.documentai.v1beta2.Document.text\].
         #[prost(message, repeated, tag = "1")]
         pub text_segments: ::prost::alloc::vec::Vec<text_anchor::TextSegment>,
+        /// Contains the content of the text span so that users do
+        /// not have to look it up in the text_segments.
+        #[prost(string, tag = "2")]
+        pub content: ::prost::alloc::string::String,
     }
     /// Nested message and enum types in `TextAnchor`.
     pub mod text_anchor {

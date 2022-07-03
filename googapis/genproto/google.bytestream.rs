@@ -178,7 +178,9 @@ pub mod byte_stream_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/google.bytestream.ByteStream/Read");
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " `Write()` is used to send the contents of a resource as a sequence of"]
         #[doc = " bytes. The bytes are sent in a sequence of request protos of a client-side"]
@@ -214,7 +216,9 @@ pub mod byte_stream_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static("/google.bytestream.ByteStream/Write");
-            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .client_streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " `QueryWriteStatus()` is used to find the `committed_size` for a resource"]
         #[doc = " that is being written, which can then be used as the `write_offset` for"]

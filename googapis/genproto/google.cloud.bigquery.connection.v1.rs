@@ -90,7 +90,7 @@ pub struct Connection {
     #[prost(bool, tag = "7")]
     pub has_credential: bool,
     /// Properties specific to the underlying data source.
-    #[prost(oneof = "connection::Properties", tags = "4, 8, 21")]
+    #[prost(oneof = "connection::Properties", tags = "4, 8, 21, 22")]
     pub properties: ::core::option::Option<connection::Properties>,
 }
 /// Nested message and enum types in `Connection`.
@@ -107,6 +107,9 @@ pub mod connection {
         /// Cloud Spanner properties.
         #[prost(message, tag = "21")]
         CloudSpanner(super::CloudSpannerProperties),
+        /// Cloud Resource properties.
+        #[prost(message, tag = "22")]
+        CloudResource(super::CloudResourceProperties),
     }
 }
 /// Connection properties specific to the Cloud SQL.
@@ -210,6 +213,23 @@ pub struct AwsAccessRole {
     /// This identity will be used to access the user's AWS IAM Role.
     #[prost(string, tag = "2")]
     pub identity: ::prost::alloc::string::String,
+}
+/// Container for connection properties for delegation of access to GCP
+/// resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudResourceProperties {
+    /// Output only. The account ID of the service created for the purpose of this connection.
+    ///
+    /// The service account does not have any permissions associated with it
+    /// when it is created. After creation, customers delegate permissions
+    /// to the service account. When the connection is used in the context of an
+    /// operation in BigQuery, the service account will be used to connect to the
+    /// desired resources in GCP.
+    ///
+    /// The account ID is in the form of:
+    ///   <service-1234>@gcp-sa-bigquery-cloudresource.iam.gserviceaccount.com
+    #[prost(string, tag = "1")]
+    pub service_account_id: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod connection_service_client {

@@ -83,94 +83,113 @@ pub struct Property {
     /// and is not slated to be deleted.
     #[prost(message, optional, tag = "12")]
     pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Immutable. The resource name of the parent account
+    /// Format: accounts/{account_id}
+    /// Example: "accounts/123"
+    #[prost(string, tag = "13")]
+    pub account: ::prost::alloc::string::String,
 }
-/// A resource message representing a Google Analytics Android app stream.
+/// A resource message representing a data stream.
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct AndroidAppDataStream {
+pub struct DataStream {
     /// Output only. Resource name of this Data Stream.
-    /// Format: properties/{property_id}/androidAppDataStreams/{stream_id}
-    /// Example: "properties/1000/androidAppDataStreams/2000"
+    /// Format: properties/{property_id}/dataStreams/{stream_id}
+    /// Example: "properties/1000/dataStreams/2000"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
-    /// Output only. ID of the corresponding Android app in Firebase, if any.
-    /// This ID can change if the Android app is deleted and recreated.
-    #[prost(string, tag = "2")]
-    pub firebase_app_id: ::prost::alloc::string::String,
-    /// Output only. Time when this stream was originally created.
-    #[prost(message, optional, tag = "3")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when stream payload fields were last updated.
-    #[prost(message, optional, tag = "4")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Immutable. The package name for the app being measured.
-    /// Example: "com.example.myandroidapp"
-    #[prost(string, tag = "5")]
-    pub package_name: ::prost::alloc::string::String,
+    /// Required. Immutable. The type of this DataStream resource.
+    #[prost(enumeration = "data_stream::DataStreamType", tag = "2")]
+    pub r#type: i32,
     /// Human-readable display name for the Data Stream.
     ///
-    /// The max allowed display name length is 255 UTF-16 code units.
-    #[prost(string, tag = "6")]
-    pub display_name: ::prost::alloc::string::String,
-}
-/// A resource message representing a Google Analytics IOS app stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct IosAppDataStream {
-    /// Output only. Resource name of this Data Stream.
-    /// Format: properties/{property_id}/iosAppDataStreams/{stream_id}
-    /// Example: "properties/1000/iosAppDataStreams/2000"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Output only. ID of the corresponding iOS app in Firebase, if any.
-    /// This ID can change if the iOS app is deleted and recreated.
-    #[prost(string, tag = "2")]
-    pub firebase_app_id: ::prost::alloc::string::String,
-    /// Output only. Time when this stream was originally created.
-    #[prost(message, optional, tag = "3")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Time when stream payload fields were last updated.
-    #[prost(message, optional, tag = "4")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Required. Immutable. The Apple App Store Bundle ID for the app
-    /// Example: "com.example.myiosapp"
-    #[prost(string, tag = "5")]
-    pub bundle_id: ::prost::alloc::string::String,
-    /// Human-readable display name for the Data Stream.
+    /// Required for web data streams.
     ///
     /// The max allowed display name length is 255 UTF-16 code units.
-    #[prost(string, tag = "6")]
-    pub display_name: ::prost::alloc::string::String,
-}
-/// A resource message representing a Google Analytics web stream.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct WebDataStream {
-    /// Output only. Resource name of this Data Stream.
-    /// Format: properties/{property_id}/webDataStreams/{stream_id}
-    /// Example: "properties/1000/webDataStreams/2000"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Output only. Analytics "Measurement ID", without the "G-" prefix.
-    /// Example: "G-1A2BCD345E" would just be "1A2BCD345E"
-    #[prost(string, tag = "2")]
-    pub measurement_id: ::prost::alloc::string::String,
-    /// Output only. ID of the corresponding web app in Firebase, if any.
-    /// This ID can change if the web app is deleted and recreated.
     #[prost(string, tag = "3")]
-    pub firebase_app_id: ::prost::alloc::string::String,
+    pub display_name: ::prost::alloc::string::String,
     /// Output only. Time when this stream was originally created.
     #[prost(message, optional, tag = "4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. Time when stream payload fields were last updated.
     #[prost(message, optional, tag = "5")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Immutable. Domain name of the web app being measured, or empty.
-    /// Example: "<http://www.google.com",> "<https://www.google.com">
-    #[prost(string, tag = "6")]
-    pub default_uri: ::prost::alloc::string::String,
-    /// Required. Human-readable display name for the Data Stream.
-    ///
-    /// The max allowed display name length is 100 UTF-16 code units.
-    #[prost(string, tag = "7")]
-    pub display_name: ::prost::alloc::string::String,
+    /// Data for specific data stream types. The message that will be
+    /// set corresponds to the type of this stream.
+    #[prost(oneof = "data_stream::StreamData", tags = "6, 7, 8")]
+    pub stream_data: ::core::option::Option<data_stream::StreamData>,
+}
+/// Nested message and enum types in `DataStream`.
+pub mod data_stream {
+    /// Data specific to web streams.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct WebStreamData {
+        /// Output only. Analytics "Measurement ID", without the "G-" prefix.
+        /// Example: "G-1A2BCD345E" would just be "1A2BCD345E"
+        #[prost(string, tag = "1")]
+        pub measurement_id: ::prost::alloc::string::String,
+        /// Output only. ID of the corresponding web app in Firebase, if any.
+        /// This ID can change if the web app is deleted and recreated.
+        #[prost(string, tag = "2")]
+        pub firebase_app_id: ::prost::alloc::string::String,
+        /// Immutable. Domain name of the web app being measured, or empty.
+        /// Example: "<http://www.google.com",> "<https://www.google.com">
+        #[prost(string, tag = "3")]
+        pub default_uri: ::prost::alloc::string::String,
+    }
+    /// Data specific to Android app streams.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AndroidAppStreamData {
+        /// Output only. ID of the corresponding Android app in Firebase, if any.
+        /// This ID can change if the Android app is deleted and recreated.
+        #[prost(string, tag = "1")]
+        pub firebase_app_id: ::prost::alloc::string::String,
+        /// Immutable. The package name for the app being measured.
+        /// Example: "com.example.myandroidapp"
+        #[prost(string, tag = "2")]
+        pub package_name: ::prost::alloc::string::String,
+    }
+    /// Data specific to iOS app streams.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct IosAppStreamData {
+        /// Output only. ID of the corresponding iOS app in Firebase, if any.
+        /// This ID can change if the iOS app is deleted and recreated.
+        #[prost(string, tag = "1")]
+        pub firebase_app_id: ::prost::alloc::string::String,
+        /// Required. Immutable. The Apple App Store Bundle ID for the app
+        /// Example: "com.example.myiosapp"
+        #[prost(string, tag = "2")]
+        pub bundle_id: ::prost::alloc::string::String,
+    }
+    /// The type of the data stream.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum DataStreamType {
+        /// Type unknown or not specified.
+        Unspecified = 0,
+        /// Web data stream.
+        WebDataStream = 1,
+        /// Android app data stream.
+        AndroidAppDataStream = 2,
+        /// iOS app data stream.
+        IosAppDataStream = 3,
+    }
+    /// Data for specific data stream types. The message that will be
+    /// set corresponds to the type of this stream.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum StreamData {
+        /// Data specific to web streams. Must be populated if type is
+        /// WEB_DATA_STREAM.
+        #[prost(message, tag = "6")]
+        WebStreamData(WebStreamData),
+        /// Data specific to Android app streams. Must be populated if type is
+        /// ANDROID_APP_DATA_STREAM.
+        #[prost(message, tag = "7")]
+        AndroidAppStreamData(AndroidAppStreamData),
+        /// Data specific to iOS app streams. Must be populated if type is
+        /// IOS_APP_DATA_STREAM.
+        #[prost(message, tag = "8")]
+        IosAppStreamData(IosAppStreamData),
+    }
 }
 /// A resource message representing a user's permissions on an Account or
 /// Property resource.
@@ -185,10 +204,12 @@ pub struct UserLink {
     /// Roles directly assigned to this user for this account or property.
     ///
     /// Valid values:
-    /// predefinedRoles/read
-    /// predefinedRoles/collaborate
-    /// predefinedRoles/edit
-    /// predefinedRoles/manage-users
+    /// predefinedRoles/viewer
+    /// predefinedRoles/analyst
+    /// predefinedRoles/editor
+    /// predefinedRoles/admin
+    /// predefinedRoles/no-cost-data
+    /// predefinedRoles/no-revenue-data
     ///
     /// Excludes roles that are inherited from a higher-level entity, group,
     /// or organization admin role.
@@ -209,7 +230,7 @@ pub struct AuditUserLink {
     pub email_address: ::prost::alloc::string::String,
     /// Roles directly assigned to this user for this entity.
     ///
-    /// Format: predefinedRoles/read
+    /// Format: predefinedRoles/viewer
     ///
     /// Excludes roles that are inherited from an account (if this is for a
     /// property), group, or organization admin role.
@@ -218,68 +239,11 @@ pub struct AuditUserLink {
     /// Union of all permissions a user has at this account or property (includes
     /// direct permissions, group-inherited permissions, etc.).
     ///
-    /// Format: predefinedRoles/read
+    /// Format: predefinedRoles/viewer
     #[prost(string, repeated, tag = "4")]
     pub effective_roles: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
-/// Singleton resource under a WebDataStream, configuring measurement of
-/// additional site interactions and content.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct EnhancedMeasurementSettings {
-    /// Output only. Resource name of this Data Stream.
-    /// Format:
-    /// properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
-    /// Example: "properties/1000/webDataStreams/2000/enhancedMeasurementSettings"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-    /// Indicates whether Enhanced Measurement Settings will be used to
-    /// automatically measure interactions and content on this web stream.
-    ///
-    /// Changing this value does not affect the settings themselves, but determines
-    /// whether they are respected.
-    #[prost(bool, tag = "2")]
-    pub stream_enabled: bool,
-    /// Output only. If enabled, capture a page view event each time a page loads or the
-    /// website changes the browser history state.
-    #[prost(bool, tag = "3")]
-    pub page_views_enabled: bool,
-    /// If enabled, capture scroll events each time a visitor gets to the bottom of
-    /// a page.
-    #[prost(bool, tag = "4")]
-    pub scrolls_enabled: bool,
-    /// If enabled, capture an outbound click event each time a visitor clicks a
-    /// link that leads them away from your domain.
-    #[prost(bool, tag = "5")]
-    pub outbound_clicks_enabled: bool,
-    /// If enabled, capture a view search results event each time a visitor
-    /// performs a search on your site (based on a query parameter).
-    #[prost(bool, tag = "7")]
-    pub site_search_enabled: bool,
-    /// If enabled, capture video play, progress, and complete events as visitors
-    /// view embedded videos on your site.
-    #[prost(bool, tag = "9")]
-    pub video_engagement_enabled: bool,
-    /// If enabled, capture a file download event each time a link is clicked with
-    /// a common document, compressed file, application, video, or audio extension.
-    #[prost(bool, tag = "10")]
-    pub file_downloads_enabled: bool,
-    /// Output only. If enabled, capture a page view event each time a page loads.
-    #[prost(bool, tag = "12")]
-    pub page_loads_enabled: bool,
-    /// If enabled, capture a page view event each time the website changes the
-    /// browser history state.
-    #[prost(bool, tag = "13")]
-    pub page_changes_enabled: bool,
-    /// Required. URL query parameters to interpret as site search parameters.
-    /// Max length is 1024 characters. Must not be empty.
-    #[prost(string, tag = "16")]
-    pub search_query_parameter: ::prost::alloc::string::String,
-    /// Additional URL query parameters.
-    /// Max length is 1024 characters.
-    #[prost(string, tag = "17")]
-    pub uri_query_parameter: ::prost::alloc::string::String,
-}
-/// A link between an GA4 property and a Firebase project.
+/// A link between a GA4 property and a Firebase project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FirebaseLink {
     /// Output only. Example format: properties/1234/firebaseLinks/5678
@@ -299,11 +263,12 @@ pub struct FirebaseLink {
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 /// Read-only resource with the tag for sending data from a website to a
-/// WebDataStream.
+/// DataStream. Only present for web DataStream resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GlobalSiteTag {
     /// Output only. Resource name for this GlobalSiteTag resource.
-    /// Format: properties/{propertyId}/globalSiteTag
+    /// Format: properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
+    /// Example: "properties/123/dataStreams/456/globalSiteTag"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
     /// Immutable. JavaScript code snippet to be pasted as the first item into the head tag of
@@ -311,7 +276,7 @@ pub struct GlobalSiteTag {
     #[prost(string, tag = "2")]
     pub snippet: ::prost::alloc::string::String,
 }
-/// A link between an GA4 property and a Google Ads account.
+/// A link between a GA4 property and a Google Ads account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GoogleAdsLink {
     /// Output only. Format: properties/{propertyId}/googleAdsLinks/{googleAdsLinkId}
@@ -392,7 +357,7 @@ pub struct AccountSummary {
     #[prost(message, repeated, tag = "4")]
     pub property_summaries: ::prost::alloc::vec::Vec<PropertySummary>,
 }
-/// A virtual resource representing metadata for an GA4 property.
+/// A virtual resource representing metadata for a GA4 property.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PropertySummary {
     /// Resource name of property referred to by this property summary
@@ -400,7 +365,7 @@ pub struct PropertySummary {
     /// Example: "properties/1000"
     #[prost(string, tag = "1")]
     pub property: ::prost::alloc::string::String,
-    /// Display name for the property referred to in this account summary.
+    /// Display name for the property referred to in this property summary.
     #[prost(string, tag = "2")]
     pub display_name: ::prost::alloc::string::String,
 }
@@ -478,7 +443,7 @@ pub mod change_history_change {
     pub struct ChangeHistoryResource {
         #[prost(
             oneof = "change_history_resource::Resource",
-            tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15"
+            tags = "1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18"
         )]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
@@ -492,15 +457,6 @@ pub mod change_history_change {
             /// A snapshot of a Property resource in change history.
             #[prost(message, tag = "2")]
             Property(super::super::Property),
-            /// A snapshot of a WebDataStream resource in change history.
-            #[prost(message, tag = "3")]
-            WebDataStream(super::super::WebDataStream),
-            /// A snapshot of an AndroidAppDataStream resource in change history.
-            #[prost(message, tag = "4")]
-            AndroidAppDataStream(super::super::AndroidAppDataStream),
-            /// A snapshot of an IosAppDataStream resource in change history.
-            #[prost(message, tag = "5")]
-            IosAppDataStream(super::super::IosAppDataStream),
             /// A snapshot of a FirebaseLink resource in change history.
             #[prost(message, tag = "6")]
             FirebaseLink(super::super::FirebaseLink),
@@ -535,6 +491,9 @@ pub mod change_history_change {
             /// A snapshot of a data retention settings resource in change history.
             #[prost(message, tag = "15")]
             DataRetentionSettings(super::super::DataRetentionSettings),
+            /// A snapshot of a DataStream resource in change history.
+            #[prost(message, tag = "18")]
+            DataStream(super::super::DataStream),
         }
     }
 }
@@ -564,14 +523,14 @@ pub struct DisplayVideo360AdvertiserLink {
     #[prost(message, optional, tag = "5")]
     pub campaign_data_sharing_enabled: ::core::option::Option<bool>,
     /// Immutable. Enables the import of cost data from Display & Video 360 into the GA4
-    /// property. This can only be enabled if campaign_data_import_enabled is
+    /// property. This can only be enabled if campaign_data_sharing_enabled is
     /// enabled. After link creation, this can only be updated from the Display &
     /// Video 360 product.
     /// If this field is not set on create, it will be defaulted to true.
     #[prost(message, optional, tag = "6")]
     pub cost_data_sharing_enabled: ::core::option::Option<bool>,
 }
-/// A proposal for a link between an GA4 property and a Display & Video 360
+/// A proposal for a link between a GA4 property and a Display & Video 360
 /// advertiser.
 ///
 /// A proposal is converted to a DisplayVideo360AdvertiserLink once approved.
@@ -613,7 +572,7 @@ pub struct DisplayVideo360AdvertiserLinkProposal {
     #[prost(message, optional, tag = "7")]
     pub campaign_data_sharing_enabled: ::core::option::Option<bool>,
     /// Immutable. Enables the import of cost data from Display & Video 360.
-    /// This can only be enabled if campaign_data_import_enabled is enabled.
+    /// This can only be enabled if campaign_data_sharing_enabled is enabled.
     /// If this field is not set on create, it will be defaulted to true.
     #[prost(message, optional, tag = "8")]
     pub cost_data_sharing_enabled: ::core::option::Option<bool>,
@@ -757,6 +716,16 @@ pub struct CustomMetric {
     /// Required. Immutable. The scope of this custom metric.
     #[prost(enumeration = "custom_metric::MetricScope", tag = "6")]
     pub scope: i32,
+    /// Optional. Types of restricted data that this metric may contain. Required for metrics
+    /// with CURRENCY measurement unit. Must be empty for metrics with a
+    /// non-CURRENCY measurement unit.
+    #[prost(
+        enumeration = "custom_metric::RestrictedMetricType",
+        repeated,
+        packed = "false",
+        tag = "8"
+    )]
+    pub restricted_metric_type: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `CustomMetric`.
 pub mod custom_metric {
@@ -798,6 +767,18 @@ pub mod custom_metric {
         Unspecified = 0,
         /// Metric scoped to an event.
         Event = 1,
+    }
+    /// Labels that mark the data in this custom metric as data that should be
+    /// restricted to specific users.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RestrictedMetricType {
+        /// Type unknown or unspecified.
+        Unspecified = 0,
+        /// Metric reports cost data.
+        CostData = 1,
+        /// Metric reports revenue data.
+        RevenueData = 2,
     }
 }
 /// Settings values for data retention. This is a singleton resource.
@@ -945,12 +926,6 @@ pub enum ChangeHistoryResourceType {
     Account = 1,
     /// Property resource
     Property = 2,
-    /// WebDataStream resource
-    WebDataStream = 3,
-    /// AndroidAppDataStream resource
-    AndroidAppDataStream = 4,
-    /// IosAppDataStream resource
-    IosAppDataStream = 5,
     /// FirebaseLink resource
     FirebaseLink = 6,
     /// GoogleAdsLink resource
@@ -967,6 +942,12 @@ pub enum ChangeHistoryResourceType {
     CustomMetric = 12,
     /// DataRetentionSettings resource
     DataRetentionSettings = 13,
+    /// DisplayVideo360AdvertiserLink resource
+    DisplayVideo360AdvertiserLink = 14,
+    /// DisplayVideo360AdvertiserLinkProposal resource
+    DisplayVideo360AdvertiserLinkProposal = 15,
+    /// DataStream resource
+    DataStream = 18,
 }
 /// Status of the Google Signals settings (i.e., whether this feature has been
 /// enabled for the property).
@@ -1129,14 +1110,17 @@ pub struct GetPropertyRequest {
 pub struct ListPropertiesRequest {
     /// Required. An expression for filtering the results of the request.
     /// Fields eligible for filtering are:
-    /// `parent:`(The resource name of the parent account) or
+    /// `parent:`(The resource name of the parent account/property) or
+    /// `ancestor:`(The resource name of the parent account) or
     /// `firebase_project:`(The id or number of the linked firebase project).
     /// Some examples of filters:
     ///
     /// ```
     /// | Filter                      | Description                               |
     /// |-----------------------------|-------------------------------------------|
-    /// | parent:accounts/123         | The account with account id: 123.         |
+    /// | parent:accounts/123         | The account with account id: 123.       |
+    /// | parent:properties/123       | The property with property id: 123.       |
+    /// | ancestor:accounts/123       | The account with account id: 123.         |
     /// | firebase_project:project-id | The firebase project with id: project-id. |
     /// | firebase_project:123        | The firebase project with number: 123.    |
     /// ```
@@ -1388,228 +1372,6 @@ pub struct BatchDeleteUserLinksRequest {
     #[prost(message, repeated, tag = "2")]
     pub requests: ::prost::alloc::vec::Vec<DeleteUserLinkRequest>,
 }
-/// Request message for GetWebDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetWebDataStreamRequest {
-    /// Required. The name of the web data stream to lookup.
-    /// Format: properties/{property_id}/webDataStreams/{stream_id}
-    /// Example: "properties/123/webDataStreams/456"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for DeleteWebDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteWebDataStreamRequest {
-    /// Required. The name of the web data stream to delete.
-    /// Format: properties/{property_id}/webDataStreams/{stream_id}
-    /// Example: "properties/123/webDataStreams/456"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for UpdateWebDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateWebDataStreamRequest {
-    /// Required. The web stream to update.
-    /// The `name` field is used to identify the web stream to be updated.
-    #[prost(message, optional, tag = "1")]
-    pub web_data_stream: ::core::option::Option<WebDataStream>,
-    /// Required. The list of fields to be updated. Field names must be in snake case
-    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    /// the entire entity, use one path with the string "*" to match all fields.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// Request message for CreateWebDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct CreateWebDataStreamRequest {
-    /// Required. The web stream to create.
-    #[prost(message, optional, tag = "1")]
-    pub web_data_stream: ::core::option::Option<WebDataStream>,
-    /// Required. The parent resource where this web data stream will be created.
-    /// Format: properties/123
-    #[prost(string, tag = "2")]
-    pub parent: ::prost::alloc::string::String,
-}
-/// Request message for ListWebDataStreams RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListWebDataStreamsRequest {
-    /// Required. The name of the parent property.
-    /// For example, to list results of web streams under the property with Id
-    /// 123: "properties/123"
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return.
-    /// If unspecified, at most 50 resources will be returned.
-    /// The maximum value is 200; (higher values will be coerced to the maximum)
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `ListWebDataStreams` call.
-    /// Provide this to retrieve the subsequent page.
-    /// When paginating, all other parameters provided to `ListWebDataStreams` must
-    /// match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Request message for ListWebDataStreams RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListWebDataStreamsResponse {
-    /// Results that matched the filter criteria and were accessible to the caller.
-    #[prost(message, repeated, tag = "1")]
-    pub web_data_streams: ::prost::alloc::vec::Vec<WebDataStream>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Request message for GetIosAppDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetIosAppDataStreamRequest {
-    /// Required. The name of the iOS app data stream to lookup.
-    /// Format: properties/{property_id}/iosAppDataStreams/{stream_id}
-    /// Example: "properties/123/iosAppDataStreams/456"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for DeleteIosAppDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteIosAppDataStreamRequest {
-    /// Required. The name of the iOS app data stream to delete.
-    /// Format: properties/{property_id}/iosAppDataStreams/{stream_id}
-    /// Example: "properties/123/iosAppDataStreams/456"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for UpdateIosAppDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateIosAppDataStreamRequest {
-    /// Required. The iOS app stream to update.
-    /// The `name` field is used to identify the iOS app stream to be updated.
-    #[prost(message, optional, tag = "1")]
-    pub ios_app_data_stream: ::core::option::Option<IosAppDataStream>,
-    /// Required. The list of fields to be updated. Field names must be in snake case
-    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    /// the entire entity, use one path with the string "*" to match all fields.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// Request message for ListIosAppDataStreams RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListIosAppDataStreamsRequest {
-    /// Required. The name of the parent property.
-    /// For example, to list results of app streams under the property with Id
-    /// 123: "properties/123"
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return.
-    /// If unspecified, at most 50 resources will be returned.
-    /// The maximum value is 200; (higher values will be coerced to the maximum)
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous `ListIosAppDataStreams`
-    /// call. Provide this to retrieve the subsequent page.
-    /// When paginating, all other parameters provided to `ListIosAppDataStreams`
-    /// must match the call that provided the page token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Request message for ListIosAppDataStreams RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListIosAppDataStreamsResponse {
-    /// Results that matched the filter criteria and were accessible to the caller.
-    #[prost(message, repeated, tag = "1")]
-    pub ios_app_data_streams: ::prost::alloc::vec::Vec<IosAppDataStream>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Request message for GetAndroidAppDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetAndroidAppDataStreamRequest {
-    /// Required. The name of the android app data stream to lookup.
-    /// Format: properties/{property_id}/androidAppDataStreams/{stream_id}
-    /// Example: "properties/123/androidAppDataStreams/456"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for DeleteAndroidAppDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DeleteAndroidAppDataStreamRequest {
-    /// Required. The name of the android app data stream to delete.
-    /// Format: properties/{property_id}/androidAppDataStreams/{stream_id}
-    /// Example: "properties/123/androidAppDataStreams/456"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for UpdateAndroidAppDataStream RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateAndroidAppDataStreamRequest {
-    /// Required. The android app stream to update.
-    /// The `name` field is used to identify the android app stream to be updated.
-    #[prost(message, optional, tag = "1")]
-    pub android_app_data_stream: ::core::option::Option<AndroidAppDataStream>,
-    /// Required. The list of fields to be updated. Field names must be in snake case
-    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    /// the entire entity, use one path with the string "*" to match all fields.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
-/// Request message for ListAndroidAppDataStreams RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListAndroidAppDataStreamsRequest {
-    /// Required. The name of the parent property.
-    /// For example, to limit results to app streams under the property with Id
-    /// 123: "properties/123"
-    #[prost(string, tag = "1")]
-    pub parent: ::prost::alloc::string::String,
-    /// The maximum number of resources to return.
-    ///
-    /// If unspecified, at most 50 resources will be returned.
-    /// The maximum value is 200; (higher values will be coerced to the maximum)
-    #[prost(int32, tag = "2")]
-    pub page_size: i32,
-    /// A page token, received from a previous call. Provide this to
-    /// retrieve the subsequent page.
-    /// When paginating, all other parameters provided to
-    /// `ListAndroidAppDataStreams` must match the call that provided the page
-    /// token.
-    #[prost(string, tag = "3")]
-    pub page_token: ::prost::alloc::string::String,
-}
-/// Request message for ListAndroidDataStreams RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ListAndroidAppDataStreamsResponse {
-    /// Results that matched the filter criteria and were accessible to the caller.
-    #[prost(message, repeated, tag = "1")]
-    pub android_app_data_streams: ::prost::alloc::vec::Vec<AndroidAppDataStream>,
-    /// A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
-    #[prost(string, tag = "2")]
-    pub next_page_token: ::prost::alloc::string::String,
-}
-/// Request message for GetEnhancedMeasurementSettings RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GetEnhancedMeasurementSettingsRequest {
-    /// Required. The name of the settings to lookup.
-    /// Format:
-    /// properties/{property_id}/webDataStreams/{stream_id}/enhancedMeasurementSettings
-    /// Example: "properties/1000/webDataStreams/2000/enhancedMeasurementSettings"
-    #[prost(string, tag = "1")]
-    pub name: ::prost::alloc::string::String,
-}
-/// Request message for UpdateEnhancedMeasurementSettings RPC.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct UpdateEnhancedMeasurementSettingsRequest {
-    /// Required. The settings to update.
-    /// The `name` field is used to identify the settings to be updated.
-    #[prost(message, optional, tag = "1")]
-    pub enhanced_measurement_settings: ::core::option::Option<EnhancedMeasurementSettings>,
-    /// Required. The list of fields to be updated. Field names must be in snake case
-    /// (e.g., "field_to_update"). Omitted fields will not be updated. To replace
-    /// the entire entity, use one path with the string "*" to match all fields.
-    #[prost(message, optional, tag = "2")]
-    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
-}
 /// Request message for CreateFirebaseLink RPC
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateFirebaseLinkRequest {
@@ -1667,8 +1429,8 @@ pub struct ListFirebaseLinksResponse {
 pub struct GetGlobalSiteTagRequest {
     /// Required. The name of the site tag to lookup.
     /// Note that site tags are singletons and do not have unique IDs.
-    /// Format: properties/{property_id}/webDataStreams/{stream_id}/globalSiteTag
-    /// Example: "properties/123/webDataStreams/456/globalSiteTag"
+    /// Format: properties/{property_id}/dataStreams/{stream_id}/globalSiteTag
+    /// Example: "properties/123/dataStreams/456/globalSiteTag"
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1767,6 +1529,26 @@ pub struct ListAccountSummariesResponse {
     #[prost(string, tag = "2")]
     pub next_page_token: ::prost::alloc::string::String,
 }
+/// Request message for AcknowledgeUserDataCollection RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AcknowledgeUserDataCollectionRequest {
+    /// Required. The property for which to acknowledge user data collection.
+    #[prost(string, tag = "1")]
+    pub property: ::prost::alloc::string::String,
+    /// Required. An acknowledgement that the caller of this method understands the terms
+    /// of user data collection.
+    ///
+    /// This field must contain the exact value:
+    /// "I acknowledge that I have the necessary privacy disclosures and rights
+    /// from my end users for the collection and processing of their data,
+    /// including the association of such data with the visitation information
+    /// Google Analytics collects from my site and/or app property."
+    #[prost(string, tag = "2")]
+    pub acknowledgement: ::prost::alloc::string::String,
+}
+/// Response message for AcknowledgeUserDataCollection RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AcknowledgeUserDataCollectionResponse {}
 /// Request message for SearchChangeHistoryEvents RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SearchChangeHistoryEventsRequest {
@@ -1779,7 +1561,12 @@ pub struct SearchChangeHistoryEventsRequest {
     pub property: ::prost::alloc::string::String,
     /// Optional. If set, only return changes if they are for a resource that matches at
     /// least one of these types.
-    #[prost(enumeration = "ChangeHistoryResourceType", repeated, packed = "false", tag = "3")]
+    #[prost(
+        enumeration = "ChangeHistoryResourceType",
+        repeated,
+        packed = "false",
+        tag = "3"
+    )]
     pub resource_type: ::prost::alloc::vec::Vec<i32>,
     /// Optional. If set, only return changes that match one or more of these types of
     /// actions.
@@ -1823,9 +1610,7 @@ pub struct SearchChangeHistoryEventsResponse {
 pub struct GetMeasurementProtocolSecretRequest {
     /// Required. The name of the measurement protocol secret to lookup.
     /// Format:
-    /// properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
-    /// Note: Any type of stream (WebDataStream, IosAppDataStream,
-    /// AndroidAppDataStream) may be a parent.
+    /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1833,9 +1618,7 @@ pub struct GetMeasurementProtocolSecretRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateMeasurementProtocolSecretRequest {
     /// Required. The parent resource where this secret will be created.
-    /// Any type of stream (WebDataStream, IosAppDataStream, AndroidAppDataStream)
-    /// may be a parent.
-    /// Format: properties/{property}/webDataStreams/{webDataStream}
+    /// Format: properties/{property}/dataStreams/{dataStream}
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The measurement protocol secret to create.
@@ -1847,9 +1630,7 @@ pub struct CreateMeasurementProtocolSecretRequest {
 pub struct DeleteMeasurementProtocolSecretRequest {
     /// Required. The name of the MeasurementProtocolSecret to delete.
     /// Format:
-    /// properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
-    /// Note: Any type of stream (WebDataStream, IosAppDataStream,
-    /// AndroidAppDataStream) may be a parent.
+    /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -1867,10 +1648,8 @@ pub struct UpdateMeasurementProtocolSecretRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListMeasurementProtocolSecretsRequest {
     /// Required. The resource name of the parent stream.
-    /// Any type of stream (WebDataStream, IosAppDataStream, AndroidAppDataStream)
-    /// may be a parent.
     /// Format:
-    /// properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets
+    /// properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of resources to return.
@@ -2287,6 +2066,74 @@ pub struct UpdateDataRetentionSettingsRequest {
     /// the entire entity, use one path with the string "*" to match all fields.
     #[prost(message, optional, tag = "2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for CreateDataStream RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateDataStreamRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The DataStream to create.
+    #[prost(message, optional, tag = "2")]
+    pub data_stream: ::core::option::Option<DataStream>,
+}
+/// Request message for DeleteDataStream RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteDataStreamRequest {
+    /// Required. The name of the DataStream to delete.
+    /// Example format: properties/1234/dataStreams/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+}
+/// Request message for UpdateDataStream RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateDataStreamRequest {
+    /// The DataStream to update
+    #[prost(message, optional, tag = "1")]
+    pub data_stream: ::core::option::Option<DataStream>,
+    /// Required. The list of fields to be updated. Omitted fields will not be updated.
+    /// To replace the entire entity, use one path with the string "*" to match
+    /// all fields.
+    #[prost(message, optional, tag = "2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request message for ListDataStreams RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataStreamsRequest {
+    /// Required. Example format: properties/1234
+    #[prost(string, tag = "1")]
+    pub parent: ::prost::alloc::string::String,
+    /// The maximum number of resources to return.
+    /// If unspecified, at most 50 resources will be returned.
+    /// The maximum value is 200 (higher values will be coerced to the maximum).
+    #[prost(int32, tag = "2")]
+    pub page_size: i32,
+    /// A page token, received from a previous `ListDataStreams` call.
+    /// Provide this to retrieve the subsequent page.
+    ///
+    /// When paginating, all other parameters provided to `ListDataStreams` must
+    /// match the call that provided the page token.
+    #[prost(string, tag = "3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+/// Response message for ListDataStreams RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListDataStreamsResponse {
+    /// List of DataStreams.
+    #[prost(message, repeated, tag = "1")]
+    pub data_streams: ::prost::alloc::vec::Vec<DataStream>,
+    /// A token, which can be sent as `page_token` to retrieve the next page.
+    /// If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag = "2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+/// Request message for GetDataStream RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetDataStreamRequest {
+    /// Required. The name of the DataStream to get.
+    /// Example format: properties/1234/dataStreams/5678
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 #[doc = r" Generated client implementations."]
 pub mod analytics_admin_service_client {
@@ -2739,271 +2586,6 @@ pub mod analytics_admin_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Lookup for a single WebDataStream"]
-        pub async fn get_web_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetWebDataStreamRequest>,
-        ) -> Result<tonic::Response<super::WebDataStream>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetWebDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Deletes a web stream on a property."]
-        pub async fn delete_web_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteWebDataStreamRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteWebDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Updates a web stream on a property."]
-        pub async fn update_web_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateWebDataStreamRequest>,
-        ) -> Result<tonic::Response<super::WebDataStream>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateWebDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Creates a web stream with the specified location and attributes."]
-        pub async fn create_web_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::CreateWebDataStreamRequest>,
-        ) -> Result<tonic::Response<super::WebDataStream>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateWebDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Returns child web data streams under the specified parent property."]
-        #[doc = ""]
-        #[doc = " Web data streams will be excluded if the caller does not have access."]
-        #[doc = " Returns an empty list if no relevant web data streams are found."]
-        pub async fn list_web_data_streams(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListWebDataStreamsRequest>,
-        ) -> Result<tonic::Response<super::ListWebDataStreamsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListWebDataStreams",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Lookup for a single IosAppDataStream"]
-        pub async fn get_ios_app_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetIosAppDataStreamRequest>,
-        ) -> Result<tonic::Response<super::IosAppDataStream>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetIosAppDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Deletes an iOS app stream on a property."]
-        pub async fn delete_ios_app_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteIosAppDataStreamRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteIosAppDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Updates an iOS app stream on a property."]
-        pub async fn update_ios_app_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateIosAppDataStreamRequest>,
-        ) -> Result<tonic::Response<super::IosAppDataStream>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateIosAppDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Returns child iOS app data streams under the specified parent property."]
-        #[doc = ""]
-        #[doc = " iOS app data streams will be excluded if the caller does not have access."]
-        #[doc = " Returns an empty list if no relevant iOS app data streams are found."]
-        pub async fn list_ios_app_data_streams(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListIosAppDataStreamsRequest>,
-        ) -> Result<tonic::Response<super::ListIosAppDataStreamsResponse>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListIosAppDataStreams",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Lookup for a single AndroidAppDataStream"]
-        pub async fn get_android_app_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetAndroidAppDataStreamRequest>,
-        ) -> Result<tonic::Response<super::AndroidAppDataStream>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetAndroidAppDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Deletes an android app stream on a property."]
-        pub async fn delete_android_app_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::DeleteAndroidAppDataStreamRequest>,
-        ) -> Result<tonic::Response<()>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteAndroidAppDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Updates an android app stream on a property."]
-        pub async fn update_android_app_data_stream(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateAndroidAppDataStreamRequest>,
-        ) -> Result<tonic::Response<super::AndroidAppDataStream>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateAndroidAppDataStream",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Returns child android app streams under the specified parent property."]
-        #[doc = ""]
-        #[doc = " Android app streams will be excluded if the caller does not have access."]
-        #[doc = " Returns an empty list if no relevant android app streams are found."]
-        pub async fn list_android_app_data_streams(
-            &mut self,
-            request: impl tonic::IntoRequest<super::ListAndroidAppDataStreamsRequest>,
-        ) -> Result<tonic::Response<super::ListAndroidAppDataStreamsResponse>, tonic::Status>
-        {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListAndroidAppDataStreams",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Returns the singleton enhanced measurement settings for this web stream."]
-        #[doc = " Note that the stream must enable enhanced measurement for these settings to"]
-        #[doc = " take effect."]
-        pub async fn get_enhanced_measurement_settings(
-            &mut self,
-            request: impl tonic::IntoRequest<super::GetEnhancedMeasurementSettingsRequest>,
-        ) -> Result<tonic::Response<super::EnhancedMeasurementSettings>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/GetEnhancedMeasurementSettings") ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        #[doc = " Updates the singleton enhanced measurement settings for this web stream."]
-        #[doc = " Note that the stream must enable enhanced measurement for these settings to"]
-        #[doc = " take effect."]
-        pub async fn update_enhanced_measurement_settings(
-            &mut self,
-            request: impl tonic::IntoRequest<super::UpdateEnhancedMeasurementSettingsRequest>,
-        ) -> Result<tonic::Response<super::EnhancedMeasurementSettings>, tonic::Status> {
-            self.inner.ready().await.map_err(|e| {
-                tonic::Status::new(
-                    tonic::Code::Unknown,
-                    format!("Service was not ready: {}", e.into()),
-                )
-            })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateEnhancedMeasurementSettings") ;
-            self.inner.unary(request.into_request(), path, codec).await
-        }
         #[doc = " Creates a FirebaseLink."]
         #[doc = ""]
         #[doc = " Properties can have at most one FirebaseLink."]
@@ -3237,6 +2819,25 @@ pub mod analytics_admin_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateMeasurementProtocolSecret") ;
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Acknowledges the terms of user data collection for the specified property."]
+        #[doc = ""]
+        #[doc = " This acknowledgement must be completed (either in the Google Analytics UI"]
+        #[doc = " or via this API) before MeasurementProtocolSecret resources may be created."]
+        pub async fn acknowledge_user_data_collection(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AcknowledgeUserDataCollectionRequest>,
+        ) -> Result<tonic::Response<super::AcknowledgeUserDataCollectionResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http :: uri :: PathAndQuery :: from_static ("/google.analytics.admin.v1alpha.AnalyticsAdminService/AcknowledgeUserDataCollection") ;
             self.inner.unary(request.into_request(), path, codec).await
         }
         #[doc = " Searches through all changes to an account or its children given the"]
@@ -3749,6 +3350,91 @@ pub mod analytics_admin_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateDataRetentionSettings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Creates a DataStream."]
+        pub async fn create_data_stream(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateDataStreamRequest>,
+        ) -> Result<tonic::Response<super::DataStream>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateDataStream",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Deletes a DataStream on a property."]
+        pub async fn delete_data_stream(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteDataStreamRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/DeleteDataStream",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Updates a DataStream on a property."]
+        pub async fn update_data_stream(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateDataStreamRequest>,
+        ) -> Result<tonic::Response<super::DataStream>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateDataStream",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lists DataStreams on a property."]
+        pub async fn list_data_streams(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListDataStreamsRequest>,
+        ) -> Result<tonic::Response<super::ListDataStreamsResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListDataStreams",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Lookup for a single DataStream."]
+        pub async fn get_data_stream(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetDataStreamRequest>,
+        ) -> Result<tonic::Response<super::DataStream>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDataStream",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

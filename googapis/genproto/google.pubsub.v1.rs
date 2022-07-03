@@ -599,10 +599,17 @@ pub struct Subscription {
     #[prost(string, tag = "2")]
     pub topic: ::prost::alloc::string::String,
     /// If push delivery is used with this subscription, this field is
-    /// used to configure it. An empty `pushConfig` signifies that the subscriber
-    /// will pull and ack messages using API methods.
+    /// used to configure it. Either `pushConfig` or `bigQueryConfig` can be set,
+    /// but not both. If both are empty, then the subscriber will pull and ack
+    /// messages using API methods.
     #[prost(message, optional, tag = "4")]
     pub push_config: ::core::option::Option<PushConfig>,
+    /// If delivery to BigQuery is used with this subscription, this field is
+    /// used to configure it. Either `pushConfig` or `bigQueryConfig` can be set,
+    /// but not both. If both are empty, then the subscriber will pull and ack
+    /// messages using API methods.
+    #[prost(message, optional, tag = "18")]
+    pub bigquery_config: ::core::option::Option<BigQueryConfig>,
     /// The approximate amount of time (on a best-effort basis) Pub/Sub waits for
     /// the subscriber to acknowledge receipt before resending the message. In the
     /// interval after the message is delivered and before it is acknowledged, it
@@ -693,6 +700,19 @@ pub struct Subscription {
     /// the endpoint will not be made.
     #[prost(bool, tag = "15")]
     pub detached: bool,
+    /// If true, Pub/Sub provides the following guarantees for the delivery of
+    /// a message with a given value of `message_id` on this subscription:
+    ///
+    /// * The message sent to a subscriber is guaranteed not to be resent
+    /// before the message's acknowledgement deadline expires.
+    /// * An acknowledged message will not be resent to a subscriber.
+    ///
+    /// Note that subscribers may still receive multiple copies of a message
+    /// when `enable_exactly_once_delivery` is true if the message was published
+    /// multiple times by a publisher client. These copies are  considered distinct
+    /// by Pub/Sub and have distinct `message_id` values.
+    #[prost(bool, tag = "16")]
+    pub enable_exactly_once_delivery: bool,
     /// Output only. Indicates the minimum duration for which a message is retained
     /// after it is published to the subscription's topic. If this field is set,
     /// messages published to the subscription's topic in the last
@@ -701,6 +721,26 @@ pub struct Subscription {
     /// in responses from the server; it is ignored if it is set in any requests.
     #[prost(message, optional, tag = "17")]
     pub topic_message_retention_duration: ::core::option::Option<::prost_types::Duration>,
+    /// Output only. An output-only field indicating whether or not the subscription can receive
+    /// messages.
+    #[prost(enumeration = "subscription::State", tag = "19")]
+    pub state: i32,
+}
+/// Nested message and enum types in `Subscription`.
+pub mod subscription {
+    /// Possible states for a subscription.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// The subscription can actively receive messages
+        Active = 1,
+        /// The subscription cannot receive messages because of an error with the
+        /// resource to which it pushes messages. See the more detailed error state
+        /// in the corresponding configuration.
+        ResourceError = 2,
+    }
 }
 /// A policy that specifies how Cloud Pub/Sub retries message delivery.
 ///
@@ -844,6 +884,54 @@ pub mod push_config {
         /// `Authorization` header in the HTTP request for every pushed message.
         #[prost(message, tag = "3")]
         OidcToken(OidcToken),
+    }
+}
+/// Configuration for a BigQuery subscription.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BigQueryConfig {
+    /// The name of the table to which to write data, of the form
+    /// {projectId}:{datasetId}.{tableId}
+    #[prost(string, tag = "1")]
+    pub table: ::prost::alloc::string::String,
+    /// When true, use the topic's schema as the columns to write to in BigQuery,
+    /// if it exists.
+    #[prost(bool, tag = "2")]
+    pub use_topic_schema: bool,
+    /// When true, write the subscription name, message_id, publish_time,
+    /// attributes, and ordering_key to additional columns in the table. The
+    /// subscription name, message_id, and publish_time fields are put in their own
+    /// columns while all other message properties (other than data) are written to
+    /// a JSON object in the attributes column.
+    #[prost(bool, tag = "3")]
+    pub write_metadata: bool,
+    /// When true and use_topic_schema is true, any fields that are a part of the
+    /// topic schema that are not part of the BigQuery table schema are dropped
+    /// when writing to BigQuery. Otherwise, the schemas must be kept in sync and
+    /// any messages with extra fields are not written and remain in the
+    /// subscription's backlog.
+    #[prost(bool, tag = "4")]
+    pub drop_unknown_fields: bool,
+    /// Output only. An output-only field that indicates whether or not the subscription can
+    /// receive messages.
+    #[prost(enumeration = "big_query_config::State", tag = "5")]
+    pub state: i32,
+}
+/// Nested message and enum types in `BigQueryConfig`.
+pub mod big_query_config {
+    /// Possible states for a BigQuery subscription.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// Default value. This value is unused.
+        Unspecified = 0,
+        /// The subscription can actively send messages to BigQuery
+        Active = 1,
+        /// Cannot write to the BigQuery table because of permission denied errors.
+        PermissionDenied = 2,
+        /// Cannot write to the BigQuery table because it does not exist.
+        NotFound = 3,
+        /// Cannot write to the BigQuery table due to a schema mismatch.
+        SchemaMismatch = 4,
     }
 }
 /// A message and its corresponding acknowledgment ID.
@@ -1094,6 +1182,16 @@ pub struct StreamingPullResponse {
     /// Received Pub/Sub messages. This will not be empty.
     #[prost(message, repeated, tag = "1")]
     pub received_messages: ::prost::alloc::vec::Vec<ReceivedMessage>,
+    /// This field will only be set if `enable_exactly_once_delivery` is set to
+    /// `true`.
+    #[prost(message, optional, tag = "5")]
+    pub acknowledge_confirmation:
+        ::core::option::Option<streaming_pull_response::AcknowledgeConfirmation>,
+    /// This field will only be set if `enable_exactly_once_delivery` is set to
+    /// `true`.
+    #[prost(message, optional, tag = "3")]
+    pub modify_ack_deadline_confirmation:
+        ::core::option::Option<streaming_pull_response::ModifyAckDeadlineConfirmation>,
     /// Properties associated with this subscription.
     #[prost(message, optional, tag = "4")]
     pub subscription_properties:
@@ -1101,9 +1199,39 @@ pub struct StreamingPullResponse {
 }
 /// Nested message and enum types in `StreamingPullResponse`.
 pub mod streaming_pull_response {
+    /// Acknowledgement IDs sent in one or more previous requests to acknowledge a
+    /// previously received message.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AcknowledgeConfirmation {
+        /// Successfully processed acknowledgement IDs.
+        #[prost(string, repeated, tag = "1")]
+        pub ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// List of acknowledgement IDs that were malformed or whose acknowledgement
+        /// deadline has expired.
+        #[prost(string, repeated, tag = "2")]
+        pub invalid_ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// List of acknowledgement IDs that were out of order.
+        #[prost(string, repeated, tag = "3")]
+        pub unordered_ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    /// Acknowledgement IDs sent in one or more previous requests to modify the
+    /// deadline for a specific message.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ModifyAckDeadlineConfirmation {
+        /// Successfully processed acknowledgement IDs.
+        #[prost(string, repeated, tag = "1")]
+        pub ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        /// List of acknowledgement IDs that were malformed or whose acknowledgement
+        /// deadline has expired.
+        #[prost(string, repeated, tag = "2")]
+        pub invalid_ack_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
     /// Subscription properties sent as part of the response.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SubscriptionProperties {
+        /// True iff exactly once delivery is enabled for this subscription.
+        #[prost(bool, tag = "1")]
+        pub exactly_once_delivery_enabled: bool,
         /// True iff message ordering is enabled for this subscription.
         #[prost(bool, tag = "2")]
         pub message_ordering_enabled: bool,
@@ -1705,7 +1833,9 @@ pub mod subscriber_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.pubsub.v1.Subscriber/StreamingPull");
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Modifies the `PushConfig` for a specified subscription."]
         #[doc = ""]

@@ -377,7 +377,9 @@ pub mod tether_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.apigeeconnect.v1.Tether/Egress",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }

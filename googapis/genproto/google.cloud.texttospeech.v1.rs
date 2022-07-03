@@ -2,13 +2,13 @@
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListVoicesRequest {
     /// Optional. Recommended.
-    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag. If
-    /// specified, the ListVoices call will only return voices that can be used to
-    /// synthesize this language_code. E.g. when specifying `"en-NZ"`, you will get
-    /// supported `"en-\*"` voices; when specifying `"no"`, you will get supported
-    /// `"no-\*"` (Norwegian) and `"nb-\*"` (Norwegian Bokmal) voices; specifying
-    /// `"zh"` will also get supported `"cmn-\*"` voices; specifying `"zh-hk"` will
-    /// also get supported `"yue-\*"` voices.
+    /// \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag.
+    /// If not specified, the API will return all supported voices.
+    /// If specified, the ListVoices call will only return voices that can be used
+    /// to synthesize this language_code. For example, if you specify `"en-NZ"`,
+    /// all `"en-NZ"` voices will be returned. If you specify `"no"`, both
+    /// `"no-\*"` (Norwegian) and `"nb-\*"` (Norwegian Bokmal) voices will be
+    /// returned.
     #[prost(string, tag = "1")]
     pub language_code: ::prost::alloc::string::String,
 }
@@ -103,6 +103,11 @@ pub struct VoiceSelectionParams {
     /// substitute a voice with a different gender rather than failing the request.
     #[prost(enumeration = "SsmlVoiceGender", tag = "3")]
     pub ssml_gender: i32,
+    /// The configuration for a custom voice. If \[CustomVoiceParams.model\] is set,
+    /// the service will choose the custom voice matching the specified
+    /// configuration.
+    #[prost(message, optional, tag = "4")]
+    pub custom_voice: ::core::option::Option<CustomVoiceParams>,
 }
 /// Description of audio data to be synthesized.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -148,6 +153,35 @@ pub struct AudioConfig {
     /// current supported profile ids.
     #[prost(string, repeated, tag = "6")]
     pub effects_profile_id: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Description of the custom voice to be synthesized.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomVoiceParams {
+    /// Required. The name of the AutoML model that synthesizes the custom voice.
+    #[prost(string, tag = "1")]
+    pub model: ::prost::alloc::string::String,
+    /// Optional. The usage of the synthesized audio to be reported.
+    #[prost(enumeration = "custom_voice_params::ReportedUsage", tag = "3")]
+    pub reported_usage: i32,
+}
+/// Nested message and enum types in `CustomVoiceParams`.
+pub mod custom_voice_params {
+    /// The usage of the synthesized audio. You must report your honest and
+    /// correct usage of the service as it's regulated by contract and will cause
+    /// significant difference in billing.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ReportedUsage {
+        /// Request with reported usage unspecified will be rejected.
+        Unspecified = 0,
+        /// For scenarios where the synthesized audio is not downloadable and can
+        /// only be used once. For example, real-time request in IVR system.
+        Realtime = 1,
+        /// For scenarios where the synthesized audio is downloadable and can be
+        /// reused. For example, the synthesized audio is downloaded, stored in
+        /// customer service system and played repeatedly.
+        Offline = 2,
+    }
 }
 /// The message returned to the client by the `SynthesizeSpeech` method.
 #[derive(Clone, PartialEq, ::prost::Message)]

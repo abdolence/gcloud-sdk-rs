@@ -623,7 +623,10 @@ pub struct ConfigFile {
     #[prost(string, tag = "1")]
     pub file_path: ::prost::alloc::string::String,
     /// Each type of config file should have a corresponding field in the oneof.
-    #[prost(oneof = "config_file::File", tags = "2, 3, 4, 6, 7, 8, 15, 9, 10, 11, 13, 12")]
+    #[prost(
+        oneof = "config_file::File",
+        tags = "2, 3, 4, 6, 7, 8, 15, 9, 10, 11, 13, 12"
+    )]
     pub file: ::core::option::Option<config_file::File>,
 }
 /// Nested message and enum types in `ConfigFile`.
@@ -1223,7 +1226,9 @@ pub mod actions_sdk_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/WriteDraft",
             );
-            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .client_streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Updates the user's project preview based on the model."]
         pub async fn write_preview(
@@ -1240,7 +1245,9 @@ pub mod actions_sdk_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/WritePreview",
             );
-            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .client_streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Creates a project version based on the model and triggers deployment to the"]
         #[doc = " specified release channel, if specified."]
@@ -1258,7 +1265,9 @@ pub mod actions_sdk_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/CreateVersion",
             );
-            self.inner.client_streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .client_streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Reads the entire content of the project draft."]
         pub async fn read_draft(
@@ -1275,7 +1284,9 @@ pub mod actions_sdk_client {
             let codec = tonic::codec::ProstCodec::default();
             let path =
                 http::uri::PathAndQuery::from_static("/google.actions.sdk.v2.ActionsSdk/ReadDraft");
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Reads the entire content of a project version."]
         pub async fn read_version(
@@ -1295,7 +1306,9 @@ pub mod actions_sdk_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.actions.sdk.v2.ActionsSdk/ReadVersion",
             );
-            self.inner.server_streaming(request.into_request(), path, codec).await
+            self.inner
+                .server_streaming(request.into_request(), path, codec)
+                .await
         }
         #[doc = " Encrypts the OAuth client secret used in account linking flows."]
         #[doc = " This can be used to encrypt the client secret for the first time (e.g."]

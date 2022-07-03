@@ -233,7 +233,10 @@ pub struct RemovePublicKeyMetadata {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloudShellErrorDetails {
     /// Code indicating the specific error the occurred.
-    #[prost(enumeration = "cloud_shell_error_details::CloudShellErrorCode", tag = "1")]
+    #[prost(
+        enumeration = "cloud_shell_error_details::CloudShellErrorCode",
+        tag = "1"
+    )]
     pub code: i32,
 }
 /// Nested message and enum types in `CloudShellErrorDetails`.

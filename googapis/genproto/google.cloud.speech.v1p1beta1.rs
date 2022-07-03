@@ -67,6 +67,12 @@ pub mod phrase_set {
     /// resources and inline classes. Then use the class' id wrapped in $`{...}`
     /// e.g. "${my-months}". To refer to custom classes resources, use the class'
     /// id wrapped in `${}` (e.g. `${my-months}`).
+    ///
+    /// Speech-to-Text supports three locations: `global`, `us` (US North America),
+    /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
+    /// endpoint, use the `global` location. To specify a region, use a
+    /// [regional endpoint](/speech-to-text/docs/endpoints) with matching `us` or
+    /// `eu` location value.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Phrase {
         /// The phrase itself.
@@ -76,9 +82,8 @@ pub mod phrase_set {
         /// Positive value will increase the probability that a specific phrase will
         /// be recognized over other similar sounding phrases. The higher the boost,
         /// the higher the chance of false positive recognition as well. Negative
-        /// boost values would correspond to anti-biasing. Anti-biasing is not
-        /// enabled, so negative boost will simply be ignored. Though `boost` can
-        /// accept a wide range of positive values, most use cases are best served
+        /// boost will simply be ignored. Though `boost` can accept a wide range of
+        /// positive values, most use cases are best served
         /// with values between 0 and 20. We recommend using a binary search approach
         /// to finding the optimal value for your use case. Speech recognition
         /// will skip PhraseSets with a boost value of 0.
@@ -321,10 +326,10 @@ pub struct RecognitionConfig {
     #[prost(bool, tag = "5")]
     pub profanity_filter: bool,
     /// Speech adaptation configuration improves the accuracy of speech
-    /// recognition. When speech adaptation is set it supersedes the
-    /// `speech_contexts` field. For more information, see the [speech
+    /// recognition. For more information, see the [speech
     /// adaptation](<https://cloud.google.com/speech-to-text/docs/adaptation>)
     /// documentation.
+    /// When speech adaptation is set it supersedes the `speech_contexts` field.
     #[prost(message, optional, tag = "20")]
     pub adaptation: ::core::option::Option<SpeechAdaptation>,
     /// Use transcription normalization to automatically replace parts of the
@@ -409,6 +414,15 @@ pub struct RecognitionConfig {
     ///     <td><b>Description</b></td>
     ///   </tr>
     ///   <tr>
+    ///     <td><code>latest_long</code></td>
+    ///     <td>Best for long form content like media or conversation.</td>
+    ///   </tr>
+    ///   <tr>
+    ///     <td><code>latest_short</code></td>
+    ///     <td>Best for short form content like commands or single shot directed
+    ///     speech.</td>
+    ///   </tr>
+    ///   <tr>
     ///     <td><code>command_and_search</code></td>
     ///     <td>Best for short queries such as voice commands or voice search.</td>
     ///   </tr>
@@ -429,6 +443,16 @@ pub struct RecognitionConfig {
     ///     <td>Best for audio that is not one of the specific audio models.
     ///         For example, long-form audio. Ideally the audio is high-fidelity,
     ///         recorded at a 16khz or greater sampling rate.</td>
+    ///   </tr>
+    ///   <tr>
+    ///     <td><code>medical_conversation</code></td>
+    ///     <td>Best for audio that originated from a conversation between a
+    ///         medical provider and patient.</td>
+    ///   </tr>
+    ///   <tr>
+    ///     <td><code>medical_dictation</code></td>
+    ///     <td>Best for audio that originated from dictation notes by a medical
+    ///         provider.</td>
     ///   </tr>
     /// </table>
     #[prost(string, tag = "13")]
@@ -456,7 +480,8 @@ pub mod recognition_config {
     /// a lossless encoding (`FLAC` or `LINEAR16`). The accuracy of the speech
     /// recognition can be reduced if lossy codecs are used to capture or transmit
     /// audio, particularly if background noise is present. Lossy codecs include
-    /// `MULAW`, `AMR`, `AMR_WB`, `OGG_OPUS`, `SPEEX_WITH_HEADER_BYTE`, `MP3`.
+    /// `MULAW`, `AMR`, `AMR_WB`, `OGG_OPUS`, `SPEEX_WITH_HEADER_BYTE`, `MP3`,
+    /// and `WEBM_OPUS`.
     ///
     /// The `FLAC` and `WAV` audio file formats include a header that describes the
     /// included audio content. You can request recognition for `WAV` files that
@@ -512,9 +537,8 @@ pub mod recognition_config {
         /// sample rate of the file being used.
         Mp3 = 8,
         /// Opus encoded audio frames in WebM container
-        /// (\[OggOpus\](<https://wiki.xiph.org/OggOpus>)). This is a Beta features and
-        /// only available in v1p1beta1. `sample_rate_hertz` must be one of 8000,
-        /// 12000, 16000, 24000, or 48000.
+        /// (\[OggOpus\](<https://wiki.xiph.org/OggOpus>)). `sample_rate_hertz` must be
+        /// one of 8000, 12000, 16000, 24000, or 48000.
         WebmOpus = 9,
     }
 }
@@ -843,7 +867,10 @@ pub struct StreamingRecognizeResponse {
     #[prost(message, repeated, tag = "2")]
     pub results: ::prost::alloc::vec::Vec<StreamingRecognitionResult>,
     /// Indicates the type of speech event.
-    #[prost(enumeration = "streaming_recognize_response::SpeechEventType", tag = "4")]
+    #[prost(
+        enumeration = "streaming_recognize_response::SpeechEventType",
+        tag = "4"
+    )]
     pub speech_event_type: i32,
     /// When available, billed audio seconds for the stream.
     /// Set only if this is the last response in the stream.
@@ -921,6 +948,10 @@ pub struct SpeechRecognitionResult {
     /// For audio_channel_count = N, its output values can range from '1' to 'N'.
     #[prost(int32, tag = "2")]
     pub channel_tag: i32,
+    /// Time offset of the end of this result relative to the
+    /// beginning of the audio.
+    #[prost(message, optional, tag = "4")]
+    pub result_end_time: ::core::option::Option<::prost_types::Duration>,
     /// Output only. The \[BCP-47\](<https://www.rfc-editor.org/rfc/bcp/bcp47.txt>) language tag
     /// of the language in this result. This language code was detected to have
     /// the most likelihood of being spoken in the audio.
@@ -931,6 +962,9 @@ pub struct SpeechRecognitionResult {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SpeechRecognitionAlternative {
     /// Transcript text representing the words that the user spoke.
+    /// In languages that use spaces to separate words, the transcript might have a
+    /// leading space if it isn't the first result. You can concatenate each result
+    /// to obtain the full transcript without using a separator.
     #[prost(string, tag = "1")]
     pub transcript: ::prost::alloc::string::String,
     /// The confidence estimate between 0.0 and 1.0. A higher number
@@ -1099,23 +1133,31 @@ pub mod speech_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.speech.v1p1beta1.Speech/StreamingRecognize",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }
 /// Message sent by the client for the `CreatePhraseSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreatePhraseSetRequest {
-    /// Required. The parent resource where this phrase set will be created.
-    /// Format:
-    /// {api_version}/projects/{project}/locations/{location}/phraseSets
+    /// Required. The parent resource where this phrase set will be created. Format:
+    ///
+    /// `projects/{project}/locations/{location}/phraseSets`
+    ///
+    /// Speech-to-Text supports three locations: `global`, `us` (US North America),
+    /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
+    /// endpoint, use the `global` location. To specify a region, use a
+    /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
+    /// with matching `us` or `eu` location value.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID to use for the phrase set, which will become the final
     /// component of the phrase set's resource name.
     ///
-    /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// This value should restrict to letters, numbers, and hyphens, with the first
+    /// character a letter, the last a letter or a number, and be 4-63 characters.
     #[prost(string, tag = "2")]
     pub phrase_set_id: ::prost::alloc::string::String,
     /// Required. The phrase set to create.
@@ -1129,7 +1171,14 @@ pub struct UpdatePhraseSetRequest {
     ///
     /// The phrase set's `name` field is used to identify the set to be
     /// updated. Format:
-    /// {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+    ///
+    /// `projects/{project}/locations/{location}/phraseSets/{phrase_set}`
+    ///
+    /// Speech-to-Text supports three locations: `global`, `us` (US North America),
+    /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
+    /// endpoint, use the `global` location. To specify a region, use a
+    /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
+    /// with matching `us` or `eu` location value.
     #[prost(message, optional, tag = "1")]
     pub phrase_set: ::core::option::Option<PhraseSet>,
     /// The list of fields to be updated.
@@ -1139,18 +1188,30 @@ pub struct UpdatePhraseSetRequest {
 /// Message sent by the client for the `GetPhraseSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetPhraseSetRequest {
-    /// Required. The name of the phrase set to retrieve.
-    /// Format:
-    /// {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+    /// Required. The name of the phrase set to retrieve. Format:
+    ///
+    /// `projects/{project}/locations/{location}/phraseSets/{phrase_set}`
+    ///
+    /// Speech-to-Text supports three locations: `global`, `us` (US North America),
+    /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
+    /// endpoint, use the `global` location. To specify a region, use a
+    /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
+    /// with matching `us` or `eu` location value.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `ListPhraseSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListPhraseSetRequest {
-    /// Required. The parent, which owns this collection of phrase set.
-    /// Format:
-    /// projects/{project}/locations/{location}
+    /// Required. The parent, which owns this collection of phrase set. Format:
+    ///
+    /// `projects/{project}/locations/{location}`
+    ///
+    /// Speech-to-Text supports three locations: `global`, `us` (US North America),
+    /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
+    /// endpoint, use the `global` location. To specify a region, use a
+    /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
+    /// with matching `us` or `eu` location value.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of phrase sets to return. The service may return
@@ -1181,25 +1242,31 @@ pub struct ListPhraseSetResponse {
 /// Message sent by the client for the `DeletePhraseSet` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeletePhraseSetRequest {
-    /// Required. The name of the phrase set to delete.
-    /// Format:
-    /// {api_version}/projects/{project}/locations/{location}/phraseSets/{phrase_set}
+    /// Required. The name of the phrase set to delete. Format:
+    ///
+    /// `projects/{project}/locations/{location}/phraseSets/{phrase_set}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `CreateCustomClass` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateCustomClassRequest {
-    /// Required. The parent resource where this custom class will be created.
-    /// Format:
-    /// {api_version}/projects/{project}/locations/{location}/customClasses
+    /// Required. The parent resource where this custom class will be created. Format:
+    ///
+    /// `projects/{project}/locations/{location}/customClasses`
+    ///
+    /// Speech-to-Text supports three locations: `global`, `us` (US North America),
+    /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
+    /// endpoint, use the `global` location. To specify a region, use a
+    /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
+    /// with matching `us` or `eu` location value.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID to use for the custom class, which will become the final
     /// component of the custom class' resource name.
     ///
-    /// This value should be 4-63 characters, and valid characters
-    /// are /\[a-z][0-9\]-/.
+    /// This value should restrict to letters, numbers, and hyphens, with the first
+    /// character a letter, the last a letter or a number, and be 4-63 characters.
     #[prost(string, tag = "2")]
     pub custom_class_id: ::prost::alloc::string::String,
     /// Required. The custom class to create.
@@ -1213,7 +1280,14 @@ pub struct UpdateCustomClassRequest {
     ///
     /// The custom class's `name` field is used to identify the custom class to be
     /// updated. Format:
-    /// {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+    ///
+    /// `projects/{project}/locations/{location}/customClasses/{custom_class}`
+    ///
+    /// Speech-to-Text supports three locations: `global`, `us` (US North America),
+    /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
+    /// endpoint, use the `global` location. To specify a region, use a
+    /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
+    /// with matching `us` or `eu` location value.
     #[prost(message, optional, tag = "1")]
     pub custom_class: ::core::option::Option<CustomClass>,
     /// The list of fields to be updated.
@@ -1223,18 +1297,24 @@ pub struct UpdateCustomClassRequest {
 /// Message sent by the client for the `GetCustomClass` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCustomClassRequest {
-    /// Required. The name of the custom class to retrieve.
-    /// Format:
-    /// {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+    /// Required. The name of the custom class to retrieve. Format:
+    ///
+    /// `projects/{project}/locations/{location}/customClasses/{custom_class}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
 /// Message sent by the client for the `ListCustomClasses` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListCustomClassesRequest {
-    /// Required. The parent, which owns this collection of custom classes.
-    /// Format:
-    /// {api_version}/projects/{project}/locations/{location}/customClasses
+    /// Required. The parent, which owns this collection of custom classes. Format:
+    ///
+    /// `projects/{project}/locations/{location}/customClasses`
+    ///
+    /// Speech-to-Text supports three locations: `global`, `us` (US North America),
+    /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
+    /// endpoint, use the `global` location. To specify a region, use a
+    /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
+    /// with matching `us` or `eu` location value.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// The maximum number of custom classes to return. The service may return
@@ -1265,9 +1345,15 @@ pub struct ListCustomClassesResponse {
 /// Message sent by the client for the `DeleteCustomClass` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteCustomClassRequest {
-    /// Required. The name of the custom class to delete.
-    /// Format:
-    /// {api_version}/projects/{project}/locations/{location}/customClasses/{custom_class}
+    /// Required. The name of the custom class to delete. Format:
+    ///
+    /// `projects/{project}/locations/{location}/customClasses/{custom_class}`
+    ///
+    /// Speech-to-Text supports three locations: `global`, `us` (US North America),
+    /// and `eu` (Europe). If you are calling the `speech.googleapis.com`
+    /// endpoint, use the `global` location. To specify a region, use a
+    /// [regional endpoint](<https://cloud.google.com/speech-to-text/docs/endpoints>)
+    /// with matching `us` or `eu` location value.
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }

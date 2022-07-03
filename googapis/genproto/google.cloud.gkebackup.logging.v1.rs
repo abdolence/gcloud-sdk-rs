@@ -264,14 +264,20 @@ pub struct RestoreConfig {
     /// resources being restored already exist in the target cluster. This MUST be
     /// set to a value other than CLUSTER_RESOURCE_CONFLICT_POLICY_UNSPECIFIED if
     /// cluster_resource_restore_scope is not empty.
-    #[prost(enumeration = "restore_config::ClusterResourceConflictPolicy", tag = "2")]
+    #[prost(
+        enumeration = "restore_config::ClusterResourceConflictPolicy",
+        tag = "2"
+    )]
     pub cluster_resource_conflict_policy: i32,
     /// Defines the behavior for handling the situation where sets of namespaced
     /// resources being restored already exist in the target cluster. This MUST be
     /// set to a value other than NAMESPACED_RESOURCE_RESTORE_MODE_UNSPECIFIED if
     /// any namespaced restoration is configured via
     /// namespaced_resource_restore_scope .
-    #[prost(enumeration = "restore_config::NamespacedResourceRestoreMode", tag = "3")]
+    #[prost(
+        enumeration = "restore_config::NamespacedResourceRestoreMode",
+        tag = "3"
+    )]
     pub namespaced_resource_restore_mode: i32,
     /// Identifies the cluster-scoped resources to restore from the Backup.
     /// Not specifying it means NO cluster resource will be restored.
@@ -288,7 +294,10 @@ pub struct RestoreConfig {
     /// Specifies the namespaced resources to restore from the Backup.
     /// Only one of the entries may be specified. If not specified, NO namespaced
     /// resources will be restored.
-    #[prost(oneof = "restore_config::NamespacedResourceRestoreScope", tags = "5, 6, 7")]
+    #[prost(
+        oneof = "restore_config::NamespacedResourceRestoreScope",
+        tags = "5, 6, 7"
+    )]
     pub namespaced_resource_restore_scope:
         ::core::option::Option<restore_config::NamespacedResourceRestoreScope>,
 }

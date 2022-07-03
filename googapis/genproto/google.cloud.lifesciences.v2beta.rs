@@ -556,7 +556,10 @@ pub struct Event {
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
     /// Machine-readable details about the event.
-    #[prost(oneof = "event::Details", tags = "17, 18, 19, 20, 21, 22, 23, 24, 25, 26")]
+    #[prost(
+        oneof = "event::Details",
+        tags = "17, 18, 19, 20, 21, 22, 23, 24, 25, 26"
+    )]
     pub details: ::core::option::Option<event::Details>,
 }
 /// Nested message and enum types in `Event`.

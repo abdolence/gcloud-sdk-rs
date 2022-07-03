@@ -5,7 +5,10 @@ pub struct LogLine {
     #[prost(message, optional, tag = "1")]
     pub time: ::core::option::Option<::prost_types::Timestamp>,
     /// Severity of this log entry.
-    #[prost(enumeration = "super::super::super::logging::r#type::LogSeverity", tag = "2")]
+    #[prost(
+        enumeration = "super::super::super::logging::r#type::LogSeverity",
+        tag = "2"
+    )]
     pub severity: i32,
     /// App-provided log message.
     #[prost(string, tag = "3")]

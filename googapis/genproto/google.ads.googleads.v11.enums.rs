@@ -413,6 +413,34 @@ pub mod mime_type_enum {
         Html5AdZip = 13,
     }
 }
+// Proto file describing video thumbnails.
+
+/// Defines the thumbnail to use for In-Display video ads. Note that
+/// DEFAULT_THUMBNAIL may have been uploaded by the user while thumbnails 1-3 are
+/// auto-generated from the video.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VideoThumbnailEnum {}
+/// Nested message and enum types in `VideoThumbnailEnum`.
+pub mod video_thumbnail_enum {
+    /// Enum listing the possible types of a video thumbnail.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum VideoThumbnail {
+        /// The type has not been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The default thumbnail. Can be auto-generated or user-uploaded.
+        DefaultThumbnail = 2,
+        /// Thumbnail 1, generated from the video.
+        Thumbnail1 = 3,
+        /// Thumbnail 2, generated from the video.
+        Thumbnail2 = 4,
+        /// Thumbnail 3, generated from the video.
+        Thumbnail3 = 5,
+    }
+}
 // Proto file describing age range types.
 
 /// Container for enum describing the type of demographic age ranges.
@@ -1014,6 +1042,41 @@ pub mod webpage_condition_operator_enum {
         Contains = 3,
     }
 }
+// Proto file describing call to action type.
+
+/// Container for enum describing the call to action types.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CallToActionTypeEnum {}
+/// Nested message and enum types in `CallToActionTypeEnum`.
+pub mod call_to_action_type_enum {
+    /// Enum describing possible types of call to action.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum CallToActionType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The call to action type is learn more.
+        LearnMore = 2,
+        /// The call to action type is get quote.
+        GetQuote = 3,
+        /// The call to action type is apply now.
+        ApplyNow = 4,
+        /// The call to action type is sign up.
+        SignUp = 5,
+        /// The call to action type is contact us.
+        ContactUs = 6,
+        /// The call to action type is subscribe.
+        Subscribe = 7,
+        /// The call to action type is download.
+        Download = 8,
+        /// The call to action type is book now.
+        BookNow = 9,
+        /// The call to action type is shop now.
+        ShopNow = 10,
+    }
+}
 /// Describes the type of call-to-action phrases in a lead form.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormCallToActionTypeEnum {}
@@ -1072,7 +1135,7 @@ pub mod lead_form_desired_intent_enum {
         Unknown = 1,
         /// Deliver more leads at a potentially lower quality.
         LowIntent = 2,
-        /// Only leads with a high level of intent are desired.
+        /// Deliver leads that are more qualified.
         HighIntent = 3,
     }
 }
@@ -1092,12 +1155,6 @@ pub mod lead_form_field_user_input_type_enum {
         /// The user will be asked to fill in their given and family name. This field
         /// cannot be set at the same time as GIVEN_NAME or FAMILY_NAME.
         FullName = 2,
-        /// The user will be asked to fill in their given name (first name). This
-        /// field can not be set at the same time as FULL_NAME.
-        GivenName = 6,
-        /// The user will be asked to fill in their family name (last name). This
-        /// field can not be set at the same time as FULL_NAME.
-        FamilyName = 7,
         /// The user will be asked to fill in their email address.
         Email = 3,
         /// The user will be asked to fill in their phone number.
@@ -1119,6 +1176,26 @@ pub mod lead_form_field_user_input_type_enum {
         WorkPhone = 14,
         /// The user will be asked to fill in their job title.
         JobTitle = 15,
+        /// The user will be asked to fill in their CPF for Brazil users.
+        GovernmentIssuedIdCpfBr = 16,
+        /// The user will be asked to fill in their DNI for Argentina users.
+        GovernmentIssuedIdDniAr = 17,
+        /// The user will be asked to fill in their DNI for Peru users.
+        GovernmentIssuedIdDniPe = 18,
+        /// The user will be asked to fill in their RUT for Chile users.
+        GovernmentIssuedIdRutCl = 19,
+        /// The user will be asked to fill in their CC for Colombia users.
+        GovernmentIssuedIdCcCo = 20,
+        /// The user will be asked to fill in their CI for Ecuador users.
+        GovernmentIssuedIdCiEc = 21,
+        /// The user will be asked to fill in their RFC for Mexico users.
+        GovernmentIssuedIdRfcMx = 22,
+        /// The user will be asked to fill in their first name. This
+        /// field can not be set at the same time as FULL_NAME.
+        FirstName = 23,
+        /// The user will be asked to fill in their last name. This
+        /// field can not be set at the same time as FULL_NAME.
+        LastName = 24,
         /// Question: "Which model are you interested in?"
         /// Category: "Auto"
         VehicleModel = 1001,
@@ -1284,6 +1361,112 @@ pub mod lead_form_post_submit_call_to_action_type_enum {
         LearnMore = 4,
         /// Shop now.
         ShopNow = 5,
+    }
+}
+/// Container for enum describing different types of mobile app vendors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MobileAppVendorEnum {}
+/// Nested message and enum types in `MobileAppVendorEnum`.
+pub mod mobile_app_vendor_enum {
+    /// The type of mobile app vendor
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum MobileAppVendor {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Mobile app vendor for Apple app store.
+        AppleAppStore = 2,
+        /// Mobile app vendor for Google app store.
+        GoogleAppStore = 3,
+    }
+}
+// Proto file describing price extension price qualifier type.
+
+/// Container for enum describing a price extension price qualifier.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PriceExtensionPriceQualifierEnum {}
+/// Nested message and enum types in `PriceExtensionPriceQualifierEnum`.
+pub mod price_extension_price_qualifier_enum {
+    /// Enums of price extension price qualifier.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PriceExtensionPriceQualifier {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// 'From' qualifier for the price.
+        From = 2,
+        /// 'Up to' qualifier for the price.
+        UpTo = 3,
+        /// 'Average' qualifier for the price.
+        Average = 4,
+    }
+}
+// Proto file describing price extension price unit.
+
+/// Container for enum describing price extension price unit.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PriceExtensionPriceUnitEnum {}
+/// Nested message and enum types in `PriceExtensionPriceUnitEnum`.
+pub mod price_extension_price_unit_enum {
+    /// Price extension price unit.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PriceExtensionPriceUnit {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Per hour.
+        PerHour = 2,
+        /// Per day.
+        PerDay = 3,
+        /// Per week.
+        PerWeek = 4,
+        /// Per month.
+        PerMonth = 5,
+        /// Per year.
+        PerYear = 6,
+        /// Per night.
+        PerNight = 7,
+    }
+}
+// Proto file describing price extension type.
+
+/// Container for enum describing types for a price extension.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PriceExtensionTypeEnum {}
+/// Nested message and enum types in `PriceExtensionTypeEnum`.
+pub mod price_extension_type_enum {
+    /// Price extension type.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PriceExtensionType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The type for showing a list of brands.
+        Brands = 2,
+        /// The type for showing a list of events.
+        Events = 3,
+        /// The type for showing locations relevant to your business.
+        Locations = 4,
+        /// The type for showing sub-regions or districts within a city or region.
+        Neighborhoods = 5,
+        /// The type for showing a collection of product categories.
+        ProductCategories = 6,
+        /// The type for showing a collection of related product tiers.
+        ProductTiers = 7,
+        /// The type for showing a collection of services offered by your business.
+        Services = 8,
+        /// The type for showing a collection of service categories.
+        ServiceCategories = 9,
+        /// The type for showing a collection of related service tiers.
+        ServiceTiers = 10,
     }
 }
 // Proto file describing promotion extension discount modifier.
@@ -1464,7 +1647,7 @@ pub mod advertising_channel_sub_type_enum {
         /// Google Display Network.
         AppCampaign = 12,
         /// App Campaign for engagement, focused on driving re-engagement with the
-        /// app across several of Google’s top properties including Search, YouTube,
+        /// app across several of Google's top properties including Search, YouTube,
         /// and the Google Display Network.
         AppCampaignForEngagement = 13,
         /// Campaigns specialized for local advertising.
@@ -1475,6 +1658,11 @@ pub mod advertising_channel_sub_type_enum {
         SmartCampaign = 16,
         /// Video campaigns with sequence video ads.
         VideoSequence = 17,
+        /// App Campaign for pre registration, specialized for advertising mobile
+        /// app pre-registration, that targets multiple advertising channels across
+        /// Google Play, YouTube and Display Network. See
+        /// <https://support.google.com/google-ads/answer/9441344> to learn more.
+        AppCampaignForPreRegistration = 18,
     }
 }
 // Proto file describing advertising channel types
@@ -1510,6 +1698,12 @@ pub mod advertising_channel_type_enum {
         Local = 8,
         /// Smart campaigns.
         Smart = 9,
+        /// Performance Max campaigns.
+        PerformanceMax = 10,
+        /// Local services campaigns.
+        LocalServices = 11,
+        /// Discovery campaigns.
+        Discovery = 12,
     }
 }
 // Proto file describing the criterion category channel availability mode.
@@ -1568,6 +1762,31 @@ pub mod criterion_category_locale_availability_mode_enum {
         /// The category is available to campaigns within a list of country, language
         /// pairs.
         CountryAndLanguage = 5,
+    }
+}
+// Proto file describing customizer attribute type.
+
+/// Container for enum describing possible types of a customizer attribute.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomizerAttributeTypeEnum {}
+/// Nested message and enum types in `CustomizerAttributeTypeEnum`.
+pub mod customizer_attribute_type_enum {
+    /// The possible types of a customizer attribute.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum CustomizerAttributeType {
+        /// The status has not been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        Unknown = 1,
+        /// Text customizer.
+        Text = 2,
+        /// Number customizer.
+        Number = 3,
+        /// Price customizer consisting of a number and a currency.
+        Price = 4,
+        /// Percentage customizer consisting of a number and a '%'.
+        Percent = 5,
     }
 }
 // Proto file describing days of week.
@@ -1630,93 +1849,6 @@ pub mod app_store_enum {
         AppleItunes = 2,
         /// Google Play.
         GooglePlay = 3,
-    }
-}
-// Proto file describing price extension price qualifier type.
-
-/// Container for enum describing a price extension price qualifier.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PriceExtensionPriceQualifierEnum {}
-/// Nested message and enum types in `PriceExtensionPriceQualifierEnum`.
-pub mod price_extension_price_qualifier_enum {
-    /// Enums of price extension price qualifier.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum PriceExtensionPriceQualifier {
-        /// Not specified.
-        Unspecified = 0,
-        /// Used for return value only. Represents value unknown in this version.
-        Unknown = 1,
-        /// 'From' qualifier for the price.
-        From = 2,
-        /// 'Up to' qualifier for the price.
-        UpTo = 3,
-        /// 'Average' qualifier for the price.
-        Average = 4,
-    }
-}
-// Proto file describing price extension price unit.
-
-/// Container for enum describing price extension price unit.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PriceExtensionPriceUnitEnum {}
-/// Nested message and enum types in `PriceExtensionPriceUnitEnum`.
-pub mod price_extension_price_unit_enum {
-    /// Price extension price unit.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum PriceExtensionPriceUnit {
-        /// Not specified.
-        Unspecified = 0,
-        /// Used for return value only. Represents value unknown in this version.
-        Unknown = 1,
-        /// Per hour.
-        PerHour = 2,
-        /// Per day.
-        PerDay = 3,
-        /// Per week.
-        PerWeek = 4,
-        /// Per month.
-        PerMonth = 5,
-        /// Per year.
-        PerYear = 6,
-        /// Per night.
-        PerNight = 7,
-    }
-}
-// Proto file describing price extension type.
-
-/// Container for enum describing types for a price extension.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct PriceExtensionTypeEnum {}
-/// Nested message and enum types in `PriceExtensionTypeEnum`.
-pub mod price_extension_type_enum {
-    /// Price extension type.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum PriceExtensionType {
-        /// Not specified.
-        Unspecified = 0,
-        /// Used for return value only. Represents value unknown in this version.
-        Unknown = 1,
-        /// The type for showing a list of brands.
-        Brands = 2,
-        /// The type for showing a list of events.
-        Events = 3,
-        /// The type for showing locations relevant to your business.
-        Locations = 4,
-        /// The type for showing sub-regions or districts within a city or region.
-        Neighborhoods = 5,
-        /// The type for showing a collection of product categories.
-        ProductCategories = 6,
-        /// The type for showing a collection of related product tiers.
-        ProductTiers = 7,
-        /// The type for showing a collection of services offered by your business.
-        Services = 8,
-        /// The type for showing a collection of service categories.
-        ServiceCategories = 9,
-        /// The type for showing a collection of related service tiers.
-        ServiceTiers = 10,
     }
 }
 /// The type of string matching to be used for a dynamic FeedItemSet filter.
@@ -1955,6 +2087,78 @@ pub mod matching_function_operator_enum {
         ContainsAny = 6,
     }
 }
+// Proto file describing experiment metric.
+
+/// Container for enum describing the type of experiment metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExperimentMetricEnum {}
+/// Nested message and enum types in `ExperimentMetricEnum`.
+pub mod experiment_metric_enum {
+    /// The type of experiment metric.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ExperimentMetric {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// The goal of the experiment is clicks.
+        Clicks = 2,
+        /// The goal of the experiment is impressions.
+        Impressions = 3,
+        /// The goal of the experiment is cost.
+        Cost = 4,
+        /// The goal of the experiment is conversion rate.
+        ConversionsPerInteractionRate = 5,
+        /// The goal of the experiment is cost per conversion.
+        CostPerConversion = 6,
+        /// The goal of the experiment is conversion value per cost.
+        ConversionsValuePerCost = 7,
+        /// The goal of the experiment is avg cpc.
+        AverageCpc = 8,
+        /// The goal of the experiment is ctr.
+        Ctr = 9,
+        /// The goal of the experiment is incremental conversions.
+        IncrementalConversions = 10,
+        /// The goal of the experiment is completed video views.
+        CompletedVideoViews = 11,
+        /// The goal of the experiment is custom algorithms.
+        CustomAlgorithms = 12,
+        /// The goal of the experiment is conversions.
+        Conversions = 13,
+        /// The goal of the experiment is conversion value.
+        ConversionValue = 14,
+    }
+}
+// Proto file describing experiment metric direction.
+
+/// Container for enum describing the type of experiment metric direction.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExperimentMetricDirectionEnum {}
+/// Nested message and enum types in `ExperimentMetricDirectionEnum`.
+pub mod experiment_metric_direction_enum {
+    /// The type of experiment metric direction.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ExperimentMetricDirection {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// The goal of the experiment is to not change the metric.
+        NoChange = 2,
+        /// The goal of the experiment is to increate the metric.
+        Increase = 3,
+        /// The goal of the experiment is to decrease the metric.
+        Decrease = 4,
+        /// The goal of the experiment is to either not change or increase the
+        /// metric.
+        NoChangeOrIncrease = 5,
+        /// The goal of the experiment is to either not change or decrease the
+        /// metric.
+        NoChangeOrDecrease = 6,
+    }
+}
 // Proto file describing types of payable and free interactions.
 
 /// Container for enum describing types of payable and free interactions.
@@ -2012,13 +2216,13 @@ pub mod quality_score_bucket_enum {
 // Proto file describing user identifier source
 
 /// Container for enum describing the source of the user identifier for offline
-/// Store Sales third party uploads.
+/// Store Sales, click conversion, and conversion adjustment uploads.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UserIdentifierSourceEnum {}
 /// Nested message and enum types in `UserIdentifierSourceEnum`.
 pub mod user_identifier_source_enum {
-    /// The type of user identifier source for offline Store Sales third party
-    /// uploads.
+    /// The type of user identifier source for offline Store Sales, click
+    /// conversion, and conversion adjustment uploads.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum UserIdentifierSource {
@@ -2245,6 +2449,8 @@ pub mod click_type_enum {
         HotelBookOnGoogleRoomSelection = 55,
         /// Shopping - Comparison Listing.
         ShoppingComparisonListing = 56,
+        /// Cross-network. From Performance Max and Discovery Campaigns.
+        CrossNetwork = 57,
     }
 }
 /// Container for enum describing the category of conversions that are associated
@@ -2269,8 +2475,6 @@ pub mod conversion_action_category_enum {
         Purchase = 4,
         /// Signup user action.
         Signup = 5,
-        /// Lead-generating action.
-        Lead = 6,
         /// Software download action (as for an app).
         Download = 7,
         /// The addition of items to a shopping cart or bag on an advertiser site.
@@ -2304,6 +2508,17 @@ pub mod conversion_action_category_enum {
         StoreVisit = 20,
         /// A sale occurring in a physical store.
         StoreSale = 21,
+        /// A lead conversion imported from an external source into Google Ads,
+        /// that has been further qualified by the advertiser (marketing/sales team).
+        /// In the lead-to-sale journey, advertisers get leads, then act on them
+        /// by reaching out to the consumer. If the consumer is interested and
+        /// may end up buying their product, the advertiser marks such leads as
+        /// "qualified leads".
+        QualifiedLead = 22,
+        /// A lead conversion imported from an external source into Google Ads, that
+        /// has further completed a desired stage as defined by the lead gen
+        /// advertiser.
+        ConvertedLead = 23,
     }
 }
 /// Container for enum indicating the event type the conversion is attributed to.
@@ -2534,6 +2749,38 @@ pub mod conversion_or_adjustment_lag_bucket_enum {
         AdjustmentUnknown = 42,
     }
 }
+// Proto file describing conversion value rule primary dimension.
+
+/// Container for enum describing value rule primary dimension for stats.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionValueRulePrimaryDimensionEnum {}
+/// Nested message and enum types in `ConversionValueRulePrimaryDimensionEnum`.
+pub mod conversion_value_rule_primary_dimension_enum {
+    /// Identifies the primary dimension for conversion value rule stats.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConversionValueRulePrimaryDimension {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// For no-value-rule-applied conversions after value rule is enabled.
+        NoRuleApplied = 2,
+        /// Below are for value-rule-applied conversions:
+        /// The original stats.
+        Original = 3,
+        /// When a new or returning customer condition is satisfied.
+        NewVsReturningUser = 4,
+        /// When a query-time Geo location condition is satisfied.
+        GeoLocation = 5,
+        /// When a query-time browsing device condition is satisfied.
+        Device = 6,
+        /// When a query-time audience condition is satisfied.
+        Audience = 7,
+        /// When multiple rules are applied.
+        Multiple = 8,
+    }
+}
 /// Container for enum describing the external conversion source that is
 /// associated with a ConversionAction.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2630,6 +2877,8 @@ pub mod external_conversion_source_enum {
         AnalyticsSearchAds360 = 31,
         /// Conversion that comes from a linked Firebase event for Search Ads 360.
         FirebaseSearchAds360 = 33,
+        /// Conversion that is reported by Floodlight for DV360.
+        DisplayAndVideo360Floodlight = 34,
     }
 }
 // Proto file describing hotel price buckets.
@@ -2715,8 +2964,8 @@ pub mod placeholder_type_enum {
         /// Lets you provide users with a link that points to a mobile app in
         /// addition to a website.
         App = 4,
-        /// Lets you show locations of businesses from your Google My Business
-        /// account in your ad. This helps people find your locations by showing your
+        /// Lets you show locations of businesses from your Business Profile
+        /// in your ad. This helps people find your locations by showing your
         /// ads with your address, a map to your location, or the distance to your
         /// business. This extension type is useful to draw customers to your
         /// brick-and-mortar location.
@@ -2768,6 +3017,83 @@ pub mod placeholder_type_enum {
         Image = 21,
     }
 }
+// Proto file describing Recommendation types.
+
+/// Container for enum describing types of recommendations.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RecommendationTypeEnum {}
+/// Nested message and enum types in `RecommendationTypeEnum`.
+pub mod recommendation_type_enum {
+    /// Types of recommendations.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RecommendationType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Budget recommendation for campaigns that are currently budget-constrained
+        /// (as opposed to the FORECASTING_CAMPAIGN_BUDGET recommendation, which
+        /// applies to campaigns that are expected to become budget-constrained in
+        /// the future).
+        CampaignBudget = 2,
+        /// Keyword recommendation.
+        Keyword = 3,
+        /// Recommendation to add a new text ad.
+        TextAd = 4,
+        /// Recommendation to update a campaign to use a Target CPA bidding strategy.
+        TargetCpaOptIn = 5,
+        /// Recommendation to update a campaign to use the Maximize Conversions
+        /// bidding strategy.
+        MaximizeConversionsOptIn = 6,
+        /// Recommendation to enable Enhanced Cost Per Click for a campaign.
+        EnhancedCpcOptIn = 7,
+        /// Recommendation to start showing your campaign's ads on Google Search
+        /// Partners Websites.
+        SearchPartnersOptIn = 8,
+        /// Recommendation to update a campaign to use a Maximize Clicks bidding
+        /// strategy.
+        MaximizeClicksOptIn = 9,
+        /// Recommendation to start using the "Optimize" ad rotation setting for the
+        /// given ad group.
+        OptimizeAdRotation = 10,
+        /// Recommendation to add callout extensions to a campaign.
+        CalloutExtension = 11,
+        /// Recommendation to add sitelink extensions to a campaign.
+        SitelinkExtension = 12,
+        /// Recommendation to add call extensions to a campaign.
+        CallExtension = 13,
+        /// Recommendation to change an existing keyword from one match type to a
+        /// broader match type.
+        KeywordMatchType = 14,
+        /// Recommendation to move unused budget from one budget to a constrained
+        /// budget.
+        MoveUnusedBudget = 15,
+        /// Budget recommendation for campaigns that are expected to become
+        /// budget-constrained in the future (as opposed to the CAMPAIGN_BUDGET
+        /// recommendation, which applies to campaigns that are currently
+        /// budget-constrained).
+        ForecastingCampaignBudget = 16,
+        /// Recommendation to update a campaign to use a Target ROAS bidding
+        /// strategy.
+        TargetRoasOptIn = 17,
+        /// Recommendation to add a new responsive search ad.
+        ResponsiveSearchAd = 18,
+        /// Budget recommendation for campaigns whose ROI is predicted to increase
+        /// with a budget adjustment.
+        MarginalRoiCampaignBudget = 19,
+        /// Recommendation to expand keywords to broad match for fully automated
+        /// conversion-based bidding campaigns.
+        UseBroadMatchKeyword = 20,
+        /// Recommendation to add new responsive search ad assets.
+        ResponsiveSearchAdAsset = 21,
+        /// Recommendation to upgrade a Smart Shopping campaign to a Performance Max
+        /// campaign.
+        UpgradeSmartShoppingCampaignToPerformanceMax = 22,
+        /// Recommendation to improve strength of responsive search ad.
+        ResponsiveSearchAdImproveAdStrength = 23,
+    }
+}
 // Proto file describing search engine results page types.
 
 /// The type of the search engine results page.
@@ -2817,6 +3143,79 @@ pub mod search_term_match_type_enum {
         NearExact = 5,
         /// Phrase match (close variant).
         NearPhrase = 6,
+    }
+}
+// Proto file describing SkAdNetwork Ad Event Types.
+
+/// Container for enumeration of SkAdNetwork ad event types.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SkAdNetworkAdEventTypeEnum {}
+/// Nested message and enum types in `SkAdNetworkAdEventTypeEnum`.
+pub mod sk_ad_network_ad_event_type_enum {
+    /// Enumerates SkAdNetwork ad event types
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SkAdNetworkAdEventType {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// The value was not present in the postback or we do not have this data for
+        /// other reasons.
+        Unavailable = 2,
+        /// The user interacted with the ad.
+        Interaction = 3,
+        /// The user viewed the ad.
+        View = 4,
+    }
+}
+// Proto file describing SkAdNetwork attribution credits.
+
+/// Container for enumeration of SkAdNetwork attribution credits.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SkAdNetworkAttributionCreditEnum {}
+/// Nested message and enum types in `SkAdNetworkAttributionCreditEnum`.
+pub mod sk_ad_network_attribution_credit_enum {
+    /// Enumerates SkAdNetwork attribution credits.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SkAdNetworkAttributionCredit {
+        /// Default value. This value is equivalent to null.
+        Unspecified = 0,
+        /// The value is unknown in this API version. The true enum value cannot be
+        /// returned in this API version or is not supported yet.
+        Unknown = 1,
+        /// The value was not present in the postback or we do not have this data for
+        /// other reasons.
+        Unavailable = 2,
+        /// Google was the ad network that won ad attribution.
+        Won = 3,
+        /// Google qualified for attribution, but didn't win.
+        Contributed = 4,
+    }
+}
+// Proto file describing SkAdNetwork user types.
+
+/// Container for enumeration of SkAdNetwork user types.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SkAdNetworkUserTypeEnum {}
+/// Nested message and enum types in `SkAdNetworkUserTypeEnum`.
+pub mod sk_ad_network_user_type_enum {
+    /// Enumerates SkAdNetwork user types
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SkAdNetworkUserType {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// The value was not present in the postback or we do not have this data for
+        /// other reasons.
+        Unavailable = 2,
+        /// The user installed the app for the first time.
+        NewInstaller = 3,
+        /// The user has previously installed the app.
+        Reinstaller = 4,
     }
 }
 // Proto file describing slots.
@@ -3524,6 +3923,8 @@ pub mod ad_group_type_enum {
         VideoResponsive = 16,
         /// Video efficient reach ad groups.
         VideoEfficientReach = 17,
+        /// Ad group type for Smart campaigns.
+        SmartCampaignAds = 18,
     }
 }
 // Proto file describing ad serving statuses.
@@ -3608,8 +4009,6 @@ pub mod ad_type_enum {
         TextAd = 2,
         /// The ad is an expanded text ad.
         ExpandedTextAd = 3,
-        /// The ad is a call only ad.
-        CallOnlyAd = 6,
         /// The ad is an expanded dynamic search ad.
         ExpandedDynamicSearchAd = 7,
         /// The ad is a hotel ad.
@@ -3651,12 +4050,22 @@ pub mod ad_type_enum {
         VideoNonSkippableInStreamAd = 26,
         /// Video outstream ad.
         VideoOutstreamAd = 27,
-        /// Video TrueView in-display ad.
-        VideoTrueviewDiscoveryAd = 28,
         /// Video TrueView in-stream ad.
         VideoTrueviewInStreamAd = 29,
         /// Video responsive ad.
         VideoResponsiveAd = 30,
+        /// Smart campaign ad.
+        SmartCampaignAd = 31,
+        /// Call ad.
+        CallAd = 32,
+        /// Universal app pre-registration ad.
+        AppPreRegistrationAd = 33,
+        /// In-feed video ad.
+        InFeedVideoAd = 34,
+        /// Discovery multi asset ad.
+        DiscoveryMultiAssetAd = 35,
+        /// Discovery carousel ad.
+        DiscoveryCarouselAd = 36,
     }
 }
 // Proto file describing relation type for affiliate location feeds.
@@ -3764,12 +4173,16 @@ pub mod app_campaign_bidding_strategy_goal_type_enum {
         /// Aim to maximize the long term number of selected in-app conversions from
         /// app installs. The cpa bid is the target cost per in-app conversion. Note
         /// that the actual cpa may seem higher than the target cpa at first, since
-        /// the long term conversions haven’t happened yet.
+        /// the long term conversions haven't happened yet.
         OptimizeInAppConversionsTargetConversionCost = 4,
         /// Aim to maximize all conversions' value, i.e. install + selected in-app
         /// conversions while achieving or exceeding target return on advertising
         /// spend.
         OptimizeReturnOnAdvertisingSpend = 5,
+        /// Aim to maximize the pre-registration of the app.
+        OptimizePreRegistrationConversionVolume = 6,
+        /// Aim to maximize installation of the app without target cost-per-install.
+        OptimizeInstallsWithoutTargetInstallCost = 7,
     }
 }
 // Proto file describing App placeholder fields.
@@ -3852,6 +4265,53 @@ pub mod asset_field_type_enum {
         StructuredSnippet = 12,
         /// The asset is linked for use as a Sitelink extension.
         Sitelink = 13,
+        /// The asset is linked for use as a Mobile App extension.
+        MobileApp = 14,
+        /// The asset is linked for use as a Hotel Callout extension.
+        HotelCallout = 15,
+        /// The asset is linked for use as a Call extension.
+        Call = 16,
+        /// The asset is linked for use as a Price extension.
+        Price = 24,
+        /// The asset is linked for use as a long headline.
+        LongHeadline = 17,
+        /// The asset is linked for use as a business name.
+        BusinessName = 18,
+        /// The asset is linked for use as a square marketing image.
+        SquareMarketingImage = 19,
+        /// The asset is linked for use as a portrait marketing image.
+        PortraitMarketingImage = 20,
+        /// The asset is linked for use as a logo.
+        Logo = 21,
+        /// The asset is linked for use as a landscape logo.
+        LandscapeLogo = 22,
+        /// The asset is linked for use as a non YouTube logo.
+        Video = 23,
+        /// The asset is linked for use to select a call-to-action.
+        CallToActionSelection = 25,
+    }
+}
+// Proto file describing asset group status.
+
+/// Container for enum describing possible statuses of an asset group.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetGroupStatusEnum {}
+/// Nested message and enum types in `AssetGroupStatusEnum`.
+pub mod asset_group_status_enum {
+    /// The possible statuses of an asset group.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AssetGroupStatus {
+        /// The status has not been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        Unknown = 1,
+        /// The asset group is enabled.
+        Enabled = 2,
+        /// The asset group is paused.
+        Paused = 3,
+        /// The asset group is removed.
+        Removed = 4,
     }
 }
 // Proto file describing status of an asset link.
@@ -3875,6 +4335,132 @@ pub mod asset_link_status_enum {
         Removed = 3,
         /// Asset link is paused.
         Paused = 4,
+    }
+}
+// Proto file describing asset set status.
+
+/// Container for enum describing possible statuses of an asset set asset.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetSetAssetStatusEnum {}
+/// Nested message and enum types in `AssetSetAssetStatusEnum`.
+pub mod asset_set_asset_status_enum {
+    /// The possible statuses of an asset set asset.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AssetSetAssetStatus {
+        /// The status has not been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The asset set asset is enabled.
+        Enabled = 2,
+        /// The asset set asset is removed.
+        Removed = 3,
+    }
+}
+// Proto file describing asset set status.
+
+/// Container for enum describing possible statuses of the linkage between asset
+/// set and its container.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetSetLinkStatusEnum {}
+/// Nested message and enum types in `AssetSetLinkStatusEnum`.
+pub mod asset_set_link_status_enum {
+    /// The possible statuses of he linkage between asset set and its container.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AssetSetLinkStatus {
+        /// The status has not been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The linkage between asset set and its container is enabled.
+        Enabled = 2,
+        /// The linkage between asset set and its container is removed.
+        Removed = 3,
+    }
+}
+// Proto file describing asset set status.
+
+/// Container for enum describing possible statuses of an asset set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetSetStatusEnum {}
+/// Nested message and enum types in `AssetSetStatusEnum`.
+pub mod asset_set_status_enum {
+    /// The possible statuses of an asset set.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AssetSetStatus {
+        /// The status has not been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The asset set is enabled.
+        Enabled = 2,
+        /// The asset set is removed.
+        Removed = 3,
+    }
+}
+// Proto file describing asset set type.
+
+/// Container for enum describing possible types of an asset set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetSetTypeEnum {}
+/// Nested message and enum types in `AssetSetTypeEnum`.
+pub mod asset_set_type_enum {
+    /// Possible types of an asset set.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AssetSetType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Page asset set.
+        PageFeed = 2,
+        /// Dynamic education asset set.
+        DynamicEducation = 3,
+        /// Google Merchant Center asset set.
+        MerchantCenterFeed = 4,
+        /// Dynamic real estate asset set.
+        DynamicRealEstate = 5,
+        /// Dynamic custom asset set.
+        DynamicCustom = 6,
+        /// Dynamic hotels and rentals asset set.
+        DynamicHotelsAndRentals = 7,
+        /// Dynamic flights asset set.
+        DynamicFlights = 8,
+        /// Dynamic travel asset set.
+        DynamicTravel = 9,
+        /// Dynamic local asset set.
+        DynamicLocal = 10,
+        /// Dynamic jobs asset set.
+        DynamicJobs = 11,
+    }
+}
+// Proto file describing asset source.
+
+/// Source of the asset or asset link for who generated the entity.
+/// e.g. advertiser or automatically created.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AssetSourceEnum {}
+/// Nested message and enum types in `AssetSourceEnum`.
+pub mod asset_source_enum {
+    /// Enum describing possible source of asset.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AssetSource {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The asset or asset link is provided by advertiser.
+        Advertiser = 2,
+        /// The asset or asset link is generated by Google.
+        AutomaticallyCreated = 3,
     }
 }
 // Proto file describing asset type.
@@ -3912,6 +4498,63 @@ pub mod asset_type_enum {
         StructuredSnippet = 10,
         /// Sitelink asset.
         Sitelink = 11,
+        /// Page Feed asset.
+        PageFeed = 12,
+        /// Dynamic Education asset.
+        DynamicEducation = 13,
+        /// Mobile app asset.
+        MobileApp = 14,
+        /// Hotel callout asset.
+        HotelCallout = 15,
+        /// Call asset.
+        Call = 16,
+        /// Price asset.
+        Price = 17,
+        /// Call to action asset.
+        CallToAction = 18,
+        /// Dynamic real estate asset.
+        DynamicRealEstate = 19,
+        /// Dynamic custom asset.
+        DynamicCustom = 20,
+        /// Dynamic hotels and rentals asset.
+        DynamicHotelsAndRentals = 21,
+        /// Dynamic flights asset.
+        DynamicFlights = 22,
+        /// Discovery Carousel Card asset.
+        DiscoveryCarouselCard = 23,
+        /// Dynamic travel asset.
+        DynamicTravel = 24,
+        /// Dynamic local asset.
+        DynamicLocal = 25,
+        /// Dynamic jobs asset.
+        DynamicJobs = 26,
+    }
+}
+// Proto file describing experiment async action status.
+
+/// Container for enum describing the experiment async action status.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AsyncActionStatusEnum {}
+/// Nested message and enum types in `AsyncActionStatusEnum`.
+pub mod async_action_status_enum {
+    /// The async action status of the experiment.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AsyncActionStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// Action has not started.
+        NotStarted = 2,
+        /// Action is in progress.
+        InProgress = 3,
+        /// Action has completed successfully.
+        Completed = 4,
+        /// Action has failed.
+        Failed = 5,
+        /// Action has completed successfully with warnings.
+        CompletedWithWarning = 6,
     }
 }
 /// Container for enum representing the attribution model that describes how to
@@ -3950,6 +4593,49 @@ pub mod attribution_model_enum {
         /// Flexible model that uses machine learning to determine the appropriate
         /// distribution of credit among clicks using Google Search attribution.
         GoogleSearchAttributionDataDriven = 106,
+    }
+}
+// Proto file describing a plannable network.
+
+/// Container for enum describing audience insights dimensions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceInsightsDimensionEnum {}
+/// Nested message and enum types in `AudienceInsightsDimensionEnum`.
+pub mod audience_insights_dimension_enum {
+    /// Possible audience dimensions for use in generating insights.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AudienceInsightsDimension {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// A Product & Service category.
+        Category = 2,
+        /// A Knowledge Graph entity.
+        KnowledgeGraph = 3,
+    }
+}
+// Proto file describing audience status.
+
+/// The status of audience.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceStatusEnum {}
+/// Nested message and enum types in `AudienceStatusEnum`.
+pub mod audience_status_enum {
+    /// Enum containing possible audience status types.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AudienceStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Enabled status - audience is enabled and can be targeted.
+        Enabled = 2,
+        /// Removed status - audience is removed and cannot be used for
+        /// targeting.
+        Removed = 3,
     }
 }
 // Proto file describing batch job statuses.
@@ -4067,6 +4753,17 @@ pub mod bidding_strategy_type_enum {
         /// that seem more likely to lead to a conversion and lowers
         /// them for clicks where they seem less likely.
         EnhancedCpc = 2,
+        /// Used for return value only. Indicates that a campaign does not have a
+        /// bidding strategy. This prevents the campaign from serving. For example,
+        /// a campaign may be attached to a manager bidding strategy and the serving
+        /// account is subsequently unlinked from the manager account. In this case
+        /// the campaign will automatically be detached from the now inaccessible
+        /// manager bidding strategy and transition to the INVALID bidding strategy
+        /// type.
+        Invalid = 17,
+        /// Manual bidding strategy that allows advertiser to set the bid per
+        /// advertiser-specified action.
+        ManualCpa = 18,
         /// Manual click based bidding where user pays per click.
         ManualCpc = 3,
         /// Manual impression based bidding
@@ -4271,13 +4968,6 @@ pub mod budget_type_enum {
         /// Caps daily spend at two times the specified budget amount.
         /// Full details: <https://support.google.com/google-ads/answer/6385083>
         Standard = 2,
-        /// Budget type for Hotels Ads commission program.
-        /// Full details: <https://support.google.com/google-ads/answer/9243945>
-        ///
-        /// This type is only supported by campaigns with
-        /// AdvertisingChannelType.HOTEL, BiddingStrategyType.COMMISSION and
-        /// PaymentMode.CONVERSION_VALUE.
-        HotelAdsCommission = 3,
         /// Budget type with a fixed cost-per-acquisition (conversion).
         /// Full details: <https://support.google.com/google-ads/answer/7528254>
         ///
@@ -4286,6 +4976,19 @@ pub mod budget_type_enum {
         /// AdvertisingChannelSubType.DISPLAY_GMAIL),
         /// BiddingStrategyType.TARGET_CPA and PaymentMode.CONVERSIONS.
         FixedCpa = 4,
+        /// Budget type for Smart Campaign.
+        /// Full details: <https://support.google.com/google-ads/answer/7653509>
+        ///
+        /// This type is only supported by campaigns with
+        /// AdvertisingChannelType.SMART and
+        /// AdvertisingChannelSubType.SMART_CAMPAIGN.
+        SmartCampaign = 5,
+        /// Budget type for Local Services Campaign.
+        /// Full details: <https://support.google.com/localservices/answer/7434558>
+        ///
+        /// This type is only supported by campaigns with
+        /// AdvertisingChannelType.LOCAL_SERVICES.
+        LocalServices = 6,
     }
 }
 // Proto file describing Call placeholder fields.
@@ -4536,6 +5239,27 @@ pub mod campaign_experiment_type_enum {
         Experiment = 4,
     }
 }
+// Proto file describing CampaignGroup statuses.
+
+/// Message describing CampaignGroup statuses.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CampaignGroupStatusEnum {}
+/// Nested message and enum types in `CampaignGroupStatusEnum`.
+pub mod campaign_group_status_enum {
+    /// Possible statuses of a CampaignGroup.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum CampaignGroupStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The campaign group is active.
+        Enabled = 2,
+        /// The campaign group has been removed.
+        Removed = 3,
+    }
+}
 // Proto file describing Campaign serving statuses.
 
 /// Message describing Campaign serving statuses.
@@ -4698,6 +5422,20 @@ pub mod change_event_resource_type_enum {
         AdGroupFeed = 12,
         /// An AdGroupAd resource change.
         AdGroupAd = 13,
+        /// An Asset resource change.
+        Asset = 14,
+        /// A CustomerAsset resource change.
+        CustomerAsset = 15,
+        /// A CampaignAsset resource change.
+        CampaignAsset = 16,
+        /// An AdGroupAsset resource change.
+        AdGroupAsset = 17,
+        /// An AssetSet resource change.
+        AssetSet = 18,
+        /// An AssetSetAsset resource change.
+        AssetSetAsset = 19,
+        /// A CampaignAssetSet resource change.
+        CampaignAssetSet = 20,
     }
 }
 // Proto file describing the change status operations.
@@ -4761,6 +5499,18 @@ pub mod change_status_resource_type_enum {
         CampaignFeed = 12,
         /// An AdGroupBidModifier resource change.
         AdGroupBidModifier = 13,
+        /// A SharedSet resource change.
+        SharedSet = 14,
+        /// A CampaignSharedSet resource change.
+        CampaignSharedSet = 15,
+        /// An Asset resource change.
+        Asset = 16,
+        /// A CustomerAsset resource change.
+        CustomerAsset = 17,
+        /// A CampaignAsset resource change.
+        CampaignAsset = 18,
+        /// An AdGroupAsset resource change.
+        AdGroupAsset = 19,
     }
 }
 // Proto file describing combined audience status.
@@ -4965,6 +5715,9 @@ pub mod conversion_adjustment_type_enum {
         Retraction = 2,
         /// Changes the value of a conversion.
         Restatement = 3,
+        /// Supplements an existing conversion with provided user identifiers and
+        /// user agent, which can be used by Google to enhance the conversion count.
+        Enhancement = 4,
     }
 }
 // Proto file describing conversion custom variable status.
@@ -4992,6 +5745,135 @@ pub mod conversion_custom_variable_status_enum {
         Enabled = 3,
         /// The conversion custom variable is paused and will not accrue stats
         /// until set to ENABLED again.
+        Paused = 4,
+    }
+}
+/// Container for enum representing the conversion environment an uploaded
+/// conversion was recorded on. e.g. App or Web.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionEnvironmentEnum {}
+/// Nested message and enum types in `ConversionEnvironmentEnum`.
+pub mod conversion_environment_enum {
+    /// Conversion environment of the uploaded conversion.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConversionEnvironment {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The conversion was recorded on an app.
+        App = 2,
+        /// The conversion was recorded on a website.
+        Web = 3,
+    }
+}
+// Proto file describing conversion origin.
+
+/// Container for enum describing possible conversion origins.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionOriginEnum {}
+/// Nested message and enum types in `ConversionOriginEnum`.
+pub mod conversion_origin_enum {
+    /// The possible places where a conversion can occur.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConversionOrigin {
+        /// The conversion origin has not been specified.
+        Unspecified = 0,
+        /// The conversion origin is not known in this version.
+        Unknown = 1,
+        /// Conversion that occurs when a user visits a website or takes an action
+        /// there after viewing an ad.
+        Website = 2,
+        /// Conversions reported by an offline pipeline which collects local actions
+        /// from Google-hosted pages (e.g. Google Maps, Google Place Page, etc) and
+        /// attributes them to relevant ad events.
+        GoogleHosted = 3,
+        /// Conversion that occurs when a user performs an action via any app
+        /// platforms.
+        App = 4,
+        /// Conversion that occurs when a user makes a call from ads.
+        CallFromAds = 5,
+        /// Conversion that occurs when a user visits or makes a purchase at a
+        /// physical store.
+        Store = 6,
+        /// Conversion that occurs on YouTube.
+        YoutubeHosted = 7,
+    }
+}
+/// Container for enum representing the conversion tracking status of the
+/// customer.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionTrackingStatusEnum {}
+/// Nested message and enum types in `ConversionTrackingStatusEnum`.
+pub mod conversion_tracking_status_enum {
+    /// Conversion Tracking status of the customer.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConversionTrackingStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Customer does not use any conversion tracking.
+        NotConversionTracked = 2,
+        /// The conversion actions are created and managed by this customer.
+        ConversionTrackingManagedBySelf = 3,
+        /// The conversion actions are created and managed by the manager specified
+        /// in the request's `login-customer-id`.
+        ConversionTrackingManagedByThisManager = 4,
+        /// The conversion actions are created and managed by a manager different
+        /// from the customer or manager specified in the request's
+        /// `login-customer-id`.
+        ConversionTrackingManagedByAnotherManager = 5,
+    }
+}
+// Proto file describing conversion value rule set status.
+
+/// Container for enum describing possible statuses of a conversion value rule
+/// set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionValueRuleSetStatusEnum {}
+/// Nested message and enum types in `ConversionValueRuleSetStatusEnum`.
+pub mod conversion_value_rule_set_status_enum {
+    /// Possible statuses of a conversion value rule set.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConversionValueRuleSetStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Conversion Value Rule Set is enabled and can be applied.
+        Enabled = 2,
+        /// Conversion Value Rule Set is permanently deleted and can't be applied.
+        Removed = 3,
+        /// Conversion Value Rule Set is paused and won't be applied. It can be
+        /// enabled again.
+        Paused = 4,
+    }
+}
+// Proto file describing conversion value rule status.
+
+/// Container for enum describing possible statuses of a conversion value rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ConversionValueRuleStatusEnum {}
+/// Nested message and enum types in `ConversionValueRuleStatusEnum`.
+pub mod conversion_value_rule_status_enum {
+    /// Possible statuses of a conversion value rule.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ConversionValueRuleStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Conversion Value Rule is enabled and can be applied.
+        Enabled = 2,
+        /// Conversion Value Rule is permanently deleted and can't be applied.
+        Removed = 3,
+        /// Conversion Value Rule is paused, but can be re-enabled.
         Paused = 4,
     }
 }
@@ -5095,6 +5977,10 @@ pub mod criterion_type_enum {
         CustomAudience = 32,
         /// Combined audience
         CombinedAudience = 33,
+        /// Smart Campaign keyword theme
+        KeywordTheme = 34,
+        /// Audience
+        Audience = 35,
     }
 }
 // Proto file describing custom audience member type.
@@ -5169,6 +6055,27 @@ pub mod custom_audience_type_enum {
         PurchaseIntent = 4,
         /// Matches users by what they searched on Google Search.
         Search = 5,
+    }
+}
+// Proto file describing custom conversion goal status.
+
+/// Container for enum describing possible statuses of a custom conversion goal.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomConversionGoalStatusEnum {}
+/// Nested message and enum types in `CustomConversionGoalStatusEnum`.
+pub mod custom_conversion_goal_status_enum {
+    /// The possible statuses of a custom conversion goal.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum CustomConversionGoalStatus {
+        /// The status has not been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        Unknown = 1,
+        /// The custom conversion goal is enabled.
+        Enabled = 2,
+        /// The custom conversion goal is removed.
+        Removed = 3,
     }
 }
 // Proto file describing custom interest member type.
@@ -5351,6 +6258,75 @@ pub mod customer_pay_per_conversion_eligibility_failure_reason_enum {
         Other = 8,
     }
 }
+/// Container for enum describing possible statuses of a customer.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomerStatusEnum {}
+/// Nested message and enum types in `CustomerStatusEnum`.
+pub mod customer_status_enum {
+    /// Possible statuses of a customer.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum CustomerStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Indicates an active account able to serve ads.
+        Enabled = 2,
+        /// Indicates a canceled account unable to serve ads.
+        /// Can be reactivated by an admin user.
+        Canceled = 3,
+        /// Indicates a suspended account unable to serve ads.
+        /// May only be activated by Google support.
+        Suspended = 4,
+        /// Indicates a closed account unable to serve ads.
+        /// Test account will also have CLOSED status.
+        /// Status is permanent and may not be reopened.
+        Closed = 5,
+    }
+}
+// Proto file describing customizer attribute status.
+
+/// Container for enum describing possible statuses of a customizer attribute.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomizerAttributeStatusEnum {}
+/// Nested message and enum types in `CustomizerAttributeStatusEnum`.
+pub mod customizer_attribute_status_enum {
+    /// The possible statuses of a customizer attribute.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum CustomizerAttributeStatus {
+        /// The status has not been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        Unknown = 1,
+        /// The customizer attribute is enabled.
+        Enabled = 2,
+        /// The customizer attribute is removed.
+        Removed = 3,
+    }
+}
+// Proto file describing customizer value status.
+
+/// Container for enum describing possible statuses of a customizer value.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CustomizerValueStatusEnum {}
+/// Nested message and enum types in `CustomizerValueStatusEnum`.
+pub mod customizer_value_status_enum {
+    /// The possible statuses of a customizer value.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum CustomizerValueStatus {
+        /// The status has not been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        Unknown = 1,
+        /// The customizer value is enabled.
+        Enabled = 2,
+        /// The customizer value is removed.
+        Removed = 3,
+    }
+}
 // Proto file describing data-driven model status.
 
 /// Container for enum indicating data driven model status.
@@ -5384,13 +6360,13 @@ pub mod data_driven_model_status_enum {
 }
 // Proto file describing distance buckets.
 
-/// Container for distance buckets of a user’s distance from an advertiser’s
+/// Container for distance buckets of a user's distance from an advertiser's
 /// location extension.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DistanceBucketEnum {}
 /// Nested message and enum types in `DistanceBucketEnum`.
 pub mod distance_bucket_enum {
-    /// The distance bucket for a user’s distance from an advertiser’s location
+    /// The distance bucket for a user's distance from an advertiser's location
     /// extension.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -5542,6 +6518,76 @@ pub mod education_placeholder_field_enum {
         IosAppLink = 17,
         /// Data Type: INT64. iOS app store ID.
         IosAppStoreId = 18,
+    }
+}
+// Proto file describing experiment status.
+
+/// Container for enum describing the experiment status.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExperimentStatusEnum {}
+/// Nested message and enum types in `ExperimentStatusEnum`.
+pub mod experiment_status_enum {
+    /// The status of the experiment.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ExperimentStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// The experiment is enabled.
+        Enabled = 2,
+        /// The experiment has been removed.
+        Removed = 3,
+        /// The experiment has been halted.
+        /// This status can be set from ENABLED status through API.
+        Halted = 4,
+        /// The experiment will be promoted out of experimental status.
+        Promoted = 5,
+        /// Initial status of the experiment.
+        Setup = 6,
+        /// The experiment's campaigns are pending materialization.
+        /// This status can be set from SETUP status through API.
+        Initiated = 7,
+        /// The experiment has been graduated.
+        Graduated = 8,
+    }
+}
+// Proto file describing experiment type.
+
+/// Container for enum describing the type of experiment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExperimentTypeEnum {}
+/// Nested message and enum types in `ExperimentTypeEnum`.
+pub mod experiment_type_enum {
+    /// The type of the experiment.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ExperimentType {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// This is a DISPLAY_AND_VIDEO_360 experiment.
+        DisplayAndVideo360 = 2,
+        /// This is an ad variation experiment.
+        AdVariation = 3,
+        /// A custom experiment consisting of Video campaigns.
+        YoutubeCustom = 5,
+        /// A custom experiment consisting of display campaigns.
+        DisplayCustom = 6,
+        /// A custom experiment consisting of search campaigns.
+        SearchCustom = 7,
+        /// An experiment that compares bidding strategies for display campaigns.
+        DisplayAutomatedBiddingStrategy = 8,
+        /// An experiment that compares bidding strategies for search campaigns."
+        SearchAutomatedBiddingStrategy = 9,
+        /// An experiment that compares bidding strategies for shopping campaigns.
+        ShoppingAutomatedBiddingStrategy = 10,
+        /// DEPRECATED. A smart matching experiment with search campaigns.
+        SmartMatching = 11,
+        /// A custom experiment consisting of hotel campaigns.
+        HotelCustom = 12,
     }
 }
 // Proto file describing extension setting device type.
@@ -6107,7 +7153,30 @@ pub mod geo_targeting_type_enum {
         LocationOfPresence = 3,
     }
 }
-// Proto file describing GoogleAdsField categories
+// Proto file describing goal config level.
+
+/// Container for enum describing possible goal config levels.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GoalConfigLevelEnum {}
+/// Nested message and enum types in `GoalConfigLevelEnum`.
+pub mod goal_config_level_enum {
+    /// The possible goal config levels. Campaigns automatically inherit the
+    /// effective conversion account's customer goals unless they have been
+    /// configured with their own set of campaign goals.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum GoalConfigLevel {
+        /// The goal config level has not been specified.
+        Unspecified = 0,
+        /// The goal config level is not known in this version.
+        Unknown = 1,
+        /// The goal config is defined at the customer level.
+        Customer = 2,
+        /// The goal config is defined at the campaign level.
+        Campaign = 3,
+    }
+}
+// Proto file describing GoogleAdsField categories.
 
 /// Container for enum that determines if the described artifact is a resource
 /// or a field, and if it is a field, when it segments search queries.
@@ -6137,7 +7206,7 @@ pub mod google_ads_field_category_enum {
         Metric = 6,
     }
 }
-// Proto file describing GoogleAdsField data types
+// Proto file describing GoogleAdsField data types.
 
 /// Container holding the various data types.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6297,6 +7366,37 @@ pub mod hotel_placeholder_field_enum {
         IosAppLink = 20,
         /// Data Type: INT64. iOS app store ID.
         IosAppStoreId = 21,
+    }
+}
+// Proto file describing hotel reconciliation row status.
+
+/// Container for HotelReconciliationStatus.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HotelReconciliationStatusEnum {}
+/// Nested message and enum types in `HotelReconciliationStatusEnum`.
+pub mod hotel_reconciliation_status_enum {
+    /// Status of the hotel booking reconciliation.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum HotelReconciliationStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// The value is unknown in this version.
+        Unknown = 1,
+        /// Bookings are for a future date, or a stay is underway but the check-out
+        /// date hasn't passed. An active reservation can't be reconciled.
+        ReservationEnabled = 2,
+        /// Check-out has already taken place, or the booked dates have passed
+        /// without cancellation. Bookings that are not reconciled within 45 days of
+        /// the check-out date are billed based on the original booking price.
+        ReconciliationNeeded = 3,
+        /// These bookings have been reconciled. Reconciled bookings are billed 45
+        /// days after the check-out date.
+        Reconciled = 4,
+        /// This booking was marked as canceled. Canceled stays with a value greater
+        /// than zero (due to minimum stay rules or cancellation fees) are billed 45
+        /// days after the check-out date.
+        Canceled = 5,
     }
 }
 // Proto file describing Advertiser Provided Image placeholder fields.
@@ -6515,6 +7615,178 @@ pub mod linked_account_type_enum {
         DataPartner = 3,
         /// A link to Google Ads.
         GoogleAds = 4,
+        /// A link to Hotel Center.
+        HotelCenter = 5,
+    }
+}
+// Proto file describing listing groups.
+
+/// Container for enum describing the levels of bidding category used in
+/// ListingGroupFilterDimension.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterBiddingCategoryLevelEnum {}
+/// Nested message and enum types in `ListingGroupFilterBiddingCategoryLevelEnum`.
+pub mod listing_group_filter_bidding_category_level_enum {
+    /// The level of the listing group filter bidding category.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ListingGroupFilterBiddingCategoryLevel {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Level 1.
+        Level1 = 2,
+        /// Level 2.
+        Level2 = 3,
+        /// Level 3.
+        Level3 = 4,
+        /// Level 4.
+        Level4 = 5,
+        /// Level 5.
+        Level5 = 6,
+    }
+}
+// Proto file describing listing groups.
+
+/// Container for enum describing the indexes of custom attribute used in
+/// ListingGroupFilterDimension.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterCustomAttributeIndexEnum {}
+/// Nested message and enum types in `ListingGroupFilterCustomAttributeIndexEnum`.
+pub mod listing_group_filter_custom_attribute_index_enum {
+    /// The index of customer attributes.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ListingGroupFilterCustomAttributeIndex {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// First listing group filter custom attribute.
+        Index0 = 2,
+        /// Second listing group filter custom attribute.
+        Index1 = 3,
+        /// Third listing group filter custom attribute.
+        Index2 = 4,
+        /// Fourth listing group filter custom attribute.
+        Index3 = 5,
+        /// Fifth listing group filter custom attribute.
+        Index4 = 6,
+    }
+}
+// Proto file describing listing groups.
+
+/// Locality of a product offer.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterProductChannelEnum {}
+/// Nested message and enum types in `ListingGroupFilterProductChannelEnum`.
+pub mod listing_group_filter_product_channel_enum {
+    /// Enum describing the locality of a product offer.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ListingGroupFilterProductChannel {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The item is sold online.
+        Online = 2,
+        /// The item is sold in local stores.
+        Local = 3,
+    }
+}
+// Proto file describing listing groups.
+
+/// Condition of a product offer.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterProductConditionEnum {}
+/// Nested message and enum types in `ListingGroupFilterProductConditionEnum`.
+pub mod listing_group_filter_product_condition_enum {
+    /// Enum describing the condition of a product offer.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ListingGroupFilterProductCondition {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The product condition is new.
+        New = 2,
+        /// The product condition is refurbished.
+        Refurbished = 3,
+        /// The product condition is used.
+        Used = 4,
+    }
+}
+// Proto file describing listing groups.
+
+/// Level of the type of a product offer.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterProductTypeLevelEnum {}
+/// Nested message and enum types in `ListingGroupFilterProductTypeLevelEnum`.
+pub mod listing_group_filter_product_type_level_enum {
+    /// Enum describing the level of the type of a product offer.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ListingGroupFilterProductTypeLevel {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Level 1.
+        Level1 = 2,
+        /// Level 2.
+        Level2 = 3,
+        /// Level 3.
+        Level3 = 4,
+        /// Level 4.
+        Level4 = 5,
+        /// Level 5.
+        Level5 = 6,
+    }
+}
+// Proto file describing listing groups.
+
+/// Container for enum describing the type of the listing group filter node.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterTypeEnum {}
+/// Nested message and enum types in `ListingGroupFilterTypeEnum`.
+pub mod listing_group_filter_type_enum {
+    /// The type of the listing group filter.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ListingGroupFilterType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Subdivision of products along some listing dimensions.
+        Subdivision = 2,
+        /// An included listing group filter leaf node.
+        UnitIncluded = 3,
+        /// An excluded listing group filter leaf node.
+        UnitExcluded = 4,
+    }
+}
+// Proto file describing listing groups.
+
+/// Container for enum describing the type of the vertical a listing group filter
+/// tree represents.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListingGroupFilterVerticalEnum {}
+/// Nested message and enum types in `ListingGroupFilterVerticalEnum`.
+pub mod listing_group_filter_vertical_enum {
+    /// The type of the listing group filter vertical.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ListingGroupFilterVertical {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Represents the shopping vertical.
+        Shopping = 2,
     }
 }
 // Proto file describing Local placeholder fields.
@@ -6667,8 +7939,7 @@ pub mod location_source_type_enum {
         Unspecified = 0,
         /// Used for return value only. Represents value unknown in this version.
         Unknown = 1,
-        /// Locations associated with the customer's linked Google My Business
-        /// account.
+        /// Locations associated with the customer's linked Business Profile.
         GoogleMyBusiness = 2,
         /// Affiliate (chain) store locations. For example, Best Buy store locations.
         Affiliate = 3,
@@ -6785,25 +8056,6 @@ pub mod message_placeholder_field_enum {
         MessageText = 6,
     }
 }
-/// Container for enum describing different types of mobile app vendors.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MobileAppVendorEnum {}
-/// Nested message and enum types in `MobileAppVendorEnum`.
-pub mod mobile_app_vendor_enum {
-    /// The type of mobile app vendor
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum MobileAppVendor {
-        /// Not specified.
-        Unspecified = 0,
-        /// Used for return value only. Represents value unknown in this version.
-        Unknown = 1,
-        /// Mobile app vendor for Apple app store.
-        AppleAppStore = 2,
-        /// Mobile app vendor for Google app store.
-        GoogleAppStore = 3,
-    }
-}
 // Proto file describing mobile device types.
 
 /// Container for enum describing the types of mobile device.
@@ -6868,6 +8120,41 @@ pub mod offline_user_data_job_failure_reason_enum {
         InsufficientMatchedTransactions = 2,
         /// The uploaded transactions are insufficient.
         InsufficientTransactions = 3,
+    }
+}
+/// Container for enum describing reasons match rate ranges for a customer match
+/// list upload.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct OfflineUserDataJobMatchRateRangeEnum {}
+/// Nested message and enum types in `OfflineUserDataJobMatchRateRangeEnum`.
+pub mod offline_user_data_job_match_rate_range_enum {
+    /// The match rate range of an offline user data job.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum OfflineUserDataJobMatchRateRange {
+        /// Not specified.
+        Unspecified = 0,
+        /// Default value for match rate range.
+        Unknown = 1,
+        /// Match rate range for offline data upload entity is between 0% and 19%.
+        MatchRangeLessThan20 = 2,
+        /// Match rate range for offline data upload entity is between 20% and 30%.
+        MatchRange20To30 = 3,
+        /// Match rate range for offline data upload entity is between 31% and 40%.
+        MatchRange31To40 = 4,
+        /// Match rate range for offline data upload entity is between 41% and 50%.
+        MatchRange41To50 = 5,
+        /// Match rate range for offline data upload entity is between 51% and 60%.
+        MatchRange51To60 = 6,
+        /// Match rate range for offline data upload entity is between 61% and 70%.
+        MatchRange61To70 = 7,
+        /// Match rate range for offline data upload entity is between 71% and 80%.
+        MatchRange71To80 = 8,
+        /// Match rate range for offline data upload entity is between 81% and 90%.
+        MatchRange81To90 = 9,
+        /// Match rate range for offline data upload entity more than or equal to
+        /// 91%.
+        MatchRange91To100 = 10,
     }
 }
 // Proto file describing offline user data job status.
@@ -6963,6 +8250,10 @@ pub mod optimization_goal_type_enum {
         /// times people selected 'Get directions' to navigate to a store after
         /// viewing an ad.
         DrivingDirections = 3,
+        /// Optimize for pre-registration. Pre-registration conversions are the
+        /// number of pre-registration signups to receive a notification when the app
+        /// is released.
+        AppPreRegistration = 4,
     }
 }
 // Proto file describing payment modes.
@@ -6984,7 +8275,7 @@ pub mod payment_mode_enum {
         Clicks = 4,
         /// Pay per conversion value. This mode is only supported by campaigns with
         /// AdvertisingChannelType.HOTEL, BiddingStrategyType.COMMISSION, and
-        /// BudgetType.HOTEL_ADS_COMMISSION.
+        /// BudgetType.STANDARD.
         ConversionValue = 5,
         /// Pay per conversion. This mode is only supported by campaigns with
         /// AdvertisingChannelType.DISPLAY (excluding
@@ -6996,6 +8287,32 @@ pub mod payment_mode_enum {
         /// AdvertisingChannelType.HOTEL, BiddingStrategyType.COMMISSION, and
         /// BudgetType.STANDARD.
         GuestStay = 7,
+    }
+}
+// Proto file describing advertising channel types
+
+/// Performance Max Upgrade status for campaign.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PerformanceMaxUpgradeStatusEnum {}
+/// Nested message and enum types in `PerformanceMaxUpgradeStatusEnum`.
+pub mod performance_max_upgrade_status_enum {
+    /// Performance Max Upgrade status enum for campaign.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PerformanceMaxUpgradeStatus {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// The campaign is eligible for upgrade to a Performance Max campaign.
+        UpgradeElibigle = 2,
+        /// The upgrade to a Performance Max campaign is in progress.
+        UpgradeInProgress = 3,
+        /// The upgrade to a Performance Max campaign is complete.
+        UpgradeComplete = 4,
+        /// The upgrade to a Performance Max campaign failed.
+        /// The campaign will still serve as it was before upgrade was attempted.
+        UpgradeFailed = 5,
     }
 }
 // Proto file describing placement types.
@@ -7474,73 +8791,6 @@ pub mod real_estate_placeholder_field_enum {
         IosAppStoreId = 19,
     }
 }
-// Proto file describing Recommendation types.
-
-/// Container for enum describing types of recommendations.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RecommendationTypeEnum {}
-/// Nested message and enum types in `RecommendationTypeEnum`.
-pub mod recommendation_type_enum {
-    /// Types of recommendations.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum RecommendationType {
-        /// Not specified.
-        Unspecified = 0,
-        /// Used for return value only. Represents value unknown in this version.
-        Unknown = 1,
-        /// Budget recommendation for campaigns that are currently budget-constrained
-        /// (as opposed to the FORECASTING_CAMPAIGN_BUDGET recommendation, which
-        /// applies to campaigns that are expected to become budget-constrained in
-        /// the future).
-        CampaignBudget = 2,
-        /// Keyword recommendation.
-        Keyword = 3,
-        /// Recommendation to add a new text ad.
-        TextAd = 4,
-        /// Recommendation to update a campaign to use a Target CPA bidding strategy.
-        TargetCpaOptIn = 5,
-        /// Recommendation to update a campaign to use the Maximize Conversions
-        /// bidding strategy.
-        MaximizeConversionsOptIn = 6,
-        /// Recommendation to enable Enhanced Cost Per Click for a campaign.
-        EnhancedCpcOptIn = 7,
-        /// Recommendation to start showing your campaign's ads on Google Search
-        /// Partners Websites.
-        SearchPartnersOptIn = 8,
-        /// Recommendation to update a campaign to use a Maximize Clicks bidding
-        /// strategy.
-        MaximizeClicksOptIn = 9,
-        /// Recommendation to start using the "Optimize" ad rotation setting for the
-        /// given ad group.
-        OptimizeAdRotation = 10,
-        /// Recommendation to add callout extensions to a campaign.
-        CalloutExtension = 11,
-        /// Recommendation to add sitelink extensions to a campaign.
-        SitelinkExtension = 12,
-        /// Recommendation to add call extensions to a campaign.
-        CallExtension = 13,
-        /// Recommendation to change an existing keyword from one match type to a
-        /// broader match type.
-        KeywordMatchType = 14,
-        /// Recommendation to move unused budget from one budget to a constrained
-        /// budget.
-        MoveUnusedBudget = 15,
-        /// Budget recommendation for campaigns that are expected to become
-        /// budget-constrained in the future (as opposed to the CAMPAIGN_BUDGET
-        /// recommendation, which applies to campaigns that are currently
-        /// budget-constrained).
-        ForecastingCampaignBudget = 16,
-        /// Recommendation to update a campaign to use a Target ROAS bidding
-        /// strategy.
-        TargetRoasOptIn = 17,
-        /// Recommendation to add a new responsive search ad.
-        ResponsiveSearchAd = 18,
-        /// Budget recommendation for campaigns whose ROI is predicted to increase
-        /// with a budget adjustment.
-        MarginalRoiCampaignBudget = 19,
-    }
-}
 // Proto file describing the resource change operations in change event.
 
 /// Container for enum describing resource change operations
@@ -7686,6 +8936,8 @@ pub mod resource_limit_type_enum {
         BasicUserListsPerCustomer = 47,
         /// Number of open logical user lists per customer.
         LogicalUserListsPerCustomer = 48,
+        /// Number of open rule based user lists per customer.
+        RuleBasedUserListsPerCustomer = 153,
         /// Number of ENABLED and PAUSED ad group ads across all base campaigns for a
         /// customer.
         BaseAdGroupAdsPerCustomer = 53,
@@ -7711,8 +8963,93 @@ pub mod resource_limit_type_enum {
         LocalAdsPerAdGroup = 62,
         /// Number of ENABLED video ads per ad group.
         VideoAdsPerAdGroup = 63,
-        /// Number of ENABLED lead form asset links per campaign.
-        LeadFormAssetLinksPerCampaign = 68,
+        /// Number of ENABLED lead form CampaignAssets per campaign.
+        LeadFormCampaignAssetsPerCampaign = 143,
+        /// Number of ENABLED promotion CustomerAssets per customer.
+        PromotionCustomerAssetsPerCustomer = 79,
+        /// Number of ENABLED promotion CampaignAssets per campaign.
+        PromotionCampaignAssetsPerCampaign = 80,
+        /// Number of ENABLED promotion AdGroupAssets per ad group.
+        PromotionAdGroupAssetsPerAdGroup = 81,
+        /// Number of ENABLED callout CustomerAssets per customer.
+        CalloutCustomerAssetsPerCustomer = 134,
+        /// Number of ENABLED callout CampaignAssets per campaign.
+        CalloutCampaignAssetsPerCampaign = 135,
+        /// Number of ENABLED callout AdGroupAssets per ad group.
+        CalloutAdGroupAssetsPerAdGroup = 136,
+        /// Number of ENABLED sitelink CustomerAssets per customer.
+        SitelinkCustomerAssetsPerCustomer = 137,
+        /// Number of ENABLED sitelink CampaignAssets per campaign.
+        SitelinkCampaignAssetsPerCampaign = 138,
+        /// Number of ENABLED sitelink AdGroupAssets per ad group.
+        SitelinkAdGroupAssetsPerAdGroup = 139,
+        /// Number of ENABLED structured snippet CustomerAssets per customer.
+        StructuredSnippetCustomerAssetsPerCustomer = 140,
+        /// Number of ENABLED structured snippet CampaignAssets per campaign.
+        StructuredSnippetCampaignAssetsPerCampaign = 141,
+        /// Number of ENABLED structured snippet AdGroupAssets per ad group.
+        StructuredSnippetAdGroupAssetsPerAdGroup = 142,
+        /// Number of ENABLED mobile app CustomerAssets per customer.
+        MobileAppCustomerAssetsPerCustomer = 144,
+        /// Number of ENABLED mobile app CampaignAssets per campaign.
+        MobileAppCampaignAssetsPerCampaign = 145,
+        /// Number of ENABLED mobile app AdGroupAssets per ad group.
+        MobileAppAdGroupAssetsPerAdGroup = 146,
+        /// Number of ENABLED hotel callout CustomerAssets per customer.
+        HotelCalloutCustomerAssetsPerCustomer = 147,
+        /// Number of ENABLED hotel callout CampaignAssets per campaign.
+        HotelCalloutCampaignAssetsPerCampaign = 148,
+        /// Number of ENABLED hotel callout AdGroupAssets per ad group.
+        HotelCalloutAdGroupAssetsPerAdGroup = 149,
+        /// Number of ENABLED call CustomerAssets per customer.
+        CallCustomerAssetsPerCustomer = 150,
+        /// Number of ENABLED call CampaignAssets per campaign.
+        CallCampaignAssetsPerCampaign = 151,
+        /// Number of ENABLED call AdGroupAssets per ad group.
+        CallAdGroupAssetsPerAdGroup = 152,
+        /// Number of ENABLED price CustomerAssets per customer.
+        PriceCustomerAssetsPerCustomer = 154,
+        /// Number of ENABLED price CampaignAssets per campaign.
+        PriceCampaignAssetsPerCampaign = 155,
+        /// Number of ENABLED price AdGroupAssets per ad group.
+        PriceAdGroupAssetsPerAdGroup = 156,
+        /// Number of ENABLED page feed asset sets per customer.
+        PageFeedAssetSetsPerCustomer = 157,
+        /// Number of ENABLED dynamic education feed asset sets per customer.
+        DynamicEducationFeedAssetSetsPerCustomer = 158,
+        /// Number of ENABLED assets per page feed asset set.
+        AssetsPerPageFeedAssetSet = 159,
+        /// Number of ENABLED assets per dynamic education asset set.
+        AssetsPerDynamicEducationFeedAssetSet = 160,
+        /// Number of ENABLED dynamic real estate asset sets per customer.
+        DynamicRealEstateAssetSetsPerCustomer = 161,
+        /// Number of ENABLED assets per dynamic real estate asset set.
+        AssetsPerDynamicRealEstateAssetSet = 162,
+        /// Number of ENABLED dynamic custom asset sets per customer.
+        DynamicCustomAssetSetsPerCustomer = 163,
+        /// Number of ENABLED assets per dynamic custom asset set.
+        AssetsPerDynamicCustomAssetSet = 164,
+        /// Number of ENABLED dynamic hotels and rentals asset sets per
+        /// customer.
+        DynamicHotelsAndRentalsAssetSetsPerCustomer = 165,
+        /// Number of ENABLED assets per dynamic hotels and rentals asset set.
+        AssetsPerDynamicHotelsAndRentalsAssetSet = 166,
+        /// Number of ENABLED dynamic local asset sets per customer.
+        DynamicLocalAssetSetsPerCustomer = 167,
+        /// Number of ENABLED assets per dynamic local asset set.
+        AssetsPerDynamicLocalAssetSet = 168,
+        /// Number of ENABLED dynamic flights asset sets per customer.
+        DynamicFlightsAssetSetsPerCustomer = 169,
+        /// Number of ENABLED assets per dynamic flights asset set.
+        AssetsPerDynamicFlightsAssetSet = 170,
+        /// Number of ENABLED dynamic travel asset sets per customer.
+        DynamicTravelAssetSetsPerCustomer = 171,
+        /// Number of ENABLED assets per dynamic travel asset set.
+        AssetsPerDynamicTravelAssetSet = 172,
+        /// Number of ENABLED dynamic jobs asset sets per customer.
+        DynamicJobsAssetSetsPerCustomer = 173,
+        /// Number of ENABLED assets per dynamic jobs asset set.
+        AssetsPerDynamicJobsAssetSet = 174,
         /// Number of versions per ad.
         VersionsPerAd = 82,
         /// Number of ENABLED user feeds per customer.
@@ -7830,6 +9167,59 @@ pub mod search_term_targeting_status_enum {
         AddedExcluded = 4,
         /// Search term is neither targeted nor excluded.
         None = 5,
+    }
+}
+// Proto file describing seasonality event status.
+
+/// Message describing seasonality event scopes. The two types of seasonality
+/// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SeasonalityEventScopeEnum {}
+/// Nested message and enum types in `SeasonalityEventScopeEnum`.
+pub mod seasonality_event_scope_enum {
+    /// The possible scopes of a Seasonality Event.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SeasonalityEventScope {
+        /// No value has been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        ///
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The seasonality event is applied to all the customer's traffic for
+        /// supported advertising channel types and device types. The CUSTOMER scope
+        /// cannot be used in mutates.
+        Customer = 2,
+        /// The seasonality event is applied to all specified campaigns.
+        Campaign = 4,
+        /// The seasonality event is applied to all campaigns that belong to
+        /// specified channel types.
+        Channel = 5,
+    }
+}
+// Proto file describing seasonality event status.
+
+/// Message describing seasonality event statuses. The two types of seasonality
+/// events are BiddingSeasonalityAdjustments and BiddingDataExclusions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SeasonalityEventStatusEnum {}
+/// Nested message and enum types in `SeasonalityEventStatusEnum`.
+pub mod seasonality_event_status_enum {
+    /// The possible statuses of a Seasonality Event.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SeasonalityEventStatus {
+        /// No value has been specified.
+        Unspecified = 0,
+        /// The received value is not known in this version.
+        ///
+        /// This is a response-only value.
+        Unknown = 1,
+        /// The seasonality event is enabled.
+        Enabled = 2,
+        /// The seasonality event is removed.
+        Removed = 4,
     }
 }
 // Proto file describing shared set statuses.
@@ -8357,6 +9747,123 @@ pub mod user_list_type_enum {
         /// UserList of first-party CRM data provided by advertiser in the form of
         /// emails or other formats.
         CrmBased = 7,
+    }
+}
+// Proto file describing conversion value rule device type.
+
+/// Container for enum describing possible device types used in a conversion
+/// value rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleDeviceTypeEnum {}
+/// Nested message and enum types in `ValueRuleDeviceTypeEnum`.
+pub mod value_rule_device_type_enum {
+    /// Possible device types used in conversion value rule.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleDeviceType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Mobile device.
+        Mobile = 2,
+        /// Desktop device.
+        Desktop = 3,
+        /// Tablet device.
+        Tablet = 4,
+    }
+}
+// Proto file describing conversion value rule geo location match type.
+
+/// Container for enum describing possible geographic location matching types
+/// used in a conversion value rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleGeoLocationMatchTypeEnum {}
+/// Nested message and enum types in `ValueRuleGeoLocationMatchTypeEnum`.
+pub mod value_rule_geo_location_match_type_enum {
+    /// Possible geographic location matching types.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleGeoLocationMatchType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Either Area of Interest or Location of Presence can be used to match.
+        Any = 2,
+        /// Only Location of Presence can be used to match.
+        LocationOfPresence = 3,
+    }
+}
+// Proto file describing conversion value rule operation.
+
+/// Container for enum describing possible operations for value rules which are
+/// executed when rules are triggered.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleOperationEnum {}
+/// Nested message and enum types in `ValueRuleOperationEnum`.
+pub mod value_rule_operation_enum {
+    /// Possible operations of the action of a conversion value rule.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleOperation {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Add provided value to conversion value.
+        Add = 2,
+        /// Multiply conversion value by provided value.
+        Multiply = 3,
+        /// Set conversion value to provided value.
+        Set = 4,
+    }
+}
+// Proto file describing where the conversion value rule is attached.
+
+/// Container for enum describing where a value rule set is attached.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleSetAttachmentTypeEnum {}
+/// Nested message and enum types in `ValueRuleSetAttachmentTypeEnum`.
+pub mod value_rule_set_attachment_type_enum {
+    /// Possible level where a value rule set is attached.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleSetAttachmentType {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Attached to the customer.
+        Customer = 2,
+        /// Attached to a campaign.
+        Campaign = 3,
+    }
+}
+// Proto file describing conversion value rule set dimension.
+
+/// Container for enum describing possible dimensions of a conversion value rule
+/// set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ValueRuleSetDimensionEnum {}
+/// Nested message and enum types in `ValueRuleSetDimensionEnum`.
+pub mod value_rule_set_dimension_enum {
+    /// Possible dimensions of a conversion value rule set.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueRuleSetDimension {
+        /// Not specified.
+        Unspecified = 0,
+        /// Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        /// Dimension for geo location.
+        GeoLocation = 2,
+        /// Dimension for device type.
+        Device = 3,
+        /// Dimension for audience.
+        Audience = 4,
+        /// This dimension implies the rule will always apply.
+        NoCondition = 5,
     }
 }
 // Proto file describing vanity pharma display url modes.

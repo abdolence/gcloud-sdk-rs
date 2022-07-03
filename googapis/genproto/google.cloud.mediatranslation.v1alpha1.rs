@@ -147,7 +147,10 @@ pub struct StreamingTranslateSpeechConfig {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StreamingTranslateSpeechRequest {
     /// The streaming request, which is either a streaming config or content.
-    #[prost(oneof = "streaming_translate_speech_request::StreamingRequest", tags = "1, 2")]
+    #[prost(
+        oneof = "streaming_translate_speech_request::StreamingRequest",
+        tags = "1, 2"
+    )]
     pub streaming_request:
         ::core::option::Option<streaming_translate_speech_request::StreamingRequest>,
 }
@@ -236,7 +239,10 @@ pub struct StreamingTranslateSpeechResponse {
     #[prost(message, optional, tag = "2")]
     pub result: ::core::option::Option<StreamingTranslateSpeechResult>,
     /// Output only. Indicates the type of speech event.
-    #[prost(enumeration = "streaming_translate_speech_response::SpeechEventType", tag = "3")]
+    #[prost(
+        enumeration = "streaming_translate_speech_response::SpeechEventType",
+        tag = "3"
+    )]
     pub speech_event_type: i32,
 }
 /// Nested message and enum types in `StreamingTranslateSpeechResponse`.
@@ -327,7 +333,9 @@ pub mod speech_translation_service_client {
             })?;
             let codec = tonic::codec::ProstCodec::default();
             let path = http :: uri :: PathAndQuery :: from_static ("/google.cloud.mediatranslation.v1alpha1.SpeechTranslationService/StreamingTranslateSpeech") ;
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }

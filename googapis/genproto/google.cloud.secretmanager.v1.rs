@@ -41,6 +41,19 @@ pub struct Secret {
     /// rotation policy.
     #[prost(message, optional, tag = "9")]
     pub rotation: ::core::option::Option<Rotation>,
+    /// Optional. Mapping from version alias to version name.
+    ///
+    /// A version alias is a string with a maximum length of 63 characters and can
+    /// contain uppercase and lowercase letters, numerals, and the hyphen (`-`)
+    /// and underscore ('_') characters. An alias string must start with a
+    /// letter and cannot be the string 'latest' or 'NEW'.
+    /// No more than 50 aliases can be assigned to a given secret.
+    ///
+    /// Version-Alias pairs will be viewable via GetSecret and modifiable via
+    /// UpdateSecret. At launch access by alias will only be supported on
+    /// GetSecretVersion and AccessSecretVersion.
+    #[prost(map = "string, int64", tag = "11")]
+    pub version_aliases: ::std::collections::HashMap<::prost::alloc::string::String, i64>,
     /// Expiration policy attached to the \[Secret][google.cloud.secretmanager.v1.Secret\]. If specified the \[Secret][google.cloud.secretmanager.v1.Secret\]
     /// and all \[SecretVersions][google.cloud.secretmanager.v1.SecretVersion\] will be automatically deleted at
     /// expiration. Expired secrets are irreversibly deleted.
@@ -100,6 +113,11 @@ pub struct SecretVersion {
     /// Output only. Etag of the currently stored \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\].
     #[prost(string, tag = "6")]
     pub etag: ::prost::alloc::string::String,
+    /// Output only. True if payload checksum specified in \[SecretPayload][google.cloud.secretmanager.v1.SecretPayload\] object has been
+    /// received by \[SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService\] on
+    /// \[SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion\].
+    #[prost(bool, tag = "7")]
+    pub client_specified_payload_checksum: bool,
 }
 /// Nested message and enum types in `SecretVersion`.
 pub mod secret_version {
@@ -316,6 +334,18 @@ pub struct SecretPayload {
     /// The secret data. Must be no larger than 64KiB.
     #[prost(bytes = "vec", tag = "1")]
     pub data: ::prost::alloc::vec::Vec<u8>,
+    /// Optional. If specified, \[SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService\] will verify the integrity of the
+    /// received \[data][google.cloud.secretmanager.v1.SecretPayload.data\] on \[SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion\] calls using
+    /// the crc32c checksum and store it to include in future
+    /// \[SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion\] responses. If a checksum is
+    /// not provided in the \[SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion\] request, the
+    /// \[SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService\] will generate and store one for you.
+    ///
+    /// The CRC32C value is encoded as a Int64 for compatibility, and can be
+    /// safely downconverted to uint32 in languages that support this type.
+    /// <https://cloud.google.com/apis/design/design_patterns#integer_types>
+    #[prost(int64, optional, tag = "2")]
+    pub data_crc32c: ::core::option::Option<i64>,
 }
 /// Request message for \[SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets\].
 #[derive(Clone, PartialEq, ::prost::Message)]

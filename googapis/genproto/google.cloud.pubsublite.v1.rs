@@ -1200,7 +1200,9 @@ pub mod cursor_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.CursorService/StreamingCommitCursor",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
         #[doc = " Updates the committed cursor."]
         pub async fn commit_cursor(
@@ -1383,7 +1385,9 @@ pub mod publisher_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.PublisherService/Publish",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }
@@ -1650,7 +1654,9 @@ pub mod subscriber_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.SubscriberService/Subscribe",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }
@@ -1729,7 +1735,9 @@ pub mod partition_assignment_service_client {
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.pubsublite.v1.PartitionAssignmentService/AssignPartitions",
             );
-            self.inner.streaming(request.into_streaming_request(), path, codec).await
+            self.inner
+                .streaming(request.into_streaming_request(), path, codec)
+                .await
         }
     }
 }

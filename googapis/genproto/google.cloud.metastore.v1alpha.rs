@@ -48,6 +48,8 @@ pub struct Service {
     pub metadata_integration: ::core::option::Option<MetadataIntegration>,
     /// The one hour maintenance window of the metastore service. This specifies
     /// when the service can be restarted for maintenance purposes in UTC time.
+    /// Maintenance window is not needed for services with the SPANNER
+    /// database type.
     #[prost(message, optional, tag = "15")]
     pub maintenance_window: ::core::option::Option<MaintenanceWindow>,
     /// Output only. The globally unique resource identifier of the metastore service.
@@ -60,6 +62,17 @@ pub struct Service {
     /// If unspecified, defaults to `STABLE`.
     #[prost(enumeration = "service::ReleaseChannel", tag = "19")]
     pub release_channel: i32,
+    /// Immutable. Information used to configure the Dataproc Metastore service to encrypt
+    /// customer data at rest. Cannot be updated.
+    #[prost(message, optional, tag = "20")]
+    pub encryption_config: ::core::option::Option<EncryptionConfig>,
+    /// Immutable. The configuration specifying the network settings for the
+    /// Dataproc Metastore service.
+    #[prost(message, optional, tag = "21")]
+    pub network_config: ::core::option::Option<NetworkConfig>,
+    /// Immutable. The database type that the Metastore service stores its data.
+    #[prost(enumeration = "service::DatabaseType", tag = "22")]
+    pub database_type: i32,
     /// Configuration properties specific to the underlying metastore service
     /// technology (the software that serves metastore queries).
     #[prost(oneof = "service::MetastoreConfig", tags = "5")]
@@ -120,6 +133,17 @@ pub mod service {
         /// and have been validated for production use.
         Stable = 2,
     }
+    /// The backend database type for the metastore service.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum DatabaseType {
+        /// The DATABASE_TYPE is not set.
+        Unspecified = 0,
+        /// MySQL is used to persist the metastore data.
+        Mysql = 1,
+        /// Spanner is used to persist the metastore data.
+        Spanner = 2,
+    }
     /// Configuration properties specific to the underlying metastore service
     /// technology (the software that serves metastore queries).
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -136,6 +160,9 @@ pub struct MetadataIntegration {
     /// The integration config for the Data Catalog service.
     #[prost(message, optional, tag = "1")]
     pub data_catalog_config: ::core::option::Option<DataCatalogConfig>,
+    /// The integration config for the Dataplex service.
+    #[prost(message, optional, tag = "2")]
+    pub dataplex_config: ::core::option::Option<DataplexConfig>,
 }
 /// Specifies how metastore metadata should be integrated with the Data Catalog
 /// service.
@@ -145,6 +172,25 @@ pub struct DataCatalogConfig {
     /// The default value is to disable syncing metastore metadata to Data Catalog.
     #[prost(bool, tag = "2")]
     pub enabled: bool,
+}
+/// Specifies how metastore metadata should be integrated with the Dataplex
+/// service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DataplexConfig {
+    /// A reference to the Lake resources that this metastore service is attached
+    /// to. The key is the lake resource name. Example:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`.
+    #[prost(map = "string, message", tag = "1")]
+    pub lake_resources: ::std::collections::HashMap<::prost::alloc::string::String, Lake>,
+}
+/// Represents a Lake resource
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Lake {
+    /// The Lake resource name.
+    /// Example:
+    /// `projects/{project_number}/locations/{location_id}/lakes/{lake_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
 }
 /// Maintenance window. This specifies when Dataproc Metastore
 /// may perform system maintenance operation to the service.
@@ -166,7 +212,9 @@ pub struct HiveMetastoreConfig {
     pub version: ::prost::alloc::string::String,
     /// A mapping of Hive metastore configuration key-value pairs to apply to the
     /// Hive metastore (configured in `hive-site.xml`). The mappings
-    /// override system defaults (some keys cannot be overridden).
+    /// override system defaults (some keys cannot be overridden). These
+    /// overrides are also applied to auxiliary versions and can be further
+    /// customized in the auxiliary version's `AuxiliaryVersionConfig`.
     #[prost(map = "string, string", tag = "2")]
     pub config_overrides:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -177,6 +225,35 @@ pub struct HiveMetastoreConfig {
     /// while omitting this field from the request's `service`.
     #[prost(message, optional, tag = "3")]
     pub kerberos_config: ::core::option::Option<KerberosConfig>,
+    /// The protocol to use for the metastore service endpoint. If unspecified,
+    /// defaults to `THRIFT`.
+    #[prost(enumeration = "hive_metastore_config::EndpointProtocol", tag = "4")]
+    pub endpoint_protocol: i32,
+    /// A mapping of Hive metastore version to the auxiliary version
+    /// configuration. When specified, a secondary Hive metastore service is
+    /// created along with the primary service. All auxiliary versions must be less
+    /// than the service's primary version. The key is the auxiliary service name
+    /// and it must match the regular expression \[a-z]([-a-z0-9]*[a-z0-9\])?. This
+    /// means that the first character must be a lowercase letter, and all the
+    /// following characters must be hyphens, lowercase letters, or digits, except
+    /// the last character, which cannot be a hyphen.
+    #[prost(map = "string, message", tag = "5")]
+    pub auxiliary_versions:
+        ::std::collections::HashMap<::prost::alloc::string::String, AuxiliaryVersionConfig>,
+}
+/// Nested message and enum types in `HiveMetastoreConfig`.
+pub mod hive_metastore_config {
+    /// Protocols available for serving the metastore service endpoint.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum EndpointProtocol {
+        /// The protocol is not set.
+        Unspecified = 0,
+        /// Use the legacy Apache Thrift protocol for the metastore service endpoint.
+        Thrift = 1,
+        /// Use the modernized gRPC protocol for the metastore service endpoint.
+        Grpc = 2,
+    }
 }
 /// Configuration information for a Kerberos principal.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -191,7 +268,7 @@ pub struct KerberosConfig {
     #[prost(string, tag = "2")]
     pub principal: ::prost::alloc::string::String,
     /// A Cloud Storage URI that specifies the path to a
-    /// krb5.conf file. It is of the form gs://{bucket_name}/path/to/krb5.conf,
+    /// krb5.conf file. It is of the form `gs://{bucket_name}/path/to/krb5.conf`,
     /// although the file does not need to be named krb5.conf explicitly.
     #[prost(string, tag = "3")]
     pub krb5_config_gcs_uri: ::prost::alloc::string::String,
@@ -212,6 +289,72 @@ pub mod secret {
         /// `projects/{project_number}/secrets/{secret_id}/versions/{version_id}`.
         #[prost(string, tag = "2")]
         CloudSecret(::prost::alloc::string::String),
+    }
+}
+/// Encryption settings for the service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EncryptionConfig {
+    /// The fully qualified customer provided Cloud KMS key name to use for
+    /// customer data encryption, in the following form:
+    ///
+    /// `projects/{project_number}/locations/{location_id}/keyRings/{key_ring_id}/cryptoKeys/{crypto_key_id}`.
+    #[prost(string, tag = "1")]
+    pub kms_key: ::prost::alloc::string::String,
+}
+/// Configuration information for the auxiliary service versions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuxiliaryVersionConfig {
+    /// The Hive metastore version of the auxiliary service. It must be less
+    /// than the primary Hive metastore service's version.
+    #[prost(string, tag = "1")]
+    pub version: ::prost::alloc::string::String,
+    /// A mapping of Hive metastore configuration key-value pairs to apply to the
+    /// auxiliary Hive metastore (configured in `hive-site.xml`) in addition to
+    /// the primary version's overrides. If keys are present in both the auxiliary
+    /// version's overrides and the primary version's overrides, the value from
+    /// the auxiliary version's overrides takes precedence.
+    #[prost(map = "string, string", tag = "2")]
+    pub config_overrides:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Output only. The network configuration contains the endpoint URI(s) of the auxiliary
+    /// Hive metastore service.
+    #[prost(message, optional, tag = "3")]
+    pub network_config: ::core::option::Option<NetworkConfig>,
+}
+/// Network configuration for the Dataproc Metastore service.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NetworkConfig {
+    /// Immutable. The consumer-side network configuration for the Dataproc Metastore
+    /// instance.
+    #[prost(message, repeated, tag = "1")]
+    pub consumers: ::prost::alloc::vec::Vec<network_config::Consumer>,
+}
+/// Nested message and enum types in `NetworkConfig`.
+pub mod network_config {
+    /// Contains information of the customer's network configurations.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Consumer {
+        /// Output only. The URI of the endpoint used to access the metastore service.
+        #[prost(string, tag = "3")]
+        pub endpoint_uri: ::prost::alloc::string::String,
+        #[prost(oneof = "consumer::VpcResource", tags = "1")]
+        pub vpc_resource: ::core::option::Option<consumer::VpcResource>,
+    }
+    /// Nested message and enum types in `Consumer`.
+    pub mod consumer {
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum VpcResource {
+            /// The subnetwork of the customer project from which an IP address is
+            /// reserved and used as the Dataproc Metastore service's
+            /// endpoint. It is accessible to hosts in the subnet and to all
+            /// hosts in a subnet in the same region and same network. There must
+            /// be at least one IP address available in the subnet's primary range. The
+            /// subnet is specified in the following form:
+            ///
+            /// `projects/{project_number}/regions/{region_id}/subnetworks/{subnetwork_id}
+            #[prost(string, tag = "1")]
+            Subnetwork(::prost::alloc::string::String),
+        }
     }
 }
 /// The metadata management activities of the metastore service.
@@ -235,12 +378,15 @@ pub struct MetadataImport {
     /// The description of the metadata import.
     #[prost(string, tag = "2")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The time when the metadata import was created.
+    /// Output only. The time when the metadata import was started.
     #[prost(message, optional, tag = "3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The time when the metadata import was last updated.
     #[prost(message, optional, tag = "4")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time when the metadata import finished.
+    #[prost(message, optional, tag = "7")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The current state of the metadata import.
     #[prost(enumeration = "metadata_import::State", tag = "5")]
     pub state: i32,
@@ -375,6 +521,9 @@ pub struct Backup {
     /// The description of the backup.
     #[prost(string, tag = "6")]
     pub description: ::prost::alloc::string::String,
+    /// Output only. Services that are restoring from the backup.
+    #[prost(string, repeated, tag = "7")]
+    pub restoring_services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `Backup`.
 pub mod backup {
@@ -392,6 +541,8 @@ pub mod backup {
         Active = 3,
         /// The backup failed.
         Failed = 4,
+        /// The backup is being restored.
+        Restoring = 5,
     }
 }
 /// The details of a metadata restore operation.
@@ -409,7 +560,7 @@ pub struct Restore {
     /// Output only. The relative resource name of the metastore service backup to restore
     /// from, in the following form:
     ///
-    /// `projects/{project_id}/locations/{location_id}/services/{service_id}/backups/{backup_id}`
+    /// `projects/{project_id}/locations/{location_id}/services/{service_id}/backups/{backup_id}`.
     #[prost(string, tag = "4")]
     pub backup: ::prost::alloc::string::String,
     /// Output only. The type of restore.
@@ -437,7 +588,7 @@ pub mod restore {
         /// The metadata restore is cancelled.
         Cancelled = 4,
     }
-    /// The type of restore.
+    /// The type of restore. If unspecified, defaults to `METADATA_ONLY`.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum RestoreType {
@@ -661,7 +812,7 @@ pub struct CreateMetadataImportRequest {
     /// Required. The relative resource name of the service in which to create a metastore
     /// import, in the following form:
     ///
-    /// `projects/{project_number}/locations/{location_id}/services/{service_id}`
+    /// `projects/{project_number}/locations/{location_id}/services/{service_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the metadata import, which is used as the final component of the
@@ -786,7 +937,7 @@ pub struct CreateBackupRequest {
     /// Required. The relative resource name of the service in which to create a backup
     /// of the following form:
     ///
-    /// `projects/{project_number}/locations/{location_id}/services/{service_id}`
+    /// `projects/{project_number}/locations/{location_id}/services/{service_id}`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,
     /// Required. The ID of the backup, which is used as the final component of the
@@ -846,7 +997,7 @@ pub struct ExportMetadataRequest {
     /// Required. The relative resource name of the metastore service to run export, in the
     /// following form:
     ///
-    /// `projects/{project_id}/locations/{location_id}/services/{service_id}`
+    /// `projects/{project_id}/locations/{location_id}/services/{service_id}`.
     #[prost(string, tag = "1")]
     pub service: ::prost::alloc::string::String,
     /// Optional. A request ID. Specify a unique request ID to allow the server to ignore the
@@ -888,13 +1039,13 @@ pub struct RestoreServiceRequest {
     /// Required. The relative resource name of the metastore service to run restore, in the
     /// following form:
     ///
-    /// `projects/{project_id}/locations/{location_id}/services/{service_id}`
+    /// `projects/{project_id}/locations/{location_id}/services/{service_id}`.
     #[prost(string, tag = "1")]
     pub service: ::prost::alloc::string::String,
     /// Required. The relative resource name of the metastore service backup to restore
     /// from, in the following form:
     ///
-    /// `projects/{project_id}/locations/{location_id}/services/{service_id}/backups/{backup_id}`
+    /// `projects/{project_id}/locations/{location_id}/services/{service_id}/backups/{backup_id}`.
     #[prost(string, tag = "2")]
     pub backup: ::prost::alloc::string::String,
     /// Optional. The type of restore. If unspecified, defaults to `METADATA_ONLY`.
@@ -980,6 +1131,8 @@ pub mod database_dump_spec {
         Unspecified = 0,
         /// Database dump is a MySQL dump file.
         Mysql = 1,
+        /// Database dump contains Avro files.
+        Avro = 2,
     }
 }
 #[doc = r" Generated client implementations."]
@@ -987,8 +1140,8 @@ pub mod dataproc_metastore_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
     #[doc = " Configures and manages metastore services."]
-    #[doc = " Metastore services are fully managed, highly available, auto-scaled,"]
-    #[doc = " auto-healing, OSS-native deployments of technical metadata management"]
+    #[doc = " Metastore services are fully managed, highly available, autoscaled,"]
+    #[doc = " autohealing, OSS-native deployments of technical metadata management"]
     #[doc = " software. Each metastore service exposes a network endpoint through which"]
     #[doc = " metadata queries are served. Metadata queries can originate from a variety"]
     #[doc = " of sources, including Apache Hive, Apache Presto, and Apache Spark."]
@@ -1291,7 +1444,7 @@ pub mod dataproc_metastore_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a new Backup in a given project and location."]
+        #[doc = " Creates a new backup in a given project and location."]
         pub async fn create_backup(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateBackupRequest>,

@@ -27,8 +27,10 @@ pub struct OperationMetadata {
     pub api_version: ::prost::alloc::string::String,
 }
 /// A hub is a collection of spokes. A single hub can contain spokes from
-/// multiple regions. However, all of a hub's spokes must be associated with
-/// resources that reside in the same VPC network.
+/// multiple regions. However, if any of a hub's spokes use the data transfer
+/// feature, the resources associated with those spokes must all reside in the
+/// same VPC network. Spokes that do not use data transfer can be associated
+/// with any VPC network in your project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Hub {
     /// Immutable. The name of the hub. Hub names must be unique. They use the
@@ -59,22 +61,27 @@ pub struct Hub {
     /// Output only. The current lifecycle state of this hub.
     #[prost(enumeration = "State", tag = "9")]
     pub state: i32,
-    /// The VPC network associated with this hub's spokes. All of the VPN tunnels,
-    /// VLAN attachments, and router appliance instances referenced by this hub's
-    /// spokes must belong to this VPC network.
+    /// The VPC networks associated with this hub's spokes.
     ///
     /// This field is read-only. Network Connectivity Center automatically
     /// populates it based on the set of spokes attached to the hub.
     #[prost(message, repeated, tag = "10")]
     pub routing_vpcs: ::prost::alloc::vec::Vec<RoutingVpc>,
 }
-/// RoutingVPC contains information about the VPC network that is associated with
-/// a hub's spokes.
+/// RoutingVPC contains information about the VPC networks that are associated
+/// with a hub's spokes.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RoutingVpc {
     /// The URI of the VPC network.
     #[prost(string, tag = "1")]
     pub uri: ::prost::alloc::string::String,
+    /// Output only. If true, indicates that this VPC network is currently associated with
+    /// spokes that use the data transfer feature (spokes where the
+    /// site_to_site_data_transfer field is set to true). If you create new spokes
+    /// that use data transfer, they must be associated with this VPC network. At
+    /// most, one VPC network will have this field set to true.
+    #[prost(bool, tag = "2")]
+    pub required_for_new_site_to_site_data_transfer_spokes: bool,
 }
 /// A spoke represents a connection between your Google Cloud network resources
 /// and a non-Google-Cloud network.
@@ -382,8 +389,8 @@ pub struct LinkedVpnTunnels {
     #[prost(string, repeated, tag = "1")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A value that controls whether site-to-site data transfer is enabled for
-    /// these resources. This field is set to false by default, but you must set it
-    /// to true. Note that data transfer is available only in supported locations.
+    /// these resources. Data transfer is available only in [supported
+    /// locations](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>).
     #[prost(bool, tag = "2")]
     pub site_to_site_data_transfer: bool,
 }
@@ -397,22 +404,23 @@ pub struct LinkedInterconnectAttachments {
     #[prost(string, repeated, tag = "1")]
     pub uris: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     /// A value that controls whether site-to-site data transfer is enabled for
-    /// these resources. This field is set to false by default, but you must set it
-    /// to true. Note that data transfer is available only in supported locations.
+    /// these resources. Data transfer is available only in [supported
+    /// locations](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>).
     #[prost(bool, tag = "2")]
     pub site_to_site_data_transfer: bool,
 }
-/// A collection of router appliance instances. If you have multiple router
-/// appliance instances connected to the same site, they should all be attached
-/// to the same spoke.
+/// A collection of router appliance instances. If you configure multiple router
+/// appliance instances to receive data from the same set of sites outside of
+/// Google Cloud, we recommend that you associate those instances with the same
+/// spoke.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LinkedRouterApplianceInstances {
     /// The list of router appliance instances.
     #[prost(message, repeated, tag = "1")]
     pub instances: ::prost::alloc::vec::Vec<RouterApplianceInstance>,
     /// A value that controls whether site-to-site data transfer is enabled for
-    /// these resources. This field is set to false by default, but you must set it
-    /// to true. Note that data transfer is available only in supported locations.
+    /// these resources. Data transfer is available only in [supported
+    /// locations](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/locations>).
     #[prost(bool, tag = "2")]
     pub site_to_site_data_transfer: bool,
 }
@@ -429,6 +437,13 @@ pub struct RouterApplianceInstance {
     #[prost(string, tag = "3")]
     pub ip_address: ::prost::alloc::string::String,
 }
+/// Metadata about locations
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocationMetadata {
+    /// List of supported features
+    #[prost(enumeration = "LocationFeature", repeated, tag = "1")]
+    pub location_features: ::prost::alloc::vec::Vec<i32>,
+}
 /// The State enum represents the lifecycle stage of a Network Connectivity
 /// Center resource.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -442,6 +457,17 @@ pub enum State {
     Active = 2,
     /// The resource's Delete operation is in progress
     Deleting = 3,
+}
+/// Supported features for a location
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum LocationFeature {
+    /// No publicly supported feature in this location
+    Unspecified = 0,
+    /// Site-to-cloud spokes are supported in this location
+    SiteToCloudSpokes = 1,
+    /// Site-to-site spokes are supported in this location
+    SiteToSiteSpokes = 2,
 }
 #[doc = r" Generated client implementations."]
 pub mod hub_service_client {

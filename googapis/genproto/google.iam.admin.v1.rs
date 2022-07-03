@@ -228,7 +228,11 @@ pub struct ListServiceAccountKeysRequest {
     /// Filters the types of keys the user wants to include in the list
     /// response. Duplicate key types are not allowed. If no key type
     /// is provided, all keys are returned.
-    #[prost(enumeration = "list_service_account_keys_request::KeyType", repeated, tag = "2")]
+    #[prost(
+        enumeration = "list_service_account_keys_request::KeyType",
+        repeated,
+        tag = "2"
+    )]
     pub key_types: ::prost::alloc::vec::Vec<i32>,
 }
 /// Nested message and enum types in `ListServiceAccountKeysRequest`.

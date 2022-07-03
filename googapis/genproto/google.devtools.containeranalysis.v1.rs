@@ -1,7 +1,7 @@
 /// Request to get a vulnerability summary for some set of occurrences.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetVulnerabilityOccurrencesSummaryRequest {
-    /// The name of the project to get a vulnerability summary for in the form of
+    /// Required. The name of the project to get a vulnerability summary for in the form of
     /// `projects/\[PROJECT_ID\]`.
     #[prost(string, tag = "1")]
     pub parent: ::prost::alloc::string::String,

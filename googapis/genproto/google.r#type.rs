@@ -462,75 +462,6 @@ pub struct PostalAddress {
     #[prost(string, tag = "11")]
     pub organization: ::prost::alloc::string::String,
 }
-/// Represents a day of the week.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum DayOfWeek {
-    /// The day of the week is unspecified.
-    Unspecified = 0,
-    /// Monday
-    Monday = 1,
-    /// Tuesday
-    Tuesday = 2,
-    /// Wednesday
-    Wednesday = 3,
-    /// Thursday
-    Thursday = 4,
-    /// Friday
-    Friday = 5,
-    /// Saturday
-    Saturday = 6,
-    /// Sunday
-    Sunday = 7,
-}
-/// Represents a time of day. The date and time zone are either not significant
-/// or are specified elsewhere. An API may choose to allow leap seconds. Related
-/// types are \[google.type.Date][google.type.Date\] and
-/// `google.protobuf.Timestamp`.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TimeOfDay {
-    /// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
-    /// to allow the value "24:00:00" for scenarios like business closing time.
-    #[prost(int32, tag = "1")]
-    pub hours: i32,
-    /// Minutes of hour of day. Must be from 0 to 59.
-    #[prost(int32, tag = "2")]
-    pub minutes: i32,
-    /// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
-    /// allow the value 60 if it allows leap-seconds.
-    #[prost(int32, tag = "3")]
-    pub seconds: i32,
-    /// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
-    #[prost(int32, tag = "4")]
-    pub nanos: i32,
-}
-/// A `CalendarPeriod` represents the abstract concept of a time period that has
-/// a canonical start. Grammatically, "the start of the current
-/// `CalendarPeriod`." All calendar times begin at midnight UTC.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum CalendarPeriod {
-    /// Undefined period, raises an error.
-    Unspecified = 0,
-    /// A day.
-    Day = 1,
-    /// A week. Weeks begin on Monday, following
-    /// [ISO 8601](<https://en.wikipedia.org/wiki/ISO_week_date>).
-    Week = 2,
-    /// A fortnight. The first calendar fortnight of the year begins at the start
-    /// of week 1 according to
-    /// [ISO 8601](<https://en.wikipedia.org/wiki/ISO_week_date>).
-    Fortnight = 3,
-    /// A month.
-    Month = 4,
-    /// A quarter. Quarters start on dates 1-Jan, 1-Apr, 1-Jul, and 1-Oct of each
-    /// year.
-    Quarter = 5,
-    /// A half-year. Half-years start on dates 1-Jan and 1-Jul.
-    Half = 6,
-    /// A year.
-    Year = 7,
-}
 /// A representation of a decimal value, such as 2.5. Clients may convert values
 /// into language-native decimal formats, such as Java's \[BigDecimal][\] or
 /// Python's \[decimal.Decimal][\].
@@ -603,17 +534,6 @@ pub struct Decimal {
     #[prost(string, tag = "1")]
     pub value: ::prost::alloc::string::String,
 }
-/// Represents a fraction in terms of a numerator divided by a denominator.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Fraction {
-    /// The numerator in the fraction, e.g. 2 in 2/3.
-    #[prost(int64, tag = "1")]
-    pub numerator: i64,
-    /// The value by which the numerator is divided, e.g. 3 in 2/3. Must be
-    /// positive.
-    #[prost(int64, tag = "2")]
-    pub denominator: i64,
-}
 /// Represents a time interval, encoded as a Timestamp start (inclusive) and a
 /// Timestamp end (exclusive).
 ///
@@ -634,6 +554,86 @@ pub struct Interval {
     /// end.
     #[prost(message, optional, tag = "2")]
     pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+/// Represents a day of the week.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DayOfWeek {
+    /// The day of the week is unspecified.
+    Unspecified = 0,
+    /// Monday
+    Monday = 1,
+    /// Tuesday
+    Tuesday = 2,
+    /// Wednesday
+    Wednesday = 3,
+    /// Thursday
+    Thursday = 4,
+    /// Friday
+    Friday = 5,
+    /// Saturday
+    Saturday = 6,
+    /// Sunday
+    Sunday = 7,
+}
+/// Represents a time of day. The date and time zone are either not significant
+/// or are specified elsewhere. An API may choose to allow leap seconds. Related
+/// types are \[google.type.Date][google.type.Date\] and
+/// `google.protobuf.Timestamp`.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TimeOfDay {
+    /// Hours of day in 24 hour format. Should be from 0 to 23. An API may choose
+    /// to allow the value "24:00:00" for scenarios like business closing time.
+    #[prost(int32, tag = "1")]
+    pub hours: i32,
+    /// Minutes of hour of day. Must be from 0 to 59.
+    #[prost(int32, tag = "2")]
+    pub minutes: i32,
+    /// Seconds of minutes of the time. Must normally be from 0 to 59. An API may
+    /// allow the value 60 if it allows leap-seconds.
+    #[prost(int32, tag = "3")]
+    pub seconds: i32,
+    /// Fractions of seconds in nanoseconds. Must be from 0 to 999,999,999.
+    #[prost(int32, tag = "4")]
+    pub nanos: i32,
+}
+/// A `CalendarPeriod` represents the abstract concept of a time period that has
+/// a canonical start. Grammatically, "the start of the current
+/// `CalendarPeriod`." All calendar times begin at midnight UTC.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum CalendarPeriod {
+    /// Undefined period, raises an error.
+    Unspecified = 0,
+    /// A day.
+    Day = 1,
+    /// A week. Weeks begin on Monday, following
+    /// [ISO 8601](<https://en.wikipedia.org/wiki/ISO_week_date>).
+    Week = 2,
+    /// A fortnight. The first calendar fortnight of the year begins at the start
+    /// of week 1 according to
+    /// [ISO 8601](<https://en.wikipedia.org/wiki/ISO_week_date>).
+    Fortnight = 3,
+    /// A month.
+    Month = 4,
+    /// A quarter. Quarters start on dates 1-Jan, 1-Apr, 1-Jul, and 1-Oct of each
+    /// year.
+    Quarter = 5,
+    /// A half-year. Half-years start on dates 1-Jan and 1-Jul.
+    Half = 6,
+    /// A year.
+    Year = 7,
+}
+/// Represents a fraction in terms of a numerator divided by a denominator.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Fraction {
+    /// The numerator in the fraction, e.g. 2 in 2/3.
+    #[prost(int64, tag = "1")]
+    pub numerator: i64,
+    /// The value by which the numerator is divided, e.g. 3 in 2/3. Must be
+    /// positive.
+    #[prost(int64, tag = "2")]
+    pub denominator: i64,
 }
 /// Localized variant of a text in a particular language.
 #[derive(Clone, PartialEq, ::prost::Message)]

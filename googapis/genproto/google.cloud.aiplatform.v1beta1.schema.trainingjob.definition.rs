@@ -10,7 +10,10 @@ pub struct AutoMlImageClassification {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlImageClassificationInputs {
-    #[prost(enumeration = "auto_ml_image_classification_inputs::ModelType", tag = "1")]
+    #[prost(
+        enumeration = "auto_ml_image_classification_inputs::ModelType",
+        tag = "1"
+    )]
     pub model_type: i32,
     /// The ID of the `base` model. If it is specified, the new model will be
     /// trained based on the `base` model. Otherwise, the new model will be
@@ -119,7 +122,10 @@ pub struct AutoMlImageObjectDetection {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlImageObjectDetectionInputs {
-    #[prost(enumeration = "auto_ml_image_object_detection_inputs::ModelType", tag = "1")]
+    #[prost(
+        enumeration = "auto_ml_image_object_detection_inputs::ModelType",
+        tag = "1"
+    )]
     pub model_type: i32,
     /// The training budget of creating this model, expressed in milli node
     /// hours i.e. 1,000 value in this field means 1 node hour. The actual
@@ -219,7 +225,10 @@ pub struct AutoMlImageSegmentation {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlImageSegmentationInputs {
-    #[prost(enumeration = "auto_ml_image_segmentation_inputs::ModelType", tag = "1")]
+    #[prost(
+        enumeration = "auto_ml_image_segmentation_inputs::ModelType",
+        tag = "1"
+    )]
     pub model_type: i32,
     /// The training budget of creating this model, expressed in milli node
     /// hours i.e. 1,000 value in this field means 1 node hour. The actual
@@ -275,7 +284,10 @@ pub struct AutoMlImageSegmentationMetadata {
     pub cost_milli_node_hours: i64,
     /// For successful job completions, this is the reason why the job has
     /// finished.
-    #[prost(enumeration = "auto_ml_image_segmentation_metadata::SuccessfulStopReason", tag = "2")]
+    #[prost(
+        enumeration = "auto_ml_image_segmentation_metadata::SuccessfulStopReason",
+        tag = "2"
+    )]
     pub successful_stop_reason: i32,
 }
 /// Nested message and enum types in `AutoMlImageSegmentationMetadata`.
@@ -404,7 +416,10 @@ pub struct AutoMlTablesInputs {
     /// Additional optimization objective configuration. Required for
     /// `maximize-precision-at-recall` and `maximize-recall-at-precision`,
     /// otherwise unused.
-    #[prost(oneof = "auto_ml_tables_inputs::AdditionalOptimizationObjectiveConfig", tags = "5, 6")]
+    #[prost(
+        oneof = "auto_ml_tables_inputs::AdditionalOptimizationObjectiveConfig",
+        tags = "5, 6"
+    )]
     pub additional_optimization_objective_config:
         ::core::option::Option<auto_ml_tables_inputs::AdditionalOptimizationObjectiveConfig>,
 }
@@ -414,7 +429,10 @@ pub mod auto_ml_tables_inputs {
     pub struct Transformation {
         /// The transformation that the training pipeline will apply to the input
         /// columns.
-        #[prost(oneof = "transformation::TransformationDetail", tags = "1, 2, 3, 4, 5, 6, 7, 8")]
+        #[prost(
+            oneof = "transformation::TransformationDetail",
+            tags = "1, 2, 3, 4, 5, 6, 7, 8"
+        )]
         pub transformation_detail: ::core::option::Option<transformation::TransformationDetail>,
     }
     /// Nested message and enum types in `Transformation`.
@@ -925,7 +943,10 @@ pub struct AutoMlVideoActionRecognition {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoActionRecognitionInputs {
-    #[prost(enumeration = "auto_ml_video_action_recognition_inputs::ModelType", tag = "1")]
+    #[prost(
+        enumeration = "auto_ml_video_action_recognition_inputs::ModelType",
+        tag = "1"
+    )]
     pub model_type: i32,
 }
 /// Nested message and enum types in `AutoMlVideoActionRecognitionInputs`.
@@ -961,7 +982,10 @@ pub struct AutoMlVideoClassification {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoClassificationInputs {
-    #[prost(enumeration = "auto_ml_video_classification_inputs::ModelType", tag = "1")]
+    #[prost(
+        enumeration = "auto_ml_video_classification_inputs::ModelType",
+        tag = "1"
+    )]
     pub model_type: i32,
 }
 /// Nested message and enum types in `AutoMlVideoClassificationInputs`.
@@ -993,7 +1017,10 @@ pub struct AutoMlVideoObjectTracking {
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AutoMlVideoObjectTrackingInputs {
-    #[prost(enumeration = "auto_ml_video_object_tracking_inputs::ModelType", tag = "1")]
+    #[prost(
+        enumeration = "auto_ml_video_object_tracking_inputs::ModelType",
+        tag = "1"
+    )]
     pub model_type: i32,
 }
 /// Nested message and enum types in `AutoMlVideoObjectTrackingInputs`.

@@ -43,7 +43,7 @@ pub mod environment {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VmImage {
     /// Required. The name of the Google Cloud project that this VM image belongs to.
-    /// Format: `projects/{project_id}`
+    /// Format: `{project_id}`
     #[prost(string, tag = "1")]
     pub project: ::prost::alloc::string::String,
     /// The reference to an external Compute Engine VM image.
@@ -86,10 +86,14 @@ pub struct Event {
     /// Event type.
     #[prost(enumeration = "event::EventType", tag = "2")]
     pub r#type: i32,
+    /// Optional. Event details. This field is used to pass event information.
+    #[prost(map = "string, string", tag = "3")]
+    pub details:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `Event`.
 pub mod event {
-    /// The definition of the even types.
+    /// The definition of the event types.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum EventType {
@@ -97,6 +101,18 @@ pub mod event {
         Unspecified = 0,
         /// The instance / runtime is idle
         Idle = 1,
+        /// The instance / runtime is available.
+        /// This event indicates that instance / runtime underlying compute is
+        /// operational.
+        Heartbeat = 2,
+        /// The instance / runtime health is available.
+        /// This event indicates that instance / runtime health information.
+        Health = 3,
+        /// The instance / runtime is available.
+        /// This event allows instance / runtime to send Host maintenance
+        /// information to Control Plane.
+        /// <https://cloud.google.com/compute/docs/gpus/gpu-host-maintenance>
+        Maintenance = 4,
     }
 }
 /// The description a notebook execution workload.
@@ -153,7 +169,8 @@ pub struct ExecutionTemplate {
     ///
     /// Finally, if you want to use a TPU for training, specify `cloud_tpu` in this
     /// field. Learn more about the [special configuration options for training
-    /// with TPU.
+    /// with
+    /// TPU](<https://cloud.google.com/ai-platform/training/docs/using-tpus#configuring_a_custom_tpu_machine>).
     #[prost(string, tag = "2")]
     pub master_type: ::prost::alloc::string::String,
     /// Configuration (count and accelerator type) for hardware running notebook
@@ -170,7 +187,7 @@ pub struct ExecutionTemplate {
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
     /// Path to the notebook file to execute.
     /// Must be in a Google Cloud Storage bucket.
-    /// Format: `gs://{project_id}/{folder}/{notebook_file_name}`
+    /// Format: `gs://{bucket_name}/{folder}/{notebook_file_name}`
     /// Ex: `gs://notebook_user/scheduled_notebooks/sentiment_notebook.ipynb`
     #[prost(string, tag = "5")]
     pub input_notebook_file: ::prost::alloc::string::String,
@@ -182,7 +199,7 @@ pub struct ExecutionTemplate {
     pub container_image_uri: ::prost::alloc::string::String,
     /// Path to the notebook folder to write to.
     /// Must be in a Google Cloud Storage bucket path.
-    /// Format: `gs://{project_id}/{folder}`
+    /// Format: `gs://{bucket_name}/{folder}`
     /// Ex: `gs://notebook_user/scheduled_notebooks`
     #[prost(string, tag = "7")]
     pub output_notebook_folder: ::prost::alloc::string::String,
@@ -204,16 +221,27 @@ pub struct ExecutionTemplate {
     /// The type of Job to be used on this execution.
     #[prost(enumeration = "execution_template::JobType", tag = "11")]
     pub job_type: i32,
+    /// Name of the kernel spec to use. This must be specified if the
+    /// kernel spec name on the execution target does not match the name in the
+    /// input notebook file.
+    #[prost(string, tag = "14")]
+    pub kernel_spec: ::prost::alloc::string::String,
+    /// The name of a Vertex AI \[Tensorboard\] resource to which this execution
+    /// will upload Tensorboard logs.
+    /// Format:
+    /// `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
+    #[prost(string, tag = "15")]
+    pub tensorboard: ::prost::alloc::string::String,
     /// Parameters for an execution type.
     /// NOTE: There are currently no extra parameters for VertexAI jobs.
-    #[prost(oneof = "execution_template::JobParameters", tags = "12")]
+    #[prost(oneof = "execution_template::JobParameters", tags = "12, 13")]
     pub job_parameters: ::core::option::Option<execution_template::JobParameters>,
 }
 /// Nested message and enum types in `ExecutionTemplate`.
 pub mod execution_template {
     /// Definition of a hardware accelerator. Note that not all combinations
-    /// of `type` and `core_count` are valid. Check GPUs on
-    /// Compute Engine to find a valid
+    /// of `type` and `core_count` are valid. Check [GPUs on
+    /// Compute Engine](<https://cloud.google.com/compute/docs/gpus>) to find a valid
     /// combination. TPUs are not supported.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct SchedulerAcceleratorConfig {
@@ -231,6 +259,30 @@ pub mod execution_template {
         /// Format: `projects/{PROJECT_ID}/regions/{REGION}/clusters/{CLUSTER_NAME}`
         #[prost(string, tag = "1")]
         pub cluster: ::prost::alloc::string::String,
+    }
+    /// Parameters used in Vertex AI JobType executions.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct VertexAiParameters {
+        /// The full name of the Compute Engine
+        /// \[network\](/compute/docs/networks-and-firewalls#networks) to which the Job
+        /// should be peered. For example, `projects/12345/global/networks/myVPC`.
+        /// \[Format\](<https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert>)
+        /// is of the form `projects/{project}/global/networks/{network}`.
+        /// Where {project} is a project number, as in `12345`, and {network} is a
+        /// network name.
+        ///
+        /// Private services access must already be configured for the network. If
+        /// left unspecified, the job is not peered with any network.
+        #[prost(string, tag = "1")]
+        pub network: ::prost::alloc::string::String,
+        /// Environment variables.
+        ///  At most 100 environment variables can be specified and unique.
+        /// Example: GCP_BUCKET=gs://my-bucket/samples/
+        #[prost(map = "string, string", tag = "2")]
+        pub env: ::std::collections::HashMap<
+            ::prost::alloc::string::String,
+            ::prost::alloc::string::String,
+        >,
     }
     /// Required. Specifies the machine types, the number of replicas for workers
     /// and parameter servers.
@@ -254,25 +306,9 @@ pub mod execution_template {
         /// own cluster specification. When you use this tier, set values to
         /// configure your processing cluster according to these guidelines:
         ///
-        /// *   You _must_ set `TrainingInput.masterType` to specify the type
+        /// *   You _must_ set `ExecutionTemplate.masterType` to specify the type
         ///     of machine to use for your master node. This is the only required
         ///     setting.
-        ///
-        /// *   You _may_ set `TrainingInput.workerCount` to specify the number of
-        ///     workers to use. If you specify one or more workers, you _must_ also
-        ///     set `TrainingInput.workerType` to specify the type of machine to use
-        ///     for your worker nodes.
-        ///
-        /// *   You _may_ set `TrainingInput.parameterServerCount` to specify the
-        ///     number of parameter servers to use. If you specify one or more
-        ///     parameter servers, you _must_ also set
-        ///     `TrainingInput.parameterServerType` to specify the type of machine to
-        ///     use for your parameter servers.
-        ///
-        /// Note that all of your workers must use the same machine type, which can
-        /// be different from your parameter server type and master type. Your
-        /// parameter servers must likewise use the same machine type, which can be
-        /// different from your worker type and master type.
         Custom = 6,
     }
     /// Hardware accelerator types for AI Platform Training jobs.
@@ -291,6 +327,8 @@ pub mod execution_template {
         NvidiaTeslaP4 = 4,
         /// Nvidia Tesla T4 GPU.
         NvidiaTeslaT4 = 5,
+        /// Nvidia Tesla A100 GPU.
+        NvidiaTeslaA100 = 10,
         /// TPU v2.
         TpuV2 = 6,
         /// TPU v3.
@@ -316,6 +354,9 @@ pub mod execution_template {
         /// Parameters used in Dataproc JobType executions.
         #[prost(message, tag = "12")]
         DataprocParameters(DataprocParameters),
+        /// Parameters used in Vertex AI JobType executions.
+        #[prost(message, tag = "13")]
+        VertexAiParameters(VertexAiParameters),
     }
 }
 /// The definition of a single executed notebook.
@@ -325,7 +366,7 @@ pub struct Execution {
     #[prost(message, optional, tag = "1")]
     pub execution_template: ::core::option::Option<ExecutionTemplate>,
     /// Output only. The resource name of the execute. Format:
-    /// `projects/{project_id}/locations/{location}/execution/{execution_id}`
+    /// `projects/{project_id}/locations/{location}/executions/{execution_id}`
     #[prost(string, tag = "2")]
     pub name: ::prost::alloc::string::String,
     /// Output only. Name used for UI purposes.
@@ -376,7 +417,7 @@ pub mod execution {
         /// The job has been cancelled.
         /// `error_message` should describe the reason for the cancellation.
         Cancelled = 7,
-        /// The jobs has become expired (added for uCAIP jobs)
+        /// The job has become expired (relevant to Vertex AI jobs)
         /// <https://cloud.google.com/vertex-ai/docs/reference/rest/v1/JobState>
         Expired = 9,
         /// The Execution is being created.
@@ -563,6 +604,13 @@ pub struct Instance {
     /// to this notebook instance.
     #[prost(message, optional, tag = "34")]
     pub reservation_affinity: ::core::option::Option<ReservationAffinity>,
+    /// Output only. Email address of entity that sent original CreateInstance request.
+    #[prost(string, tag = "36")]
+    pub creator: ::prost::alloc::string::String,
+    /// Optional. Flag to enable ip forwarding or not, default false/off.
+    /// <https://cloud.google.com/vpc/docs/using-routes#canipforward>
+    #[prost(bool, tag = "39")]
+    pub can_ip_forward: bool,
     /// Output only. Instance creation time.
     #[prost(message, optional, tag = "23")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -785,7 +833,7 @@ pub mod instance {
         NvidiaTeslaP100 = 2,
         /// Accelerator type is Nvidia Tesla V100.
         NvidiaTeslaV100 = 3,
-        /// Accelerator type is Nvidia Tesla P4 GPU.
+        /// Accelerator type is Nvidia Tesla P4.
         NvidiaTeslaP4 = 4,
         /// Accelerator type is Nvidia Tesla T4.
         NvidiaTeslaT4 = 5,
@@ -795,7 +843,7 @@ pub mod instance {
         NvidiaTeslaT4Vws = 8,
         /// Accelerator type is NVIDIA Tesla P100 Virtual Workstations.
         NvidiaTeslaP100Vws = 9,
-        /// Accelerator type is Nvidia Tesla P4 GPU Virtual Workstations.
+        /// Accelerator type is NVIDIA Tesla P4 Virtual Workstations.
         NvidiaTeslaP4Vws = 10,
         /// (Coming soon) Accelerator type is TPU V2.
         TpuV2 = 6,
@@ -827,6 +875,10 @@ pub mod instance {
         Initializing = 8,
         /// The instance is getting registered.
         Registering = 9,
+        /// The instance is suspending.
+        Suspending = 10,
+        /// The instance is suspended.
+        Suspended = 11,
     }
     /// Possible disk types for notebook instances.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -840,6 +892,8 @@ pub mod instance {
         PdSsd = 2,
         /// Balanced persistent disk type.
         PdBalanced = 3,
+        /// Extreme persistent disk type.
+        PdExtreme = 4,
     }
     /// Definition of the disk encryption options.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -960,6 +1014,12 @@ pub mod runtime {
         /// (for example, critical daemons are not running)
         /// Applies to ACTIVE state.
         Unhealthy = 2,
+        /// The runtime has not installed health monitoring agent.
+        /// Applies to ACTIVE state.
+        AgentNotInstalled = 3,
+        /// The runtime health monitoring agent is not running.
+        /// Applies to ACTIVE state.
+        AgentNotRunning = 4,
     }
     /// Type of the runtime; currently only supports Compute Engine VM.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -978,6 +1038,7 @@ pub mod runtime {
 /// * `nvidia-tesla-k80`
 /// * `nvidia-tesla-p100`
 /// * `nvidia-tesla-v100`
+/// * `nvidia-tesla-p4`
 /// * `nvidia-tesla-t4`
 /// * `nvidia-tesla-a100`
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1003,7 +1064,7 @@ pub mod runtime_accelerator_config {
         NvidiaTeslaP100 = 2,
         /// Accelerator type is Nvidia Tesla V100.
         NvidiaTeslaV100 = 3,
-        /// Accelerator type is Nvidia Tesla P4 GPU.
+        /// Accelerator type is Nvidia Tesla P4.
         NvidiaTeslaP4 = 4,
         /// Accelerator type is Nvidia Tesla T4.
         NvidiaTeslaT4 = 5,
@@ -1017,7 +1078,7 @@ pub mod runtime_accelerator_config {
         NvidiaTeslaT4Vws = 9,
         /// Accelerator type is NVIDIA Tesla P100 Virtual Workstations.
         NvidiaTeslaP100Vws = 10,
-        /// Accelerator type is Nvidia Tesla P.4 GPU Virtual Workstations.
+        /// Accelerator type is NVIDIA Tesla P4 Virtual Workstations.
         NvidiaTeslaP4Vws = 11,
     }
 }
@@ -1180,6 +1241,8 @@ pub mod local_disk_initialize_params {
         PdSsd = 2,
         /// Balanced persistent disk type.
         PdBalanced = 3,
+        /// Extreme persistent disk type.
+        PdExtreme = 4,
     }
 }
 /// Specifies the login configuration for Runtime
@@ -1207,6 +1270,11 @@ pub mod runtime_access_config {
         Unspecified = 0,
         /// Single user login.
         SingleUser = 1,
+        /// Service Account mode.
+        /// In Service Account mode, Runtime creator will specify a SA that exists
+        /// in the consumer project. Using Runtime Service Account field.
+        /// Users accessing the Runtime need ActAs (Service Account User) permission.
+        ServiceAccount = 2,
     }
 }
 /// Specifies the selection and configuration of software inside the runtime.
@@ -1215,7 +1283,7 @@ pub mod runtime_access_config {
 ///
 /// * `idle_shutdown: true`
 /// * `idle_shutdown_timeout: 180`
-/// * `report-system-health: true`
+/// * `enable_health_monitoring: true`
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuntimeSoftwareConfig {
     /// Cron expression in UTC timezone, used to schedule instance auto upgrade.
@@ -1234,6 +1302,7 @@ pub struct RuntimeSoftwareConfig {
     #[prost(int32, tag = "4")]
     pub idle_shutdown_timeout: i32,
     /// Install Nvidia Driver automatically.
+    /// Default: True
     #[prost(bool, tag = "5")]
     pub install_gpu_driver: bool,
     /// Specify a custom Cloud Storage path where the GPU driver is stored.
@@ -1245,6 +1314,12 @@ pub struct RuntimeSoftwareConfig {
     /// Cloud Storage path (`gs://path-to-file/file-name`).
     #[prost(string, tag = "7")]
     pub post_startup_script: ::prost::alloc::string::String,
+    /// Optional. Use a list of container images to use as Kernels in the notebook instance.
+    #[prost(message, repeated, tag = "8")]
+    pub kernels: ::prost::alloc::vec::Vec<ContainerImage>,
+    /// Output only. Bool indicating whether an newer image is available in an image family.
+    #[prost(bool, optional, tag = "9")]
+    pub upgradeable: ::core::option::Option<bool>,
 }
 /// Contains runtime daemon metrics, such as OS and kernels and sessions stats.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1308,7 +1383,7 @@ pub struct VirtualMachineConfig {
     /// * `e2-standard-8`
     #[prost(string, tag = "2")]
     pub machine_type: ::prost::alloc::string::String,
-    /// Optional. Use a list of container images to start the notebook instance.
+    /// Optional. Use a list of container images to use as Kernels in the notebook instance.
     #[prost(message, repeated, tag = "3")]
     pub container_images: ::prost::alloc::vec::Vec<ContainerImage>,
     /// Required. Data disk option configuration settings.
@@ -1391,9 +1466,32 @@ pub struct VirtualMachineConfig {
     /// VirtioNet.
     #[prost(enumeration = "virtual_machine_config::NicType", tag = "17")]
     pub nic_type: i32,
+    /// Optional. Reserved IP Range name is used for VPC Peering.
+    /// The subnetwork allocation will use the range *name* if it's assigned.
+    ///
+    /// Example: managed-notebooks-range-c
+    /// PEERING_RANGE_NAME_3=managed-notebooks-range-c
+    /// gcloud compute addresses create $PEERING_RANGE_NAME_3 \
+    ///   --global \
+    ///   --prefix-length=24 \
+    ///   --description="Google Cloud Managed Notebooks Range 24 c" \
+    ///   --network=$NETWORK \
+    ///   --addresses=192.168.0.0 \
+    ///   --purpose=VPC_PEERING
+    ///
+    /// Field value will be: `managed-notebooks-range-c`
+    #[prost(string, tag = "18")]
+    pub reserved_ip_range: ::prost::alloc::string::String,
+    /// Optional. Boot image metadata used for runtime upgradeability.
+    #[prost(message, optional, tag = "19")]
+    pub boot_image: ::core::option::Option<virtual_machine_config::BootImage>,
 }
 /// Nested message and enum types in `VirtualMachineConfig`.
 pub mod virtual_machine_config {
+    /// Definition of the boot image used by the Runtime.
+    /// Used to facilitate runtime upgradeability.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BootImage {}
     /// The type of vNIC driver.
     /// Default should be UNSPECIFIED_NIC_TYPE.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1459,6 +1557,9 @@ pub struct CreateRuntimeRequest {
     /// Required. The Runtime to be created.
     #[prost(message, optional, tag = "3")]
     pub runtime: ::core::option::Option<Runtime>,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request for deleting a Managed Notebook Runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1467,6 +1568,9 @@ pub struct DeleteRuntimeRequest {
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request for starting a Managed Notebook Runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1475,6 +1579,9 @@ pub struct StartRuntimeRequest {
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request for stopping a Managed Notebook Runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1483,6 +1590,9 @@ pub struct StopRuntimeRequest {
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request for switching a Managed Notebook Runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1497,14 +1607,20 @@ pub struct SwitchRuntimeRequest {
     /// accelerator config.
     #[prost(message, optional, tag = "3")]
     pub accelerator_config: ::core::option::Option<RuntimeAcceleratorConfig>,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "4")]
+    pub request_id: ::prost::alloc::string::String,
 }
-/// Request for reseting a Managed Notebook Runtime.
+/// Request for resetting a Managed Notebook Runtime.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetRuntimeRequest {
     /// Required. Format:
     /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Idempotent request UUID.
+    #[prost(string, tag = "2")]
+    pub request_id: ::prost::alloc::string::String,
 }
 /// Request for reporting a Managed Notebook Event.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1520,6 +1636,28 @@ pub struct ReportRuntimeEventRequest {
     /// Required. The Event to be reported.
     #[prost(message, optional, tag = "3")]
     pub event: ::core::option::Option<Event>,
+}
+/// Request for getting a new access token.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RefreshRuntimeTokenInternalRequest {
+    /// Required. Format:
+    /// `projects/{project_id}/locations/{location}/runtimes/{runtime_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The VM hardware token for authenticating the VM.
+    /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
+    #[prost(string, tag = "2")]
+    pub vm_id: ::prost::alloc::string::String,
+}
+/// Response with a new access token.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RefreshRuntimeTokenInternalResponse {
+    /// The OAuth 2.0 access token.
+    #[prost(string, tag = "1")]
+    pub access_token: ::prost::alloc::string::String,
+    /// Output only. Token expiration time.
+    #[prost(message, optional, tag = "2")]
+    pub expire_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 #[doc = r" Generated client implementations."]
 pub mod managed_notebook_service_client {
@@ -1754,6 +1892,25 @@ pub mod managed_notebook_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        #[doc = " Gets an access token for the consumer service account that the customer"]
+        #[doc = " attached to the runtime. Only accessible from the tenant instance."]
+        pub async fn refresh_runtime_token_internal(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RefreshRuntimeTokenInternalRequest>,
+        ) -> Result<tonic::Response<super::RefreshRuntimeTokenInternalResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.ManagedNotebookService/RefreshRuntimeTokenInternal",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
 }
 /// The definition of a schedule.
@@ -1773,8 +1930,8 @@ pub struct Schedule {
     pub description: ::prost::alloc::string::String,
     #[prost(enumeration = "schedule::State", tag = "4")]
     pub state: i32,
-    /// Cron-tab formatted schedule by which the job will execute
-    /// Format: minute, hour, day of month, month, day of week
+    /// Cron-tab formatted schedule by which the job will execute.
+    /// Format: minute, hour, day of month, month, day of week,
     /// e.g. 0 0 * * WED = every Wednesday
     /// More examples: <https://crontab.guru/examples.html>
     #[prost(string, tag = "5")]
@@ -1981,6 +2138,26 @@ pub struct SetInstanceLabelsRequest {
     pub labels:
         ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
+/// Request for adding/changing metadata items  for an instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateInstanceMetadataItemsRequest {
+    /// Required. Format:
+    /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
+    #[prost(string, tag = "1")]
+    pub name: ::prost::alloc::string::String,
+    /// Metadata items to add/update for the instance.
+    #[prost(map = "string, string", tag = "2")]
+    pub items:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+}
+/// Response for adding/changing metadata items for an instance.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateInstanceMetadataItemsResponse {
+    /// Map of items that were added/updated to/in the metadata.
+    #[prost(map = "string, string", tag = "1")]
+    pub items:
+        ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+}
 /// Request for updating the Shielded Instance config for a notebook instance.
 /// You can only use this method on a stopped instance
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2017,7 +2194,7 @@ pub struct StopInstanceRequest {
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
 }
-/// Request for reseting a notebook instance
+/// Request for resetting a notebook instance
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResetInstanceRequest {
     /// Required. Format:
@@ -2049,6 +2226,10 @@ pub struct IsInstanceUpgradeableRequest {
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
     #[prost(string, tag = "1")]
     pub notebook_instance: ::prost::alloc::string::String,
+    /// Optional. The optional UpgradeType. Setting this field will search for additional
+    /// compute images to upgrade this instance.
+    #[prost(enumeration = "UpgradeType", tag = "2")]
+    pub r#type: i32,
 }
 /// Response for checking if a notebook instance is upgradeable.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2127,6 +2308,10 @@ pub struct UpgradeInstanceRequest {
     /// `projects/{project_id}/locations/{location}/instances/{instance_id}`
     #[prost(string, tag = "1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The optional UpgradeType. Setting this field will search for additional
+    /// compute images to upgrade this instance.
+    #[prost(enumeration = "UpgradeType", tag = "2")]
+    pub r#type: i32,
 }
 /// Request for rollbacking a notebook instance
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2151,6 +2336,10 @@ pub struct UpgradeInstanceInternalRequest {
     /// <https://cloud.google.com/compute/docs/instances/verifying-instance-identity>
     #[prost(string, tag = "2")]
     pub vm_id: ::prost::alloc::string::String,
+    /// Optional. The optional UpgradeType. Setting this field will search for additional
+    /// compute images to upgrade this instance.
+    #[prost(enumeration = "UpgradeType", tag = "3")]
+    pub r#type: i32,
 }
 /// Request for listing environments.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2357,6 +2546,22 @@ pub struct CreateExecutionRequest {
     /// Required. The execution to be created.
     #[prost(message, optional, tag = "3")]
     pub execution: ::core::option::Option<Execution>,
+}
+/// Definition of the types of upgrade that can be used on this
+/// instance.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum UpgradeType {
+    /// Upgrade type is not specified.
+    Unspecified = 0,
+    /// Upgrade ML framework.
+    UpgradeFramework = 1,
+    /// Upgrade Operating System.
+    UpgradeOs = 2,
+    /// Upgrade CUDA.
+    UpgradeCuda = 3,
+    /// Upgrade All (OS, Framework and CUDA).
+    UpgradeAll = 4,
 }
 #[doc = r" Generated client implementations."]
 pub mod notebook_service_client {
@@ -2582,6 +2787,24 @@ pub mod notebook_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.notebooks.v1.NotebookService/SetInstanceLabels",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Add/update metadata items for an instance."]
+        pub async fn update_instance_metadata_items(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateInstanceMetadataItemsRequest>,
+        ) -> Result<tonic::Response<super::UpdateInstanceMetadataItemsResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.notebooks.v1.NotebookService/UpdateInstanceMetadataItems",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
@@ -3005,7 +3228,7 @@ pub mod notebook_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        #[doc = " Creates a new Scheduled Notebook in a given project and location."]
+        #[doc = " Creates a new Execution in a given project and location."]
         pub async fn create_execution(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateExecutionRequest>,

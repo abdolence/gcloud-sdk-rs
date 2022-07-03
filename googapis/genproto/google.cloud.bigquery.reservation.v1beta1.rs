@@ -496,6 +496,7 @@ pub struct UpdateBiReservationRequest {
 pub mod reservation_service_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
     use tonic::codegen::*;
+    #[doc = " Deprecated: Please use the v1 api instead."]
     #[doc = " This API allows users to manage their flat-rate BigQuery reservations."]
     #[doc = ""]
     #[doc = " A reservation provides computational resource guarantees, in the form of"]

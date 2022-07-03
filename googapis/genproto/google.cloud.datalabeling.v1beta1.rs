@@ -67,7 +67,10 @@ pub struct Annotation {
 /// Annotation value for an example.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnnotationValue {
-    #[prost(oneof = "annotation_value::ValueType", tags = "1, 2, 8, 9, 3, 10, 4, 5, 6")]
+    #[prost(
+        oneof = "annotation_value::ValueType",
+        tags = "1, 2, 8, 9, 3, 10, 4, 5, 6"
+    )]
     pub value_type: ::core::option::Option<annotation_value::ValueType>,
 }
 /// Nested message and enum types in `AnnotationValue`.
@@ -1387,7 +1390,10 @@ pub struct EvaluationJobConfig {
     pub evaluation_job_alert_config: ::core::option::Option<EvaluationJobAlertConfig>,
     /// Required. Details for how you want human reviewers to provide ground truth
     /// labels.
-    #[prost(oneof = "evaluation_job_config::HumanAnnotationRequestConfig", tags = "4, 5, 8")]
+    #[prost(
+        oneof = "evaluation_job_config::HumanAnnotationRequestConfig",
+        tags = "4, 5, 8"
+    )]
     pub human_annotation_request_config:
         ::core::option::Option<evaluation_job_config::HumanAnnotationRequestConfig>,
 }

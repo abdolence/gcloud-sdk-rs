@@ -386,7 +386,10 @@ pub struct CheckedExpr {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Type {
     /// The kind of type.
-    #[prost(oneof = "r#type::TypeKind", tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14")]
+    #[prost(
+        oneof = "r#type::TypeKind",
+        tags = "1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14"
+    )]
     pub type_kind: ::core::option::Option<r#type::TypeKind>,
 }
 /// Nested message and enum types in `Type`.
@@ -624,7 +627,7 @@ pub mod decl {
             #[prost(message, optional, tag = "4")]
             pub result_type: ::core::option::Option<super::super::Type>,
             /// Whether the function is to be used in a method call-style `x.f(...)`
-            /// of a function call-style `f(x, ...)`.
+            /// or a function call-style `f(x, ...)`.
             ///
             /// For methods, the first parameter declaration, `params\[0\]` is the
             /// expected type of the target receiver.
