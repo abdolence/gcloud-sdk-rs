@@ -29,6 +29,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let spanner_client_factory = CachedGoogleApiClient::new(
         GoogleSpannerClientBuilder {},
         "spanner.googleapis.com",
+        chrono::Duration::minutes(15),
         None,
     );
 

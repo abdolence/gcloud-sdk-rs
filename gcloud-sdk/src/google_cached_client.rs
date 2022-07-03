@@ -2,6 +2,7 @@ use std::sync::{Arc, RwLock};
 
 use async_trait::async_trait;
 use chrono::prelude::*;
+use chrono::Duration;
 use tonic::transport::Channel;
 
 use crate::google_tonic_connector::GoogleConnectorInterceptor;
@@ -19,6 +20,7 @@ where
     builder: B,
     google_api_url: &'static str,
     cloud_resource_prefix_meta: Option<String>,
+    max_duration: Duration,
     state: Arc<RwLock<Option<CachedGoogleApiClientState<C>>>>,
 }
 
@@ -39,6 +41,7 @@ where
     pub fn new(
         builder: B,
         google_api_url: &'static str,
+        max_duration: Duration,
         cloud_resource_prefix_meta: Option<String>,
     ) -> Self {
         Self {
@@ -46,6 +49,7 @@ where
             builder: builder,
             google_api_url: google_api_url,
             cloud_resource_prefix_meta: cloud_resource_prefix_meta,
+            max_duration: max_duration
         }
     }
 
@@ -58,7 +62,7 @@ where
         let now = Utc::now();
 
         match existing_state {
-            Some(state) if now.signed_duration_since(state.cached_at).num_minutes() < 15 => {
+            Some(state) if now.signed_duration_since(state.cached_at).le(&self.max_duration) => {
                 Ok(state.client)
             }
             _ => {
