@@ -66,10 +66,10 @@ Cargo.toml:
 [dependencies]
 gcloud-sdk = { version = "0.7", features = ["google-spanner-admin-database-v1"] }
 gouth = { version = "0.2" }
-tonic = { version = "0.6", features = ["tls"] }
-prost = "0.9"
-prost-types = "0.9"
-tokio = { version = "1.13", features = ["rt-multi-thread", "time", "fs", "macros"] }
+tonic = { version = "0.7", features = ["tls"] }
+prost = "0.10"
+prost-types = "0.10"
+tokio = { version = "1.14", features = ["rt-multi-thread", "time", "fs", "macros"] }
 ```
 
 main.rs:
