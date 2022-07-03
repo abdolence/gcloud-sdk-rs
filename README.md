@@ -6,7 +6,7 @@
 
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
 
-This is not offical gcloud sdk from Google (and it doesn't exist at the moment of this page was updated).
+This is not official gcloud sdk from Google (and it doesn't exist at the moment of this page was updated).
 
 ## Overview
 This library contains all the code generated from the Google API.
