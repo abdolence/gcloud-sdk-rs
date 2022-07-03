@@ -1,6 +1,6 @@
 [package]
 name = "gcloud-sdk"
-version = "0.7.3"
+version = "0.7.4"
 authors = ["mechiru <u9053u6d41@gmail.com>", "me@abdolence.dev"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -402,6 +402,7 @@ jsonwebtoken = { version = "8" }
 hyper = { version ="0.14", features = ["client", "http2", "h2"] }
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
+tokio= { version =  "1.19" }
 
 [dev-dependencies]
 lazy_static = "1.4"

@@ -10,9 +10,10 @@
 
 use std::{
     path::PathBuf,
-    sync::{Arc, Mutex},
+    sync::Arc,
     time::Instant,
 };
+use tokio::sync::Mutex;
 
 use crate::source::{self, find_default, from_file, from_json, BoxSource};
 
@@ -32,7 +33,7 @@ impl Token {
     /// Get the value of the authorization header.
     /// If it has expired, it will be updated automatically.
     pub async fn header_value(&self) -> crate::Result<Arc<String>> {
-        let mut inner = self.inner.lock().unwrap();
+        let mut inner = self.inner.lock().await;
         let v = match inner.curr {
             Some(ref c) if !c.token.expired(Instant::now()) => c.header.clone(),
             _ => {
