@@ -49,11 +49,12 @@ impl From<Metadata> for BoxSource {
 #[async_trait]
 impl Source for Metadata {
     async fn token(&self) -> crate::error::Result<Token> {
-        trace!("Receiving a new token from Metadata Server");
+        let url = PathAndQuery::from_str(&self.uri_suffix())?;
+        trace!("Receiving a new token from Metadata Server using '{}'", url);
 
          let resp_str = self
             .gcemeta_client
-            .get(PathAndQuery::from_str(&self.uri_suffix())?, false)
+            .get(url, false)
             .await?;
         let resp = TokenResponse::try_from(resp_str.as_str())?;
         Token::try_from(resp)
