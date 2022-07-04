@@ -50,7 +50,7 @@ impl From<Metadata> for BoxSource {
 impl Source for Metadata {
     async fn token(&self) -> crate::error::Result<Token> {
         let url = PathAndQuery::from_str(
-            format!("computeMetadata/v1/{}",self.uri_suffix()).as_str()
+            format!("/computeMetadata/v1/{}",self.uri_suffix()).as_str()
         )?;
         trace!("Receiving a new token from Metadata Server using '{}'", url);
 
