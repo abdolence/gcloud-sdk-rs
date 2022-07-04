@@ -8,13 +8,13 @@ use tonic::transport::Channel;
 use crate::google_tonic_connector::GoogleConnectorInterceptor;
 
 #[async_trait]
-pub trait CachedGoogleApiClientBuilder<C> {
+pub trait GoogleApiClientBuilder<C> {
     fn create_client(&self, channel: Channel, interceptor: GoogleConnectorInterceptor) -> C;
 }
 
-pub struct CachedGoogleApiClient<B, C>
+pub struct GoogleApiClient<B, C>
 where
-    B: CachedGoogleApiClientBuilder<C>,
+    B: GoogleApiClientBuilder<C>,
     C: Clone,
 {
     builder: B,
@@ -33,9 +33,9 @@ where
     client: C,
 }
 
-impl<B, C> CachedGoogleApiClient<B, C>
+impl<B, C> GoogleApiClient<B, C>
 where
-    B: CachedGoogleApiClientBuilder<C>,
+    B: GoogleApiClientBuilder<C>,
     C: Clone,
 {
     pub fn new(

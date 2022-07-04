@@ -1,7 +1,7 @@
 use gcloud_sdk::google::spanner::admin::database::v1::{
     database_admin_client::DatabaseAdminClient, ListDatabasesRequest,
 };
-use gcloud_sdk::google_cached_client::{CachedGoogleApiClient, CachedGoogleApiClientBuilder};
+use gcloud_sdk::google_cached_client::{GoogleApiClient, GoogleApiClientBuilder};
 use gcloud_sdk::google_tonic_connector::GoogleConnectorInterceptor;
 use tonic::{transport::Channel, Request};
 
@@ -11,7 +11,7 @@ pub type GoogleDatabaseAdminClient = DatabaseAdminClient<
 
 pub struct GoogleSpannerClientBuilder;
 
-impl CachedGoogleApiClientBuilder<GoogleDatabaseAdminClient> for GoogleSpannerClientBuilder {
+impl GoogleApiClientBuilder<GoogleDatabaseAdminClient> for GoogleSpannerClientBuilder {
     fn create_client(
         &self,
         channel: Channel,
@@ -26,7 +26,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let project = std::env::var("PROJECT")?;
     let instance = std::env::var("INSTANCE")?;
 
-    let spanner_client = CachedGoogleApiClient::new(
+    let spanner_client = GoogleApiClient::new(
         GoogleSpannerClientBuilder {},
         "spanner.googleapis.com",
         chrono::Duration::minutes(15),
