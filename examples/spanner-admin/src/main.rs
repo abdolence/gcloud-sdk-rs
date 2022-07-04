@@ -1,8 +1,8 @@
 use gcloud_sdk::google::spanner::admin::database::v1::{
     database_admin_client::DatabaseAdminClient, ListDatabasesRequest,
 };
-use gcloud_sdk::google_cached_client::{GoogleApiClient, GoogleApiClientBuilder};
-use gcloud_sdk::google_tonic_connector::GoogleConnectorInterceptor;
+use gcloud_sdk::GoogleConnectorInterceptor;
+use gcloud_sdk::{GoogleApiClient, GoogleApiClientBuilder};
 use tonic::{transport::Channel, Request};
 
 pub type GoogleDatabaseAdminClient = DatabaseAdminClient<
@@ -31,9 +31,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "spanner.googleapis.com",
         chrono::Duration::minutes(15),
         None,
-    );
+    )
+    .await?;
 
-    let response = spanner_client.get().await?
+    let response = spanner_client
+        .get()
+        .await?
         .list_databases(Request::new(ListDatabasesRequest {
             parent: format!("projects/{}/instances/{}", project, instance),
             page_size: 100,

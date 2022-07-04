@@ -1,3 +1,5 @@
+use crate::source::{BoxSource, Token};
+use chrono::prelude::*;
 use std::convert::TryFrom;
 use tonic::metadata::Ascii;
 use tonic::service::Interceptor;
@@ -5,6 +7,7 @@ use tonic::{Request, Status};
 
 #[derive(Clone)]
 pub struct GoogleConnectorInterceptor {
+    token: Token,
     token_value_meta: tonic::metadata::MetadataValue<Ascii>,
     cloud_resource_prefix_meta: Option<tonic::metadata::MetadataValue<Ascii>>,
 }
@@ -23,34 +26,35 @@ impl GoogleConnectorInterceptor {
     pub async fn init_google_services_channel(
         api_url: &'static str,
         google_services_tls_config: &tonic::transport::ClientTlsConfig,
-    ) -> Result<tonic::transport::Channel, crate::Error> {
+    ) -> Result<tonic::transport::Channel, crate::error::Error> {
         Ok(tonic::transport::Channel::from_static(api_url)
             .tls_config(google_services_tls_config.clone())?
             .connect()
             .await?)
     }
 
-    pub async fn new() -> crate::Result<Self> {
-        Self::with_cloud_resource_prefix(None).await
-    }
-
-    pub async fn with_cloud_resource_prefix(
+    pub async fn new(
+        token_source: &BoxSource,
         cloud_resource_prefix: Option<String>,
-    ) -> crate::Result<Self> {
-        let token = crate::Token::new().await?;
-        let token_value = &*token.header_value().await?;
-        let token_value_meta: tonic::metadata::MetadataValue<Ascii> =
-            tonic::metadata::MetadataValue::try_from(token_value)?;
+    ) -> crate::error::Result<Self> {
+        let token = token_source.token().await?;
 
         let cloud_resource_prefix_meta =
             cloud_resource_prefix.and_then(|cloud_resource_prefix_value| {
                 tonic::metadata::MetadataValue::try_from(cloud_resource_prefix_value.as_str()).ok()
             });
 
+        let token_value_meta = tonic::metadata::MetadataValue::try_from(token.header_value())?;
+
         Ok(Self {
+            token,
             token_value_meta,
             cloud_resource_prefix_meta,
         })
+    }
+
+    pub fn expiry_date(&self) -> DateTime<Utc> {
+        self.token.expiry
     }
 
     fn google_interceptor_fn(

@@ -42,7 +42,7 @@ pub struct User {
 
 #[async_trait]
 impl Source for Credentials {
-    async fn token(&self) -> crate::Result<Token> {
+    async fn token(&self) -> crate::error::Result<Token> {
         use Credentials::*;
         match self {
             ServiceAccount(sa) => jwt::token(&sa),
@@ -59,14 +59,14 @@ impl From<Credentials> for BoxSource {
 
 const ENV_KEY: &str = "GOOGLE_APPLICATION_CREDENTIALS";
 
-pub fn from_env_var(scopes: &[String]) -> crate::Result<Option<Credentials>> {
+pub fn from_env_var(scopes: &[String]) -> crate::error::Result<Option<Credentials>> {
     match env::var(ENV_KEY) {
         Ok(path) => from_file(path, scopes).map(Some),
         Err(_) => Ok(None),
     }
 }
 
-pub fn from_well_known_file(scopes: &[String]) -> crate::Result<Option<Credentials>> {
+pub fn from_well_known_file(scopes: &[String]) -> crate::error::Result<Option<Credentials>> {
     match well_known_file_path() {
         Some(path) if path.exists() => from_file(path, scopes).map(Some),
         _ => Ok(None),
@@ -91,16 +91,17 @@ fn well_known_file_path() -> Option<PathBuf> {
     Some(buf)
 }
 
-pub fn from_json(buf: &[u8], scopes: &[String]) -> crate::Result<Credentials> {
-    let mut creds = serde_json::from_slice(buf).map_err(crate::ErrorKind::CredentialsJson)?;
+pub fn from_json(buf: &[u8], scopes: &[String]) -> crate::error::Result<Credentials> {
+    let mut creds =
+        serde_json::from_slice(buf).map_err(crate::error::ErrorKind::CredentialsJson)?;
     if let Credentials::ServiceAccount(ref mut sa) = creds {
         sa.scopes = scopes.to_owned()
     }
     Ok(creds)
 }
 
-pub fn from_file(path: impl AsRef<Path>, scopes: &[String]) -> crate::Result<Credentials> {
-    let buf = fs::read(path).map_err(crate::ErrorKind::CredentialsFile)?;
+pub fn from_file(path: impl AsRef<Path>, scopes: &[String]) -> crate::error::Result<Credentials> {
+    let buf = fs::read(path).map_err(crate::error::ErrorKind::CredentialsFile)?;
     from_json(&buf, scopes)
 }
 
@@ -151,7 +152,7 @@ mod jwt {
 
     const DEFAULT_EXPIRE: u64 = 60 * 60;
 
-    pub fn token(sa: &ServiceAccount) -> crate::Result<Token> {
+    pub fn token(sa: &ServiceAccount) -> crate::error::Result<Token> {
         let iat = issued_at();
         let claims = Claims {
             iss: &sa.client_email,
@@ -175,7 +176,7 @@ mod jwt {
             let resp = TokenResponse::try_from(resp.text()?.as_ref())?;
             Token::try_from(resp)
         } else {
-            Err(crate::ErrorKind::HttpStatus(resp.status()).into())
+            Err(crate::error::ErrorKind::HttpStatus(resp.status()).into())
         }
     }
 }
@@ -200,11 +201,11 @@ mod oauth2 {
     const TOKEN_URL: &str = "https://oauth2.googleapis.com/token";
     const GRANT_TYPE: &str = "refresh_token";
 
-    pub fn token(user: &User) -> crate::Result<Token> {
+    pub fn token(user: &User) -> crate::error::Result<Token> {
         fetch_token(TOKEN_URL, user)
     }
 
-    pub(super) fn fetch_token(url: &str, user: &User) -> crate::Result<Token> {
+    pub(super) fn fetch_token(url: &str, user: &User) -> crate::error::Result<Token> {
         let mut req = httpc_post(url)
             .form(&Payload {
                 client_id: &user.client_id,
@@ -220,7 +221,7 @@ mod oauth2 {
             let resp = TokenResponse::try_from(resp.text()?.as_ref())?;
             Token::try_from(resp)
         } else {
-            Err(crate::ErrorKind::HttpStatus(resp.status()).into())
+            Err(crate::error::ErrorKind::HttpStatus(resp.status()).into())
         }
     }
 }

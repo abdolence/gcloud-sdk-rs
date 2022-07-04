@@ -1,12 +1,13 @@
 mod apis;
 pub use apis::*;
 
-mod error;
+pub mod error;
 mod source;
-mod token;
 
-pub use error::{Error, ErrorKind, Result};
-pub use token::{Builder, Token};
+mod google_api_client;
+pub use google_api_client::*;
 
-pub mod google_cached_client;
-pub mod google_tonic_connector;
+mod google_connector_interceptor;
+pub use google_connector_interceptor::*;
+
+pub use source::Token;

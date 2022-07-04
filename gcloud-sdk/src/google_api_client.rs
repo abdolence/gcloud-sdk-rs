@@ -1,11 +1,15 @@
-use std::sync::{Arc, RwLock};
+use std::ops::Add;
+use std::sync::Arc;
 
 use async_trait::async_trait;
 use chrono::prelude::*;
 use chrono::Duration;
+use tokio::sync::RwLock;
 use tonic::transport::Channel;
 
-use crate::google_tonic_connector::GoogleConnectorInterceptor;
+use crate::google_connector_interceptor::GoogleConnectorInterceptor;
+use crate::source::TokenSourceType;
+use crate::source::*;
 
 #[async_trait]
 pub trait GoogleApiClientBuilder<C> {
@@ -20,8 +24,9 @@ where
     builder: B,
     google_api_url: &'static str,
     cloud_resource_prefix_meta: Option<String>,
-    max_duration: Duration,
+    max_duration: chrono::Duration,
     state: Arc<RwLock<Option<CachedGoogleApiClientState<C>>>>,
+    token_source: BoxSource,
 }
 
 #[derive(Clone)]
@@ -29,7 +34,7 @@ struct CachedGoogleApiClientState<C>
 where
     C: Clone,
 {
-    cached_at: DateTime<Utc>,
+    expired_at: DateTime<Utc>,
     client: C,
 }
 
@@ -38,33 +43,53 @@ where
     B: GoogleApiClientBuilder<C>,
     C: Clone,
 {
-    pub fn new(
+    pub async fn new(
         builder: B,
         google_api_url: &'static str,
         max_duration: Duration,
         cloud_resource_prefix_meta: Option<String>,
-    ) -> Self {
-        Self {
+    ) -> crate::error::Result<Self> {
+        Self::with_token_source(
+            TokenSourceType::Default,
+            vec!["https://www.googleapis.com/auth/cloud-platform".into()],
+            builder,
+            google_api_url,
+            max_duration,
+            cloud_resource_prefix_meta,
+        )
+        .await
+    }
+
+    pub async fn with_token_source(
+        token_source_type: TokenSourceType,
+        token_scopes: Vec<String>,
+        builder: B,
+        google_api_url: &'static str,
+        max_duration: Duration,
+        cloud_resource_prefix_meta: Option<String>,
+    ) -> crate::error::Result<Self> {
+        let source: BoxSource = create_source(token_source_type, token_scopes).await?;
+
+        Ok(Self {
             state: Arc::new(RwLock::new(None)),
             builder: builder,
             google_api_url: google_api_url,
             cloud_resource_prefix_meta: cloud_resource_prefix_meta,
-            max_duration: max_duration
-        }
+            max_duration: max_duration,
+            token_source: source,
+        })
     }
 
-    pub async fn get(&self) -> crate::Result<C> {
+    pub async fn get(&self) -> crate::error::Result<C> {
         let existing_state: Option<CachedGoogleApiClientState<C>> = {
-            let read_state = self.state.read().unwrap();
+            let read_state = self.state.read().await;
             read_state.clone()
         };
 
         let now = Utc::now();
 
         match existing_state {
-            Some(state) if now.signed_duration_since(state.cached_at).le(&self.max_duration) => {
-                Ok(state.client)
-            }
+            Some(state) if state.expired_at.lt(&now) => Ok(state.client),
             _ => {
                 let domain_name = self.google_api_url.to_string().replace("https://", "");
 
@@ -79,21 +104,31 @@ where
                 )
                 .await?;
 
-                let interceptor = GoogleConnectorInterceptor::with_cloud_resource_prefix(
+                let interceptor = GoogleConnectorInterceptor::new(
+                    &self.token_source,
                     self.cloud_resource_prefix_meta.clone(),
                 )
                 .await?;
 
+                let token_expiry_date = interceptor.expiry_date().min(now.add(self.max_duration));
+
+                println!("Exp: {}", token_expiry_date);
+
                 let new_client = self.builder.create_client(channel, interceptor);
                 {
-                    let mut write_state = self.state.write().unwrap();
+                    let mut write_state = self.state.write().await;
                     *write_state = Some(CachedGoogleApiClientState {
-                        cached_at: now,
                         client: new_client.clone(),
+                        expired_at: token_expiry_date,
                     })
                 }
                 Ok(new_client)
             }
         }
+    }
+
+    pub async fn clear_cache(&self) {
+        let mut write_state = self.state.write().await;
+        *write_state = None;
     }
 }

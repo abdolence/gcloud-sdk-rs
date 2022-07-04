@@ -47,7 +47,7 @@ impl From<Metadata> for BoxSource {
 
 #[async_trait]
 impl Source for Metadata {
-    async fn token(&self) -> crate::Result<Token> {
+    async fn token(&self) -> crate::error::Result<Token> {
         if !self.gcemeta_client.on_gce().await? {
             panic!("must be running on Google Compute Engine.")
         }
@@ -60,7 +60,7 @@ impl Source for Metadata {
     }
 }
 
-pub async fn from_metadata(scopes: &[String]) -> crate::Result<Option<Metadata>> {
+pub async fn from_metadata(scopes: &[String]) -> crate::error::Result<Option<Metadata>> {
     let gcemeta_client = gcemeta::Client::new();
 
     if gcemeta_client.on_gce().await? {

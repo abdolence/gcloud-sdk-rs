@@ -1,9 +1,9 @@
-use std::{
-    convert::TryFrom,
-    time::{Duration, Instant},
-};
+use std::convert::TryFrom;
+use std::ops::Add;
+use std::path::PathBuf;
 
 use async_trait::async_trait;
+use chrono::prelude::*;
 
 mod credentials;
 mod metadata;
@@ -17,14 +17,25 @@ pub type BoxSource = Box<dyn Source + Send + Sync + 'static>;
 
 #[async_trait]
 pub trait Source {
-    async fn token(&self) -> crate::Result<Token>;
+    async fn token(&self) -> crate::error::Result<Token>;
+}
+
+pub async fn create_source(
+    token_source_type: TokenSourceType,
+    token_scopes: Vec<String>,
+) -> crate::error::Result<BoxSource> {
+    Ok(match token_source_type {
+        TokenSourceType::Default => find_default(&token_scopes).await?,
+        TokenSourceType::Json(json) => from_json(json.as_bytes(), &token_scopes)?.into(),
+        TokenSourceType::File(path) => from_file(path, &token_scopes)?.into(),
+    })
 }
 
 // Looks for credentials in the following places, preferring the first location found:
 // - A JSON file whose path is specified by the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
 // - A JSON file in a location known to the gcloud command-line tool.
 // - On Google Compute Engine, it fetches credentials from the metadata server.
-pub async fn find_default(scopes: &[String]) -> crate::Result<BoxSource> {
+pub async fn find_default(scopes: &[String]) -> crate::error::Result<BoxSource> {
     if let Some(src) = from_env_var(scopes)? {
         return Ok(src.into());
     }
@@ -34,38 +45,50 @@ pub async fn find_default(scopes: &[String]) -> crate::Result<BoxSource> {
     if let Some(src) = from_metadata(scopes).await? {
         return Ok(src.into());
     }
-    Err(crate::ErrorKind::TokenSource.into())
+    Err(crate::error::ErrorKind::TokenSource.into())
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Token {
     pub type_: String,
     pub token: String,
-    pub expiry: std::time::Instant,
+    pub expiry: DateTime<Utc>,
 }
 
 impl Token {
-    const EXPIRY_DELTA: Duration = Duration::from_secs(10);
+    pub async fn generate() -> crate::error::Result<Token> {
+        let token_source: BoxSource = create_source(
+            TokenSourceType::Default,
+            vec!["https://www.googleapis.com/auth/cloud-platform".into()],
+        )
+        .await?;
+        token_source.token().await
+    }
 
-    pub fn expired(&self, now: Instant) -> bool {
-        self.expiry
-            .checked_duration_since(now)
-            .map(|d| d < Self::EXPIRY_DELTA)
-            .unwrap_or(true)
+    pub async fn generate_for_scopes(
+        token_source_type: TokenSourceType,
+        token_scopes: Vec<String>,
+    ) -> crate::error::Result<Token> {
+        let token_source: BoxSource = create_source(token_source_type, token_scopes).await?;
+        token_source.token().await
+    }
+
+    pub fn header_value(&self) -> String {
+        format!("{} {}", self.type_, self.token)
     }
 }
 
 impl TryFrom<TokenResponse> for Token {
-    type Error = crate::Error;
+    type Error = crate::error::Error;
 
     fn try_from(v: TokenResponse) -> Result<Self, Self::Error> {
         if v.token_type.is_empty() || v.access_token.is_empty() || v.expires_in == 0 {
-            Err(crate::ErrorKind::TokenData.into())
+            Err(crate::error::ErrorKind::TokenData.into())
         } else {
             Ok(Token {
                 type_: v.token_type,
                 token: v.access_token,
-                expiry: Instant::now() + Duration::from_secs(v.expires_in),
+                expiry: Utc::now().add(chrono::Duration::seconds(v.expires_in.try_into().unwrap())),
             })
         }
     }
@@ -79,10 +102,10 @@ struct TokenResponse {
 }
 
 impl TryFrom<&str> for TokenResponse {
-    type Error = crate::Error;
+    type Error = crate::error::Error;
 
     fn try_from(v: &str) -> Result<Self, Self::Error> {
-        let resp = serde_json::from_str(v).map_err(crate::ErrorKind::TokenJson)?;
+        let resp = serde_json::from_str(v).map_err(crate::error::ErrorKind::TokenJson)?;
         Ok(resp)
     }
 }
@@ -90,18 +113,6 @@ impl TryFrom<&str> for TokenResponse {
 #[cfg(test)]
 mod test {
     use super::*;
-
-    #[test]
-    fn test_token_expired() {
-        let t = Token {
-            type_: String::new(),
-            token: String::new(),
-            expiry: Instant::now(),
-        };
-        assert!(t.expired(Instant::now()));
-        assert!(t.expired(Instant::now() - Duration::from_secs(5)));
-        assert!(!t.expired(Instant::now() - Duration::from_secs(30)));
-    }
 
     macro_rules! test_token_try_from {
         () => {};
@@ -147,4 +158,10 @@ mod test {
         },
         true;
     );
+}
+
+pub enum TokenSourceType {
+    Default,
+    Json(String),
+    File(PathBuf),
 }
