@@ -11,6 +11,8 @@ use crate::google_connector_interceptor::GoogleConnectorInterceptor;
 use crate::source::TokenSourceType;
 use crate::source::*;
 
+use tracing::*;
+
 #[async_trait]
 pub trait GoogleApiClientBuilder<C> {
     fn create_client(&self, channel: Channel, interceptor: GoogleConnectorInterceptor) -> C;
@@ -68,6 +70,8 @@ where
         max_duration: Duration,
         cloud_resource_prefix_meta: Option<String>,
     ) -> crate::error::Result<Self> {
+        debug!("Creating a new Google API client for {}. Max duration: {}. Scopes: {:?}", google_api_url, max_duration, token_scopes);
+
         let source: BoxSource = create_source(token_source_type, token_scopes).await?;
 
         Ok(Self {
@@ -89,8 +93,11 @@ where
         let now = Utc::now();
 
         match existing_state {
-            Some(state) if state.expired_at.lt(&now) => Ok(state.client),
+            Some(state) if state.expired_at.lt(&now) => {
+                Ok(state.client)
+            },
             _ => {
+
                 let domain_name = self.google_api_url.to_string().replace("https://", "");
 
                 let tls_config =
@@ -112,7 +119,7 @@ where
 
                 let token_expiry_date = interceptor.expiry_date().min(now.add(self.max_duration));
 
-                println!("Exp: {}", token_expiry_date);
+                debug!("Creating a new instance of Google API client for {}. Expiry date: {}", self.google_api_url, token_expiry_date);
 
                 let new_client = self.builder.create_client(channel, interceptor);
                 {

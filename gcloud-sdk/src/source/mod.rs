@@ -12,6 +12,7 @@ use credentials::{from_env_var, from_well_known_file};
 use metadata::from_metadata;
 
 pub use credentials::{from_file, from_json};
+use tracing::*;
 
 pub type BoxSource = Box<dyn Source + Send + Sync + 'static>;
 
@@ -24,27 +25,40 @@ pub async fn create_source(
     token_source_type: TokenSourceType,
     token_scopes: Vec<String>,
 ) -> crate::error::Result<BoxSource> {
-    Ok(match token_source_type {
-        TokenSourceType::Default => find_default(&token_scopes).await?,
-        TokenSourceType::Json(json) => from_json(json.as_bytes(), &token_scopes)?.into(),
-        TokenSourceType::File(path) => from_file(path, &token_scopes)?.into(),
-    })
+    match token_source_type {
+        TokenSourceType::Default => Ok(find_default(&token_scopes).await?),
+        TokenSourceType::Json(json) => Ok(from_json(json.as_bytes(), &token_scopes)?.into()),
+        TokenSourceType::File(path) => Ok(from_file(path, &token_scopes)?.into()),
+        TokenSourceType::MetadataServer =>
+            if let Some(src) = from_metadata(&token_scopes).await? {
+                Ok(src.into())
+            }
+            else {
+                Err(crate::error::ErrorKind::TokenSource.into())
+            }
+    }
 }
 
 // Looks for credentials in the following places, preferring the first location found:
 // - A JSON file whose path is specified by the `GOOGLE_APPLICATION_CREDENTIALS` environment variable.
 // - A JSON file in a location known to the gcloud command-line tool.
 // - On Google Compute Engine, it fetches credentials from the metadata server.
-pub async fn find_default(scopes: &[String]) -> crate::error::Result<BoxSource> {
-    if let Some(src) = from_env_var(scopes)? {
+pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSource> {
+    debug!("Finding default token for scopes: {:?}", token_scopes);
+
+    if let Some(src) = from_env_var(token_scopes)? {
+        debug!("Creating token based on environment variable: GOOGLE_APPLICATION_CREDENTIALS");
         return Ok(src.into());
     }
-    if let Some(src) = from_well_known_file(scopes)? {
+    if let Some(src) = from_well_known_file(token_scopes)? {
+        debug!("Creating token based on standard config files such as application_default_credentials.json");
         return Ok(src.into());
     }
-    if let Some(src) = from_metadata(scopes).await? {
+    if let Some(src) = from_metadata(token_scopes).await? {
+        debug!("Creating token based on metadata server");
         return Ok(src.into());
     }
+    warn!("None of the possible sources detected for Google OAuth token");
     Err(crate::error::ErrorKind::TokenSource.into())
 }
 
@@ -164,4 +178,5 @@ pub enum TokenSourceType {
     Default,
     Json(String),
     File(PathBuf),
+    MetadataServer
 }

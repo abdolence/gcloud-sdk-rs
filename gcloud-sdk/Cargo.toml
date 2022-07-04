@@ -403,6 +403,7 @@ hyper = { version ="0.14", features = ["client", "http2", "h2"] }
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
 tokio= { version =  "1.19" }
+tracing = "0.1"
 
 [dev-dependencies]
 lazy_static = "1.4"

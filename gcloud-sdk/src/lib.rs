@@ -11,3 +11,4 @@ mod google_connector_interceptor;
 pub use google_connector_interceptor::*;
 
 pub use source::Token;
+pub use source::TokenSourceType;
