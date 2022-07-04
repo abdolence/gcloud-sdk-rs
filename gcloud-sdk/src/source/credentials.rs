@@ -268,7 +268,7 @@ mod test {
     }
 
     #[test]
-    fn test_from_json_sa() -> crate::Result<()> {
+    fn test_from_json_sa() -> crate::error::Result<()> {
         let sa = from_json(SERVICE_ACCOUNT, &[])?;
         assert_eq!(
             sa,

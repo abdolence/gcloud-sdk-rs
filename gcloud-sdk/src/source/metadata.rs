@@ -4,6 +4,7 @@ use async_trait::async_trait;
 use hyper::http::uri::PathAndQuery;
 use std::convert::TryFrom;
 use std::str::FromStr;
+use tracing::trace;
 
 use crate::source::{BoxSource, Source, Token, TokenResponse};
 
@@ -48,10 +49,9 @@ impl From<Metadata> for BoxSource {
 #[async_trait]
 impl Source for Metadata {
     async fn token(&self) -> crate::error::Result<Token> {
-        if !self.gcemeta_client.on_gce().await? {
-            panic!("must be running on Google Compute Engine.")
-        }
-        let resp_str = self
+        trace!("Receiving a new token from Metadata Server");
+
+         let resp_str = self
             .gcemeta_client
             .get(PathAndQuery::from_str(&self.uri_suffix())?, false)
             .await?;
@@ -80,6 +80,7 @@ mod test {
         assert_eq!(m.uri_suffix(), "instance/service-accounts/default/token?");
 
         let m = Metadata::new(vec!["https://www.googleapis.com/auth/cloud-platform".into()]);
+
         assert_eq!(
             m.uri_suffix(),
             "instance/service-accounts/default/token?scopes=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform"
