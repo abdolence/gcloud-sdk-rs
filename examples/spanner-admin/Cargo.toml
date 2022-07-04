@@ -1,6 +1,6 @@
 [package]
 name = "spanner-admin"
-version = "0.2.2"
+version = "0.2.3"
 authors = ["mechiru <u9053u6d41@gmail.com>", "me@abdolence.dev"]
 edition = "2018"
 
