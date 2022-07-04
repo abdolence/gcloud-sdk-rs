@@ -59,7 +59,7 @@ The complete code can be found [here](./examples/spanner-admin).
 Cargo.toml:
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.8", features = ["google-spanner-admin-database-v1"] }
+gcloud-sdk = { version = "0.9", features = ["google-spanner-admin-database-v1"] }
 tonic = { version = "0.7", features = ["tls"] }
 prost = "0.10"
 prost-types = "0.10"
@@ -88,4 +88,4 @@ or [MIT license](./LICENSE-MIT) at your option.
 
 ## Authors
 - [mechiru](https://github.com/mechiru) - the original project
-- Abdulla Abdurakhmanov - updated for recent deps, introduced caching client implementation, merged with gouth.
+- Abdulla Abdurakhmanov - updated for recent deps, introduced caching client implementation, merged/refactorings with gouth.
