@@ -37,9 +37,14 @@ fn gen() {
         .compile_with_config(config, &gen::proto_path(&protos), &includes)
         .unwrap();
 
-    let mut out_path = PathBuf::from("gcloud-sdk/src/googapis.rs");
+    let mut out_path = PathBuf::from("gcloud-sdk/src/google_apis.rs");
     let root = gen::from_protos(protos);
     fs::write(out_path.clone(), root.gen_code()).unwrap();
+
+    let input_contents = fs::read_to_string(&out_path).unwrap();
+    let syntax_tree = syn::parse_file(&input_contents).unwrap();
+    let formatted = prettyplease::unparse(&syntax_tree);
+    fs::write(out_path.clone(), formatted).unwrap();
 
     out_path.pop();
 }

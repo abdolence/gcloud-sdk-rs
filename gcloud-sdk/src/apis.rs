@@ -19,4 +19,4 @@ macro_rules! include_proto {
     };
 }
 
-include!("googapis.rs");
+include!("google_apis.rs");
