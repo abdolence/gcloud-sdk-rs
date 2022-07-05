@@ -46,30 +46,13 @@ impl<B, C> GoogleApiClient<B, C>
         B: GoogleApiClientBuilder<C>,
         C: Clone,
 {
-    pub async fn from_builder(
+    pub async fn with_token_source(
         builder: B,
         google_api_url: &'static str,
         max_duration: Duration,
         cloud_resource_prefix_meta: Option<String>,
-    ) -> crate::error::Result<Self> {
-        Self::with_token_source(
-            TokenSourceType::Default,
-            vec!["https://www.googleapis.com/auth/cloud-platform".into()],
-            builder,
-            google_api_url,
-            max_duration,
-            cloud_resource_prefix_meta,
-        )
-            .await
-    }
-
-    pub async fn with_token_source(
         token_source_type: TokenSourceType,
         token_scopes: Vec<String>,
-        builder: B,
-        google_api_url: &'static str,
-        max_duration: Duration,
-        cloud_resource_prefix_meta: Option<String>,
     ) -> crate::error::Result<Self> {
         debug!("Creating a new Google API client for {}. Max duration: {}. Scopes: {:?}", google_api_url, max_duration, token_scopes);
 
@@ -156,11 +139,21 @@ impl<C> GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>
     pub async fn from_function(builder_fn: fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C, google_api_url: &'static str,
                                max_duration: Duration,
                                cloud_resource_prefix_meta: Option<String>) -> crate::error::Result<Self> {
+        Self::from_function_with_scopes(
+            builder_fn,google_api_url, max_duration, cloud_resource_prefix_meta,
+            vec!["https://www.googleapis.com/auth/cloud-platform".into()]
+        ).await
+    }
+
+    pub async fn from_function_with_scopes(builder_fn: fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C, google_api_url: &'static str,
+                               max_duration: Duration,
+                               cloud_resource_prefix_meta: Option<String>,
+                               token_scopes: Vec<String>) -> crate::error::Result<Self> {
         let builder: GoogleApiClientBuilderFunction<C> = GoogleApiClientBuilderFunction {
             f: builder_fn
         };
 
-        Self::from_builder(builder, google_api_url, max_duration, cloud_resource_prefix_meta).await
+        Self::with_token_source(builder, google_api_url, max_duration, cloud_resource_prefix_meta, TokenSourceType::Default, token_scopes).await
     }
 }
 
