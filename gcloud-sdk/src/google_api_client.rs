@@ -1,3 +1,4 @@
+use std::marker::PhantomData;
 use std::ops::Add;
 use std::sync::Arc;
 
@@ -19,9 +20,9 @@ pub trait GoogleApiClientBuilder<C> {
 }
 
 pub struct GoogleApiClient<B, C>
-where
-    B: GoogleApiClientBuilder<C>,
-    C: Clone,
+    where
+        B: GoogleApiClientBuilder<C>,
+        C: Clone,
 {
     builder: B,
     google_api_url: &'static str,
@@ -33,19 +34,19 @@ where
 
 #[derive(Clone)]
 struct CachedGoogleApiClientState<C>
-where
-    C: Clone,
+    where
+        C: Clone,
 {
     expired_at: DateTime<Utc>,
     client: C,
 }
 
 impl<B, C> GoogleApiClient<B, C>
-where
-    B: GoogleApiClientBuilder<C>,
-    C: Clone,
+    where
+        B: GoogleApiClientBuilder<C>,
+        C: Clone,
 {
-    pub async fn new(
+    pub async fn from_builder(
         builder: B,
         google_api_url: &'static str,
         max_duration: Duration,
@@ -59,7 +60,7 @@ where
             max_duration,
             cloud_resource_prefix_meta,
         )
-        .await
+            .await
     }
 
     pub async fn with_token_source(
@@ -95,9 +96,8 @@ where
         match existing_state {
             Some(state) if state.expired_at.lt(&now) => {
                 Ok(state.client)
-            },
+            }
             _ => {
-
                 let domain_name = self.google_api_url.to_string().replace("https://", "");
 
                 let tls_config =
@@ -109,13 +109,13 @@ where
                     self.google_api_url,
                     &tls_config,
                 )
-                .await?;
+                    .await?;
 
                 let interceptor = GoogleConnectorInterceptor::new(
                     &self.token_source,
                     self.cloud_resource_prefix_meta.clone(),
                 )
-                .await?;
+                    .await?;
 
                 let token_expiry_date = interceptor.expiry_date().min(now.add(self.max_duration));
 
@@ -137,5 +137,34 @@ where
     pub async fn clear_cache(&self) {
         let mut write_state = self.state.write().await;
         *write_state = None;
+    }
+}
+
+pub struct GoogleApiClientBuilderFunction<F, C>
+    where F: Fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C, C: Clone {
+    f: F,
+    _ph_c: PhantomData<C>,
+}
+
+impl<C, F> GoogleApiClientBuilder<C> for GoogleApiClientBuilderFunction<F, C>
+    where F: Fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C, C: Clone {
+    fn create_client(&self, channel: Channel, interceptor: GoogleConnectorInterceptor) -> C {
+        (self.f)(channel, interceptor)
+    }
+}
+
+impl<F, C> GoogleApiClient<GoogleApiClientBuilderFunction<F, C>, C>
+    where F: Fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C,
+          C: Clone,
+{
+    pub async fn from_function(builder_fn: F, google_api_url: &'static str,
+                               max_duration: Duration,
+                               cloud_resource_prefix_meta: Option<String>) -> crate::error::Result<Self> where F: Fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C {
+        let builder = GoogleApiClientBuilderFunction {
+            f: builder_fn,
+            _ph_c: PhantomData::default(),
+        };
+
+        Self::from_builder(builder, google_api_url, max_duration, cloud_resource_prefix_meta).await
     }
 }

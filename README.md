@@ -56,6 +56,50 @@ The list of available features can be found [here](./googapis/Cargo.toml#L22-L31
 ## Example
 The complete code can be found [here](./examples/spanner-admin).
 
+
+```rust
+use gcloud_sdk::*;
+
+// One of the Google API declarations from tonic/protobuf
+use gcloud_sdk::google::spanner::admin::database::v1::database_admin_client::DatabaseAdminClient;
+
+// Defining a user type for convenience for some of Google API
+type GoogleDatabaseAdminClient = DatabaseAdminClient<
+    tonic::service::interceptor::InterceptedService<Channel, GoogleConnectorInterceptor>,
+>;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let project = std::env::var("PROJECT")?;
+    let instance = std::env::var("INSTANCE")?;
+
+    let spanner_client = GoogleApiClient::new(
+        GoogleSpannerClientBuilder {},
+        "spanner.googleapis.com",
+        chrono::Duration::minutes(15),
+        None,
+    )
+        .await?;
+
+    let response = spanner_client
+        .get()
+        .await?
+        .list_databases(Request::new(ListDatabasesRequest {
+            parent: format!("projects/{}/instances/{}", project, instance),
+            page_size: 100,
+            ..Default::default()
+        }))
+        .await?;
+
+    println!("RESPONSE={:?}", response);
+
+    Ok(())
+}
+
+
+
+```
+
 Cargo.toml:
 ```toml
 [dependencies]
