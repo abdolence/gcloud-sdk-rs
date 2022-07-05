@@ -1,4 +1,3 @@
-use std::marker::PhantomData;
 use std::ops::Add;
 use std::sync::Arc;
 
@@ -6,6 +5,7 @@ use async_trait::async_trait;
 use chrono::prelude::*;
 use chrono::Duration;
 use tokio::sync::RwLock;
+use tonic::codegen::InterceptedService;
 use tonic::transport::Channel;
 
 use crate::google_connector_interceptor::GoogleConnectorInterceptor;
@@ -140,31 +140,33 @@ impl<B, C> GoogleApiClient<B, C>
     }
 }
 
-pub struct GoogleApiClientBuilderFunction<F, C>
-    where F: Fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C, C: Clone {
-    f: F,
-    _ph_c: PhantomData<C>,
+pub struct GoogleApiClientBuilderFunction<C> where C: Clone {
+    f: fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C
 }
 
-impl<C, F> GoogleApiClientBuilder<C> for GoogleApiClientBuilderFunction<F, C>
-    where F: Fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C, C: Clone {
+impl<C> GoogleApiClientBuilder<C> for GoogleApiClientBuilderFunction<C> where C: Clone {
     fn create_client(&self, channel: Channel, interceptor: GoogleConnectorInterceptor) -> C {
         (self.f)(channel, interceptor)
     }
 }
 
-impl<F, C> GoogleApiClient<GoogleApiClientBuilderFunction<F, C>, C>
-    where F: Fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C,
-          C: Clone,
+impl<C> GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>
+    where C: Clone,
 {
-    pub async fn from_function(builder_fn: F, google_api_url: &'static str,
+    pub async fn from_function(builder_fn: fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C, google_api_url: &'static str,
                                max_duration: Duration,
-                               cloud_resource_prefix_meta: Option<String>) -> crate::error::Result<Self> where F: Fn(tonic::transport::Channel, GoogleConnectorInterceptor) -> C {
-        let builder = GoogleApiClientBuilderFunction {
-            f: builder_fn,
-            _ph_c: PhantomData::default(),
+                               cloud_resource_prefix_meta: Option<String>) -> crate::error::Result<Self> {
+        let builder: GoogleApiClientBuilderFunction<C> = GoogleApiClientBuilderFunction {
+            f: builder_fn
         };
 
         Self::from_builder(builder, google_api_url, max_duration, cloud_resource_prefix_meta).await
     }
 }
+
+pub type GoogleConnectorInterceptedService = InterceptedService<Channel, GoogleConnectorInterceptor>;
+
+pub type GoogleApiClientFn<C> = GoogleApiClient<
+    GoogleApiClientBuilderFunction<C>,
+    C
+>;
