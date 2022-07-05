@@ -3,10 +3,6 @@ use gcloud_sdk::google::spanner::admin::database::v1::{
 };
 use gcloud_sdk::*;
 
-pub type GoogleDatabaseAdminClient = DatabaseAdminClient<
-    tonic::service::interceptor::InterceptedService<tonic::transport::Channel, GoogleConnectorInterceptor>,
->;
-
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let project = std::env::var("PROJECT")?;
