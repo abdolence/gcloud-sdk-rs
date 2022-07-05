@@ -79,6 +79,9 @@ chrono = "0.4"
 
 Default Scope is `https://www.googleapis.com/auth/cloud-platform`.
 
+To specify custom scopes there is `from_function_with_scopes()` function
+instead of `from_function()`;
+
 Looks for credentials in the following places, preferring the first location found:
 - A JSON file whose path is specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable.
 - A JSON file in a location known to the gcloud command-line tool.
