@@ -16,46 +16,13 @@ For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub)
 
 The feature name is the period of the package name of each proto file, replaced by a hyphen.
 If you specify a package, it will automatically load the dependent packages and include them in the build.
-It means that `features = ["google-spanner-admin-database-v1"]` is the same as the code below:
-
-```rust
-pub mod google {
-    pub mod api {
-        tonic::include_proto!("google.api");
-    }
-    pub mod iam {
-        pub mod v1 {
-            tonic::include_proto!("google.iam.v1");
-        }
-    }
-    pub mod longrunning {
-        tonic::include_proto!("google.longrunning");
-    }
-    pub mod r#type {
-        tonic::include_proto!("google.r#type");
-    }
-    pub mod rpc {
-        tonic::include_proto!("google.rpc");
-    }
-    pub mod spanner {
-        pub mod admin {
-            pub mod database {
-                pub mod v1 {
-                    tonic::include_proto!("google.spanner.admin.database.v1");
-                }
-            }
-        }
-    }
-}
-```
+It means that `features = ["google-spanner-admin-database-v1"]`.
 
 In addition, multiple features can be specified.
 
-The list of available features can be found [here](./googapis/Cargo.toml#L22-L315).
+The list of available features can be found [here](./gcloud-sdk/Cargo.toml#L22-L390).
 
 ## Example
-The complete code can be found [here](./examples/spanner-admin).
-
 
 ```rust
 use gcloud_sdk::*;
@@ -70,13 +37,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let instance = std::env::var("INSTANCE")?;
 
     // The library handles getting token from environment automatically
-    let spanner_client: GoogleApiClientFn<DatabaseAdminClient<GoogleConnectorInterceptedService>> = GoogleApiClient::from_function(
-        | channel, interceptor | DatabaseAdminClient::with_interceptor(channel, interceptor),
-        "https://spanner.googleapis.com",
-        chrono::Duration::minutes(15),
-        None,
-    )
-        .await?;
+    let spanner_client: GoogleApiClientFn<DatabaseAdminClient<GoogleConnectorInterceptedService>> = 
+        GoogleApiClient::from_function(
+            | channel, interceptor | DatabaseAdminClient::with_interceptor(channel, interceptor),
+            "https://spanner.googleapis.com",
+            chrono::Duration::minutes(15),
+            None,
+        )
+            .await?;
 
     // The library caches clients and tokens automatically
     let response = spanner_client
