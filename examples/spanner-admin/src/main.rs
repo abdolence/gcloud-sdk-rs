@@ -14,7 +14,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let spanner_client = GoogleApiClient::from_function(
         |channel, interceptor | DatabaseAdminClient::with_interceptor(channel, interceptor),
-        "spanner.googleapis.com",
+        "https://spanner.googleapis.com",
         chrono::Duration::minutes(15),
         None,
     )
