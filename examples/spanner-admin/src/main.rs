@@ -11,12 +11,12 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let spanner_client: GoogleApiClientFn<DatabaseAdminClient<GoogleConnectorInterceptedService>> = GoogleApiClient::from_function(
         DatabaseAdminClient::with_interceptor,
         "https://spanner.googleapis.com",
-        chrono::Duration::minutes(15),
-        None,
+        chrono::Duration::minutes(15), // max caching client duration
+        None, // cloud resource prefix: used only for some of the APIs (such as Firestore)
     )
         .await?;
 
-    let response = spanner_client
+    let _response = spanner_client
         .get()
         .await?
         .list_databases(tonic::Request::new(ListDatabasesRequest {
@@ -25,8 +25,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             ..Default::default()
         }))
         .await?;
-
-    println!("RESPONSE={:?}", response);
 
     Ok(())
 }
