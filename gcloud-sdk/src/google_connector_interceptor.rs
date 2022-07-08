@@ -1,4 +1,4 @@
-use crate::source::{BoxSource, Token};
+use crate::token_source::{BoxSource, Token};
 use chrono::prelude::*;
 use std::convert::TryFrom;
 use tonic::metadata::Ascii;
@@ -13,26 +13,6 @@ pub struct GoogleConnectorInterceptor {
 }
 
 impl GoogleConnectorInterceptor {
-    pub fn init_google_services_channel_tls_config(
-        domain_name: String,
-    ) -> tonic::transport::ClientTlsConfig {
-        tonic::transport::ClientTlsConfig::new()
-            .ca_certificate(tonic::transport::Certificate::from_pem(
-                crate::apis::CERTIFICATES,
-            ))
-            .domain_name(domain_name)
-    }
-
-    pub async fn init_google_services_channel(
-        api_url: &'static str,
-        google_services_tls_config: &tonic::transport::ClientTlsConfig,
-    ) -> Result<tonic::transport::Channel, crate::error::Error> {
-        Ok(tonic::transport::Channel::from_static(api_url)
-            .tls_config(google_services_tls_config.clone())?
-            .connect()
-            .await?)
-    }
-
     pub async fn new(
         token_source: &BoxSource,
         cloud_resource_prefix: Option<String>,

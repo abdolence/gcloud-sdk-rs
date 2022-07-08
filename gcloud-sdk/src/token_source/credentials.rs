@@ -5,17 +5,10 @@ use std::{
 
 use async_trait::async_trait;
 
-use crate::source::{BoxSource, Source, Token};
+use crate::token_source::{BoxSource, Source, Token};
 
-// `github.com/{user}/{package_name} v{package_version}`
-const USER_AGENT: &str = concat!(
-    "github.com/mechiru/",
-    env!("CARGO_PKG_NAME"),
-    " v",
-    env!("CARGO_PKG_VERSION")
-);
+const USER_AGENT: &str = concat!("gcloud-sdk-rs/v", env!("CARGO_PKG_VERSION"));
 
-// https://cloud.google.com/iam/docs/creating-managing-service-account-keys
 #[derive(Debug, PartialEq, serde::Serialize, serde::Deserialize)]
 #[serde(untagged)]
 pub enum Credentials {
@@ -30,7 +23,7 @@ pub struct ServiceAccount {
     private_key: String,
     token_uri: String,
     #[serde(skip)]
-    scopes: Vec<String>, // additional field for jwt
+    scopes: Vec<String>,
 }
 
 #[derive(Debug, PartialEq, serde::Serialize, serde::Deserialize)]
@@ -115,7 +108,7 @@ mod jwt {
 
     use std::{convert::TryFrom, time::SystemTime};
 
-    use crate::source::{
+    use crate::token_source::{
         credentials::{httpc_post, ServiceAccount},
         Token, TokenResponse,
     };
@@ -184,7 +177,7 @@ mod jwt {
 mod oauth2 {
     use std::convert::TryFrom;
 
-    use crate::source::{
+    use crate::token_source::{
         credentials::{httpc_post, User},
         Token, TokenResponse,
     };
@@ -235,7 +228,7 @@ mod test {
     use std::{fs, io::Read};
 
     use super::*;
-    use crate::source::TokenResponse;
+    use crate::token_source::TokenResponse;
 
     const SERVICE_ACCOUNT: &[u8] = br#"{
 "type": "service_account",

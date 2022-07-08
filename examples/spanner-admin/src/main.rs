@@ -8,12 +8,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let project = std::env::var("PROJECT")?;
     let instance = std::env::var("INSTANCE")?;
 
-    let spanner_client: GoogleApiClientFn<DatabaseAdminClient<GoogleConnectorInterceptedService>> = GoogleApiClient::from_function(
-        DatabaseAdminClient::with_interceptor,
-        "https://spanner.googleapis.com",
-        chrono::Duration::minutes(15), // max caching client duration
-        None, // cloud resource prefix: used only for some of the APIs (such as Firestore)
-    )
+    let spanner_client: GoogleApiClientFn<DatabaseAdminClient<GoogleConnectorInterceptedService>> =
+        GoogleApiClient::from_function(
+            DatabaseAdminClient::with_interceptor,
+            "https://spanner.googleapis.com",
+            chrono::Duration::minutes(15), // max caching client duration
+            None, // cloud resource prefix: used only for some of the APIs (such as Firestore)
+        )
         .await?;
 
     let _response = spanner_client

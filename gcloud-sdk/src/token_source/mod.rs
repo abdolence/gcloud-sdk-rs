@@ -29,13 +29,13 @@ pub async fn create_source(
         TokenSourceType::Default => Ok(find_default(&token_scopes).await?),
         TokenSourceType::Json(json) => Ok(from_json(json.as_bytes(), &token_scopes)?.into()),
         TokenSourceType::File(path) => Ok(from_file(path, &token_scopes)?.into()),
-        TokenSourceType::MetadataServer =>
+        TokenSourceType::MetadataServer => {
             if let Some(src) = from_metadata(&token_scopes).await? {
                 Ok(src.into())
-            }
-            else {
+            } else {
                 Err(crate::error::ErrorKind::TokenSource.into())
             }
+        }
     }
 }
 
@@ -178,5 +178,5 @@ pub enum TokenSourceType {
     Default,
     Json(String),
     File(PathBuf),
-    MetadataServer
+    MetadataServer,
 }

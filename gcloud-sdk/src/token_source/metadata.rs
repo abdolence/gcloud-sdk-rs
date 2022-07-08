@@ -6,7 +6,7 @@ use std::convert::TryFrom;
 use std::str::FromStr;
 use tracing::trace;
 
-use crate::source::{BoxSource, Source, Token, TokenResponse};
+use crate::token_source::{BoxSource, Source, Token, TokenResponse};
 
 #[derive(Debug)]
 pub struct Metadata {
@@ -49,15 +49,11 @@ impl From<Metadata> for BoxSource {
 #[async_trait]
 impl Source for Metadata {
     async fn token(&self) -> crate::error::Result<Token> {
-        let url = PathAndQuery::from_str(
-            format!("/computeMetadata/v1/{}",self.uri_suffix()).as_str()
-        )?;
+        let url =
+            PathAndQuery::from_str(format!("/computeMetadata/v1/{}", self.uri_suffix()).as_str())?;
         trace!("Receiving a new token from Metadata Server using '{}'", url);
 
-         let resp_str = self
-            .gcemeta_client
-            .get(url, false)
-            .await?;
+        let resp_str = self.gcemeta_client.get(url, false).await?;
         let resp = TokenResponse::try_from(resp_str.as_str())?;
         Token::try_from(resp)
     }
