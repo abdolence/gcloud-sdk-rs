@@ -9,7 +9,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let instance = std::env::var("INSTANCE")?;
 
     let spanner_client: GoogleApiClientFn<DatabaseAdminClient<GoogleConnectorInterceptedService>> = GoogleApiClient::from_function(
-        |channel, interceptor | DatabaseAdminClient::with_interceptor(channel, interceptor),
+        DatabaseAdminClient::with_interceptor,
         "https://spanner.googleapis.com",
         chrono::Duration::minutes(15),
         None,
