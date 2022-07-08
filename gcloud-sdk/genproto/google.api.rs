@@ -1003,313 +1003,6 @@ pub mod backend_rule {
         DisableAuth(bool),
     }
 }
-/// A description of a label.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LabelDescriptor {
-    /// The label key.
-    #[prost(string, tag="1")]
-    pub key: ::prost::alloc::string::String,
-    /// The type of data that can be assigned to the label.
-    #[prost(enumeration="label_descriptor::ValueType", tag="2")]
-    pub value_type: i32,
-    /// A human-readable description for the label.
-    #[prost(string, tag="3")]
-    pub description: ::prost::alloc::string::String,
-}
-/// Nested message and enum types in `LabelDescriptor`.
-pub mod label_descriptor {
-    /// Value types that can be used as label values.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum ValueType {
-        /// A variable-length string. This is the default.
-        String = 0,
-        /// Boolean; true or false.
-        Bool = 1,
-        /// A 64-bit signed integer.
-        Int64 = 2,
-    }
-}
-/// The launch stage as defined by [Google Cloud Platform
-/// Launch Stages](<http://cloud.google.com/terms/launch-stages>).
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum LaunchStage {
-    /// Do not use this default value.
-    Unspecified = 0,
-    /// The feature is not yet implemented. Users can not use it.
-    Unimplemented = 6,
-    /// Prelaunch features are hidden from users and are only visible internally.
-    Prelaunch = 7,
-    /// Early Access features are limited to a closed group of testers. To use
-    /// these features, you must sign up in advance and sign a Trusted Tester
-    /// agreement (which includes confidentiality provisions). These features may
-    /// be unstable, changed in backward-incompatible ways, and are not
-    /// guaranteed to be released.
-    EarlyAccess = 1,
-    /// Alpha is a limited availability test for releases before they are cleared
-    /// for widespread use. By Alpha, all significant design issues are resolved
-    /// and we are in the process of verifying functionality. Alpha customers
-    /// need to apply for access, agree to applicable terms, and have their
-    /// projects allowlisted. Alpha releases don’t have to be feature complete,
-    /// no SLAs are provided, and there are no technical support obligations, but
-    /// they will be far enough along that customers can actually use them in
-    /// test environments or for limited-use tests -- just like they would in
-    /// normal production cases.
-    Alpha = 2,
-    /// Beta is the point at which we are ready to open a release for any
-    /// customer to use. There are no SLA or technical support obligations in a
-    /// Beta release. Products will be complete from a feature perspective, but
-    /// may have some open outstanding issues. Beta releases are suitable for
-    /// limited production use cases.
-    Beta = 3,
-    /// GA features are open to all developers and are considered stable and
-    /// fully qualified for production use.
-    Ga = 4,
-    /// Deprecated features are scheduled to be shut down and removed. For more
-    /// information, see the “Deprecation Policy” section of our [Terms of
-    /// Service](<https://cloud.google.com/terms/>)
-    /// and the [Google Cloud Platform Subject to the Deprecation
-    /// Policy](<https://cloud.google.com/terms/deprecation>) documentation.
-    Deprecated = 5,
-}
-/// Defines a metric type and its schema. Once a metric descriptor is created,
-/// deleting or altering it stops data collection and makes the metric type's
-/// existing data unusable.
-///
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct MetricDescriptor {
-    /// The resource name of the metric descriptor.
-    #[prost(string, tag="1")]
-    pub name: ::prost::alloc::string::String,
-    /// The metric type, including its DNS name prefix. The type is not
-    /// URL-encoded. All user-defined metric types have the DNS name
-    /// `custom.googleapis.com` or `external.googleapis.com`. Metric types should
-    /// use a natural hierarchical grouping. For example:
-    ///
-    ///     "custom.googleapis.com/invoice/paid/amount"
-    ///     "external.googleapis.com/prometheus/up"
-    ///     "appengine.googleapis.com/http/server/response_latencies"
-    #[prost(string, tag="8")]
-    pub r#type: ::prost::alloc::string::String,
-    /// The set of labels that can be used to describe a specific
-    /// instance of this metric type. For example, the
-    /// `appengine.googleapis.com/http/server/response_latencies` metric
-    /// type has a label for the HTTP response code, `response_code`, so
-    /// you can look at latencies for successful responses or just
-    /// for responses that failed.
-    #[prost(message, repeated, tag="2")]
-    pub labels: ::prost::alloc::vec::Vec<LabelDescriptor>,
-    /// Whether the metric records instantaneous values, changes to a value, etc.
-    /// Some combinations of `metric_kind` and `value_type` might not be supported.
-    #[prost(enumeration="metric_descriptor::MetricKind", tag="3")]
-    pub metric_kind: i32,
-    /// Whether the measurement is an integer, a floating-point number, etc.
-    /// Some combinations of `metric_kind` and `value_type` might not be supported.
-    #[prost(enumeration="metric_descriptor::ValueType", tag="4")]
-    pub value_type: i32,
-    /// The units in which the metric value is reported. It is only applicable
-    /// if the `value_type` is `INT64`, `DOUBLE`, or `DISTRIBUTION`. The `unit`
-    /// defines the representation of the stored metric values.
-    ///
-    /// Different systems might scale the values to be more easily displayed (so a
-    /// value of `0.02kBy` _might_ be displayed as `20By`, and a value of
-    /// `3523kBy` _might_ be displayed as `3.5MBy`). However, if the `unit` is
-    /// `kBy`, then the value of the metric is always in thousands of bytes, no
-    /// matter how it might be displayed.
-    ///
-    /// If you want a custom metric to record the exact number of CPU-seconds used
-    /// by a job, you can create an `INT64 CUMULATIVE` metric whose `unit` is
-    /// `s{CPU}` (or equivalently `1s{CPU}` or just `s`). If the job uses 12,005
-    /// CPU-seconds, then the value is written as `12005`.
-    ///
-    /// Alternatively, if you want a custom metric to record data in a more
-    /// granular way, you can create a `DOUBLE CUMULATIVE` metric whose `unit` is
-    /// `ks{CPU}`, and then write the value `12.005` (which is `12005/1000`),
-    /// or use `Kis{CPU}` and write `11.723` (which is `12005/1024`).
-    ///
-    /// The supported units are a subset of [The Unified Code for Units of
-    /// Measure](<https://unitsofmeasure.org/ucum.html>) standard:
-    ///
-    /// **Basic units (UNIT)**
-    ///
-    /// * `bit`   bit
-    /// * `By`    byte
-    /// * `s`     second
-    /// * `min`   minute
-    /// * `h`     hour
-    /// * `d`     day
-    /// * `1`     dimensionless
-    ///
-    /// **Prefixes (PREFIX)**
-    ///
-    /// * `k`     kilo    (10^3)
-    /// * `M`     mega    (10^6)
-    /// * `G`     giga    (10^9)
-    /// * `T`     tera    (10^12)
-    /// * `P`     peta    (10^15)
-    /// * `E`     exa     (10^18)
-    /// * `Z`     zetta   (10^21)
-    /// * `Y`     yotta   (10^24)
-    ///
-    /// * `m`     milli   (10^-3)
-    /// * `u`     micro   (10^-6)
-    /// * `n`     nano    (10^-9)
-    /// * `p`     pico    (10^-12)
-    /// * `f`     femto   (10^-15)
-    /// * `a`     atto    (10^-18)
-    /// * `z`     zepto   (10^-21)
-    /// * `y`     yocto   (10^-24)
-    ///
-    /// * `Ki`    kibi    (2^10)
-    /// * `Mi`    mebi    (2^20)
-    /// * `Gi`    gibi    (2^30)
-    /// * `Ti`    tebi    (2^40)
-    /// * `Pi`    pebi    (2^50)
-    ///
-    /// **Grammar**
-    ///
-    /// The grammar also includes these connectors:
-    ///
-    /// * `/`    division or ratio (as an infix operator). For examples,
-    ///          `kBy/{email}` or `MiBy/10ms` (although you should almost never
-    ///          have `/s` in a metric `unit`; rates should always be computed at
-    ///          query time from the underlying cumulative or delta value).
-    /// * `.`    multiplication or composition (as an infix operator). For
-    ///          examples, `GBy.d` or `k{watt}.h`.
-    ///
-    /// The grammar for a unit is as follows:
-    ///
-    ///     Expression = Component { "." Component } { "/" Component } ;
-    ///
-    ///     Component = ( [ PREFIX ] UNIT | "%" ) [ Annotation ]
-    ///               | Annotation
-    ///               | "1"
-    ///               ;
-    ///
-    ///     Annotation = "{" NAME "}" ;
-    ///
-    /// Notes:
-    ///
-    /// * `Annotation` is just a comment if it follows a `UNIT`. If the annotation
-    ///    is used alone, then the unit is equivalent to `1`. For examples,
-    ///    `{request}/s == 1/s`, `By{transmitted}/s == By/s`.
-    /// * `NAME` is a sequence of non-blank printable ASCII characters not
-    ///    containing `{` or `}`.
-    /// * `1` represents a unitary [dimensionless
-    ///    unit](<https://en.wikipedia.org/wiki/Dimensionless_quantity>) of 1, such
-    ///    as in `1/s`. It is typically used when none of the basic units are
-    ///    appropriate. For example, "new users per day" can be represented as
-    ///    `1/d` or `{new-users}/d` (and a metric value `5` would mean "5 new
-    ///    users). Alternatively, "thousands of page views per day" would be
-    ///    represented as `1000/d` or `k1/d` or `k{page_views}/d` (and a metric
-    ///    value of `5.3` would mean "5300 page views per day").
-    /// * `%` represents dimensionless value of 1/100, and annotates values giving
-    ///    a percentage (so the metric values are typically in the range of 0..100,
-    ///    and a metric value `3` means "3 percent").
-    /// * `10^2.%` indicates a metric contains a ratio, typically in the range
-    ///    0..1, that will be multiplied by 100 and displayed as a percentage
-    ///    (so a metric value `0.03` means "3 percent").
-    #[prost(string, tag="5")]
-    pub unit: ::prost::alloc::string::String,
-    /// A detailed description of the metric, which can be used in documentation.
-    #[prost(string, tag="6")]
-    pub description: ::prost::alloc::string::String,
-    /// A concise name for the metric, which can be displayed in user interfaces.
-    /// Use sentence case without an ending period, for example "Request count".
-    /// This field is optional but it is recommended to be set for any metrics
-    /// associated with user-visible concepts, such as Quota.
-    #[prost(string, tag="7")]
-    pub display_name: ::prost::alloc::string::String,
-    /// Optional. Metadata which can be used to guide usage of the metric.
-    #[prost(message, optional, tag="10")]
-    pub metadata: ::core::option::Option<metric_descriptor::MetricDescriptorMetadata>,
-    /// Optional. The launch stage of the metric definition.
-    #[prost(enumeration="LaunchStage", tag="12")]
-    pub launch_stage: i32,
-    /// Read-only. If present, then a [time
-    /// series]\[google.monitoring.v3.TimeSeries\], which is identified partially by
-    /// a metric type and a \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\], that is associated
-    /// with this metric type can only be associated with one of the monitored
-    /// resource types listed here.
-    #[prost(string, repeated, tag="13")]
-    pub monitored_resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-}
-/// Nested message and enum types in `MetricDescriptor`.
-pub mod metric_descriptor {
-    /// Additional annotations that can be used to guide the usage of a metric.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct MetricDescriptorMetadata {
-        /// Deprecated. Must use the \[MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage\] instead.
-        #[deprecated]
-        #[prost(enumeration="super::LaunchStage", tag="1")]
-        pub launch_stage: i32,
-        /// The sampling period of metric data points. For metrics which are written
-        /// periodically, consecutive data points are stored at this time interval,
-        /// excluding data loss due to errors. Metrics with a higher granularity have
-        /// a smaller sampling period.
-        #[prost(message, optional, tag="2")]
-        pub sample_period: ::core::option::Option<::prost_types::Duration>,
-        /// The delay of data points caused by ingestion. Data points older than this
-        /// age are guaranteed to be ingested and available to be read, excluding
-        /// data loss due to errors.
-        #[prost(message, optional, tag="3")]
-        pub ingest_delay: ::core::option::Option<::prost_types::Duration>,
-    }
-    /// The kind of measurement. It describes how the data is reported.
-    /// For information on setting the start time and end time based on
-    /// the MetricKind, see \[TimeInterval][google.monitoring.v3.TimeInterval\].
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum MetricKind {
-        /// Do not use this default value.
-        Unspecified = 0,
-        /// An instantaneous measurement of a value.
-        Gauge = 1,
-        /// The change in a value during a time interval.
-        Delta = 2,
-        /// A value accumulated over a time interval.  Cumulative
-        /// measurements in a time series should have the same start time
-        /// and increasing end times, until an event resets the cumulative
-        /// value to zero and sets a new start time for the following
-        /// points.
-        Cumulative = 3,
-    }
-    /// The value type of a metric.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum ValueType {
-        /// Do not use this default value.
-        Unspecified = 0,
-        /// The value is a boolean.
-        /// This value type can be used only if the metric kind is `GAUGE`.
-        Bool = 1,
-        /// The value is a signed 64-bit integer.
-        Int64 = 2,
-        /// The value is a double precision floating point number.
-        Double = 3,
-        /// The value is a text string.
-        /// This value type can be used only if the metric kind is `GAUGE`.
-        String = 4,
-        /// The value is a \[`Distribution`][google.api.Distribution\].
-        Distribution = 5,
-        /// The value is money.
-        Money = 6,
-    }
-}
-/// A specific metric, identified by specifying values for all of the
-/// labels of a \[`MetricDescriptor`][google.api.MetricDescriptor\].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Metric {
-    /// An existing metric type, see \[google.api.MetricDescriptor][google.api.MetricDescriptor\].
-    /// For example, `custom.googleapis.com/invoice/paid/amount`.
-    #[prost(string, tag="3")]
-    pub r#type: ::prost::alloc::string::String,
-    /// The set of label values that uniquely identify this metric. All
-    /// labels listed in the `MetricDescriptor` must be assigned values.
-    #[prost(map="string, string", tag="2")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-}
 /// Billing related configuration of the service.
 ///
 /// The following example shows how to configure monitored resources and metrics
@@ -2371,6 +2064,76 @@ pub struct HttpBody {
     #[prost(message, repeated, tag="3")]
     pub extensions: ::prost::alloc::vec::Vec<::prost_types::Any>,
 }
+/// A description of a label.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LabelDescriptor {
+    /// The label key.
+    #[prost(string, tag="1")]
+    pub key: ::prost::alloc::string::String,
+    /// The type of data that can be assigned to the label.
+    #[prost(enumeration="label_descriptor::ValueType", tag="2")]
+    pub value_type: i32,
+    /// A human-readable description for the label.
+    #[prost(string, tag="3")]
+    pub description: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `LabelDescriptor`.
+pub mod label_descriptor {
+    /// Value types that can be used as label values.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueType {
+        /// A variable-length string. This is the default.
+        String = 0,
+        /// Boolean; true or false.
+        Bool = 1,
+        /// A 64-bit signed integer.
+        Int64 = 2,
+    }
+}
+/// The launch stage as defined by [Google Cloud Platform
+/// Launch Stages](<http://cloud.google.com/terms/launch-stages>).
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum LaunchStage {
+    /// Do not use this default value.
+    Unspecified = 0,
+    /// The feature is not yet implemented. Users can not use it.
+    Unimplemented = 6,
+    /// Prelaunch features are hidden from users and are only visible internally.
+    Prelaunch = 7,
+    /// Early Access features are limited to a closed group of testers. To use
+    /// these features, you must sign up in advance and sign a Trusted Tester
+    /// agreement (which includes confidentiality provisions). These features may
+    /// be unstable, changed in backward-incompatible ways, and are not
+    /// guaranteed to be released.
+    EarlyAccess = 1,
+    /// Alpha is a limited availability test for releases before they are cleared
+    /// for widespread use. By Alpha, all significant design issues are resolved
+    /// and we are in the process of verifying functionality. Alpha customers
+    /// need to apply for access, agree to applicable terms, and have their
+    /// projects allowlisted. Alpha releases don’t have to be feature complete,
+    /// no SLAs are provided, and there are no technical support obligations, but
+    /// they will be far enough along that customers can actually use them in
+    /// test environments or for limited-use tests -- just like they would in
+    /// normal production cases.
+    Alpha = 2,
+    /// Beta is the point at which we are ready to open a release for any
+    /// customer to use. There are no SLA or technical support obligations in a
+    /// Beta release. Products will be complete from a feature perspective, but
+    /// may have some open outstanding issues. Beta releases are suitable for
+    /// limited production use cases.
+    Beta = 3,
+    /// GA features are open to all developers and are considered stable and
+    /// fully qualified for production use.
+    Ga = 4,
+    /// Deprecated features are scheduled to be shut down and removed. For more
+    /// information, see the “Deprecation Policy” section of our [Terms of
+    /// Service](<https://cloud.google.com/terms/>)
+    /// and the [Google Cloud Platform Subject to the Deprecation
+    /// Policy](<https://cloud.google.com/terms/deprecation>) documentation.
+    Deprecated = 5,
+}
 /// A description of a log type. Example in YAML format:
 ///
 ///     - name: library.googleapis.com/activity_history
@@ -2462,6 +2225,243 @@ pub mod logging {
         #[prost(string, repeated, tag="1")]
         pub logs: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
+}
+/// Defines a metric type and its schema. Once a metric descriptor is created,
+/// deleting or altering it stops data collection and makes the metric type's
+/// existing data unusable.
+///
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MetricDescriptor {
+    /// The resource name of the metric descriptor.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    /// The metric type, including its DNS name prefix. The type is not
+    /// URL-encoded. All user-defined metric types have the DNS name
+    /// `custom.googleapis.com` or `external.googleapis.com`. Metric types should
+    /// use a natural hierarchical grouping. For example:
+    ///
+    ///     "custom.googleapis.com/invoice/paid/amount"
+    ///     "external.googleapis.com/prometheus/up"
+    ///     "appengine.googleapis.com/http/server/response_latencies"
+    #[prost(string, tag="8")]
+    pub r#type: ::prost::alloc::string::String,
+    /// The set of labels that can be used to describe a specific
+    /// instance of this metric type. For example, the
+    /// `appengine.googleapis.com/http/server/response_latencies` metric
+    /// type has a label for the HTTP response code, `response_code`, so
+    /// you can look at latencies for successful responses or just
+    /// for responses that failed.
+    #[prost(message, repeated, tag="2")]
+    pub labels: ::prost::alloc::vec::Vec<LabelDescriptor>,
+    /// Whether the metric records instantaneous values, changes to a value, etc.
+    /// Some combinations of `metric_kind` and `value_type` might not be supported.
+    #[prost(enumeration="metric_descriptor::MetricKind", tag="3")]
+    pub metric_kind: i32,
+    /// Whether the measurement is an integer, a floating-point number, etc.
+    /// Some combinations of `metric_kind` and `value_type` might not be supported.
+    #[prost(enumeration="metric_descriptor::ValueType", tag="4")]
+    pub value_type: i32,
+    /// The units in which the metric value is reported. It is only applicable
+    /// if the `value_type` is `INT64`, `DOUBLE`, or `DISTRIBUTION`. The `unit`
+    /// defines the representation of the stored metric values.
+    ///
+    /// Different systems might scale the values to be more easily displayed (so a
+    /// value of `0.02kBy` _might_ be displayed as `20By`, and a value of
+    /// `3523kBy` _might_ be displayed as `3.5MBy`). However, if the `unit` is
+    /// `kBy`, then the value of the metric is always in thousands of bytes, no
+    /// matter how it might be displayed.
+    ///
+    /// If you want a custom metric to record the exact number of CPU-seconds used
+    /// by a job, you can create an `INT64 CUMULATIVE` metric whose `unit` is
+    /// `s{CPU}` (or equivalently `1s{CPU}` or just `s`). If the job uses 12,005
+    /// CPU-seconds, then the value is written as `12005`.
+    ///
+    /// Alternatively, if you want a custom metric to record data in a more
+    /// granular way, you can create a `DOUBLE CUMULATIVE` metric whose `unit` is
+    /// `ks{CPU}`, and then write the value `12.005` (which is `12005/1000`),
+    /// or use `Kis{CPU}` and write `11.723` (which is `12005/1024`).
+    ///
+    /// The supported units are a subset of [The Unified Code for Units of
+    /// Measure](<https://unitsofmeasure.org/ucum.html>) standard:
+    ///
+    /// **Basic units (UNIT)**
+    ///
+    /// * `bit`   bit
+    /// * `By`    byte
+    /// * `s`     second
+    /// * `min`   minute
+    /// * `h`     hour
+    /// * `d`     day
+    /// * `1`     dimensionless
+    ///
+    /// **Prefixes (PREFIX)**
+    ///
+    /// * `k`     kilo    (10^3)
+    /// * `M`     mega    (10^6)
+    /// * `G`     giga    (10^9)
+    /// * `T`     tera    (10^12)
+    /// * `P`     peta    (10^15)
+    /// * `E`     exa     (10^18)
+    /// * `Z`     zetta   (10^21)
+    /// * `Y`     yotta   (10^24)
+    ///
+    /// * `m`     milli   (10^-3)
+    /// * `u`     micro   (10^-6)
+    /// * `n`     nano    (10^-9)
+    /// * `p`     pico    (10^-12)
+    /// * `f`     femto   (10^-15)
+    /// * `a`     atto    (10^-18)
+    /// * `z`     zepto   (10^-21)
+    /// * `y`     yocto   (10^-24)
+    ///
+    /// * `Ki`    kibi    (2^10)
+    /// * `Mi`    mebi    (2^20)
+    /// * `Gi`    gibi    (2^30)
+    /// * `Ti`    tebi    (2^40)
+    /// * `Pi`    pebi    (2^50)
+    ///
+    /// **Grammar**
+    ///
+    /// The grammar also includes these connectors:
+    ///
+    /// * `/`    division or ratio (as an infix operator). For examples,
+    ///          `kBy/{email}` or `MiBy/10ms` (although you should almost never
+    ///          have `/s` in a metric `unit`; rates should always be computed at
+    ///          query time from the underlying cumulative or delta value).
+    /// * `.`    multiplication or composition (as an infix operator). For
+    ///          examples, `GBy.d` or `k{watt}.h`.
+    ///
+    /// The grammar for a unit is as follows:
+    ///
+    ///     Expression = Component { "." Component } { "/" Component } ;
+    ///
+    ///     Component = ( [ PREFIX ] UNIT | "%" ) [ Annotation ]
+    ///               | Annotation
+    ///               | "1"
+    ///               ;
+    ///
+    ///     Annotation = "{" NAME "}" ;
+    ///
+    /// Notes:
+    ///
+    /// * `Annotation` is just a comment if it follows a `UNIT`. If the annotation
+    ///    is used alone, then the unit is equivalent to `1`. For examples,
+    ///    `{request}/s == 1/s`, `By{transmitted}/s == By/s`.
+    /// * `NAME` is a sequence of non-blank printable ASCII characters not
+    ///    containing `{` or `}`.
+    /// * `1` represents a unitary [dimensionless
+    ///    unit](<https://en.wikipedia.org/wiki/Dimensionless_quantity>) of 1, such
+    ///    as in `1/s`. It is typically used when none of the basic units are
+    ///    appropriate. For example, "new users per day" can be represented as
+    ///    `1/d` or `{new-users}/d` (and a metric value `5` would mean "5 new
+    ///    users). Alternatively, "thousands of page views per day" would be
+    ///    represented as `1000/d` or `k1/d` or `k{page_views}/d` (and a metric
+    ///    value of `5.3` would mean "5300 page views per day").
+    /// * `%` represents dimensionless value of 1/100, and annotates values giving
+    ///    a percentage (so the metric values are typically in the range of 0..100,
+    ///    and a metric value `3` means "3 percent").
+    /// * `10^2.%` indicates a metric contains a ratio, typically in the range
+    ///    0..1, that will be multiplied by 100 and displayed as a percentage
+    ///    (so a metric value `0.03` means "3 percent").
+    #[prost(string, tag="5")]
+    pub unit: ::prost::alloc::string::String,
+    /// A detailed description of the metric, which can be used in documentation.
+    #[prost(string, tag="6")]
+    pub description: ::prost::alloc::string::String,
+    /// A concise name for the metric, which can be displayed in user interfaces.
+    /// Use sentence case without an ending period, for example "Request count".
+    /// This field is optional but it is recommended to be set for any metrics
+    /// associated with user-visible concepts, such as Quota.
+    #[prost(string, tag="7")]
+    pub display_name: ::prost::alloc::string::String,
+    /// Optional. Metadata which can be used to guide usage of the metric.
+    #[prost(message, optional, tag="10")]
+    pub metadata: ::core::option::Option<metric_descriptor::MetricDescriptorMetadata>,
+    /// Optional. The launch stage of the metric definition.
+    #[prost(enumeration="LaunchStage", tag="12")]
+    pub launch_stage: i32,
+    /// Read-only. If present, then a [time
+    /// series]\[google.monitoring.v3.TimeSeries\], which is identified partially by
+    /// a metric type and a \[MonitoredResourceDescriptor][google.api.MonitoredResourceDescriptor\], that is associated
+    /// with this metric type can only be associated with one of the monitored
+    /// resource types listed here.
+    #[prost(string, repeated, tag="13")]
+    pub monitored_resource_types: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+/// Nested message and enum types in `MetricDescriptor`.
+pub mod metric_descriptor {
+    /// Additional annotations that can be used to guide the usage of a metric.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MetricDescriptorMetadata {
+        /// Deprecated. Must use the \[MetricDescriptor.launch_stage][google.api.MetricDescriptor.launch_stage\] instead.
+        #[deprecated]
+        #[prost(enumeration="super::LaunchStage", tag="1")]
+        pub launch_stage: i32,
+        /// The sampling period of metric data points. For metrics which are written
+        /// periodically, consecutive data points are stored at this time interval,
+        /// excluding data loss due to errors. Metrics with a higher granularity have
+        /// a smaller sampling period.
+        #[prost(message, optional, tag="2")]
+        pub sample_period: ::core::option::Option<::prost_types::Duration>,
+        /// The delay of data points caused by ingestion. Data points older than this
+        /// age are guaranteed to be ingested and available to be read, excluding
+        /// data loss due to errors.
+        #[prost(message, optional, tag="3")]
+        pub ingest_delay: ::core::option::Option<::prost_types::Duration>,
+    }
+    /// The kind of measurement. It describes how the data is reported.
+    /// For information on setting the start time and end time based on
+    /// the MetricKind, see \[TimeInterval][google.monitoring.v3.TimeInterval\].
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum MetricKind {
+        /// Do not use this default value.
+        Unspecified = 0,
+        /// An instantaneous measurement of a value.
+        Gauge = 1,
+        /// The change in a value during a time interval.
+        Delta = 2,
+        /// A value accumulated over a time interval.  Cumulative
+        /// measurements in a time series should have the same start time
+        /// and increasing end times, until an event resets the cumulative
+        /// value to zero and sets a new start time for the following
+        /// points.
+        Cumulative = 3,
+    }
+    /// The value type of a metric.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ValueType {
+        /// Do not use this default value.
+        Unspecified = 0,
+        /// The value is a boolean.
+        /// This value type can be used only if the metric kind is `GAUGE`.
+        Bool = 1,
+        /// The value is a signed 64-bit integer.
+        Int64 = 2,
+        /// The value is a double precision floating point number.
+        Double = 3,
+        /// The value is a text string.
+        /// This value type can be used only if the metric kind is `GAUGE`.
+        String = 4,
+        /// The value is a \[`Distribution`][google.api.Distribution\].
+        Distribution = 5,
+        /// The value is money.
+        Money = 6,
+    }
+}
+/// A specific metric, identified by specifying values for all of the
+/// labels of a \[`MetricDescriptor`][google.api.MetricDescriptor\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Metric {
+    /// An existing metric type, see \[google.api.MetricDescriptor][google.api.MetricDescriptor\].
+    /// For example, `custom.googleapis.com/invoice/paid/amount`.
+    #[prost(string, tag="3")]
+    pub r#type: ::prost::alloc::string::String,
+    /// The set of label values that uniquely identify this metric. All
+    /// labels listed in the `MetricDescriptor` must be assigned values.
+    #[prost(map="string, string", tag="2")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
 }
 /// An object that describes the schema of a \[MonitoredResource][google.api.MonitoredResource\] object using a
 /// type name and a set of labels.  For example, the monitored resource

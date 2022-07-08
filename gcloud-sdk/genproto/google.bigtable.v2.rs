@@ -1139,3 +1139,17 @@ pub mod bigtable_client {
         }
     }
 }
+/// Response metadata proto
+/// This is an experimental feature that will be used to get zone_id and
+/// cluster_id from response trailers to tag the metrics. This should not be
+/// used by customers directly
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResponseParams {
+    /// The cloud bigtable zone associated with the cluster.
+    #[prost(string, optional, tag="1")]
+    pub zone_id: ::core::option::Option<::prost::alloc::string::String>,
+    /// Identifier for a cluster that represents set of
+    /// bigtable resources.
+    #[prost(string, optional, tag="2")]
+    pub cluster_id: ::core::option::Option<::prost::alloc::string::String>,
+}

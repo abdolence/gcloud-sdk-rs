@@ -601,12 +601,12 @@ pub mod certificate_map {
         /// A Target Proxy to which this map is attached to.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
         pub enum TargetProxy {
-            /// A name must be in the format
-            /// `projects/*/locations/*/targetHttpsProxies/*`.
+            /// This field returns the resource name in the following format:
+            /// `//compute.googleapis.com/projects/*/global/targetHttpsProxies/*`.
             #[prost(string, tag="1")]
             TargetHttpsProxy(::prost::alloc::string::String),
-            /// A name must be in the format
-            /// `projects/*/locations/*/targetSslProxies/*`.
+            /// This field returns the resource name in the following format:
+            /// `//compute.googleapis.com/projects/*/global/targetSslProxies/*`.
             #[prost(string, tag="3")]
             TargetSslProxy(::prost::alloc::string::String),
         }

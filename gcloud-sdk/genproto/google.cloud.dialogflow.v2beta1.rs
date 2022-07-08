@@ -4412,7 +4412,8 @@ pub struct QueryResult {
     #[prost(bool, tag="5")]
     pub all_required_params_present: bool,
     /// Indicates whether the conversational query triggers a cancellation for slot
-    /// filling.
+    /// filling. For more information, see the [cancel slot filling
+    /// documentation](<https://cloud.google.com/dialogflow/es/docs/intents-actions-parameters#cancel>).
     #[prost(bool, tag="21")]
     pub cancels_slot_filling: bool,
     /// The text to be pronounced to the user or shown on the screen.
@@ -5217,6 +5218,18 @@ pub struct UpdateParticipantRequest {
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// Represents the natural language speech audio to be processed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudioInput {
+    /// Required. Instructs the speech recognizer how to process the speech audio.
+    #[prost(message, optional, tag="1")]
+    pub config: ::core::option::Option<InputAudioConfig>,
+    /// Required. The natural language speech audio to be processed.
+    /// A single request can contain up to 1 minute of speech audio data.
+    /// The transcribed text cannot contain more than 256 bytes.
+    #[prost(bytes="vec", tag="2")]
+    pub audio: ::prost::alloc::vec::Vec<u8>,
+}
 /// Represents the natural language speech audio to be played to the end user.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct OutputAudio {
@@ -5379,6 +5392,22 @@ pub struct AnalyzeContentRequest {
     /// CX agent.
     #[prost(message, optional, tag="18")]
     pub cx_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// The unique identifier of the CX page to override the `current_page` in the
+    /// session.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    ///
+    /// If `cx_current_page` is specified, the previous state of the session will
+    /// be ignored by Dialogflow CX, including the [previous
+    /// page]\[QueryResult.current_page\] and the [previous session
+    /// parameters]\[QueryResult.parameters\]. In most cases, `cx_current_page` and
+    /// `cx_parameters` should be configured together to direct a session to a
+    /// specific state.
+    ///
+    /// Note: this field should only be used if you are connecting to a Dialogflow
+    /// CX agent.
+    #[prost(string, tag="20")]
+    pub cx_current_page: ::prost::alloc::string::String,
     /// Optional. The send time of the message from end user or human agent's
     /// perspective. It is used for identifying the same message under one
     /// participant.
@@ -5401,7 +5430,7 @@ pub struct AnalyzeContentRequest {
     #[prost(string, tag="11")]
     pub request_id: ::prost::alloc::string::String,
     /// Required. The input content.
-    #[prost(oneof="analyze_content_request::Input", tags="6, 8")]
+    #[prost(oneof="analyze_content_request::Input", tags="6, 7, 8")]
     pub input: ::core::option::Option<analyze_content_request::Input>,
 }
 /// Nested message and enum types in `AnalyzeContentRequest`.
@@ -5412,6 +5441,9 @@ pub mod analyze_content_request {
         /// The natural language text to be processed.
         #[prost(message, tag="6")]
         TextInput(super::TextInput),
+        /// The natural language speech audio to be processed.
+        #[prost(message, tag="7")]
+        AudioInput(super::AudioInput),
         /// An input event to send to Dialogflow.
         #[prost(message, tag="8")]
         EventInput(super::EventInput),
@@ -5550,6 +5582,22 @@ pub struct StreamingAnalyzeContentRequest {
     /// CX agent.
     #[prost(message, optional, tag="13")]
     pub cx_parameters: ::core::option::Option<::prost_types::Struct>,
+    /// The unique identifier of the CX page to override the `current_page` in the
+    /// session.
+    /// Format: `projects/<Project ID>/locations/<Location ID>/agents/<Agent
+    /// ID>/flows/<Flow ID>/pages/<Page ID>`.
+    ///
+    /// If `cx_current_page` is specified, the previous state of the session will
+    /// be ignored by Dialogflow CX, including the [previous
+    /// page]\[QueryResult.current_page\] and the [previous session
+    /// parameters]\[QueryResult.parameters\]. In most cases, `cx_current_page` and
+    /// `cx_parameters` should be configured together to direct a session to a
+    /// specific state.
+    ///
+    /// Note: this field should only be used if you are connecting to a Dialogflow
+    /// CX agent.
+    #[prost(string, tag="15")]
+    pub cx_current_page: ::prost::alloc::string::String,
     /// Enable partial virtual agent responses. If this flag is not enabled,
     /// response stream still contains only one final response even if some
     /// `Fulfillment`s in Dialogflow virtual agent have been configured to return
@@ -6792,6 +6840,15 @@ pub struct ListAnswerRecordsRequest {
     /// ID>`.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
+    /// Optional. Filters to restrict results to specific answer records.
+    ///
+    /// Marked deprecated as it hasn't been, and isn't currently, supported.
+    ///
+    /// For more information about filtering, see
+    /// [API Filtering](<https://aip.dev/160>).
+    #[deprecated]
+    #[prost(string, tag="2")]
+    pub filter: ::prost::alloc::string::String,
     /// Optional. The maximum number of records to return in a single page.
     /// The server may return fewer records than this. If unspecified, we use 10.
     /// The maximum is 100.
@@ -7744,7 +7801,8 @@ pub mod human_agent_assistant_config {
     }
     /// Custom conversation models used in agent assist feature.
     ///
-    /// Supported feature: ARTICLE_SUGGESTION, SMART_COMPOSE, SMART_REPLY.
+    /// Supported feature: ARTICLE_SUGGESTION, SMART_COMPOSE, SMART_REPLY,
+    /// CONVERSATION_SUMMARIZATION.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ConversationModelConfig {
         /// Conversation model resource name. Format: `projects/<Project

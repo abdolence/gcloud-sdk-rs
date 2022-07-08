@@ -424,6 +424,7 @@ pub mod google {
                 feature = "google-cloud-filestore-v1",
                 feature = "google-cloud-filestore-v1beta1",
                 feature = "google-cloud-functions-v1",
+                feature = "google-cloud-functions-v2",
                 feature = "google-cloud-functions-v2alpha",
                 feature = "google-cloud-functions-v2beta",
                 feature = "google-cloud-gaming-v1",
@@ -1420,6 +1421,10 @@ pub mod google {
             pub mod v1 {
                 #[cfg(any(feature = "google-cloud-functions-v1"))]
                 include_proto!("google.cloud.functions.v1");
+            }
+            pub mod v2 {
+                #[cfg(any(feature = "google-cloud-functions-v2"))]
+                include_proto!("google.cloud.functions.v2");
             }
             pub mod v2alpha {
                 #[cfg(any(feature = "google-cloud-functions-v2alpha"))]
@@ -2763,6 +2768,7 @@ pub mod google {
                 feature = "google-cloud-filestore-v1",
                 feature = "google-cloud-filestore-v1beta1",
                 feature = "google-cloud-functions-v1",
+                feature = "google-cloud-functions-v2",
                 feature = "google-cloud-functions-v2alpha",
                 feature = "google-cloud-functions-v2beta",
                 feature = "google-cloud-gaming-v1",
@@ -3191,6 +3197,7 @@ pub mod google {
                 feature = "google-cloud-filestore-v1",
                 feature = "google-cloud-filestore-v1beta1",
                 feature = "google-cloud-functions-v1",
+                feature = "google-cloud-functions-v2",
                 feature = "google-cloud-functions-v2alpha",
                 feature = "google-cloud-functions-v2beta",
                 feature = "google-cloud-gaming-v1",
