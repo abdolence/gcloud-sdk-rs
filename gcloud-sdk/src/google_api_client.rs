@@ -88,7 +88,7 @@ where
         let now = Utc::now();
 
         match existing_state {
-            Some(state) if state.expired_at.lt(&now) => Ok(state.client),
+            Some(state) if state.expired_at.gt(&now) => Ok(state.client),
             _ => {
                 let interceptor = GoogleConnectorInterceptor::new(
                     &self.token_source,
