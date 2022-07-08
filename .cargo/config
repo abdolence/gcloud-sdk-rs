@@ -1,2 +1,2 @@
 [alias]
-xtask = "run --release --package xtask --bin xtask --"
+protosgen = "run --release --package protosgen --bin protosgen --"

@@ -1,4 +1,4 @@
-[submodule "xtask/proto/googleapis"]
-	path = xtask/proto/googleapis
+[submodule "gcloud-protos-generator/proto/googleapis"]
+	path = gcloud-protos-generator/proto/googleapis
 	url = https://github.com/googleapis/googleapis
 	shallow = true

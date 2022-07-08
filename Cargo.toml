@@ -1,6 +1,6 @@
 [workspace]
 members = [
   "gcloud-sdk",
-  "xtask",
+  "gcloud-protos-generator",
   "examples/spanner-admin",
 ]
