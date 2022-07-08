@@ -1,8 +1,0 @@
-{
-  "methodConfig": [{
-    "name": [
-      { "service": "google.cloud.eventarc.publishing.v1.Publisher", "method": "PublishChannelConnectionEvents" }
-    ],
-    "timeout": "60s"
-  }]
-}
