@@ -63,7 +63,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 Cargo.toml:
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.10", features = ["google-spanner-admin-database-v1"] }
+gcloud-sdk = { version = "0.12", features = ["google-spanner-admin-database-v1"] }
 tonic = { version = "0.7", features = ["tls"] }
 prost = "0.10"
 prost-types = "0.10"
