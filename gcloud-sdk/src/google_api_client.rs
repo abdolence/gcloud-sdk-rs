@@ -61,12 +61,7 @@ where
         );
 
         let source: BoxSource = create_source(token_source_type, token_scopes).await?;
-
-        let domain_name = google_api_url.to_string().replace("https://", "");
-
-        let tls_config = Self::init_google_services_channel_tls_config(domain_name);
-
-        let channel = Self::init_google_services_channel(google_api_url, &tls_config).await?;
+        let channel = Self::init_google_services_channel(google_api_url).await?;
 
         Ok(Self {
             state: Arc::new(RwLock::new(None)),
@@ -123,7 +118,7 @@ where
         *write_state = None;
     }
 
-    pub fn init_google_services_channel_tls_config(
+    fn init_google_services_channel_tls_config(
         domain_name: String,
     ) -> tonic::transport::ClientTlsConfig {
         tonic::transport::ClientTlsConfig::new()
@@ -133,12 +128,14 @@ where
             .domain_name(domain_name)
     }
 
-    pub async fn init_google_services_channel(
-        api_url: &'static str,
-        google_services_tls_config: &tonic::transport::ClientTlsConfig,
+    async fn init_google_services_channel(
+        api_url: &'static str
     ) -> Result<Channel, crate::error::Error> {
+        let domain_name = api_url.to_string().replace("https://", "");
+        let tls_config = Self::init_google_services_channel_tls_config(domain_name);
+
         Ok(Channel::from_static(api_url)
-            .tls_config(google_services_tls_config.clone())?
+            .tls_config(tls_config)?
             .connect()
             .await?)
     }
