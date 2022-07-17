@@ -85,29 +85,21 @@ where
         match existing_state {
             Some(state) if state.expired_at.gt(&now) => Ok(state.client),
             _ => {
-                let interceptor = GoogleConnectorInterceptor::new(
-                    &self.token_source,
-                    self.cloud_resource_prefix_meta.clone(),
-                )
-                .await?;
-
-                let token_expiry_date = interceptor.expiry_date().min(now.add(self.max_duration));
-
-                debug!(
-                    "Creating a new instance of Google API client for {}. Expiry date: {}",
-                    self.google_api_url, token_expiry_date
-                );
-
-                let new_client = self
-                    .builder
-                    .create_client(self.channel.clone(), interceptor);
-                {
+                let new_client = {
                     let mut write_state = self.state.write().await;
-                    *write_state = Some(CachedGoogleApiClientState {
-                        client: new_client.clone(),
-                        expired_at: token_expiry_date,
-                    })
-                }
+
+                    match write_state.as_ref() {
+                        Some(updated_state) if updated_state.expired_at.gt(&now) => {
+                            updated_state.client.clone()
+                        }
+                        _ => {
+                            let new_client_state = self.create_new_client_state(&now).await?;
+                            let mew_client = new_client_state.client.clone();
+                            *write_state = Some(new_client_state);
+                            mew_client
+                        }
+                    }
+                };
                 Ok(new_client)
             }
         }
@@ -128,8 +120,35 @@ where
             .domain_name(domain_name)
     }
 
+    async fn create_new_client_state(
+        &self,
+        now: &DateTime<Utc>,
+    ) -> crate::error::Result<CachedGoogleApiClientState<C>> {
+        let interceptor = GoogleConnectorInterceptor::new(
+            &self.token_source,
+            self.cloud_resource_prefix_meta.clone(),
+        )
+        .await?;
+
+        let token_expiry_date = interceptor.expiry_date().min(now.add(self.max_duration));
+
+        debug!(
+            "Creating a new instance of Google API client for {}. Expiry date: {}",
+            self.google_api_url, token_expiry_date
+        );
+
+        let new_client = self
+            .builder
+            .create_client(self.channel.clone(), interceptor);
+
+        Ok(CachedGoogleApiClientState {
+            client: new_client,
+            expired_at: token_expiry_date,
+        })
+    }
+
     async fn init_google_services_channel(
-        api_url: &'static str
+        api_url: &'static str,
     ) -> Result<Channel, crate::error::Error> {
         let domain_name = api_url.to_string().replace("https://", "");
         let tls_config = Self::init_google_services_channel_tls_config(domain_name);
