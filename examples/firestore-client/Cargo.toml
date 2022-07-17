@@ -1,0 +1,14 @@
+[package]
+name = "firestore-client-example"
+version = "0.1.0"
+authors = ["me@abdolence.dev"]
+edition = "2021"
+
+[dependencies]
+gcloud-sdk = { path = "./../../gcloud-sdk", default-features = false, features = ["google-firestore-v1"] }
+tonic = { version = "0.7", features = ["tls"] }
+tower = "0.4"
+prost = "0.10"
+prost-types = "0.10"
+chrono = "0.4"
+tokio = { version = "1.20", features = ["full"] }
