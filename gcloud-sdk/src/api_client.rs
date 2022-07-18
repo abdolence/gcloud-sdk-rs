@@ -65,10 +65,6 @@ where
     pub fn get(&self) -> C {
         self.builder.create_client(self.service.clone())
     }
-
-    pub async fn clear_cache(&self) {
-        todo!()
-    }
 }
 
 pub struct GoogleApiClientBuilderFunction<C>

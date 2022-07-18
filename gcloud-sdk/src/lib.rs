@@ -23,6 +23,8 @@ pub use apis::*;
 
 pub mod error;
 mod token_source;
+pub use token_source::Token;
+pub use token_source::auth_token_generator::GoogleAuthTokenGenerator;
 
 mod api_client;
 pub use api_client::*;
