@@ -1,6 +1,6 @@
 [package]
 name = "protosgen"
-version = "0.8.3"
+version = "0.8.4"
 authors = ["mechiru <u9053u6d41@gmail.com>", "me@abdolence.dev"]
 edition = "2021"
 
