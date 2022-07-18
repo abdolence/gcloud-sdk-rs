@@ -116,7 +116,7 @@ google-cloud-bigquery-v2 = []
 google-cloud-billing-budgets-v1 = []
 google-cloud-billing-budgets-v1beta1 = []
 google-cloud-billing-v1 = []
-# google-cloud-binaryauthorization-v1 = []
+google-cloud-binaryauthorization-v1 = []
 google-cloud-binaryauthorization-v1beta1 = []
 google-cloud-channel-v1 = []
 google-cloud-clouddms-logging-v1 = []
@@ -392,6 +392,10 @@ maps-fleetengine-v1 = []
 
 [dependencies]
 tonic = { version = "0.7", features = ["tls"] }
+tower = "0.4"
+tower-layer = "0.3"
+tower-util = "0.3"
+futures = "0.3"
 prost = "0.10"
 prost-types = "0.10"
 gcemeta = { version = "0.2" }

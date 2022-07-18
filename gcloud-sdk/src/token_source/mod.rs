@@ -1,4 +1,5 @@
 use std::convert::TryFrom;
+use std::fmt::Debug;
 use std::ops::Add;
 use std::path::PathBuf;
 
@@ -7,6 +8,7 @@ use chrono::prelude::*;
 
 mod credentials;
 mod metadata;
+use serde::{Deserialize, Serialize};
 
 use credentials::{from_env_var, from_well_known_file};
 use metadata::from_metadata;
@@ -62,10 +64,19 @@ pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSo
     Err(crate::error::ErrorKind::TokenSource.into())
 }
 
+#[derive(PartialEq, Serialize, Deserialize, Clone)]
+pub struct TokenValue(String);
+
+impl Debug for TokenValue {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "TokenValue(len:{})", self.0.len())
+    }
+}
+
 #[derive(Debug, Clone)]
 pub struct Token {
     pub type_: String,
-    pub token: String,
+    pub token: TokenValue,
     pub expiry: DateTime<Utc>,
 }
 
@@ -88,7 +99,7 @@ impl Token {
     }
 
     pub fn header_value(&self) -> String {
-        format!("{} {}", self.type_, self.token)
+        format!("{} {}", self.type_, self.token.0)
     }
 }
 
@@ -96,7 +107,7 @@ impl TryFrom<TokenResponse> for Token {
     type Error = crate::error::Error;
 
     fn try_from(v: TokenResponse) -> Result<Self, Self::Error> {
-        if v.token_type.is_empty() || v.access_token.is_empty() || v.expires_in == 0 {
+        if v.token_type.is_empty() || v.access_token.0.is_empty() || v.expires_in == 0 {
             Err(crate::error::ErrorKind::TokenData.into())
         } else {
             Ok(Token {
@@ -111,7 +122,7 @@ impl TryFrom<TokenResponse> for Token {
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 struct TokenResponse {
     token_type: String,
-    access_token: String,
+    access_token: TokenValue,
     expires_in: u64,
 }
 
@@ -143,7 +154,7 @@ mod test {
         test_token_try_from_token_type,
         TokenResponse {
             token_type: String::new(),
-            access_token: "secret".into(),
+            access_token: TokenValue("secret".into()),
             expires_in: 1,
         },
         false;
@@ -151,7 +162,7 @@ mod test {
         test_token_try_from_access_token,
         TokenResponse {
             token_type: "type".into(),
-            access_token: String::new(),
+            access_token: TokenValue(String::new()),
             expires_in: 1,
         },
         false;
@@ -159,7 +170,7 @@ mod test {
         test_token_try_from_expires_in,
         TokenResponse {
             token_type: "type".into(),
-            access_token: "secret".into(),
+            access_token: TokenValue("secret".into()),
             expires_in: 0,
         },
         false;
@@ -167,13 +178,14 @@ mod test {
         test_token_try_from_ok,
         TokenResponse {
             token_type: "type".into(),
-            access_token: "secret".into(),
+            access_token: TokenValue("secret".into()),
             expires_in: 1,
         },
         true;
     );
 }
 
+#[derive(Clone, Debug)]
 pub enum TokenSourceType {
     Default,
     Json(String),

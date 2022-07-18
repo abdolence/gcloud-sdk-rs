@@ -12,3 +12,5 @@ prost = "0.10"
 prost-types = "0.10"
 chrono = "0.4"
 tokio = { version = "1.20", features = ["full"] }
+tracing = "0.1"
+tracing-subscriber = { version ="0.3", features = ["env-filter"] }

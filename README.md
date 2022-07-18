@@ -24,40 +24,25 @@ The list of available features can be found [here](./gcloud-sdk/Cargo.toml#L22-L
 ## Example
 
 ```rust
-use gcloud_sdk::*;
-
-use gcloud_sdk::google::spanner::admin::database::v1::{
-    database_admin_client::DatabaseAdminClient, ListDatabasesRequest,
-};
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let project = std::env::var("PROJECT")?;
-    let instance = std::env::var("INSTANCE")?;
-
+fn test() {
     // The library handles getting token from environment automatically
-    let spanner_client: GoogleApiClientFn<DatabaseAdminClient<GoogleConnectorInterceptedService>> = 
-        GoogleApiClient::from_function(
-            DatabaseAdminClient::with_interceptor,
-            "https://spanner.googleapis.com",
-            chrono::Duration::minutes(15), // max caching client duration
-            None, // cloud resource prefix: used only for some of the APIs (such as Firestore) 
+    let firestore_client: GoogleApi<FirestoreClient<GoogleAuthMiddleware>> =
+        GoogleApi::from_function(
+            FirestoreClient::new,
+            "https://firestore.googleapis.com",
+            // cloud resource prefix: used only for some of the APIs (such as Firestore)
+            Some(cloud_resource_prefix.clone()),
         )
             .await?;
 
-    let response = spanner_client
+    let response = firestore_client
         .get()
-        .await? // The library caches clients and tokens automatically
-        .list_databases(tonic::Request::new(ListDatabasesRequest {
-            parent: format!("projects/{}/instances/{}", project, instance),
-            page_size: 100,
+        .list_documents(tonic::Request::new(ListDocumentsRequest {
+            parent: format!("{}/documents", cloud_resource_prefix),
             ..Default::default()
         }))
         .await?;
-
-    Ok(())
 }
-
 ```
 
 Cargo.toml:

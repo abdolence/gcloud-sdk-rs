@@ -1,6 +1,6 @@
 [workspace]
 members = [
-  "gcloud-sdk",
-  "gcloud-protos-generator",
-  "examples/spanner-admin",
+    "gcloud-sdk",
+    "gcloud-protos-generator",
+    "examples/firestore-client",
 ]
