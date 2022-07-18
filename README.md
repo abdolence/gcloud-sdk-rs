@@ -84,7 +84,8 @@ the updates and API proto descriptions from Google more frequently and simplify 
 I'd be glad to contribute all of the changes back if author sees the same goals.
 
 ## High-level APIs
-Sometimes using proto generated API is tedious and cumbersome, and there is a real
+Sometimes using proto generated APIs are tedious and cumbersome, so you may need to introduce Facade API.
+* [firebase-rs](https://github.com/abdolence/firebase-rs) - to work with Firebase
 
 ## License
 Licensed under either of [Apache License, Version 2.0](./LICENSE-APACHE)
