@@ -65,7 +65,7 @@ where
             self.google_service = Some(google_service.clone());
             Box::pin(async move {
                 let begin_time = Utc::now();
-                let token = generator.create_token().await.map_err(|e| Box::new(e))?;
+                let token = generator.create_token().await.map_err(Box::new)?;
                 let token_generated_time = Utc::now();
                 let headers = req.headers_mut();
                 headers.insert("authorization", token.header_value().parse()?);

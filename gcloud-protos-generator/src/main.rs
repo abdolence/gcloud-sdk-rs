@@ -19,7 +19,7 @@ fn main() {
 
     tonic_build::configure()
         .build_server(false)
-        .out_dir(out_dir.clone())
+        .out_dir(out_dir)
         .compile_with_config(config, &gen::proto_path(&protos), &includes)
         .unwrap();
 

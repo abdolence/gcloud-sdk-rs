@@ -328,7 +328,7 @@ fn add_deps_rec(src: &Proto, proto: &Proto, map: &mut HashMap<Package, HashSet<P
     e.insert(src.package.clone());
 
     for import in proto.imports.iter() {
-        add_deps_rec(src, &import, map);
+        add_deps_rec(src, import, map);
     }
 }
 
@@ -375,7 +375,7 @@ pub fn from_protos(protos: Vec<Proto>) -> RootModule {
             .entry(pkg)
             .or_insert_with(|| Module::empty(Package::from_escaped_vec(package.clone())));
 
-        while let Some(pkg) = iter.next() {
+        for pkg in iter {
             package.push(pkg.clone());
             e = e
                 .children

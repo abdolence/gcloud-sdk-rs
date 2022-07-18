@@ -22,7 +22,7 @@ impl Metadata {
 
     fn with_account(scopes: impl Into<Vec<String>>, account: &'static str) -> Self {
         Self {
-            account: account,
+            account,
             scopes: scopes.into(),
             gcemeta_client: gcemeta::Client::new(),
         }

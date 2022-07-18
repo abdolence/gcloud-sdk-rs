@@ -38,8 +38,8 @@ impl Source for Credentials {
     async fn token(&self) -> crate::error::Result<Token> {
         use Credentials::*;
         match self {
-            ServiceAccount(sa) => jwt::token(&sa),
-            User(user) => oauth2::token(&user),
+            ServiceAccount(sa) => jwt::token(sa),
+            User(user) => oauth2::token(user),
         }
     }
 }
