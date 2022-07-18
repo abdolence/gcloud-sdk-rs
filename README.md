@@ -1,11 +1,10 @@
 # gcloud-sdk for Rust
 
-[![Rust Documentation](https://docs.rs/gcloud-sdk/badge.svg)](https://docs.rs/gcloud-sdk)
 [![Latest Version](https://img.shields.io/crates/v/gcloud-sdk.svg)](https://crates.io/crates/gcloud-sdk)
 
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
 
-This is not official gcloud sdk from Google (and it doesn't exist for Rust at the moment of this page was updated).
+This is NOT OFFICAL gcloud sdk from Google (and it doesn't exist for Rust at the moment of this page was updated).
 
 ## Overview
 This library contains all the code generated from the Google API.
@@ -48,7 +47,7 @@ fn test() {
 Cargo.toml:
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.12", features = ["google-spanner-admin-database-v1"] }
+gcloud-sdk = { version = "0.14", features = ["google-spanner-admin-database-v1"] }
 tonic = { version = "0.7", features = ["tls"] }
 prost = "0.10"
 prost-types = "0.10"
@@ -77,11 +76,15 @@ the updates and API proto descriptions from Google more frequently and simplify 
     * This fork focuses on simplicity and provided authentication capabilities natively.
     * Has direct dependencies to tokio runtime and chrono.
       Uses synchronisation primitives (such as Mutex) from tokio everywhere.
-    * Provides facade API for the caching async client implementation
+    * Provides facade API for the caching async client implementation based on Tower middleware
       that hides complexity working with tokens and TLS.
+    * Improved observability with tracing and measuring execution time of endpoints.
 - Different development cycles - the original development was updated less frequently than it was needed for me.
 
 I'd be glad to contribute all of the changes back if author sees the same goals.
+
+## High-level APIs
+Sometimes using proto generated API is tedious and cumbersome, and there is a real
 
 ## License
 Licensed under either of [Apache License, Version 2.0](./LICENSE-APACHE)

@@ -27,5 +27,4 @@ mod token_source;
 mod api_client;
 pub use api_client::*;
 
-mod auth_token_generator;
 mod middleware;

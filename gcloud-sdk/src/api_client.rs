@@ -1,6 +1,7 @@
 use std::marker::PhantomData;
+use std::time::Duration;
 
-use crate::auth_token_generator::GoogleAuthTokenGenerator;
+use crate::token_source::auth_token_generator::GoogleAuthTokenGenerator;
 use async_trait::async_trait;
 use tonic::transport::Channel;
 use tower::ServiceBuilder;
@@ -132,6 +133,11 @@ async fn init_google_services_channel(
 
     Ok(Channel::from_static(api_url)
         .tls_config(tls_config)?
+        .connect_timeout(Duration::from_secs(30))
+        .tcp_keepalive(Some(Duration::from_secs(5)))
+        .keep_alive_timeout(Duration::from_secs(60))
+        .http2_keep_alive_interval(Duration::from_secs(10))
+        .keep_alive_while_idle(true)
         .connect()
         .await?)
 }

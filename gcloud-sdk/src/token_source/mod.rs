@@ -6,8 +6,10 @@ use std::path::PathBuf;
 use async_trait::async_trait;
 use chrono::prelude::*;
 
+pub mod auth_token_generator;
 mod credentials;
 mod metadata;
+
 use serde::{Deserialize, Serialize};
 
 use credentials::{from_env_var, from_well_known_file};

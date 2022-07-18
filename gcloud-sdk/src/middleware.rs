@@ -1,4 +1,4 @@
-use crate::auth_token_generator::GoogleAuthTokenGenerator;
+use crate::token_source::auth_token_generator::GoogleAuthTokenGenerator;
 use chrono::Utc;
 use futures::{Future, TryFutureExt};
 use std::pin::Pin;
