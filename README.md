@@ -23,7 +23,6 @@ The list of available features can be found [here](./gcloud-sdk/Cargo.toml#L22-L
 ## Example
 
 ```rust
-fn test() {
     // The library handles getting token from environment automatically
     let firestore_client: GoogleApi<FirestoreClient<GoogleAuthMiddleware>> =
         GoogleApi::from_function(
@@ -41,7 +40,6 @@ fn test() {
             ..Default::default()
         }))
         .await?;
-}
 ```
 
 Cargo.toml:
