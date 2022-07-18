@@ -11,14 +11,17 @@ use crate::middleware::{GoogleAuthMiddlewareLayer, GoogleAuthMiddlewareService};
 use crate::token_source::*;
 
 #[async_trait]
-pub trait GoogleApiClientBuilder<C> {
+pub trait GoogleApiClientBuilder<C>
+where
+    C: Clone + Send + Sync,
+{
     fn create_client(&self, channel: GoogleAuthMiddlewareService<Channel>) -> C;
 }
 
 pub struct GoogleApiClient<B, C>
 where
     B: GoogleApiClientBuilder<C>,
-    C: Clone,
+    C: Clone + Send + Sync,
 {
     builder: B,
     service: GoogleAuthMiddlewareService<Channel>,
@@ -28,7 +31,7 @@ where
 impl<B, C> GoogleApiClient<B, C>
 where
     B: GoogleApiClientBuilder<C>,
-    C: Clone,
+    C: Clone + Send + Sync,
 {
     pub async fn with_token_source(
         builder: B,
@@ -70,14 +73,14 @@ where
 
 pub struct GoogleApiClientBuilderFunction<C>
 where
-    C: Clone,
+    C: Clone + Send + Sync,
 {
     f: fn(GoogleAuthMiddlewareService<Channel>) -> C,
 }
 
 impl<C> GoogleApiClientBuilder<C> for GoogleApiClientBuilderFunction<C>
 where
-    C: Clone,
+    C: Clone + Send + Sync,
 {
     fn create_client(&self, channel: GoogleAuthMiddlewareService<Channel>) -> C {
         (self.f)(channel)
@@ -86,7 +89,7 @@ where
 
 impl<C> GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>
 where
-    C: Clone,
+    C: Clone + Send + Sync,
 {
     pub async fn from_function(
         builder_fn: fn(GoogleAuthMiddlewareService<Channel>) -> C,

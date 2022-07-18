@@ -38,15 +38,16 @@ where
 
 impl<T, RequestBody> Service<hyper::Request<RequestBody>> for GoogleAuthMiddlewareService<T>
 where
-    T: GrpcService<RequestBody> + Clone + 'static,
-    T::Future: 'static,
-    RequestBody: 'static,
-    T::ResponseBody: 'static,
-    T::Error: 'static,
+    T: GrpcService<RequestBody> + Send + Clone + 'static,
+    T::Future: 'static + Send,
+    RequestBody: 'static + Send,
+    T::ResponseBody: 'static + Send + Sync,
+    T::Error: 'static + Send + Sync,
 {
     type Response = hyper::Response<T::ResponseBody>;
     type Error = Box<dyn std::error::Error + Send + Sync + 'static>;
-    type Future = Pin<Box<dyn Future<Output = Result<Self::Response, Self::Error>> + 'static>>;
+    type Future =
+        Pin<Box<dyn Future<Output = Result<Self::Response, Self::Error>> + Send + 'static>>;
 
     fn poll_ready(&mut self, cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
         if let Some(ref mut google_service) = self.google_service.as_mut() {
