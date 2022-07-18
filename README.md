@@ -83,7 +83,7 @@ I'd be glad to contribute all of the changes back if author sees the same goals.
 
 ## High-level APIs
 Sometimes using proto generated APIs are tedious and cumbersome, so you may need to introduce facade APIs on top of them:
-* [firebase-rs](https://github.com/abdolence/firebase-rs) - to work with Firebase
+* [firestore-rs](https://github.com/abdolence/firestore-rs) - to work with Firestore
 
 
 ## License
