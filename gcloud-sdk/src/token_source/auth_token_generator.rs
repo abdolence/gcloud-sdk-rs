@@ -13,7 +13,6 @@ pub struct GoogleAuthTokenGenerator {
 }
 
 impl GoogleAuthTokenGenerator {
-
     pub async fn new(
         token_source_type: TokenSourceType,
         token_scopes: Vec<String>,

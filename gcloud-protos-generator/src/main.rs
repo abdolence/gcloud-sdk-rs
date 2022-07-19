@@ -16,6 +16,11 @@ fn main() {
 
     let mut config = prost_build::Config::new();
     config.protoc_arg("--experimental_allow_proto3_optional");
+    config.extern_path(
+        ".google.cloud.secretmanager.v1.SecretPayload",
+        "crate::SecretPayload",
+    );
+    //config.bytes(&[".google.cloud.secretmanager.v1.SecretPayload.data"]);
 
     tonic_build::configure()
         .build_server(false)

@@ -9,5 +9,4 @@ macro_rules! include_proto {
     };
 }
 
-
 include!("google_apis.rs");

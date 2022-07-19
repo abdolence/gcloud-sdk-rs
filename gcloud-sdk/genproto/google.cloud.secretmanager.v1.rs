@@ -323,26 +323,6 @@ pub struct Rotation {
     #[prost(message, optional, tag="2")]
     pub rotation_period: ::core::option::Option<::prost_types::Duration>,
 }
-/// A secret payload resource in the Secret Manager API. This contains the
-/// sensitive secret payload that is associated with a \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SecretPayload {
-    /// The secret data. Must be no larger than 64KiB.
-    #[prost(bytes="vec", tag="1")]
-    pub data: ::prost::alloc::vec::Vec<u8>,
-    /// Optional. If specified, \[SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService\] will verify the integrity of the
-    /// received \[data][google.cloud.secretmanager.v1.SecretPayload.data\] on \[SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion\] calls using
-    /// the crc32c checksum and store it to include in future
-    /// \[SecretManagerService.AccessSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AccessSecretVersion\] responses. If a checksum is
-    /// not provided in the \[SecretManagerService.AddSecretVersion][google.cloud.secretmanager.v1.SecretManagerService.AddSecretVersion\] request, the
-    /// \[SecretManagerService][google.cloud.secretmanager.v1.SecretManagerService\] will generate and store one for you.
-    ///
-    /// The CRC32C value is encoded as a Int64 for compatibility, and can be
-    /// safely downconverted to uint32 in languages that support this type.
-    /// <https://cloud.google.com/apis/design/design_patterns#integer_types>
-    #[prost(int64, optional, tag="2")]
-    pub data_crc32c: ::core::option::Option<i64>,
-}
 /// Request message for \[SecretManagerService.ListSecrets][google.cloud.secretmanager.v1.SecretManagerService.ListSecrets\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSecretsRequest {
@@ -409,7 +389,7 @@ pub struct AddSecretVersionRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. The secret payload of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\].
     #[prost(message, optional, tag="2")]
-    pub payload: ::core::option::Option<SecretPayload>,
+    pub payload: ::core::option::Option<crate::SecretPayload>,
 }
 /// Request message for \[SecretManagerService.GetSecret][google.cloud.secretmanager.v1.SecretManagerService.GetSecret\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -499,7 +479,7 @@ pub struct AccessSecretVersionResponse {
     pub name: ::prost::alloc::string::String,
     /// Secret payload
     #[prost(message, optional, tag="2")]
-    pub payload: ::core::option::Option<SecretPayload>,
+    pub payload: ::core::option::Option<crate::SecretPayload>,
 }
 /// Request message for \[SecretManagerService.DeleteSecret][google.cloud.secretmanager.v1.SecretManagerService.DeleteSecret\].
 #[derive(Clone, PartialEq, ::prost::Message)]
