@@ -83,8 +83,8 @@ I'd be glad to contribute all of the changes back if author sees the same goals.
 
 ## High-level APIs
 Sometimes using proto generated APIs are tedious and cumbersome, so you may need to introduce facade APIs on top of them:
-* [firestore-rs](https://github.com/abdolence/firestore-rs) - to work with Firestore
-
+* [firestore-rs](https://github.com/abdolence/firestore-rs) - to work with Firestore;
+* [secret-vault](https://github.com/abdolence/secret-vault-rs) to read secrets from Google Secret Manager;
 
 ## License
 Licensed under either of [Apache License, Version 2.0](./LICENSE-APACHE)
