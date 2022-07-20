@@ -409,7 +409,7 @@ async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
 tokio= { version =  "1.20" }
 tracing = "0.1"
-secret-vault-value = { version="0.1.0", path="../../secret-vault-rs/secret-value", features=["proto"] }
+secret-vault-value = { version="0.1", features=["proto"] }
 
 [dev-dependencies]
 lazy_static = "1.4"
