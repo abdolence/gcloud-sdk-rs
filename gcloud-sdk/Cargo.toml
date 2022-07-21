@@ -1,6 +1,6 @@
 [package]
 name = "gcloud-sdk"
-version = "0.15.0"
+version = "0.16.0"
 authors = ["mechiru <u9053u6d41@gmail.com>", "Abdulla Abdurakhmanov <me@abdolence.dev>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -409,7 +409,7 @@ async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
 tokio= { version =  "1.20" }
 tracing = "0.1"
-secret-vault-value = { version="0.1", features=["proto"] }
+secret-vault-value = { version="0.2", features=["proto"] }
 
 [dev-dependencies]
 lazy_static = "1.4"

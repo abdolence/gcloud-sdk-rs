@@ -60,6 +60,7 @@ impl prost::Message for SecretPayload {
     }
 
     fn clear(&mut self) {
+        self.data.secure_clear();
         self.data.ref_sensitive_value_mut().clear();
         self.data_crc32c = None;
     }
