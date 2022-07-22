@@ -92,6 +92,7 @@ impl prost::Message for EncryptRequest {
         prost::encoding::string::encode(1, &self.name, buf);
         prost::encoding::bytes::encode(2, self.plaintext.ref_sensitive_value(), buf);
         prost::encoding::bytes::encode(3, &self.additional_authenticated_data, buf);
+
         if let Some(ref crc32c) = self.plaintext_crc32c {
             prost::encoding::int64::encode(7, crc32c, buf);
         }
@@ -119,6 +120,12 @@ impl prost::Message for EncryptRequest {
                 buf,
                 ctx,
             ),
+            3 => prost::encoding::bytes::merge(
+                wire_type,
+                &mut self.additional_authenticated_data,
+                buf,
+                ctx,
+            ),
             7 => prost::encoding::int64::merge(
                 wire_type,
                 self.plaintext_crc32c.get_or_insert_with(Default::default),
@@ -139,6 +146,7 @@ impl prost::Message for EncryptRequest {
     fn encoded_len(&self) -> usize {
         prost::encoding::string::encoded_len(1, &self.name)
             + prost::encoding::bytes::encoded_len(2, self.plaintext.ref_sensitive_value())
+            + prost::encoding::bytes::encoded_len(3, &self.additional_authenticated_data)
             + self
                 .plaintext_crc32c
                 .as_ref()
