@@ -85,9 +85,9 @@ pub struct EncryptRequest {
 
 impl prost::Message for EncryptRequest {
     fn encode_raw<B>(&self, buf: &mut B)
-        where
-            B: BufMut,
-            Self: Sized,
+    where
+        B: BufMut,
+        Self: Sized,
     {
         prost::encoding::string::encode(1, &self.name, buf);
         prost::encoding::bytes::encode(2, self.plaintext.ref_sensitive_value(), buf);
@@ -107,17 +107,12 @@ impl prost::Message for EncryptRequest {
         buf: &mut B,
         ctx: DecodeContext,
     ) -> Result<(), DecodeError>
-        where
-            B: Buf,
-            Self: Sized,
+    where
+        B: Buf,
+        Self: Sized,
     {
         match tag {
-            1 => prost::encoding::string::merge(
-                wire_type,
-                &mut self.name,
-                buf,
-                ctx,
-            ),
+            1 => prost::encoding::string::merge(wire_type, &mut self.name, buf, ctx),
             2 => prost::encoding::bytes::merge(
                 wire_type,
                 self.plaintext.ref_sensitive_value_mut(),
@@ -132,7 +127,8 @@ impl prost::Message for EncryptRequest {
             ),
             8 => prost::encoding::int64::merge(
                 wire_type,
-                self.additional_authenticated_data_crc32c.get_or_insert_with(Default::default),
+                self.additional_authenticated_data_crc32c
+                    .get_or_insert_with(Default::default),
                 buf,
                 ctx,
             ),
@@ -141,10 +137,16 @@ impl prost::Message for EncryptRequest {
     }
 
     fn encoded_len(&self) -> usize {
-        prost::encoding::string::encoded_len(1, &self.name) +
-            prost::encoding::bytes::encoded_len(2, self.plaintext.ref_sensitive_value()) +
-            self.plaintext_crc32c.as_ref().map_or(0, |crc32c| prost::encoding::int64::encoded_len(7, crc32c)) +
-            self.additional_authenticated_data_crc32c.as_ref().map_or(0, |crc32c| prost::encoding::int64::encoded_len(8, crc32c))
+        prost::encoding::string::encoded_len(1, &self.name)
+            + prost::encoding::bytes::encoded_len(2, self.plaintext.ref_sensitive_value())
+            + self
+                .plaintext_crc32c
+                .as_ref()
+                .map_or(0, |crc32c| prost::encoding::int64::encoded_len(7, crc32c))
+            + self
+                .additional_authenticated_data_crc32c
+                .as_ref()
+                .map_or(0, |crc32c| prost::encoding::int64::encoded_len(8, crc32c))
     }
 
     fn clear(&mut self) {
@@ -195,9 +197,9 @@ pub struct DecryptResponse {
 
 impl prost::Message for DecryptResponse {
     fn encode_raw<B>(&self, buf: &mut B)
-        where
-            B: BufMut,
-            Self: Sized,
+    where
+        B: BufMut,
+        Self: Sized,
     {
         prost::encoding::bytes::encode(1, self.plaintext.ref_sensitive_value(), buf);
         if let Some(ref crc32c) = self.plaintext_crc32c {
@@ -214,9 +216,9 @@ impl prost::Message for DecryptResponse {
         buf: &mut B,
         ctx: DecodeContext,
     ) -> Result<(), DecodeError>
-        where
-            B: Buf,
-            Self: Sized,
+    where
+        B: Buf,
+        Self: Sized,
     {
         match tag {
             1 => prost::encoding::bytes::merge(
@@ -231,33 +233,26 @@ impl prost::Message for DecryptResponse {
                 buf,
                 ctx,
             ),
-            3 => prost::encoding::bool::merge(
-                wire_type,
-                &mut self.used_primary,
-                buf,
-                ctx,
-            ),
-            4 => prost::encoding::int32::merge(
-                wire_type,
-                &mut self.protection_level,
-                buf,
-                ctx,
-            ),
+            3 => prost::encoding::bool::merge(wire_type, &mut self.used_primary, buf, ctx),
+            4 => prost::encoding::int32::merge(wire_type, &mut self.protection_level, buf, ctx),
             _ => prost::encoding::skip_field(wire_type, tag, buf, ctx),
         }
     }
 
     fn encoded_len(&self) -> usize {
-            prost::encoding::bytes::encoded_len(1, self.plaintext.ref_sensitive_value()) +
-            self.plaintext_crc32c.as_ref().map_or(0, |crc32c| prost::encoding::int64::encoded_len(2, crc32c)) +
-                prost::encoding::bool::encoded_len(3, &self.used_primary) +
-                prost::encoding::int32::encoded_len(4, &self.protection_level)
+        prost::encoding::bytes::encoded_len(1, self.plaintext.ref_sensitive_value())
+            + self
+                .plaintext_crc32c
+                .as_ref()
+                .map_or(0, |crc32c| prost::encoding::int64::encoded_len(2, crc32c))
+            + prost::encoding::bool::encoded_len(3, &self.used_primary)
+            + prost::encoding::int32::encoded_len(4, &self.protection_level)
     }
 
     fn clear(&mut self) {
         self.plaintext.secure_clear();
         self.plaintext_crc32c = None;
         self.used_primary = Default::default();
-        self.protection_level =  Default::default();
+        self.protection_level = Default::default();
     }
 }

@@ -1,3 +1,2 @@
-pub mod secretmanager;
 pub mod kms;
-
+pub mod secretmanager;
