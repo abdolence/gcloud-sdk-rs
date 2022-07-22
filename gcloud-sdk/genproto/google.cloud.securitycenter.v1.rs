@@ -312,6 +312,36 @@ pub struct Contact {
     #[prost(string, tag="1")]
     pub email: ::prost::alloc::string::String,
 }
+/// Label represents a generic name=value label. Label has separate name and
+/// value fields to support filtering with contains().
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Label {
+    /// Label name.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    /// Label value.
+    #[prost(string, tag="2")]
+    pub value: ::prost::alloc::string::String,
+}
+/// Container associated with the finding.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Container {
+    /// Container name.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    /// Container image URI provided when configuring a pod/container.
+    /// May identify a container image version using mutable tags.
+    #[prost(string, tag="2")]
+    pub uri: ::prost::alloc::string::String,
+    /// Optional container image id, when provided by the container runtime.
+    /// Uniquely identifies the container image launched using a container image
+    /// digest.
+    #[prost(string, tag="3")]
+    pub image_id: ::prost::alloc::string::String,
+    /// Container labels, as provided by the container runtime.
+    #[prost(message, repeated, tag="4")]
+    pub labels: ::prost::alloc::vec::Vec<Label>,
+}
 /// Exfiltration represents a data exfiltration attempt of one or more
 /// sources to one or more targets.  Sources represent the source
 /// of data that is exfiltrated, and Targets represents the destination the
@@ -495,6 +525,173 @@ pub mod indicator {
         }
     }
 }
+/// Kubernetes related attributes.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Kubernetes {
+    /// Kubernetes Pods associated with the finding. This field will contain Pod
+    /// records for each container that is owned by a Pod.
+    #[prost(message, repeated, tag="1")]
+    pub pods: ::prost::alloc::vec::Vec<kubernetes::Pod>,
+    /// Provides Kubernetes Node information.
+    #[prost(message, repeated, tag="2")]
+    pub nodes: ::prost::alloc::vec::Vec<kubernetes::Node>,
+    /// GKE Node Pools associated with the finding. This field will
+    /// contain NodePool information for each Node, when it is available.
+    #[prost(message, repeated, tag="3")]
+    pub node_pools: ::prost::alloc::vec::Vec<kubernetes::NodePool>,
+    /// Provides Kubernetes role information for findings that involve
+    /// Roles or ClusterRoles.
+    #[prost(message, repeated, tag="4")]
+    pub roles: ::prost::alloc::vec::Vec<kubernetes::Role>,
+    /// Provides Kubernetes role binding information for findings that involve
+    /// RoleBindings or ClusterRoleBindings.
+    #[prost(message, repeated, tag="5")]
+    pub bindings: ::prost::alloc::vec::Vec<kubernetes::Binding>,
+    /// Provides information on any Kubernetes access reviews (i.e. privilege
+    /// checks) relevant to the finding.
+    #[prost(message, repeated, tag="6")]
+    pub access_reviews: ::prost::alloc::vec::Vec<kubernetes::AccessReview>,
+}
+/// Nested message and enum types in `Kubernetes`.
+pub mod kubernetes {
+    /// Kubernetes Pod.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Pod {
+        /// Kubernetes Pod namespace.
+        #[prost(string, tag="1")]
+        pub ns: ::prost::alloc::string::String,
+        /// Kubernetes Pod name.
+        #[prost(string, tag="2")]
+        pub name: ::prost::alloc::string::String,
+        /// Pod labels.  For Kubernetes containers, these are applied to the
+        /// container.
+        #[prost(message, repeated, tag="3")]
+        pub labels: ::prost::alloc::vec::Vec<super::Label>,
+        /// Pod containers associated with this finding, if any.
+        #[prost(message, repeated, tag="4")]
+        pub containers: ::prost::alloc::vec::Vec<super::Container>,
+    }
+    /// Kubernetes Nodes associated with the finding.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Node {
+        /// Full Resource name of the Compute Engine VM running the
+        /// cluster node.
+        #[prost(string, tag="1")]
+        pub name: ::prost::alloc::string::String,
+    }
+    /// Provides GKE Node Pool information.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NodePool {
+        /// Kubernetes Node pool name.
+        #[prost(string, tag="1")]
+        pub name: ::prost::alloc::string::String,
+        /// Nodes associated with the finding.
+        #[prost(message, repeated, tag="2")]
+        pub nodes: ::prost::alloc::vec::Vec<Node>,
+    }
+    /// Kubernetes Role or ClusterRole.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Role {
+        /// Role type.
+        #[prost(enumeration="role::Kind", tag="1")]
+        pub kind: i32,
+        /// Role namespace.
+        #[prost(string, tag="2")]
+        pub ns: ::prost::alloc::string::String,
+        /// Role name.
+        #[prost(string, tag="3")]
+        pub name: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `Role`.
+    pub mod role {
+        /// Types of Kubernetes roles.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum Kind {
+            /// Role type is not specified.
+            Unspecified = 0,
+            /// Kubernetes Role.
+            Role = 1,
+            /// Kubernetes ClusterRole.
+            ClusterRole = 2,
+        }
+    }
+    /// Represents a Kubernetes RoleBinding or ClusterRoleBinding.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Binding {
+        /// Namespace for binding.
+        #[prost(string, tag="1")]
+        pub ns: ::prost::alloc::string::String,
+        /// Name for binding.
+        #[prost(string, tag="2")]
+        pub name: ::prost::alloc::string::String,
+        /// The Role or ClusterRole referenced by the binding.
+        #[prost(message, optional, tag="3")]
+        pub role: ::core::option::Option<Role>,
+        /// Represents the subjects(s) bound to the role. Not always available
+        /// for PATCH requests.
+        #[prost(message, repeated, tag="4")]
+        pub subjects: ::prost::alloc::vec::Vec<Subject>,
+    }
+    /// Represents a Kubernetes Subject.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Subject {
+        /// Authentication type for subject.
+        #[prost(enumeration="subject::AuthType", tag="1")]
+        pub kind: i32,
+        /// Namespace for subject.
+        #[prost(string, tag="2")]
+        pub ns: ::prost::alloc::string::String,
+        /// Name for subject.
+        #[prost(string, tag="3")]
+        pub name: ::prost::alloc::string::String,
+    }
+    /// Nested message and enum types in `Subject`.
+    pub mod subject {
+        /// Auth types that can be used for Subject's kind field.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum AuthType {
+            /// Authentication is not specified.
+            Unspecified = 0,
+            /// User with valid certificate.
+            User = 1,
+            /// Users managed by Kubernetes API with credentials stored as Secrets.
+            Serviceaccount = 2,
+            /// Collection of users.
+            Group = 3,
+        }
+    }
+    /// Conveys information about a Kubernetes access review (e.g. kubectl auth
+    /// can-i ...) that was involved in a finding.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AccessReview {
+        /// Group is the API Group of the Resource. "*" means all.
+        #[prost(string, tag="1")]
+        pub group: ::prost::alloc::string::String,
+        /// Namespace of the action being requested. Currently, there is no
+        /// distinction between no namespace and all namespaces.  Both
+        /// are represented by "" (empty).
+        #[prost(string, tag="2")]
+        pub ns: ::prost::alloc::string::String,
+        /// Name is the name of the resource being requested. Empty means all.
+        #[prost(string, tag="3")]
+        pub name: ::prost::alloc::string::String,
+        /// Resource is the optional resource type requested. "*" means all.
+        #[prost(string, tag="4")]
+        pub resource: ::prost::alloc::string::String,
+        /// Subresource is the optional subresource type.
+        #[prost(string, tag="5")]
+        pub subresource: ::prost::alloc::string::String,
+        /// Verb is a Kubernetes resource API verb, like: get, list, watch, create,
+        /// update, delete, proxy. "*" means all.
+        #[prost(string, tag="6")]
+        pub verb: ::prost::alloc::string::String,
+        /// Version is the API Version of the Resource. "*" means all.
+        #[prost(string, tag="7")]
+        pub version: ::prost::alloc::string::String,
+    }
+}
 /// MITRE ATT&CK tactics and techniques related to this finding.
 /// See: <https://attack.mitre.org>
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -628,6 +825,8 @@ pub mod mitre_attack {
         DomainPolicyModification = 30,
         /// T1562
         ImpairDefenses = 31,
+        /// T1046
+        NetworkServiceDiscovery = 32,
     }
 }
 /// Represents an operating system process.
@@ -1027,6 +1226,13 @@ pub struct Finding {
     /// Next steps associate to the finding.
     #[prost(string, tag="40")]
     pub next_steps: ::prost::alloc::string::String,
+    /// Containers associated with the finding. containers provides information
+    /// for both Kubernetes and non-Kubernetes containers.
+    #[prost(message, repeated, tag="42")]
+    pub containers: ::prost::alloc::vec::Vec<Container>,
+    /// Kubernetes resources associated with the finding.
+    #[prost(message, optional, tag="43")]
+    pub kubernetes: ::core::option::Option<Kubernetes>,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {

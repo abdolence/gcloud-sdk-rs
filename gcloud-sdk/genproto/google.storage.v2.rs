@@ -266,7 +266,7 @@ pub mod compose_object_request {
     }
 }
 /// Message for deleting an object.
-/// Either `bucket` and `object` *or* `upload_id` **must** be set (but not both).
+/// `bucket` and `object` **must** be set.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteObjectRequest {
     /// Required. Name of the bucket in which the object resides.
@@ -275,11 +275,6 @@ pub struct DeleteObjectRequest {
     /// Required. The name of the object to delete (when not using a resumable write).
     #[prost(string, tag="2")]
     pub object: ::prost::alloc::string::String,
-    /// The resumable upload_id of the object to delete (when deleting an
-    /// in-progress resumable write). This should be copied from the `upload_id`
-    /// field of `StartResumableWriteResponse`.
-    #[prost(string, tag="3")]
-    pub upload_id: ::prost::alloc::string::String,
     /// If present, permanently deletes a specific revision of this object (as
     /// opposed to the latest version, the default).
     #[prost(int64, tag="4")]
@@ -306,6 +301,20 @@ pub struct DeleteObjectRequest {
     /// A set of parameters common to Storage API requests concerning an object.
     #[prost(message, optional, tag="10")]
     pub common_object_request_params: ::core::option::Option<CommonObjectRequestParams>,
+}
+/// Message for canceling an in-progress resumable upload.
+/// `upload_id` **must** be set.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CancelResumableWriteRequest {
+    /// Required. The upload_id of the resumable upload to cancel. This should be copied
+    /// from the `upload_id` field of `StartResumableWriteResponse`.
+    #[prost(string, tag="1")]
+    pub upload_id: ::prost::alloc::string::String,
+}
+/// Empty response message for canceling an in-progress resumable upload, will be
+/// extended as needed.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CancelResumableWriteResponse {
 }
 /// Request message for ReadObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -466,6 +475,17 @@ pub struct WriteObjectSpec {
     /// metageneration does not match the given value.
     #[prost(int64, optional, tag="6")]
     pub if_metageneration_not_match: ::core::option::Option<i64>,
+    /// The expected final object size being uploaded.
+    /// If this value is set, closing the stream after writing fewer or more than
+    /// `object_size` bytes will result in an OUT_OF_RANGE error.
+    ///
+    /// This situation is considered a client error, and if such an error occurs
+    /// you must start the upload over from scratch, this time sending the correct
+    /// number of bytes.
+    ///
+    /// The `object_size` value is ignored for one-shot (non-resumable) writes.
+    #[prost(int64, optional, tag="8")]
+    pub object_size: ::core::option::Option<i64>,
 }
 /// Request message for WriteObject.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -656,16 +676,16 @@ pub mod query_write_status_response {
 /// common_object_request_params.customer_encryption field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RewriteObjectRequest {
-    /// Immutable. The name of the destination object. Nearly any sequence of unicode
-    /// characters is valid. See
-    /// \[Guidelines\](<https://cloud.google.com/storage/docs/naming-objects>).
+    /// Immutable. The name of the destination object.
+    /// See the
+    /// [Naming Guidelines](<https://cloud.google.com/storage/docs/naming-objects>).
     /// Example: `test.txt`
     /// The `name` field by itself does not uniquely identify a Cloud Storage
     /// object. A Cloud Storage object is uniquely identified by the tuple of
     /// (bucket, object, generation).
     #[prost(string, tag="24")]
     pub destination_name: ::prost::alloc::string::String,
-    /// Immutable. The name of the bucket containing The name of the destination object.
+    /// Immutable. The name of the bucket containing the destination object.
     #[prost(string, tag="25")]
     pub destination_bucket: ::prost::alloc::string::String,
     /// The name of the Cloud KMS key that will be used to encrypt the destination
@@ -864,14 +884,17 @@ pub struct UpdateObjectRequest {
 /// Request message for GetServiceAccount.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServiceAccountRequest {
-    /// Required. Project ID.
+    /// Required. Project ID, in the format of "projects/<projectIdentifier>".
+    /// <projectIdentifier> can be the project ID or project number.
     #[prost(string, tag="1")]
     pub project: ::prost::alloc::string::String,
 }
 /// Request message for CreateHmacKey.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateHmacKeyRequest {
-    /// Required. The project that the HMAC-owning service account lives in.
+    /// Required. The project that the HMAC-owning service account lives in, in the format of
+    /// "projects/<projectIdentifier>".
+    /// <projectIdentifier> can be the project ID or project number.
     #[prost(string, tag="1")]
     pub project: ::prost::alloc::string::String,
     /// Required. The service account to create the HMAC for.
@@ -895,7 +918,9 @@ pub struct DeleteHmacKeyRequest {
     /// Required. The identifying key for the HMAC to delete.
     #[prost(string, tag="1")]
     pub access_id: ::prost::alloc::string::String,
-    /// Required. The project id the HMAC key lies in.
+    /// Required. The project that owns the HMAC key, in the format of
+    /// "projects/<projectIdentifier>".
+    /// <projectIdentifier> can be the project ID or project number.
     #[prost(string, tag="2")]
     pub project: ::prost::alloc::string::String,
 }
@@ -905,14 +930,18 @@ pub struct GetHmacKeyRequest {
     /// Required. The identifying key for the HMAC to delete.
     #[prost(string, tag="1")]
     pub access_id: ::prost::alloc::string::String,
-    /// Required. The project id the HMAC key lies in.
+    /// Required. The project the HMAC key lies in, in the format of
+    /// "projects/<projectIdentifier>".
+    /// <projectIdentifier> can be the project ID or project number.
     #[prost(string, tag="2")]
     pub project: ::prost::alloc::string::String,
 }
 /// Request to fetch a list of HMAC keys under a given project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListHmacKeysRequest {
-    /// Required. The project id to list HMAC keys for.
+    /// Required. The project to list HMAC keys for, in the format of
+    /// "projects/<projectIdentifier>".
+    /// <projectIdentifier> can be the project ID or project number.
     #[prost(string, tag="1")]
     pub project: ::prost::alloc::string::String,
     /// Optional. The maximum number of keys to return.
@@ -940,6 +969,9 @@ pub struct ListHmacKeysResponse {
     pub next_page_token: ::prost::alloc::string::String,
 }
 /// Request object to update an HMAC key state.
+/// HmacKeyMetadata.state is required and the only writable field in
+/// UpdateHmacKey operation. Specifying fields other than state will result in an
+/// error.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateHmacKeyRequest {
     /// Required. The HMAC key to update.
@@ -949,6 +981,8 @@ pub struct UpdateHmacKeyRequest {
     #[prost(message, optional, tag="1")]
     pub hmac_key: ::core::option::Option<HmacKeyMetadata>,
     /// Update mask for hmac_key.
+    /// Not specifying any fields will mean only the `state` field is updated to
+    /// the value specified in `hmac_key`.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
@@ -1044,7 +1078,9 @@ pub struct Bucket {
     /// only be performed if the etag matches that of the bucket.
     #[prost(string, tag="29")]
     pub etag: ::prost::alloc::string::String,
-    /// Immutable. The project which owns this bucket.
+    /// Immutable. The project which owns this bucket, in the format of
+    /// "projects/<projectIdentifier>".
+    /// <projectIdentifier> can be the project ID or project number.
     #[prost(string, tag="3")]
     pub project: ::prost::alloc::string::String,
     /// Output only. The metadata generation of this bucket.
@@ -1498,25 +1534,30 @@ pub struct ObjectChecksums {
 /// Hmac Key Metadata, which includes all information other than the secret.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HmacKeyMetadata {
-    /// Resource name ID of the key in the format <projectId>/<accessId>.
+    /// Immutable. Resource name ID of the key in the format
+    /// <projectIdentifier>/<accessId>.
+    /// <projectIdentifier> can be the project ID or project number.
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
-    /// Globally unique id for keys.
+    /// Immutable. Globally unique id for keys.
     #[prost(string, tag="2")]
     pub access_id: ::prost::alloc::string::String,
-    /// The project ID that the hmac key is contained in.
+    /// Immutable. Identifies the project that owns the service account of the specified HMAC
+    /// key, in the format "projects/<projectIdentifier>". <projectIdentifier> can
+    /// be the project ID or project number.
     #[prost(string, tag="3")]
     pub project: ::prost::alloc::string::String,
-    /// Email of the service account the key authenticates as.
+    /// Output only. Email of the service account the key authenticates as.
     #[prost(string, tag="4")]
     pub service_account_email: ::prost::alloc::string::String,
     /// State of the key. One of ACTIVE, INACTIVE, or DELETED.
+    /// Writable, can be updated by UpdateHmacKey operation.
     #[prost(string, tag="5")]
     pub state: ::prost::alloc::string::String,
-    /// The creation time of the HMAC key.
+    /// Output only. The creation time of the HMAC key.
     #[prost(message, optional, tag="6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The last modification time of the HMAC key metadata.
+    /// Output only. The last modification time of the HMAC key metadata.
     #[prost(message, optional, tag="7")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     /// The etag of the HMAC key.
@@ -1662,6 +1703,11 @@ pub struct Object {
     #[prost(message, optional, tag="16")]
     pub checksums: ::core::option::Option<ObjectChecksums>,
     /// Output only. The modification time of the object metadata.
+    /// Set initially to object creation time and then updated whenever any
+    /// metadata of the object changes. This includes changes made by a requester,
+    /// such as modifying custom metadata, as well as changes made by Cloud Storage
+    /// on behalf of a requester, such as changing the storage class based on an
+    /// Object Lifecycle Configuration.
     /// Attempting to set or update this field will result in a
     /// \[FieldViolation][google.rpc.BadRequest.FieldViolation\].
     #[prost(message, optional, tag="17")]
@@ -2008,7 +2054,7 @@ pub mod storage_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Gets the IAM policy for a specified bucket.
+        /// Gets the IAM policy for a specified bucket or object.
         pub async fn get_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -2033,7 +2079,7 @@ pub mod storage_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Updates an IAM policy for the specified bucket.
+        /// Updates an IAM policy for the specified bucket or object.
         pub async fn set_iam_policy(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -2058,7 +2104,7 @@ pub mod storage_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Tests a set of permissions on the given bucket to see which, if
+        /// Tests a set of permissions on the given bucket or object to see which, if
         /// any, are held by the caller.
         pub async fn test_iam_permissions(
             &mut self,
@@ -2209,8 +2255,7 @@ pub mod storage_client {
             self.inner.unary(request.into_request(), path, codec).await
         }
         /// Deletes an object and its metadata. Deletions are permanent if versioning
-        /// is not enabled for the bucket, or if the `generation` parameter
-        /// is used.
+        /// is not enabled for the bucket, or if the `generation` parameter is used.
         pub async fn delete_object(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteObjectRequest>,
@@ -2227,6 +2272,29 @@ pub mod storage_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.storage.v2.Storage/DeleteObject",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Cancels an in-progress resumable upload.
+        pub async fn cancel_resumable_write(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CancelResumableWriteRequest>,
+        ) -> Result<
+            tonic::Response<super::CancelResumableWriteResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.storage.v2.Storage/CancelResumableWrite",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

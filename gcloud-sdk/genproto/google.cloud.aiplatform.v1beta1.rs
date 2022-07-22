@@ -4052,7 +4052,7 @@ pub struct DeployedModel {
     /// even if the DeployedModel receives no traffic.
     /// Not all Models support all resources types. See
     /// \[Model.supported_deployment_resources_types][google.cloud.aiplatform.v1beta1.Model.supported_deployment_resources_types\].
-    #[prost(oneof="deployed_model::PredictionResources", tags="7, 8")]
+    #[prost(oneof="deployed_model::PredictionResources", tags="7, 8, 17")]
     pub prediction_resources: ::core::option::Option<deployed_model::PredictionResources>,
 }
 /// Nested message and enum types in `DeployedModel`.
@@ -4072,6 +4072,11 @@ pub mod deployed_model {
         /// AI, and require only a modest additional configuration.
         #[prost(message, tag="8")]
         AutomaticResources(super::AutomaticResources),
+        /// The resource name of the shared DeploymentResourcePool to deploy on.
+        /// Format:
+        /// projects/{project}/locations/{location}/deploymentResourcePools/{deployment_resource_pool}
+        #[prost(string, tag="17")]
+        SharedResources(::prost::alloc::string::String),
     }
 }
 /// PrivateEndpoints proto is used to provide paths for users to send

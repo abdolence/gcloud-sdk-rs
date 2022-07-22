@@ -182,7 +182,7 @@ pub mod translation_config_details {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Dialect {
     /// The possible dialect options that this message represents.
-    #[prost(oneof="dialect::DialectValue", tags="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11")]
+    #[prost(oneof="dialect::DialectValue", tags="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13")]
     pub dialect_value: ::core::option::Option<dialect::DialectValue>,
 }
 /// Nested message and enum types in `Dialect`.
@@ -223,6 +223,12 @@ pub mod dialect {
         /// The SQL Server dialect
         #[prost(message, tag="11")]
         SqlServerDialect(super::SqlServerDialect),
+        /// The Postgresql dialect
+        #[prost(message, tag="12")]
+        PostgresqlDialect(super::PostgresqlDialect),
+        /// The Presto dialect
+        #[prost(message, tag="13")]
+        PrestoDialect(super::PrestoDialect),
     }
 }
 /// The dialect definition for BigQuery.
@@ -285,6 +291,14 @@ pub struct VerticaDialect {
 /// The dialect definition for SQL Server.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SqlServerDialect {
+}
+/// The dialect definition for Postgresql.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PostgresqlDialect {
+}
+/// The dialect definition for Presto.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PrestoDialect {
 }
 /// Represents a map of name mappings using a list of key:value proto messages of
 /// existing name to desired output name.
@@ -448,7 +462,7 @@ pub struct MigrationTask {
     /// Translation_Oracle2BQ, Translation_HiveQL2BQ, Translation_SparkSQL2BQ,
     /// Translation_Snowflake2BQ, Translation_Netezza2BQ,
     /// Translation_AzureSynapse2BQ, Translation_Vertica2BQ,
-    /// Translation_SQLServer2BQ.
+    /// Translation_SQLServer2BQ, Translation_Presto2BQ.
     #[prost(string, tag="2")]
     pub r#type: ::prost::alloc::string::String,
     /// Output only. The current state of the task.

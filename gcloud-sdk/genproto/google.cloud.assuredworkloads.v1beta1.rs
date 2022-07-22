@@ -8,8 +8,8 @@ pub struct CreateWorkloadRequest {
     /// Required. Assured Workload to create
     #[prost(message, optional, tag="2")]
     pub workload: ::core::option::Option<Workload>,
-    /// Optional. A identifier associated with the workload and underlying projects
-    /// which allows for the break down of billing costs for a workload. The value
+    /// Optional. A identifier associated with the workload and underlying projects which
+    /// allows for the break down of billing costs for a workload. The value
     /// provided for the identifier will add a label to the workload and contained
     /// projects with the identifier as the value.
     #[prost(string, tag="3")]
@@ -19,7 +19,7 @@ pub struct CreateWorkloadRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateWorkloadRequest {
     /// Required. The workload to update.
-    /// The workload’s `name` field is used to identify the workload to be updated.
+    /// The workload's `name` field is used to identify the workload to be updated.
     /// Format:
     /// organizations/{org_id}/locations/{location_id}/workloads/{workload_id}
     #[prost(message, optional, tag="1")]
@@ -27,6 +27,77 @@ pub struct UpdateWorkloadRequest {
     /// Required. The list of fields to be updated.
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+/// Request for restricting list of available services in Workload environment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestrictAllowedServicesRequest {
+    /// Required. The resource name of the Workload. This is the workloads's
+    /// relative path in the API, formatted as
+    /// "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
+    /// For example,
+    /// "organizations/123/locations/us-east1/workloads/assured-workload-1".
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The type of restriction for using gcp services in the Workload environment.
+    #[prost(enumeration="restrict_allowed_services_request::RestrictionType", tag="2")]
+    pub restriction_type: i32,
+}
+/// Nested message and enum types in `RestrictAllowedServicesRequest`.
+pub mod restrict_allowed_services_request {
+    /// The type of restriction.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RestrictionType {
+        /// Unknown restriction type.
+        Unspecified = 0,
+        /// Allow the use all services. This effectively remove all restrictions
+        /// placed on the Folder.
+        AllowAllGcpServices = 1,
+        /// Based on Workload's compliance regime, allowed list changes.
+        /// See - <https://cloud.google.com/assured-workloads/docs/supported-products>
+        /// for the list of allowed services.
+        AllowCompliantServices = 2,
+    }
+}
+/// Response for restricting the list of allowed services.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestrictAllowedServicesResponse {
+}
+/// Request for restricting list of available resources in Workload environment.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestrictAllowedResourcesRequest {
+    /// Required. The resource name of the Workload. This is the workloads's
+    /// relative path in the API, formatted as
+    /// "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
+    /// For example,
+    /// "organizations/123/locations/us-east1/workloads/assured-workload-1".
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    /// Required. The type of restriction for using gcp products in the Workload environment.
+    #[prost(enumeration="restrict_allowed_resources_request::RestrictionType", tag="2")]
+    pub restriction_type: i32,
+}
+/// Nested message and enum types in `RestrictAllowedResourcesRequest`.
+pub mod restrict_allowed_resources_request {
+    /// The type of restriction.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum RestrictionType {
+        /// Unknown restriction type.
+        Unspecified = 0,
+        /// Allow the use all of all gcp products, irrespective of the compliance
+        /// posture. This effectively removes gcp.restrictServiceUsage OrgPolicy
+        /// on the AssuredWorkloads Folder.
+        AllowAllGcpResources = 1,
+        /// Based on Workload's compliance regime, allowed list changes.
+        /// See - <https://cloud.google.com/assured-workloads/docs/supported-products>
+        /// for the list of supported resources.
+        AllowCompliantResources = 2,
+    }
+}
+/// Response for restricting the list of allowed resources.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RestrictAllowedResourcesResponse {
 }
 /// Request for deleting a Workload.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -44,13 +115,60 @@ pub struct DeleteWorkloadRequest {
 /// Request for fetching a workload.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetWorkloadRequest {
-    /// Required. The resource name of the Workload to fetch. This is the
-    /// workloads's relative path in the API, formatted as
+    /// Required. The resource name of the Workload to fetch. This is the workloads's
+    /// relative path in the API, formatted as
     /// "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
     /// For example,
     /// "organizations/123/locations/us-east1/workloads/assured-workload-1".
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
+}
+/// Request to check if source workload can be moved to target workload.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnalyzeWorkloadMoveRequest {
+    /// Required. The resource name of the Workload to fetch. This is the workloads's
+    /// relative path in the API, formatted as
+    /// "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
+    /// For example,
+    /// "organizations/123/locations/us-east1/workloads/assured-workload-2".
+    #[prost(string, tag="2")]
+    pub target: ::prost::alloc::string::String,
+    /// Kind of resource to be moved to the destination workload
+    #[prost(oneof="analyze_workload_move_request::ProjectOrWorkloadResource", tags="1, 3")]
+    pub project_or_workload_resource: ::core::option::Option<analyze_workload_move_request::ProjectOrWorkloadResource>,
+}
+/// Nested message and enum types in `AnalyzeWorkloadMoveRequest`.
+pub mod analyze_workload_move_request {
+    /// Kind of resource to be moved to the destination workload
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ProjectOrWorkloadResource {
+        /// The Source is project based Workload to be moved. This is the workloads's
+        /// relative path in the API, formatted as
+        /// "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
+        /// For example,
+        /// "organizations/123/locations/us-east1/workloads/assured-workload-1".
+        #[prost(string, tag="1")]
+        Source(::prost::alloc::string::String),
+        /// The Source is a project based to be moved.
+        /// This is the project's relative path in the API, formatted as
+        /// "cloudresourcemanager.googleapis.com/projects/{project_number}"
+        /// "projects/{project_number}"
+        /// "cloudresourcemanager.googleapis.com/projects/{project_id}"
+        /// "projects/{project_id}"
+        /// For example,
+        /// "organizations/123/locations/us-east1/workloads/assured-workload-1".
+        #[prost(string, tag="3")]
+        Project(::prost::alloc::string::String),
+    }
+}
+/// Response with the analysis if the source workload can be moved to the target
+/// workload
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AnalyzeWorkloadMoveResponse {
+    /// List of blockers that prevent moving the source workload to the target
+    /// workload
+    #[prost(string, repeated, tag="1")]
+    pub blockers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// Request for fetching workloads in an organization.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -130,22 +248,25 @@ pub struct Workload {
     /// Optional. Labels applied to the workload.
     #[prost(map="string, string", tag="10")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Input only. The parent resource for the resources managed by this Assured
-    /// Workload. May be either empty or a folder resource which is a child of the
+    /// Input only. The parent resource for the resources managed by this Assured Workload. May
+    /// be either empty or a folder resource which is a child of the
     /// Workload parent. If not specified all resources are created under the
     /// parent organization.
     /// Format:
     /// folders/{folder_id}
     #[prost(string, tag="13")]
     pub provisioned_resources_parent: ::prost::alloc::string::String,
-    /// Input only. Settings used to create a CMEK crypto key. When set a project
-    /// with a KMS CMEK key is provisioned. This field is mandatory for a subset of
-    /// Compliance Regimes.
+    /// Input only. Settings used to create a CMEK crypto key. When set, a project with a KMS
+    /// CMEK key is provisioned.
+    /// This field is deprecated as of Feb 28, 2022.
+    /// In order to create a Keyring, callers should specify,
+    /// ENCRYPTION_KEYS_PROJECT or KEYRING in ResourceSettings.resource_type field.
+    #[deprecated]
     #[prost(message, optional, tag="14")]
     pub kms_settings: ::core::option::Option<workload::KmsSettings>,
-    /// Input only. Resource properties that are used to customize workload
-    /// resources. These properties (such as custom project id) will be used to
-    /// create workload resources if possible. This field is optional.
+    /// Input only. Resource properties that are used to customize workload resources.
+    /// These properties (such as custom project id) will be used to create
+    /// workload resources if possible. This field is optional.
     #[prost(message, repeated, tag="15")]
     pub resource_settings: ::prost::alloc::vec::Vec<workload::ResourceSettings>,
     /// Output only. Represents the KAJ enrollment state of the given workload.
@@ -199,46 +320,41 @@ pub mod workload {
     /// Settings specific to the Key Management Service.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct KmsSettings {
-        /// Required. Input only. Immutable. The time at which the Key Management
-        /// Service will automatically create a new version of the crypto key and
-        /// mark it as the primary.
+        /// Required. Input only. Immutable. The time at which the Key Management Service will automatically create a
+        /// new version of the crypto key and mark it as the primary.
         #[prost(message, optional, tag="1")]
         pub next_rotation_time: ::core::option::Option<::prost_types::Timestamp>,
-        /// Required. Input only. Immutable. \[next_rotation_time\] will be advanced by
-        /// this period when the Key Management Service automatically rotates a key.
-        /// Must be at least 24 hours and at most 876,000 hours.
+        /// Required. Input only. Immutable. \[next_rotation_time\] will be advanced by this period when the Key
+        /// Management Service automatically rotates a key. Must be at least 24 hours
+        /// and at most 876,000 hours.
         #[prost(message, optional, tag="2")]
         pub rotation_period: ::core::option::Option<::prost_types::Duration>,
     }
     /// Settings specific to resources needed for IL4.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Il4Settings {
-        /// Required. Input only. Immutable. Settings used to create a CMEK crypto
-        /// key.
+        /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag="1")]
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for CJIS.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct CjisSettings {
-        /// Required. Input only. Immutable. Settings used to create a CMEK crypto
-        /// key.
+        /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag="1")]
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for FedRAMP High.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FedrampHighSettings {
-        /// Required. Input only. Immutable. Settings used to create a CMEK crypto
-        /// key.
+        /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag="1")]
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
     /// Settings specific to resources needed for FedRAMP Moderate.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct FedrampModerateSettings {
-        /// Required. Input only. Immutable. Settings used to create a CMEK crypto
-        /// key.
+        /// Input only. Immutable. Settings used to create a CMEK crypto key.
         #[prost(message, optional, tag="1")]
         pub kms_settings: ::core::option::Option<KmsSettings>,
     }
@@ -248,6 +364,8 @@ pub mod workload {
         /// Resource identifier.
         /// For a project this represents project_id. If the project is already
         /// taken, the workload creation will fail.
+        /// For KeyRing, this represents the keyring_id.
+        /// For a folder, don't set this value as folder_id is assigned by Google.
         #[prost(string, tag="1")]
         pub resource_id: ::prost::alloc::string::String,
         /// Indicates the type of resource. This field should be specified to
@@ -344,20 +462,16 @@ pub mod workload {
     /// Settings specific to the selected \[compliance_regime\]
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ComplianceRegimeSettings {
-        /// Required. Input only. Immutable. Settings specific to resources needed
-        /// for IL4.
+        /// Input only. Immutable. Settings specific to resources needed for IL4.
         #[prost(message, tag="7")]
         Il4Settings(Il4Settings),
-        /// Required. Input only. Immutable. Settings specific to resources needed
-        /// for CJIS.
+        /// Input only. Immutable. Settings specific to resources needed for CJIS.
         #[prost(message, tag="8")]
         CjisSettings(CjisSettings),
-        /// Required. Input only. Immutable. Settings specific to resources needed
-        /// for FedRAMP High.
+        /// Input only. Immutable. Settings specific to resources needed for FedRAMP High.
         #[prost(message, tag="11")]
         FedrampHighSettings(FedrampHighSettings),
-        /// Required. Input only. Immutable. Settings specific to resources needed
-        /// for FedRAMP Moderate.
+        /// Input only. Immutable. Settings specific to resources needed for FedRAMP Moderate.
         #[prost(message, tag="12")]
         FedrampModerateSettings(FedrampModerateSettings),
     }
@@ -374,12 +488,12 @@ pub struct CreateWorkloadOperationMetadata {
     /// Optional. The parent of the workload.
     #[prost(string, tag="3")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. Compliance controls that should be applied to the resources
-    /// managed by the workload.
+    /// Optional. Compliance controls that should be applied to the resources managed by
+    /// the workload.
     #[prost(enumeration="workload::ComplianceRegime", tag="4")]
     pub compliance_regime: i32,
-    /// Optional. Resource properties in the input that are used for
-    /// creating/customizing workload resources.
+    /// Optional. Resource properties in the input that are used for creating/customizing
+    /// workload resources.
     #[prost(message, repeated, tag="5")]
     pub resource_settings: ::prost::alloc::vec::Vec<workload::ResourceSettings>,
 }
@@ -496,9 +610,68 @@ pub mod assured_workloads_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Restrict the list of services allowed in the Workload environment.
+        /// The current list of allowed services can be found at
+        /// https://cloud.google.com/assured-workloads/docs/supported-products
+        /// In addition to assuredworkloads.workload.update permission, the user should
+        /// also have orgpolicy.policy.set permission on the folder resource
+        /// to use this functionality.
+        pub async fn restrict_allowed_services(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RestrictAllowedServicesRequest>,
+        ) -> Result<
+            tonic::Response<super::RestrictAllowedServicesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/RestrictAllowedServices",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Restrict the list of resources allowed in the Workload environment.
+        /// The current list of allowed products can be found at
+        /// https://cloud.google.com/assured-workloads/docs/supported-products
+        /// In addition to assuredworkloads.workload.update permission, the user should
+        /// also have orgpolicy.policy.set permission on the folder resource
+        /// to use this functionality.
+        pub async fn restrict_allowed_resources(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RestrictAllowedResourcesRequest>,
+        ) -> Result<
+            tonic::Response<super::RestrictAllowedResourcesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/RestrictAllowedResources",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// Deletes the workload. Make sure that workload's direct children are already
         /// in a deleted state, otherwise the request will fail with a
         /// FAILED_PRECONDITION error.
+        /// In addition to assuredworkloads.workload.delete permission, the user should
+        /// also have orgpolicy.policy.set permission on the deleted folder to remove
+        /// Assured Workloads OrgPolicies.
         pub async fn delete_workload(
             &mut self,
             request: impl tonic::IntoRequest<super::DeleteWorkloadRequest>,
@@ -535,6 +708,27 @@ pub mod assured_workloads_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/GetWorkload",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Analyze if the source Assured Workloads can be moved to the target Assured
+        /// Workload
+        pub async fn analyze_workload_move(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AnalyzeWorkloadMoveRequest>,
+        ) -> Result<tonic::Response<super::AnalyzeWorkloadMoveResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/AnalyzeWorkloadMove",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

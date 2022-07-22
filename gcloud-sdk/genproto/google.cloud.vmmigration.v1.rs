@@ -38,15 +38,15 @@ pub struct MigratingVm {
     /// The replication schedule policy.
     #[prost(message, optional, tag="8")]
     pub policy: ::core::option::Option<SchedulePolicy>,
-    /// Output only. The time the migrating VM was created (this refers to this resource and not
-    /// to the time it was installed in the source).
+    /// Output only. The time the migrating VM was created (this refers to this
+    /// resource and not to the time it was installed in the source).
     #[prost(message, optional, tag="9")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last time the migrating VM resource was updated.
     #[prost(message, optional, tag="10")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The most updated snapshot created time in the source that finished
-    /// replication.
+    /// Output only. The most updated snapshot created time in the source that
+    /// finished replication.
     #[prost(message, optional, tag="11")]
     pub last_sync: ::core::option::Option<ReplicationSync>,
     /// Output only. State of the MigratingVm.
@@ -55,21 +55,36 @@ pub struct MigratingVm {
     /// Output only. The last time the migrating VM state was updated.
     #[prost(message, optional, tag="22")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. The percentage progress of the current running replication cycle.
+    /// Output only. The percentage progress of the current running replication
+    /// cycle.
     #[prost(message, optional, tag="13")]
     pub current_sync_info: ::core::option::Option<ReplicationCycle>,
-    /// Output only. The group this migrating vm is included in, if any. The group is
-    /// represented by the full path of the appropriate
+    /// Output only. The group this migrating vm is included in, if any. The group
+    /// is represented by the full path of the appropriate
     /// \[Group][google.cloud.vmmigration.v1.Group\] resource.
     #[prost(string, tag="15")]
     pub group: ::prost::alloc::string::String,
     /// The labels of the migrating VM.
     #[prost(map="string, string", tag="16")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    /// Output only. Provides details on the state of the Migrating VM in case of an
-    /// error in replication.
+    /// Output only. The recent [clone jobs]\[google.cloud.vmmigration.v1.CloneJob\]
+    /// performed on the migrating VM. This field holds the vm's last completed
+    /// clone job and the vm's running clone job, if one exists.
+    /// Note: To have this field populated you need to explicitly request it via
+    /// the "view" parameter of the Get/List request.
+    #[prost(message, repeated, tag="17")]
+    pub recent_clone_jobs: ::prost::alloc::vec::Vec<CloneJob>,
+    /// Output only. Provides details on the state of the Migrating VM in case of
+    /// an error in replication.
     #[prost(message, optional, tag="19")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. The recent cutover jobs performed on the migrating VM.
+    /// This field holds the vm's last completed cutover job and the vm's
+    /// running cutover job, if one exists.
+    /// Note: To have this field populated you need to explicitly request it via
+    /// the "view" parameter of the Get/List request.
+    #[prost(message, repeated, tag="20")]
+    pub recent_cutover_jobs: ::prost::alloc::vec::Vec<CutoverJob>,
     /// The default configuration of the target VM that will be created in GCP as a
     /// result of the migration.
     #[prost(oneof="migrating_vm::TargetVmDefaults", tags="26")]
@@ -133,11 +148,14 @@ pub mod migrating_vm {
 /// CloneJob being cancelled or upon failure to clone.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CloneJob {
-    /// Output only. The time the clone job was created (as an API call, not when it was
-    /// actually created in the target).
+    /// Output only. The time the clone job was created (as an API call, not when
+    /// it was actually created in the target).
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// The name of the clone.
+    /// Output only. The time the clone job was ended.
+    #[prost(message, optional, tag="22")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The name of the clone.
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
     /// Output only. State of the clone job.
@@ -146,7 +164,8 @@ pub struct CloneJob {
     /// Output only. The time the state was last updated.
     #[prost(message, optional, tag="14")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Provides details for the errors that led to the Clone Job's state.
+    /// Output only. Provides details for the errors that led to the Clone Job's
+    /// state.
     #[prost(message, optional, tag="17")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
     /// Details of the VM to create as the target of this clone job.
@@ -190,10 +209,13 @@ pub mod clone_job {
 /// clonning the VM using the replicated snapshot.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CutoverJob {
-    /// Output only. The time the cutover job was created (as an API call, not when it was
-    /// actually created in the target).
+    /// Output only. The time the cutover job was created (as an API call, not when
+    /// it was actually created in the target).
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// Output only. The time the cutover job had finished.
+    #[prost(message, optional, tag="16")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The name of the cutover job.
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
@@ -206,10 +228,12 @@ pub struct CutoverJob {
     /// Output only. The current progress in percentage of the cutover job.
     #[prost(int32, tag="13")]
     pub progress_percent: i32,
-    /// Output only. Provides details for the errors that led to the Cutover Job's state.
+    /// Output only. Provides details for the errors that led to the Cutover Job's
+    /// state.
     #[prost(message, optional, tag="9")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    /// Output only. A message providing possible extra details about the current state.
+    /// Output only. A message providing possible extra details about the current
+    /// state.
     #[prost(string, tag="10")]
     pub state_message: ::prost::alloc::string::String,
     /// Details of the VM to create as the target of this cutover job.
@@ -293,10 +317,10 @@ pub struct ListCloneJobsRequest {
     /// Required. The parent, which owns this collection of source VMs.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of clone jobs to return. The service may return
-    /// fewer than this value. If unspecified, at most 500 clone jobs will be
-    /// returned. The maximum value is 1000; values above 1000 will be coerced to
-    /// 1000.
+    /// Optional. The maximum number of clone jobs to return. The service may
+    /// return fewer than this value. If unspecified, at most 500 clone jobs will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Required. A page token, received from a previous `ListCloneJobs` call.
@@ -319,8 +343,8 @@ pub struct ListCloneJobsResponse {
     /// Output only. The list of clone jobs response.
     #[prost(message, repeated, tag="1")]
     pub clone_jobs: ::prost::alloc::vec::Vec<CloneJob>,
-    /// Output only. A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Output only. Locations that could not be reached.
@@ -372,8 +396,8 @@ pub struct VmwareSourceDetails {
     /// The credentials username.
     #[prost(string, tag="1")]
     pub username: ::prost::alloc::string::String,
-    /// Input only. The credentials password. This is write only and can not be read in a GET
-    /// operation.
+    /// Input only. The credentials password. This is write only and can not be
+    /// read in a GET operation.
     #[prost(string, tag="2")]
     pub password: ::prost::alloc::string::String,
     /// The ip address of the vcenter this Source represents.
@@ -388,8 +412,8 @@ pub struct VmwareSourceDetails {
 /// to connect the Datacenter to GCP and support vm migration data transfer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DatacenterConnector {
-    /// Output only. The time the connector was created (as an API call, not when it was
-    /// actually installed).
+    /// Output only. The time the connector was created (as an API call, not when
+    /// it was actually installed).
     #[prost(message, optional, tag="1")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last time the connector was updated with an API call.
@@ -398,9 +422,9 @@ pub struct DatacenterConnector {
     /// Output only. The connector's name.
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
-    /// Immutable. A unique key for this connector. This key is internal to the OVA connector
-    /// and is supplied with its creation during the registration process and can
-    /// not be modified.
+    /// Immutable. A unique key for this connector. This key is internal to the OVA
+    /// connector and is supplied with its creation during the registration process
+    /// and can not be modified.
     #[prost(string, tag="12")]
     pub registration_id: ::prost::alloc::string::String,
     /// The service account to use in the connector when communicating with the
@@ -411,19 +435,37 @@ pub struct DatacenterConnector {
     /// connector during the registration process and can not be modified.
     #[prost(string, tag="6")]
     pub version: ::prost::alloc::string::String,
-    /// Output only. The communication channel between the datacenter connector and GCP.
+    /// Output only. The communication channel between the datacenter connector and
+    /// GCP.
     #[prost(string, tag="10")]
     pub bucket: ::prost::alloc::string::String,
-    /// Output only. State of the DatacenterConnector, as determined by the health checks.
+    /// Output only. State of the DatacenterConnector, as determined by the health
+    /// checks.
     #[prost(enumeration="datacenter_connector::State", tag="7")]
     pub state: i32,
     /// Output only. The time the state was last set.
     #[prost(message, optional, tag="8")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Provides details on the state of the Datacenter Connector in case of an
-    /// error.
+    /// Output only. Provides details on the state of the Datacenter Connector in
+    /// case of an error.
     #[prost(message, optional, tag="11")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// Output only. Appliance OVA version.
+    /// This is the OVA which is manually installed by the user and contains the
+    /// infrastructure for the automatically updatable components on the appliance.
+    #[prost(string, tag="13")]
+    pub appliance_infrastructure_version: ::prost::alloc::string::String,
+    /// Output only. Appliance last installed update bundle version.
+    /// This is the version of the automatically updatable components on the
+    /// appliance.
+    #[prost(string, tag="14")]
+    pub appliance_software_version: ::prost::alloc::string::String,
+    /// Output only. The available versions for updating this appliance.
+    #[prost(message, optional, tag="15")]
+    pub available_versions: ::core::option::Option<AvailableUpdates>,
+    /// Output only. The status of the current / last upgradeAppliance operation.
+    #[prost(message, optional, tag="16")]
+    pub upgrade_status: ::core::option::Option<UpgradeStatus>,
 }
 /// Nested message and enum types in `DatacenterConnector`.
 pub mod datacenter_connector {
@@ -445,6 +487,71 @@ pub mod datacenter_connector {
         /// The source exists and its credentials were verified.
         Active = 4,
     }
+}
+/// UpgradeStatus contains information about upgradeAppliance operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeStatus {
+    /// The version to upgrade to.
+    #[prost(string, tag="1")]
+    pub version: ::prost::alloc::string::String,
+    /// The state of the upgradeAppliance operation.
+    #[prost(enumeration="upgrade_status::State", tag="2")]
+    pub state: i32,
+    /// Provides details on the state of the upgrade operation in case of an error.
+    #[prost(message, optional, tag="3")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+    /// The time the operation was started.
+    #[prost(message, optional, tag="4")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    /// The version from which we upgraded.
+    #[prost(string, tag="5")]
+    pub previous_version: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `UpgradeStatus`.
+pub mod upgrade_status {
+    /// The possible values of the state.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        /// The state was not sampled by the health checks yet.
+        Unspecified = 0,
+        /// The upgrade has started.
+        Running = 1,
+        /// The upgrade failed.
+        Failed = 2,
+        /// The upgrade finished successfully.
+        Succeeded = 3,
+    }
+}
+/// Holds informatiom about the available versions for upgrade.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AvailableUpdates {
+    /// The newest deployable version of the appliance.
+    /// The current appliance can't be updated into this version, and the owner
+    /// must manually deploy this OVA to a new appliance.
+    #[prost(message, optional, tag="1")]
+    pub new_deployable_appliance: ::core::option::Option<ApplianceVersion>,
+    /// The latest version for in place update.
+    /// The current appliance can be updated to this version using the API or m4c
+    /// CLI.
+    #[prost(message, optional, tag="2")]
+    pub in_place_update: ::core::option::Option<ApplianceVersion>,
+}
+/// Describes an appliance version.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ApplianceVersion {
+    /// The appliance version.
+    #[prost(string, tag="1")]
+    pub version: ::prost::alloc::string::String,
+    /// A link for downloading the version.
+    #[prost(string, tag="2")]
+    pub uri: ::prost::alloc::string::String,
+    /// Determine whether it's critical to upgrade the appliance to this version.
+    #[prost(bool, tag="3")]
+    pub critical: bool,
+    /// Link to a page that contains the version release notes.
+    #[prost(string, tag="4")]
+    pub release_notes_uri: ::prost::alloc::string::String,
 }
 /// Request message for 'ListSources' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -478,8 +585,8 @@ pub struct ListSourcesResponse {
     /// Output only. The list of sources response.
     #[prost(message, repeated, tag="1")]
     pub sources: ::prost::alloc::vec::Vec<Source>,
-    /// Output only. A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Output only. Locations that could not be reached.
@@ -619,7 +726,7 @@ pub struct VmwareVmDetails {
     #[prost(int64, tag="12")]
     pub committed_storage_mb: i64,
     /// The VM's OS. See for example
-    /// <https://pubs.vmware.com/vi-sdk/visdk250/ReferenceGuide/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html>
+    /// <https://vdc-repo.vmware.com/vmwb-repository/dcr-public/da47f910-60ac-438b-8b9b-6122f4d14524/16b7274a-bf8b-4b4c-a05e-746f2aa93c8c/doc/vim.vm.GuestOsDescriptor.GuestOsIdentifier.html>
     /// for types of strings this might hold.
     #[prost(string, tag="11")]
     pub guest_description: ::prost::alloc::string::String,
@@ -665,8 +772,8 @@ pub struct VmwareVmsDetails {
 /// \[fetchInventory][google.cloud.vmmigration.v1.VmMigration.FetchInventory\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FetchInventoryResponse {
-    /// Output only. The timestamp when the source was last queried (if the result is from the
-    /// cache).
+    /// Output only. The timestamp when the source was last queried (if the result
+    /// is from the cache).
     #[prost(message, optional, tag="2")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(oneof="fetch_inventory_response::SourceVms", tags="1")]
@@ -676,7 +783,7 @@ pub struct FetchInventoryResponse {
 pub mod fetch_inventory_response {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum SourceVms {
-        /// Output only. The description of the VMs in a Source of type Vmware.
+        /// The description of the VMs in a Source of type Vmware.
         #[prost(message, tag="1")]
         VmwareVms(super::VmwareVmsDetails),
     }
@@ -697,19 +804,20 @@ pub struct UtilizationReport {
     /// Output only. The time the state was last set.
     #[prost(message, optional, tag="4")]
     pub state_time: ::core::option::Option<::prost_types::Timestamp>,
-    /// Output only. Provides details on the state of the report in case of an error.
+    /// Output only. Provides details on the state of the report in case of an
+    /// error.
     #[prost(message, optional, tag="5")]
     pub error: ::core::option::Option<super::super::super::rpc::Status>,
-    /// Output only. The time the report was created (this refers to the time of the request,
-    /// not the time the report creation completed).
+    /// Output only. The time the report was created (this refers to the time of
+    /// the request, not the time the report creation completed).
     #[prost(message, optional, tag="6")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Time frame of the report.
     #[prost(enumeration="utilization_report::TimeFrame", tag="7")]
     pub time_frame: i32,
-    /// Output only. The point in time when the time frame ends. Notice that the time
-    /// frame is counted backwards. For instance if the "frame_end_time" value is
-    /// 2021/01/20 and the time frame is WEEK then the report covers the week
+    /// Output only. The point in time when the time frame ends. Notice that the
+    /// time frame is counted backwards. For instance if the "frame_end_time" value
+    /// is 2021/01/20 and the time frame is WEEK then the report covers the week
     /// between 2021/01/20 and 2021/01/14.
     #[prost(message, optional, tag="8")]
     pub frame_end_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -819,8 +927,8 @@ pub struct ListUtilizationReportsRequest {
     /// 1000.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    /// Required. A page token, received from a previous `ListUtilizationReports` call.
-    /// Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListUtilizationReports`
+    /// call. Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to `ListUtilizationReports`
     /// must match the call that provided the page token.
@@ -839,8 +947,8 @@ pub struct ListUtilizationReportsResponse {
     /// Output only. The list of reports.
     #[prost(message, repeated, tag="1")]
     pub utilization_reports: ::prost::alloc::vec::Vec<UtilizationReport>,
-    /// Output only. A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Output only. Locations that could not be reached.
@@ -867,8 +975,8 @@ pub struct CreateUtilizationReportRequest {
     /// Required. The report to create.
     #[prost(message, optional, tag="2")]
     pub utilization_report: ::core::option::Option<UtilizationReport>,
-    /// Required. The ID to use for the report, which will become the final component of
-    /// the reports's resource name.
+    /// Required. The ID to use for the report, which will become the final
+    /// component of the reports's resource name.
     ///
     /// This value maximum length is 63 characters, and valid characters
     /// are /\[a-z][0-9\]-/. It must start with an english letter and must not
@@ -919,8 +1027,8 @@ pub struct ListDatacenterConnectorsResponse {
     /// Output only. The list of sources response.
     #[prost(message, repeated, tag="1")]
     pub datacenter_connectors: ::prost::alloc::vec::Vec<DatacenterConnector>,
-    /// Output only. A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Output only. Locations that could not be reached.
@@ -987,20 +1095,46 @@ pub struct DeleteDatacenterConnectorRequest {
     #[prost(string, tag="2")]
     pub request_id: ::prost::alloc::string::String,
 }
+/// Request message for 'UpgradeAppliance' request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeApplianceRequest {
+    /// Required. The DatacenterConnector name.
+    #[prost(string, tag="1")]
+    pub datacenter_connector: ::prost::alloc::string::String,
+    /// A request ID to identify requests. Specify a unique request ID
+    /// so that if you must retry your request, the server will know to ignore
+    /// the request if it has already been completed. The server will guarantee
+    /// that for at least 60 minutes after the first request.
+    ///
+    /// For example, consider a situation where you make an initial request and t
+    /// he request times out. If you make the request again with the same request
+    /// ID, the server can check if original operation with the same request ID
+    /// was received, and if so, will ignore the second request. This prevents
+    /// clients from accidentally creating duplicate commitments.
+    ///
+    /// The request ID must be a valid UUID with the exception that zero UUID is
+    /// not supported (00000000-0000-0000-0000-000000000000).
+    #[prost(string, tag="2")]
+    pub request_id: ::prost::alloc::string::String,
+}
+/// Response message for 'UpgradeAppliance' request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpgradeApplianceResponse {
+}
 /// Request message for 'ListDatacenterConnectors' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListDatacenterConnectorsRequest {
     /// Required. The parent, which owns this collection of connectors.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of connectors to return. The service may return
-    /// fewer than this value. If unspecified, at most 500 sources will be
+    /// Optional. The maximum number of connectors to return. The service may
+    /// return fewer than this value. If unspecified, at most 500 sources will be
     /// returned. The maximum value is 1000; values above 1000 will be coerced to
     /// 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
-    /// Required. A page token, received from a previous `ListDatacenterConnectors` call.
-    /// Provide this to retrieve the subsequent page.
+    /// Required. A page token, received from a previous `ListDatacenterConnectors`
+    /// call. Provide this to retrieve the subsequent page.
     ///
     /// When paginating, all other parameters provided to
     /// `ListDatacenterConnectors` must match the call that provided the page
@@ -1068,6 +1202,12 @@ pub struct ComputeEngineTargetDefaults {
     /// The metadata key/value pairs to assign to the VM.
     #[prost(map="string, string", tag="16")]
     pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Additional licenses to assign to the VM.
+    #[prost(string, repeated, tag="17")]
+    pub additional_licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The hostname to assign to the VM.
+    #[prost(string, tag="18")]
+    pub hostname: ::prost::alloc::string::String,
 }
 /// ComputeEngineTargetDetails is a collection of details for creating a VM in a
 /// target Compute Engine project.
@@ -1122,6 +1262,12 @@ pub struct ComputeEngineTargetDetails {
     /// The metadata key/value pairs to assign to the VM.
     #[prost(map="string, string", tag="16")]
     pub metadata: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    /// Additional licenses to assign to the VM.
+    #[prost(string, repeated, tag="17")]
+    pub additional_licenses: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    /// The hostname to assign to the VM.
+    #[prost(string, tag="18")]
+    pub hostname: ::prost::alloc::string::String,
 }
 /// NetworkInterface represents a NIC of a VM.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1297,10 +1443,10 @@ pub struct ListMigratingVmsRequest {
     /// Required. The parent, which owns this collection of MigratingVms.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of migrating VMs to return. The service may return
-    /// fewer than this value. If unspecified, at most 500 migrating VMs will be
-    /// returned. The maximum value is 1000; values above 1000 will be coerced to
-    /// 1000.
+    /// Optional. The maximum number of migrating VMs to return. The service may
+    /// return fewer than this value. If unspecified, at most 500 migrating VMs
+    /// will be returned. The maximum value is 1000; values above 1000 will be
+    /// coerced to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Required. A page token, received from a previous `ListMigratingVms` call.
@@ -1316,6 +1462,9 @@ pub struct ListMigratingVmsRequest {
     /// Optional. the order by fields for the result.
     #[prost(string, tag="5")]
     pub order_by: ::prost::alloc::string::String,
+    /// Optional. The level of details of each migrating VM.
+    #[prost(enumeration="MigratingVmView", tag="6")]
+    pub view: i32,
 }
 /// Response message for 'ListMigratingVms' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1323,8 +1472,8 @@ pub struct ListMigratingVmsResponse {
     /// Output only. The list of Migrating VMs response.
     #[prost(message, repeated, tag="1")]
     pub migrating_vms: ::prost::alloc::vec::Vec<MigratingVm>,
-    /// Output only. A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Output only. Locations that could not be reached.
@@ -1337,6 +1486,9 @@ pub struct GetMigratingVmRequest {
     /// Required. The name of the MigratingVm.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
+    /// Optional. The level of details of the migrating VM.
+    #[prost(enumeration="MigratingVmView", tag="2")]
+    pub view: i32,
 }
 /// Request message for 'UpdateMigratingVm' request.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1422,7 +1574,7 @@ pub struct FinalizeMigrationResponse {
 /// migration or a clone.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetProject {
-    /// The name of the target project.
+    /// Output only. The name of the target project.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// The target project ID (number) or project name.
@@ -1431,8 +1583,8 @@ pub struct TargetProject {
     /// The target project's description.
     #[prost(string, tag="3")]
     pub description: ::prost::alloc::string::String,
-    /// Output only. The time this target project resource was created (not related to when the
-    /// Compute Engine project it points to was created).
+    /// Output only. The time this target project resource was created (not related
+    /// to when the Compute Engine project it points to was created).
     #[prost(message, optional, tag="4")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
     /// Output only. The last time the target project resource was updated.
@@ -1478,8 +1630,8 @@ pub struct ListTargetProjectsResponse {
     /// Output only. The list of target response.
     #[prost(message, repeated, tag="1")]
     pub target_projects: ::prost::alloc::vec::Vec<TargetProject>,
-    /// Output only. A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Output only. Locations that could not be reached.
@@ -1569,7 +1721,7 @@ pub struct DeleteTargetProjectRequest {
 /// MigratingVms.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Group {
-    /// The Group name.
+    /// Output only. The Group name.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     /// Output only. The create time timestamp.
@@ -1617,8 +1769,8 @@ pub struct ListGroupsResponse {
     /// Output only. The list of groups response.
     #[prost(message, repeated, tag="1")]
     pub groups: ::prost::alloc::vec::Vec<Group>,
-    /// Output only. A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Output only. Locations that could not be reached.
@@ -1784,10 +1936,10 @@ pub struct ListCutoverJobsRequest {
     /// Required. The parent, which owns this collection of migrating VMs.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    /// Optional. The maximum number of cutover jobs to return. The service may return
-    /// fewer than this value. If unspecified, at most 500 cutover jobs will be
-    /// returned. The maximum value is 1000; values above 1000 will be coerced to
-    /// 1000.
+    /// Optional. The maximum number of cutover jobs to return. The service may
+    /// return fewer than this value. If unspecified, at most 500 cutover jobs will
+    /// be returned. The maximum value is 1000; values above 1000 will be coerced
+    /// to 1000.
     #[prost(int32, tag="2")]
     pub page_size: i32,
     /// Required. A page token, received from a previous `ListCutoverJobs` call.
@@ -1810,8 +1962,8 @@ pub struct ListCutoverJobsResponse {
     /// Output only. The list of cutover jobs response.
     #[prost(message, repeated, tag="1")]
     pub cutover_jobs: ::prost::alloc::vec::Vec<CutoverJob>,
-    /// Output only. A token, which can be sent as `page_token` to retrieve the next page.
-    /// If this field is omitted, there are no subsequent pages.
+    /// Output only. A token, which can be sent as `page_token` to retrieve the
+    /// next page. If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
     /// Output only. Locations that could not be reached.
@@ -1845,8 +1997,9 @@ pub struct OperationMetadata {
     pub status_message: ::prost::alloc::string::String,
     /// Output only. Identifies whether the user has requested cancellation
     /// of the operation. Operations that have successfully been cancelled
-    /// have \[Operation.error][\] value with a \[google.rpc.Status.code][google.rpc.Status.code\] of 1,
-    /// corresponding to `Code.CANCELLED`.
+    /// have \[Operation.error][\] value with a
+    /// \[google.rpc.Status.code][google.rpc.Status.code\] of 1, corresponding to
+    /// `Code.CANCELLED`.
     #[prost(bool, tag="6")]
     pub requested_cancellation: bool,
     /// Output only. API version used to start the operation.
@@ -1867,7 +2020,8 @@ pub struct MigrationError {
     /// Output only. Suggested action for solving the error.
     #[prost(message, optional, tag="3")]
     pub action_item: ::core::option::Option<super::super::super::rpc::LocalizedMessage>,
-    /// Output only. URL(s) pointing to additional information on handling the current error.
+    /// Output only. URL(s) pointing to additional information on handling the
+    /// current error.
     #[prost(message, repeated, tag="4")]
     pub help_links: ::prost::alloc::vec::Vec<super::super::super::rpc::help::Link>,
     /// Output only. The time the error occurred.
@@ -1900,6 +2054,8 @@ pub mod migration_error {
         /// Migrate for Compute encountered an error during utilization report
         /// creation.
         UtilizationReportError = 8,
+        /// Migrate for Compute encountered an error during appliance upgrade.
+        ApplianceUpgradeError = 9,
     }
 }
 /// Controls the level of details of a Utilization Report.
@@ -1912,6 +2068,19 @@ pub enum UtilizationReportView {
     Unspecified = 0,
     /// Get the report metadata, without the list of VMs and their utilization
     /// info.
+    Basic = 1,
+    /// Include everything.
+    Full = 2,
+}
+/// Controls the level of details of a Migrating VM.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum MigratingVmView {
+    /// View is unspecified. The API will fallback to the default value.
+    Unspecified = 0,
+    /// Get the migrating VM basic details.
+    /// The basic details do not include the recent clone jobs and recent cutover
+    /// jobs lists.
     Basic = 1,
     /// Include everything.
     Full = 2,
@@ -2325,6 +2494,30 @@ pub mod vm_migration_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.vmmigration.v1.VmMigration/DeleteDatacenterConnector",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Upgrades the appliance relate to this DatacenterConnector to the in-place
+        /// updateable version.
+        pub async fn upgrade_appliance(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpgradeApplianceRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.vmmigration.v1.VmMigration/UpgradeAppliance",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

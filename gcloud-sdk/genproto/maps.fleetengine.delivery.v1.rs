@@ -722,6 +722,34 @@ pub struct UpdateDeliveryVehicleRequest {
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
+/// The `BatchCreateTask` request message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateTasksRequest {
+    /// Optional. The standard Delivery API request header.
+    /// Note: If you set this field, then the header field in the
+    /// `CreateTaskRequest` messages must either be empty, or it must match this
+    /// field.
+    #[prost(message, optional, tag="1")]
+    pub header: ::core::option::Option<DeliveryRequestHeader>,
+    /// Required. The parent resource shared by all tasks. This value must be in the format
+    /// `providers/{provider}`. The `provider` must be the Google Cloud Project ID.
+    /// For example, `sample-cloud-project`. The parent field in the
+    /// `CreateTaskRequest` messages must either  be empty, or it must match this
+    /// field.
+    #[prost(string, tag="3")]
+    pub parent: ::prost::alloc::string::String,
+    /// Required. The request message that specifies the resources to create.
+    /// Note: You can create a maximum of 500 tasks in a batch.
+    #[prost(message, repeated, tag="4")]
+    pub requests: ::prost::alloc::vec::Vec<CreateTaskRequest>,
+}
+/// The `BatchCreateTask` response message.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchCreateTasksResponse {
+    /// The created Tasks.
+    #[prost(message, repeated, tag="1")]
+    pub tasks: ::prost::alloc::vec::Vec<Task>,
+}
 /// The `CreateTask` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateTaskRequest {
@@ -1033,6 +1061,26 @@ pub mod delivery_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/maps.fleetengine.delivery.v1.DeliveryService/UpdateDeliveryVehicle",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates and returns a batch of new `Task` objects.
+        pub async fn batch_create_tasks(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchCreateTasksRequest>,
+        ) -> Result<tonic::Response<super::BatchCreateTasksResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/maps.fleetengine.delivery.v1.DeliveryService/BatchCreateTasks",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

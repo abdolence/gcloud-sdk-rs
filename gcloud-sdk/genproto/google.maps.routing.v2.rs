@@ -657,7 +657,7 @@ pub enum RouteTravelMode {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
 pub enum RoutingPreference {
-    /// No routing preference specified. Default to `TRAFFIC_AWARE`.
+    /// No routing preference specified. Default to `TRAFFIC_UNAWARE`.
     Unspecified = 0,
     /// Computes routes without taking traffic conditions into consideration.
     /// Suitable when traffic conditions don't matter. Using this value produces

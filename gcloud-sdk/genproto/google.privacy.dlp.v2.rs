@@ -145,7 +145,11 @@ pub mod custom_info_type {
         /// rule.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct Proximity {
-            /// Number of characters before the finding to consider.
+            /// Number of characters before the finding to consider. For tabular data,
+            /// if you want to modify the likelihood of an entire column of findngs,
+            /// set this to 1. For more information, see
+            /// [Hotword example: Set the match likelihood of a table column]
+            /// (<https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values>).
             #[prost(int32, tag="1")]
             pub window_before: i32,
             /// Number of characters after the finding to consider.
@@ -185,14 +189,19 @@ pub mod custom_info_type {
             /// Regular expression pattern defining what qualifies as a hotword.
             #[prost(message, optional, tag="1")]
             pub hotword_regex: ::core::option::Option<super::Regex>,
-            /// Proximity of the finding within which the entire hotword must reside.
-            /// The total length of the window cannot exceed 1000 characters. Note that
-            /// the finding itself will be included in the window, so that hotwords may
-            /// be used to match substrings of the finding itself. For example, the
-            /// certainty of a phone number regex "\(\d{3}\) \d{3}-\d{4}" could be
-            /// adjusted upwards if the area code is known to be the local area code of
-            /// a company office using the hotword regex "\(xxx\)", where "xxx"
-            /// is the area code in question.
+            /// Range of characters within which the entire hotword must reside.
+            /// The total length of the window cannot exceed 1000 characters.
+            /// The finding itself will be included in the window, so that hotwords can
+            /// be used to match substrings of the finding itself. Suppose you
+            /// want Cloud DLP to promote the likelihood of the phone number
+            /// regex "\(\d{3}\) \d{3}-\d{4}" if the area code is known to be the
+            /// area code of a company's office. In this case, use the hotword regex
+            /// "\(xxx\)", where "xxx" is the area code in question.
+            ///
+            /// For tabular data, if you want to modify the likelihood of an entire
+            /// column of findngs, see
+            /// [Hotword example: Set the match likelihood of a table column]
+            /// (<https://cloud.google.com/dlp/docs/creating-custom-infotypes-likelihood#match-column-values>).
             #[prost(message, optional, tag="2")]
             pub proximity: ::core::option::Option<Proximity>,
             /// Likelihood adjustment to apply to all matching findings.
@@ -894,7 +903,7 @@ pub struct InspectConfig {
     #[prost(message, optional, tag="3")]
     pub limits: ::core::option::Option<inspect_config::FindingLimits>,
     /// When true, a contextual quote from the data that triggered a finding is
-    /// included in the response; see Finding.quote.
+    /// included in the response; see \[Finding.quote][google.privacy.dlp.v2.Finding.quote\].
     /// This is not used for data profiling.
     #[prost(bool, tag="4")]
     pub include_quote: bool,
@@ -1759,6 +1768,161 @@ pub struct InfoTypeDescription {
     /// request.
     #[prost(string, tag="4")]
     pub description: ::prost::alloc::string::String,
+    /// The category of the infoType.
+    #[prost(message, repeated, tag="10")]
+    pub categories: ::prost::alloc::vec::Vec<InfoTypeCategory>,
+}
+/// Classification of infoTypes to organize them according to geographic
+/// location, industry, and data type.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct InfoTypeCategory {
+    #[prost(oneof="info_type_category::Category", tags="1, 2, 3")]
+    pub category: ::core::option::Option<info_type_category::Category>,
+}
+/// Nested message and enum types in `InfoTypeCategory`.
+pub mod info_type_category {
+    /// Enum of the current locations.
+    /// We might add more locations in the future.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum LocationCategory {
+        /// Unused location
+        LocationUnspecified = 0,
+        /// The infoType is not issued by or tied to a specific region, but is used
+        /// almost everywhere.
+        Global = 1,
+        /// The infoType is typically used in Argentina.
+        Argentina = 2,
+        /// The infoType is typically used in Australia.
+        Australia = 3,
+        /// The infoType is typically used in Belgium.
+        Belgium = 4,
+        /// The infoType is typically used in Brazil.
+        Brazil = 5,
+        /// The infoType is typically used in Canada.
+        Canada = 6,
+        /// The infoType is typically used in Chile.
+        Chile = 7,
+        /// The infoType is typically used in China.
+        China = 8,
+        /// The infoType is typically used in Colombia.
+        Colombia = 9,
+        /// The infoType is typically used in Denmark.
+        Denmark = 10,
+        /// The infoType is typically used in France.
+        France = 11,
+        /// The infoType is typically used in Finland.
+        Finland = 12,
+        /// The infoType is typically used in Germany.
+        Germany = 13,
+        /// The infoType is typically used in Hong Kong.
+        HongKong = 14,
+        /// The infoType is typically used in India.
+        India = 15,
+        /// The infoType is typically used in Indonesia.
+        Indonesia = 16,
+        /// The infoType is typically used in Ireland.
+        Ireland = 17,
+        /// The infoType is typically used in Israel.
+        Israel = 18,
+        /// The infoType is typically used in Italy.
+        Italy = 19,
+        /// The infoType is typically used in Japan.
+        Japan = 20,
+        /// The infoType is typically used in Korea.
+        Korea = 21,
+        /// The infoType is typically used in Mexico.
+        Mexico = 22,
+        /// The infoType is typically used in the Netherlands.
+        TheNetherlands = 23,
+        /// The infoType is typically used in Norway.
+        Norway = 24,
+        /// The infoType is typically used in Paraguay.
+        Paraguay = 25,
+        /// The infoType is typically used in Peru.
+        Peru = 26,
+        /// The infoType is typically used in Poland.
+        Poland = 27,
+        /// The infoType is typically used in Portugal.
+        Portugal = 28,
+        /// The infoType is typically used in Singapore.
+        Singapore = 29,
+        /// The infoType is typically used in South Africa.
+        SouthAfrica = 30,
+        /// The infoType is typically used in Spain.
+        Spain = 31,
+        /// The infoType is typically used in Sweden.
+        Sweden = 32,
+        /// The infoType is typically used in Taiwan.
+        Taiwan = 33,
+        /// The infoType is typically used in Thailand.
+        Thailand = 34,
+        /// The infoType is typically used in Turkey.
+        Turkey = 35,
+        /// The infoType is typically used in the United Kingdom.
+        UnitedKingdom = 36,
+        /// The infoType is typically used in the United States.
+        UnitedStates = 37,
+        /// The infoType is typically used in Uruguay.
+        Uruguay = 38,
+        /// The infoType is typically used in Venezuela.
+        Venezuela = 39,
+        /// The infoType is typically used in Google internally.
+        Internal = 40,
+    }
+    /// Enum of the current industries in the category.
+    /// We might add more industries in the future.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum IndustryCategory {
+        /// Unused industry
+        IndustryUnspecified = 0,
+        /// The infoType is typically used in the finance industry.
+        Finance = 1,
+        /// The infoType is typically used in the health industry.
+        Health = 2,
+        /// The infoType is typically used in the telecommunications industry.
+        Telecommunications = 3,
+    }
+    /// Enum of the current types in the category.
+    /// We might add more types in the future.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum TypeCategory {
+        /// Unused type
+        TypeUnspecified = 0,
+        /// Personally identifiable information, for example, a
+        /// name or phone number
+        Pii = 1,
+        /// Personally identifiable information that is especially sensitive, for
+        /// example, a passport number.
+        Spii = 2,
+        /// Attributes that can partially identify someone, especially in
+        /// combination with other attributes, like age, height, and gender.
+        Demographic = 3,
+        /// Confidential or secret information, for example, a password.
+        Credential = 4,
+        /// An identification document issued by a government.
+        GovernmentId = 5,
+        /// A document, for example, a resume or source code.
+        Document = 6,
+        /// Information that is not sensitive on its own, but provides details about
+        /// the circumstances surrounding an entity or an event.
+        ContextualInformation = 7,
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Category {
+        /// The region or country that issued the ID or document represented by the
+        /// infoType.
+        #[prost(enumeration="LocationCategory", tag="1")]
+        LocationCategory(i32),
+        /// The group of relevant businesses where this infoType is commonly used
+        #[prost(enumeration="IndustryCategory", tag="2")]
+        IndustryCategory(i32),
+        /// The class of identifiers where this infoType belongs
+        #[prost(enumeration="TypeCategory", tag="3")]
+        TypeCategory(i32),
+    }
 }
 /// Request for the list of infoTypes.
 #[derive(Clone, PartialEq, ::prost::Message)]

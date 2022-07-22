@@ -362,6 +362,10 @@ pub mod route_info {
         NextHopBlackhole = 9,
         /// Next hop is the forwarding rule of an Internal Load Balancer.
         NextHopIlb = 10,
+        /// Next hop is a
+        /// [router appliance
+        /// instance](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview>).
+        NextHopRouterAppliance = 11,
     }
 }
 /// For display only. Metadata associated with a Compute Engine forwarding rule.
@@ -704,6 +708,8 @@ pub mod abort_info {
         /// Aborted because the destination network does not match the destination
         /// endpoint.
         MismatchedDestinationNetwork = 14,
+        /// Aborted because the test scenario is not supported.
+        Unsupported = 15,
     }
 }
 /// Details of the final state "drop" and associated resource.
@@ -749,9 +755,7 @@ pub mod drop_info {
         PrivateGoogleAccessDisallowed = 8,
         /// Instance with only an internal IP address tries to access external hosts,
         /// but Cloud NAT is not enabled in the subnet, unless special configurations
-        /// on a VM allow this connection. For more details, see [Special
-        /// configurations for VM
-        /// instances](<https://cloud.google.com/vpc/docs/special-configurations>).
+        /// on a VM allow this connection.
         NoExternalAddress = 9,
         /// Destination internal address cannot be resolved to a known target. If
         /// this is a shared VPC scenario, verify if the service project ID is

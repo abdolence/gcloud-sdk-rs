@@ -47,7 +47,7 @@ pub struct Step {
     /// has no permission to view the configuration in this step, for non-final
     /// states a special state is populated (VIEWER_PERMISSION_MISSING), and for
     /// final state the configuration is cleared.
-    #[prost(oneof="step::StepInfo", tags="5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19")]
+    #[prost(oneof="step::StepInfo", tags="5, 6, 7, 8, 9, 10, 11, 21, 12, 13, 14, 15, 16, 17, 18, 19, 20")]
     pub step_info: ::core::option::Option<step::StepInfo>,
 }
 /// Nested message and enum types in `Step`.
@@ -76,6 +76,9 @@ pub mod step {
         /// Initial state: packet originating from a Cloud SQL instance.
         /// A CloudSQLInstanceInfo is populated with starting instance information.
         StartFromCloudSqlInstance = 22,
+        /// Initial state: packet originating from a Cloud function.
+        /// A CloudFunctionInfo is populated with starting function information.
+        StartFromCloudFunction = 23,
         /// Config checking state: verify ingress firewall rule.
         ApplyIngressFirewallRule = 4,
         /// Config checking state: verify egress firewall rule.
@@ -97,6 +100,8 @@ pub mod step {
         ArriveAtVpnGateway = 12,
         /// Forwarding state: arriving at a Cloud VPN tunnel.
         ArriveAtVpnTunnel = 13,
+        /// Forwarding state: arriving at a VPC connector.
+        ArriveAtVpcConnector = 24,
         /// Transition state: packet header translated.
         Nat = 14,
         /// Transition state: original connection is terminated and a new proxied
@@ -146,6 +151,9 @@ pub mod step {
         /// Display information of a Compute Engine VPN tunnel.
         #[prost(message, tag="11")]
         VpnTunnel(super::VpnTunnelInfo),
+        /// Display information of a VPC connector.
+        #[prost(message, tag="21")]
+        VpcConnector(super::VpcConnectorInfo),
         /// Display information of the final state "deliver" and reason.
         #[prost(message, tag="12")]
         Deliver(super::DeliverInfo),
@@ -170,6 +178,9 @@ pub mod step {
         /// Display information of a Cloud SQL instance.
         #[prost(message, tag="19")]
         CloudSqlInstance(super::CloudSqlInstanceInfo),
+        /// Display information of a Cloud function.
+        #[prost(message, tag="20")]
+        CloudFunction(super::CloudFunctionInfo),
     }
 }
 /// For display only. Metadata associated with a Compute Engine instance.
@@ -274,6 +285,11 @@ pub mod firewall_info {
         /// [Implied
         /// rules](<https://cloud.google.com/vpc/docs/firewalls#default_firewall_rules>).
         ImpliedVpcFirewallRule = 3,
+        /// Implicit firewall rules that are managed by serverless VPC access to
+        /// allow ingress access. They are not visible in the Google Cloud console.
+        /// For details, see [VPC connector's implicit
+        /// rules](<https://cloud.google.com/functions/docs/networking/connecting-vpc#restrict-access>).
+        ServerlessVpcAccessManagedFirewallRule = 4,
     }
 }
 /// For display only. Metadata associated with a Compute Engine route.
@@ -362,6 +378,10 @@ pub mod route_info {
         NextHopBlackhole = 9,
         /// Next hop is the forwarding rule of an Internal Load Balancer.
         NextHopIlb = 10,
+        /// Next hop is a
+        /// [router appliance
+        /// instance](<https://cloud.google.com/network-connectivity/docs/network-connectivity-center/concepts/ra-overview>).
+        NextHopRouterAppliance = 11,
     }
 }
 /// For display only. Metadata associated with a Compute Engine forwarding rule.
@@ -575,6 +595,9 @@ pub struct EndpointInfo {
     /// URI of the network where this packet is sent to.
     #[prost(string, tag="7")]
     pub destination_network_uri: ::prost::alloc::string::String,
+    /// URI of the source telemetry agent this packet originates from.
+    #[prost(string, tag="8")]
+    pub source_agent_uri: ::prost::alloc::string::String,
 }
 /// Details of the final state "deliver" and associated resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -604,6 +627,15 @@ pub mod deliver_info {
         GkeMaster = 4,
         /// Target is a Cloud SQL instance.
         CloudSqlInstance = 5,
+        /// Target is a published service using [Private Service
+        /// Connect](<https://cloud.google.com/vpc/docs/configure-private-service-connect-services>).
+        PscPublishedService = 6,
+        /// Target is all Google APIs using [Private Service
+        /// Connect](<https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>).
+        PscGoogleApi = 7,
+        /// Target is VPC-SC using [Private Service
+        /// Connect](<https://cloud.google.com/vpc/docs/configure-private-service-connect-apis>).
+        PscVpcSc = 8,
     }
 }
 /// Details of the final state "forward" and associated resource.
@@ -704,6 +736,8 @@ pub mod abort_info {
         /// Aborted because the destination network does not match the destination
         /// endpoint.
         MismatchedDestinationNetwork = 14,
+        /// Aborted because the test scenario is not supported.
+        Unsupported = 15,
     }
 }
 /// Details of the final state "drop" and associated resource.
@@ -728,7 +762,7 @@ pub mod drop_info {
         /// the address is used in a Google Cloud project, provide the project ID
         /// as test input.
         UnknownExternalAddress = 1,
-        /// a Compute Engine instance can only send or receive a packet with a
+        /// A Compute Engine instance can only send or receive a packet with a
         /// foreign IP address if ip_forward is enabled.
         ForeignIpDisallowed = 2,
         /// Dropped due to a firewall rule, unless allowed due to connection
@@ -749,9 +783,7 @@ pub mod drop_info {
         PrivateGoogleAccessDisallowed = 8,
         /// Instance with only an internal IP address tries to access external hosts,
         /// but Cloud NAT is not enabled in the subnet, unless special configurations
-        /// on a VM allow this connection. For more details, see [Special
-        /// configurations for VM
-        /// instances](<https://cloud.google.com/vpc/docs/special-configurations>).
+        /// on a VM allow this connection.
         NoExternalAddress = 9,
         /// Destination internal address cannot be resolved to a known target. If
         /// this is a shared VPC scenario, verify if the service project ID is
@@ -795,6 +827,19 @@ pub mod drop_info {
         /// Packet was dropped because the Cloud SQL instance has neither a private
         /// nor a public IP address.
         CloudSqlInstanceNoIpAddress = 21,
+        /// Packet could be dropped because the Cloud function is not in an active
+        /// status.
+        CloudFunctionNotActive = 22,
+        /// Packet could be dropped because no VPC connector is set.
+        VpcConnectorNotSet = 23,
+        /// Packet could be dropped because the VPC connector is not in a running
+        /// state.
+        VpcConnectorNotRunning = 24,
+        /// Packet could be dropped because it was sent from a different region
+        /// to a regional forwarding without global access.
+        ForwardingRuleRegionMismatch = 25,
+        /// Privte Service Connect (PSC) connection is not in accepted state.
+        PscConnectionNotAccepted = 26,
     }
 }
 /// For display only. Metadata associated with a Google Kubernetes Engine (GKE)
@@ -836,6 +881,35 @@ pub struct CloudSqlInstanceInfo {
     /// Region in which the Cloud SQL instance is running.
     #[prost(string, tag="7")]
     pub region: ::prost::alloc::string::String,
+}
+/// For display only. Metadata associated with a Cloud function.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CloudFunctionInfo {
+    /// Name of a Cloud function.
+    #[prost(string, tag="1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// URI of a Cloud function.
+    #[prost(string, tag="2")]
+    pub uri: ::prost::alloc::string::String,
+    /// Location in which the Cloud function is deployed.
+    #[prost(string, tag="3")]
+    pub location: ::prost::alloc::string::String,
+    /// Latest successfully deployed version id of the Cloud function.
+    #[prost(int64, tag="4")]
+    pub version_id: i64,
+}
+/// For display only. Metadata associated with a VPC connector.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VpcConnectorInfo {
+    /// Name of a VPC connector.
+    #[prost(string, tag="1")]
+    pub display_name: ::prost::alloc::string::String,
+    /// URI of a VPC connector.
+    #[prost(string, tag="2")]
+    pub uri: ::prost::alloc::string::String,
+    /// Location in which the VPC connector is deployed.
+    #[prost(string, tag="3")]
+    pub location: ::prost::alloc::string::String,
 }
 /// A Connectivity Test for a network reachability analysis.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -916,10 +990,10 @@ pub struct ConnectivityTest {
     /// existing test, or triggering a one-time rerun of an existing test.
     #[prost(message, optional, tag="12")]
     pub reachability_details: ::core::option::Option<ReachabilityDetails>,
-    /// Output only. The probing details of this test from the latest run, present for
-    /// applicable tests only. The details are updated when creating a new test,
-    /// updating an existing test, or triggering a one-time rerun of an existing
-    /// test.
+    /// Output only. The probing details of this test from the latest run, present
+    /// for applicable tests only. The details are updated when creating a new
+    /// test, updating an existing test, or triggering a one-time rerun of an
+    /// existing test.
     #[prost(message, optional, tag="14")]
     pub probing_details: ::core::option::Option<ProbingDetails>,
 }
@@ -946,6 +1020,9 @@ pub struct Endpoint {
     /// A [Cloud SQL](<https://cloud.google.com/sql>) instance URI.
     #[prost(string, tag="8")]
     pub cloud_sql_instance: ::prost::alloc::string::String,
+    /// A [Cloud function](<https://cloud.google.com/functions>).
+    #[prost(message, optional, tag="10")]
+    pub cloud_function: ::core::option::Option<endpoint::CloudFunctionEndpoint>,
     /// A Compute Engine network URI.
     #[prost(string, tag="4")]
     pub network: ::prost::alloc::string::String,
@@ -968,6 +1045,13 @@ pub struct Endpoint {
 }
 /// Nested message and enum types in `Endpoint`.
 pub mod endpoint {
+    /// Wrapper for cloud function attributes.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CloudFunctionEndpoint {
+        /// A [Cloud function](<https://cloud.google.com/functions>) name.
+        #[prost(string, tag="1")]
+        pub uri: ::prost::alloc::string::String,
+    }
     /// The type definition of an endpoint's network. Use one of the
     /// following choices:
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
@@ -1085,9 +1169,25 @@ pub struct ProbingDetails {
     /// from the source to the destination endpoint.
     #[prost(message, optional, tag="8")]
     pub probing_latency: ::core::option::Option<LatencyDistribution>,
+    /// The EdgeLocation from which a packet destined for/originating from the
+    /// internet will egress/ingress the Google network.
+    /// This will only be populated for a connectivity test which has an internet
+    /// destination/source address.
+    /// The absence of this field *must not* be used as an indication that the
+    /// destination/source is part of the Google network.
+    #[prost(message, optional, tag="9")]
+    pub destination_egress_location: ::core::option::Option<probing_details::EdgeLocation>,
 }
 /// Nested message and enum types in `ProbingDetails`.
 pub mod probing_details {
+    /// Representation of a network edge location as per
+    /// <https://cloud.google.com/vpc/docs/edge-locations.>
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct EdgeLocation {
+        /// Name of the metropolitan area.
+        #[prost(string, tag="1")]
+        pub metropolitan_area: ::prost::alloc::string::String,
+    }
     /// Overall probing result of the test.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]

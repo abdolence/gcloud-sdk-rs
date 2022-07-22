@@ -84,6 +84,9 @@ pub struct ListRepositoriesResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Locations which could not be reached.
+    #[prost(string, repeated, tag="3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `GetRepository` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -189,6 +192,9 @@ pub struct ListWorkspacesResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Locations which could not be reached.
+    #[prost(string, repeated, tag="3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `GetWorkspace` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -661,6 +667,9 @@ pub struct ListCompilationResultsResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Locations which could not be reached.
+    #[prost(string, repeated, tag="3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `GetCompilationResult` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1046,6 +1055,9 @@ pub struct ListWorkflowInvocationsResponse {
     /// If this field is omitted, there are no subsequent pages.
     #[prost(string, tag="2")]
     pub next_page_token: ::prost::alloc::string::String,
+    /// Locations which could not be reached.
+    #[prost(string, repeated, tag="3")]
+    pub unreachable: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 /// `GetWorkflowInvocation` request message.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -1091,6 +1103,9 @@ pub struct WorkflowInvocationAction {
     /// Output only. This action's current state.
     #[prost(enumeration="workflow_invocation_action::State", tag="4")]
     pub state: i32,
+    /// Output only. If and only if action's state is FAILED a failure reason is set.
+    #[prost(string, tag="7")]
+    pub failure_reason: ::prost::alloc::string::String,
     /// Output only. This action's timing details.
     /// `start_time` will be set if the action is in [RUNNING, SUCCEEDED,
     /// CANCELLED, FAILED] state.

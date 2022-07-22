@@ -22,6 +22,10 @@ pub struct PartitionId {
     /// The ID of the project to which the entities belong.
     #[prost(string, tag="2")]
     pub project_id: ::prost::alloc::string::String,
+    /// If not empty, the ID of the database to which the entities
+    /// belong.
+    #[prost(string, tag="3")]
+    pub database_id: ::prost::alloc::string::String,
     /// If not empty, the ID of the namespace to which the entities belong.
     #[prost(string, tag="4")]
     pub namespace_id: ::prost::alloc::string::String,
@@ -371,7 +375,10 @@ pub struct CompositeFilter {
     #[prost(enumeration="composite_filter::Operator", tag="1")]
     pub op: i32,
     /// The list of filters to combine.
-    /// Must contain at least one filter.
+    ///
+    /// Requires:
+    ///
+    /// * At least one filter is present.
     #[prost(message, repeated, tag="2")]
     pub filters: ::prost::alloc::vec::Vec<Filter>,
 }
@@ -585,6 +592,12 @@ pub struct LookupRequest {
     /// Required. The ID of the project against which to make the request.
     #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
+    /// The ID of the database against which to make the request.
+    ///
+    /// '(default)' is not allowed; please use empty string '' to refer the default
+    /// database.
+    #[prost(string, tag="9")]
+    pub database_id: ::prost::alloc::string::String,
     /// The options for this lookup request.
     #[prost(message, optional, tag="1")]
     pub read_options: ::core::option::Option<ReadOptions>,
@@ -620,6 +633,12 @@ pub struct RunQueryRequest {
     /// Required. The ID of the project against which to make the request.
     #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
+    /// The ID of the database against which to make the request.
+    ///
+    /// '(default)' is not allowed; please use empty string '' to refer the default
+    /// database.
+    #[prost(string, tag="9")]
+    pub database_id: ::prost::alloc::string::String,
     /// Entities are partitioned into subsets, identified by a partition ID.
     /// Queries are scoped to a single partition.
     /// This partition ID is normalized with the standard default context
@@ -641,7 +660,7 @@ pub mod run_query_request {
         /// The query to run.
         #[prost(message, tag="3")]
         Query(super::Query),
-        /// The GQL query to run.
+        /// The GQL query to run. This query must be a non-aggregation query.
         #[prost(message, tag="7")]
         GqlQuery(super::GqlQuery),
     }
@@ -662,6 +681,12 @@ pub struct BeginTransactionRequest {
     /// Required. The ID of the project against which to make the request.
     #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
+    /// The ID of the database against which to make the request.
+    ///
+    /// '(default)' is not allowed; please use empty string '' to refer the default
+    /// database.
+    #[prost(string, tag="9")]
+    pub database_id: ::prost::alloc::string::String,
     /// Options for a new transaction.
     #[prost(message, optional, tag="10")]
     pub transaction_options: ::core::option::Option<TransactionOptions>,
@@ -679,6 +704,12 @@ pub struct RollbackRequest {
     /// Required. The ID of the project against which to make the request.
     #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
+    /// The ID of the database against which to make the request.
+    ///
+    /// '(default)' is not allowed; please use empty string '' to refer the default
+    /// database.
+    #[prost(string, tag="9")]
+    pub database_id: ::prost::alloc::string::String,
     /// Required. The transaction identifier, returned by a call to
     /// \[Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction\].
     #[prost(bytes="vec", tag="1")]
@@ -695,6 +726,12 @@ pub struct CommitRequest {
     /// Required. The ID of the project against which to make the request.
     #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
+    /// The ID of the database against which to make the request.
+    ///
+    /// '(default)' is not allowed; please use empty string '' to refer the default
+    /// database.
+    #[prost(string, tag="9")]
+    pub database_id: ::prost::alloc::string::String,
     /// The type of commit to perform. Defaults to `TRANSACTIONAL`.
     #[prost(enumeration="commit_request::Mode", tag="5")]
     pub mode: i32,
@@ -763,6 +800,12 @@ pub struct AllocateIdsRequest {
     /// Required. The ID of the project against which to make the request.
     #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
+    /// The ID of the database against which to make the request.
+    ///
+    /// '(default)' is not allowed; please use empty string '' to refer the default
+    /// database.
+    #[prost(string, tag="9")]
+    pub database_id: ::prost::alloc::string::String,
     /// Required. A list of keys with incomplete key paths for which to allocate IDs.
     /// No key may be reserved/read-only.
     #[prost(message, repeated, tag="1")]
@@ -782,7 +825,10 @@ pub struct ReserveIdsRequest {
     /// Required. The ID of the project against which to make the request.
     #[prost(string, tag="8")]
     pub project_id: ::prost::alloc::string::String,
-    /// If not empty, the ID of the database against which to make the request.
+    /// The ID of the database against which to make the request.
+    ///
+    /// '(default)' is not allowed; please use empty string '' to refer the default
+    /// database.
     #[prost(string, tag="9")]
     pub database_id: ::prost::alloc::string::String,
     /// Required. A list of keys with complete key paths whose numeric IDs should not be
