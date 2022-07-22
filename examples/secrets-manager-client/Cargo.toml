@@ -1,6 +1,6 @@
 [package]
 name = "secrets-manager-client-example"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["me@abdolence.dev"]
 edition = "2021"
 
