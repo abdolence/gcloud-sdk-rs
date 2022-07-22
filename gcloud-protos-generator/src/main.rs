@@ -6,9 +6,6 @@ fn main() {
     let proto_root = PathBuf::from("gcloud-protos-generator/proto/googleapis");
     let protos = gen::find_proto(proto_root.clone());
 
-    // let gates = gen::feature_gates(&protos);
-    // println!("{}", gates);
-
     let out_dir = PathBuf::from("gcloud-sdk/genproto");
     let _ = fs::remove_dir_all(out_dir.as_path());
     let _ = fs::create_dir(out_dir.as_path());
@@ -16,11 +13,20 @@ fn main() {
 
     let mut config = prost_build::Config::new();
     config.protoc_arg("--experimental_allow_proto3_optional");
+
     config.extern_path(
         ".google.cloud.secretmanager.v1.SecretPayload",
-        "crate::SecretPayload",
+        "crate::proto_ext::secretmanager::SecretPayload",
     );
-    //config.bytes(&[".google.cloud.secretmanager.v1.SecretPayload.data"]);
+
+    config.extern_path(
+        ".google.cloud.kms.v1.EncryptRequest",
+        "crate::proto_ext::kms::EncryptRequest",
+    );
+    config.extern_path(
+        ".google.cloud.kms.v1.DecryptResponse",
+        "crate::proto_ext::kms::DecryptResponse",
+    );
 
     tonic_build::configure()
         .build_server(false)

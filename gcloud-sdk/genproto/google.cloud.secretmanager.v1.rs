@@ -389,7 +389,7 @@ pub struct AddSecretVersionRequest {
     pub parent: ::prost::alloc::string::String,
     /// Required. The secret payload of the \[SecretVersion][google.cloud.secretmanager.v1.SecretVersion\].
     #[prost(message, optional, tag="2")]
-    pub payload: ::core::option::Option<crate::SecretPayload>,
+    pub payload: ::core::option::Option<crate::proto_ext::secretmanager::SecretPayload>,
 }
 /// Request message for \[SecretManagerService.GetSecret][google.cloud.secretmanager.v1.SecretManagerService.GetSecret\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -479,7 +479,7 @@ pub struct AccessSecretVersionResponse {
     pub name: ::prost::alloc::string::String,
     /// Secret payload
     #[prost(message, optional, tag="2")]
-    pub payload: ::core::option::Option<crate::SecretPayload>,
+    pub payload: ::core::option::Option<crate::proto_ext::secretmanager::SecretPayload>,
 }
 /// Request message for \[SecretManagerService.DeleteSecret][google.cloud.secretmanager.v1.SecretManagerService.DeleteSecret\].
 #[derive(Clone, PartialEq, ::prost::Message)]

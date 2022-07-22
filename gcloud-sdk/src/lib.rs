@@ -31,5 +31,5 @@ pub use api_client::*;
 
 mod middleware;
 
-mod proto_ext;
-pub use proto_ext::*;
+pub mod proto_ext;
+
