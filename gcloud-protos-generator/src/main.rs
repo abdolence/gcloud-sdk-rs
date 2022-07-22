@@ -23,10 +23,11 @@ fn main() {
         ".google.cloud.kms.v1.EncryptRequest",
         "crate::proto_ext::kms::EncryptRequest",
     );
-    config.extern_path(
-        ".google.cloud.kms.v1.DecryptResponse",
-        "crate::proto_ext::kms::DecryptResponse",
-    );
+
+    // config.extern_path(
+    //     ".google.cloud.kms.v1.DecryptResponse",
+    //     "crate::proto_ext::kms::DecryptResponse",
+    // );
 
     tonic_build::configure()
         .build_server(false)
