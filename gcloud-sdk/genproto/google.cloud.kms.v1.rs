@@ -1868,42 +1868,6 @@ pub struct EncryptResponse {
     pub protection_level: i32,
 }
 /// Response message for
-/// \[KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt\].
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct DecryptResponse {
-    /// The decrypted data originally supplied in
-    /// \[EncryptRequest.plaintext][google.cloud.kms.v1.EncryptRequest.plaintext\].
-    #[prost(bytes="vec", tag="1")]
-    pub plaintext: ::prost::alloc::vec::Vec<u8>,
-    /// Integrity verification field. A CRC32C checksum of the returned
-    /// \[DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext\].
-    /// An integrity check of
-    /// \[DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext\]
-    /// can be performed by computing the CRC32C checksum of
-    /// \[DecryptResponse.plaintext][google.cloud.kms.v1.DecryptResponse.plaintext\]
-    /// and comparing your results to this field. Discard the response in case of
-    /// non-matching checksum values, and perform a limited number of retries. A
-    /// persistent mismatch may indicate an issue in your computation of the CRC32C
-    /// checksum. Note: receiving this response message indicates that
-    /// \[KeyManagementService][google.cloud.kms.v1.KeyManagementService\] is able to
-    /// successfully decrypt the
-    /// \[ciphertext][google.cloud.kms.v1.DecryptRequest.ciphertext\]. Note: This
-    /// field is defined as int64 for reasons of compatibility across different
-    /// languages. However, it is a non-negative integer, which will never exceed
-    /// 2^32-1, and can be safely downconverted to uint32 in languages that support
-    /// this type.
-    #[prost(message, optional, tag="2")]
-    pub plaintext_crc32c: ::core::option::Option<i64>,
-    /// Whether the Decryption was performed using the primary key version.
-    #[prost(bool, tag="3")]
-    pub used_primary: bool,
-    /// The \[ProtectionLevel][google.cloud.kms.v1.ProtectionLevel\] of the
-    /// \[CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion\] used in
-    /// decryption.
-    #[prost(enumeration="ProtectionLevel", tag="4")]
-    pub protection_level: i32,
-}
-/// Response message for
 /// \[KeyManagementService.AsymmetricSign][google.cloud.kms.v1.KeyManagementService.AsymmetricSign\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AsymmetricSignResponse {
@@ -2745,7 +2709,10 @@ pub mod key_management_service_client {
         pub async fn decrypt(
             &mut self,
             request: impl tonic::IntoRequest<super::DecryptRequest>,
-        ) -> Result<tonic::Response<super::DecryptResponse>, tonic::Status> {
+        ) -> Result<
+            tonic::Response<crate::proto_ext::kms::DecryptResponse>,
+            tonic::Status,
+        > {
             self.inner
                 .ready()
                 .await

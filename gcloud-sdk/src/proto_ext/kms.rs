@@ -1,8 +1,5 @@
-use hyper::body::Buf;
-use prost::bytes::BufMut;
-use prost::encoding::{DecodeContext, WireType};
-use prost::DecodeError;
 use secret_vault_value::SecretValue;
+use crate::google::cloud::kms::v1::ProtectionLevel;
 
 #[derive(Clone, PartialEq, Debug, Default)]
 pub struct EncryptRequest {
@@ -84,87 +81,109 @@ pub struct EncryptRequest {
 }
 
 impl prost::Message for EncryptRequest {
-    fn encode_raw<B>(&self, buf: &mut B)
-    where
-        B: BufMut,
-        Self: Sized,
-    {
-        prost::encoding::string::encode(1, &self.name, buf);
-        prost::encoding::bytes::encode(2, self.plaintext.ref_sensitive_value(), buf);
-        prost::encoding::bytes::encode(3, &self.additional_authenticated_data, buf);
-
-        if let Some(ref crc32c) = self.plaintext_crc32c {
-            prost::encoding::int64::encode(7, crc32c, buf);
+    #[allow(unused_variables)]
+    fn encode_raw<B>(&self, buf: &mut B) where
+        B: ::prost::bytes::BufMut {
+        if self.name != "" {
+            ::prost::encoding::string::encode(1u32, &self.name, buf);
         }
-        if let Some(ref crc32c) = self.additional_authenticated_data_crc32c {
-            prost::encoding::int64::encode(8, crc32c, buf);
+        if !self.plaintext.ref_sensitive_value().is_empty() {
+            ::prost::encoding::bytes::encode(2u32, self.plaintext.ref_sensitive_value(),
+                                             buf);
+        }
+        if self.additional_authenticated_data != b"" as &[u8] {
+            ::prost::encoding::bytes::encode(3u32,
+                                             &self.additional_authenticated_data, buf);
+        }
+        if let Some(ref msg) = self.plaintext_crc32c {
+            ::prost::encoding::message::encode(7u32, msg, buf);
+        }
+        if let Some(ref msg) =
+        self.additional_authenticated_data_crc32c {
+            ::prost::encoding::message::encode(8u32, msg, buf);
         }
     }
-
-    fn merge_field<B>(
-        &mut self,
-        tag: u32,
-        wire_type: WireType,
-        buf: &mut B,
-        ctx: DecodeContext,
-    ) -> Result<(), DecodeError>
-    where
-        B: Buf,
-        Self: Sized,
-    {
+    #[allow(unused_variables)]
+    fn merge_field<B>(&mut self, tag: u32,
+                      wire_type: ::prost::encoding::WireType, buf: &mut B,
+                      ctx: ::prost::encoding::DecodeContext)
+                      -> ::core::result::Result<(), ::prost::DecodeError> where
+        B: ::prost::bytes::Buf {
+        const STRUCT_NAME: &'static str = "EncryptRequest";
         match tag {
-            1 => prost::encoding::string::merge(wire_type, &mut self.name, buf, ctx),
-            2 => prost::encoding::bytes::merge(
-                wire_type,
-                self.plaintext.ref_sensitive_value_mut(),
-                buf,
-                ctx,
-            ),
-            3 => prost::encoding::bytes::merge(
-                wire_type,
-                &mut self.additional_authenticated_data,
-                buf,
-                ctx,
-            ),
-            7 => prost::encoding::int64::merge(
-                wire_type,
-                self.plaintext_crc32c.get_or_insert_with(Default::default),
-                buf,
-                ctx,
-            ),
-            8 => prost::encoding::int64::merge(
-                wire_type,
-                self.additional_authenticated_data_crc32c
-                    .get_or_insert_with(Default::default),
-                buf,
-                ctx,
-            ),
-            _ => prost::encoding::skip_field(wire_type, tag, buf, ctx),
+            1u32 => {
+                let value = &mut self.name;
+                ::prost::encoding::string::merge(wire_type, value, buf,
+                                                 ctx).map_err(|mut error|
+                    { error.push(STRUCT_NAME, "name"); error })
+            }
+            2u32 => {
+                ::prost::encoding::bytes::merge(wire_type, self.plaintext.ref_sensitive_value_mut(), buf,
+                                                ctx).map_err(|mut error|
+                    { error.push(STRUCT_NAME, "plaintext"); error })
+            }
+            3u32 => {
+                let value = &mut self.additional_authenticated_data;
+                ::prost::encoding::bytes::merge(wire_type, value, buf,
+                                                ctx).map_err(|mut error|
+                    {
+                        error.push(STRUCT_NAME, "additional_authenticated_data");
+                        error
+                    })
+            }
+            7u32 => {
+                let value = &mut self.plaintext_crc32c;
+                ::prost::encoding::message::merge(wire_type,
+                                                  value.get_or_insert_with(::core::default::Default::default),
+                                                  buf,
+                                                  ctx).map_err(|mut error|
+                    { error.push(STRUCT_NAME, "plaintext_crc32c"); error })
+            }
+            8u32 => {
+                let value =
+                    &mut self.additional_authenticated_data_crc32c;
+                ::prost::encoding::message::merge(wire_type,
+                                                  value.get_or_insert_with(::core::default::Default::default),
+                                                  buf,
+                                                  ctx).map_err(|mut error|
+                    {
+                        error.push(STRUCT_NAME,
+                                   "additional_authenticated_data_crc32c");
+                        error
+                    })
+            }
+            _ =>
+                ::prost::encoding::skip_field(wire_type, tag, buf, ctx),
         }
     }
-
+    #[inline]
     fn encoded_len(&self) -> usize {
-        prost::encoding::string::encoded_len(1, &self.name)
-            + prost::encoding::bytes::encoded_len(2, self.plaintext.ref_sensitive_value())
-            + prost::encoding::bytes::encoded_len(3, &self.additional_authenticated_data)
-            + self
-                .plaintext_crc32c
-                .as_ref()
-                .map_or(0, |crc32c| prost::encoding::int64::encoded_len(7, crc32c))
-            + self
-                .additional_authenticated_data_crc32c
-                .as_ref()
-                .map_or(0, |crc32c| prost::encoding::int64::encoded_len(8, crc32c))
+        0 +
+            if self.name != "" {
+                ::prost::encoding::string::encoded_len(1u32, &self.name)
+            } else { 0 } +
+            if !self.plaintext.ref_sensitive_value().is_empty() {
+                ::prost::encoding::bytes::encoded_len(2u32, self.plaintext.ref_sensitive_value())
+            } else { 0 } +
+            if self.additional_authenticated_data != b"" as &[u8] {
+                ::prost::encoding::bytes::encoded_len(3u32,
+                                                      &self.additional_authenticated_data)
+            } else { 0 } +
+            self.plaintext_crc32c.as_ref().map_or(0,
+                                                  |msg| ::prost::encoding::message::encoded_len(7u32, msg)) +
+            self.additional_authenticated_data_crc32c.as_ref().map_or(0,
+                                                                      |msg| ::prost::encoding::message::encoded_len(8u32, msg))
     }
-
     fn clear(&mut self) {
         self.name.clear();
         self.plaintext.secure_clear();
-        self.plaintext_crc32c = None;
         self.additional_authenticated_data.clear();
-        self.additional_authenticated_data_crc32c = None;
+        self.plaintext_crc32c = ::core::option::Option::None;
+        self.additional_authenticated_data_crc32c =
+            ::core::option::Option::None;
     }
 }
+
 
 /// Response message for
 /// \[KeyManagementService.Decrypt][google.cloud.kms.v1.KeyManagementService.Decrypt\].
@@ -192,7 +211,7 @@ pub struct DecryptResponse {
     /// 2^32-1, and can be safely downconverted to uint32 in languages that support
     /// this type.
     //#[prost(message, optional, tag="2")]
-    pub plaintext_crc32c: ::core::option::Option<i64>,
+    pub plaintext_crc32c: Option<i64>,
     /// Whether the Decryption was performed using the primary key version.
     //#[prost(bool, tag="3")]
     pub used_primary: bool,
@@ -204,63 +223,85 @@ pub struct DecryptResponse {
 }
 
 impl prost::Message for DecryptResponse {
-    fn encode_raw<B>(&self, buf: &mut B)
-    where
-        B: BufMut,
-        Self: Sized,
-    {
-        prost::encoding::bytes::encode(1, self.plaintext.ref_sensitive_value(), buf);
-        if let Some(ref crc32c) = self.plaintext_crc32c {
-            prost::encoding::int64::encode(2, crc32c, buf);
+    #[allow(unused_variables)]
+    fn encode_raw<B>(&self, buf: &mut B) where
+        B: ::prost::bytes::BufMut {
+        if !self.plaintext.ref_sensitive_value().is_empty() {
+            ::prost::encoding::bytes::encode(1u32, self.plaintext.ref_sensitive_value(),
+                                             buf);
         }
-        prost::encoding::bool::encode(3, &self.used_primary, buf);
-        prost::encoding::int32::encode(4, &self.protection_level, buf);
+        if let Some(ref msg) = self.plaintext_crc32c {
+            ::prost::encoding::message::encode(2u32, msg, buf);
+        }
+        if self.used_primary != false {
+            ::prost::encoding::bool::encode(3u32, &self.used_primary,
+                                            buf);
+        }
+        if self.protection_level !=
+            ProtectionLevel::default() as i32 {
+            ::prost::encoding::int32::encode(4u32,
+                                             &self.protection_level, buf);
+        }
     }
-
-    fn merge_field<B>(
-        &mut self,
-        tag: u32,
-        wire_type: WireType,
-        buf: &mut B,
-        ctx: DecodeContext,
-    ) -> Result<(), DecodeError>
-    where
-        B: Buf,
-        Self: Sized,
-    {
+    #[allow(unused_variables)]
+    fn merge_field<B>(&mut self, tag: u32,
+                      wire_type: ::prost::encoding::WireType, buf: &mut B,
+                      ctx: ::prost::encoding::DecodeContext)
+                      -> ::core::result::Result<(), ::prost::DecodeError> where
+        B: ::prost::bytes::Buf {
+        const STRUCT_NAME: &'static str = "DecryptResponse";
         match tag {
-            1 => prost::encoding::bytes::merge(
-                wire_type,
-                self.plaintext.ref_sensitive_value_mut(),
-                buf,
-                ctx,
-            ),
-            2 => prost::encoding::int64::merge(
-                wire_type,
-                self.plaintext_crc32c.get_or_insert_with(Default::default),
-                buf,
-                ctx,
-            ),
-            3 => prost::encoding::bool::merge(wire_type, &mut self.used_primary, buf, ctx),
-            4 => prost::encoding::int32::merge(wire_type, &mut self.protection_level, buf, ctx),
-            _ => prost::encoding::skip_field(wire_type, tag, buf, ctx),
+            1u32 => {
+                ::prost::encoding::bytes::merge(wire_type, self.plaintext.ref_sensitive_value_mut(), buf,
+                                                ctx).map_err(|mut error|
+                    { error.push(STRUCT_NAME, "plaintext"); error })
+            }
+            2u32 => {
+                let value = &mut self.plaintext_crc32c;
+                ::prost::encoding::message::merge(wire_type,
+                                                  value.get_or_insert_with(::core::default::Default::default),
+                                                  buf,
+                                                  ctx).map_err(|mut error|
+                    { error.push(STRUCT_NAME, "plaintext_crc32c"); error })
+            }
+            3u32 => {
+                let value = &mut self.used_primary;
+                ::prost::encoding::bool::merge(wire_type, value, buf,
+                                               ctx).map_err(|mut error|
+                    { error.push(STRUCT_NAME, "used_primary"); error })
+            }
+            4u32 => {
+                let value = &mut self.protection_level;
+                ::prost::encoding::int32::merge(wire_type, value, buf,
+                                                ctx).map_err(|mut error|
+                    { error.push(STRUCT_NAME, "protection_level"); error })
+            }
+            _ =>
+                ::prost::encoding::skip_field(wire_type, tag, buf, ctx),
         }
     }
-
+    #[inline]
     fn encoded_len(&self) -> usize {
-        prost::encoding::bytes::encoded_len(1, self.plaintext.ref_sensitive_value())
-            + self
-                .plaintext_crc32c
-                .as_ref()
-                .map_or(0, |crc32c| prost::encoding::int64::encoded_len(2, crc32c))
-            + prost::encoding::bool::encoded_len(3, &self.used_primary)
-            + prost::encoding::int32::encoded_len(4, &self.protection_level)
+        0 +
+            if !self.plaintext.ref_sensitive_value().is_empty() {
+                ::prost::encoding::bytes::encoded_len(1u32, self.plaintext.ref_sensitive_value())
+            } else { 0 } +
+            self.plaintext_crc32c.as_ref().map_or(0,
+                                                  |msg| ::prost::encoding::message::encoded_len(2u32, msg)) +
+            if self.used_primary != false {
+                ::prost::encoding::bool::encoded_len(3u32,
+                                                     &self.used_primary)
+            } else { 0 } +
+            if self.protection_level !=
+                ProtectionLevel::default() as i32 {
+                ::prost::encoding::int32::encoded_len(4u32,
+                                                      &self.protection_level)
+            } else { 0 }
     }
-
     fn clear(&mut self) {
         self.plaintext.secure_clear();
-        self.plaintext_crc32c = None;
-        self.used_primary = Default::default();
-        self.protection_level = Default::default();
+        self.plaintext_crc32c = ::core::option::Option::None;
+        self.used_primary = false;
+        self.protection_level = ProtectionLevel::default() as i32;
     }
 }
