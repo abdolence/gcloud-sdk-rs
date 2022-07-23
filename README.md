@@ -4,6 +4,7 @@
 
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
 
+## Disclaimer
 This is NOT OFFICAL gcloud sdk from Google (and it doesn't exist for Rust at the moment of this page was updated).
 
 ## Overview
@@ -14,7 +15,7 @@ For example, if you want to use [Cloud Pub/Sub](https://cloud.google.com/pubsub)
 
 The feature name is the period of the package name of each proto file, replaced by a hyphen.
 If you specify a package, it will automatically load the dependent packages and include them in the build.
-It means that `features = ["google-spanner-admin-database-v1"]`.
+It means that `features = ["google-firestore-v1"]`.
 
 In addition, multiple features can be specified.
 
@@ -45,7 +46,7 @@ The list of available features can be found [here](./gcloud-sdk/Cargo.toml#L22-L
 Cargo.toml:
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.14", features = ["google-spanner-admin-database-v1"] }
+gcloud-sdk = { version = "0.17", features = ["google-firestore-v1"] }
 tonic = { version = "0.7", features = ["tls"] }
 prost = "0.10"
 prost-types = "0.10"
@@ -76,7 +77,7 @@ the updates and API proto descriptions from Google more frequently and simplify 
       Uses synchronisation primitives (such as Mutex) from tokio everywhere.
     * Provides facade API for the caching async client implementation based on Tower middleware
       that hides complexity working with tokens and TLS.
-    * Improved observability with tracing and measuring execution time of endpoints.
+    * Improved observability with tracing and measuring execution time of endpoints. 
 - Different development cycles - the original development was updated less frequently than it was needed for me.
 
 I'd be glad to contribute all of the changes back if author sees the same goals.
@@ -93,4 +94,4 @@ or [MIT license](./LICENSE-MIT) at your option.
 
 ## Authors
 - [mechiru](https://github.com/mechiru) - the original project
-- Abdulla Abdurakhmanov - updated for recent deps, introduced caching client implementation, merged/refactorings with gouth.
+- Abdulla Abdurakhmanov - updated for recent deps, the transparent client implementation, security extensions for Google KMS and Secret Manager API.
