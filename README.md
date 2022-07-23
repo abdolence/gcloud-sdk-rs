@@ -87,6 +87,7 @@ Sometimes using proto generated APIs are tedious and cumbersome, so you may need
 * [firestore-rs](https://github.com/abdolence/firestore-rs) - to work with Firestore;
 * [secret-vault](https://github.com/abdolence/secret-vault-rs) - to read secrets from Google Secret Manager;
 * [kms-aead](https://github.com/abdolence/kms-aead-rs) - envelope encryption using Google KMS and Ring AEAD.
+* [opentelemetry-gcloud-trace](https://github.com/abdolence/opentelemetry-gcloud-trace-rs) - Google Cloud Trace support for OpenTelemetry project.
 
 ## License
 Licensed under either of [Apache License, Version 2.0](./LICENSE-APACHE)
