@@ -26,7 +26,7 @@ fn main() {
 
     config.extern_path(
         ".google.cloud.kms.v1.DecryptResponse",
-         "crate::proto_ext::kms::DecryptResponse",
+        "crate::proto_ext::kms::DecryptResponse",
     );
 
     tonic_build::configure()
