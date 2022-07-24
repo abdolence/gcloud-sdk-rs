@@ -45,7 +45,7 @@ where
             google_api_url, token_scopes
         );
 
-        let channel = init_google_services_channel(google_api_url).await?;
+        let channel = GoogleEnvironment::init_google_services_channel(google_api_url).await?;
 
         let token_generator =
             GoogleAuthTokenGenerator::new(token_source_type, token_scopes).await?;
@@ -124,29 +124,54 @@ where
 pub type GoogleAuthMiddleware = GoogleAuthMiddlewareService<Channel>;
 pub type GoogleApi<C> = GoogleApiClient<GoogleApiClientBuilderFunction<C>, C>;
 
-async fn init_google_services_channel(
-    api_url: &'static str,
-) -> Result<Channel, crate::error::Error> {
-    let domain_name = api_url.to_string().replace("https://", "");
-    let tls_config = init_google_services_channel_tls_config(domain_name);
+pub struct GoogleEnvironment;
 
-    Ok(Channel::from_static(api_url)
-        .tls_config(tls_config)?
-        .connect_timeout(Duration::from_secs(30))
-        .tcp_keepalive(Some(Duration::from_secs(5)))
-        .keep_alive_timeout(Duration::from_secs(60))
-        .http2_keep_alive_interval(Duration::from_secs(10))
-        .keep_alive_while_idle(true)
-        .connect()
-        .await?)
-}
+impl GoogleEnvironment {
+    pub async fn detect_google_project_id() -> Option<String> {
+        let for_env = std::env::var("PROJECT_ID")
+            .ok()
+            .or_else(|| std::env::var("GCP_PROJECT_ID").ok());
+        if for_env.is_some() {
+            debug!("Detected GCP Project ID using environment variables");
+            for_env
+        } else {
+            let metadata_server = crate::token_source::metadata::Metadata::new(vec![
+                "https://www.googleapis.com/auth/cloud-platform".into(),
+            ]);
+            let metadata_result = metadata_server.detect_google_project_id().await;
+            if metadata_result.is_some() {
+                debug!("Detected GCP Project ID using GKE metadata server");
+            } else {
+                debug!("No GCP Project ID detected in this environment. Please specify it explicitly using environment variables: `PROJECT_ID` or `GCP_PROJECT_ID`");
+            }
+            metadata_result
+        }
+    }
 
-fn init_google_services_channel_tls_config(
-    domain_name: String,
-) -> tonic::transport::ClientTlsConfig {
-    tonic::transport::ClientTlsConfig::new()
-        .ca_certificate(tonic::transport::Certificate::from_pem(
-            crate::apis::CERTIFICATES,
-        ))
-        .domain_name(domain_name)
+    pub async fn init_google_services_channel(
+        api_url: &'static str,
+    ) -> Result<Channel, crate::error::Error> {
+        let domain_name = api_url.to_string().replace("https://", "");
+        let tls_config = Self::init_google_services_channel_tls_config(domain_name);
+
+        Ok(Channel::from_static(api_url)
+            .tls_config(tls_config)?
+            .connect_timeout(Duration::from_secs(30))
+            .tcp_keepalive(Some(Duration::from_secs(5)))
+            .keep_alive_timeout(Duration::from_secs(60))
+            .http2_keep_alive_interval(Duration::from_secs(10))
+            .keep_alive_while_idle(true)
+            .connect()
+            .await?)
+    }
+
+    pub fn init_google_services_channel_tls_config(
+        domain_name: String,
+    ) -> tonic::transport::ClientTlsConfig {
+        tonic::transport::ClientTlsConfig::new()
+            .ca_certificate(tonic::transport::Certificate::from_pem(
+                crate::apis::CERTIFICATES,
+            ))
+            .domain_name(domain_name)
+    }
 }

@@ -8,7 +8,7 @@ use chrono::prelude::*;
 
 pub mod auth_token_generator;
 mod credentials;
-mod metadata;
+pub mod metadata;
 
 use serde::{Deserialize, Serialize};
 

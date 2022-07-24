@@ -66,6 +66,7 @@ Looks for credentials in the following places, preferring the first location fou
 - A JSON file in a location known to the gcloud command-line tool.
 - On Google Compute Engine, it fetches credentials from the metadata server.
 
+
 ## Fork
 The library is a fork of [mechiru/googapis](https://github.com/mechiru/googapis) and [mechiru/gouth](https://github.com/mechiru/gouth) to keep up with
 the updates and API proto descriptions from Google more frequently and simplify dependencies management.

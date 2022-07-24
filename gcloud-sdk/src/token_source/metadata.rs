@@ -16,11 +16,11 @@ pub struct Metadata {
 }
 
 impl Metadata {
-    fn new(scopes: impl Into<Vec<String>>) -> Self {
+    pub fn new(scopes: impl Into<Vec<String>>) -> Self {
         Self::with_account(scopes, "default")
     }
 
-    fn with_account(scopes: impl Into<Vec<String>>, account: &'static str) -> Self {
+    pub fn with_account(scopes: impl Into<Vec<String>>, account: &'static str) -> Self {
         Self {
             account,
             scopes: scopes.into(),
@@ -37,6 +37,10 @@ impl Metadata {
                 .finish()
         };
         format!("instance/service-accounts/{}/token?{}", self.account, query)
+    }
+
+    pub async fn detect_google_project_id(&self) -> Option<String> {
+        self.gcemeta_client.project_id().await.ok()
     }
 }
 
