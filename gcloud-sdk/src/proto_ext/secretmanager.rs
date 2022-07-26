@@ -31,7 +31,7 @@ impl prost::Message for SecretPayload {
     where
         B: ::prost::bytes::Buf,
     {
-        const STRUCT_NAME: &'static str = "SecretPayload";
+        const STRUCT_NAME: &str = "SecretPayload";
         match tag {
             1u32 => ::prost::encoding::bytes::merge(
                 wire_type,

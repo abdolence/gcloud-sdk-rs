@@ -1,6 +1,10 @@
 # gcloud-sdk for Rust
 
 [![Latest Version](https://img.shields.io/crates/v/gcloud-sdk.svg)](https://crates.io/crates/gcloud-sdk)
+![tests and formatting](https://github.com/abdolence/gcloud-sdk-rs/workflows/tests%20&amp;%20formatting/badge.svg)
+![security audit](https://github.com/abdolence/gcloud-sdk-rs/workflows/security%20audit/badge.svg)
+![unsafe](https://img.shields.io/badge/unsafe-forbidden-success.svg)
+
 
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
 
@@ -50,8 +54,6 @@ gcloud-sdk = { version = "0.17", features = ["google-firestore-v1"] }
 tonic = { version = "0.7", features = ["tls"] }
 prost = "0.10"
 prost-types = "0.10"
-tokio = { version = "1.14", features = ["rt-multi-thread", "time", "fs", "macros"] }
-chrono = "0.4"
 ```
 
 ## Google authentication
