@@ -5,11 +5,10 @@
 ![security audit](https://github.com/abdolence/gcloud-sdk-rs/workflows/security%20audit/badge.svg)
 ![unsafe](https://img.shields.io/badge/unsafe-forbidden-success.svg)
 
-
 This library generated from [Google API](https://github.com/googleapis/googleapis) using [tonic-build](https://github.com/hyperium/tonic/tree/master/tonic-build).
 
 ## Disclaimer
-This is NOT OFFICAL gcloud sdk from Google (and it doesn't exist for Rust at the moment of this page was updated).
+This is NOT OFFICIAL Google Cloud SDK (and it doesn't exist for Rust at the time this page updated).
 
 ## Overview
 This library contains all the code generated from the Google API.
@@ -46,6 +45,7 @@ The list of available features can be found [here](./gcloud-sdk/Cargo.toml#L22-L
         }))
         .await?;
 ```
+More complete examples are located [here](examples).
 
 Cargo.toml:
 ```toml
@@ -76,7 +76,7 @@ the updates and API proto descriptions from Google more frequently and simplify 
 ### Why not to contribute back?
 - Different goals from googapis.
     * This fork focuses on simplicity and provided authentication capabilities natively.
-    * Has direct dependencies to tokio runtime and chrono.
+    * Has direct dependencies to tokio runtime.
       Uses synchronisation primitives (such as Mutex) from tokio everywhere.
     * Provides facade API for the caching async client implementation based on Tower middleware
       that hides complexity working with tokens and TLS.
