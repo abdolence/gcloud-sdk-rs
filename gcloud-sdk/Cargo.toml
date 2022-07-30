@@ -391,7 +391,7 @@ grafeas-v1beta1-source = []
 maps-fleetengine-v1 = []
 
 [dependencies]
-tonic = { version = "0.7", features = ["tls"] }
+tonic = { version = "0.8", features = ["tls"] }
 tower = "0.4"
 tower-layer = "0.3"
 tower-util = "0.3"
