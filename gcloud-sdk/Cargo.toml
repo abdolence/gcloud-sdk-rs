@@ -396,7 +396,7 @@ tower = "0.4"
 tower-layer = "0.3"
 tower-util = "0.3"
 futures = "0.3"
-prost = "0.10"
+prost = "0.11"
 prost-types = "0.11"
 gcemeta = { version = "0.2" }
 serde = { version = "1.0", features = ["derive"] }
