@@ -50,10 +50,10 @@ More complete examples are located [here](examples).
 Cargo.toml:
 ```toml
 [dependencies]
-gcloud-sdk = { version = "0.17", features = ["google-firestore-v1"] }
-tonic = { version = "0.7", features = ["tls"] }
-prost = "0.10"
-prost-types = "0.10"
+gcloud-sdk = { version = "0.18", features = ["google-firestore-v1"] }
+tonic = { version = "0.8", features = ["tls"] }
+prost = "0.11"
+prost-types = "0.11"
 ```
 
 ## Google authentication
