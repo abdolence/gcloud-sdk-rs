@@ -346,6 +346,7 @@ pub mod google {
                 feature = "google-cloud-datacatalog-v1",
                 feature = "google-cloud-datacatalog-v1beta1",
                 feature = "google-cloud-dataform-v1alpha2",
+                feature = "google-cloud-dataform-v1beta1",
                 feature = "google-cloud-datafusion-v1",
                 feature = "google-cloud-datafusion-v1beta1",
                 feature = "google-cloud-datalabeling-v1beta1",
@@ -1246,6 +1247,10 @@ pub mod google {
             pub mod v1alpha2 {
                 #[cfg(any(feature = "google-cloud-dataform-v1alpha2"))]
                 include_proto!("google.cloud.dataform.v1alpha2");
+            }
+            pub mod v1beta1 {
+                #[cfg(any(feature = "google-cloud-dataform-v1beta1"))]
+                include_proto!("google.cloud.dataform.v1beta1");
             }
         }
         pub mod datafusion {
@@ -2992,6 +2997,7 @@ pub mod google {
                 feature = "google-cloud-datacatalog-v1",
                 feature = "google-cloud-datacatalog-v1beta1",
                 feature = "google-cloud-dataform-v1alpha2",
+                feature = "google-cloud-dataform-v1beta1",
                 feature = "google-cloud-datafusion-v1beta1",
                 feature = "google-cloud-dataplex-v1",
                 feature = "google-cloud-deploy-v1",
