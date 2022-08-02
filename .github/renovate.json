@@ -3,7 +3,7 @@
     "config:base"
   ],
   "git-submodules": {
-    "enabled": true
+    "enabled": false
   },
   "labels": ["B-renovate"],
   "timezone": "Asia/Tokyo",
