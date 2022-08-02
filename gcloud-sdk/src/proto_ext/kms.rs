@@ -113,7 +113,7 @@ impl prost::Message for EncryptRequest {
     where
         B: ::prost::bytes::Buf,
     {
-        const STRUCT_NAME: &'static str = "EncryptRequest";
+        const STRUCT_NAME: &str = "EncryptRequest";
         match tag {
             1u32 => {
                 let value = &mut self.name;
@@ -267,7 +267,7 @@ impl prost::Message for DecryptResponse {
     where
         B: ::prost::bytes::Buf,
     {
-        const STRUCT_NAME: &'static str = "DecryptResponse";
+        const STRUCT_NAME: &str = "DecryptResponse";
         match tag {
             1u32 => ::prost::encoding::bytes::merge(
                 wire_type,
