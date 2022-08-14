@@ -537,7 +537,7 @@ pub struct AlertPolicy {
     ///
     ///      projects/\[PROJECT_ID_OR_NUMBER]/alertPolicies/[ALERT_POLICY_ID\]
     ///
-    ///  `\[ALERT_POLICY_ID\]` is assigned by Stackdriver Monitoring when the policy
+    ///  `\[ALERT_POLICY_ID\]` is assigned by Cloud Monitoring when the policy
     ///  is created. When calling the
     ///  \[alertPolicies.create][google.monitoring.v3.AlertPolicyService.CreateAlertPolicy\]
     ///  method, do not include the `name` field in the alerting policy passed as
@@ -624,7 +624,8 @@ pub mod alert_policy {
         ///  The text of the documentation, interpreted according to `mime_type`.
         ///  The content may not exceed 8,192 Unicode characters and may not exceed
         ///  more than 10,240 bytes when encoded in UTF-8 format, whichever is
-        ///  smaller.
+        ///  smaller. This text can be [templatized by using
+        ///  variables](<https://cloud.google.com/monitoring/alerts/doc-variables>).
         #[prost(string, tag="1")]
         pub content: ::prost::alloc::string::String,
         ///  The format of the `content` field. Presently, only the value
@@ -643,13 +644,13 @@ pub mod alert_policy {
         ///
         ///      projects/\[PROJECT_ID_OR_NUMBER]/alertPolicies/[POLICY_ID]/conditions/[CONDITION_ID\]
         ///
-        ///  `\[CONDITION_ID\]` is assigned by Stackdriver Monitoring when the
+        ///  `\[CONDITION_ID\]` is assigned by Cloud Monitoring when the
         ///  condition is created as part of a new or updated alerting policy.
         ///
         ///  When calling the
         ///  \[alertPolicies.create][google.monitoring.v3.AlertPolicyService.CreateAlertPolicy\]
         ///  method, do not include the `name` field in the conditions of the
-        ///  requested alerting policy. Stackdriver Monitoring creates the
+        ///  requested alerting policy. Cloud Monitoring creates the
         ///  condition identifiers and includes them in the new policy.
         ///
         ///  When calling the
@@ -782,6 +783,10 @@ pub mod alert_policy {
             ///  are specified.
             #[prost(message, optional, tag="7")]
             pub trigger: ::core::option::Option<Trigger>,
+            ///  A condition control that determines how metric-threshold conditions
+            ///  are evaluated when data stops arriving.
+            #[prost(enumeration="EvaluationMissingData", tag="11")]
+            pub evaluation_missing_data: i32,
         }
         ///  A condition type that checks that monitored resources
         ///  are reporting data. The configuration defines a metric and
@@ -884,6 +889,42 @@ pub mod alert_policy {
             ///  are specified.
             #[prost(message, optional, tag="3")]
             pub trigger: ::core::option::Option<Trigger>,
+            ///  A condition control that determines how metric-threshold conditions
+            ///  are evaluated when data stops arriving.
+            #[prost(enumeration="EvaluationMissingData", tag="4")]
+            pub evaluation_missing_data: i32,
+        }
+        ///  A condition control that determines how metric-threshold conditions
+        ///  are evaluated when data stops arriving.
+        ///  This control doesn't affect metric-absence policies.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum EvaluationMissingData {
+            ///  An unspecified evaluation missing data option.  Equivalent to
+            ///  EVALUATION_MISSING_DATA_NO_OP.
+            Unspecified = 0,
+            ///  If there is no data to evaluate the condition, then evaluate the
+            ///  condition as false.
+            Inactive = 1,
+            ///  If there is no data to evaluate the condition, then evaluate the
+            ///  condition as true.
+            Active = 2,
+            ///  Do not evaluate the condition to any value if there is no data.
+            NoOp = 3,
+        }
+        impl EvaluationMissingData {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    EvaluationMissingData::Unspecified => "EVALUATION_MISSING_DATA_UNSPECIFIED",
+                    EvaluationMissingData::Inactive => "EVALUATION_MISSING_DATA_INACTIVE",
+                    EvaluationMissingData::Active => "EVALUATION_MISSING_DATA_ACTIVE",
+                    EvaluationMissingData::NoOp => "EVALUATION_MISSING_DATA_NO_OP",
+                }
+            }
         }
         ///  Only one of the following condition types will be specified.
         #[derive(Clone, PartialEq, ::prost::Oneof)]
@@ -974,7 +1015,7 @@ pub struct CreateAlertPolicyRequest {
     ///
     ///  Note that this field names the parent container in which the alerting
     ///  policy will be written, not the name of the created policy. |name| must be
-    ///  a host project of a workspace, otherwise INVALID_ARGUMENT error will
+    ///  a host project of a Metrics Scope, otherwise INVALID_ARGUMENT error will
     ///  return. The alerting policy that is returned will have a name that contains
     ///  a normalized representation of this name as a prefix but adds a suffix of
     ///  the form `/alertPolicies/\[ALERT_POLICY_ID\]`, identifying the policy in the
@@ -1101,14 +1142,14 @@ pub mod alert_policy_service_client {
     use tonic::codegen::*;
     use tonic::codegen::http::Uri;
     /// The AlertPolicyService API is used to manage (list, create, delete,
-    /// edit) alert policies in Stackdriver Monitoring. An alerting policy is
+    /// edit) alert policies in Cloud Monitoring. An alerting policy is
     /// a description of the conditions under which some aspect of your
     /// system is considered to be "unhealthy" and the ways to notify
     /// people or services about this state. In addition to using this API, alert
     /// policies can also be managed through
-    /// [Stackdriver Monitoring](https://cloud.google.com/monitoring/docs/),
+    /// [Cloud Monitoring](https://cloud.google.com/monitoring/docs/),
     /// which can be reached by clicking the "Monitoring" tab in
-    /// [Cloud Console](https://console.cloud.google.com/).
+    /// [Cloud console](https://console.cloud.google.com/).
     #[derive(Debug, Clone)]
     pub struct AlertPolicyServiceClient<T> {
         inner: tonic::client::Grpc<T>,

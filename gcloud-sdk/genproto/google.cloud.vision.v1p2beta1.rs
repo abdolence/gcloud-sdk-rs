@@ -916,6 +916,9 @@ pub struct TextDetectionParams {
     ///  score for TEXT_DETECTION as well.
     #[prost(bool, tag="9")]
     pub enable_text_detection_confidence_score: bool,
+    ///  A list of advanced OCR options to fine-tune OCR behavior.
+    #[prost(string, repeated, tag="11")]
+    pub advanced_ocr_options: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///  Image context and/or feature-specific parameters.
 #[derive(Clone, PartialEq, ::prost::Message)]

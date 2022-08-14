@@ -5836,6 +5836,38 @@ pub struct StringArray {
     #[prost(string, repeated, tag="1")]
     pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
+///  Request message for \[FeaturestoreOnlineServingService.WriteFeatureValues][google.cloud.aiplatform.v1beta1.FeaturestoreOnlineServingService.WriteFeatureValues\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WriteFeatureValuesRequest {
+    ///  Required. The resource name of the EntityType for the entities being written.
+    ///  Value format: `projects/{project}/locations/{location}/featurestores/
+    ///  {featurestore}/entityTypes/{entityType}`. For example,
+    ///  for a machine learning model predicting user clicks on a website, an
+    ///  EntityType ID could be `user`.
+    #[prost(string, tag="1")]
+    pub entity_type: ::prost::alloc::string::String,
+    ///  Required. The entities to be written. Up to 100,000 feature values can be written
+    ///  across all `payloads`.
+    #[prost(message, repeated, tag="2")]
+    pub payloads: ::prost::alloc::vec::Vec<WriteFeatureValuesPayload>,
+}
+///  Contains Feature values to be written for a specific entity.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WriteFeatureValuesPayload {
+    ///  Required. The ID of the entity.
+    #[prost(string, tag="1")]
+    pub entity_id: ::prost::alloc::string::String,
+    ///  Required. Feature values to be written, mapping from Feature ID to value. Up to
+    ///  100,000 `feature_values` entries may be written across all payloads.  The
+    ///  feature generation time, aligned by days, must be no older than five
+    ///  years (1825 days) and no later than one year (366 days) in the future.
+    #[prost(map="string, message", tag="2")]
+    pub feature_values: ::std::collections::HashMap<::prost::alloc::string::String, FeatureValue>,
+}
+///  Response message for \[FeaturestoreOnlineServingService.WriteFeatureValues][google.cloud.aiplatform.v1beta1.FeaturestoreOnlineServingService.WriteFeatureValues\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct WriteFeatureValuesResponse {
+}
 ///  Request message for \[FeaturestoreOnlineServingService.ReadFeatureValues][google.cloud.aiplatform.v1beta1.FeaturestoreOnlineServingService.ReadFeatureValues\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ReadFeatureValuesRequest {
@@ -6134,6 +6166,30 @@ pub mod featurestore_online_serving_service_client {
                 "/google.cloud.aiplatform.v1beta1.FeaturestoreOnlineServingService/StreamingReadFeatureValues",
             );
             self.inner.server_streaming(request.into_request(), path, codec).await
+        }
+        /// Writes Feature values of one or more entities of an EntityType.
+        ///
+        /// The Feature values are merged into existing entities if any. The Feature
+        /// values to be written must have timestamp within the online storage
+        /// retention.
+        pub async fn write_feature_values(
+            &mut self,
+            request: impl tonic::IntoRequest<super::WriteFeatureValuesRequest>,
+        ) -> Result<tonic::Response<super::WriteFeatureValuesResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.FeaturestoreOnlineServingService/WriteFeatureValues",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }

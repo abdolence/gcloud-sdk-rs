@@ -321,8 +321,8 @@ pub struct Route {
     #[prost(int32, tag="2")]
     pub distance_meters: i32,
     ///  The length of time needed to navigate the route. If you set the
-    ///  `route_preference` to `TRAFFIC_UNAWARE`, then this value is the same as
-    ///  `static_duration`. If you set the `route_preference` to either
+    ///  `routing_preference` to `TRAFFIC_UNAWARE`, then this value is the same as
+    ///  `static_duration`. If you set the `routing_preference` to either
     ///  `TRAFFIC_AWARE` or `TRAFFIC_AWARE_OPTIMAL`, then this value is calculated
     ///  taking traffic conditions into account.
     #[prost(message, optional, tag="3")]
@@ -1020,7 +1020,8 @@ pub struct ComputeRoutesRequest {
     ///  time that has already occurred, then the request fails.
     #[prost(message, optional, tag="7")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Optional. Specifies whether to calculate alternate routes in addition to the route.
+    ///  Optional. Specifies whether to calculate alternate routes in addition to
+    ///  the route.
     #[prost(bool, tag="8")]
     pub compute_alternative_routes: bool,
     ///  Optional. A set of conditions to satisfy that affect the way routes are
@@ -1063,8 +1064,8 @@ pub struct ComputeRoutesResponse {
 ///  ComputeRouteMatrix request message
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ComputeRouteMatrixRequest {
-    ///  Required. Array of origins, which determines the rows of the response matrix.
-    ///  Several size restrictions apply to the cardinality of origins and
+    ///  Required. Array of origins, which determines the rows of the response
+    ///  matrix. Several size restrictions apply to the cardinality of origins and
     ///  destinations:
     ///
     ///  * The number of elements (origins × destinations) must be no greater than
@@ -1075,24 +1076,25 @@ pub struct ComputeRouteMatrixRequest {
     ///  must be no greater than 50.
     #[prost(message, repeated, tag="1")]
     pub origins: ::prost::alloc::vec::Vec<RouteMatrixOrigin>,
-    ///  Required. Array of destinations, which determines the columns of the response matrix.
+    ///  Required. Array of destinations, which determines the columns of the
+    ///  response matrix.
     #[prost(message, repeated, tag="2")]
     pub destinations: ::prost::alloc::vec::Vec<RouteMatrixDestination>,
     ///  Optional. Specifies the mode of transportation.
     #[prost(enumeration="RouteTravelMode", tag="3")]
     pub travel_mode: i32,
-    ///  Optional. Specifies how to compute the route. The server attempts to use the selected
-    ///  routing preference to compute the route. If the routing preference results
-    ///  in an error or an extra long latency, an error is returned. In the future,
-    ///  we might implement a fallback mechanism to use a different option when the
-    ///  preferred option does not give a valid result. You can specify this option
-    ///  only when the `travel_mode` is `DRIVE` or `TWO_WHEELER`, otherwise the
-    ///  request fails.
+    ///  Optional. Specifies how to compute the route. The server attempts to use
+    ///  the selected routing preference to compute the route. If the routing
+    ///  preference results in an error or an extra long latency, an error is
+    ///  returned. In the future, we might implement a fallback mechanism to use a
+    ///  different option when the preferred option does not give a valid result.
+    ///  You can specify this option only when the `travel_mode` is `DRIVE` or
+    ///  `TWO_WHEELER`, otherwise the request fails.
     #[prost(enumeration="RoutingPreference", tag="4")]
     pub routing_preference: i32,
-    ///  Optional. The departure time. If you don't set this value, this defaults to the time
-    ///  that you made the request. If you set this value to a time that has already
-    ///  occurred, the request fails.
+    ///  Optional. The departure time. If you don't set this value, this defaults to
+    ///  the time that you made the request. If you set this value to a time that
+    ///  has already occurred, the request fails.
     #[prost(message, optional, tag="5")]
     pub departure_time: ::core::option::Option<::prost_types::Timestamp>,
 }
@@ -1133,8 +1135,8 @@ pub struct RouteMatrixElement {
     #[prost(int32, tag="4")]
     pub distance_meters: i32,
     ///  The length of time needed to navigate the route. If you set the
-    ///  `route_preference` to `TRAFFIC_UNAWARE`, then this value is the same as
-    ///  `static_duration`. If you set the `route_preference` to either
+    ///  `routing_preference` to `TRAFFIC_UNAWARE`, then this value is the same as
+    ///  `static_duration`. If you set the `routing_preference` to either
     ///  `TRAFFIC_AWARE` or `TRAFFIC_AWARE_OPTIMAL`, then this value is calculated
     ///  taking traffic conditions into account.
     #[prost(message, optional, tag="5")]

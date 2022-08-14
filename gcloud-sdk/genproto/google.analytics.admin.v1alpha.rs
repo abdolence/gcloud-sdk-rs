@@ -1,3 +1,892 @@
+///  Dimensions are attributes of your data. For example, the dimension
+///  `userEmail` indicates the email of the user that accessed reporting data.
+///  Dimension values in report responses are strings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessDimension {
+    ///  The API name of the dimension. See [Data Access
+    ///  Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
+    ///  for the list of dimensions supported in this API.
+    ///
+    ///  Dimensions are referenced by name in `dimensionFilter` and `orderBys`.
+    #[prost(string, tag="1")]
+    pub dimension_name: ::prost::alloc::string::String,
+}
+///  The quantitative measurements of a report. For example, the metric
+///  `accessCount` is the total number of data access records.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessMetric {
+    ///  The API name of the metric. See [Data Access
+    ///  Schema](<https://developers.google.com/analytics/devguides/config/admin/v1/access-api-schema>)
+    ///  for the list of metrics supported in this API.
+    ///
+    ///  Metrics are referenced by name in `metricFilter` & `orderBys`.
+    #[prost(string, tag="1")]
+    pub metric_name: ::prost::alloc::string::String,
+}
+///  A contiguous range of days: startDate, startDate + 1, ..., endDate.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessDateRange {
+    ///  The inclusive start date for the query in the format `YYYY-MM-DD`. Cannot
+    ///  be after `endDate`. The format `NdaysAgo`, `yesterday`, or `today` is also
+    ///  accepted, and in that case, the date is inferred based on the current time
+    ///  in the request's time zone.
+    #[prost(string, tag="1")]
+    pub start_date: ::prost::alloc::string::String,
+    ///  The inclusive end date for the query in the format `YYYY-MM-DD`. Cannot
+    ///  be before `startDate`. The format `NdaysAgo`, `yesterday`, or `today` is
+    ///  also accepted, and in that case, the date is inferred based on the current
+    ///  time in the request's time zone.
+    #[prost(string, tag="2")]
+    pub end_date: ::prost::alloc::string::String,
+}
+///  Expresses dimension or metric filters. The fields in the same expression need
+///  to be either all dimensions or all metrics.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessFilterExpression {
+    ///  Specify one type of filter expression for `FilterExpression`.
+    #[prost(oneof="access_filter_expression::OneExpression", tags="1, 2, 3, 4")]
+    pub one_expression: ::core::option::Option<access_filter_expression::OneExpression>,
+}
+/// Nested message and enum types in `AccessFilterExpression`.
+pub mod access_filter_expression {
+    ///  Specify one type of filter expression for `FilterExpression`.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneExpression {
+        ///  Each of the FilterExpressions in the and_group has an AND relationship.
+        #[prost(message, tag="1")]
+        AndGroup(super::AccessFilterExpressionList),
+        ///  Each of the FilterExpressions in the or_group has an OR relationship.
+        #[prost(message, tag="2")]
+        OrGroup(super::AccessFilterExpressionList),
+        ///  The FilterExpression is NOT of not_expression.
+        #[prost(message, tag="3")]
+        NotExpression(::prost::alloc::boxed::Box<super::AccessFilterExpression>),
+        ///  A primitive filter. In the same FilterExpression, all of the filter's
+        ///  field names need to be either all dimensions or all metrics.
+        #[prost(message, tag="4")]
+        AccessFilter(super::AccessFilter),
+    }
+}
+///  A list of filter expressions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessFilterExpressionList {
+    ///  A list of filter expressions.
+    #[prost(message, repeated, tag="1")]
+    pub expressions: ::prost::alloc::vec::Vec<AccessFilterExpression>,
+}
+///  An expression to filter dimension or metric values.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessFilter {
+    ///  The dimension name or metric name.
+    #[prost(string, tag="1")]
+    pub field_name: ::prost::alloc::string::String,
+    ///  Specify one type of filter for `Filter`.
+    #[prost(oneof="access_filter::OneFilter", tags="2, 3, 4, 5")]
+    pub one_filter: ::core::option::Option<access_filter::OneFilter>,
+}
+/// Nested message and enum types in `AccessFilter`.
+pub mod access_filter {
+    ///  Specify one type of filter for `Filter`.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneFilter {
+        ///  Strings related filter.
+        #[prost(message, tag="2")]
+        StringFilter(super::AccessStringFilter),
+        ///  A filter for in list values.
+        #[prost(message, tag="3")]
+        InListFilter(super::AccessInListFilter),
+        ///  A filter for numeric or date values.
+        #[prost(message, tag="4")]
+        NumericFilter(super::AccessNumericFilter),
+        ///  A filter for two values.
+        #[prost(message, tag="5")]
+        BetweenFilter(super::AccessBetweenFilter),
+    }
+}
+///  The filter for strings.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessStringFilter {
+    ///  The match type for this filter.
+    #[prost(enumeration="access_string_filter::MatchType", tag="1")]
+    pub match_type: i32,
+    ///  The string value used for the matching.
+    #[prost(string, tag="2")]
+    pub value: ::prost::alloc::string::String,
+    ///  If true, the string value is case sensitive.
+    #[prost(bool, tag="3")]
+    pub case_sensitive: bool,
+}
+/// Nested message and enum types in `AccessStringFilter`.
+pub mod access_string_filter {
+    ///  The match type of a string filter.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum MatchType {
+        ///  Unspecified
+        Unspecified = 0,
+        ///  Exact match of the string value.
+        Exact = 1,
+        ///  Begins with the string value.
+        BeginsWith = 2,
+        ///  Ends with the string value.
+        EndsWith = 3,
+        ///  Contains the string value.
+        Contains = 4,
+        ///  Full match for the regular expression with the string value.
+        FullRegexp = 5,
+        ///  Partial match for the regular expression with the string value.
+        PartialRegexp = 6,
+    }
+    impl MatchType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MatchType::Unspecified => "MATCH_TYPE_UNSPECIFIED",
+                MatchType::Exact => "EXACT",
+                MatchType::BeginsWith => "BEGINS_WITH",
+                MatchType::EndsWith => "ENDS_WITH",
+                MatchType::Contains => "CONTAINS",
+                MatchType::FullRegexp => "FULL_REGEXP",
+                MatchType::PartialRegexp => "PARTIAL_REGEXP",
+            }
+        }
+    }
+}
+///  The result needs to be in a list of string values.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessInListFilter {
+    ///  The list of string values. Must be non-empty.
+    #[prost(string, repeated, tag="1")]
+    pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    ///  If true, the string value is case sensitive.
+    #[prost(bool, tag="2")]
+    pub case_sensitive: bool,
+}
+///  Filters for numeric or date values.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessNumericFilter {
+    ///  The operation type for this filter.
+    #[prost(enumeration="access_numeric_filter::Operation", tag="1")]
+    pub operation: i32,
+    ///  A numeric value or a date value.
+    #[prost(message, optional, tag="2")]
+    pub value: ::core::option::Option<NumericValue>,
+}
+/// Nested message and enum types in `AccessNumericFilter`.
+pub mod access_numeric_filter {
+    ///  The operation applied to a numeric filter.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Operation {
+        ///  Unspecified.
+        Unspecified = 0,
+        ///  Equal
+        Equal = 1,
+        ///  Less than
+        LessThan = 2,
+        ///  Less than or equal
+        LessThanOrEqual = 3,
+        ///  Greater than
+        GreaterThan = 4,
+        ///  Greater than or equal
+        GreaterThanOrEqual = 5,
+    }
+    impl Operation {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Operation::Unspecified => "OPERATION_UNSPECIFIED",
+                Operation::Equal => "EQUAL",
+                Operation::LessThan => "LESS_THAN",
+                Operation::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
+                Operation::GreaterThan => "GREATER_THAN",
+                Operation::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+            }
+        }
+    }
+}
+///  To express that the result needs to be between two numbers (inclusive).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessBetweenFilter {
+    ///  Begins with this number.
+    #[prost(message, optional, tag="1")]
+    pub from_value: ::core::option::Option<NumericValue>,
+    ///  Ends with this number.
+    #[prost(message, optional, tag="2")]
+    pub to_value: ::core::option::Option<NumericValue>,
+}
+///  To represent a number.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct NumericValue {
+    ///  One of a numeric value
+    #[prost(oneof="numeric_value::OneValue", tags="1, 2")]
+    pub one_value: ::core::option::Option<numeric_value::OneValue>,
+}
+/// Nested message and enum types in `NumericValue`.
+pub mod numeric_value {
+    ///  One of a numeric value
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneValue {
+        ///  Integer value
+        #[prost(int64, tag="1")]
+        Int64Value(i64),
+        ///  Double value
+        #[prost(double, tag="2")]
+        DoubleValue(f64),
+    }
+}
+///  Order bys define how rows will be sorted in the response. For example,
+///  ordering rows by descending access count is one ordering, and ordering rows
+///  by the country string is a different ordering.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessOrderBy {
+    ///  If true, sorts by descending order. If false or unspecified, sorts in
+    ///  ascending order.
+    #[prost(bool, tag="3")]
+    pub desc: bool,
+    ///  Specify one type of order by for `OrderBy`.
+    #[prost(oneof="access_order_by::OneOrderBy", tags="1, 2")]
+    pub one_order_by: ::core::option::Option<access_order_by::OneOrderBy>,
+}
+/// Nested message and enum types in `AccessOrderBy`.
+pub mod access_order_by {
+    ///  Sorts by metric values.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MetricOrderBy {
+        ///  A metric name in the request to order by.
+        #[prost(string, tag="1")]
+        pub metric_name: ::prost::alloc::string::String,
+    }
+    ///  Sorts by dimension values.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DimensionOrderBy {
+        ///  A dimension name in the request to order by.
+        #[prost(string, tag="1")]
+        pub dimension_name: ::prost::alloc::string::String,
+        ///  Controls the rule for dimension value ordering.
+        #[prost(enumeration="dimension_order_by::OrderType", tag="2")]
+        pub order_type: i32,
+    }
+    /// Nested message and enum types in `DimensionOrderBy`.
+    pub mod dimension_order_by {
+        ///  Rule to order the string dimension values by.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum OrderType {
+            ///  Unspecified.
+            Unspecified = 0,
+            ///  Alphanumeric sort by Unicode code point. For example, "2" < "A" < "X" <
+            ///  "b" < "z".
+            Alphanumeric = 1,
+            ///  Case insensitive alphanumeric sort by lower case Unicode code point.
+            ///  For example, "2" < "A" < "b" < "X" < "z".
+            CaseInsensitiveAlphanumeric = 2,
+            ///  Dimension values are converted to numbers before sorting. For example
+            ///  in NUMERIC sort, "25" < "100", and in `ALPHANUMERIC` sort, "100" <
+            ///  "25". Non-numeric dimension values all have equal ordering value below
+            ///  all numeric values.
+            Numeric = 3,
+        }
+        impl OrderType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    OrderType::Unspecified => "ORDER_TYPE_UNSPECIFIED",
+                    OrderType::Alphanumeric => "ALPHANUMERIC",
+                    OrderType::CaseInsensitiveAlphanumeric => "CASE_INSENSITIVE_ALPHANUMERIC",
+                    OrderType::Numeric => "NUMERIC",
+                }
+            }
+        }
+    }
+    ///  Specify one type of order by for `OrderBy`.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneOrderBy {
+        ///  Sorts results by a metric's values.
+        #[prost(message, tag="1")]
+        Metric(MetricOrderBy),
+        ///  Sorts results by a dimension's values.
+        #[prost(message, tag="2")]
+        Dimension(DimensionOrderBy),
+    }
+}
+///  Describes a dimension column in the report. Dimensions requested in a report
+///  produce column entries within rows and DimensionHeaders. However, dimensions
+///  used exclusively within filters or expressions do not produce columns in a
+///  report; correspondingly, those dimensions do not produce headers.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessDimensionHeader {
+    ///  The dimension's name; for example 'userEmail'.
+    #[prost(string, tag="1")]
+    pub dimension_name: ::prost::alloc::string::String,
+}
+///  Describes a metric column in the report. Visible metrics requested in a
+///  report produce column entries within rows and MetricHeaders. However,
+///  metrics used exclusively within filters or expressions do not produce columns
+///  in a report; correspondingly, those metrics do not produce headers.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessMetricHeader {
+    ///  The metric's name; for example 'accessCount'.
+    #[prost(string, tag="1")]
+    pub metric_name: ::prost::alloc::string::String,
+}
+///  Access report data for each row.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessRow {
+    ///  List of dimension values. These values are in the same order as specified
+    ///  in the request.
+    #[prost(message, repeated, tag="1")]
+    pub dimension_values: ::prost::alloc::vec::Vec<AccessDimensionValue>,
+    ///  List of metric values. These values are in the same order as specified
+    ///  in the request.
+    #[prost(message, repeated, tag="2")]
+    pub metric_values: ::prost::alloc::vec::Vec<AccessMetricValue>,
+}
+///  The value of a dimension.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessDimensionValue {
+    ///  The dimension value. For example, this value may be 'France' for the
+    ///  'country' dimension.
+    #[prost(string, tag="1")]
+    pub value: ::prost::alloc::string::String,
+}
+///  The value of a metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessMetricValue {
+    ///  The measurement value. For example, this value may be '13'.
+    #[prost(string, tag="1")]
+    pub value: ::prost::alloc::string::String,
+}
+///  Current state of all quotas for this Analytics property. If any quota for a
+///  property is exhausted, all requests to that property will return Resource
+///  Exhausted errors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessQuota {
+    ///  Properties can use 250,000 tokens per day. Most requests consume fewer than
+    ///  10 tokens.
+    #[prost(message, optional, tag="1")]
+    pub tokens_per_day: ::core::option::Option<AccessQuotaStatus>,
+    ///  Properties can use 50,000 tokens per hour. An API request consumes a single
+    ///  number of tokens, and that number is deducted from both the hourly and
+    ///  daily quotas.
+    #[prost(message, optional, tag="2")]
+    pub tokens_per_hour: ::core::option::Option<AccessQuotaStatus>,
+    ///  Properties can use up to 50 concurrent requests.
+    #[prost(message, optional, tag="3")]
+    pub concurrent_requests: ::core::option::Option<AccessQuotaStatus>,
+    ///  Properties and cloud project pairs can have up to 50 server errors per
+    ///  hour.
+    #[prost(message, optional, tag="4")]
+    pub server_errors_per_project_per_hour: ::core::option::Option<AccessQuotaStatus>,
+}
+///  Current state for a particular quota group.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AccessQuotaStatus {
+    ///  Quota consumed by this request.
+    #[prost(int32, tag="1")]
+    pub consumed: i32,
+    ///  Quota remaining after this request.
+    #[prost(int32, tag="2")]
+    pub remaining: i32,
+}
+///  A specific filter for a single dimension or metric.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceDimensionOrMetricFilter {
+    ///  Required. Immutable. The dimension name or metric name to filter.
+    #[prost(string, tag="1")]
+    pub field_name: ::prost::alloc::string::String,
+    ///  Optional. Indicates whether this filter needs dynamic evaluation or not. If set to
+    ///  true, users join the Audience if they ever met the condition (static
+    ///  evaluation). If unset or set to false, user evaluation for an Audience is
+    ///  dynamic; users are added to an Audience when they meet the conditions and
+    ///  then removed when they no longer meet them.
+    ///
+    ///  This can only be set when Audience scope is ACROSS_ALL_SESSIONS.
+    #[prost(bool, tag="6")]
+    pub at_any_point_in_time: bool,
+    ///  Optional. If set, specifies the time window for which to evaluate data in number of
+    ///  days. If not set, then audience data is evaluated against lifetime data
+    ///  (i.e., infinite time window).
+    ///
+    ///  For example, if set to 1 day, only the current day's data is evaluated. The
+    ///  reference point is the current day when at_any_point_in_time is unset or
+    ///  false.
+    ///
+    ///  It can only be set when Audience scope is ACROSS_ALL_SESSIONS and cannot be
+    ///  greater than 60 days.
+    #[prost(int32, tag="7")]
+    pub in_any_n_day_period: i32,
+    ///  One of the above filters.
+    #[prost(oneof="audience_dimension_or_metric_filter::OneFilter", tags="2, 3, 4, 5")]
+    pub one_filter: ::core::option::Option<audience_dimension_or_metric_filter::OneFilter>,
+}
+/// Nested message and enum types in `AudienceDimensionOrMetricFilter`.
+pub mod audience_dimension_or_metric_filter {
+    ///  A filter for a string-type dimension that matches a particular pattern.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct StringFilter {
+        ///  Required. The match type for the string filter.
+        #[prost(enumeration="string_filter::MatchType", tag="1")]
+        pub match_type: i32,
+        ///  Required. The string value to be matched against.
+        #[prost(string, tag="2")]
+        pub value: ::prost::alloc::string::String,
+        ///  Optional. If true, the match is case-sensitive. If false, the match is
+        ///  case-insensitive.
+        #[prost(bool, tag="3")]
+        pub case_sensitive: bool,
+    }
+    /// Nested message and enum types in `StringFilter`.
+    pub mod string_filter {
+        ///  The match type for the string filter.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum MatchType {
+            ///  Unspecified
+            Unspecified = 0,
+            ///  Exact match of the string value.
+            Exact = 1,
+            ///  Begins with the string value.
+            BeginsWith = 2,
+            ///  Ends with the string value.
+            EndsWith = 3,
+            ///  Contains the string value.
+            Contains = 4,
+            ///  Full regular expression matches with the string value.
+            FullRegexp = 5,
+            ///  Partial regular expression matches with the string value.
+            PartialRegexp = 6,
+        }
+        impl MatchType {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    MatchType::Unspecified => "MATCH_TYPE_UNSPECIFIED",
+                    MatchType::Exact => "EXACT",
+                    MatchType::BeginsWith => "BEGINS_WITH",
+                    MatchType::EndsWith => "ENDS_WITH",
+                    MatchType::Contains => "CONTAINS",
+                    MatchType::FullRegexp => "FULL_REGEXP",
+                    MatchType::PartialRegexp => "PARTIAL_REGEXP",
+                }
+            }
+        }
+    }
+    ///  A filter for a string dimension that matches a particular list of options.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct InListFilter {
+        ///  Required. The list of possible string values to match against. Must be non-empty.
+        #[prost(string, repeated, tag="1")]
+        pub values: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        ///  Optional. If true, the match is case-sensitive. If false, the match is
+        ///  case-insensitive.
+        #[prost(bool, tag="2")]
+        pub case_sensitive: bool,
+    }
+    ///  To represent a number.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NumericValue {
+        ///  One of a numeric value.
+        #[prost(oneof="numeric_value::OneValue", tags="1, 2")]
+        pub one_value: ::core::option::Option<numeric_value::OneValue>,
+    }
+    /// Nested message and enum types in `NumericValue`.
+    pub mod numeric_value {
+        ///  One of a numeric value.
+        #[derive(Clone, PartialEq, ::prost::Oneof)]
+        pub enum OneValue {
+            ///  Integer value.
+            #[prost(int64, tag="1")]
+            Int64Value(i64),
+            ///  Double value.
+            #[prost(double, tag="2")]
+            DoubleValue(f64),
+        }
+    }
+    ///  A filter for numeric or date values on a dimension or metric.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct NumericFilter {
+        ///  Required. The operation applied to a numeric filter.
+        #[prost(enumeration="numeric_filter::Operation", tag="1")]
+        pub operation: i32,
+        ///  Required. The numeric or date value to match against.
+        #[prost(message, optional, tag="2")]
+        pub value: ::core::option::Option<NumericValue>,
+    }
+    /// Nested message and enum types in `NumericFilter`.
+    pub mod numeric_filter {
+        ///  The operation applied to a numeric filter.
+        #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+        #[repr(i32)]
+        pub enum Operation {
+            ///  Unspecified.
+            Unspecified = 0,
+            ///  Equal.
+            Equal = 1,
+            ///  Less than.
+            LessThan = 2,
+            ///  Less than or equal.
+            LessThanOrEqual = 3,
+            ///  Greater than.
+            GreaterThan = 4,
+            ///  Greater than or equal.
+            GreaterThanOrEqual = 5,
+        }
+        impl Operation {
+            /// String value of the enum field names used in the ProtoBuf definition.
+            ///
+            /// The values are not transformed in any way and thus are considered stable
+            /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+            pub fn as_str_name(&self) -> &'static str {
+                match self {
+                    Operation::Unspecified => "OPERATION_UNSPECIFIED",
+                    Operation::Equal => "EQUAL",
+                    Operation::LessThan => "LESS_THAN",
+                    Operation::LessThanOrEqual => "LESS_THAN_OR_EQUAL",
+                    Operation::GreaterThan => "GREATER_THAN",
+                    Operation::GreaterThanOrEqual => "GREATER_THAN_OR_EQUAL",
+                }
+            }
+        }
+    }
+    ///  A filter for numeric or date values between certain values on a dimension
+    ///  or metric.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BetweenFilter {
+        ///  Required. Begins with this number, inclusive.
+        #[prost(message, optional, tag="1")]
+        pub from_value: ::core::option::Option<NumericValue>,
+        ///  Required. Ends with this number, inclusive.
+        #[prost(message, optional, tag="2")]
+        pub to_value: ::core::option::Option<NumericValue>,
+    }
+    ///  One of the above filters.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum OneFilter {
+        ///  A filter for a string-type dimension that matches a particular pattern.
+        #[prost(message, tag="2")]
+        StringFilter(StringFilter),
+        ///  A filter for a string dimension that matches a particular list of
+        ///  options.
+        #[prost(message, tag="3")]
+        InListFilter(InListFilter),
+        ///  A filter for numeric or date values on a dimension or metric.
+        #[prost(message, tag="4")]
+        NumericFilter(NumericFilter),
+        ///  A filter for numeric or date values between certain values on a dimension
+        ///  or metric.
+        #[prost(message, tag="5")]
+        BetweenFilter(BetweenFilter),
+    }
+}
+///  A filter that matches events of a single event name. If an event parameter
+///  is specified, only the subset of events that match both the single event name
+///  and the parameter filter expressions match this event filter.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceEventFilter {
+    ///  Required. Immutable. The name of the event to match against.
+    #[prost(string, tag="1")]
+    pub event_name: ::prost::alloc::string::String,
+    ///  Optional. If specified, this filter matches events that match both the single
+    ///  event name and the parameter filter expressions. AudienceEventFilter
+    ///  inside the parameter filter expression cannot be set (i.e., nested
+    ///  event filters are not supported). This should be a single and_group of
+    ///  dimension_or_metric_filter or not_expression; ANDs of ORs are not
+    ///  supported. Also, if it includes a filter for "eventCount", only that one
+    ///  will be considered; all the other filters will be ignored.
+    #[prost(message, optional, boxed, tag="2")]
+    pub event_parameter_filter_expression: ::core::option::Option<::prost::alloc::boxed::Box<AudienceFilterExpression>>,
+}
+///  A logical expression of Audience dimension, metric, or event filters.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceFilterExpression {
+    ///  The expression applied to a filter.
+    #[prost(oneof="audience_filter_expression::Expr", tags="1, 2, 3, 4, 5")]
+    pub expr: ::core::option::Option<audience_filter_expression::Expr>,
+}
+/// Nested message and enum types in `AudienceFilterExpression`.
+pub mod audience_filter_expression {
+    ///  The expression applied to a filter.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Expr {
+        ///  A list of expressions to be AND’ed together. It can only contain
+        ///  AudienceFilterExpressions with or_group. This must be set for the top
+        ///  level AudienceFilterExpression.
+        #[prost(message, tag="1")]
+        AndGroup(super::AudienceFilterExpressionList),
+        ///  A list of expressions to OR’ed together. It cannot contain
+        ///  AudienceFilterExpressions with and_group or or_group.
+        #[prost(message, tag="2")]
+        OrGroup(super::AudienceFilterExpressionList),
+        ///  A filter expression to be NOT'ed (i.e., inverted, complemented). It
+        ///  can only include a dimension_or_metric_filter. This cannot be set on the
+        ///  top level AudienceFilterExpression.
+        #[prost(message, tag="3")]
+        NotExpression(::prost::alloc::boxed::Box<super::AudienceFilterExpression>),
+        ///  A filter on a single dimension or metric. This cannot be set on the top
+        ///  level AudienceFilterExpression.
+        #[prost(message, tag="4")]
+        DimensionOrMetricFilter(super::AudienceDimensionOrMetricFilter),
+        ///  Creates a filter that matches a specific event. This cannot be set on the
+        ///  top level AudienceFilterExpression.
+        #[prost(message, tag="5")]
+        EventFilter(::prost::alloc::boxed::Box<super::AudienceEventFilter>),
+    }
+}
+///  A list of Audience filter expressions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceFilterExpressionList {
+    ///  A list of Audience filter expressions.
+    #[prost(message, repeated, tag="1")]
+    pub filter_expressions: ::prost::alloc::vec::Vec<AudienceFilterExpression>,
+}
+///  Defines a simple filter that a user must satisfy to be a member of the
+///  Audience.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceSimpleFilter {
+    ///  Required. Immutable. Specifies the scope for this filter.
+    #[prost(enumeration="AudienceFilterScope", tag="1")]
+    pub scope: i32,
+    ///  Required. Immutable. A logical expression of Audience dimension, metric, or event filters.
+    #[prost(message, optional, tag="2")]
+    pub filter_expression: ::core::option::Option<AudienceFilterExpression>,
+}
+///  Defines filters that must occur in a specific order for the user to be a
+///  member of the Audience.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceSequenceFilter {
+    ///  Required. Immutable. Specifies the scope for this filter.
+    #[prost(enumeration="AudienceFilterScope", tag="1")]
+    pub scope: i32,
+    ///  Optional. Defines the time period in which the whole sequence must occur.
+    #[prost(message, optional, tag="2")]
+    pub sequence_maximum_duration: ::core::option::Option<::prost_types::Duration>,
+    ///  Required. An ordered sequence of steps. A user must complete each step in order to
+    ///  join the sequence filter.
+    #[prost(message, repeated, tag="3")]
+    pub sequence_steps: ::prost::alloc::vec::Vec<audience_sequence_filter::AudienceSequenceStep>,
+}
+/// Nested message and enum types in `AudienceSequenceFilter`.
+pub mod audience_sequence_filter {
+    ///  A condition that must occur in the specified step order for this user
+    ///  to match the sequence.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct AudienceSequenceStep {
+        ///  Required. Immutable. Specifies the scope for this step.
+        #[prost(enumeration="super::AudienceFilterScope", tag="1")]
+        pub scope: i32,
+        ///  Optional. If true, the event satisfying this step must be the very next event
+        ///  after the event satisfying the last step. If unset or false, this
+        ///  step indirectly follows the prior step; for example, there may be
+        ///  events between the prior step and this step. It is ignored for the
+        ///  first step.
+        #[prost(bool, tag="2")]
+        pub immediately_follows: bool,
+        ///  Optional. When set, this step must be satisfied within the constraint_duration of
+        ///  the previous step (i.e., t\[i\] - t\[i-1\] <= constraint_duration). If not
+        ///  set, there is no duration requirement (the duration is effectively
+        ///  unlimited). It is ignored for the first step.
+        #[prost(message, optional, tag="3")]
+        pub constraint_duration: ::core::option::Option<::prost_types::Duration>,
+        ///  Required. Immutable. A logical expression of Audience dimension, metric, or event filters in
+        ///  each step.
+        #[prost(message, optional, tag="4")]
+        pub filter_expression: ::core::option::Option<super::AudienceFilterExpression>,
+    }
+}
+///  A clause for defining either a simple or sequence filter. A filter can be
+///  inclusive (i.e., users satisfying the filter clause are included in the
+///  Audience) or exclusive (i.e., users satisfying the filter clause are
+///  excluded from the Audience).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceFilterClause {
+    ///  Required. Specifies whether this is an include or exclude filter clause.
+    #[prost(enumeration="audience_filter_clause::AudienceClauseType", tag="1")]
+    pub clause_type: i32,
+    #[prost(oneof="audience_filter_clause::Filter", tags="2, 3")]
+    pub filter: ::core::option::Option<audience_filter_clause::Filter>,
+}
+/// Nested message and enum types in `AudienceFilterClause`.
+pub mod audience_filter_clause {
+    ///  Specifies whether this is an include or exclude filter clause.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AudienceClauseType {
+        ///  Unspecified clause type.
+        Unspecified = 0,
+        ///  Users will be included in the Audience if the filter clause is met.
+        Include = 1,
+        ///  Users will be excluded from the Audience if the filter clause is met.
+        Exclude = 2,
+    }
+    impl AudienceClauseType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AudienceClauseType::Unspecified => "AUDIENCE_CLAUSE_TYPE_UNSPECIFIED",
+                AudienceClauseType::Include => "INCLUDE",
+                AudienceClauseType::Exclude => "EXCLUDE",
+            }
+        }
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Filter {
+        ///  A simple filter that a user must satisfy to be a member of the Audience.
+        #[prost(message, tag="2")]
+        SimpleFilter(super::AudienceSimpleFilter),
+        ///  Filters that must occur in a specific order for the user to be a member
+        ///  of the Audience.
+        #[prost(message, tag="3")]
+        SequenceFilter(super::AudienceSequenceFilter),
+    }
+}
+///  Specifies an event to log when a user joins the Audience.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AudienceEventTrigger {
+    ///  Required. The event name that will be logged.
+    #[prost(string, tag="1")]
+    pub event_name: ::prost::alloc::string::String,
+    ///  Required. When to log the event.
+    #[prost(enumeration="audience_event_trigger::LogCondition", tag="2")]
+    pub log_condition: i32,
+}
+/// Nested message and enum types in `AudienceEventTrigger`.
+pub mod audience_event_trigger {
+    ///  Determines when to log the event.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum LogCondition {
+        ///  Log condition is not specified.
+        Unspecified = 0,
+        ///  The event should be logged only when a user is joined.
+        AudienceJoined = 1,
+        ///  The event should be logged whenever the Audience condition is met, even
+        ///  if the user is already a member of the Audience.
+        AudienceMembershipRenewed = 2,
+    }
+    impl LogCondition {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                LogCondition::Unspecified => "LOG_CONDITION_UNSPECIFIED",
+                LogCondition::AudienceJoined => "AUDIENCE_JOINED",
+                LogCondition::AudienceMembershipRenewed => "AUDIENCE_MEMBERSHIP_RENEWED",
+            }
+        }
+    }
+}
+///  A resource message representing a GA4 Audience.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Audience {
+    ///  Output only. The resource name for this Audience resource.
+    ///  Format: properties/{propertyId}/audiences/{audienceId}
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    ///  Required. The display name of the Audience.
+    #[prost(string, tag="2")]
+    pub display_name: ::prost::alloc::string::String,
+    ///  Required. The description of the Audience.
+    #[prost(string, tag="3")]
+    pub description: ::prost::alloc::string::String,
+    ///  Required. Immutable. The duration a user should stay in an Audience. It cannot be set to more
+    ///  than 540 days.
+    #[prost(int32, tag="4")]
+    pub membership_duration_days: i32,
+    ///  Output only. It is automatically set by GA to false if this is an NPA Audience and is
+    ///  excluded from ads personalization.
+    #[prost(bool, tag="5")]
+    pub ads_personalization_enabled: bool,
+    ///  Optional. Specifies an event to log when a user joins the Audience. If not set, no
+    ///  event is logged when a user joins the Audience.
+    #[prost(message, optional, tag="6")]
+    pub event_trigger: ::core::option::Option<AudienceEventTrigger>,
+    ///  Immutable. Specifies how long an exclusion lasts for users that meet the exclusion
+    ///  filter. It is applied to all EXCLUDE filter clauses and is ignored when
+    ///  there is no EXCLUDE filter clause in the Audience.
+    #[prost(enumeration="audience::AudienceExclusionDurationMode", tag="7")]
+    pub exclusion_duration_mode: i32,
+    ///  Required. Immutable. null Filter clauses that define the Audience. All clauses will be AND’ed
+    ///  together.
+    #[prost(message, repeated, tag="8")]
+    pub filter_clauses: ::prost::alloc::vec::Vec<AudienceFilterClause>,
+}
+/// Nested message and enum types in `Audience`.
+pub mod audience {
+    ///  Specifies how long an exclusion lasts for users that meet the exclusion
+    ///  filter.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AudienceExclusionDurationMode {
+        ///  Not specified.
+        Unspecified = 0,
+        ///  Exclude users from the Audience during periods when they meet the
+        ///  filter clause.
+        ExcludeTemporarily = 1,
+        ///  Exclude users from the Audience if they've ever met the filter clause.
+        ExcludePermanently = 2,
+    }
+    impl AudienceExclusionDurationMode {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AudienceExclusionDurationMode::Unspecified => "AUDIENCE_EXCLUSION_DURATION_MODE_UNSPECIFIED",
+                AudienceExclusionDurationMode::ExcludeTemporarily => "EXCLUDE_TEMPORARILY",
+                AudienceExclusionDurationMode::ExcludePermanently => "EXCLUDE_PERMANENTLY",
+            }
+        }
+    }
+}
+///  Specifies how to evaluate users for joining an Audience.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AudienceFilterScope {
+    ///  Scope is not specified.
+    Unspecified = 0,
+    ///  User joins the Audience if the filter condition is met within one
+    ///  event.
+    WithinSameEvent = 1,
+    ///  User joins the Audience if the filter condition is met within one
+    ///  session.
+    WithinSameSession = 2,
+    ///  User joins the Audience if the filter condition is met by any event
+    ///  across any session.
+    AcrossAllSessions = 3,
+}
+impl AudienceFilterScope {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            AudienceFilterScope::Unspecified => "AUDIENCE_FILTER_SCOPE_UNSPECIFIED",
+            AudienceFilterScope::WithinSameEvent => "AUDIENCE_FILTER_SCOPE_WITHIN_SAME_EVENT",
+            AudienceFilterScope::WithinSameSession => "AUDIENCE_FILTER_SCOPE_WITHIN_SAME_SESSION",
+            AudienceFilterScope::AcrossAllSessions => "AUDIENCE_FILTER_SCOPE_ACROSS_ALL_SESSIONS",
+        }
+    }
+}
 ///  A resource message representing a Google Analytics account.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Account {
@@ -31,6 +920,12 @@ pub struct Property {
     ///  Example: "properties/1000"
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
+    ///  Immutable. The property type for this Property resource. When creating a property, if
+    ///  the type is "PROPERTY_TYPE_UNSPECIFIED", then "ORDINARY_PROPERTY" will be
+    ///  implied. "SUBPROPERTY" and "ROLLUP_PROPERTY" types cannot yet be created
+    ///  via Google Analytics Admin API.
+    #[prost(enumeration="PropertyType", tag="14")]
+    pub property_type: i32,
     ///  Output only. Time when the entity was originally created.
     #[prost(message, optional, tag="3")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
@@ -40,8 +935,8 @@ pub struct Property {
     ///  Immutable. Resource name of this property's logical parent.
     ///
     ///  Note: The Property-Moving UI can be used to change the parent.
-    ///  Format: accounts/{account}
-    ///  Example: "accounts/100"
+    ///  Format: accounts/{account}, properties/{property}
+    ///  Example: "accounts/100", "properties/101"
     #[prost(string, tag="2")]
     pub parent: ::prost::alloc::string::String,
     ///  Required. Human-readable display name for this property.
@@ -382,6 +1277,16 @@ pub struct PropertySummary {
     ///  Display name for the property referred to in this property summary.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
+    ///  The property's property type.
+    #[prost(enumeration="PropertyType", tag="3")]
+    pub property_type: i32,
+    ///  Resource name of this property's logical parent.
+    ///
+    ///  Note: The Property-Moving UI can be used to change the parent.
+    ///  Format: accounts/{account}, properties/{property}
+    ///  Example: "accounts/100", "properties/200"
+    #[prost(string, tag="4")]
+    pub parent: ::prost::alloc::string::String,
 }
 ///  A secret value used for sending hits to Measurement Protocol.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -389,7 +1294,7 @@ pub struct MeasurementProtocolSecret {
     ///  Output only. Resource name of this secret. This secret may be a child of any type of
     ///  stream.
     ///  Format:
-    ///  properties/{property}/webDataStreams/{webDataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
+    ///  properties/{property}/dataStreams/{dataStream}/measurementProtocolSecrets/{measurementProtocolSecret}
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
     ///  Required. Human-readable display name for this secret.
@@ -454,7 +1359,7 @@ pub mod change_history_change {
     ///  change history.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct ChangeHistoryResource {
-        #[prost(oneof="change_history_resource::Resource", tags="1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18")]
+        #[prost(oneof="change_history_resource::Resource", tags="1, 2, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18, 20")]
         pub resource: ::core::option::Option<change_history_resource::Resource>,
     }
     /// Nested message and enum types in `ChangeHistoryResource`.
@@ -502,6 +1407,9 @@ pub mod change_history_change {
             ///  A snapshot of a DataStream resource in change history.
             #[prost(message, tag="18")]
             DataStream(super::super::DataStream),
+            ///  A snapshot of AttributionSettings resource in change history.
+            #[prost(message, tag="20")]
+            AttributionSettings(super::super::AttributionSettings),
         }
     }
 }
@@ -897,6 +1805,140 @@ pub mod data_retention_settings {
         }
     }
 }
+///  The attribution settings used for a given property. This is a singleton
+///  resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AttributionSettings {
+    ///  Output only. Resource name of this attribution settings resource.
+    ///  Format: properties/{property_id}/attributionSettings
+    ///  Example: "properties/1000/attributionSettings"
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    ///  Required. The lookback window configuration for acquisition conversion events.
+    ///  The default window size is 30 days.
+    #[prost(enumeration="attribution_settings::AcquisitionConversionEventLookbackWindow", tag="2")]
+    pub acquisition_conversion_event_lookback_window: i32,
+    ///  Required. The lookback window for all other, non-acquisition conversion events.
+    ///  The default window size is 90 days.
+    #[prost(enumeration="attribution_settings::OtherConversionEventLookbackWindow", tag="3")]
+    pub other_conversion_event_lookback_window: i32,
+    ///  Required. The reporting attribution model used to calculate conversion credit in this
+    ///  property's reports.
+    ///
+    ///  Changing the attribution model will apply to both historical and future
+    ///  data. These changes will be reflected in reports with conversion and
+    ///  revenue data. User and session data will be unaffected.
+    #[prost(enumeration="attribution_settings::ReportingAttributionModel", tag="4")]
+    pub reporting_attribution_model: i32,
+}
+/// Nested message and enum types in `AttributionSettings`.
+pub mod attribution_settings {
+    ///  How far back in time events should be considered for inclusion in a
+    ///  converting path which leads to the first install of an app or the first
+    ///  visit to a site.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum AcquisitionConversionEventLookbackWindow {
+        ///  Lookback window size unspecified.
+        Unspecified = 0,
+        ///  7-day lookback window.
+        AcquisitionConversionEventLookbackWindow7Days = 1,
+        ///  30-day lookback window.
+        AcquisitionConversionEventLookbackWindow30Days = 2,
+    }
+    impl AcquisitionConversionEventLookbackWindow {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                AcquisitionConversionEventLookbackWindow::Unspecified => "ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED",
+                AcquisitionConversionEventLookbackWindow::AcquisitionConversionEventLookbackWindow7Days => "ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_7_DAYS",
+                AcquisitionConversionEventLookbackWindow::AcquisitionConversionEventLookbackWindow30Days => "ACQUISITION_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS",
+            }
+        }
+    }
+    ///  How far back in time events should be considered for inclusion in a
+    ///  converting path for all conversions other than first app install/first site
+    ///  visit.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum OtherConversionEventLookbackWindow {
+        ///  Lookback window size unspecified.
+        Unspecified = 0,
+        ///  30-day lookback window.
+        OtherConversionEventLookbackWindow30Days = 1,
+        ///  60-day lookback window.
+        OtherConversionEventLookbackWindow60Days = 2,
+        ///  90-day lookback window.
+        OtherConversionEventLookbackWindow90Days = 3,
+    }
+    impl OtherConversionEventLookbackWindow {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                OtherConversionEventLookbackWindow::Unspecified => "OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_UNSPECIFIED",
+                OtherConversionEventLookbackWindow::OtherConversionEventLookbackWindow30Days => "OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_30_DAYS",
+                OtherConversionEventLookbackWindow::OtherConversionEventLookbackWindow60Days => "OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_60_DAYS",
+                OtherConversionEventLookbackWindow::OtherConversionEventLookbackWindow90Days => "OTHER_CONVERSION_EVENT_LOOKBACK_WINDOW_90_DAYS",
+            }
+        }
+    }
+    ///  The reporting attribution model used to calculate conversion credit in this
+    ///  property's reports.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ReportingAttributionModel {
+        ///  Reporting attribution model unspecified.
+        Unspecified = 0,
+        ///  Data-driven attribution distributes credit for the conversion based on
+        ///  data for each conversion event. Each Data-driven model is specific to
+        ///  each advertiser and each conversion event.
+        CrossChannelDataDriven = 1,
+        ///  Ignores direct traffic and attributes 100% of the conversion value to the
+        ///  last channel that the customer clicked through (or engaged view through
+        ///  for YouTube) before converting.
+        CrossChannelLastClick = 2,
+        ///  Gives all credit for the conversion to the first channel that a customer
+        ///  clicked (or engaged view through for YouTube) before converting.
+        CrossChannelFirstClick = 3,
+        ///  Distributes the credit for the conversion equally across all the channels
+        ///  a customer clicked (or engaged view through for YouTube) before
+        ///  converting.
+        CrossChannelLinear = 4,
+        ///  Attributes 40% credit to the first and last interaction, and the
+        ///  remaining 20% credit is distributed evenly to the middle interactions.
+        CrossChannelPositionBased = 5,
+        ///  Gives more credit to the touchpoints that happened closer in time to
+        ///  the conversion.
+        CrossChannelTimeDecay = 6,
+        ///  Attributes 100% of the conversion value to the last Google Ads channel
+        ///  that the customer clicked through before converting.
+        AdsPreferredLastClick = 7,
+    }
+    impl ReportingAttributionModel {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ReportingAttributionModel::Unspecified => "REPORTING_ATTRIBUTION_MODEL_UNSPECIFIED",
+                ReportingAttributionModel::CrossChannelDataDriven => "CROSS_CHANNEL_DATA_DRIVEN",
+                ReportingAttributionModel::CrossChannelLastClick => "CROSS_CHANNEL_LAST_CLICK",
+                ReportingAttributionModel::CrossChannelFirstClick => "CROSS_CHANNEL_FIRST_CLICK",
+                ReportingAttributionModel::CrossChannelLinear => "CROSS_CHANNEL_LINEAR",
+                ReportingAttributionModel::CrossChannelPositionBased => "CROSS_CHANNEL_POSITION_BASED",
+                ReportingAttributionModel::CrossChannelTimeDecay => "CROSS_CHANNEL_TIME_DECAY",
+                ReportingAttributionModel::AdsPreferredLastClick => "ADS_PREFERRED_LAST_CLICK",
+            }
+        }
+    }
+}
 ///  The category selected for this property, used for industry benchmarking.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -1102,8 +2144,12 @@ pub enum ChangeHistoryResourceType {
     DisplayVideo360AdvertiserLink = 14,
     ///  DisplayVideo360AdvertiserLinkProposal resource
     DisplayVideo360AdvertiserLinkProposal = 15,
+    ///  SearchAds360Link resource
+    SearchAds360Link = 16,
     ///  DataStream resource
     DataStream = 18,
+    ///  AttributionSettings resource
+    AttributionSettings = 20,
 }
 impl ChangeHistoryResourceType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -1125,7 +2171,9 @@ impl ChangeHistoryResourceType {
             ChangeHistoryResourceType::DataRetentionSettings => "DATA_RETENTION_SETTINGS",
             ChangeHistoryResourceType::DisplayVideo360AdvertiserLink => "DISPLAY_VIDEO_360_ADVERTISER_LINK",
             ChangeHistoryResourceType::DisplayVideo360AdvertiserLinkProposal => "DISPLAY_VIDEO_360_ADVERTISER_LINK_PROPOSAL",
+            ChangeHistoryResourceType::SearchAds360Link => "SEARCH_ADS_360_LINK",
             ChangeHistoryResourceType::DataStream => "DATA_STREAM",
+            ChangeHistoryResourceType::AttributionSettings => "ATTRIBUTION_SETTINGS",
         }
     }
 }
@@ -1250,6 +2298,138 @@ impl LinkProposalState {
             LinkProposalState::Obsolete => "OBSOLETE",
         }
     }
+}
+///  Types of Property resources.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum PropertyType {
+    ///  Unknown or unspecified property type
+    Unspecified = 0,
+    ///  Ordinary GA4 property
+    Ordinary = 1,
+    ///  GA4 subproperty
+    Subproperty = 2,
+    ///  GA4 rollup property
+    Rollup = 3,
+}
+impl PropertyType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            PropertyType::Unspecified => "PROPERTY_TYPE_UNSPECIFIED",
+            PropertyType::Ordinary => "PROPERTY_TYPE_ORDINARY",
+            PropertyType::Subproperty => "PROPERTY_TYPE_SUBPROPERTY",
+            PropertyType::Rollup => "PROPERTY_TYPE_ROLLUP",
+        }
+    }
+}
+///  The request for a Data Access Record Report.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunAccessReportRequest {
+    ///  The Data Access Report is requested for this property.
+    ///  For example if "123" is your GA4 property ID, then entity should be
+    ///  "properties/123".
+    #[prost(string, tag="1")]
+    pub entity: ::prost::alloc::string::String,
+    ///  The dimensions requested and displayed in the response. Requests are
+    ///  allowed up to 9 dimensions.
+    #[prost(message, repeated, tag="2")]
+    pub dimensions: ::prost::alloc::vec::Vec<AccessDimension>,
+    ///  The metrics requested and displayed in the response. Requests are allowed
+    ///  up to 10 metrics.
+    #[prost(message, repeated, tag="3")]
+    pub metrics: ::prost::alloc::vec::Vec<AccessMetric>,
+    ///  Date ranges of access records to read. If multiple date ranges are
+    ///  requested, each response row will contain a zero based date range index. If
+    ///  two date ranges overlap, the access records for the overlapping days is
+    ///  included in the response rows for both date ranges. Requests are allowed up
+    ///  to 2 date ranges.
+    #[prost(message, repeated, tag="4")]
+    pub date_ranges: ::prost::alloc::vec::Vec<AccessDateRange>,
+    ///  Dimension filters allow you to restrict report response to specific
+    ///  dimension values which match the filter. For example, filtering on access
+    ///  records of a single user. To learn more, see [Fundamentals of Dimension
+    ///  Filters](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#dimension_filters>)
+    ///  for examples. Metrics cannot be used in this filter.
+    #[prost(message, optional, tag="5")]
+    pub dimension_filter: ::core::option::Option<AccessFilterExpression>,
+    ///  Metric filters allow you to restrict report response to specific metric
+    ///  values which match the filter. Metric filters are applied after aggregating
+    ///  the report's rows, similar to SQL having-clause. Dimensions cannot be used
+    ///  in this filter.
+    #[prost(message, optional, tag="6")]
+    pub metric_filter: ::core::option::Option<AccessFilterExpression>,
+    ///  The row count of the start row. The first row is counted as row 0. If
+    ///  offset is unspecified, it is treated as 0. If offset is zero, then this
+    ///  method will return the first page of results with `limit` entries.
+    ///
+    ///  To learn more about this pagination parameter, see
+    ///  \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag="7")]
+    pub offset: i64,
+    ///  The number of rows to return. If unspecified, 10,000 rows are returned. The
+    ///  API returns a maximum of 100,000 rows per request, no matter how many you
+    ///  ask for. `limit` must be positive.
+    ///
+    ///  The API may return fewer rows than the requested `limit`, if there aren't
+    ///  as many remaining rows as the `limit`. For instance, there are fewer than
+    ///  300 possible values for the dimension `country`, so when reporting on only
+    ///  `country`, you can't get more than 300 rows, even if you set `limit` to a
+    ///  higher value.
+    ///
+    ///  To learn more about this pagination parameter, see
+    ///  \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int64, tag="8")]
+    pub limit: i64,
+    ///  This request's time zone if specified. If unspecified, the property's time
+    ///  zone is used. The request's time zone is used to interpret the start & end
+    ///  dates of the report.
+    ///
+    ///  Formatted as strings from the IANA Time Zone database
+    ///  (<https://www.iana.org/time-zones>); for example "America/New_York" or
+    ///  "Asia/Tokyo".
+    #[prost(string, tag="9")]
+    pub time_zone: ::prost::alloc::string::String,
+    ///  Specifies how rows are ordered in the response.
+    #[prost(message, repeated, tag="10")]
+    pub order_bys: ::prost::alloc::vec::Vec<AccessOrderBy>,
+    ///  Toggles whether to return the current state of this Analytics Property's
+    ///  quota. Quota is returned in \[AccessQuota\](#AccessQuota).
+    #[prost(bool, tag="11")]
+    pub return_entity_quota: bool,
+}
+///  The customized Data Access Record Report response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RunAccessReportResponse {
+    ///  The header for a column in the report that corresponds to a specific
+    ///  dimension. The number of DimensionHeaders and ordering of DimensionHeaders
+    ///  matches the dimensions present in rows.
+    #[prost(message, repeated, tag="1")]
+    pub dimension_headers: ::prost::alloc::vec::Vec<AccessDimensionHeader>,
+    ///  The header for a column in the report that corresponds to a specific
+    ///  metric. The number of MetricHeaders and ordering of MetricHeaders matches
+    ///  the metrics present in rows.
+    #[prost(message, repeated, tag="2")]
+    pub metric_headers: ::prost::alloc::vec::Vec<AccessMetricHeader>,
+    ///  Rows of dimension value combinations and metric values in the report.
+    #[prost(message, repeated, tag="3")]
+    pub rows: ::prost::alloc::vec::Vec<AccessRow>,
+    ///  The total number of rows in the query result. `rowCount` is independent of
+    ///  the number of rows returned in the response, the `limit` request
+    ///  parameter, and the `offset` request parameter. For example if a query
+    ///  returns 175 rows and includes `limit` of 50 in the API request, the
+    ///  response will contain `rowCount` of 175 but only 50 rows.
+    ///
+    ///  To learn more about this pagination parameter, see
+    ///  \[Pagination\](<https://developers.google.com/analytics/devguides/reporting/data/v1/basics#pagination>).
+    #[prost(int32, tag="4")]
+    pub row_count: i32,
+    ///  The quota state for this Analytics property including this request.
+    #[prost(message, optional, tag="5")]
+    pub quota: ::core::option::Option<AccessQuota>,
 }
 ///  Request message for GetAccount RPC.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2364,6 +3544,95 @@ pub struct GetDataStreamRequest {
     ///  Example format: properties/1234/dataStreams/5678
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
+}
+///  Request message for GetAudience RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAudienceRequest {
+    ///  Required. The name of the Audience to get.
+    ///  Example format: properties/1234/audiences/5678
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+///  Request message for ListAudiences RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAudiencesRequest {
+    ///  Required. Example format: properties/1234
+    #[prost(string, tag="1")]
+    pub parent: ::prost::alloc::string::String,
+    ///  The maximum number of resources to return.
+    ///  If unspecified, at most 50 resources will be returned.
+    ///  The maximum value is 200 (higher values will be coerced to the maximum).
+    #[prost(int32, tag="2")]
+    pub page_size: i32,
+    ///  A page token, received from a previous `ListAudiences` call. Provide this
+    ///  to retrieve the subsequent page.
+    ///
+    ///  When paginating, all other parameters provided to `ListAudiences` must
+    ///  match the call that provided the page token.
+    #[prost(string, tag="3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+///  Response message for ListAudiences RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListAudiencesResponse {
+    ///  List of Audiences.
+    #[prost(message, repeated, tag="1")]
+    pub audiences: ::prost::alloc::vec::Vec<Audience>,
+    ///  A token, which can be sent as `page_token` to retrieve the next page.
+    ///  If this field is omitted, there are no subsequent pages.
+    #[prost(string, tag="2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+///  Request message for CreateAudience RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateAudienceRequest {
+    ///  Required. Example format: properties/1234
+    #[prost(string, tag="1")]
+    pub parent: ::prost::alloc::string::String,
+    ///  Required. The audience to create.
+    #[prost(message, optional, tag="2")]
+    pub audience: ::core::option::Option<Audience>,
+}
+///  Request message for UpdateAudience RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAudienceRequest {
+    ///  Required. The audience to update.
+    ///  The audience's `name` field is used to identify the audience to be updated.
+    #[prost(message, optional, tag="1")]
+    pub audience: ::core::option::Option<Audience>,
+    ///  Required. The list of fields to be updated. Field names must be in snake case
+    ///  (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    ///  the entire entity, use one path with the string "*" to match all fields.
+    #[prost(message, optional, tag="2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+///  Request message for ArchiveAudience RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ArchiveAudienceRequest {
+    ///  Required. Example format: properties/1234/audiences/5678
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+///  Request message for GetAttributionSettings RPC.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetAttributionSettingsRequest {
+    ///  Required. The name of the attribution settings to retrieve.
+    ///  Format: properties/{property}/attributionSettings
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+///  Request message for UpdateAttributionSettings RPC
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateAttributionSettingsRequest {
+    ///  Required. The attribution settings to update.
+    ///  The `name` field is used to identify the settings to be updated.
+    #[prost(message, optional, tag="1")]
+    pub attribution_settings: ::core::option::Option<AttributionSettings>,
+    ///  Required. The list of fields to be updated. Field names must be in snake case
+    ///  (e.g., "field_to_update"). Omitted fields will not be updated. To replace
+    ///  the entire entity, use one path with the string "*" to match all fields.
+    #[prost(message, optional, tag="2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 /// Generated client implementations.
 pub mod analytics_admin_service_client {
@@ -4003,6 +5272,180 @@ pub mod analytics_admin_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetDataStream",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lookup for a single Audience.
+        /// Audiences created before 2020 may not be supported.
+        pub async fn get_audience(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAudienceRequest>,
+        ) -> Result<tonic::Response<super::Audience>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetAudience",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists Audiences on a property.
+        /// Audiences created before 2020 may not be supported.
+        pub async fn list_audiences(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListAudiencesRequest>,
+        ) -> Result<tonic::Response<super::ListAudiencesResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ListAudiences",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Creates an Audience.
+        pub async fn create_audience(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateAudienceRequest>,
+        ) -> Result<tonic::Response<super::Audience>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/CreateAudience",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Updates an Audience on a property.
+        pub async fn update_audience(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAudienceRequest>,
+        ) -> Result<tonic::Response<super::Audience>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateAudience",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Archives an Audience on a property.
+        pub async fn archive_audience(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ArchiveAudienceRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/ArchiveAudience",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lookup for a AttributionSettings singleton.
+        pub async fn get_attribution_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetAttributionSettingsRequest>,
+        ) -> Result<tonic::Response<super::AttributionSettings>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/GetAttributionSettings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Updates attribution settings on a property.
+        pub async fn update_attribution_settings(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateAttributionSettingsRequest>,
+        ) -> Result<tonic::Response<super::AttributionSettings>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/UpdateAttributionSettings",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Returns a customized report of data access records. The report provides
+        /// records of each time a user reads Google Analytics reporting data. Access
+        /// records are retained for up to 2 years.
+        ///
+        /// Data Access Reports can be requested for a property. The property must be
+        /// in Google Analytics 360. This method is only available to Administrators.
+        ///
+        /// These data access records include GA4 UI Reporting, GA4 UI Explorations,
+        /// GA4 Data API, and other products like Firebase & Admob that can retrieve
+        /// data from Google Analytics through a linkage. These records don't include
+        /// property configuration changes like adding a stream or changing a
+        /// property's time zone. For configuration change history, see
+        /// [searchChangeHistoryEvents](https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alpha/accounts/searchChangeHistoryEvents).
+        pub async fn run_access_report(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RunAccessReportRequest>,
+        ) -> Result<tonic::Response<super::RunAccessReportResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.analytics.admin.v1alpha.AnalyticsAdminService/RunAccessReport",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

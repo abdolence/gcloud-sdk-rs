@@ -103,8 +103,8 @@ pub struct Asset {
     ///  effectively policy is the union of both the policy set on this resource
     ///  and each policy set on all of the resource's ancestry resource levels in
     ///  the hierarchy. See
-    ///  [this topic](<https://cloud.google.com/iam/docs/policies#inheritance>) for
-    ///  more information.
+    ///  [this topic](<https://cloud.google.com/iam/help/allow-policies/inheritance>)
+    ///  for more information.
     #[prost(message, optional, tag="4")]
     pub iam_policy: ::core::option::Option<super::super::super::iam::v1::Policy>,
     ///  A representation of an [organization
@@ -288,6 +288,7 @@ pub struct RelatedAsset {
     pub relationship_type: ::prost::alloc::string::String,
 }
 ///  A result of Resource Search, containing information of a cloud resource.
+///  Next ID: 29
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ResourceSearchResult {
     ///  The full resource name of this resource. Example:
@@ -1585,6 +1586,14 @@ pub struct SearchAllResourcesRequest {
     ///  * `labels.env:*` to find Cloud resources that have a label "env".
     ///  * `kmsKey:key` to find Cloud resources encrypted with a customer-managed
     ///    encryption key whose name contains the word "key".
+    ///  * `relationships:instance-group-1` to find Cloud resources that have
+    ///    relationships with "instance-group-1" in the related resource name.
+    ///  * `relationships:INSTANCE_TO_INSTANCEGROUP` to find compute instances that
+    ///    have relationships of type "INSTANCE_TO_INSTANCEGROUP".
+    ///  * `relationships.INSTANCE_TO_INSTANCEGROUP:instance-group-1` to find
+    ///    compute instances that have relationships with "instance-group-1" in the
+    ///    compute instance group resource name, for relationship type
+    ///    "INSTANCE_TO_INSTANCEGROUP".
     ///  * `state:ACTIVE` to find Cloud resources whose state contains "ACTIVE" as a
     ///    word.
     ///  * `NOT state:ACTIVE` to find Cloud resources whose state doesn't contain
@@ -1729,8 +1738,8 @@ pub struct SearchAllIamPoliciesRequest {
     ///  compared against each Cloud IAM policy binding, including its principals,
     ///  roles, and Cloud IAM conditions. The returned Cloud IAM policies will only
     ///  contain the bindings that match your query. To learn more about the IAM
-    ///  policy structure, see [IAM policy
-    ///  doc](<https://cloud.google.com/iam/docs/policies#structure>).
+    ///  policy structure, see the [IAM policy
+    ///  documentation](<https://cloud.google.com/iam/help/allow-policies/structure>).
     ///
     ///  Examples:
     ///
@@ -2515,6 +2524,230 @@ pub struct MoveImpact {
     #[prost(string, tag="1")]
     pub detail: ::prost::alloc::string::String,
 }
+///  Output configuration query assets.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryAssetsOutputConfig {
+    ///  BigQuery destination where the query results will be saved.
+    #[prost(message, optional, tag="1")]
+    pub bigquery_destination: ::core::option::Option<query_assets_output_config::BigQueryDestination>,
+}
+/// Nested message and enum types in `QueryAssetsOutputConfig`.
+pub mod query_assets_output_config {
+    ///  BigQuery destination.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct BigQueryDestination {
+        ///  Required. The BigQuery dataset where the query results will be saved. It
+        ///  has the format of "projects/{projectId}/datasets/{datasetId}".
+        #[prost(string, tag="1")]
+        pub dataset: ::prost::alloc::string::String,
+        ///  Required. The BigQuery table where the query results will be saved. If
+        ///  this table does not exist, a new table with the given name will be
+        ///  created.
+        #[prost(string, tag="2")]
+        pub table: ::prost::alloc::string::String,
+        ///  Specifies the action that occurs if the destination table or partition
+        ///  already exists. The following values are supported:
+        ///
+        ///  * WRITE_TRUNCATE: If the table or partition already exists, BigQuery
+        ///  overwrites the entire table or all the partitions data.
+        ///  * WRITE_APPEND: If the table or partition already exists, BigQuery
+        ///  appends the data to the table or the latest partition.
+        ///  * WRITE_EMPTY: If the table already exists and contains data, an error is
+        ///  returned.
+        #[prost(string, tag="3")]
+        pub write_disposition: ::prost::alloc::string::String,
+    }
+}
+///  QueryAssets request.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryAssetsRequest {
+    ///  Required. The relative name of the root asset. This can only be an
+    ///  organization number (such as "organizations/123"), a project ID (such as
+    ///  "projects/my-project-id"), or a project number (such as "projects/12345"),
+    ///  or a folder number (such as "folders/123").
+    ///
+    ///  Only assets belonging to the `parent` will be returned.
+    #[prost(string, tag="1")]
+    pub parent: ::prost::alloc::string::String,
+    ///  Optional. The maximum number of rows to return in the results. Responses
+    ///  are limited to 10 MB and 1000 rows.
+    ///
+    ///  By default, the maximum row count is 1000. When the byte or row count limit
+    ///  is reached, the rest of the query results will be paginated.
+    ///
+    ///  The field will be ignored when \[output_config\] is specified.
+    #[prost(int32, tag="4")]
+    pub page_size: i32,
+    ///  Optional. A page token received from previous `QueryAssets`.
+    ///
+    ///  The field will be ignored when \[output_config\] is specified.
+    #[prost(string, tag="5")]
+    pub page_token: ::prost::alloc::string::String,
+    ///  Optional. Specifies the maximum amount of time that the client is willing
+    ///  to wait for the query to complete. By default, this limit is 5 min for the
+    ///  first query, and 1 minute for the following queries. If the query is
+    ///  complete, the `done` field in the `QueryAssetsResponse` is true, otherwise
+    ///  false.
+    ///
+    ///  Like BigQuery [jobs.query
+    ///  API](<https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query#queryrequest>)
+    ///  The call is not guaranteed to wait for the specified timeout; it typically
+    ///  returns after around 200 seconds (200,000 milliseconds), even if the query
+    ///  is not complete.
+    ///
+    ///  The field will be ignored when \[output_config\] is specified.
+    #[prost(message, optional, tag="6")]
+    pub timeout: ::core::option::Option<::prost_types::Duration>,
+    ///  Optional. Destination where the query results will be saved.
+    ///
+    ///  When this field is specified, the query results won't be saved in the
+    ///  \[QueryAssetsResponse.query_result\]. Instead
+    ///  \[QueryAssetsResponse.output_config\] will be set.
+    ///
+    ///  Meanwhile, \[QueryAssetsResponse.job_reference\] will be set and can be used
+    ///  to check the status of the query job when passed to a following
+    ///  \[QueryAssets\] API call.
+    #[prost(message, optional, tag="9")]
+    pub output_config: ::core::option::Option<QueryAssetsOutputConfig>,
+    #[prost(oneof="query_assets_request::Query", tags="2, 3")]
+    pub query: ::core::option::Option<query_assets_request::Query>,
+    ///  Specifies what time period or point in time to query asset metadata at.
+    ///  * unset - query asset metadata as it is right now
+    ///  * \[read_time_window\] - query asset metadata as it was at any point in time
+    ///  between \[start_time\] and \[end_time\].
+    ///  * \[read_time\] - query asset metadata as it was at that point in time.
+    ///  If data for the timestamp/date range selected does not exist,
+    ///  it will simply return a valid response with no rows.
+    #[prost(oneof="query_assets_request::Time", tags="7, 8")]
+    pub time: ::core::option::Option<query_assets_request::Time>,
+}
+/// Nested message and enum types in `QueryAssetsRequest`.
+pub mod query_assets_request {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Query {
+        ///  Optional. A SQL statement that's compatible with [BigQuery Standard
+        ///  SQL](<http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql>).
+        #[prost(string, tag="2")]
+        Statement(::prost::alloc::string::String),
+        ///  Optional. Reference to the query job, which is from the
+        ///  `QueryAssetsResponse` of previous `QueryAssets` call.
+        #[prost(string, tag="3")]
+        JobReference(::prost::alloc::string::String),
+    }
+    ///  Specifies what time period or point in time to query asset metadata at.
+    ///  * unset - query asset metadata as it is right now
+    ///  * \[read_time_window\] - query asset metadata as it was at any point in time
+    ///  between \[start_time\] and \[end_time\].
+    ///  * \[read_time\] - query asset metadata as it was at that point in time.
+    ///  If data for the timestamp/date range selected does not exist,
+    ///  it will simply return a valid response with no rows.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Time {
+        ///  Optional. \[start_time\] is required. \[start_time\] must be less than
+        ///  \[end_time\] Defaults \[end_time\] to now if \[start_time\] is set and
+        ///  \[end_time\] isn't. Maximum permitted time range is 7 days.
+        #[prost(message, tag="7")]
+        ReadTimeWindow(super::TimeWindow),
+        ///  Optional. Queries cloud assets as they appeared at the specified point in
+        ///  time.
+        #[prost(message, tag="8")]
+        ReadTime(::prost_types::Timestamp),
+    }
+}
+///  QueryAssets response.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryAssetsResponse {
+    ///  Reference to a query job.
+    #[prost(string, tag="1")]
+    pub job_reference: ::prost::alloc::string::String,
+    ///  The query response, which can be either an `error` or a valid `response`.
+    ///
+    ///  If `done` == `false` and the query result is being saved in a output, the
+    ///  output_config field will be set.
+    ///  If `done` == `true`, exactly one of
+    ///  `error`, `query_result` or `output_config` will be set.
+    #[prost(bool, tag="2")]
+    pub done: bool,
+    #[prost(oneof="query_assets_response::Response", tags="3, 4, 5")]
+    pub response: ::core::option::Option<query_assets_response::Response>,
+}
+/// Nested message and enum types in `QueryAssetsResponse`.
+pub mod query_assets_response {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Response {
+        ///  Error status.
+        #[prost(message, tag="3")]
+        Error(super::super::super::super::rpc::Status),
+        ///  Result of the query.
+        #[prost(message, tag="4")]
+        QueryResult(super::QueryResult),
+        ///  Output configuration which indicates instead of being returned in API
+        ///  response on the fly, the query result will be saved in a specific output.
+        #[prost(message, tag="5")]
+        OutputConfig(super::QueryAssetsOutputConfig),
+    }
+}
+///  Execution results of the query.
+///
+///  The result is formatted as rows represented by BigQuery compatible \[schema\].
+///  When pagination is necessary, it will contains the page token to retrieve
+///  the results of following pages.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryResult {
+    ///  Each row hold a query result in the format of `Struct`.
+    #[prost(message, repeated, tag="1")]
+    pub rows: ::prost::alloc::vec::Vec<::prost_types::Struct>,
+    ///  Describes the format of the \[rows\].
+    #[prost(message, optional, tag="2")]
+    pub schema: ::core::option::Option<TableSchema>,
+    ///  Token to retrieve the next page of the results.
+    #[prost(string, tag="3")]
+    pub next_page_token: ::prost::alloc::string::String,
+    ///  Total rows of the whole query results.
+    #[prost(int64, tag="4")]
+    pub total_rows: i64,
+}
+///  BigQuery Compatible table schema.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableSchema {
+    ///  Describes the fields in a table.
+    #[prost(message, repeated, tag="1")]
+    pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
+}
+///  A field in TableSchema.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TableFieldSchema {
+    ///  The field name. The name must contain only letters (a-z, A-Z),
+    ///  numbers (0-9), or underscores (_), and must start with a letter or
+    ///  underscore. The maximum length is 128 characters.
+    #[prost(string, tag="1")]
+    pub field: ::prost::alloc::string::String,
+    ///  The field data type. Possible values include
+    ///  * STRING
+    ///  * BYTES
+    ///  * INTEGER
+    ///  * FLOAT
+    ///  * BOOLEAN
+    ///  * TIMESTAMP
+    ///  * DATE
+    ///  * TIME
+    ///  * DATETIME
+    ///  * GEOGRAPHY,
+    ///  * NUMERIC,
+    ///  * BIGNUMERIC,
+    ///  * RECORD
+    ///  (where RECORD indicates that the field contains a nested schema).
+    #[prost(string, tag="2")]
+    pub r#type: ::prost::alloc::string::String,
+    ///  The field mode. Possible values include NULLABLE, REQUIRED and
+    ///  REPEATED. The default value is NULLABLE.
+    #[prost(string, tag="3")]
+    pub mode: ::prost::alloc::string::String,
+    ///  Describes the nested schema fields if the type property is set
+    ///  to RECORD.
+    #[prost(message, repeated, tag="4")]
+    pub fields: ::prost::alloc::vec::Vec<TableFieldSchema>,
+}
 ///  A request message for
 ///  \[AssetService.BatchGetEffectiveIamPolicies][google.cloud.asset.v1.AssetService.BatchGetEffectiveIamPolicies\].
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -3020,6 +3253,39 @@ pub mod asset_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.asset.v1.AssetService/AnalyzeMove",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Issue a job that queries assets using a SQL statement compatible with
+        /// [BigQuery Standard
+        /// SQL](http://cloud/bigquery/docs/reference/standard-sql/enabling-standard-sql).
+        ///
+        /// If the query execution finishes within timeout and there's no pagination,
+        /// the full query results will be returned in the `QueryAssetsResponse`.
+        ///
+        /// Otherwise, full query results can be obtained by issuing extra requests
+        /// with the `job_reference` from the a previous `QueryAssets` call.
+        ///
+        /// Note, the query result has approximately 10 GB limitation enforced by
+        /// BigQuery
+        /// https://cloud.google.com/bigquery/docs/best-practices-performance-output,
+        /// queries return larger results will result in errors.
+        pub async fn query_assets(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryAssetsRequest>,
+        ) -> Result<tonic::Response<super::QueryAssetsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.asset.v1.AssetService/QueryAssets",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

@@ -1,6 +1,6 @@
 [package]
 name = "gcloud-sdk"
-version = "0.18.1"
+version = "0.18.2"
 authors = ["mechiru <u9053u6d41@gmail.com>", "Abdulla Abdurakhmanov <me@abdolence.dev>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -55,6 +55,7 @@ google-api-servicecontrol-v2 = []
 google-api-servicemanagement-v1 = []
 google-api-serviceusage-v1 = []
 google-api-serviceusage-v1beta1 = []
+google-api-apikeys-v2 = []
 google-appengine-legacy = []
 google-appengine-logging-v1 = []
 google-appengine-v1 = []
@@ -431,7 +432,7 @@ prost-types = "0.11"
 gcemeta = { version = "0.2" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = { version = "1.0" }
-attohttpc = { version = "0.20", default-features = false, features = ["compress", "tls-rustls", "form"] }
+attohttpc = { version = "0.22", default-features = false, features = ["compress", "tls-rustls", "form"] }
 url = { version = "2.2" }
 jsonwebtoken = { version = "8" }
 hyper = { version ="0.14", features = ["client", "http2", "h2"] }

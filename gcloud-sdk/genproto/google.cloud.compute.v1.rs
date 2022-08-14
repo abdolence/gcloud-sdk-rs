@@ -1961,6 +1961,10 @@ pub struct AttachNetworkEndpointsNetworkEndpointGroupRequest {
 ///  An instance-attached disk resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachedDisk {
+    ///  [Output Only] The architecture of the attached disk. Valid values are ARM64 or X86_64.
+    ///  Check the Architecture enum for the list of possible values.
+    #[prost(string, optional, tag="302803283")]
+    pub architecture: ::core::option::Option<::prost::alloc::string::String>,
     ///  Specifies whether the disk will be auto-deleted when the instance is deleted (but not when the disk is detached from the instance).
     #[prost(bool, optional, tag="464761403")]
     pub auto_delete: ::core::option::Option<bool>,
@@ -2012,6 +2016,33 @@ pub struct AttachedDisk {
 }
 /// Nested message and enum types in `AttachedDisk`.
 pub mod attached_disk {
+    ///  [Output Only] The architecture of the attached disk. Valid values are ARM64 or X86_64.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Architecture {
+        ///  A value indicating that the enum field is not set.
+        UndefinedArchitecture = 0,
+        ///  Default value indicating Architecture is not set.
+        Unspecified = 394750507,
+        ///  Machines with architecture ARM64
+        Arm64 = 62547450,
+        ///  Machines with architecture X86_64
+        X8664 = 425300551,
+    }
+    impl Architecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Architecture::UndefinedArchitecture => "UNDEFINED_ARCHITECTURE",
+                Architecture::Unspecified => "ARCHITECTURE_UNSPECIFIED",
+                Architecture::Arm64 => "ARM64",
+                Architecture::X8664 => "X86_64",
+            }
+        }
+    }
     ///  Specifies the disk interface to use for attaching this disk, which is either SCSI or NVME. The default is SCSI. Persistent disks must always use SCSI and the request will fail if you attempt to attach a persistent disk in any other format than SCSI. Local SSDs can use either NVME or SCSI. For performance characteristics of SCSI over NVMe, see Local SSD performance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -2084,6 +2115,10 @@ pub mod attached_disk {
 ///  [Input Only] Specifies the parameters for a new disk that will be created alongside the new instance. Use initialization parameters to create boot disks or local SSDs attached to the new instance. This field is persisted and returned for instanceTemplate and not returned in the context of instance. This property is mutually exclusive with the source property; you can only define one or the other, but not both.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AttachedDiskInitializeParams {
+    ///  The architecture of the attached disk. Valid values are arm64 or x86_64.
+    ///  Check the Architecture enum for the list of possible values.
+    #[prost(string, optional, tag="302803283")]
+    pub architecture: ::core::option::Option<::prost::alloc::string::String>,
     ///  An optional description. Provide this property when creating the disk.
     #[prost(string, optional, tag="422937596")]
     pub description: ::core::option::Option<::prost::alloc::string::String>,
@@ -2127,6 +2162,33 @@ pub struct AttachedDiskInitializeParams {
 }
 /// Nested message and enum types in `AttachedDiskInitializeParams`.
 pub mod attached_disk_initialize_params {
+    ///  The architecture of the attached disk. Valid values are arm64 or x86_64.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Architecture {
+        ///  A value indicating that the enum field is not set.
+        UndefinedArchitecture = 0,
+        ///  Default value indicating Architecture is not set.
+        Unspecified = 394750507,
+        ///  Machines with architecture ARM64
+        Arm64 = 62547450,
+        ///  Machines with architecture X86_64
+        X8664 = 425300551,
+    }
+    impl Architecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Architecture::UndefinedArchitecture => "UNDEFINED_ARCHITECTURE",
+                Architecture::Unspecified => "ARCHITECTURE_UNSPECIFIED",
+                Architecture::Arm64 => "ARM64",
+                Architecture::X8664 => "X86_64",
+            }
+        }
+    }
     ///  Specifies which action to take on instance update with this disk. Default is to use the existing disk.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -2715,7 +2777,7 @@ pub struct Backend {
     ///  Defines a maximum target for requests per second (RPS). For usage guidelines, see Rate balancing mode and Utilization balancing mode. Not available if the backend's balancingMode is CONNECTION.
     #[prost(float, optional, tag="17599579")]
     pub max_rate_per_instance: ::core::option::Option<f32>,
-    ///  Optional parameter to define a target capacity for the UTILIZATIONbalancing mode. The valid range is [0.0, 1.0]. For usage guidelines, see Utilization balancing mode.
+    ///  Optional parameter to define a target capacity for the UTILIZATION balancing mode. The valid range is [0.0, 1.0]. For usage guidelines, see Utilization balancing mode.
     #[prost(float, optional, tag="148192199")]
     pub max_utilization: ::core::option::Option<f32>,
 }
@@ -3836,7 +3898,7 @@ pub struct BulkInsertInstanceResource {
     ///  The instance properties defining the VM instances to be created. Required if sourceInstanceTemplate is not provided.
     #[prost(message, optional, tag="215355165")]
     pub instance_properties: ::core::option::Option<InstanceProperties>,
-    ///  Policy for chosing target zone.
+    ///  Policy for chosing target zone. For more information, see Create VMs in bulk .
     #[prost(message, optional, tag="465689852")]
     pub location_policy: ::core::option::Option<LocationPolicy>,
     ///  The minimum number of instances to create. If no min_count is specified then count is used as the default value. If min_count instances cannot be created, then no instances will be created and instances already created will be deleted.
@@ -4095,6 +4157,7 @@ pub mod commitment {
         ///  A value indicating that the enum field is not set.
         UndefinedStatus = 0,
         Active = 314733318,
+        Cancelled = 41957681,
         Creating = 455564985,
         Expired = 482489093,
         NotYetActive = 20607337,
@@ -4108,6 +4171,7 @@ pub mod commitment {
             match self {
                 Status::UndefinedStatus => "UNDEFINED_STATUS",
                 Status::Active => "ACTIVE",
+                Status::Cancelled => "CANCELLED",
                 Status::Creating => "CREATING",
                 Status::Expired => "EXPIRED",
                 Status::NotYetActive => "NOT_YET_ACTIVE",
@@ -5874,6 +5938,10 @@ pub struct DisableXpnResourceProjectRequest {
 ///  Represents a Persistent Disk resource. Google Compute Engine has two Disk resources: * \[Zonal\](/compute/docs/reference/rest/v1/disks) * \[Regional\](/compute/docs/reference/rest/v1/regionDisks) Persistent disks are required for running your VM instances. Create both boot and non-boot (data) persistent disks. For more information, read Persistent Disks. For more storage options, read Storage options. The disks resource represents a zonal persistent disk. For more information, read Zonal persistent disks. The regionDisks resource represents a regional persistent disk. For more information, read Regional resources.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Disk {
+    ///  The architecture of the disk. Valid values are ARM64 or X86_64.
+    ///  Check the Architecture enum for the list of possible values.
+    #[prost(string, optional, tag="302803283")]
+    pub architecture: ::core::option::Option<::prost::alloc::string::String>,
     ///  [Output Only] Creation timestamp in RFC3339 text format.
     #[prost(string, optional, tag="30525366")]
     pub creation_timestamp: ::core::option::Option<::prost::alloc::string::String>,
@@ -5986,6 +6054,33 @@ pub struct Disk {
 }
 /// Nested message and enum types in `Disk`.
 pub mod disk {
+    ///  The architecture of the disk. Valid values are ARM64 or X86_64.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Architecture {
+        ///  A value indicating that the enum field is not set.
+        UndefinedArchitecture = 0,
+        ///  Default value indicating Architecture is not set.
+        Unspecified = 394750507,
+        ///  Machines with architecture ARM64
+        Arm64 = 62547450,
+        ///  Machines with architecture X86_64
+        X8664 = 425300551,
+    }
+    impl Architecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Architecture::UndefinedArchitecture => "UNDEFINED_ARCHITECTURE",
+                Architecture::Unspecified => "ARCHITECTURE_UNSPECIFIED",
+                Architecture::Arm64 => "ARM64",
+                Architecture::X8664 => "X86_64",
+            }
+        }
+    }
     ///  [Output Only] The status of disk creation. - CREATING: Disk is provisioning. - RESTORING: Source data is being copied into the disk. - FAILED: Disk creation failed. - READY: Disk is ready for use. - DELETING: Disk is deleting. 
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -6358,10 +6453,36 @@ pub struct Error {
 }
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ErrorDetails {
+    #[prost(message, optional, tag="25251973")]
+    pub error_info: ::core::option::Option<ErrorInfo>,
+    #[prost(message, optional, tag="3198785")]
+    pub help: ::core::option::Option<Help>,
+    #[prost(message, optional, tag="404537155")]
+    pub localized_message: ::core::option::Option<LocalizedMessage>,
+}
+///  Describes the cause of the error with structured details. Example of an error when contacting the "pubsub.googleapis.com" API when it is not enabled: { "reason": "API_DISABLED" "domain": "googleapis.com" "metadata": { "resource": "projects/123", "service": "pubsub.googleapis.com" } } This response indicates that the pubsub.googleapis.com API is not enabled. Example of an error that is returned when attempting to create a Spanner instance in a region that is out of stock: { "reason": "STOCKOUT" "domain": "spanner.googleapis.com", "metadata": { "availableRegions": "us-central1,us-east2" } }
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ErrorInfo {
+    ///  The logical grouping to which the "reason" belongs. The error domain is typically the registered service name of the tool or product that generates the error. Example: "pubsub.googleapis.com". If the error is generated by some common infrastructure, the error domain must be a globally unique value that identifies the infrastructure. For Google API infrastructure, the error domain is "googleapis.com".
+    #[prost(string, optional, tag="284415172")]
+    pub domain: ::core::option::Option<::prost::alloc::string::String>,
+    ///  Additional structured details about this error. Keys should match /\[a-zA-Z0-9-_\]/ and be limited to 64 characters in length. When identifying the current value of an exceeded limit, the units should be contained in the key, not the value. For example, rather than {"instanceLimit": "100/request"}, should be returned as, {"instanceLimitPerRequest": "100"}, if the client exceeds the number of instances that can be created in a single (batch) request.
+    #[prost(map="string, string", tag="8514340")]
+    pub metadatas: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    ///  The reason of the error. This is a constant value that identifies the proximate cause of the error. Error reasons are unique within a particular domain of errors. This should be at most 63 characters and match /\[A-Z0-9_\]+/.
+    #[prost(string, optional, tag="138777156")]
+    pub reason: ::core::option::Option<::prost::alloc::string::String>,
+}
+///
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Errors {
     ///  [Output Only] The error type identifier for this error.
     #[prost(string, optional, tag="3059181")]
     pub code: ::core::option::Option<::prost::alloc::string::String>,
+    ///  [Output Only] An optional list of messages that contain the error details. There is a set of defined message types to use for providing details.The syntax depends on the error code. For example, QuotaExceededInfo will have details when the error code is QUOTA_EXCEEDED.
+    #[prost(message, repeated, tag="274653963")]
+    pub error_details: ::prost::alloc::vec::Vec<ErrorDetails>,
     ///  [Output Only] Indicates the field in the request that caused the error. This property is optional.
     #[prost(string, optional, tag="290430901")]
     pub location: ::core::option::Option<::prost::alloc::string::String>,
@@ -7032,7 +7153,7 @@ pub struct ForwardingRule {
     ///  [Output Only] The unique identifier for the resource. This identifier is defined by the server.
     #[prost(uint64, optional, tag="3355")]
     pub id: ::core::option::Option<u64>,
-    ///  The IP Version that will be used by this forwarding rule. Valid options are IPV4 or IPV6. This can only be specified for an external global forwarding rule.
+    ///  The IP Version that will be used by this forwarding rule. Valid options are IPV4 or IPV6.
     ///  Check the IpVersion enum for the list of possible values.
     #[prost(string, optional, tag="294959552")]
     pub ip_version: ::core::option::Option<::prost::alloc::string::String>,
@@ -7136,7 +7257,7 @@ pub mod forwarding_rule {
             }
         }
     }
-    ///  The IP Version that will be used by this forwarding rule. Valid options are IPV4 or IPV6. This can only be specified for an external global forwarding rule.
+    ///  The IP Version that will be used by this forwarding rule. Valid options are IPV4 or IPV6.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum IpVersion {
@@ -7230,6 +7351,8 @@ pub mod forwarding_rule {
         Accepted = 246714279,
         ///  The connection has been closed by the producer and will not serve traffic going forward.
         Closed = 380163436,
+        ///  The connection has been accepted by the producer, but the producer needs to take further action before the forwarding rule can serve traffic.
+        NeedsAttention = 344491452,
         ///  The connection is pending acceptance by the producer.
         Pending = 35394935,
         ///  The connection has been rejected by the producer.
@@ -7246,6 +7369,7 @@ pub mod forwarding_rule {
                 PscConnectionStatus::UndefinedPscConnectionStatus => "UNDEFINED_PSC_CONNECTION_STATUS",
                 PscConnectionStatus::Accepted => "ACCEPTED",
                 PscConnectionStatus::Closed => "CLOSED",
+                PscConnectionStatus::NeedsAttention => "NEEDS_ATTENTION",
                 PscConnectionStatus::Pending => "PENDING",
                 PscConnectionStatus::Rejected => "REJECTED",
                 PscConnectionStatus::StatusUnspecified => "STATUS_UNSPECIFIED",
@@ -9708,6 +9832,23 @@ pub mod health_status_for_network_endpoint {
         }
     }
 }
+///  Provides links to documentation or for performing an out of band action. For example, if a quota check failed with an error indicating the calling project hasn't enabled the accessed service, this can contain a URL pointing directly to the right place in the developer console to flip the bit.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Help {
+    ///  URL(s) pointing to additional information on handling the current error.
+    #[prost(message, repeated, tag="102977465")]
+    pub links: ::prost::alloc::vec::Vec<HelpLink>,
+}
+///  Describes a URL link.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct HelpLink {
+    ///  Describes what the link offers.
+    #[prost(string, optional, tag="422937596")]
+    pub description: ::core::option::Option<::prost::alloc::string::String>,
+    ///  The URL of the link.
+    #[prost(string, optional, tag="116079")]
+    pub url: ::core::option::Option<::prost::alloc::string::String>,
+}
 ///  UrlMaps A host-matching rule for a URL. If matched, will use the named PathMatcher to select the BackendService.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HostRule {
@@ -9977,6 +10118,10 @@ pub struct HttpRouteRuleMatch {
 ///  Represents an Image resource. You can use images to create boot disks for your VM instances. For more information, read Images.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Image {
+    ///  The architecture of the image. Valid values are ARM64 or X86_64.
+    ///  Check the Architecture enum for the list of possible values.
+    #[prost(string, optional, tag="302803283")]
+    pub architecture: ::core::option::Option<::prost::alloc::string::String>,
     ///  Size of the image tar.gz archive stored in Google Cloud Storage (in bytes).
     #[prost(int64, optional, tag="381093450")]
     pub archive_size_bytes: ::core::option::Option<i64>,
@@ -10075,6 +10220,33 @@ pub struct Image {
 }
 /// Nested message and enum types in `Image`.
 pub mod image {
+    ///  The architecture of the image. Valid values are ARM64 or X86_64.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Architecture {
+        ///  A value indicating that the enum field is not set.
+        UndefinedArchitecture = 0,
+        ///  Default value indicating Architecture is not set.
+        Unspecified = 394750507,
+        ///  Machines with architecture ARM64
+        Arm64 = 62547450,
+        ///  Machines with architecture X86_64
+        X8664 = 425300551,
+    }
+    impl Architecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Architecture::UndefinedArchitecture => "UNDEFINED_ARCHITECTURE",
+                Architecture::Unspecified => "ARCHITECTURE_UNSPECIFIED",
+                Architecture::Arm64 => "ARM64",
+                Architecture::X8664 => "X86_64",
+            }
+        }
+    }
     ///  The type of the image used to create this disk. The default and only valid value is RAW.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -11246,6 +11418,10 @@ pub struct Instance {
     ///  [Output Only] The unique identifier for the resource. This identifier is defined by the server.
     #[prost(uint64, optional, tag="3355")]
     pub id: ::core::option::Option<u64>,
+    ///  KeyRevocationActionType of the instance. Supported options are "STOP" and "NONE". The default value is "NONE" if it is not specified.
+    ///  Check the KeyRevocationActionType enum for the list of possible values.
+    #[prost(string, optional, tag="235941474")]
+    pub key_revocation_action_type: ::core::option::Option<::prost::alloc::string::String>,
     ///  [Output Only] Type of the resource. Always compute#instance for instances.
     #[prost(string, optional, tag="3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
@@ -11335,6 +11511,33 @@ pub struct Instance {
 }
 /// Nested message and enum types in `Instance`.
 pub mod instance {
+    ///  KeyRevocationActionType of the instance. Supported options are "STOP" and "NONE". The default value is "NONE" if it is not specified.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum KeyRevocationActionType {
+        ///  A value indicating that the enum field is not set.
+        UndefinedKeyRevocationActionType = 0,
+        ///  Default value. This value is unused.
+        Unspecified = 467110106,
+        ///  Indicates user chose no operation.
+        None = 2402104,
+        ///  Indicates user chose to opt for VM shutdown on key revocation.
+        Stop = 2555906,
+    }
+    impl KeyRevocationActionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                KeyRevocationActionType::UndefinedKeyRevocationActionType => "UNDEFINED_KEY_REVOCATION_ACTION_TYPE",
+                KeyRevocationActionType::Unspecified => "KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED",
+                KeyRevocationActionType::None => "NONE",
+                KeyRevocationActionType::Stop => "STOP",
+            }
+        }
+    }
     ///  The private IPv6 google access type for the VM. If not specified, use INHERIT_FROM_SUBNETWORK as default.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -12345,6 +12548,10 @@ pub struct InstanceProperties {
     ///  A list of guest accelerator cards' type and count to use for instances created from these properties.
     #[prost(message, repeated, tag="463595119")]
     pub guest_accelerators: ::prost::alloc::vec::Vec<AcceleratorConfig>,
+    ///  KeyRevocationActionType of the instance. Supported options are "STOP" and "NONE". The default value is "NONE" if it is not specified.
+    ///  Check the KeyRevocationActionType enum for the list of possible values.
+    #[prost(string, optional, tag="235941474")]
+    pub key_revocation_action_type: ::core::option::Option<::prost::alloc::string::String>,
     ///  Labels to apply to instances that are created from these properties.
     #[prost(map="string, string", tag="500195327")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -12391,6 +12598,33 @@ pub struct InstanceProperties {
 }
 /// Nested message and enum types in `InstanceProperties`.
 pub mod instance_properties {
+    ///  KeyRevocationActionType of the instance. Supported options are "STOP" and "NONE". The default value is "NONE" if it is not specified.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum KeyRevocationActionType {
+        ///  A value indicating that the enum field is not set.
+        UndefinedKeyRevocationActionType = 0,
+        ///  Default value. This value is unused.
+        Unspecified = 467110106,
+        ///  Indicates user chose no operation.
+        None = 2402104,
+        ///  Indicates user chose to opt for VM shutdown on key revocation.
+        Stop = 2555906,
+    }
+    impl KeyRevocationActionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                KeyRevocationActionType::UndefinedKeyRevocationActionType => "UNDEFINED_KEY_REVOCATION_ACTION_TYPE",
+                KeyRevocationActionType::Unspecified => "KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED",
+                KeyRevocationActionType::None => "NONE",
+                KeyRevocationActionType::Stop => "STOP",
+            }
+        }
+    }
     ///  The private IPv6 google access type for VMs. If not specified, use INHERIT_FROM_SUBNETWORK as default. Note that for MachineImage, this is not supported yet.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -16347,6 +16581,16 @@ pub struct LocalDisk {
     #[prost(string, optional, tag="93009052")]
     pub disk_type: ::core::option::Option<::prost::alloc::string::String>,
 }
+///  Provides a localized error message that is safe to return to the user which can be attached to an RPC error.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocalizedMessage {
+    ///  The locale used following the specification defined at <http://www.rfc-editor.org/rfc/bcp/bcp47.txt.> Examples are: "en-US", "fr-CH", "es-MX"
+    #[prost(string, optional, tag="513150554")]
+    pub locale: ::core::option::Option<::prost::alloc::string::String>,
+    ///  The localized error message in the above locale.
+    #[prost(string, optional, tag="418054151")]
+    pub message: ::core::option::Option<::prost::alloc::string::String>,
+}
 ///  Configuration for location policy among multiple possible locations (e.g. preferences for zone selection among zones in a single region).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationPolicy {
@@ -16391,14 +16635,17 @@ pub mod location_policy {
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationPolicyLocation {
-    ///  Preference for a given location.
+    ///  Constraints that the caller requires on the result distribution in this zone.
+    #[prost(message, optional, tag="3909174")]
+    pub constraints: ::core::option::Option<LocationPolicyLocationConstraints>,
+    ///  Preference for a given location. Set to either ALLOW or DENY.
     ///  Check the Preference enum for the list of possible values.
     #[prost(string, optional, tag="150781147")]
     pub preference: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Nested message and enum types in `LocationPolicyLocation`.
 pub mod location_policy_location {
-    ///  Preference for a given location.
+    ///  Preference for a given location. Set to either ALLOW or DENY.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Preference {
@@ -16425,6 +16672,13 @@ pub mod location_policy_location {
             }
         }
     }
+}
+///  Per-zone constraints on location policy for this zone.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct LocationPolicyLocationConstraints {
+    ///  Maximum number of items that are allowed to be placed in this zone. The value must be non-negative.
+    #[prost(int32, optional, tag="287620724")]
+    pub max_count: ::core::option::Option<i32>,
 }
 ///  This is deprecated and has no effect. Do not use.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -17090,6 +17344,9 @@ pub struct Network {
     ///  Enable ULA internal ipv6 on this network. Enabling this feature will assign a /48 from google defined ULA prefix fd20::/20. .
     #[prost(bool, optional, tag="423757720")]
     pub enable_ula_internal_ipv6: ::core::option::Option<bool>,
+    ///  [Output Only] URL of the firewall policy the network is associated with.
+    #[prost(string, optional, tag="498173265")]
+    pub firewall_policy: ::core::option::Option<::prost::alloc::string::String>,
     ///  [Output Only] The gateway address for default routing out of the network, selected by GCP.
     #[prost(string, optional, tag="178678877")]
     pub gateway_i_pv4: ::core::option::Option<::prost::alloc::string::String>,
@@ -17375,7 +17632,7 @@ pub struct NetworkEndpointGroupAppEngine {
     ///  Optional serving service. The service name is case-sensitive and must be 1-63 characters long. Example value: "default", "my-service".
     #[prost(string, optional, tag="373540533")]
     pub service: ::core::option::Option<::prost::alloc::string::String>,
-    ///  A template to parse service and version fields from a request URL. URL mask allows for routing to multiple App Engine services without having to create multiple Network Endpoint Groups and backend services. For example, the request URLs "foo1-dot-appname.appspot.com/v1" and "foo1-dot-appname.appspot.com/v2" can be backed by the same Serverless NEG with URL mask "-dot-appname.appspot.com/". The URL mask will parse them to { service = "foo1", version = "v1" } and { service = "foo1", version = "v2" } respectively.
+    ///  A template to parse service and version fields from a request URL. URL mask allows for routing to multiple App Engine services without having to create multiple Network Endpoint Groups and backend services. For example, the request URLs "foo1-dot-appname.appspot.com/v1" and "foo1-dot-appname.appspot.com/v2" can be backed by the same Serverless NEG with URL mask "<service>-dot-appname.appspot.com/<version>". The URL mask will parse them to { service = "foo1", version = "v1" } and { service = "foo1", version = "v2" } respectively.
     #[prost(string, optional, tag="103352252")]
     pub url_mask: ::core::option::Option<::prost::alloc::string::String>,
     ///  Optional serving version. The version name is case-sensitive and must be 1-100 characters long. Example value: "v1", "v2".
@@ -17388,7 +17645,7 @@ pub struct NetworkEndpointGroupCloudFunction {
     ///  A user-defined name of the Cloud Function. The function name is case-sensitive and must be 1-63 characters long. Example value: "func1".
     #[prost(string, optional, tag="307196888")]
     pub function: ::core::option::Option<::prost::alloc::string::String>,
-    ///  A template to parse function field from a request URL. URL mask allows for routing to multiple Cloud Functions without having to create multiple Network Endpoint Groups and backend services. For example, request URLs " mydomain.com/function1" and "mydomain.com/function2" can be backed by the same Serverless NEG with URL mask "/". The URL mask will parse them to { function = "function1" } and { function = "function2" } respectively.
+    ///  A template to parse function field from a request URL. URL mask allows for routing to multiple Cloud Functions without having to create multiple Network Endpoint Groups and backend services. For example, request URLs " mydomain.com/function1" and "mydomain.com/function2" can be backed by the same Serverless NEG with URL mask "/<function>". The URL mask will parse them to { function = "function1" } and { function = "function2" } respectively.
     #[prost(string, optional, tag="103352252")]
     pub url_mask: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -21514,7 +21771,7 @@ pub struct RegionSetPolicyRequest {
 ///
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegionTargetHttpsProxiesSetSslCertificatesRequest {
-    ///  New set of SslCertificate resources to associate with this TargetHttpsProxy resource. Currently exactly one SslCertificate resource must be specified.
+    ///  New set of SslCertificate resources to associate with this TargetHttpsProxy resource.
     #[prost(string, repeated, tag="366006543")]
     pub ssl_certificates: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -21767,7 +22024,7 @@ pub struct RemoveRuleSecurityPolicyRequest {
 ///  A policy that specifies how requests intended for the route's backends are shadowed to a separate mirrored backend service. The load balancer doesn't wait for responses from the shadow service. Before sending traffic to the shadow service, the host or authority header is suffixed with -shadow.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RequestMirrorPolicy {
-    ///  The full or partial URL to the BackendService resource being mirrored to.
+    ///  The full or partial URL to the BackendService resource being mirrored to. The backend service configured for a mirroring policy must reference backends that are of the same type as the original backend service matched in the URL map. Serverless NEG backends are not currently supported as a mirrored backend service. 
     #[prost(string, optional, tag="306946058")]
     pub backend_service: ::core::option::Option<::prost::alloc::string::String>,
 }
@@ -23824,6 +24081,10 @@ pub mod saved_attached_disk {
 ///  An instance-attached disk resource.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SavedDisk {
+    ///  [Output Only] The architecture of the attached disk.
+    ///  Check the Architecture enum for the list of possible values.
+    #[prost(string, optional, tag="302803283")]
+    pub architecture: ::core::option::Option<::prost::alloc::string::String>,
     ///  [Output Only] Type of the resource. Always compute#savedDisk for attached disks.
     #[prost(string, optional, tag="3292052")]
     pub kind: ::core::option::Option<::prost::alloc::string::String>,
@@ -23840,6 +24101,33 @@ pub struct SavedDisk {
 }
 /// Nested message and enum types in `SavedDisk`.
 pub mod saved_disk {
+    ///  [Output Only] The architecture of the attached disk.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Architecture {
+        ///  A value indicating that the enum field is not set.
+        UndefinedArchitecture = 0,
+        ///  Default value indicating Architecture is not set.
+        Unspecified = 394750507,
+        ///  Machines with architecture ARM64
+        Arm64 = 62547450,
+        ///  Machines with architecture X86_64
+        X8664 = 425300551,
+    }
+    impl Architecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Architecture::UndefinedArchitecture => "UNDEFINED_ARCHITECTURE",
+                Architecture::Unspecified => "ARCHITECTURE_UNSPECIFIED",
+                Architecture::Arm64 => "ARM64",
+                Architecture::X8664 => "X86_64",
+            }
+        }
+    }
     ///  [Output Only] An indicator whether storageBytes is in a stable state or it is being adjusted as a result of shared storage reallocation. This status can either be UPDATING, meaning the size of the snapshot is being updated, or UP_TO_DATE, meaning the size of the snapshot is up-to-date.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -23910,7 +24198,7 @@ pub mod scaling_schedule_status {
         }
     }
 }
-///  Sets the scheduling options for an Instance. NextID: 21
+///  Sets the scheduling options for an Instance.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Scheduling {
     ///  Specifies whether the instance should be automatically restarted if it is terminated by Compute Engine (not terminated by a user). You can only set the automatic restart option for standard instances. Preemptible instances cannot be automatically restarted. By default, this is set to true so an instance is automatically restarted if it is terminated by Compute Engine.
@@ -24794,6 +25082,8 @@ pub mod service_attachment_connected_endpoint {
         Accepted = 246714279,
         ///  The connection has been closed by the producer.
         Closed = 380163436,
+        ///  The connection has been accepted by the producer, but the producer needs to take further action before the forwarding rule can serve traffic.
+        NeedsAttention = 344491452,
         ///  The connection is pending acceptance by the producer.
         Pending = 35394935,
         ///  The consumer is still connected but not using the connection.
@@ -24810,6 +25100,7 @@ pub mod service_attachment_connected_endpoint {
                 Status::UndefinedStatus => "UNDEFINED_STATUS",
                 Status::Accepted => "ACCEPTED",
                 Status::Closed => "CLOSED",
+                Status::NeedsAttention => "NEEDS_ATTENTION",
                 Status::Pending => "PENDING",
                 Status::Rejected => "REJECTED",
                 Status::Unspecified => "STATUS_UNSPECIFIED",
@@ -26125,12 +26416,19 @@ pub struct SimulateMaintenanceEventInstanceRequest {
 ///  Represents a Persistent Disk Snapshot resource. You can use snapshots to back up data on a regular interval. For more information, read Creating persistent disk snapshots.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Snapshot {
+    ///  [Output Only] The architecture of the snapshot. Valid values are ARM64 or X86_64.
+    ///  Check the Architecture enum for the list of possible values.
+    #[prost(string, optional, tag="302803283")]
+    pub architecture: ::core::option::Option<::prost::alloc::string::String>,
     ///  [Output Only] Set to true if snapshots are automatically created by applying resource policy on the target disk.
     #[prost(bool, optional, tag="463922264")]
     pub auto_created: ::core::option::Option<bool>,
     ///  Creates the new snapshot in the snapshot chain labeled with the specified name. The chain name must be 1-63 characters long and comply with RFC1035. This is an uncommon option only for advanced service owners who needs to create separate snapshot chains, for example, for chargeback tracking. When you describe your snapshot resource, this field is visible only if it has a non-empty value.
     #[prost(string, optional, tag="68644169")]
     pub chain_name: ::core::option::Option<::prost::alloc::string::String>,
+    ///  [Output Only] Size in bytes of the snapshot at creation time.
+    #[prost(int64, optional, tag="125400077")]
+    pub creation_size_bytes: ::core::option::Option<i64>,
     ///  [Output Only] Creation timestamp in RFC3339 text format.
     #[prost(string, optional, tag="30525366")]
     pub creation_timestamp: ::core::option::Option<::prost::alloc::string::String>,
@@ -26176,6 +26474,10 @@ pub struct Snapshot {
     ///  Encrypts the snapshot using a customer-supplied encryption key. After you encrypt a snapshot using a customer-supplied key, you must provide the same key if you use the snapshot later. For example, you must provide the encryption key when you create a disk from the encrypted snapshot in a future request. Customer-supplied encryption keys do not protect access to metadata of the snapshot. If you do not provide an encryption key when creating the snapshot, then the snapshot will be encrypted using an automatically generated key and you do not need to provide a key to use the snapshot later.
     #[prost(message, optional, tag="43334526")]
     pub snapshot_encryption_key: ::core::option::Option<CustomerEncryptionKey>,
+    ///  Indicates the type of the snapshot.
+    ///  Check the SnapshotType enum for the list of possible values.
+    #[prost(string, optional, tag="124349653")]
+    pub snapshot_type: ::core::option::Option<::prost::alloc::string::String>,
     ///  The source disk used to create this snapshot.
     #[prost(string, optional, tag="451753793")]
     pub source_disk: ::core::option::Option<::prost::alloc::string::String>,
@@ -26185,6 +26487,12 @@ pub struct Snapshot {
     ///  [Output Only] The ID value of the disk used to create this snapshot. This value may be used to determine whether the snapshot was taken from the current or a previous instance of a given disk name.
     #[prost(string, optional, tag="454190809")]
     pub source_disk_id: ::core::option::Option<::prost::alloc::string::String>,
+    ///  [Output Only] URL of the resource policy which created this scheduled snapshot.
+    #[prost(string, optional, tag="235756291")]
+    pub source_snapshot_schedule_policy: ::core::option::Option<::prost::alloc::string::String>,
+    ///  [Output Only] ID of the resource policy which created this scheduled snapshot.
+    #[prost(string, optional, tag="70489047")]
+    pub source_snapshot_schedule_policy_id: ::core::option::Option<::prost::alloc::string::String>,
     ///  [Output Only] The status of the snapshot. This can be CREATING, DELETING, FAILED, READY, or UPLOADING.
     ///  Check the Status enum for the list of possible values.
     #[prost(string, optional, tag="181260274")]
@@ -26202,6 +26510,55 @@ pub struct Snapshot {
 }
 /// Nested message and enum types in `Snapshot`.
 pub mod snapshot {
+    ///  [Output Only] The architecture of the snapshot. Valid values are ARM64 or X86_64.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Architecture {
+        ///  A value indicating that the enum field is not set.
+        UndefinedArchitecture = 0,
+        ///  Default value indicating Architecture is not set.
+        Unspecified = 394750507,
+        ///  Machines with architecture ARM64
+        Arm64 = 62547450,
+        ///  Machines with architecture X86_64
+        X8664 = 425300551,
+    }
+    impl Architecture {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Architecture::UndefinedArchitecture => "UNDEFINED_ARCHITECTURE",
+                Architecture::Unspecified => "ARCHITECTURE_UNSPECIFIED",
+                Architecture::Arm64 => "ARM64",
+                Architecture::X8664 => "X86_64",
+            }
+        }
+    }
+    ///  Indicates the type of the snapshot.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum SnapshotType {
+        ///  A value indicating that the enum field is not set.
+        UndefinedSnapshotType = 0,
+        Archive = 506752162,
+        Standard = 484642493,
+    }
+    impl SnapshotType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                SnapshotType::UndefinedSnapshotType => "UNDEFINED_SNAPSHOT_TYPE",
+                SnapshotType::Archive => "ARCHIVE",
+                SnapshotType::Standard => "STANDARD",
+            }
+        }
+    }
     ///  [Output Only] The status of the snapshot. This can be CREATING, DELETING, FAILED, READY, or UPLOADING.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
@@ -26315,6 +26672,10 @@ pub struct SourceInstanceProperties {
     ///  A list of guest accelerator cards' type and count to use for instances created from this machine image.
     #[prost(message, repeated, tag="463595119")]
     pub guest_accelerators: ::prost::alloc::vec::Vec<AcceleratorConfig>,
+    ///  KeyRevocationActionType of the instance. Supported options are "STOP" and "NONE". The default value is "NONE" if it is not specified.
+    ///  Check the KeyRevocationActionType enum for the list of possible values.
+    #[prost(string, optional, tag="235941474")]
+    pub key_revocation_action_type: ::core::option::Option<::prost::alloc::string::String>,
     ///  Labels to apply to instances that are created from this machine image.
     #[prost(map="string, string", tag="500195327")]
     pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
@@ -26339,6 +26700,36 @@ pub struct SourceInstanceProperties {
     ///  A list of tags to apply to the instances that are created from this machine image. The tags identify valid sources or targets for network firewalls. The setTags method can modify this list of tags. Each tag within the list must comply with RFC1035.
     #[prost(message, optional, tag="3552281")]
     pub tags: ::core::option::Option<Tags>,
+}
+/// Nested message and enum types in `SourceInstanceProperties`.
+pub mod source_instance_properties {
+    ///  KeyRevocationActionType of the instance. Supported options are "STOP" and "NONE". The default value is "NONE" if it is not specified.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum KeyRevocationActionType {
+        ///  A value indicating that the enum field is not set.
+        UndefinedKeyRevocationActionType = 0,
+        ///  Default value. This value is unused.
+        Unspecified = 467110106,
+        ///  Indicates user chose no operation.
+        None = 2402104,
+        ///  Indicates user chose to opt for VM shutdown on key revocation.
+        Stop = 2555906,
+    }
+    impl KeyRevocationActionType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                KeyRevocationActionType::UndefinedKeyRevocationActionType => "UNDEFINED_KEY_REVOCATION_ACTION_TYPE",
+                KeyRevocationActionType::Unspecified => "KEY_REVOCATION_ACTION_TYPE_UNSPECIFIED",
+                KeyRevocationActionType::None => "NONE",
+                KeyRevocationActionType::Stop => "STOP",
+            }
+        }
+    }
 }
 ///  Represents an SSL Certificate resource. Google Compute Engine has two SSL Certificate resources: * \[Global\](/compute/docs/reference/rest/v1/sslCertificates) * \[Regional\](/compute/docs/reference/rest/v1/regionSslCertificates) The sslCertificates are used by: - external HTTPS load balancers - SSL proxy load balancers The regionSslCertificates are used by internal HTTPS load balancers. Optionally, certificate file contents that you upload can contain a set of up to five PEM-encoded certificates. The API call creates an object (sslCertificate) that holds this data. You can use SSL keys and certificates to secure connections to a load balancer. For more information, read Creating and using SSL certificates, SSL certificates quotas and limits, and Troubleshooting SSL certificates.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -27682,7 +28073,7 @@ pub struct TargetInstance {
     ///  Name of the resource. Provided by the client when the resource is created. The name must be 1-63 characters long, and comply with RFC1035. Specifically, the name must be 1-63 characters long and match the regular expression `\[a-z]([-a-z0-9]*[a-z0-9\])?` which means the first character must be a lowercase letter, and all following characters must be a dash, lowercase letter, or digit, except the last character, which cannot be a dash.
     #[prost(string, optional, tag="3373707")]
     pub name: ::core::option::Option<::prost::alloc::string::String>,
-    ///  NAT option controlling how IPs are NAT'ed to the instance. Currently only NO_NAT (default value) is supported.
+    ///  Must have a value of NO_NAT. Protocol forwarding delivers packets while preserving the destination IP address of the forwarding rule referencing the target instance.
     ///  Check the NatPolicy enum for the list of possible values.
     #[prost(string, optional, tag="509780496")]
     pub nat_policy: ::core::option::Option<::prost::alloc::string::String>,
@@ -27698,7 +28089,7 @@ pub struct TargetInstance {
 }
 /// Nested message and enum types in `TargetInstance`.
 pub mod target_instance {
-    ///  NAT option controlling how IPs are NAT'ed to the instance. Currently only NO_NAT (default value) is supported.
+    ///  Must have a value of NO_NAT. Protocol forwarding delivers packets while preserving the destination IP address of the forwarding rule referencing the target instance.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum NatPolicy {
@@ -29633,12 +30024,34 @@ pub struct VmEndpointNatMappingsInterfaceNatMappings {
     ///  Total number of ports across all NAT IPs allocated to this interface. It equals to the aggregated port number in the field nat_ip_port_ranges.
     #[prost(int32, optional, tag="299904384")]
     pub num_total_nat_ports: ::core::option::Option<i32>,
+    ///  Information about mappings provided by rules in this NAT.
+    #[prost(message, repeated, tag="486192968")]
+    pub rule_mappings: ::prost::alloc::vec::Vec<VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings>,
     ///  Alias IP range for this interface endpoint. It will be a private (RFC 1918) IP range. Examples: "10.33.4.55/32", or "192.168.5.0/24".
     #[prost(string, optional, tag="440340952")]
     pub source_alias_ip_range: ::core::option::Option<::prost::alloc::string::String>,
     ///  Primary IP of the VM for this NIC.
     #[prost(string, optional, tag="149836159")]
     pub source_virtual_ip: ::core::option::Option<::prost::alloc::string::String>,
+}
+///  Contains information of NAT Mappings provided by a NAT Rule.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VmEndpointNatMappingsInterfaceNatMappingsNatRuleMappings {
+    ///  List of all drain IP:port-range mappings assigned to this interface by this rule. These ranges are inclusive, that is, both the first and the last ports can be used for NAT. Example: ["2.2.2.2:12345-12355", "1.1.1.1:2234-2234"].
+    #[prost(string, repeated, tag="395440577")]
+    pub drain_nat_ip_port_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    ///  A list of all IP:port-range mappings assigned to this interface by this rule. These ranges are inclusive, that is, both the first and the last ports can be used for NAT. Example: ["2.2.2.2:12345-12355", "1.1.1.1:2234-2234"].
+    #[prost(string, repeated, tag="531830810")]
+    pub nat_ip_port_ranges: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    ///  Total number of drain ports across all NAT IPs allocated to this interface by this rule. It equals the aggregated port number in the field drain_nat_ip_port_ranges.
+    #[prost(int32, optional, tag="335532793")]
+    pub num_total_drain_nat_ports: ::core::option::Option<i32>,
+    ///  Total number of ports across all NAT IPs allocated to this interface by this rule. It equals the aggregated port number in the field nat_ip_port_ranges.
+    #[prost(int32, optional, tag="299904384")]
+    pub num_total_nat_ports: ::core::option::Option<i32>,
+    ///  Rule number of the NAT Rule.
+    #[prost(int32, optional, tag="535211500")]
+    pub rule_number: ::core::option::Option<i32>,
 }
 ///  Contains a list of VmEndpointNatMappings.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -30183,6 +30596,8 @@ pub mod warning {
         FieldValueOverriden = 329669423,
         ///  The operation involved use of an injected kernel, which is deprecated.
         InjectedKernelsDeprecated = 417377419,
+        ///  A WEIGHTED_MAGLEV backend service is associated with a health check that is not of type HTTP/HTTPS/HTTP2.
+        InvalidHealthCheckForDynamicWieghtedLb = 401542606,
         ///  When deploying a deployment with a exceedingly large number of resources
         LargeDeploymentWarning = 481440678,
         ///  A resource depends on a missing type
@@ -30236,6 +30651,7 @@ pub mod warning {
                 Code::ExternalApiWarning => "EXTERNAL_API_WARNING",
                 Code::FieldValueOverriden => "FIELD_VALUE_OVERRIDEN",
                 Code::InjectedKernelsDeprecated => "INJECTED_KERNELS_DEPRECATED",
+                Code::InvalidHealthCheckForDynamicWieghtedLb => "INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB",
                 Code::LargeDeploymentWarning => "LARGE_DEPLOYMENT_WARNING",
                 Code::MissingTypeDependency => "MISSING_TYPE_DEPENDENCY",
                 Code::NextHopAddressNotAssigned => "NEXT_HOP_ADDRESS_NOT_ASSIGNED",
@@ -30296,6 +30712,8 @@ pub mod warnings {
         FieldValueOverriden = 329669423,
         ///  The operation involved use of an injected kernel, which is deprecated.
         InjectedKernelsDeprecated = 417377419,
+        ///  A WEIGHTED_MAGLEV backend service is associated with a health check that is not of type HTTP/HTTPS/HTTP2.
+        InvalidHealthCheckForDynamicWieghtedLb = 401542606,
         ///  When deploying a deployment with a exceedingly large number of resources
         LargeDeploymentWarning = 481440678,
         ///  A resource depends on a missing type
@@ -30349,6 +30767,7 @@ pub mod warnings {
                 Code::ExternalApiWarning => "EXTERNAL_API_WARNING",
                 Code::FieldValueOverriden => "FIELD_VALUE_OVERRIDEN",
                 Code::InjectedKernelsDeprecated => "INJECTED_KERNELS_DEPRECATED",
+                Code::InvalidHealthCheckForDynamicWieghtedLb => "INVALID_HEALTH_CHECK_FOR_DYNAMIC_WIEGHTED_LB",
                 Code::LargeDeploymentWarning => "LARGE_DEPLOYMENT_WARNING",
                 Code::MissingTypeDependency => "MISSING_TYPE_DEPENDENCY",
                 Code::NextHopAddressNotAssigned => "NEXT_HOP_ADDRESS_NOT_ASSIGNED",
@@ -35180,7 +35599,7 @@ pub mod instance_group_managers_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Lists all of the instances in the managed instance group. Each instance in the list has a currentAction, which indicates the action that the managed instance group is performing on the instance. For example, if the group is still creating an instance, the currentAction is CREATING. If a previous action failed, the list displays the errors for that failed action. The orderBy query parameter is not supported.
+        /// Lists all of the instances in the managed instance group. Each instance in the list has a currentAction, which indicates the action that the managed instance group is performing on the instance. For example, if the group is still creating an instance, the currentAction is CREATING. If a previous action failed, the list displays the errors for that failed action. The orderBy query parameter is not supported. The `pageToken` query parameter is supported only in the alpha and beta API and only if the group's `listManagedInstancesResults` field is set to `PAGINATED`.
         pub async fn list_managed_instances(
             &mut self,
             request: impl tonic::IntoRequest<
@@ -35998,7 +36417,7 @@ pub mod instances_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Creates multiple instances. Count specifies the number of instances to create.
+        /// Creates multiple instances. Count specifies the number of instances to create. For more information, see About bulk creation of VMs.
         pub async fn bulk_insert(
             &mut self,
             request: impl tonic::IntoRequest<super::BulkInsertInstanceRequest>,
@@ -42472,7 +42891,7 @@ pub mod region_instance_group_managers_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Lists the instances in the managed instance group and instances that are scheduled to be created. The list includes any current actions that the group has scheduled for its instances. The orderBy query parameter is not supported.
+        /// Lists the instances in the managed instance group and instances that are scheduled to be created. The list includes any current actions that the group has scheduled for its instances. The orderBy query parameter is not supported. The `pageToken` query parameter is supported only in the alpha and beta API and only if the group's `listManagedInstancesResults` field is set to `PAGINATED`.
         pub async fn list_managed_instances(
             &mut self,
             request: impl tonic::IntoRequest<

@@ -1,3 +1,27 @@
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IpUtilizationInfo {
+    #[prost(message, repeated, tag="1")]
+    pub subnet_ip_utilization: ::prost::alloc::vec::Vec<ip_utilization_info::SubnetIpUtilization>,
+}
+/// Nested message and enum types in `IpUtilizationInfo`.
+pub mod ip_utilization_info {
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SubnetIpUtilization {
+        ///  URI of subnet.
+        #[prost(string, tag="1")]
+        pub subnet_uri: ::prost::alloc::string::String,
+        ///  Secondary range name. If the range is the primary range of the subnet,
+        ///  this field is empty.
+        #[prost(string, tag="2")]
+        pub secondary_range_name: ::prost::alloc::string::String,
+        ///  Total number of usable IP addresses in the IP range.
+        #[prost(uint64, tag="3")]
+        pub total_usable_addresses: u64,
+        ///  The ratio of allocated IP addresses from the total usable addresses.
+        #[prost(double, tag="4")]
+        pub allocation_ratio: f64,
+    }
+}
 ///  Log entry that describes a report from Network Analyzer.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Report {
@@ -35,6 +59,8 @@ pub struct Report {
     ///  The groups of the report. One report may be present in multiple groups.
     #[prost(enumeration="report::ReportGroup", repeated, tag="18")]
     pub report_groups: ::prost::alloc::vec::Vec<i32>,
+    #[prost(oneof="report::Content", tags="19")]
+    pub content: ::core::option::Option<report::Content>,
 }
 /// Nested message and enum types in `Report`.
 pub mod report {
@@ -135,6 +161,11 @@ pub mod report {
                 ReportGroup::ManagedServices => "MANAGED_SERVICES",
             }
         }
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Content {
+        #[prost(message, tag="19")]
+        IpUtilizationInfo(super::IpUtilizationInfo),
     }
 }
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
