@@ -161,6 +161,41 @@ pub mod xss {
         }
     }
 }
+///  Information reported for an XXE.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Xxe {
+    ///  The XML string that triggered the XXE vulnerability. Non-payload values
+    ///  might be redacted.
+    #[prost(string, tag="1")]
+    pub payload_value: ::prost::alloc::string::String,
+    ///  Location within the request where the payload was placed.
+    #[prost(enumeration="xxe::Location", tag="2")]
+    pub payload_location: i32,
+}
+/// Nested message and enum types in `Xxe`.
+pub mod xxe {
+    ///  Locations within a request where XML was substituted.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum Location {
+        ///  Unknown Location.
+        Unspecified = 0,
+        ///  The XML payload replaced the complete request body.
+        CompleteRequestBody = 1,
+    }
+    impl Location {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                Location::Unspecified => "LOCATION_UNSPECIFIED",
+                Location::CompleteRequestBody => "COMPLETE_REQUEST_BODY",
+            }
+        }
+    }
+}
 ///  A Finding resource represents a vulnerability instance identified during a
 ///  ScanRun.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -228,6 +263,9 @@ pub struct Finding {
     ///  Output only. An addon containing information reported for an XSS, if any.
     #[prost(message, optional, tag="14")]
     pub xss: ::core::option::Option<Xss>,
+    ///  Output only. An addon containing information reported for an XXE, if any.
+    #[prost(message, optional, tag="18")]
+    pub xxe: ::core::option::Option<Xxe>,
 }
 /// Nested message and enum types in `Finding`.
 pub mod finding {
@@ -322,6 +360,9 @@ pub struct ScanConfig {
     ///  If enabled, the scanner will access applications from static IP addresses.
     #[prost(bool, tag="14")]
     pub static_ip_scan: bool,
+    ///  Whether to keep scanning even if most requests return HTTP error codes.
+    #[prost(bool, tag="15")]
+    pub ignore_http_status_errors: bool,
 }
 /// Nested message and enum types in `ScanConfig`.
 pub mod scan_config {
@@ -691,7 +732,7 @@ pub struct ScanRunErrorTrace {
 pub mod scan_run_error_trace {
     ///  Output only.
     ///  Defines an error reason code.
-    ///  Next id: 7
+    ///  Next id: 8
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum Code {
@@ -765,6 +806,8 @@ pub mod scan_run_warning_trace {
         TooManyFuzzTasks = 3,
         ///  Indicates that a scan is blocked by IAP.
         BlockedByIap = 4,
+        ///  Indicates that no seeds is found for a scan
+        NoStartingUrlFoundForManagedScan = 5,
     }
     impl Code {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -778,6 +821,7 @@ pub mod scan_run_warning_trace {
                 Code::TooManyCrawlResults => "TOO_MANY_CRAWL_RESULTS",
                 Code::TooManyFuzzTasks => "TOO_MANY_FUZZ_TASKS",
                 Code::BlockedByIap => "BLOCKED_BY_IAP",
+                Code::NoStartingUrlFoundForManagedScan => "NO_STARTING_URL_FOUND_FOR_MANAGED_SCAN",
             }
         }
     }
@@ -890,6 +934,34 @@ pub mod scan_run {
             }
         }
     }
+}
+///  A ScanRunLog is an output-only proto used for Stackdriver customer logging.
+///  It is used for logs covering the start and end of scan pipelines.
+///  Other than an added summary, this is a subset of the ScanRun.
+///  Representation in logs is either a proto Struct, or converted to JSON.
+///  Next id: 9
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ScanRunLog {
+    ///  Human friendly message about the event.
+    #[prost(string, tag="1")]
+    pub summary: ::prost::alloc::string::String,
+    ///  The resource name of the ScanRun being logged.
+    #[prost(string, tag="2")]
+    pub name: ::prost::alloc::string::String,
+    ///  The execution state of the ScanRun.
+    #[prost(enumeration="scan_run::ExecutionState", tag="3")]
+    pub execution_state: i32,
+    ///  The result state of the ScanRun.
+    #[prost(enumeration="scan_run::ResultState", tag="4")]
+    pub result_state: i32,
+    #[prost(int64, tag="5")]
+    pub urls_crawled_count: i64,
+    #[prost(int64, tag="6")]
+    pub urls_tested_count: i64,
+    #[prost(bool, tag="7")]
+    pub has_findings: bool,
+    #[prost(message, optional, tag="8")]
+    pub error_trace: ::core::option::Option<ScanRunErrorTrace>,
 }
 ///  Request for the `CreateScanConfig` method.
 #[derive(Clone, PartialEq, ::prost::Message)]

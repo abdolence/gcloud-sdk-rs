@@ -884,7 +884,7 @@ pub struct ExplanationSpec {
     ///  Required. Parameters that configure explaining of the Model's predictions.
     #[prost(message, optional, tag="1")]
     pub parameters: ::core::option::Option<ExplanationParameters>,
-    ///  Required. Metadata describing the Model's input and output for explanation.
+    ///  Optional. Metadata describing the Model's input and output for explanation.
     #[prost(message, optional, tag="2")]
     pub metadata: ::core::option::Option<ExplanationMetadata>,
 }
@@ -903,7 +903,7 @@ pub struct ExplanationParameters {
     ///  explaining.
     ///
     ///  If not populated, returns attributions for \[top_k][google.cloud.aiplatform.v1.ExplanationParameters.top_k\] indices of outputs.
-    ///  If neither top_k nor output_indeices is populated, returns the argmax
+    ///  If neither top_k nor output_indices is populated, returns the argmax
     ///  index of the outputs.
     ///
     ///  Only applicable to Models that predict multiple outputs (e,g, multi-class
@@ -3140,6 +3140,7 @@ pub struct SavedQuery {
     pub annotation_filter: ::prost::alloc::string::String,
     ///  Required. Problem type of the SavedQuery.
     ///  Allowed values:
+    ///
     ///  * IMAGE_CLASSIFICATION_SINGLE_LABEL
     ///  * IMAGE_CLASSIFICATION_MULTI_LABEL
     ///  * IMAGE_BOUNDING_POLY
@@ -3155,7 +3156,7 @@ pub struct SavedQuery {
     ///  Output only. Number of AnnotationSpecs in the context of the SavedQuery.
     #[prost(int32, tag="10")]
     pub annotation_spec_count: i32,
-    ///  Used to perform consistent read-modify-write updates. If not set, a blind
+    ///  Used to perform a consistent read-modify-write update. If not set, a blind
     ///  "overwrite" update happens.
     #[prost(string, tag="8")]
     pub etag: ::prost::alloc::string::String,
@@ -3386,8 +3387,7 @@ pub struct ListSavedQueriesRequest {
 ///  Response message for \[DatasetService.ListSavedQueries][google.cloud.aiplatform.v1.DatasetService.ListSavedQueries\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSavedQueriesResponse {
-    ///  A list of SavedQueries that matches the specified filter in the
-    ///  request.
+    ///  A list of SavedQueries that match the specified filter in the request.
     #[prost(message, repeated, tag="1")]
     pub saved_queries: ::prost::alloc::vec::Vec<SavedQuery>,
     ///  The standard List next-page token.
@@ -7665,6 +7665,104 @@ pub struct Index {
     ///  is reflected in it.
     #[prost(message, optional, tag="11")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  Output only. Stats of the index resource.
+    #[prost(message, optional, tag="14")]
+    pub index_stats: ::core::option::Option<IndexStats>,
+    ///  Immutable. The update method to use with this Index. If not set, BATCH_UPDATE will be
+    ///  used by default.
+    #[prost(enumeration="index::IndexUpdateMethod", tag="16")]
+    pub index_update_method: i32,
+}
+/// Nested message and enum types in `Index`.
+pub mod index {
+    ///  The update method of an Index.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum IndexUpdateMethod {
+        ///  Should not be used.
+        Unspecified = 0,
+        ///  BatchUpdate: user can call UpdateIndex with files on Cloud Storage of
+        ///  datapoints to update.
+        BatchUpdate = 1,
+        ///  StreamUpdate: user can call UpsertDatapoints/DeleteDatapoints to update
+        ///  the Index and the updates will be applied in corresponding
+        ///  DeployedIndexes in nearly real-time.
+        StreamUpdate = 2,
+    }
+    impl IndexUpdateMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                IndexUpdateMethod::Unspecified => "INDEX_UPDATE_METHOD_UNSPECIFIED",
+                IndexUpdateMethod::BatchUpdate => "BATCH_UPDATE",
+                IndexUpdateMethod::StreamUpdate => "STREAM_UPDATE",
+            }
+        }
+    }
+}
+///  A datapoint of Index.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexDatapoint {
+    ///  Required. Unique identifier of the datapoint.
+    #[prost(string, tag="1")]
+    pub datapoint_id: ::prost::alloc::string::String,
+    ///  Required. Feature embedding vector. An array of numbers with the length of
+    ///  \[NearestNeighborSearchConfig.dimensions\].
+    #[prost(float, repeated, packed="false", tag="2")]
+    pub feature_vector: ::prost::alloc::vec::Vec<f32>,
+    ///  Optional. List of Restrict of the datapoint, used to perform "restricted searches"
+    ///  where boolean rule are used to filter the subset of the database eligible
+    ///  for matching.
+    ///  See: <https://cloud.google.com/vertex-ai/docs/matching-engine/filtering>
+    #[prost(message, repeated, tag="4")]
+    pub restricts: ::prost::alloc::vec::Vec<index_datapoint::Restriction>,
+    ///  Optional. CrowdingTag of the datapoint, the number of neighbors to return in each
+    ///  crowding can be configured during query.
+    #[prost(message, optional, tag="5")]
+    pub crowding_tag: ::core::option::Option<index_datapoint::CrowdingTag>,
+}
+/// Nested message and enum types in `IndexDatapoint`.
+pub mod index_datapoint {
+    ///  Restriction of a datapoint which describe its attributes(tokens) from each
+    ///  of several attribute categories(namespaces).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Restriction {
+        ///  The namespace of this restriction. eg: color.
+        #[prost(string, tag="1")]
+        pub namespace: ::prost::alloc::string::String,
+        ///  The attributes to allow in this namespace. eg: 'red'
+        #[prost(string, repeated, tag="2")]
+        pub allow_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        ///  The attributes to deny in this namespace. eg: 'blue'
+        #[prost(string, repeated, tag="3")]
+        pub deny_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    ///  Crowding tag is a constraint on a neighbor list produced by nearest
+    ///  neighbor search requiring that no more than some value k' of the k
+    ///  neighbors returned have the same value of crowding_attribute.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CrowdingTag {
+        ///  The attribute value used for crowding.  The maximum number of neighbors
+        ///  to return per crowding attribute value
+        ///  (per_crowding_attribute_num_neighbors) is configured per-query. This
+        ///  field is ignored if per_crowding_attribute_num_neighbors is larger than
+        ///  the total number of neighbors to return for a given query.
+        #[prost(string, tag="1")]
+        pub crowding_attribute: ::prost::alloc::string::String,
+    }
+}
+///  Stats of the Index.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexStats {
+    ///  Output only. The number of vectors in the Index.
+    #[prost(int64, tag="1")]
+    pub vectors_count: i64,
+    ///  Output only. The number of shards in the Index.
+    #[prost(int32, tag="2")]
+    pub shards_count: i32,
 }
 ///  Indexes are deployed into it. An IndexEndpoint can have multiple
 ///  DeployedIndexes.
@@ -8403,6 +8501,38 @@ pub struct DeleteIndexRequest {
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
+///  Request message for \[IndexService.UpsertDatapoints][google.cloud.aiplatform.v1.IndexService.UpsertDatapoints\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpsertDatapointsRequest {
+    ///  Required. The name of the Index resource to be updated.
+    ///  Format:
+    ///  `projects/{project}/locations/{location}/indexes/{index}`
+    #[prost(string, tag="1")]
+    pub index: ::prost::alloc::string::String,
+    ///  A list of datapoints to be created/updated.
+    #[prost(message, repeated, tag="2")]
+    pub datapoints: ::prost::alloc::vec::Vec<IndexDatapoint>,
+}
+///  Response message for \[IndexService.UpsertDatapoints][google.cloud.aiplatform.v1.IndexService.UpsertDatapoints\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpsertDatapointsResponse {
+}
+///  Request message for \[IndexService.RemoveDatapoints][google.cloud.aiplatform.v1.IndexService.RemoveDatapoints\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveDatapointsRequest {
+    ///  Required. The name of the Index resource to be updated.
+    ///  Format:
+    ///  `projects/{project}/locations/{location}/indexes/{index}`
+    #[prost(string, tag="1")]
+    pub index: ::prost::alloc::string::String,
+    ///  A list of datapoint ids to be deleted.
+    #[prost(string, repeated, tag="2")]
+    pub datapoint_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+///  Response message for \[IndexService.RemoveDatapoints][google.cloud.aiplatform.v1.IndexService.RemoveDatapoints\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveDatapointsResponse {
+}
 ///  Runtime operation metadata with regard to Matching Engine Index.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NearestNeighborSearchOperationMetadata {
@@ -8680,9 +8810,50 @@ pub mod index_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Add/update Datapoints into an Index.
+        pub async fn upsert_datapoints(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpsertDatapointsRequest>,
+        ) -> Result<tonic::Response<super::UpsertDatapointsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.IndexService/UpsertDatapoints",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Remove Datapoints from an Index.
+        pub async fn remove_datapoints(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RemoveDatapointsRequest>,
+        ) -> Result<tonic::Response<super::RemoveDatapointsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1.IndexService/RemoveDatapoints",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
 }
-///  Next ID: 8
+///  The objective configuration for model monitoring, including the information
+///  needed to detect anomalies for one particular model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelMonitoringObjectiveConfig {
     ///  Training dataset for models. This field has to be set only if
@@ -8853,7 +9024,6 @@ pub mod model_monitoring_objective_config {
         }
     }
 }
-///  Next ID: 3
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelMonitoringAlertConfig {
     ///  Dump the anomalies to Cloud Logging. The anomalies will be put to json
@@ -8883,7 +9053,6 @@ pub mod model_monitoring_alert_config {
     }
 }
 ///  The config for feature monitoring threshold.
-///  Next ID: 3
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThresholdConfig {
     #[prost(oneof="threshold_config::Threshold", tags="1")]
@@ -8907,7 +9076,6 @@ pub mod threshold_config {
 }
 ///  Sampling Strategy for logging, can be for both training and prediction
 ///  dataset.
-///  Next ID: 2
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SamplingStrategy {
     ///  Random sample config. Will support more sampling strategies later.
@@ -13005,7 +13173,7 @@ pub struct MergeVersionAliasesRequest {
     pub name: ::prost::alloc::string::String,
     ///  Required. The set of version aliases to merge.
     ///  The alias should be at most 128 characters, and match
-    ///  `\[a-z][a-z0-9-]{0,126}[a-z-0-9\]`.
+    ///  `\[a-z][a-zA-Z0-9-]{0,126}[a-z-0-9\]`.
     ///  Add the `-` prefix to an alias means removing that alias from the version.
     ///  `-` is NOT counted in the 128 characters. Example: `-golden` means removing
     ///  the `golden` alias from the version.
@@ -13836,6 +14004,32 @@ pub mod pipeline_job {
         ///  tasks will continue to completion.
         #[prost(enumeration="super::PipelineFailurePolicy", tag="4")]
         pub failure_policy: i32,
+        ///  The runtime artifacts of the PipelineJob. The key will be the input
+        ///  artifact name and the value would be one of the InputArtifact.
+        #[prost(map="string, message", tag="5")]
+        pub input_artifacts: ::std::collections::HashMap<::prost::alloc::string::String, runtime_config::InputArtifact>,
+    }
+    /// Nested message and enum types in `RuntimeConfig`.
+    pub mod runtime_config {
+        ///  The type of an input artifact.
+        #[derive(Clone, PartialEq, ::prost::Message)]
+        pub struct InputArtifact {
+            #[prost(oneof="input_artifact::Kind", tags="1")]
+            pub kind: ::core::option::Option<input_artifact::Kind>,
+        }
+        /// Nested message and enum types in `InputArtifact`.
+        pub mod input_artifact {
+            #[derive(Clone, PartialEq, ::prost::Oneof)]
+            pub enum Kind {
+                ///  Artifact resource id from MLMD. Which is the last portion of an
+                ///  artifact resource
+                ///  name(projects/{project}/locations/{location}/metadataStores/default/artifacts/{artifact_id}).
+                ///  The artifact must stay within the same project, location and default
+                ///  metadatastore as the pipeline.
+                #[prost(string, tag="1")]
+                ArtifactId(::prost::alloc::string::String),
+            }
+        }
     }
 }
 ///  Pipeline template metadata if \[PipelineJob.template_uri][google.cloud.aiplatform.v1.PipelineJob.template_uri\] is from supported
@@ -14616,6 +14810,9 @@ pub struct ListPipelineJobsRequest {
     ///    * `start_time`
     #[prost(string, tag="6")]
     pub order_by: ::prost::alloc::string::String,
+    ///  Mask specifying which fields to read.
+    #[prost(message, optional, tag="7")]
+    pub read_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
 ///  Response message for \[PipelineService.ListPipelineJobs][google.cloud.aiplatform.v1.PipelineService.ListPipelineJobs\]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -17231,7 +17428,7 @@ pub struct SuggestTrialsRequest {
     ///  Format: `projects/{project}/locations/{location}/studies/{study}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The number of suggestions requested.
+    ///  Required. The number of suggestions requested. It must be positive.
     #[prost(int32, tag="2")]
     pub suggestion_count: i32,
     ///  Required. The identifier of the client that is requesting the suggestion.

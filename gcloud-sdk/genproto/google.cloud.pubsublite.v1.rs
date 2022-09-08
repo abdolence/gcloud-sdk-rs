@@ -174,6 +174,10 @@ pub struct Subscription {
     ///  The settings for this subscription's message delivery.
     #[prost(message, optional, tag="3")]
     pub delivery_config: ::core::option::Option<subscription::DeliveryConfig>,
+    ///  If present, messages are automatically written from the Pub/Sub Lite topic
+    ///  associated with this subscription to a destination.
+    #[prost(message, optional, tag="4")]
+    pub export_config: ::core::option::Option<ExportConfig>,
 }
 /// Nested message and enum types in `Subscription`.
 pub mod subscription {
@@ -215,6 +219,92 @@ pub mod subscription {
                 }
             }
         }
+    }
+}
+///  Configuration for a Pub/Sub Lite subscription that writes messages to a
+///  destination. User subscriber clients must not connect to this subscription.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ExportConfig {
+    ///  The desired state of this export.
+    #[prost(enumeration="export_config::State", tag="1")]
+    pub desired_state: i32,
+    ///  Output only. The export statuses of each partition. This field is output only.
+    #[prost(message, repeated, tag="4")]
+    pub statuses: ::prost::alloc::vec::Vec<export_config::PartitionStatus>,
+    ///  Optional. The name of an optional Pub/Sub Lite topic to publish messages that can not
+    ///  be exported to the destination. For example, the message can not be
+    ///  published to the Pub/Sub service because it does not satisfy the
+    ///  constraints documented at <https://cloud.google.com/pubsub/docs/publisher.>
+    ///
+    ///  Structured like:
+    ///  projects/{project_number}/locations/{location}/topics/{topic_id}.
+    ///  Must be within the same project and location as the subscription. The topic
+    ///  may be changed or removed.
+    #[prost(string, tag="5")]
+    pub dead_letter_topic: ::prost::alloc::string::String,
+    ///  The destination to export to. Required.
+    #[prost(oneof="export_config::Destination", tags="3")]
+    pub destination: ::core::option::Option<export_config::Destination>,
+}
+/// Nested message and enum types in `ExportConfig`.
+pub mod export_config {
+    ///  The export status of a partition.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PartitionStatus {
+        ///  The partition number.
+        #[prost(int64, tag="1")]
+        pub partition: i64,
+        ///  If the export for a partition is healthy and the desired state is
+        ///  `ACTIVE`, the status code will be `OK` (zero). If the desired state of
+        ///  the export is `PAUSED`, the status code will be `CANCELLED`.
+        ///
+        ///  If the export has been suspended due to an error, the status will be
+        ///  populated with an error code and details. The service will automatically
+        ///  retry after a period of time, and will update the status code to `OK` if
+        ///  export subsequently succeeds.
+        #[prost(message, optional, tag="2")]
+        pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
+    }
+    ///  Configuration for exporting to a Pub/Sub topic.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct PubSubConfig {
+        ///  The name of the Pub/Sub topic.
+        ///  Structured like: projects/{project_number}/topics/{topic_id}.
+        ///  The topic may be changed.
+        #[prost(string, tag="1")]
+        pub topic: ::prost::alloc::string::String,
+    }
+    ///  An export state.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum State {
+        ///  Default value. This value is unused.
+        Unspecified = 0,
+        ///  Messages are being exported.
+        Active = 1,
+        ///  Exporting messages is suspended.
+        Paused = 2,
+    }
+    impl State {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                State::Unspecified => "STATE_UNSPECIFIED",
+                State::Active => "ACTIVE",
+                State::Paused => "PAUSED",
+            }
+        }
+    }
+    ///  The destination to export to. Required.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Destination {
+        ///  Messages are automatically written from the Pub/Sub Lite topic associated
+        ///  with this subscription to a Pub/Sub topic.
+        #[prost(message, tag="3")]
+        PubsubConfig(PubSubConfig),
     }
 }
 ///  A target publish or event time. Can be used for seeking to or retrieving the

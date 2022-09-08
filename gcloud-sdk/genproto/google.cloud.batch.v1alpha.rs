@@ -761,6 +761,7 @@ pub struct AllocationPolicy {
     #[prost(enumeration="allocation_policy::ProvisioningModel", repeated, packed="false", tag="4")]
     pub provisioning_models: ::prost::alloc::vec::Vec<i32>,
     ///  Email of the service account that VMs will run as.
+    #[deprecated]
     #[prost(string, tag="5")]
     pub service_account_email: ::prost::alloc::string::String,
     ///  Service account that VMs will run as.
@@ -784,12 +785,18 @@ pub struct AllocationPolicy {
 pub mod allocation_policy {
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct LocationPolicy {
-        ///  A list of allowed location names represented by internal URLs,
-        ///  First location in the list must be a region.
-        ///  for example,
-        ///  \["regions/us-central1"\] allow VMs in region us-central1,
-        ///  ["regions/us-central1", "zones/us-central1-a"] only allow VMs in zone
-        ///  us-central1-a.
+        ///  A list of allowed location names represented by internal URLs.
+        ///  Each location can be a region or a zone.
+        ///  Only one region or multiple zones in one region is supported now.
+        ///  For example,
+        ///  \["regions/us-central1"\] allow VMs in any zones in region us-central1.
+        ///  ["zones/us-central1-a", "zones/us-central1-c"] only allow VMs
+        ///  in zones us-central1-a and us-central1-c.
+        ///  All locations end up in different regions would cause errors.
+        ///  For example,
+        ///  ["regions/us-central1", "zones/us-central1-a", "zones/us-central1-b",
+        ///  "zones/us-west1-a"] contains 2 regions "us-central1" and
+        ///  "us-west1". An error is expected in this case.
         #[prost(string, repeated, tag="1")]
         pub allowed_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         ///  A list of denied location names.
@@ -798,17 +805,27 @@ pub mod allocation_policy {
         #[prost(string, repeated, tag="2")]
         pub denied_locations: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
-    ///  A new persistent disk.
+    ///  A new persistent disk or a local ssd.
+    ///  A VM can only have one local SSD setting but multiple local SSD partitions.
+    ///  <https://cloud.google.com/compute/docs/disks#pdspecs.>
+    ///  <https://cloud.google.com/compute/docs/disks#localssds.>
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct Disk {
         ///  Disk type as shown in `gcloud compute disk-types list`
-        ///  For example, "pd-ssd", "pd-standard", "pd-balanced".
+        ///  For example, "pd-ssd", "pd-standard", "pd-balanced", "local-ssd".
         #[prost(string, tag="1")]
         pub r#type: ::prost::alloc::string::String,
         ///  Disk size in GB.
         ///  This field is ignored if `data_source` is `disk` or `image`.
+        ///  If `type` is `local-ssd`, size_gb should be a multiple of 375GB,
+        ///  otherwise, the final size will be the next greater multiple of 375 GB.
         #[prost(int64, tag="2")]
         pub size_gb: i64,
+        ///  Local SSDs are available through both "SCSI" and "NVMe" interfaces.
+        ///  If not indicated, "NVMe" will be the default one for local ssds.
+        ///  We only support "SCSI" for persistent disks now.
+        #[prost(string, tag="6")]
+        pub disk_interface: ::prost::alloc::string::String,
         ///  A data source from which a PD will be created.
         #[prost(oneof="disk::DataSource", tags="4, 5")]
         pub data_source: ::core::option::Option<disk::DataSource>,
@@ -826,7 +843,8 @@ pub mod allocation_policy {
             Snapshot(::prost::alloc::string::String),
         }
     }
-    ///  A new or an existing persistent disk attached to a VM instance.
+    ///  A new or an existing persistent disk or a local ssd attached to a VM
+    ///  instance.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct AttachedDisk {
         ///  Device name that the guest operating system will see.
@@ -857,6 +875,9 @@ pub mod allocation_policy {
         ///  The number of accelerators of this type.
         #[prost(int64, tag="2")]
         pub count: i64,
+        #[deprecated]
+        #[prost(bool, tag="3")]
+        pub install_gpu_drivers: bool,
     }
     ///  InstancePolicy describes an instance type and resources attached to each VM
     ///  created by this InstancePolicy.
@@ -889,6 +910,8 @@ pub mod allocation_policy {
     ///  Either an InstancePolicy or an instance template.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct InstancePolicyOrTemplate {
+        #[prost(bool, tag="3")]
+        pub install_gpu_drivers: bool,
         #[prost(oneof="instance_policy_or_template::PolicyTemplate", tags="1, 2")]
         pub policy_template: ::core::option::Option<instance_policy_or_template::PolicyTemplate>,
     }

@@ -17,17 +17,18 @@ pub struct ExternalAccountKey {
     #[prost(bytes="vec", tag="3")]
     pub b64_mac_key: ::prost::alloc::vec::Vec<u8>,
 }
-///  Creates a new
-///  \[ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey\]
-///  in a given project.
+///  Creates a new \[ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey\] in a given project.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateExternalAccountKeyRequest {
-    ///  Required. The parent resource where this external_account_key will be
-    ///  created. Format:
-    ///  projects/\[project_id]/locations/[location\]/externalAccountKeys.
+    ///  Required. The parent resource where this external_account_key will be created.
+    ///  Format: projects/\[project_id]/locations/[location\].
+    ///  At present only the "global" location is supported.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The external account key to create.
+    ///  Required. The external account key to create. This field only exists to future-proof
+    ///  the API. At present, all fields in ExternalAccountKey are output only and
+    ///  all values are ignored. For the purpose of the
+    ///  CreateExternalAccountKeyRequest, set it to a default/empty value.
     #[prost(message, optional, tag="2")]
     pub external_account_key: ::core::option::Option<ExternalAccountKey>,
 }
@@ -105,9 +106,7 @@ pub mod public_certificate_authority_service_client {
             self.inner = self.inner.accept_compressed(encoding);
             self
         }
-        /// Creates a new
-        /// [ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey]
-        /// bound to the project.
+        /// Creates a new [ExternalAccountKey][google.cloud.security.publicca.v1beta1.ExternalAccountKey] bound to the project.
         pub async fn create_external_account_key(
             &mut self,
             request: impl tonic::IntoRequest<super::CreateExternalAccountKeyRequest>,

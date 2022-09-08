@@ -433,8 +433,8 @@ pub mod display_ad_format_setting_enum {
         AllFormats = 2,
         ///  Text and image formats.
         NonNative = 3,
-        ///  Native format, i.e. the format rendering is controlled by the publisher
-        ///  and not by Google.
+        ///  Native format, for example, the format rendering is controlled by the
+        ///  publisher and not by Google.
         Native = 4,
     }
     impl DisplayAdFormatSetting {
@@ -702,7 +702,8 @@ pub struct AgeRangeTypeEnum {
 }
 /// Nested message and enum types in `AgeRangeTypeEnum`.
 pub mod age_range_type_enum {
-    ///  The type of demographic age ranges (e.g. between 18 and 24 years old).
+    ///  The type of demographic age ranges (for example, between 18 and 24 years
+    ///  old).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AgeRangeType {
@@ -855,13 +856,13 @@ pub mod content_label_type_enum {
 }
 //  Proto file describing days of week.
 
-///  Container for enumeration of days of the week, e.g., "Monday".
+///  Container for enumeration of days of the week, for example, "Monday".
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DayOfWeekEnum {
 }
 /// Nested message and enum types in `DayOfWeekEnum`.
 pub mod day_of_week_enum {
-    ///  Enumerates days of the week, e.g., "Monday".
+    ///  Enumerates days of the week, for example, "Monday".
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum DayOfWeek {
@@ -957,7 +958,7 @@ pub struct GenderTypeEnum {
 }
 /// Nested message and enum types in `GenderTypeEnum`.
 pub mod gender_type_enum {
-    ///  The type of demographic genders (e.g. female).
+    ///  The type of demographic genders (for example, female).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum GenderType {
@@ -1032,7 +1033,7 @@ pub struct IncomeRangeTypeEnum {
 }
 /// Nested message and enum types in `IncomeRangeTypeEnum`.
 pub mod income_range_type_enum {
-    ///  The type of demographic income ranges (e.g. between 0% to 50%).
+    ///  The type of demographic income ranges (for example, between 0% to 50%).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum IncomeRangeType {
@@ -1193,7 +1194,7 @@ pub struct LocationGroupRadiusUnitsEnum {
 }
 /// Nested message and enum types in `LocationGroupRadiusUnitsEnum`.
 pub mod location_group_radius_units_enum {
-    ///  The unit of radius distance in location group (e.g. MILES)
+    ///  The unit of radius distance in location group (for example, MILES)
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum LocationGroupRadiusUnits {
@@ -1232,7 +1233,7 @@ pub struct MinuteOfHourEnum {
 }
 /// Nested message and enum types in `MinuteOfHourEnum`.
 pub mod minute_of_hour_enum {
-    ///  Enumerates of quarter-hours. E.g. "FIFTEEN"
+    ///  Enumerates of quarter-hours. For example, "FIFTEEN"
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum MinuteOfHour {
@@ -1274,7 +1275,7 @@ pub struct ParentalStatusTypeEnum {
 }
 /// Nested message and enum types in `ParentalStatusTypeEnum`.
 pub mod parental_status_type_enum {
-    ///  The type of parental statuses (e.g. not a parent).
+    ///  The type of parental statuses (for example, not a parent).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ParentalStatusType {
@@ -1592,7 +1593,7 @@ pub struct ProximityRadiusUnitsEnum {
 }
 /// Nested message and enum types in `ProximityRadiusUnitsEnum`.
 pub mod proximity_radius_units_enum {
-    ///  The unit of radius distance in proximity (e.g. MILES)
+    ///  The unit of radius distance in proximity (for example, MILES)
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum ProximityRadiusUnits {
@@ -1829,13 +1830,13 @@ pub mod lead_form_call_to_action_type_enum {
         }
     }
 }
-///  Describes the desired level of intent of generated leads.
+///  Describes the chosen level of intent of generated leads.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormDesiredIntentEnum {
 }
 /// Nested message and enum types in `LeadFormDesiredIntentEnum`.
 pub mod lead_form_desired_intent_enum {
-    ///  Enum describing the desired level of intent of generated leads.
+    ///  Enum describing the chosen level of intent of generated leads.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum LeadFormDesiredIntent {
@@ -1886,10 +1887,12 @@ pub mod lead_form_field_user_input_type_enum {
         PhoneNumber = 4,
         ///  The user will be asked to fill in their zip code.
         PostalCode = 5,
+        ///  The user will be asked to fill in their street address.
+        StreetAddress = 8,
         ///  The user will be asked to fill in their city.
         City = 9,
-        ///  The user will be asked to fill in their region part of the address (e.g.
-        ///  state for US, province for Canada).
+        ///  The user will be asked to fill in their region part of the address (for
+        ///  example, state for US, province for Canada).
         Region = 10,
         ///  The user will be asked to fill in their country.
         Country = 11,
@@ -1957,6 +1960,150 @@ pub mod lead_form_field_user_input_type_enum {
         ///  Question: "What is your job role?"
         ///  Category: "Business"
         JobRole = 1012,
+        ///  Question: "Are you over 18 years of age?"
+        ///  Category: "Demographics"
+        Over18Age = 1078,
+        ///  Question: "Are you over 19 years of age?"
+        ///  Category: "Demographics"
+        Over19Age = 1079,
+        ///  Question: "Are you over 20 years of age?"
+        ///  Category: "Demographics"
+        Over20Age = 1080,
+        ///  Question: "Are you over 21 years of age?"
+        ///  Category: "Demographics"
+        Over21Age = 1081,
+        ///  Question: "Are you over 22 years of age?"
+        ///  Category: "Demographics"
+        Over22Age = 1082,
+        ///  Question: "Are you over 23 years of age?"
+        ///  Category: "Demographics"
+        Over23Age = 1083,
+        ///  Question: "Are you over 24 years of age?"
+        ///  Category: "Demographics"
+        Over24Age = 1084,
+        ///  Question: "Are you over 25 years of age?"
+        ///  Category: "Demographics"
+        Over25Age = 1085,
+        ///  Question: "Are you over 26 years of age?"
+        ///  Category: "Demographics"
+        Over26Age = 1086,
+        ///  Question: "Are you over 27 years of age?"
+        ///  Category: "Demographics"
+        Over27Age = 1087,
+        ///  Question: "Are you over 28 years of age?"
+        ///  Category: "Demographics"
+        Over28Age = 1088,
+        ///  Question: "Are you over 29 years of age?"
+        ///  Category: "Demographics"
+        Over29Age = 1089,
+        ///  Question: "Are you over 30 years of age?"
+        ///  Category: "Demographics"
+        Over30Age = 1090,
+        ///  Question: "Are you over 31 years of age?"
+        ///  Category: "Demographics"
+        Over31Age = 1091,
+        ///  Question: "Are you over 32 years of age?"
+        ///  Category: "Demographics"
+        Over32Age = 1092,
+        ///  Question: "Are you over 33 years of age?"
+        ///  Category: "Demographics"
+        Over33Age = 1093,
+        ///  Question: "Are you over 34 years of age?"
+        ///  Category: "Demographics"
+        Over34Age = 1094,
+        ///  Question: "Are you over 35 years of age?"
+        ///  Category: "Demographics"
+        Over35Age = 1095,
+        ///  Question: "Are you over 36 years of age?"
+        ///  Category: "Demographics"
+        Over36Age = 1096,
+        ///  Question: "Are you over 37 years of age?"
+        ///  Category: "Demographics"
+        Over37Age = 1097,
+        ///  Question: "Are you over 38 years of age?"
+        ///  Category: "Demographics"
+        Over38Age = 1098,
+        ///  Question: "Are you over 39 years of age?"
+        ///  Category: "Demographics"
+        Over39Age = 1099,
+        ///  Question: "Are you over 40 years of age?"
+        ///  Category: "Demographics"
+        Over40Age = 1100,
+        ///  Question: "Are you over 41 years of age?"
+        ///  Category: "Demographics"
+        Over41Age = 1101,
+        ///  Question: "Are you over 42 years of age?"
+        ///  Category: "Demographics"
+        Over42Age = 1102,
+        ///  Question: "Are you over 43 years of age?"
+        ///  Category: "Demographics"
+        Over43Age = 1103,
+        ///  Question: "Are you over 44 years of age?"
+        ///  Category: "Demographics"
+        Over44Age = 1104,
+        ///  Question: "Are you over 45 years of age?"
+        ///  Category: "Demographics"
+        Over45Age = 1105,
+        ///  Question: "Are you over 46 years of age?"
+        ///  Category: "Demographics"
+        Over46Age = 1106,
+        ///  Question: "Are you over 47 years of age?"
+        ///  Category: "Demographics"
+        Over47Age = 1107,
+        ///  Question: "Are you over 48 years of age?"
+        ///  Category: "Demographics"
+        Over48Age = 1108,
+        ///  Question: "Are you over 49 years of age?"
+        ///  Category: "Demographics"
+        Over49Age = 1109,
+        ///  Question: "Are you over 50 years of age?"
+        ///  Category: "Demographics"
+        Over50Age = 1110,
+        ///  Question: "Are you over 51 years of age?"
+        ///  Category: "Demographics"
+        Over51Age = 1111,
+        ///  Question: "Are you over 52 years of age?"
+        ///  Category: "Demographics"
+        Over52Age = 1112,
+        ///  Question: "Are you over 53 years of age?"
+        ///  Category: "Demographics"
+        Over53Age = 1113,
+        ///  Question: "Are you over 54 years of age?"
+        ///  Category: "Demographics"
+        Over54Age = 1114,
+        ///  Question: "Are you over 55 years of age?"
+        ///  Category: "Demographics"
+        Over55Age = 1115,
+        ///  Question: "Are you over 56 years of age?"
+        ///  Category: "Demographics"
+        Over56Age = 1116,
+        ///  Question: "Are you over 57 years of age?"
+        ///  Category: "Demographics"
+        Over57Age = 1117,
+        ///  Question: "Are you over 58 years of age?"
+        ///  Category: "Demographics"
+        Over58Age = 1118,
+        ///  Question: "Are you over 59 years of age?"
+        ///  Category: "Demographics"
+        Over59Age = 1119,
+        ///  Question: "Are you over 60 years of age?"
+        ///  Category: "Demographics"
+        Over60Age = 1120,
+        ///  Question: "Are you over 61 years of age?"
+        ///  Category: "Demographics"
+        Over61Age = 1121,
+        ///  Question: "Are you over 62 years of age?"
+        ///  Category: "Demographics"
+        Over62Age = 1122,
+        ///  Question: "Are you over 63 years of age?"
+        ///  Category: "Demographics"
+        Over63Age = 1123,
+        ///  Question: "Are you over 64 years of age?"
+        ///  Category: "Demographics"
+        Over64Age = 1124,
+        ///  Question: "Are you over 65 years of age?"
+        ///  Category: "Demographics"
+        Over65Age = 1125,
         ///  Question: "Which program are you interested in?"
         ///  Category: "Education"
         EducationProgram = 1013,
@@ -2076,6 +2223,7 @@ pub mod lead_form_field_user_input_type_enum {
                 LeadFormFieldUserInputType::Email => "EMAIL",
                 LeadFormFieldUserInputType::PhoneNumber => "PHONE_NUMBER",
                 LeadFormFieldUserInputType::PostalCode => "POSTAL_CODE",
+                LeadFormFieldUserInputType::StreetAddress => "STREET_ADDRESS",
                 LeadFormFieldUserInputType::City => "CITY",
                 LeadFormFieldUserInputType::Region => "REGION",
                 LeadFormFieldUserInputType::Country => "COUNTRY",
@@ -2104,6 +2252,54 @@ pub mod lead_form_field_user_input_type_enum {
                 LeadFormFieldUserInputType::YearsInBusiness => "YEARS_IN_BUSINESS",
                 LeadFormFieldUserInputType::JobDepartment => "JOB_DEPARTMENT",
                 LeadFormFieldUserInputType::JobRole => "JOB_ROLE",
+                LeadFormFieldUserInputType::Over18Age => "OVER_18_AGE",
+                LeadFormFieldUserInputType::Over19Age => "OVER_19_AGE",
+                LeadFormFieldUserInputType::Over20Age => "OVER_20_AGE",
+                LeadFormFieldUserInputType::Over21Age => "OVER_21_AGE",
+                LeadFormFieldUserInputType::Over22Age => "OVER_22_AGE",
+                LeadFormFieldUserInputType::Over23Age => "OVER_23_AGE",
+                LeadFormFieldUserInputType::Over24Age => "OVER_24_AGE",
+                LeadFormFieldUserInputType::Over25Age => "OVER_25_AGE",
+                LeadFormFieldUserInputType::Over26Age => "OVER_26_AGE",
+                LeadFormFieldUserInputType::Over27Age => "OVER_27_AGE",
+                LeadFormFieldUserInputType::Over28Age => "OVER_28_AGE",
+                LeadFormFieldUserInputType::Over29Age => "OVER_29_AGE",
+                LeadFormFieldUserInputType::Over30Age => "OVER_30_AGE",
+                LeadFormFieldUserInputType::Over31Age => "OVER_31_AGE",
+                LeadFormFieldUserInputType::Over32Age => "OVER_32_AGE",
+                LeadFormFieldUserInputType::Over33Age => "OVER_33_AGE",
+                LeadFormFieldUserInputType::Over34Age => "OVER_34_AGE",
+                LeadFormFieldUserInputType::Over35Age => "OVER_35_AGE",
+                LeadFormFieldUserInputType::Over36Age => "OVER_36_AGE",
+                LeadFormFieldUserInputType::Over37Age => "OVER_37_AGE",
+                LeadFormFieldUserInputType::Over38Age => "OVER_38_AGE",
+                LeadFormFieldUserInputType::Over39Age => "OVER_39_AGE",
+                LeadFormFieldUserInputType::Over40Age => "OVER_40_AGE",
+                LeadFormFieldUserInputType::Over41Age => "OVER_41_AGE",
+                LeadFormFieldUserInputType::Over42Age => "OVER_42_AGE",
+                LeadFormFieldUserInputType::Over43Age => "OVER_43_AGE",
+                LeadFormFieldUserInputType::Over44Age => "OVER_44_AGE",
+                LeadFormFieldUserInputType::Over45Age => "OVER_45_AGE",
+                LeadFormFieldUserInputType::Over46Age => "OVER_46_AGE",
+                LeadFormFieldUserInputType::Over47Age => "OVER_47_AGE",
+                LeadFormFieldUserInputType::Over48Age => "OVER_48_AGE",
+                LeadFormFieldUserInputType::Over49Age => "OVER_49_AGE",
+                LeadFormFieldUserInputType::Over50Age => "OVER_50_AGE",
+                LeadFormFieldUserInputType::Over51Age => "OVER_51_AGE",
+                LeadFormFieldUserInputType::Over52Age => "OVER_52_AGE",
+                LeadFormFieldUserInputType::Over53Age => "OVER_53_AGE",
+                LeadFormFieldUserInputType::Over54Age => "OVER_54_AGE",
+                LeadFormFieldUserInputType::Over55Age => "OVER_55_AGE",
+                LeadFormFieldUserInputType::Over56Age => "OVER_56_AGE",
+                LeadFormFieldUserInputType::Over57Age => "OVER_57_AGE",
+                LeadFormFieldUserInputType::Over58Age => "OVER_58_AGE",
+                LeadFormFieldUserInputType::Over59Age => "OVER_59_AGE",
+                LeadFormFieldUserInputType::Over60Age => "OVER_60_AGE",
+                LeadFormFieldUserInputType::Over61Age => "OVER_61_AGE",
+                LeadFormFieldUserInputType::Over62Age => "OVER_62_AGE",
+                LeadFormFieldUserInputType::Over63Age => "OVER_63_AGE",
+                LeadFormFieldUserInputType::Over64Age => "OVER_64_AGE",
+                LeadFormFieldUserInputType::Over65Age => "OVER_65_AGE",
                 LeadFormFieldUserInputType::EducationProgram => "EDUCATION_PROGRAM",
                 LeadFormFieldUserInputType::EducationCourse => "EDUCATION_COURSE",
                 LeadFormFieldUserInputType::Product => "PRODUCT",
@@ -2399,7 +2595,7 @@ pub mod promotion_extension_discount_modifier_enum {
 //  Proto file describing promotion extension occasion.
 
 ///  Container for enum describing a promotion extension occasion.
-///  For more information about the occasions please check:
+///  For more information about the occasions  check:
 ///  <https://support.google.com/google-ads/answer/7367521>
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PromotionExtensionOccasionEnum {
@@ -2616,7 +2812,7 @@ pub mod advertising_channel_sub_type_enum {
         VideoAction = 10,
         ///  Video campaigns with non-skippable video ads.
         VideoNonSkippable = 11,
-        ///  App Campaign that allows you to easily promote your Android or iOS app
+        ///  App Campaign that lets you easily promote your Android or iOS app
         ///  across Google's top properties including Search, Play, YouTube, and the
         ///  Google Display Network.
         AppCampaign = 12,
@@ -2868,13 +3064,13 @@ pub mod customizer_attribute_type_enum {
 }
 //  Proto file describing days of week.
 
-///  Container for enumeration of months of the year, e.g., "January".
+///  Container for enumeration of months of the year, for example, "January".
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MonthOfYearEnum {
 }
 /// Nested message and enum types in `MonthOfYearEnum`.
 pub mod month_of_year_enum {
-    ///  Enumerates months of the year, e.g., "January".
+    ///  Enumerates months of the year, for example, "January".
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum MonthOfYear {
@@ -3043,7 +3239,7 @@ pub struct FrequencyCapEventTypeEnum {
 }
 /// Nested message and enum types in `FrequencyCapEventTypeEnum`.
 pub mod frequency_cap_event_type_enum {
-    ///  The type of event that the cap applies to (e.g. impression).
+    ///  The type of event that the cap applies to (for example, impression).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum FrequencyCapEventType {
@@ -3119,7 +3315,7 @@ pub struct FrequencyCapTimeUnitEnum {
 }
 /// Nested message and enum types in `FrequencyCapTimeUnitEnum`.
 pub mod frequency_cap_time_unit_enum {
-    ///  Unit of time the cap is defined at (e.g. day, week).
+    ///  Unit of time the cap is defined at (for example, day, week).
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum FrequencyCapTimeUnit {
@@ -3502,7 +3698,7 @@ pub mod interaction_event_type_enum {
         VideoView = 4,
         ///  The default InteractionEventType for ad conversion events.
         ///  This is used when an ad conversion row does NOT indicate
-        ///  that the free interactions (i.e., the ad conversions)
+        ///  that the free interactions (for example, the ad conversions)
         ///  should be 'promoted' and reported as part of the core metrics.
         ///  These are simply other (ad) conversions.
         None = 5,
@@ -4007,7 +4203,7 @@ pub mod conversion_action_category_enum {
         ///  "qualified leads".
         QualifiedLead = 22,
         ///  A lead conversion imported from an external source into Google Ads, that
-        ///  has further completed a desired stage as defined by the lead gen
+        ///  has further completed a chosen stage as defined by the lead gen
         ///  advertiser.
         ConvertedLead = 23,
     }
@@ -4638,9 +4834,9 @@ pub mod hotel_rate_type_enum {
         ///  more on Qualified Rates, visit
         ///  <https://developers.google.com/hotels/hotel-ads/dev-guide/qualified-rates>
         QualifiedRate = 4,
-        ///  Rates available to users that satisfy some eligibility criteria. e.g.
-        ///  all signed-in users, 20% of mobile users, all mobile users in Canada,
-        ///  etc.
+        ///  Rates available to users that satisfy some eligibility criteria, for
+        ///  example, all signed-in users, 20% of mobile users, all mobile users in
+        ///  Canada, etc.
         PrivateRate = 5,
     }
     impl HotelRateType {
@@ -4710,7 +4906,7 @@ pub mod placeholder_type_enum {
         ///  Lets you display prices for a list of items along with your ads. A price
         ///  feed is composed of three to eight price table rows.
         Price = 10,
-        ///  Allows you to highlight sales and other promotions that let users see how
+        ///  Lets you highlight sales and other promotions that let users see how
         ///  they can save by buying now.
         Promotion = 11,
         ///  Lets you dynamically inject custom data into the title and description
@@ -4846,6 +5042,11 @@ pub mod recommendation_type_enum {
         UpgradeSmartShoppingCampaignToPerformanceMax = 22,
         ///  Recommendation to improve strength of responsive search ad.
         ResponsiveSearchAdImproveAdStrength = 23,
+        ///  Recommendation to update a campaign to use Display Expansion.
+        DisplayExpansionOptIn = 24,
+        ///  Recommendation to upgrade a Local campaign to a Performance Max
+        ///  campaign.
+        UpgradeLocalCampaignToPerformanceMax = 25,
     }
     impl RecommendationType {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -4878,6 +5079,8 @@ pub mod recommendation_type_enum {
                 RecommendationType::ResponsiveSearchAdAsset => "RESPONSIVE_SEARCH_AD_ASSET",
                 RecommendationType::UpgradeSmartShoppingCampaignToPerformanceMax => "UPGRADE_SMART_SHOPPING_CAMPAIGN_TO_PERFORMANCE_MAX",
                 RecommendationType::ResponsiveSearchAdImproveAdStrength => "RESPONSIVE_SEARCH_AD_IMPROVE_AD_STRENGTH",
+                RecommendationType::DisplayExpansionOptIn => "DISPLAY_EXPANSION_OPT_IN",
+                RecommendationType::UpgradeLocalCampaignToPerformanceMax => "UPGRADE_LOCAL_CAMPAIGN_TO_PERFORMANCE_MAX",
             }
         }
     }
@@ -5236,14 +5439,14 @@ pub mod targeting_dimension_enum {
         Unspecified = 0,
         ///  Used for return value only. Represents value unknown in this version.
         Unknown = 1,
-        ///  Keyword criteria, e.g. 'mars cruise'. KEYWORD may be used as a custom bid
-        ///  dimension. Keywords are always a targeting dimension, so may not be set
-        ///  as a target "ALL" dimension with TargetRestriction.
+        ///  Keyword criteria, for example, 'mars cruise'. KEYWORD may be used as a
+        ///  custom bid dimension. Keywords are always a targeting dimension, so may
+        ///  not be set as a target "ALL" dimension with TargetRestriction.
         Keyword = 2,
         ///  Audience criteria, which include user list, user interest, custom
         ///  affinity,  and custom in market.
         Audience = 3,
-        ///  Topic criteria for targeting categories of content, e.g.
+        ///  Topic criteria for targeting categories of content, for example,
         ///  'category::Animals>Pets' Used for Display and Video targeting.
         Topic = 4,
         ///  Criteria for targeting gender.
@@ -5426,6 +5629,40 @@ pub mod user_list_date_rule_item_operator_enum {
                 UserListDateRuleItemOperator::NotEquals => "NOT_EQUALS",
                 UserListDateRuleItemOperator::Before => "BEFORE",
                 UserListDateRuleItemOperator::After => "AFTER",
+            }
+        }
+    }
+}
+///  Logical operator connecting two rules.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UserListFlexibleRuleOperatorEnum {
+}
+/// Nested message and enum types in `UserListFlexibleRuleOperatorEnum`.
+pub mod user_list_flexible_rule_operator_enum {
+    ///  Enum describing possible user list combined rule operators.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum UserListFlexibleRuleOperator {
+        ///  Not specified.
+        Unspecified = 0,
+        ///  Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        ///  A AND B.
+        And = 2,
+        ///  A OR B.
+        Or = 3,
+    }
+    impl UserListFlexibleRuleOperator {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                UserListFlexibleRuleOperator::Unspecified => "UNSPECIFIED",
+                UserListFlexibleRuleOperator::Unknown => "UNKNOWN",
+                UserListFlexibleRuleOperator::And => "AND",
+                UserListFlexibleRuleOperator::Or => "OR",
             }
         }
     }
@@ -5788,7 +6025,7 @@ pub mod account_budget_proposal_status_enum {
         Approved = 4,
         ///  The proposal has been cancelled by the user.
         Cancelled = 5,
-        ///  The proposal has been rejected by the user, e.g. by rejecting an
+        ///  The proposal has been rejected by the user, for example, by rejecting an
         ///  acceptance email.
         Rejected = 6,
     }
@@ -6650,9 +6887,9 @@ pub mod app_campaign_bidding_strategy_goal_type_enum {
         ///  that the actual cpa may seem higher than the target cpa at first, since
         ///  the long term conversions haven't happened yet.
         OptimizeInAppConversionsTargetConversionCost = 4,
-        ///  Aim to maximize all conversions' value, i.e. install + selected in-app
-        ///  conversions while achieving or exceeding target return on advertising
-        ///  spend.
+        ///  Aim to maximize all conversions' value, for example, install + selected
+        ///  in-app conversions while achieving or exceeding target return on
+        ///  advertising spend.
         OptimizeReturnOnAdvertisingSpend = 5,
         ///  Aim to maximize the pre-registration of the app.
         OptimizePreRegistrationConversionVolume = 6,
@@ -6966,7 +7203,7 @@ pub struct AssetSetLinkStatusEnum {
 }
 /// Nested message and enum types in `AssetSetLinkStatusEnum`.
 pub mod asset_set_link_status_enum {
-    ///  The possible statuses of he linkage between asset set and its container.
+    ///  The possible statuses of the linkage between asset set and its container.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum AssetSetLinkStatus {
@@ -7095,7 +7332,7 @@ pub mod asset_set_type_enum {
 //  Proto file describing asset source.
 
 ///  Source of the asset or asset link for who generated the entity.
-///  e.g. advertiser or automatically created.
+///  For example, advertiser or automatically created.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AssetSourceEnum {
 }
@@ -7357,6 +7594,26 @@ pub mod audience_insights_dimension_enum {
         Category = 2,
         ///  A Knowledge Graph entity.
         KnowledgeGraph = 3,
+        ///  A country, represented by a geo target.
+        GeoTargetCountry = 4,
+        ///  A geographic location within a country.
+        SubCountryLocation = 5,
+        ///  A YouTube channel.
+        YoutubeChannel = 6,
+        ///  A YouTube Dynamic Lineup.
+        YoutubeDynamicLineup = 7,
+        ///  An Affinity UserInterest.
+        AffinityUserInterest = 8,
+        ///  An In-Market UserInterest.
+        InMarketUserInterest = 9,
+        ///  A Parental Status value (parent, or not a parent).
+        ParentalStatus = 10,
+        ///  A household income percentile range.
+        IncomeRange = 11,
+        ///  An age range.
+        AgeRange = 12,
+        ///  A gender.
+        Gender = 13,
     }
     impl AudienceInsightsDimension {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -7369,6 +7626,16 @@ pub mod audience_insights_dimension_enum {
                 AudienceInsightsDimension::Unknown => "UNKNOWN",
                 AudienceInsightsDimension::Category => "CATEGORY",
                 AudienceInsightsDimension::KnowledgeGraph => "KNOWLEDGE_GRAPH",
+                AudienceInsightsDimension::GeoTargetCountry => "GEO_TARGET_COUNTRY",
+                AudienceInsightsDimension::SubCountryLocation => "SUB_COUNTRY_LOCATION",
+                AudienceInsightsDimension::YoutubeChannel => "YOUTUBE_CHANNEL",
+                AudienceInsightsDimension::YoutubeDynamicLineup => "YOUTUBE_DYNAMIC_LINEUP",
+                AudienceInsightsDimension::AffinityUserInterest => "AFFINITY_USER_INTEREST",
+                AudienceInsightsDimension::InMarketUserInterest => "IN_MARKET_USER_INTEREST",
+                AudienceInsightsDimension::ParentalStatus => "PARENTAL_STATUS",
+                AudienceInsightsDimension::IncomeRange => "INCOME_RANGE",
+                AudienceInsightsDimension::AgeRange => "AGE_RANGE",
+                AudienceInsightsDimension::Gender => "GENDER",
             }
         }
     }
@@ -7561,6 +7828,133 @@ pub mod bidding_strategy_status_enum {
                 BiddingStrategyStatus::Unknown => "UNKNOWN",
                 BiddingStrategyStatus::Enabled => "ENABLED",
                 BiddingStrategyStatus::Removed => "REMOVED",
+            }
+        }
+    }
+}
+//  Proto file describing BiddingStrategy statuses.
+
+///  Message describing BiddingStrategy system statuses.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BiddingStrategySystemStatusEnum {
+}
+/// Nested message and enum types in `BiddingStrategySystemStatusEnum`.
+pub mod bidding_strategy_system_status_enum {
+    ///  The possible system statuses of a BiddingStrategy.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum BiddingStrategySystemStatus {
+        ///  Signals that an unexpected error occurred, for example, no bidding
+        ///  strategy type was found, or no status information was found.
+        Unspecified = 0,
+        ///  Used for return value only. Represents value unknown in this version.
+        Unknown = 1,
+        ///  The bid strategy is active, and AdWords cannot find any specific issues
+        ///  with the strategy.
+        Enabled = 2,
+        ///  The bid strategy is learning because it has been recently created or
+        ///  recently reactivated.
+        LearningNew = 3,
+        ///  The bid strategy is learning because of a recent setting change.
+        LearningSettingChange = 4,
+        ///  The bid strategy is learning because of a recent budget change.
+        LearningBudgetChange = 5,
+        ///  The bid strategy is learning because of recent change in number of
+        ///  campaigns, ad groups or keywords attached to it.
+        LearningCompositionChange = 6,
+        ///  The bid strategy depends on conversion reporting and the customer
+        ///  recently modified conversion types that were relevant to the
+        ///  bid strategy.
+        LearningConversionTypeChange = 7,
+        ///  The bid strategy depends on conversion reporting and the customer
+        ///  recently changed their conversion settings.
+        LearningConversionSettingChange = 8,
+        ///  The bid strategy is limited by its bid ceiling.
+        LimitedByCpcBidCeiling = 9,
+        ///  The bid strategy is limited by its bid floor.
+        LimitedByCpcBidFloor = 10,
+        ///  The bid strategy is limited because there was not enough conversion
+        ///  traffic over the past weeks.
+        LimitedByData = 11,
+        ///  A significant fraction of keywords in this bid strategy are limited by
+        ///  budget.
+        LimitedByBudget = 12,
+        ///  The bid strategy cannot reach its target spend because its spend has
+        ///  been de-prioritized.
+        LimitedByLowPrioritySpend = 13,
+        ///  A significant fraction of keywords in this bid strategy have a low
+        ///  Quality Score.
+        LimitedByLowQuality = 14,
+        ///  The bid strategy cannot fully spend its budget because of narrow
+        ///  targeting.
+        LimitedByInventory = 15,
+        ///  Missing conversion tracking (no pings present) and/or remarketing lists
+        ///  for SSC.
+        MisconfiguredZeroEligibility = 16,
+        ///  The bid strategy depends on conversion reporting and the customer is
+        ///  lacking conversion types that might be reported against this strategy.
+        MisconfiguredConversionTypes = 17,
+        ///  The bid strategy depends on conversion reporting and the customer's
+        ///  conversion settings are misconfigured.
+        MisconfiguredConversionSettings = 18,
+        ///  There are campaigns outside the bid strategy that share budgets with
+        ///  campaigns included in the strategy.
+        MisconfiguredSharedBudget = 19,
+        ///  The campaign has an invalid strategy type and is not serving.
+        MisconfiguredStrategyType = 20,
+        ///  The bid strategy is not active. Either there are no active campaigns,
+        ///  ad groups or keywords attached to the bid strategy. Or there are no
+        ///  active budgets connected to the bid strategy.
+        Paused = 21,
+        ///  This bid strategy currently does not support status reporting.
+        Unavailable = 22,
+        ///  There were multiple LEARNING_* system statuses for this bid strategy
+        ///  during the time in question.
+        MultipleLearning = 23,
+        ///  There were multiple LIMITED_* system statuses for this bid strategy
+        ///  during the time in question.
+        MultipleLimited = 24,
+        ///  There were multiple MISCONFIGURED_* system statuses for this bid strategy
+        ///  during the time in question.
+        MultipleMisconfigured = 25,
+        ///  There were multiple system statuses for this bid strategy during the
+        ///  time in question.
+        Multiple = 26,
+    }
+    impl BiddingStrategySystemStatus {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                BiddingStrategySystemStatus::Unspecified => "UNSPECIFIED",
+                BiddingStrategySystemStatus::Unknown => "UNKNOWN",
+                BiddingStrategySystemStatus::Enabled => "ENABLED",
+                BiddingStrategySystemStatus::LearningNew => "LEARNING_NEW",
+                BiddingStrategySystemStatus::LearningSettingChange => "LEARNING_SETTING_CHANGE",
+                BiddingStrategySystemStatus::LearningBudgetChange => "LEARNING_BUDGET_CHANGE",
+                BiddingStrategySystemStatus::LearningCompositionChange => "LEARNING_COMPOSITION_CHANGE",
+                BiddingStrategySystemStatus::LearningConversionTypeChange => "LEARNING_CONVERSION_TYPE_CHANGE",
+                BiddingStrategySystemStatus::LearningConversionSettingChange => "LEARNING_CONVERSION_SETTING_CHANGE",
+                BiddingStrategySystemStatus::LimitedByCpcBidCeiling => "LIMITED_BY_CPC_BID_CEILING",
+                BiddingStrategySystemStatus::LimitedByCpcBidFloor => "LIMITED_BY_CPC_BID_FLOOR",
+                BiddingStrategySystemStatus::LimitedByData => "LIMITED_BY_DATA",
+                BiddingStrategySystemStatus::LimitedByBudget => "LIMITED_BY_BUDGET",
+                BiddingStrategySystemStatus::LimitedByLowPrioritySpend => "LIMITED_BY_LOW_PRIORITY_SPEND",
+                BiddingStrategySystemStatus::LimitedByLowQuality => "LIMITED_BY_LOW_QUALITY",
+                BiddingStrategySystemStatus::LimitedByInventory => "LIMITED_BY_INVENTORY",
+                BiddingStrategySystemStatus::MisconfiguredZeroEligibility => "MISCONFIGURED_ZERO_ELIGIBILITY",
+                BiddingStrategySystemStatus::MisconfiguredConversionTypes => "MISCONFIGURED_CONVERSION_TYPES",
+                BiddingStrategySystemStatus::MisconfiguredConversionSettings => "MISCONFIGURED_CONVERSION_SETTINGS",
+                BiddingStrategySystemStatus::MisconfiguredSharedBudget => "MISCONFIGURED_SHARED_BUDGET",
+                BiddingStrategySystemStatus::MisconfiguredStrategyType => "MISCONFIGURED_STRATEGY_TYPE",
+                BiddingStrategySystemStatus::Paused => "PAUSED",
+                BiddingStrategySystemStatus::Unavailable => "UNAVAILABLE",
+                BiddingStrategySystemStatus::MultipleLearning => "MULTIPLE_LEARNING",
+                BiddingStrategySystemStatus::MultipleLimited => "MULTIPLE_LIMITED",
+                BiddingStrategySystemStatus::MultipleMisconfigured => "MULTIPLE_MISCONFIGURED",
+                BiddingStrategySystemStatus::Multiple => "MULTIPLE",
             }
         }
     }
@@ -8949,31 +9343,32 @@ pub mod conversion_action_type_enum {
         ///  Only customers on the allowlist can use store sales types.
         ///  Read only.
         StoreSales = 11,
-        ///  Android app first open conversions tracked via Firebase.
+        ///  Android app first open conversions tracked through Firebase.
         FirebaseAndroidFirstOpen = 12,
-        ///  Android app in app purchase conversions tracked via Firebase.
+        ///  Android app in app purchase conversions tracked through Firebase.
         FirebaseAndroidInAppPurchase = 13,
-        ///  Android app custom conversions tracked via Firebase.
+        ///  Android app custom conversions tracked through Firebase.
         FirebaseAndroidCustom = 14,
-        ///  iOS app first open conversions tracked via Firebase.
+        ///  iOS app first open conversions tracked through Firebase.
         FirebaseIosFirstOpen = 15,
-        ///  iOS app in app purchase conversions tracked via Firebase.
+        ///  iOS app in app purchase conversions tracked through Firebase.
         FirebaseIosInAppPurchase = 16,
-        ///  iOS app custom conversions tracked via Firebase.
+        ///  iOS app custom conversions tracked through Firebase.
         FirebaseIosCustom = 17,
-        ///  Android app first open conversions tracked via Third Party App Analytics.
+        ///  Android app first open conversions tracked through Third Party App
+        ///  Analytics.
         ThirdPartyAppAnalyticsAndroidFirstOpen = 18,
-        ///  Android app in app purchase conversions tracked via Third Party App
+        ///  Android app in app purchase conversions tracked through Third Party App
         ///  Analytics.
         ThirdPartyAppAnalyticsAndroidInAppPurchase = 19,
-        ///  Android app custom conversions tracked via Third Party App Analytics.
+        ///  Android app custom conversions tracked through Third Party App Analytics.
         ThirdPartyAppAnalyticsAndroidCustom = 20,
-        ///  iOS app first open conversions tracked via Third Party App Analytics.
+        ///  iOS app first open conversions tracked through Third Party App Analytics.
         ThirdPartyAppAnalyticsIosFirstOpen = 21,
-        ///  iOS app in app purchase conversions tracked via Third Party App
+        ///  iOS app in app purchase conversions tracked through Third Party App
         ///  Analytics.
         ThirdPartyAppAnalyticsIosInAppPurchase = 22,
-        ///  iOS app custom conversions tracked via Third Party App Analytics.
+        ///  iOS app custom conversions tracked through Third Party App Analytics.
         ThirdPartyAppAnalyticsIosCustom = 23,
         ///  Conversions that occur when a user pre-registers a mobile app from the
         ///  Google Play Store. Read only.
@@ -9149,7 +9544,7 @@ pub mod conversion_custom_variable_status_enum {
     }
 }
 ///  Container for enum representing the conversion environment an uploaded
-///  conversion was recorded on. e.g. App or Web.
+///  conversion was recorded on, for example, App or Web.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ConversionEnvironmentEnum {
 }
@@ -9203,10 +9598,10 @@ pub mod conversion_origin_enum {
         ///  there after viewing an ad.
         Website = 2,
         ///  Conversions reported by an offline pipeline which collects local actions
-        ///  from Google-hosted pages (e.g. Google Maps, Google Place Page, etc) and
-        ///  attributes them to relevant ad events.
+        ///  from Google-hosted pages (for example, Google Maps, Google Place Page,
+        ///  etc) and attributes them to relevant ad events.
         GoogleHosted = 3,
-        ///  Conversion that occurs when a user performs an action via any app
+        ///  Conversion that occurs when a user performs an action through any app
         ///  platforms.
         App = 4,
         ///  Conversion that occurs when a user makes a call from ads.
@@ -9412,9 +9807,9 @@ pub mod criterion_type_enum {
         Unspecified = 0,
         ///  Used for return value only. Represents value unknown in this version.
         Unknown = 1,
-        ///  Keyword. e.g. 'mars cruise'.
+        ///  Keyword, for example, 'mars cruise'.
         Keyword = 2,
-        ///  Placement, aka Website. e.g. 'www.flowers4sale.com'
+        ///  Placement, also known as Website, for example, 'www.flowers4sale.com'
         Placement = 3,
         ///  Mobile application categories to target.
         MobileAppCategory = 4,
@@ -9444,7 +9839,7 @@ pub mod criterion_type_enum {
         UserList = 16,
         ///  Proximity.
         Proximity = 17,
-        ///  A topic target on the display network (e.g. "Pets & Animals").
+        ///  A topic target on the display network (for example, "Pets & Animals").
         Topic = 18,
         ///  Listing scope to target.
         ListingScope = 19,
@@ -10320,8 +10715,8 @@ pub mod education_placeholder_field_enum {
         ///  Data Type: URL. Alternative hosted file of image to be used in the ad.
         AlternativeThumbnailImageUrl = 10,
         ///  Data Type: URL_LIST. Required. Final URLs to be used in ad when using
-        ///  Upgraded URLs; the more specific the better (e.g. the individual URL of a
-        ///  specific program and its location).
+        ///  Upgraded URLs; the more specific the better (for example, the individual
+        ///  URL of a specific program and its location).
         FinalUrls = 11,
         ///  Data Type: URL_LIST. Final mobile URLs for the ad when using Upgraded
         ///  URLs.
@@ -11888,8 +12283,8 @@ pub mod job_placeholder_field_enum {
         ///  ad.
         Salary = 11,
         ///  Data Type: URL_LIST. Required. Final URLs to be used in ad when using
-        ///  Upgraded URLs; the more specific the better (e.g. the individual URL of a
-        ///  specific job and its location).
+        ///  Upgraded URLs; the more specific the better (for example, the individual
+        ///  URL of a specific job and its location).
         FinalUrls = 12,
         ///  Data Type: URL_LIST. Final mobile URLs for the ad when using Upgraded
         ///  URLs.
@@ -12462,8 +12857,8 @@ pub mod local_placeholder_field_enum {
         ///  Data Type: STRING_LIST. Keywords used for product retrieval.
         ContextualKeywords = 13,
         ///  Data Type: URL_LIST. Required. Final URLs to be used in ad when using
-        ///  Upgraded URLs; the more specific the better (e.g. the individual URL of a
-        ///  specific local deal and its location).
+        ///  Upgraded URLs; the more specific the better (for example, the individual
+        ///  URL of a specific local deal and its location).
         FinalUrls = 14,
         ///  Data Type: URL_LIST. Final mobile URLs for the ad when using Upgraded
         ///  URLs.
@@ -13278,15 +13673,15 @@ pub mod placement_type_enum {
         Unspecified = 0,
         ///  Used for return value only. Represents value unknown in this version.
         Unknown = 1,
-        ///  Websites(e.g. 'www.flowers4sale.com').
+        ///  Websites(for example, 'www.flowers4sale.com').
         Website = 2,
-        ///  Mobile application categories(e.g. 'Games').
+        ///  Mobile application categories(for example, 'Games').
         MobileAppCategory = 3,
-        ///  mobile applications(e.g. 'mobileapp::2-com.whatsthewordanswers').
+        ///  mobile applications(for example, 'mobileapp::2-com.whatsthewordanswers').
         MobileApplication = 4,
-        ///  YouTube videos(e.g. 'youtube.com/video/wtLJPvx7-ys').
+        ///  YouTube videos(for example, 'youtube.com/video/wtLJPvx7-ys').
         YoutubeVideo = 5,
-        ///  YouTube channels(e.g. 'youtube.com::L8ZULXASCc1I_oaOT0NaOQ').
+        ///  YouTube channels(for example, 'youtube.com::L8ZULXASCc1I_oaOT0NaOQ').
         YoutubeChannel = 6,
     }
     impl PlacementType {
@@ -13387,7 +13782,8 @@ pub mod price_placeholder_field_enum {
         ///  Data Type: STRING. The description of item 1 of the table.
         Item1Description = 101,
         ///  Data Type: MONEY. The price (money with currency) of item 1 of the table,
-        ///  e.g., 30 USD. The currency must match one of the available currencies.
+        ///  for example, 30 USD. The currency must match one of the available
+        ///  currencies.
         Item1Price = 102,
         ///  Data Type: STRING. The price unit of item 1 of the table. Must match one
         ///  of the predefined price units.
@@ -13403,7 +13799,8 @@ pub mod price_placeholder_field_enum {
         ///  Data Type: STRING. The description of item 2 of the table.
         Item2Description = 201,
         ///  Data Type: MONEY. The price (money with currency) of item 2 of the table,
-        ///  e.g., 30 USD. The currency must match one of the available currencies.
+        ///  for example, 30 USD. The currency must match one of the available
+        ///  currencies.
         Item2Price = 202,
         ///  Data Type: STRING. The price unit of item 2 of the table. Must match one
         ///  of the predefined price units.
@@ -13419,7 +13816,8 @@ pub mod price_placeholder_field_enum {
         ///  Data Type: STRING. The description of item 3 of the table.
         Item3Description = 301,
         ///  Data Type: MONEY. The price (money with currency) of item 3 of the table,
-        ///  e.g., 30 USD. The currency must match one of the available currencies.
+        ///  for example, 30 USD. The currency must match one of the available
+        ///  currencies.
         Item3Price = 302,
         ///  Data Type: STRING. The price unit of item 3 of the table. Must match one
         ///  of the predefined price units.
@@ -13435,7 +13833,8 @@ pub mod price_placeholder_field_enum {
         ///  Data Type: STRING. The description of item 4 of the table.
         Item4Description = 401,
         ///  Data Type: MONEY. The price (money with currency) of item 4 of the table,
-        ///  e.g., 30 USD. The currency must match one of the available currencies.
+        ///  for example, 30 USD. The currency must match one of the available
+        ///  currencies.
         Item4Price = 402,
         ///  Data Type: STRING. The price unit of item 4 of the table. Must match one
         ///  of the predefined price units.
@@ -13451,7 +13850,8 @@ pub mod price_placeholder_field_enum {
         ///  Data Type: STRING. The description of item 5 of the table.
         Item5Description = 501,
         ///  Data Type: MONEY. The price (money with currency) of item 5 of the table,
-        ///  e.g., 30 USD. The currency must match one of the available currencies.
+        ///  for example, 30 USD. The currency must match one of the available
+        ///  currencies.
         Item5Price = 502,
         ///  Data Type: STRING. The price unit of item 5 of the table. Must match one
         ///  of the predefined price units.
@@ -13467,7 +13867,8 @@ pub mod price_placeholder_field_enum {
         ///  Data Type: STRING. The description of item 6 of the table.
         Item6Description = 601,
         ///  Data Type: MONEY. The price (money with currency) of item 6 of the table,
-        ///  e.g., 30 USD. The currency must match one of the available currencies.
+        ///  for example, 30 USD. The currency must match one of the available
+        ///  currencies.
         Item6Price = 602,
         ///  Data Type: STRING. The price unit of item 6 of the table. Must match one
         ///  of the predefined price units.
@@ -13483,7 +13884,8 @@ pub mod price_placeholder_field_enum {
         ///  Data Type: STRING. The description of item 7 of the table.
         Item7Description = 701,
         ///  Data Type: MONEY. The price (money with currency) of item 7 of the table,
-        ///  e.g., 30 USD. The currency must match one of the available currencies.
+        ///  for example, 30 USD. The currency must match one of the available
+        ///  currencies.
         Item7Price = 702,
         ///  Data Type: STRING. The price unit of item 7 of the table. Must match one
         ///  of the predefined price units.
@@ -13499,7 +13901,8 @@ pub mod price_placeholder_field_enum {
         ///  Data Type: STRING. The description of item 8 of the table.
         Item8Description = 801,
         ///  Data Type: MONEY. The price (money with currency) of item 8 of the table,
-        ///  e.g., 30 USD. The currency must match one of the available currencies.
+        ///  for example, 30 USD. The currency must match one of the available
+        ///  currencies.
         Item8Price = 802,
         ///  Data Type: STRING. The price unit of item 8 of the table. Must match one
         ///  of the predefined price units.
@@ -13632,7 +14035,7 @@ pub mod promotion_placeholder_field_enum {
         ///  Data Type: STRING. The text that appears on the ad when the extension is
         ///  shown.
         PromotionTarget = 2,
-        ///  Data Type: STRING. Allows you to add "up to" phrase to the promotion,
+        ///  Data Type: STRING. Lets you add "up to" phrase to the promotion,
         ///  in case you have variable promotion rates.
         DiscountModifier = 3,
         ///  Data Type: INT64. Takes a value in micros, where 1 million micros
@@ -13927,8 +14330,8 @@ pub mod real_estate_placeholder_field_enum {
         ///  Data Type: STRING_LIST. Keywords used for product retrieval.
         ContextualKeywords = 12,
         ///  Data Type: URL_LIST. Final URLs to be used in ad when using Upgraded
-        ///  URLs; the more specific the better (e.g. the individual URL of a specific
-        ///  listing and its location).
+        ///  URLs; the more specific the better (for example, the individual URL of a
+        ///  specific listing and its location).
         FinalUrls = 13,
         ///  Data Type: URL_LIST. Final mobile URLs for the ad when using Upgraded
         ///  URLs.
@@ -14112,7 +14515,7 @@ pub mod resource_limit_type_enum {
         CombinedAudienceCriteriaPerCampaign = 27,
         ///  Number of negative keywords per campaign.
         NegativeKeywordsPerCampaign = 28,
-        ///  Number of excluded campaign criteria in placement dimension, e.g.
+        ///  Number of excluded campaign criteria in placement dimension, for example,
         ///  placement, mobile application, YouTube channel, etc. The API criterion
         ///  type is NOT limited to placement only, and this does not include
         ///  exclusions at the ad group or other levels.
@@ -14308,8 +14711,8 @@ pub mod resource_limit_type_enum {
         TargetCustomersPerLabel = 121,
         ///  Number of ENABLED keyword plans per user per customer.
         ///  The limit is applied per <user, customer> pair because by default a plan
-        ///  is private to a user of a customer. Each user of a customer has his or
-        ///  her own independent limit.
+        ///  is private to a user of a customer. Each user of a customer has their own
+        ///  independent limit.
         KeywordPlansPerUserPerCustomer = 122,
         ///  Number of keyword plan ad group keywords per keyword plan.
         KeywordPlanAdGroupKeywordsPerKeywordPlan = 123,
@@ -15145,8 +15548,8 @@ pub mod travel_placeholder_field_enum {
         ///  Data Type: STRING. Address of travel offer, including postal code.
         DestinationAddress = 14,
         ///  Data Type: URL_LIST. Required. Final URLs to be used in ad, when using
-        ///  Upgraded URLs; the more specific the better (e.g. the individual URL of a
-        ///  specific travel offer and its location).
+        ///  Upgraded URLs; the more specific the better (for example, the individual
+        ///  URL of a specific travel offer and its location).
         FinalUrl = 15,
         ///  Data Type: URL_LIST. Final mobile URLs for the ad when using Upgraded
         ///  URLs.

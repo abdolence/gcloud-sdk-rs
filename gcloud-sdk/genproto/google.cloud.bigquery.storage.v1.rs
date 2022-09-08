@@ -77,6 +77,22 @@ pub struct AvroRows {
     #[prost(int64, tag="2")]
     pub row_count: i64,
 }
+///  Contains options specific to Avro Serialization.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AvroSerializationOptions {
+    ///  Enable displayName attribute in Avro schema.
+    ///
+    ///  The Avro specification requires field names to be alphanumeric.  By
+    ///  default, in cases when column names do not conform to these requirements
+    ///  (e.g. non-ascii unicode codepoints) and Avro is requested as an output
+    ///  format, the CreateReadSession call will fail.
+    ///
+    ///  Setting this field to true, populates avro field names with a placeholder
+    ///  value and populates a "displayName" attribute for every avro field with the
+    ///  original column name.
+    #[prost(bool, tag="1")]
+    pub enable_display_name_attribute: bool,
+}
 ///  ProtoSchema describes the schema of the serialized protocol buffer data rows.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ProtoSchema {
@@ -334,10 +350,53 @@ pub mod read_session {
     ///  Options dictating how we read a table.
     #[derive(Clone, PartialEq, ::prost::Message)]
     pub struct TableReadOptions {
-        ///  Names of the fields in the table that should be read. If empty, all
-        ///  fields will be read. If the specified field is a nested field, all
-        ///  the sub-fields in the field will be selected. The output field order is
-        ///  unrelated to the order of fields in selected_fields.
+        ///  Optional. The names of the fields in the table to be returned. If no
+        ///  field names are specified, then all fields in the table are returned.
+        ///
+        ///  Nested fields -- the child elements of a STRUCT field -- can be selected
+        ///  individually using their fully-qualified names, and will be returned as
+        ///  record fields containing only the selected nested fields. If a STRUCT
+        ///  field is specified in the selected fields list, all of the child elements
+        ///  will be returned.
+        ///
+        ///  As an example, consider a table with the following schema:
+        ///
+        ///    {
+        ///        "name": "struct_field",
+        ///        "type": "RECORD",
+        ///        "mode": "NULLABLE",
+        ///        "fields": [
+        ///            {
+        ///                "name": "string_field1",
+        ///                "type": "STRING",
+        ///  .              "mode": "NULLABLE"
+        ///            },
+        ///            {
+        ///                "name": "string_field2",
+        ///                "type": "STRING",
+        ///                "mode": "NULLABLE"
+        ///            }
+        ///        ]
+        ///    }
+        ///
+        ///  Specifying "struct_field" in the selected fields list will result in a
+        ///  read session schema with the following logical structure:
+        ///
+        ///    struct_field {
+        ///        string_field1
+        ///        string_field2
+        ///    }
+        ///
+        ///  Specifying "struct_field.string_field1" in the selected fields list will
+        ///  result in a read session schema with the following logical structure:
+        ///
+        ///    struct_field {
+        ///        string_field1
+        ///    }
+        ///
+        ///  The order of the fields in the read session schema is derived from the
+        ///  table schema and does not correspond to the order in which the fields are
+        ///  specified in this list.
         #[prost(string, repeated, tag="1")]
         pub selected_fields: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
         ///  SQL text filtering statement, similar to a WHERE clause in a query.
@@ -352,7 +411,7 @@ pub mod read_session {
         ///  Restricted to a maximum length for 1 MB.
         #[prost(string, tag="2")]
         pub row_restriction: ::prost::alloc::string::String,
-        #[prost(oneof="table_read_options::OutputFormatSerializationOptions", tags="3")]
+        #[prost(oneof="table_read_options::OutputFormatSerializationOptions", tags="3, 4")]
         pub output_format_serialization_options: ::core::option::Option<table_read_options::OutputFormatSerializationOptions>,
     }
     /// Nested message and enum types in `TableReadOptions`.
@@ -362,6 +421,9 @@ pub mod read_session {
             ///  Optional. Options specific to the Apache Arrow output format.
             #[prost(message, tag="3")]
             ArrowSerializationOptions(super::super::ArrowSerializationOptions),
+            ///  Optional. Options specific to the Apache Avro output format
+            #[prost(message, tag="4")]
+            AvroSerializationOptions(super::super::AvroSerializationOptions),
         }
     }
     ///  The schema for the read. If read_options.selected_fields is set, the
@@ -416,6 +478,11 @@ pub struct WriteStream {
     ///  Immutable. Mode of the stream.
     #[prost(enumeration="write_stream::WriteMode", tag="7")]
     pub write_mode: i32,
+    ///  Immutable. The geographic location where the stream's dataset resides. See
+    ///  <https://cloud.google.com/bigquery/docs/locations> for supported
+    ///  locations.
+    #[prost(string, tag="8")]
+    pub location: ::prost::alloc::string::String,
 }
 /// Nested message and enum types in `WriteStream`.
 pub mod write_stream {
@@ -493,6 +560,35 @@ impl DataFormat {
             DataFormat::Unspecified => "DATA_FORMAT_UNSPECIFIED",
             DataFormat::Avro => "AVRO",
             DataFormat::Arrow => "ARROW",
+        }
+    }
+}
+///  WriteStreamView is a view enum that controls what details about a write
+///  stream should be returned.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum WriteStreamView {
+    ///  The default / unset value.
+    Unspecified = 0,
+    ///  The BASIC projection returns basic metadata about a write stream.  The
+    ///  basic view does not include schema information.  This is the default view
+    ///  returned by GetWriteStream.
+    Basic = 1,
+    ///  The FULL projection returns all available write stream metadata, including
+    ///  the schema.  CreateWriteStream returns the full projection of write stream
+    ///  metadata.
+    Full = 2,
+}
+impl WriteStreamView {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            WriteStreamView::Unspecified => "WRITE_STREAM_VIEW_UNSPECIFIED",
+            WriteStreamView::Basic => "BASIC",
+            WriteStreamView::Full => "FULL",
         }
     }
 }
@@ -808,6 +904,10 @@ pub struct GetWriteStreamRequest {
     ///  `projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}`.
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
+    ///  Indicates whether to get full or partial view of the WriteStream. If
+    ///  not set, view returned will be basic.
+    #[prost(enumeration="WriteStreamView", tag="3")]
+    pub view: i32,
 }
 ///  Request message for `BatchCommitWriteStreams`.
 #[derive(Clone, PartialEq, ::prost::Message)]

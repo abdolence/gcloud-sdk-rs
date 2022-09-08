@@ -974,7 +974,7 @@ pub struct ExplanationSpec {
     ///  Required. Parameters that configure explaining of the Model's predictions.
     #[prost(message, optional, tag="1")]
     pub parameters: ::core::option::Option<ExplanationParameters>,
-    ///  Required. Metadata describing the Model's input and output for explanation.
+    ///  Optional. Metadata describing the Model's input and output for explanation.
     #[prost(message, optional, tag="2")]
     pub metadata: ::core::option::Option<ExplanationMetadata>,
 }
@@ -993,7 +993,7 @@ pub struct ExplanationParameters {
     ///  explaining.
     ///
     ///  If not populated, returns attributions for \[top_k][google.cloud.aiplatform.v1beta1.ExplanationParameters.top_k\] indices of outputs.
-    ///  If neither top_k nor output_indeices is populated, returns the argmax
+    ///  If neither top_k nor output_indices is populated, returns the argmax
     ///  index of the outputs.
     ///
     ///  Only applicable to Models that predict multiple outputs (e,g, multi-class
@@ -1635,7 +1635,67 @@ pub struct ManualBatchTuningParameters {
     #[prost(int32, tag="1")]
     pub batch_size: i32,
 }
-///  Next ID: 5
+///  Stats and Anomaly generated at specific timestamp for specific Feature.
+///  The start_time and end_time are used to define the time range of the dataset
+///  that current stats belongs to, e.g. prediction traffic is bucketed into
+///  prediction datasets by time window. If the Dataset is not defined by time
+///  window, start_time = end_time. Timestamp of the stats and anomalies always
+///  refers to end_time. Raw stats and anomalies are stored in stats_uri or
+///  anomaly_uri in the tensorflow defined protos. Field data_stats contains
+///  almost identical information with the raw stats in Vertex AI
+///  defined proto, for UI to display.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FeatureStatsAnomaly {
+    ///  Feature importance score, only populated when cross-feature monitoring is
+    ///  enabled. For now only used to represent feature attribution score within
+    ///  range [0, 1] for
+    ///  \[ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW\] and
+    ///  \[ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT\].
+    #[prost(double, tag="1")]
+    pub score: f64,
+    ///  Path of the stats file for current feature values in Cloud Storage bucket.
+    ///  Format: gs://<bucket_name>/<object_name>/stats.
+    ///  Example: gs://monitoring_bucket/feature_name/stats.
+    ///  Stats are stored as binary format with Protobuf message
+    ///  \[tensorflow.metadata.v0.FeatureNameStatistics\](<https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/statistics.proto>).
+    #[prost(string, tag="3")]
+    pub stats_uri: ::prost::alloc::string::String,
+    ///  Path of the anomaly file for current feature values in Cloud Storage
+    ///  bucket.
+    ///  Format: gs://<bucket_name>/<object_name>/anomalies.
+    ///  Example: gs://monitoring_bucket/feature_name/anomalies.
+    ///  Stats are stored as binary format with Protobuf message
+    ///  Anoamlies are stored as binary format with Protobuf message
+    ///  \[tensorflow.metadata.v0.AnomalyInfo\]
+    ///  (<https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/anomalies.proto>).
+    #[prost(string, tag="4")]
+    pub anomaly_uri: ::prost::alloc::string::String,
+    ///  Deviation from the current stats to baseline stats.
+    ///    1. For categorical feature, the distribution distance is calculated by
+    ///       L-inifinity norm.
+    ///    2. For numerical feature, the distribution distance is calculated by
+    ///       Jensen–Shannon divergence.
+    #[prost(double, tag="5")]
+    pub distribution_deviation: f64,
+    ///  This is the threshold used when detecting anomalies.
+    ///  The threshold can be changed by user, so this one might be different from
+    ///  \[ThresholdConfig.value][google.cloud.aiplatform.v1beta1.ThresholdConfig.value\].
+    #[prost(double, tag="9")]
+    pub anomaly_detection_threshold: f64,
+    ///  The start timestamp of window where stats were generated.
+    ///  For objectives where time window doesn't make sense (e.g. Featurestore
+    ///  Snapshot Monitoring), start_time is only used to indicate the monitoring
+    ///  intervals, so it always equals to (end_time - monitoring_interval).
+    #[prost(message, optional, tag="7")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  The end timestamp of window where stats were generated.
+    ///  For objectives where time window doesn't make sense (e.g. Featurestore
+    ///  Snapshot Monitoring), end_time indicates the timestamp of the data used to
+    ///  generate stats (e.g. timestamp we take snapshots for feature values).
+    #[prost(message, optional, tag="8")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
+///  The model monitoring configuration used for Batch Prediction Job.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelMonitoringConfig {
     ///  Model monitoring objective config.
@@ -1653,8 +1713,15 @@ pub struct ModelMonitoringConfig {
     ///  fields in predict instance formatted as string.
     #[prost(string, tag="4")]
     pub analysis_instance_schema_uri: ::prost::alloc::string::String,
+    ///  A Google Cloud Storage location for batch prediction model monitoring to
+    ///  dump statistics and anomalies.
+    ///  If not provided, a folder will be created in customer project to hold
+    ///  statistics and anomalies.
+    #[prost(message, optional, tag="5")]
+    pub stats_anomalies_base_directory: ::core::option::Option<GcsDestination>,
 }
-///  Next ID: 8
+///  The objective configuration for model monitoring, including the information
+///  needed to detect anomalies for one particular model.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelMonitoringObjectiveConfig {
     ///  Training dataset for models. This field has to be set only if
@@ -1773,8 +1840,10 @@ pub mod model_monitoring_objective_config {
     }
     /// Nested message and enum types in `ExplanationConfig`.
     pub mod explanation_config {
-        ///  Output from \[BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob\] for Model Monitoring baseline dataset,
-        ///  which can be used to generate baseline attribution scores.
+        ///  Output from
+        ///  \[BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob\]
+        ///  for Model Monitoring baseline dataset, which can be used to generate
+        ///  baseline attribution scores.
         #[derive(Clone, PartialEq, ::prost::Message)]
         pub struct ExplanationBaseline {
             ///  The storage format of the predictions generated BatchPrediction job.
@@ -1825,7 +1894,6 @@ pub mod model_monitoring_objective_config {
         }
     }
 }
-///  Next ID: 3
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ModelMonitoringAlertConfig {
     ///  Dump the anomalies to Cloud Logging. The anomalies will be put to json
@@ -1855,7 +1923,6 @@ pub mod model_monitoring_alert_config {
     }
 }
 ///  The config for feature monitoring threshold.
-///  Next ID: 3
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ThresholdConfig {
     #[prost(oneof="threshold_config::Threshold", tags="1")]
@@ -1879,7 +1946,6 @@ pub mod threshold_config {
 }
 ///  Sampling Strategy for logging, can be for both training and prediction
 ///  dataset.
-///  Next ID: 2
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SamplingStrategy {
     ///  Random sample config. Will support more sampling strategies later.
@@ -1894,6 +1960,333 @@ pub mod sampling_strategy {
         ///  Sample rate (0, 1]
         #[prost(double, tag="1")]
         pub sample_rate: f64,
+    }
+}
+///  Represents a job that runs periodically to monitor the deployed models in an
+///  endpoint. It will analyze the logged training & prediction data to detect any
+///  abnormal behaviors.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelDeploymentMonitoringJob {
+    ///  Output only. Resource name of a ModelDeploymentMonitoringJob.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    ///  Required. The user-defined name of the ModelDeploymentMonitoringJob.
+    ///  The name can be up to 128 characters long and can be consist of any UTF-8
+    ///  characters.
+    ///  Display name of a ModelDeploymentMonitoringJob.
+    #[prost(string, tag="2")]
+    pub display_name: ::prost::alloc::string::String,
+    ///  Required. Endpoint resource name.
+    ///  Format: `projects/{project}/locations/{location}/endpoints/{endpoint}`
+    #[prost(string, tag="3")]
+    pub endpoint: ::prost::alloc::string::String,
+    ///  Output only. The detailed state of the monitoring job.
+    ///  When the job is still creating, the state will be 'PENDING'.
+    ///  Once the job is successfully created, the state will be 'RUNNING'.
+    ///  Pause the job, the state will be 'PAUSED'.
+    ///  Resume the job, the state will return to 'RUNNING'.
+    #[prost(enumeration="JobState", tag="4")]
+    pub state: i32,
+    ///  Output only. Schedule state when the monitoring job is in Running state.
+    #[prost(enumeration="model_deployment_monitoring_job::MonitoringScheduleState", tag="5")]
+    pub schedule_state: i32,
+    ///  Output only. Latest triggered monitoring pipeline metadata.
+    #[prost(message, optional, tag="25")]
+    pub latest_monitoring_pipeline_metadata: ::core::option::Option<model_deployment_monitoring_job::LatestMonitoringPipelineMetadata>,
+    ///  Required. The config for monitoring objectives. This is a per DeployedModel config.
+    ///  Each DeployedModel needs to be configured separately.
+    #[prost(message, repeated, tag="6")]
+    pub model_deployment_monitoring_objective_configs: ::prost::alloc::vec::Vec<ModelDeploymentMonitoringObjectiveConfig>,
+    ///  Required. Schedule config for running the monitoring job.
+    #[prost(message, optional, tag="7")]
+    pub model_deployment_monitoring_schedule_config: ::core::option::Option<ModelDeploymentMonitoringScheduleConfig>,
+    ///  Required. Sample Strategy for logging.
+    #[prost(message, optional, tag="8")]
+    pub logging_sampling_strategy: ::core::option::Option<SamplingStrategy>,
+    ///  Alert config for model monitoring.
+    #[prost(message, optional, tag="15")]
+    pub model_monitoring_alert_config: ::core::option::Option<ModelMonitoringAlertConfig>,
+    ///  YAML schema file uri describing the format of a single instance,
+    ///  which are given to format this Endpoint's prediction (and explanation).
+    ///  If not set, we will generate predict schema from collected predict
+    ///  requests.
+    #[prost(string, tag="9")]
+    pub predict_instance_schema_uri: ::prost::alloc::string::String,
+    ///  Sample Predict instance, same format as \[PredictRequest.instances][google.cloud.aiplatform.v1beta1.PredictRequest.instances\],
+    ///  this can be set as a replacement of
+    ///  \[ModelDeploymentMonitoringJob.predict_instance_schema_uri][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringJob.predict_instance_schema_uri\]. If not set,
+    ///  we will generate predict schema from collected predict requests.
+    #[prost(message, optional, tag="19")]
+    pub sample_predict_instance: ::core::option::Option<::prost_types::Value>,
+    ///  YAML schema file uri describing the format of a single instance that you
+    ///  want Tensorflow Data Validation (TFDV) to analyze.
+    ///
+    ///  If this field is empty, all the feature data types are inferred from
+    ///  \[predict_instance_schema_uri][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringJob.predict_instance_schema_uri\],
+    ///  meaning that TFDV will use the data in the exact format(data type) as
+    ///  prediction request/response.
+    ///  If there are any data type differences between predict instance and TFDV
+    ///  instance, this field can be used to override the schema.
+    ///  For models trained with Vertex AI, this field must be set as all the
+    ///  fields in predict instance formatted as string.
+    #[prost(string, tag="16")]
+    pub analysis_instance_schema_uri: ::prost::alloc::string::String,
+    ///  Output only. The created bigquery tables for the job under customer project. Customer
+    ///  could do their own query & analysis. There could be 4 log tables in
+    ///  maximum:
+    ///  1. Training data logging predict request/response
+    ///  2. Serving data logging predict request/response
+    #[prost(message, repeated, tag="10")]
+    pub bigquery_tables: ::prost::alloc::vec::Vec<ModelDeploymentMonitoringBigQueryTable>,
+    ///  The TTL of BigQuery tables in user projects which stores logs.
+    ///  A day is the basic unit of the TTL and we take the ceil of TTL/86400(a
+    ///  day). e.g. { second: 3600} indicates ttl = 1 day.
+    #[prost(message, optional, tag="17")]
+    pub log_ttl: ::core::option::Option<::prost_types::Duration>,
+    ///  The labels with user-defined metadata to organize your
+    ///  ModelDeploymentMonitoringJob.
+    ///
+    ///  Label keys and values can be no longer than 64 characters
+    ///  (Unicode codepoints), can only contain lowercase letters, numeric
+    ///  characters, underscores and dashes. International characters are allowed.
+    ///
+    ///  See <https://goo.gl/xmQnxf> for more information and examples of labels.
+    #[prost(map="string, string", tag="11")]
+    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
+    ///  Output only. Timestamp when this ModelDeploymentMonitoringJob was created.
+    #[prost(message, optional, tag="12")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  Output only. Timestamp when this ModelDeploymentMonitoringJob was updated most recently.
+    #[prost(message, optional, tag="13")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  Output only. Timestamp when this monitoring pipeline will be scheduled to run for the
+    ///  next round.
+    #[prost(message, optional, tag="14")]
+    pub next_schedule_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  Stats anomalies base folder path.
+    #[prost(message, optional, tag="20")]
+    pub stats_anomalies_base_directory: ::core::option::Option<GcsDestination>,
+    ///  Customer-managed encryption key spec for a ModelDeploymentMonitoringJob. If
+    ///  set, this ModelDeploymentMonitoringJob and all sub-resources of this
+    ///  ModelDeploymentMonitoringJob will be secured by this key.
+    #[prost(message, optional, tag="21")]
+    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
+    ///  If true, the scheduled monitoring pipeline logs are sent to
+    ///  Google Cloud Logging, including pipeline status and anomalies detected.
+    ///  Please note the logs incur cost, which are subject to [Cloud Logging
+    ///  pricing](<https://cloud.google.com/logging#pricing>).
+    #[prost(bool, tag="22")]
+    pub enable_monitoring_pipeline_logs: bool,
+    ///  Output only. Only populated when the job's state is `JOB_STATE_FAILED` or
+    ///  `JOB_STATE_CANCELLED`.
+    #[prost(message, optional, tag="23")]
+    pub error: ::core::option::Option<super::super::super::rpc::Status>,
+}
+/// Nested message and enum types in `ModelDeploymentMonitoringJob`.
+pub mod model_deployment_monitoring_job {
+    ///  All metadata of most recent monitoring pipelines.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct LatestMonitoringPipelineMetadata {
+        ///  The time that most recent monitoring pipelines that is related to this
+        ///  run.
+        #[prost(message, optional, tag="1")]
+        pub run_time: ::core::option::Option<::prost_types::Timestamp>,
+        ///  The status of the most recent monitoring pipeline.
+        #[prost(message, optional, tag="2")]
+        pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
+    }
+    ///  The state to Specify the monitoring pipeline.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum MonitoringScheduleState {
+        ///  Unspecified state.
+        Unspecified = 0,
+        ///  The pipeline is picked up and wait to run.
+        Pending = 1,
+        ///  The pipeline is offline and will be scheduled for next run.
+        Offline = 2,
+        ///  The pipeline is running.
+        Running = 3,
+    }
+    impl MonitoringScheduleState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                MonitoringScheduleState::Unspecified => "MONITORING_SCHEDULE_STATE_UNSPECIFIED",
+                MonitoringScheduleState::Pending => "PENDING",
+                MonitoringScheduleState::Offline => "OFFLINE",
+                MonitoringScheduleState::Running => "RUNNING",
+            }
+        }
+    }
+}
+///  ModelDeploymentMonitoringBigQueryTable specifies the BigQuery table name
+///  as well as some information of the logs stored in this table.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelDeploymentMonitoringBigQueryTable {
+    ///  The source of log.
+    #[prost(enumeration="model_deployment_monitoring_big_query_table::LogSource", tag="1")]
+    pub log_source: i32,
+    ///  The type of log.
+    #[prost(enumeration="model_deployment_monitoring_big_query_table::LogType", tag="2")]
+    pub log_type: i32,
+    ///  The created BigQuery table to store logs. Customer could do their own query
+    ///  & analysis. Format:
+    ///  `bq://<project_id>.model_deployment_monitoring_<endpoint_id>.<tolower(log_source)>_<tolower(log_type)>`
+    #[prost(string, tag="3")]
+    pub bigquery_table_path: ::prost::alloc::string::String,
+}
+/// Nested message and enum types in `ModelDeploymentMonitoringBigQueryTable`.
+pub mod model_deployment_monitoring_big_query_table {
+    ///  Indicates where does the log come from.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum LogSource {
+        ///  Unspecified source.
+        Unspecified = 0,
+        ///  Logs coming from Training dataset.
+        Training = 1,
+        ///  Logs coming from Serving traffic.
+        Serving = 2,
+    }
+    impl LogSource {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                LogSource::Unspecified => "LOG_SOURCE_UNSPECIFIED",
+                LogSource::Training => "TRAINING",
+                LogSource::Serving => "SERVING",
+            }
+        }
+    }
+    ///  Indicates what type of traffic does the log belong to.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum LogType {
+        ///  Unspecified type.
+        Unspecified = 0,
+        ///  Predict logs.
+        Predict = 1,
+        ///  Explain logs.
+        Explain = 2,
+    }
+    impl LogType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                LogType::Unspecified => "LOG_TYPE_UNSPECIFIED",
+                LogType::Predict => "PREDICT",
+                LogType::Explain => "EXPLAIN",
+            }
+        }
+    }
+}
+///  ModelDeploymentMonitoringObjectiveConfig contains the pair of
+///  deployed_model_id to ModelMonitoringObjectiveConfig.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelDeploymentMonitoringObjectiveConfig {
+    ///  The DeployedModel ID of the objective config.
+    #[prost(string, tag="1")]
+    pub deployed_model_id: ::prost::alloc::string::String,
+    ///  The objective config of for the modelmonitoring job of this deployed model.
+    #[prost(message, optional, tag="2")]
+    pub objective_config: ::core::option::Option<ModelMonitoringObjectiveConfig>,
+}
+///  The config for scheduling monitoring job.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelDeploymentMonitoringScheduleConfig {
+    ///  Required. The model monitoring job scheduling interval. It will be rounded up to next
+    ///  full hour. This defines how often the monitoring jobs are triggered.
+    #[prost(message, optional, tag="1")]
+    pub monitor_interval: ::core::option::Option<::prost_types::Duration>,
+    ///  The time window of the prediction data being included in each prediction
+    ///  dataset. This window specifies how long the data should be collected from
+    ///  historical model results for each run. If not set,
+    ///  \[ModelDeploymentMonitoringScheduleConfig.monitor_interval][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringScheduleConfig.monitor_interval\] will be used.
+    ///  e.g. If currently the cutoff time is 2022-01-08 14:30:00 and the
+    ///  monitor_window is set to be 3600, then data from 2022-01-08 13:30:00
+    ///  to 2022-01-08 14:30:00 will be retrieved and aggregated to calculate the
+    ///  monitoring statistics.
+    #[prost(message, optional, tag="2")]
+    pub monitor_window: ::core::option::Option<::prost_types::Duration>,
+}
+///  Statistics and anomalies generated by Model Monitoring.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ModelMonitoringStatsAnomalies {
+    ///  Model Monitoring Objective those stats and anomalies belonging to.
+    #[prost(enumeration="ModelDeploymentMonitoringObjectiveType", tag="1")]
+    pub objective: i32,
+    ///  Deployed Model ID.
+    #[prost(string, tag="2")]
+    pub deployed_model_id: ::prost::alloc::string::String,
+    ///  Number of anomalies within all stats.
+    #[prost(int32, tag="3")]
+    pub anomaly_count: i32,
+    ///  A list of historical Stats and Anomalies generated for all Features.
+    #[prost(message, repeated, tag="4")]
+    pub feature_stats: ::prost::alloc::vec::Vec<model_monitoring_stats_anomalies::FeatureHistoricStatsAnomalies>,
+}
+/// Nested message and enum types in `ModelMonitoringStatsAnomalies`.
+pub mod model_monitoring_stats_anomalies {
+    ///  Historical Stats (and Anomalies) for a specific Feature.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct FeatureHistoricStatsAnomalies {
+        ///  Display Name of the Feature.
+        #[prost(string, tag="1")]
+        pub feature_display_name: ::prost::alloc::string::String,
+        ///  Threshold for anomaly detection.
+        #[prost(message, optional, tag="3")]
+        pub threshold: ::core::option::Option<super::ThresholdConfig>,
+        ///  Stats calculated for the Training Dataset.
+        #[prost(message, optional, tag="4")]
+        pub training_stats: ::core::option::Option<super::FeatureStatsAnomaly>,
+        ///  A list of historical stats generated by different time window's
+        ///  Prediction Dataset.
+        #[prost(message, repeated, tag="5")]
+        pub prediction_stats: ::prost::alloc::vec::Vec<super::FeatureStatsAnomaly>,
+    }
+}
+///  The Model Monitoring Objective types.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ModelDeploymentMonitoringObjectiveType {
+    ///  Default value, should not be set.
+    Unspecified = 0,
+    ///  Raw feature values' stats to detect skew between Training-Prediction
+    ///  datasets.
+    RawFeatureSkew = 1,
+    ///  Raw feature values' stats to detect drift between Serving-Prediction
+    ///  datasets.
+    RawFeatureDrift = 2,
+    ///  Feature attribution scores to detect skew between Training-Prediction
+    ///  datasets.
+    FeatureAttributionSkew = 3,
+    ///  Feature attribution scores to detect skew between Prediction datasets
+    ///  collected within different time windows.
+    FeatureAttributionDrift = 4,
+}
+impl ModelDeploymentMonitoringObjectiveType {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ModelDeploymentMonitoringObjectiveType::Unspecified => "MODEL_DEPLOYMENT_MONITORING_OBJECTIVE_TYPE_UNSPECIFIED",
+            ModelDeploymentMonitoringObjectiveType::RawFeatureSkew => "RAW_FEATURE_SKEW",
+            ModelDeploymentMonitoringObjectiveType::RawFeatureDrift => "RAW_FEATURE_DRIFT",
+            ModelDeploymentMonitoringObjectiveType::FeatureAttributionSkew => "FEATURE_ATTRIBUTION_SKEW",
+            ModelDeploymentMonitoringObjectiveType::FeatureAttributionDrift => "FEATURE_ATTRIBUTION_DRIFT",
+        }
     }
 }
 ///  Points to a DeployedModel.
@@ -2675,6 +3068,12 @@ pub struct BatchPredictionJob {
     ///  training dataset.
     #[prost(message, optional, tag="26")]
     pub model_monitoring_config: ::core::option::Option<ModelMonitoringConfig>,
+    ///  Get batch prediction job monitoring statistics.
+    #[prost(message, repeated, tag="31")]
+    pub model_monitoring_stats_anomalies: ::prost::alloc::vec::Vec<ModelMonitoringStatsAnomalies>,
+    ///  Output only. The running status of the model monitoring pipeline.
+    #[prost(message, optional, tag="32")]
+    pub model_monitoring_status: ::core::option::Option<super::super::super::rpc::Status>,
 }
 /// Nested message and enum types in `BatchPredictionJob`.
 pub mod batch_prediction_job {
@@ -3508,6 +3907,7 @@ pub struct SavedQuery {
     pub annotation_filter: ::prost::alloc::string::String,
     ///  Required. Problem type of the SavedQuery.
     ///  Allowed values:
+    ///
     ///  * IMAGE_CLASSIFICATION_SINGLE_LABEL
     ///  * IMAGE_CLASSIFICATION_MULTI_LABEL
     ///  * IMAGE_BOUNDING_POLY
@@ -3523,7 +3923,7 @@ pub struct SavedQuery {
     ///  Output only. Number of AnnotationSpecs in the context of the SavedQuery.
     #[prost(int32, tag="10")]
     pub annotation_spec_count: i32,
-    ///  Used to perform consistent read-modify-write updates. If not set, a blind
+    ///  Used to perform a consistent read-modify-write update. If not set, a blind
     ///  "overwrite" update happens.
     #[prost(string, tag="8")]
     pub etag: ::prost::alloc::string::String,
@@ -3754,8 +4154,7 @@ pub struct ListSavedQueriesRequest {
 ///  Response message for \[DatasetService.ListSavedQueries][google.cloud.aiplatform.v1beta1.DatasetService.ListSavedQueries\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListSavedQueriesResponse {
-    ///  A list of SavedQueries that matches the specified filter in the
-    ///  request.
+    ///  A list of SavedQueries that match the specified filter in the request.
     #[prost(message, repeated, tag="1")]
     pub saved_queries: ::prost::alloc::vec::Vec<SavedQuery>,
     ///  The standard List next-page token.
@@ -5444,66 +5843,6 @@ pub mod execution {
             }
         }
     }
-}
-///  Stats and Anomaly generated at specific timestamp for specific Feature.
-///  The start_time and end_time are used to define the time range of the dataset
-///  that current stats belongs to, e.g. prediction traffic is bucketed into
-///  prediction datasets by time window. If the Dataset is not defined by time
-///  window, start_time = end_time. Timestamp of the stats and anomalies always
-///  refers to end_time. Raw stats and anomalies are stored in stats_uri or
-///  anomaly_uri in the tensorflow defined protos. Field data_stats contains
-///  almost identical information with the raw stats in Vertex AI
-///  defined proto, for UI to display.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct FeatureStatsAnomaly {
-    ///  Feature importance score, only populated when cross-feature monitoring is
-    ///  enabled. For now only used to represent feature attribution score within
-    ///  range [0, 1] for
-    ///  \[ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_SKEW\] and
-    ///  \[ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveType.FEATURE_ATTRIBUTION_DRIFT\].
-    #[prost(double, tag="1")]
-    pub score: f64,
-    ///  Path of the stats file for current feature values in Cloud Storage bucket.
-    ///  Format: gs://<bucket_name>/<object_name>/stats.
-    ///  Example: gs://monitoring_bucket/feature_name/stats.
-    ///  Stats are stored as binary format with Protobuf message
-    ///  \[tensorflow.metadata.v0.FeatureNameStatistics\](<https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/statistics.proto>).
-    #[prost(string, tag="3")]
-    pub stats_uri: ::prost::alloc::string::String,
-    ///  Path of the anomaly file for current feature values in Cloud Storage
-    ///  bucket.
-    ///  Format: gs://<bucket_name>/<object_name>/anomalies.
-    ///  Example: gs://monitoring_bucket/feature_name/anomalies.
-    ///  Stats are stored as binary format with Protobuf message
-    ///  Anoamlies are stored as binary format with Protobuf message
-    ///  \[tensorflow.metadata.v0.AnomalyInfo\]
-    ///  (<https://github.com/tensorflow/metadata/blob/master/tensorflow_metadata/proto/v0/anomalies.proto>).
-    #[prost(string, tag="4")]
-    pub anomaly_uri: ::prost::alloc::string::String,
-    ///  Deviation from the current stats to baseline stats.
-    ///    1. For categorical feature, the distribution distance is calculated by
-    ///       L-inifinity norm.
-    ///    2. For numerical feature, the distribution distance is calculated by
-    ///       Jensen–Shannon divergence.
-    #[prost(double, tag="5")]
-    pub distribution_deviation: f64,
-    ///  This is the threshold used when detecting anomalies.
-    ///  The threshold can be changed by user, so this one might be different from
-    ///  \[ThresholdConfig.value][google.cloud.aiplatform.v1beta1.ThresholdConfig.value\].
-    #[prost(double, tag="9")]
-    pub anomaly_detection_threshold: f64,
-    ///  The start timestamp of window where stats were generated.
-    ///  For objectives where time window doesn't make sense (e.g. Featurestore
-    ///  Snapshot Monitoring), start_time is only used to indicate the monitoring
-    ///  intervals, so it always equals to (end_time - monitoring_interval).
-    #[prost(message, optional, tag="7")]
-    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The end timestamp of window where stats were generated.
-    ///  For objectives where time window doesn't make sense (e.g. Featurestore
-    ///  Snapshot Monitoring), end_time indicates the timestamp of the data used to
-    ///  generate stats (e.g. timestamp we take snapshots for feature values).
-    #[prost(message, optional, tag="8")]
-    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
 }
 ///  Feature Metadata information that describes an attribute of an entity type.
 ///  For example, apple is an entity type, and color is a feature that describes
@@ -8467,6 +8806,104 @@ pub struct Index {
     ///  is reflected in it.
     #[prost(message, optional, tag="11")]
     pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  Output only. Stats of the index resource.
+    #[prost(message, optional, tag="14")]
+    pub index_stats: ::core::option::Option<IndexStats>,
+    ///  Immutable. The update method to use with this Index. If not set, BATCH_UPDATE will be
+    ///  used by default.
+    #[prost(enumeration="index::IndexUpdateMethod", tag="16")]
+    pub index_update_method: i32,
+}
+/// Nested message and enum types in `Index`.
+pub mod index {
+    ///  The update method of an Index.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum IndexUpdateMethod {
+        ///  Should not be used.
+        Unspecified = 0,
+        ///  BatchUpdate: user can call UpdateIndex with files on Cloud Storage of
+        ///  datapoints to update.
+        BatchUpdate = 1,
+        ///  StreamUpdate: user can call UpsertDatapoints/DeleteDatapoints to update
+        ///  the Index and the updates will be applied in corresponding
+        ///  DeployedIndexes in nearly real-time.
+        StreamUpdate = 2,
+    }
+    impl IndexUpdateMethod {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                IndexUpdateMethod::Unspecified => "INDEX_UPDATE_METHOD_UNSPECIFIED",
+                IndexUpdateMethod::BatchUpdate => "BATCH_UPDATE",
+                IndexUpdateMethod::StreamUpdate => "STREAM_UPDATE",
+            }
+        }
+    }
+}
+///  A datapoint of Index.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexDatapoint {
+    ///  Required. Unique identifier of the datapoint.
+    #[prost(string, tag="1")]
+    pub datapoint_id: ::prost::alloc::string::String,
+    ///  Required. Feature embedding vector. An array of numbers with the length of
+    ///  \[NearestNeighborSearchConfig.dimensions\].
+    #[prost(float, repeated, packed="false", tag="2")]
+    pub feature_vector: ::prost::alloc::vec::Vec<f32>,
+    ///  Optional. List of Restrict of the datapoint, used to perform "restricted searches"
+    ///  where boolean rule are used to filter the subset of the database eligible
+    ///  for matching.
+    ///  See: <https://cloud.google.com/vertex-ai/docs/matching-engine/filtering>
+    #[prost(message, repeated, tag="4")]
+    pub restricts: ::prost::alloc::vec::Vec<index_datapoint::Restriction>,
+    ///  Optional. CrowdingTag of the datapoint, the number of neighbors to return in each
+    ///  crowding can be configured during query.
+    #[prost(message, optional, tag="5")]
+    pub crowding_tag: ::core::option::Option<index_datapoint::CrowdingTag>,
+}
+/// Nested message and enum types in `IndexDatapoint`.
+pub mod index_datapoint {
+    ///  Restriction of a datapoint which describe its attributes(tokens) from each
+    ///  of several attribute categories(namespaces).
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Restriction {
+        ///  The namespace of this restriction. eg: color.
+        #[prost(string, tag="1")]
+        pub namespace: ::prost::alloc::string::String,
+        ///  The attributes to allow in this namespace. eg: 'red'
+        #[prost(string, repeated, tag="2")]
+        pub allow_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        ///  The attributes to deny in this namespace. eg: 'blue'
+        #[prost(string, repeated, tag="3")]
+        pub deny_list: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    ///  Crowding tag is a constraint on a neighbor list produced by nearest
+    ///  neighbor search requiring that no more than some value k' of the k
+    ///  neighbors returned have the same value of crowding_attribute.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct CrowdingTag {
+        ///  The attribute value used for crowding.  The maximum number of neighbors
+        ///  to return per crowding attribute value
+        ///  (per_crowding_attribute_num_neighbors) is configured per-query. This
+        ///  field is ignored if per_crowding_attribute_num_neighbors is larger than
+        ///  the total number of neighbors to return for a given query.
+        #[prost(string, tag="1")]
+        pub crowding_attribute: ::prost::alloc::string::String,
+    }
+}
+///  Stats of the Index.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct IndexStats {
+    ///  Output only. The number of vectors in the Index.
+    #[prost(int64, tag="1")]
+    pub vectors_count: i64,
+    ///  Output only. The number of shards in the Index.
+    #[prost(int32, tag="2")]
+    pub shards_count: i32,
 }
 ///  Indexes are deployed into it. An IndexEndpoint can have multiple
 ///  DeployedIndexes.
@@ -9205,6 +9642,38 @@ pub struct DeleteIndexRequest {
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
+///  Request message for \[IndexService.UpsertDatapoints][google.cloud.aiplatform.v1beta1.IndexService.UpsertDatapoints\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpsertDatapointsRequest {
+    ///  Required. The name of the Index resource to be updated.
+    ///  Format:
+    ///  `projects/{project}/locations/{location}/indexes/{index}`
+    #[prost(string, tag="1")]
+    pub index: ::prost::alloc::string::String,
+    ///  A list of datapoints to be created/updated.
+    #[prost(message, repeated, tag="2")]
+    pub datapoints: ::prost::alloc::vec::Vec<IndexDatapoint>,
+}
+///  Response message for \[IndexService.UpsertDatapoints][google.cloud.aiplatform.v1beta1.IndexService.UpsertDatapoints\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpsertDatapointsResponse {
+}
+///  Request message for \[IndexService.RemoveDatapoints][google.cloud.aiplatform.v1beta1.IndexService.RemoveDatapoints\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveDatapointsRequest {
+    ///  Required. The name of the Index resource to be updated.
+    ///  Format:
+    ///  `projects/{project}/locations/{location}/indexes/{index}`
+    #[prost(string, tag="1")]
+    pub index: ::prost::alloc::string::String,
+    ///  A list of datapoint ids to be deleted.
+    #[prost(string, repeated, tag="2")]
+    pub datapoint_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+///  Response message for \[IndexService.RemoveDatapoints][google.cloud.aiplatform.v1beta1.IndexService.RemoveDatapoints\]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveDatapointsResponse {
+}
 ///  Runtime operation metadata with regard to Matching Engine Index.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct NearestNeighborSearchOperationMetadata {
@@ -9482,332 +9951,45 @@ pub mod index_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-}
-///  Represents a job that runs periodically to monitor the deployed models in an
-///  endpoint. It will analyze the logged training & prediction data to detect any
-///  abnormal behaviors.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ModelDeploymentMonitoringJob {
-    ///  Output only. Resource name of a ModelDeploymentMonitoringJob.
-    #[prost(string, tag="1")]
-    pub name: ::prost::alloc::string::String,
-    ///  Required. The user-defined name of the ModelDeploymentMonitoringJob.
-    ///  The name can be up to 128 characters long and can be consist of any UTF-8
-    ///  characters.
-    ///  Display name of a ModelDeploymentMonitoringJob.
-    #[prost(string, tag="2")]
-    pub display_name: ::prost::alloc::string::String,
-    ///  Required. Endpoint resource name.
-    ///  Format: `projects/{project}/locations/{location}/endpoints/{endpoint}`
-    #[prost(string, tag="3")]
-    pub endpoint: ::prost::alloc::string::String,
-    ///  Output only. The detailed state of the monitoring job.
-    ///  When the job is still creating, the state will be 'PENDING'.
-    ///  Once the job is successfully created, the state will be 'RUNNING'.
-    ///  Pause the job, the state will be 'PAUSED'.
-    ///  Resume the job, the state will return to 'RUNNING'.
-    #[prost(enumeration="JobState", tag="4")]
-    pub state: i32,
-    ///  Output only. Schedule state when the monitoring job is in Running state.
-    #[prost(enumeration="model_deployment_monitoring_job::MonitoringScheduleState", tag="5")]
-    pub schedule_state: i32,
-    ///  Output only. Latest triggered monitoring pipeline metadata.
-    #[prost(message, optional, tag="25")]
-    pub latest_monitoring_pipeline_metadata: ::core::option::Option<model_deployment_monitoring_job::LatestMonitoringPipelineMetadata>,
-    ///  Required. The config for monitoring objectives. This is a per DeployedModel config.
-    ///  Each DeployedModel needs to be configured separately.
-    #[prost(message, repeated, tag="6")]
-    pub model_deployment_monitoring_objective_configs: ::prost::alloc::vec::Vec<ModelDeploymentMonitoringObjectiveConfig>,
-    ///  Required. Schedule config for running the monitoring job.
-    #[prost(message, optional, tag="7")]
-    pub model_deployment_monitoring_schedule_config: ::core::option::Option<ModelDeploymentMonitoringScheduleConfig>,
-    ///  Required. Sample Strategy for logging.
-    #[prost(message, optional, tag="8")]
-    pub logging_sampling_strategy: ::core::option::Option<SamplingStrategy>,
-    ///  Alert config for model monitoring.
-    #[prost(message, optional, tag="15")]
-    pub model_monitoring_alert_config: ::core::option::Option<ModelMonitoringAlertConfig>,
-    ///  YAML schema file uri describing the format of a single instance,
-    ///  which are given to format this Endpoint's prediction (and explanation).
-    ///  If not set, we will generate predict schema from collected predict
-    ///  requests.
-    #[prost(string, tag="9")]
-    pub predict_instance_schema_uri: ::prost::alloc::string::String,
-    ///  Sample Predict instance, same format as \[PredictRequest.instances][google.cloud.aiplatform.v1beta1.PredictRequest.instances\],
-    ///  this can be set as a replacement of
-    ///  \[ModelDeploymentMonitoringJob.predict_instance_schema_uri][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringJob.predict_instance_schema_uri\]. If not set,
-    ///  we will generate predict schema from collected predict requests.
-    #[prost(message, optional, tag="19")]
-    pub sample_predict_instance: ::core::option::Option<::prost_types::Value>,
-    ///  YAML schema file uri describing the format of a single instance that you
-    ///  want Tensorflow Data Validation (TFDV) to analyze.
-    ///
-    ///  If this field is empty, all the feature data types are inferred from
-    ///  \[predict_instance_schema_uri][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringJob.predict_instance_schema_uri\],
-    ///  meaning that TFDV will use the data in the exact format(data type) as
-    ///  prediction request/response.
-    ///  If there are any data type differences between predict instance and TFDV
-    ///  instance, this field can be used to override the schema.
-    ///  For models trained with Vertex AI, this field must be set as all the
-    ///  fields in predict instance formatted as string.
-    #[prost(string, tag="16")]
-    pub analysis_instance_schema_uri: ::prost::alloc::string::String,
-    ///  Output only. The created bigquery tables for the job under customer project. Customer
-    ///  could do their own query & analysis. There could be 4 log tables in
-    ///  maximum:
-    ///  1. Training data logging predict request/response
-    ///  2. Serving data logging predict request/response
-    #[prost(message, repeated, tag="10")]
-    pub bigquery_tables: ::prost::alloc::vec::Vec<ModelDeploymentMonitoringBigQueryTable>,
-    ///  The TTL of BigQuery tables in user projects which stores logs.
-    ///  A day is the basic unit of the TTL and we take the ceil of TTL/86400(a
-    ///  day). e.g. { second: 3600} indicates ttl = 1 day.
-    #[prost(message, optional, tag="17")]
-    pub log_ttl: ::core::option::Option<::prost_types::Duration>,
-    ///  The labels with user-defined metadata to organize your
-    ///  ModelDeploymentMonitoringJob.
-    ///
-    ///  Label keys and values can be no longer than 64 characters
-    ///  (Unicode codepoints), can only contain lowercase letters, numeric
-    ///  characters, underscores and dashes. International characters are allowed.
-    ///
-    ///  See <https://goo.gl/xmQnxf> for more information and examples of labels.
-    #[prost(map="string, string", tag="11")]
-    pub labels: ::std::collections::HashMap<::prost::alloc::string::String, ::prost::alloc::string::String>,
-    ///  Output only. Timestamp when this ModelDeploymentMonitoringJob was created.
-    #[prost(message, optional, tag="12")]
-    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Timestamp when this ModelDeploymentMonitoringJob was updated most recently.
-    #[prost(message, optional, tag="13")]
-    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Timestamp when this monitoring pipeline will be scheduled to run for the
-    ///  next round.
-    #[prost(message, optional, tag="14")]
-    pub next_schedule_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Stats anomalies base folder path.
-    #[prost(message, optional, tag="20")]
-    pub stats_anomalies_base_directory: ::core::option::Option<GcsDestination>,
-    ///  Customer-managed encryption key spec for a ModelDeploymentMonitoringJob. If
-    ///  set, this ModelDeploymentMonitoringJob and all sub-resources of this
-    ///  ModelDeploymentMonitoringJob will be secured by this key.
-    #[prost(message, optional, tag="21")]
-    pub encryption_spec: ::core::option::Option<EncryptionSpec>,
-    ///  If true, the scheduled monitoring pipeline logs are sent to
-    ///  Google Cloud Logging, including pipeline status and anomalies detected.
-    ///  Please note the logs incur cost, which are subject to [Cloud Logging
-    ///  pricing](<https://cloud.google.com/logging#pricing>).
-    #[prost(bool, tag="22")]
-    pub enable_monitoring_pipeline_logs: bool,
-    ///  Output only. Only populated when the job's state is `JOB_STATE_FAILED` or
-    ///  `JOB_STATE_CANCELLED`.
-    #[prost(message, optional, tag="23")]
-    pub error: ::core::option::Option<super::super::super::rpc::Status>,
-}
-/// Nested message and enum types in `ModelDeploymentMonitoringJob`.
-pub mod model_deployment_monitoring_job {
-    ///  All metadata of most recent monitoring pipelines.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct LatestMonitoringPipelineMetadata {
-        ///  The time that most recent monitoring pipelines that is related to this
-        ///  run.
-        #[prost(message, optional, tag="1")]
-        pub run_time: ::core::option::Option<::prost_types::Timestamp>,
-        ///  The status of the most recent monitoring pipeline.
-        #[prost(message, optional, tag="2")]
-        pub status: ::core::option::Option<super::super::super::super::rpc::Status>,
-    }
-    ///  The state to Specify the monitoring pipeline.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum MonitoringScheduleState {
-        ///  Unspecified state.
-        Unspecified = 0,
-        ///  The pipeline is picked up and wait to run.
-        Pending = 1,
-        ///  The pipeline is offline and will be scheduled for next run.
-        Offline = 2,
-        ///  The pipeline is running.
-        Running = 3,
-    }
-    impl MonitoringScheduleState {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                MonitoringScheduleState::Unspecified => "MONITORING_SCHEDULE_STATE_UNSPECIFIED",
-                MonitoringScheduleState::Pending => "PENDING",
-                MonitoringScheduleState::Offline => "OFFLINE",
-                MonitoringScheduleState::Running => "RUNNING",
-            }
+        /// Add/update Datapoints into an Index.
+        pub async fn upsert_datapoints(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpsertDatapointsRequest>,
+        ) -> Result<tonic::Response<super::UpsertDatapointsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.IndexService/UpsertDatapoints",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
-    }
-}
-///  ModelDeploymentMonitoringBigQueryTable specifies the BigQuery table name
-///  as well as some information of the logs stored in this table.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ModelDeploymentMonitoringBigQueryTable {
-    ///  The source of log.
-    #[prost(enumeration="model_deployment_monitoring_big_query_table::LogSource", tag="1")]
-    pub log_source: i32,
-    ///  The type of log.
-    #[prost(enumeration="model_deployment_monitoring_big_query_table::LogType", tag="2")]
-    pub log_type: i32,
-    ///  The created BigQuery table to store logs. Customer could do their own query
-    ///  & analysis. Format:
-    ///  `bq://<project_id>.model_deployment_monitoring_<endpoint_id>.<tolower(log_source)>_<tolower(log_type)>`
-    #[prost(string, tag="3")]
-    pub bigquery_table_path: ::prost::alloc::string::String,
-}
-/// Nested message and enum types in `ModelDeploymentMonitoringBigQueryTable`.
-pub mod model_deployment_monitoring_big_query_table {
-    ///  Indicates where does the log come from.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum LogSource {
-        ///  Unspecified source.
-        Unspecified = 0,
-        ///  Logs coming from Training dataset.
-        Training = 1,
-        ///  Logs coming from Serving traffic.
-        Serving = 2,
-    }
-    impl LogSource {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                LogSource::Unspecified => "LOG_SOURCE_UNSPECIFIED",
-                LogSource::Training => "TRAINING",
-                LogSource::Serving => "SERVING",
-            }
-        }
-    }
-    ///  Indicates what type of traffic does the log belong to.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum LogType {
-        ///  Unspecified type.
-        Unspecified = 0,
-        ///  Predict logs.
-        Predict = 1,
-        ///  Explain logs.
-        Explain = 2,
-    }
-    impl LogType {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                LogType::Unspecified => "LOG_TYPE_UNSPECIFIED",
-                LogType::Predict => "PREDICT",
-                LogType::Explain => "EXPLAIN",
-            }
-        }
-    }
-}
-///  ModelDeploymentMonitoringObjectiveConfig contains the pair of
-///  deployed_model_id to ModelMonitoringObjectiveConfig.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ModelDeploymentMonitoringObjectiveConfig {
-    ///  The DeployedModel ID of the objective config.
-    #[prost(string, tag="1")]
-    pub deployed_model_id: ::prost::alloc::string::String,
-    ///  The objective config of for the modelmonitoring job of this deployed model.
-    #[prost(message, optional, tag="2")]
-    pub objective_config: ::core::option::Option<ModelMonitoringObjectiveConfig>,
-}
-///  The config for scheduling monitoring job.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ModelDeploymentMonitoringScheduleConfig {
-    ///  Required. The model monitoring job scheduling interval. It will be rounded up to next
-    ///  full hour. This defines how often the monitoring jobs are triggered.
-    #[prost(message, optional, tag="1")]
-    pub monitor_interval: ::core::option::Option<::prost_types::Duration>,
-    ///  The time window of the prediction data being included in each prediction
-    ///  dataset. This window specifies how long the data should be collected from
-    ///  historical model results for each run. If not set,
-    ///  \[ModelDeploymentMonitoringScheduleConfig.monitor_interval][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringScheduleConfig.monitor_interval\] will be used.
-    ///  e.g. If currently the cutoff time is 2022-01-08 14:30:00 and the
-    ///  monitor_window is set to be 3600, then data from 2022-01-08 13:30:00
-    ///  to 2022-01-08 14:30:00 will be retrieved and aggregated to calculate the
-    ///  monitoring statistics.
-    #[prost(message, optional, tag="2")]
-    pub monitor_window: ::core::option::Option<::prost_types::Duration>,
-}
-///  Statistics and anomalies generated by Model Monitoring.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ModelMonitoringStatsAnomalies {
-    ///  Model Monitoring Objective those stats and anomalies belonging to.
-    #[prost(enumeration="ModelDeploymentMonitoringObjectiveType", tag="1")]
-    pub objective: i32,
-    ///  Deployed Model ID.
-    #[prost(string, tag="2")]
-    pub deployed_model_id: ::prost::alloc::string::String,
-    ///  Number of anomalies within all stats.
-    #[prost(int32, tag="3")]
-    pub anomaly_count: i32,
-    ///  A list of historical Stats and Anomalies generated for all Features.
-    #[prost(message, repeated, tag="4")]
-    pub feature_stats: ::prost::alloc::vec::Vec<model_monitoring_stats_anomalies::FeatureHistoricStatsAnomalies>,
-}
-/// Nested message and enum types in `ModelMonitoringStatsAnomalies`.
-pub mod model_monitoring_stats_anomalies {
-    ///  Historical Stats (and Anomalies) for a specific Feature.
-    #[derive(Clone, PartialEq, ::prost::Message)]
-    pub struct FeatureHistoricStatsAnomalies {
-        ///  Display Name of the Feature.
-        #[prost(string, tag="1")]
-        pub feature_display_name: ::prost::alloc::string::String,
-        ///  Threshold for anomaly detection.
-        #[prost(message, optional, tag="3")]
-        pub threshold: ::core::option::Option<super::ThresholdConfig>,
-        ///  Stats calculated for the Training Dataset.
-        #[prost(message, optional, tag="4")]
-        pub training_stats: ::core::option::Option<super::FeatureStatsAnomaly>,
-        ///  A list of historical stats generated by different time window's
-        ///  Prediction Dataset.
-        #[prost(message, repeated, tag="5")]
-        pub prediction_stats: ::prost::alloc::vec::Vec<super::FeatureStatsAnomaly>,
-    }
-}
-///  The Model Monitoring Objective types.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum ModelDeploymentMonitoringObjectiveType {
-    ///  Default value, should not be set.
-    Unspecified = 0,
-    ///  Raw feature values' stats to detect skew between Training-Prediction
-    ///  datasets.
-    RawFeatureSkew = 1,
-    ///  Raw feature values' stats to detect drift between Serving-Prediction
-    ///  datasets.
-    RawFeatureDrift = 2,
-    ///  Feature attribution scores to detect skew between Training-Prediction
-    ///  datasets.
-    FeatureAttributionSkew = 3,
-    ///  Feature attribution scores to detect skew between Prediction datasets
-    ///  collected within different time windows.
-    FeatureAttributionDrift = 4,
-}
-impl ModelDeploymentMonitoringObjectiveType {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            ModelDeploymentMonitoringObjectiveType::Unspecified => "MODEL_DEPLOYMENT_MONITORING_OBJECTIVE_TYPE_UNSPECIFIED",
-            ModelDeploymentMonitoringObjectiveType::RawFeatureSkew => "RAW_FEATURE_SKEW",
-            ModelDeploymentMonitoringObjectiveType::RawFeatureDrift => "RAW_FEATURE_DRIFT",
-            ModelDeploymentMonitoringObjectiveType::FeatureAttributionSkew => "FEATURE_ATTRIBUTION_SKEW",
-            ModelDeploymentMonitoringObjectiveType::FeatureAttributionDrift => "FEATURE_ATTRIBUTION_DRIFT",
+        /// Remove Datapoints from an Index.
+        pub async fn remove_datapoints(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RemoveDatapointsRequest>,
+        ) -> Result<tonic::Response<super::RemoveDatapointsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.IndexService/RemoveDatapoints",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
         }
     }
 }
@@ -13552,7 +13734,7 @@ pub struct MergeVersionAliasesRequest {
     pub name: ::prost::alloc::string::String,
     ///  Required. The set of version aliases to merge.
     ///  The alias should be at most 128 characters, and match
-    ///  `\[a-z][a-z0-9-]{0,126}[a-z-0-9\]`.
+    ///  `\[a-z][a-zA-Z0-9-]{0,126}[a-z-0-9\]`.
     ///  Add the `-` prefix to an alias means removing that alias from the version.
     ///  `-` is NOT counted in the 128 characters. Example: `-golden` means removing
     ///  the `golden` alias from the version.
@@ -17805,7 +17987,7 @@ pub struct SuggestTrialsRequest {
     ///  Format: `projects/{project}/locations/{location}/studies/{study}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The number of suggestions requested.
+    ///  Required. The number of suggestions requested. It must be positive.
     #[prost(int32, tag="2")]
     pub suggestion_count: i32,
     ///  Required. The identifier of the client that is requesting the suggestion.

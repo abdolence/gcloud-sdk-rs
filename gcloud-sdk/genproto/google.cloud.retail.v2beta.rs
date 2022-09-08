@@ -26,8 +26,8 @@ pub mod condition {
         ///  Value cannot be empty.
         ///  Value can have at most 3 terms if specified as a partial match. Each
         ///  space separated string is considered as one term.
-        ///  Example) "a b c" is 3 terms and allowed, " a b c d" is 4 terms and not
-        ///  allowed for partial match.
+        ///  For example, "a b c" is 3 terms and allowed, but " a b c d" is 4 terms
+        ///  and not allowed for a partial match.
         #[prost(string, tag="1")]
         pub value: ::prost::alloc::string::String,
         ///  Whether this is supposed to be a full or partial match.
@@ -47,10 +47,12 @@ pub mod condition {
     }
 }
 ///  A rule is a condition-action pair
+///
 ///  * A condition defines when a rule is to be triggered.
 ///  * An action specifies what occurs on that trigger.
-///  Currently only boost rules are supported.
-///  Currently only supported by the search endpoint.
+///  Currently rules only work for \[controls][google.cloud.retail.v2beta.Control\]
+///  with
+///  \[SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH\].
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Rule {
     ///  Required. The condition that triggers the rule.
@@ -841,7 +843,7 @@ impl RecommendationsFilteringOption {
 #[repr(i32)]
 pub enum SearchSolutionUseCase {
     ///  The value when it's unspecified. In this case, server behavior defaults to
-    ///  \[SEARCH_SOLUTION_USE_CASE_SEARCH][\].
+    ///  \[SEARCH_SOLUTION_USE_CASE_SEARCH][google.cloud.retail.v2beta.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH\].
     Unspecified = 0,
     ///  Search use case. Expects the traffic has a non-empty
     ///  \[query][google.cloud.retail.v2beta.SearchRequest.query\].
@@ -934,7 +936,7 @@ pub struct Product {
     ///  The \[type][google.cloud.retail.v2beta.Product.type\] of the members must be
     ///  either \[Type.PRIMARY][google.cloud.retail.v2beta.Product.Type.PRIMARY\] or
     ///  \[Type.VARIANT][google.cloud.retail.v2beta.Product.Type.VARIANT\] otherwise
-    ///  and INVALID_ARGUMENT error is thrown. Should not set it for other types. A
+    ///  an INVALID_ARGUMENT error is thrown. Should not set it for other types. A
     ///  maximum of 1000 values are allowed. Otherwise, an INVALID_ARGUMENT error is
     ///  return.
     #[prost(string, repeated, tag="5")]
@@ -965,7 +967,7 @@ pub struct Product {
     ///
     ///
     ///  To represent full path of category, use '>' sign to separate different
-    ///  hierarchies. If '>' is part of the category name, please replace it with
+    ///  hierarchies. If '>' is part of the category name, replace it with
     ///  other character(s).
     ///
     ///  For example, if a shoes product belongs to both
@@ -1299,6 +1301,16 @@ pub struct Product {
     ///  Do not set this field in API requests.
     #[prost(message, repeated, tag="31")]
     pub variants: ::prost::alloc::vec::Vec<Product>,
+    ///  Output only. A list of local inventories specific to different places.
+    ///
+    ///  This is only available for users who have Retail Search enabled, and it can
+    ///  be managed by
+    ///  \[ProductService.AddLocalInventories][google.cloud.retail.v2beta.ProductService.AddLocalInventories\]
+    ///  and
+    ///  \[ProductService.RemoveLocalInventories][google.cloud.retail.v2beta.ProductService.RemoveLocalInventories\]
+    ///  APIs.
+    #[prost(message, repeated, tag="35")]
+    pub local_inventories: ::prost::alloc::vec::Vec<LocalInventory>,
     #[prost(oneof="product::Expiration", tags="16, 17")]
     pub expiration: ::core::option::Option<product::Expiration>,
 }
@@ -1627,7 +1639,7 @@ pub struct UserEvent {
     ///  The categories associated with a category page.
     ///
     ///  To represent full path of category, use '>' sign to separate different
-    ///  hierarchies. If '>' is part of the category name, please replace it with
+    ///  hierarchies. If '>' is part of the category name, replace it with
     ///  other character(s).
     ///
     ///  Category pages include special pages such as sales or promotions. For
@@ -1748,7 +1760,6 @@ pub struct PurchaseTransaction {
     pub currency_code: ::prost::alloc::string::String,
 }
 ///  Google Cloud Storage location for input content.
-///  format.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GcsSource {
     ///  Required. Google Cloud Storage URIs to input files. URI can be up to
@@ -1780,12 +1791,12 @@ pub struct GcsSource {
     ///
     ///  Supported values for control imports:
     ///
-    ///  * 'control' (default): One JSON
+    ///  * `control` (default): One JSON
     ///  \[Control][google.cloud.retail.v2beta.Control\] per line.
     ///
     ///  Supported values for catalog attribute imports:
     ///
-    ///  * 'catalog_attribute' (default): One CSV
+    ///  * `catalog_attribute` (default): One CSV
     ///  \[CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute\] per line.
     #[prost(string, tag="2")]
     pub data_schema: ::prost::alloc::string::String,
@@ -1828,8 +1839,7 @@ pub struct BigQuerySource {
     ///  * `user_event_ga360`:
     ///    The schema is available here:
     ///    <https://support.google.com/analytics/answer/3437719.>
-    ///  * `user_event_ga4`: This feature is in private preview. Please contact the
-    ///    support team for importing Google Analytics 4 events.
+    ///  * `user_event_ga4`:
     ///    The schema is available here:
     ///    <https://support.google.com/analytics/answer/7029846.>
     ///
@@ -1853,9 +1863,8 @@ pub mod big_query_source {
     pub enum Partition {
         ///  BigQuery time partitioned table's _PARTITIONDATE in YYYY-MM-DD format.
         ///
-        ///  Only supported when
-        ///  \[ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2beta.ImportProductsRequest.reconciliation_mode\]
-        ///  is set to `FULL`.
+        ///  Only supported in
+        ///  \[ImportProductsRequest][google.cloud.retail.v2beta.ImportProductsRequest\].
         #[prost(message, tag="6")]
         PartitionDate(super::super::super::super::r#type::Date),
     }
@@ -1889,7 +1898,7 @@ pub mod import_errors_config {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Destination {
         ///  Google Cloud Storage prefix for import errors. This must be an empty,
-        ///  existing Cloud Storage directory. Import errors will be written to
+        ///  existing Cloud Storage directory. Import errors are written to
         ///  sharded files in this directory, one per line, as a JSON-encoded
         ///  `google.rpc.Status` message.
         #[prost(string, tag="1")]
@@ -1916,8 +1925,8 @@ pub struct ImportProductsRequest {
     ///  The desired location of errors incurred during the Import.
     #[prost(message, optional, tag="3")]
     pub errors_config: ::core::option::Option<ImportErrorsConfig>,
-    ///  Indicates which fields in the provided imported 'products' to update. If
-    ///  not set, will by default update all fields.
+    ///  Indicates which fields in the provided imported `products` to update. If
+    ///  not set, all fields are updated.
     #[prost(message, optional, tag="4")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
     ///  The mode of reconciliation between existing products and the products to be
@@ -1926,21 +1935,16 @@ pub struct ImportProductsRequest {
     #[prost(enumeration="import_products_request::ReconciliationMode", tag="5")]
     pub reconciliation_mode: i32,
     ///  Full Pub/Sub topic name for receiving notification. If this field is set,
-    ///  when the import is finished, a notification will be sent to
-    ///  specified Pub/Sub topic. The message data will be JSON string of a
+    ///  when the import is finished, a notification is sent to
+    ///  specified Pub/Sub topic. The message data is JSON string of a
     ///  \[Operation][google.longrunning.Operation\].
     ///
     ///  Format of the Pub/Sub topic is `projects/{project}/topics/{topic}`. It has
     ///  to be within the same project as
     ///  \[ImportProductsRequest.parent][google.cloud.retail.v2beta.ImportProductsRequest.parent\].
-    ///  Make sure that both
-    ///  `cloud-retail-customer-data-access@system.gserviceaccount.com` and
-    ///  `service-<project number>@gcp-sa-retail.iam.gserviceaccount.com`
-    ///  have the `pubsub.topics.publish` IAM permission on the topic.
-    ///
-    ///  Only supported when
-    ///  \[ImportProductsRequest.reconciliation_mode][google.cloud.retail.v2beta.ImportProductsRequest.reconciliation_mode\]
-    ///  is set to `FULL`.
+    ///  Make sure that `service-<project
+    ///  number>@gcp-sa-retail.iam.gserviceaccount.com` has the
+    ///  `pubsub.topics.publish` IAM permission on the topic.
     #[prost(string, tag="7")]
     pub notification_pubsub_topic: ::prost::alloc::string::String,
 }
@@ -1957,16 +1961,6 @@ pub mod import_products_request {
         Incremental = 1,
         ///  Calculates diff and replaces the entire product dataset. Existing
         ///  products may be deleted if they are not present in the source location.
-        ///
-        ///  Can only be set while using
-        ///  \[BigQuerySource][google.cloud.retail.v2beta.BigQuerySource\]. And the
-        ///  BigQuery dataset must be created in the data location "us (multiple
-        ///  regions in United States)", otherwise a PERMISSION_DENIED error is
-        ///  thrown.
-        ///
-        ///  Add the IAM permission "BigQuery Data Viewer" for
-        ///  cloud-retail-customer-data-access@system.gserviceaccount.com before
-        ///  using this feature otherwise an error is thrown.
         Full = 2,
     }
     impl ReconciliationMode {
@@ -2009,8 +2003,8 @@ pub struct ImportCompletionDataRequest {
     #[prost(message, optional, tag="2")]
     pub input_config: ::core::option::Option<CompletionDataInputConfig>,
     ///  Pub/Sub topic for receiving notification. If this field is set,
-    ///  when the import is finished, a notification will be sent to
-    ///  specified Pub/Sub topic. The message data will be JSON string of a
+    ///  when the import is finished, a notification is sent to
+    ///  specified Pub/Sub topic. The message data is JSON string of a
     ///  \[Operation][google.longrunning.Operation\].
     ///  Format of the Pub/Sub topic is `projects/{project}/topics/{topic}`.
     #[prost(string, tag="3")]
@@ -2099,7 +2093,7 @@ pub mod completion_data_input_config {
         BigQuerySource(super::BigQuerySource),
     }
 }
-///  Metadata related to the progress of the Import operation. This will be
+///  Metadata related to the progress of the Import operation. This is
 ///  returned by the google.longrunning.Operation.metadata field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ImportMetadata {
@@ -2121,8 +2115,8 @@ pub struct ImportMetadata {
     #[prost(string, tag="5")]
     pub request_id: ::prost::alloc::string::String,
     ///  Pub/Sub topic for receiving notification. If this field is set,
-    ///  when the import is finished, a notification will be sent to
-    ///  specified Pub/Sub topic. The message data will be JSON string of a
+    ///  when the import is finished, a notification is sent to
+    ///  specified Pub/Sub topic. The message data is JSON string of a
     ///  \[Operation][google.longrunning.Operation\].
     ///  Format of the Pub/Sub topic is `projects/{project}/topics/{topic}`.
     #[prost(string, tag="6")]
@@ -2309,6 +2303,11 @@ pub struct CatalogAttribute {
     ///  does not work for numerical features, inventory filtering.
     #[prost(enumeration="RecommendationsFilteringOption", tag="8")]
     pub recommendations_filtering_option: i32,
+    ///  If EXACT_SEARCHABLE_ENABLED, attribute values will be exact searchable.
+    ///  This property only applies to textual custom attributes and requires
+    ///  indexable set to enabled to enable exact-searchable.
+    #[prost(enumeration="catalog_attribute::ExactSearchableOption", tag="11")]
+    pub exact_searchable_option: i32,
 }
 /// Nested message and enum types in `CatalogAttribute`.
 pub mod catalog_attribute {
@@ -2411,6 +2410,31 @@ pub mod catalog_attribute {
                 SearchableOption::Unspecified => "SEARCHABLE_OPTION_UNSPECIFIED",
                 SearchableOption::SearchableEnabled => "SEARCHABLE_ENABLED",
                 SearchableOption::SearchableDisabled => "SEARCHABLE_DISABLED",
+            }
+        }
+    }
+    ///  The status of the exact-searchable option of a catalog attribute.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ExactSearchableOption {
+        ///  Value used when unset. Defaults to
+        ///  \[EXACT_SEARCHABLE_DISABLED][google.cloud.retail.v2beta.CatalogAttribute.ExactSearchableOption.EXACT_SEARCHABLE_DISABLED\].
+        Unspecified = 0,
+        ///  Exact searchable option enabled for an attribute.
+        ExactSearchableEnabled = 1,
+        ///  Exact searchable option disabled for an attribute.
+        ExactSearchableDisabled = 2,
+    }
+    impl ExactSearchableOption {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ExactSearchableOption::Unspecified => "EXACT_SEARCHABLE_OPTION_UNSPECIFIED",
+                ExactSearchableOption::ExactSearchableEnabled => "EXACT_SEARCHABLE_ENABLED",
+                ExactSearchableOption::ExactSearchableDisabled => "EXACT_SEARCHABLE_DISABLED",
             }
         }
     }
@@ -2530,8 +2554,8 @@ pub struct MerchantCenterLink {
     #[prost(string, tag="2")]
     pub branch_id: ::prost::alloc::string::String,
     ///  String representing the destination to import for, all if left empty.
-    ///  List of possible values can be found here.
-    ///  \[<https://support.google.com/merchants/answer/7501026\]>
+    ///  List of possible values is given in [Included
+    ///  destination](<https://support.google.com/merchants/answer/7501026>).
     ///  List of allowed string values:
     ///  "Shopping_ads", "Buy_on_google_listings", "Display_ads", "Local_inventory
     ///  _ads", "Free_listings", "Free_local_listings"
@@ -2721,7 +2745,7 @@ pub struct GetDefaultBranchResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetCompletionConfigRequest {
     ///  Required. Full CompletionConfig resource name. Format:
-    ///  projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/completionConfig`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -2810,6 +2834,36 @@ pub struct RemoveCatalogAttributeRequest {
     ///  \[CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute\] to remove.
     #[prost(string, tag="2")]
     pub key: ::prost::alloc::string::String,
+}
+///  Request for
+///  \[CatalogService.BatchRemoveCatalogAttributes][google.cloud.retail.v2beta.CatalogService.BatchRemoveCatalogAttributes\]
+///  method.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchRemoveCatalogAttributesRequest {
+    ///  Required. The attributes config resource shared by all catalog attributes
+    ///  being deleted. Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/attributesConfig`
+    #[prost(string, tag="1")]
+    pub attributes_config: ::prost::alloc::string::String,
+    ///  Required. The attribute name keys of the
+    ///  \[CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute\]s to delete.
+    ///  A maximum of 1000 catalog attributes can be deleted in a batch.
+    #[prost(string, repeated, tag="2")]
+    pub attribute_keys: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+}
+///  Response of the
+///  \[CatalogService.BatchRemoveCatalogAttributes][google.cloud.retail.v2beta.CatalogService.BatchRemoveCatalogAttributes\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BatchRemoveCatalogAttributesResponse {
+    ///  Catalog attributes that were deleted. Only attributes that are not [in
+    ///  use]\[CatalogAttribute.in_use\] by products can be deleted.
+    #[prost(string, repeated, tag="1")]
+    pub deleted_catalog_attributes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    ///  Catalog attributes that were reset. Attributes that are [in
+    ///  use]\[CatalogAttribute.in_use\] by products cannot be deleted, however their
+    ///  configuration properties will reset to default values upon removal request.
+    #[prost(string, repeated, tag="2")]
+    pub reset_catalog_attributes: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
 ///  Request for
 ///  \[CatalogService.ReplaceCatalogAttribute][google.cloud.retail.v2beta.CatalogService.ReplaceCatalogAttribute\]
@@ -3158,6 +3212,31 @@ pub mod catalog_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
+        /// Removes all specified
+        /// [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute]s from the
+        /// [AttributesConfig][google.cloud.retail.v2beta.AttributesConfig].
+        pub async fn batch_remove_catalog_attributes(
+            &mut self,
+            request: impl tonic::IntoRequest<super::BatchRemoveCatalogAttributesRequest>,
+        ) -> Result<
+            tonic::Response<super::BatchRemoveCatalogAttributesResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.CatalogService/BatchRemoveCatalogAttributes",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
         /// Replaces the specified
         /// [CatalogAttribute][google.cloud.retail.v2beta.CatalogAttribute] in the
         /// [AttributesConfig][google.cloud.retail.v2beta.AttributesConfig] by updating
@@ -3334,7 +3413,7 @@ pub mod completion_service_client {
     /// Auto-completion service for retail.
     ///
     /// This feature is only available for users who have Retail Search enabled.
-    /// Please enable Retail Search on Cloud Console before using this feature.
+    /// Enable Retail Search on Cloud Console before using this feature.
     #[derive(Debug, Clone)]
     pub struct CompletionServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -3402,7 +3481,7 @@ pub mod completion_service_client {
         /// Completes the specified prefix with keyword suggestions.
         ///
         /// This feature is only available for users who have Retail Search enabled.
-        /// Please enable Retail Search on Cloud Console before using this feature.
+        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn complete_query(
             &mut self,
             request: impl tonic::IntoRequest<super::CompleteQueryRequest>,
@@ -3430,7 +3509,7 @@ pub mod completion_service_client {
         /// are indexed successfully and ready for serving. The process takes hours.
         ///
         /// This feature is only available for users who have Retail Search enabled.
-        /// Please enable Retail Search on Cloud Console before using this feature.
+        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn import_completion_data(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportCompletionDataRequest>,
@@ -3666,7 +3745,7 @@ pub struct SearchRequest {
     ///  \[UserEvent.page_categories][google.cloud.retail.v2beta.UserEvent.page_categories\];
     ///
     ///  To represent full path of category, use '>' sign to separate different
-    ///  hierarchies. If '>' is part of the category name, please replace it with
+    ///  hierarchies. If '>' is part of the category name, replace it with
     ///  other character(s).
     ///
     ///  Category pages include special pages such as sales or promotions. For
@@ -3679,6 +3758,15 @@ pub struct SearchRequest {
     #[prost(enumeration="search_request::SearchMode", tag="31")]
     pub search_mode: i32,
     ///  The specification for personalization.
+    ///
+    ///  Notice that if both
+    ///  \[ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec\]
+    ///  and
+    ///  \[SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec\]
+    ///  are set.
+    ///  \[SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec\]
+    ///  will override
+    ///  \[ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec\].
     #[prost(message, optional, tag="32")]
     pub personalization_spec: ::core::option::Option<search_request::PersonalizationSpec>,
     ///  The labels applied to a resource must meet the following requirements:
@@ -4049,7 +4137,8 @@ pub mod search_request {
         #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
         #[repr(i32)]
         pub enum Condition {
-            ///  Unspecified query expansion condition. This defaults to
+            ///  Unspecified query expansion condition. In this case, server behavior
+            ///  defaults to
             ///  \[Condition.DISABLED][google.cloud.retail.v2beta.SearchRequest.QueryExpansionSpec.Condition.DISABLED\].
             Unspecified = 0,
             ///  Disabled query expansion. Only the exact search query is used, even if
@@ -4090,7 +4179,8 @@ pub mod search_request {
             ///  Default value. In this case, server behavior defaults to
             ///  \[Mode.AUTO][google.cloud.retail.v2beta.SearchRequest.PersonalizationSpec.Mode.AUTO\].
             Unspecified = 0,
-            ///  Let CRS decide whether to use personalization.
+            ///  Let CRS decide whether to use personalization based on quality of user
+            ///  event data.
             Auto = 1,
             ///  Disable personalization.
             Disabled = 2,
@@ -4156,14 +4246,20 @@ pub mod search_request {
     #[repr(i32)]
     pub enum SearchMode {
         ///  Default value. In this case both product search and faceted search will
-        ///  be performed. Both \[SearchResponse.SearchResult\] and
-        ///  \[SearchResponse.Facet\] will be returned.
+        ///  be performed. Both
+        ///  \[SearchResponse.SearchResult][google.cloud.retail.v2beta.SearchResponse.SearchResult\]
+        ///  and
+        ///  \[SearchResponse.Facet][google.cloud.retail.v2beta.SearchResponse.Facet\]
+        ///  will be returned.
         Unspecified = 0,
         ///  Only product search will be performed. The faceted search will be
         ///  disabled.
         ///
-        ///  Only \[SearchResponse.SearchResult\] will be returned.
-        ///  \[SearchResponse.Facet\] will not be returned, even if
+        ///  Only
+        ///  \[SearchResponse.SearchResult][google.cloud.retail.v2beta.SearchResponse.SearchResult\]
+        ///  will be returned.
+        ///  \[SearchResponse.Facet][google.cloud.retail.v2beta.SearchResponse.Facet\]
+        ///  will not be returned, even if
         ///  \[SearchRequest.facet_specs][google.cloud.retail.v2beta.SearchRequest.facet_specs\]
         ///  or
         ///  \[SearchRequest.dynamic_facet_spec][google.cloud.retail.v2beta.SearchRequest.dynamic_facet_spec\]
@@ -4177,7 +4273,9 @@ pub mod search_request {
         ///  and
         ///  \[SearchRequest.dynamic_facet_spec][google.cloud.retail.v2beta.SearchRequest.dynamic_facet_spec\]
         ///  should be set. Otherwise, an INVALID_ARGUMENT error is returned. Only
-        ///  \[SearchResponse.Facet\] will be returned. \[SearchResponse.SearchResult\]
+        ///  \[SearchResponse.Facet][google.cloud.retail.v2beta.SearchResponse.Facet\]
+        ///  will be returned.
+        ///  \[SearchResponse.SearchResult][google.cloud.retail.v2beta.SearchResponse.SearchResult\]
         ///  will not be returned.
         FacetedSearchOnly = 2,
     }
@@ -4326,6 +4424,21 @@ pub mod search_response {
         ///  are 10 variants in this product are available in the store "store1".
         #[prost(map="string, message", tag="5")]
         pub variant_rollup_values: ::std::collections::HashMap<::prost::alloc::string::String, ::prost_types::Value>,
+        ///  Specifies previous events related to this product for this user based on
+        ///  \[UserEvent][google.cloud.retail.v2beta.UserEvent\] with same
+        ///  \[SearchRequest.visitor_id][google.cloud.retail.v2beta.SearchRequest.visitor_id\]
+        ///  or \[UserInfo.user_id][google.cloud.retail.v2beta.UserInfo.user_id\].
+        ///
+        ///  This is set only when
+        ///  \[SearchRequest.PersonalizationSpec.mode][google.cloud.retail.v2beta.SearchRequest.PersonalizationSpec.mode\]
+        ///  is
+        ///  \[SearchRequest.PersonalizationSpec.Mode.AUTO][google.cloud.retail.v2beta.SearchRequest.PersonalizationSpec.Mode.AUTO\].
+        ///
+        ///  Possible values:
+        ///
+        ///  * `purchased`: Indicates that this product has been purchased before.
+        #[prost(string, repeated, tag="7")]
+        pub personal_labels: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     ///  A facet result.
     #[derive(Clone, PartialEq, ::prost::Message)]
@@ -4404,7 +4517,7 @@ pub mod search_service_client {
     /// Service for search.
     ///
     /// This feature is only available for users who have Retail Search enabled.
-    /// Please enable Retail Search on Cloud Console before using this feature.
+    /// Enable Retail Search on Cloud Console before using this feature.
     #[derive(Debug, Clone)]
     pub struct SearchServiceClient<T> {
         inner: tonic::client::Grpc<T>,
@@ -4472,7 +4585,7 @@ pub mod search_service_client {
         /// Performs a search.
         ///
         /// This feature is only available for users who have Retail Search enabled.
-        /// Please enable Retail Search on Cloud Console before using this feature.
+        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn search(
             &mut self,
             request: impl tonic::IntoRequest<super::SearchRequest>,
@@ -4494,8 +4607,9 @@ pub mod search_service_client {
         }
     }
 }
-///  Configures dynamic serving time metadata that is used to pre and post
-///  process search/recommendation model results.
+///  Configures dynamic metadata that can be linked to a
+///  \[ServingConfig][google.cloud.retail.v2beta.ServingConfig\] and affect search
+///  or recommendation results at serving time.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Control {
     ///  Immutable. Fully qualified name
@@ -4508,21 +4622,33 @@ pub struct Control {
     ///  characters. Otherwise, an INVALID_ARGUMENT error is thrown.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  Output only. List of serving configuration ids that that are associated
-    ///  with this control. Note the association is managed via the ServingConfig,
-    ///  this is an output only denormalizeed  view. Assumed to be in the same
-    ///  catalog.
+    ///  Output only. List of [serving
+    ///  configuration]\[google.cloud.retail.v2beta.ServingConfig\] ids that are
+    ///  associated with this control in the same
+    ///  \[Catalog][google.cloud.retail.v2beta.Catalog\].
+    ///
+    ///  Note the association is managed via the
+    ///  \[ServingConfig][google.cloud.retail.v2beta.ServingConfig\], this is an
+    ///  output only denormalized view.
     #[prost(string, repeated, tag="5")]
     pub associated_serving_config_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Required. Immutable. The solution types that the serving config is used
-    ///  for. Currently we support setting only one type of solution at creation
-    ///  time.
+    ///  Required. Immutable. The solution types that the control is used for.
+    ///  Currently we support setting only one type of solution at creation time.
     ///
     ///  Only `SOLUTION_TYPE_SEARCH` value is supported at the moment.
     ///  If no solution type is provided at creation time, will default to
-    ///  SOLUTION_TYPE_SEARCH.
+    ///  \[SOLUTION_TYPE_SEARCH][google.cloud.retail.v2beta.SolutionType.SOLUTION_TYPE_SEARCH\].
     #[prost(enumeration="SolutionType", repeated, packed="false", tag="6")]
     pub solution_types: ::prost::alloc::vec::Vec<i32>,
+    ///  Specifies the use case for the control.
+    ///  Affects what condition fields can be set.
+    ///  Only settable by search controls.
+    ///  Will default to
+    ///  \[SEARCH_SOLUTION_USE_CASE_SEARCH][google.cloud.retail.v2beta.SearchSolutionUseCase.SEARCH_SOLUTION_USE_CASE_SEARCH\]
+    ///  if not specified. Currently only allow one search_solution_use_case per
+    ///  control.
+    #[prost(enumeration="SearchSolutionUseCase", repeated, tag="7")]
+    pub search_solution_use_case: ::prost::alloc::vec::Vec<i32>,
     ///  The behavior/type of the control
     ///
     ///  A behavior/type must be specified on creation. Type cannot be changed once
@@ -4541,6 +4667,9 @@ pub mod control {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Control {
         ///  A facet specification to perform faceted search.
+        ///
+        ///  Note that this field is deprecated and will throw NOT_IMPLEMENTED if
+        ///  used for creating a control.
         #[prost(message, tag="3")]
         FacetSpec(super::search_request::FacetSpec),
         ///  A rule control - a condition-action pair.
@@ -4595,7 +4724,7 @@ pub struct DeleteControlRequest {
 ///  Request for GetControl method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetControlRequest {
-    ///  Required. The resource name of the Control to delete. Format:
+    ///  Required. The resource name of the Control to get. Format:
     ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/controls/{control_id}`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
@@ -4754,7 +4883,7 @@ pub mod control_service_client {
         ///
         /// [Control][google.cloud.retail.v2beta.Control] cannot be set to a different
         /// oneof field, if so an INVALID_ARGUMENT is returned. If the
-        /// [Control][google.cloud.retail.v2beta.Control] to delete does not exist, a
+        /// [Control][google.cloud.retail.v2beta.Control] to update does not exist, a
         /// NOT_FOUND error is returned.
         pub async fn update_control(
             &mut self,
@@ -4795,7 +4924,8 @@ pub mod control_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Lists all Controls linked to this catalog.
+        /// Lists all Controls by their parent
+        /// [Catalog][google.cloud.retail.v2beta.Catalog].
         pub async fn list_controls(
             &mut self,
             request: impl tonic::IntoRequest<super::ListControlsRequest>,
@@ -4837,7 +4967,7 @@ pub mod export_errors_config {
         GcsPrefix(::prost::alloc::string::String),
     }
 }
-///  Metadata related to the progress of the Export operation. This will be
+///  Metadata related to the progress of the Export operation. This is
 ///  returned by the google.longrunning.Operation.metadata field.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ExportMetadata {
@@ -4896,6 +5026,600 @@ pub struct BigQueryOutputResult {
     #[prost(string, tag="2")]
     pub table_id: ::prost::alloc::string::String,
 }
+///  Metadata that describes the training and serving parameters of a
+///  \[Model][google.cloud.retail.v2beta.Model\]. A
+///  \[Model][google.cloud.retail.v2beta.Model\] can be associated with a
+///  \[ServingConfig][google.cloud.retail.v2beta.ServingConfig\] and then queried
+///  through the Predict API.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Model {
+    ///  Required. The fully qualified resource name of the model.
+    ///
+    ///  Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}`
+    ///  catalog_id has char limit of 50.
+    ///  recommendation_model_id has char limit of 40.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    ///  Required. The display name of the model.
+    ///
+    ///  Should be human readable, used to display Recommendation Models in the
+    ///  Retail Cloud Console Dashboard. UTF-8 encoded string with limit of 1024
+    ///  characters.
+    #[prost(string, tag="2")]
+    pub display_name: ::prost::alloc::string::String,
+    ///  Optional. The training state that the model is in (e.g.
+    ///  `TRAINING` or `PAUSED`).
+    ///
+    ///  Since part of the cost of running the service
+    ///  is frequency of training - this can be used to determine when to train
+    ///  model in order to control cost. If not specified: the default value for
+    ///  `CreateModel` method is `TRAINING`. The default value for
+    ///  `UpdateModel` method is to keep the state the same as before.
+    #[prost(enumeration="model::TrainingState", tag="3")]
+    pub training_state: i32,
+    ///  Output only. The serving state of the model: `ACTIVE`, `NOT_ACTIVE`.
+    #[prost(enumeration="model::ServingState", tag="4")]
+    pub serving_state: i32,
+    ///  Output only. Timestamp the Recommendation Model was created at.
+    #[prost(message, optional, tag="5")]
+    pub create_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  Output only. Timestamp the Recommendation Model was last updated. E.g.
+    ///  if a Recommendation Model was paused - this would be the time the pause was
+    ///  initiated.
+    #[prost(message, optional, tag="6")]
+    pub update_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  Required. The type of model e.g. `home-page`.
+    ///
+    ///  Currently supported values: `recommended-for-you`, `others-you-may-like`,
+    ///  `frequently-bought-together`, `page-optimization`, `similar-items`,
+    ///  `buy-it-again`, and `recently-viewed`(readonly value).
+    ///
+    ///  This field together with
+    ///  \[optimization_objective][google.cloud.retail.v2beta.Model.optimization_objective\]
+    ///  describe model metadata to use to control model training and serving.
+    ///  See <https://cloud.google.com/retail/docs/models>
+    ///  for more details on what the model metadata control and which combination
+    ///  of parameters are valid. For invalid combinations of parameters (e.g. type
+    ///  = `frequently-bought-together` and optimization_objective = `ctr`), you
+    ///  receive an error 400 if you try to create/update a recommendation with
+    ///  this set of knobs.
+    #[prost(string, tag="7")]
+    pub r#type: ::prost::alloc::string::String,
+    ///  Optional. The optimization objective e.g. `cvr`.
+    ///
+    ///  Currently supported
+    ///  values: `ctr`, `cvr`, `revenue-per-order`.
+    ///
+    ///   If not specified, we choose default based on model type.
+    ///  Default depends on type of recommendation:
+    ///
+    ///  `recommended-for-you` => `ctr`
+    ///
+    ///  `others-you-may-like` => `ctr`
+    ///
+    ///  `frequently-bought-together` => `revenue_per_order`
+    ///
+    ///  This field together with
+    ///  \[optimization_objective][google.cloud.retail.v2beta.Model.type\]
+    ///  describe model metadata to use to control model training and serving.
+    ///  See <https://cloud.google.com/retail/docs/models>
+    ///  for more details on what the model metadata control and which combination
+    ///  of parameters are valid. For invalid combinations of parameters (e.g. type
+    ///  = `frequently-bought-together` and optimization_objective = `ctr`), you
+    ///  receive an error 400 if you try to create/update a recommendation with
+    ///  this set of knobs.
+    #[prost(string, tag="8")]
+    pub optimization_objective: ::prost::alloc::string::String,
+    ///  Optional. The state of periodic tuning.
+    ///
+    ///  The period we use is 3 months - to do a
+    ///  one-off tune earlier use the `TuneModel` method. Default value
+    ///  is `PERIODIC_TUNING_ENABLED`.
+    #[prost(enumeration="model::PeriodicTuningState", tag="11")]
+    pub periodic_tuning_state: i32,
+    ///  Output only. The timestamp when the latest successful tune finished.
+    #[prost(message, optional, tag="12")]
+    pub last_tune_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  Output only. The tune operation associated with the model.
+    ///
+    ///  Can be used to determine if there is an ongoing tune for this
+    ///  recommendation. Empty field implies no tune is goig on.
+    #[prost(string, tag="15")]
+    pub tuning_operation: ::prost::alloc::string::String,
+    ///  Output only. The state of data requirements for this model: `DATA_OK` and
+    ///  `DATA_ERROR`.
+    ///
+    ///  Recommendation model cannot be trained if the data is in
+    ///  `DATA_ERROR` state. Recommendation model can have `DATA_ERROR` state even
+    ///  if serving state is `ACTIVE`: models were trained successfully before, but
+    ///  cannot be refreshed because model no longer has sufficient
+    ///  data for training.
+    #[prost(enumeration="model::DataState", tag="16")]
+    pub data_state: i32,
+    ///  Optional. If `RECOMMENDATIONS_FILTERING_ENABLED`, recommendation filtering
+    ///  by attributes is enabled for the model.
+    #[prost(enumeration="RecommendationsFilteringOption", tag="18")]
+    pub filtering_option: i32,
+    ///  Output only. The list of valid serving configs associated with the
+    ///  PageOptimizationConfig.
+    #[prost(message, repeated, tag="19")]
+    pub serving_config_lists: ::prost::alloc::vec::Vec<model::ServingConfigList>,
+}
+/// Nested message and enum types in `Model`.
+pub mod model {
+    ///  Represents an ordered combination of valid serving configs, which
+    ///  can be used for `PAGE_OPTIMIZATION` recommendations.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ServingConfigList {
+        ///  Optional. A set of valid serving configs that may be used for
+        ///  `PAGE_OPTIMIZATION`.
+        #[prost(string, repeated, tag="1")]
+        pub serving_config_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    ///  The serving state of the model.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum ServingState {
+        ///  Unspecified serving state.
+        Unspecified = 0,
+        ///  The model is not serving.
+        Inactive = 1,
+        ///  The model is serving and can be queried.
+        Active = 2,
+        ///  The model is trained on tuned hyperparameters and can be
+        ///  queried.
+        Tuned = 3,
+    }
+    impl ServingState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                ServingState::Unspecified => "SERVING_STATE_UNSPECIFIED",
+                ServingState::Inactive => "INACTIVE",
+                ServingState::Active => "ACTIVE",
+                ServingState::Tuned => "TUNED",
+            }
+        }
+    }
+    ///  The training state of the model.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum TrainingState {
+        ///  Unspecified training state.
+        Unspecified = 0,
+        ///  The model training is paused.
+        Paused = 1,
+        ///  The model is training.
+        Training = 2,
+    }
+    impl TrainingState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                TrainingState::Unspecified => "TRAINING_STATE_UNSPECIFIED",
+                TrainingState::Paused => "PAUSED",
+                TrainingState::Training => "TRAINING",
+            }
+        }
+    }
+    ///  Describes whether periodic tuning is enabled for this model
+    ///  or not. Periodic tuning is scheduled at most every three months. You can
+    ///  start a tuning process manually by using the `TuneModel`
+    ///  method, which starts a tuning process immediately and resets the quarterly
+    ///  schedule. Enabling or disabling periodic tuning does not affect any
+    ///  current tuning processes.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum PeriodicTuningState {
+        ///  Unspecified default value, should never be explicitly set.
+        Unspecified = 0,
+        ///  The model has periodic tuning disabled. Tuning
+        ///  can be reenabled by calling the `EnableModelPeriodicTuning`
+        ///  method or by calling the `TuneModel` method.
+        PeriodicTuningDisabled = 1,
+        ///  The model cannot be tuned with periodic tuning OR the
+        ///  `TuneModel` method. Hide the options in customer UI and
+        ///  reject any requests through the backend self serve API.
+        AllTuningDisabled = 3,
+        ///  The model has periodic tuning enabled. Tuning
+        ///  can be disabled by calling the `DisableModelPeriodicTuning`
+        ///  method.
+        PeriodicTuningEnabled = 2,
+    }
+    impl PeriodicTuningState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                PeriodicTuningState::Unspecified => "PERIODIC_TUNING_STATE_UNSPECIFIED",
+                PeriodicTuningState::PeriodicTuningDisabled => "PERIODIC_TUNING_DISABLED",
+                PeriodicTuningState::AllTuningDisabled => "ALL_TUNING_DISABLED",
+                PeriodicTuningState::PeriodicTuningEnabled => "PERIODIC_TUNING_ENABLED",
+            }
+        }
+    }
+    ///  Describes whether this model have sufficient training data
+    ///  to be continuously trained.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum DataState {
+        ///  Unspecified default value, should never be explicitly set.
+        Unspecified = 0,
+        ///  The model has sufficient training data.
+        DataOk = 1,
+        ///  The model does not have sufficient training data. Error
+        ///  messages can be queried via Stackdriver.
+        DataError = 2,
+    }
+    impl DataState {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DataState::Unspecified => "DATA_STATE_UNSPECIFIED",
+                DataState::DataOk => "DATA_OK",
+                DataState::DataError => "DATA_ERROR",
+            }
+        }
+    }
+}
+///  Request for creating a model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateModelRequest {
+    ///  Required. The parent resource under which to create the model. Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}`
+    #[prost(string, tag="1")]
+    pub parent: ::prost::alloc::string::String,
+    ///  Required. The payload of the \[Model][google.cloud.retail.v2beta.Model\]  to
+    ///  create.
+    #[prost(message, optional, tag="2")]
+    pub model: ::core::option::Option<Model>,
+    ///  Optional. Whether to run a dry run to validate the request (without
+    ///  actually creating the model).
+    #[prost(bool, tag="3")]
+    pub dry_run: bool,
+}
+///  Request for updating an existing model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateModelRequest {
+    ///  Required. The body of the updated
+    ///  \[Model][google.cloud.retail.v2beta.Model\].
+    #[prost(message, optional, tag="1")]
+    pub model: ::core::option::Option<Model>,
+    ///  Optional. Indicates which fields in the provided 'model' to
+    ///  update. If not set, by default updates all fields.
+    #[prost(message, optional, tag="2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+///  Request for pausing training of a model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct PauseModelRequest {
+    ///  Required. The name of the model to pause.
+    ///  Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}`
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+///  Request for resuming training of a model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ResumeModelRequest {
+    ///  Required. The name of the model to resume.
+    ///  Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}`
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+///  Request for listing models associated with a resource.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListModelsRequest {
+    ///  Required. The parent for which to list models.
+    ///  Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}`
+    #[prost(string, tag="1")]
+    pub parent: ::prost::alloc::string::String,
+    ///  Optional. Maximum number of results to return. If unspecified, defaults
+    ///  to 50. Max allowed value is 1000.
+    #[prost(int32, tag="2")]
+    pub page_size: i32,
+    ///  Optional. A page token, received from a previous `ListModels`
+    ///  call. Provide this to retrieve the subsequent page.
+    #[prost(string, tag="3")]
+    pub page_token: ::prost::alloc::string::String,
+}
+///  Request for deleting a model.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteModelRequest {
+    ///  Required. The resource name of the
+    ///  \[Model][google.cloud.retail.v2beta.Model\] to delete. Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}`
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+///  Response to a ListModelRequest.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListModelsResponse {
+    ///  List of Models.
+    #[prost(message, repeated, tag="1")]
+    pub models: ::prost::alloc::vec::Vec<Model>,
+    ///  Pagination token, if not returned indicates the last page.
+    #[prost(string, tag="2")]
+    pub next_page_token: ::prost::alloc::string::String,
+}
+///  Request to manually start a tuning process now (instead of waiting for
+///  the periodically scheduled tuning to happen).
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuneModelRequest {
+    ///  Required. The resource name of the model to tune.
+    ///  Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}`
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+}
+///  Metadata associated with a create operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateModelMetadata {
+    ///  The resource name of the model that this create applies to.
+    ///  Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}`
+    #[prost(string, tag="1")]
+    pub model: ::prost::alloc::string::String,
+}
+///  Metadata associated with a tune operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuneModelMetadata {
+    ///  The resource name of the model that this tune applies to.
+    ///  Format:
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/models/{model_id}`
+    #[prost(string, tag="1")]
+    pub model: ::prost::alloc::string::String,
+}
+///  Response associated with a tune operation.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TuneModelResponse {
+}
+/// Generated client implementations.
+pub mod model_service_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Service for performing CRUD operations on models.
+    /// Recommendation models contain all the metadata necessary to generate a set of
+    /// models for the `Predict()` API. A model is queried
+    /// indirectly via a ServingConfig, which associates a model with a
+    /// given Placement (e.g. Frequently Bought Together on Home Page).
+    ///
+    /// This service allows you to do the following:
+    ///
+    /// * Initiate training of a model.
+    /// * Pause training of an existing model.
+    /// * List all the available models along with their metadata.
+    /// * Control their tuning schedule.
+    #[derive(Debug, Clone)]
+    pub struct ModelServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl ModelServiceClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> ModelServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> ModelServiceClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            ModelServiceClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Creates a new model.
+        pub async fn create_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateModelRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.ModelService/CreateModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Pauses the training of an existing model.
+        pub async fn pause_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::PauseModelRequest>,
+        ) -> Result<tonic::Response<super::Model>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.ModelService/PauseModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Resumes the training of an existing model.
+        pub async fn resume_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ResumeModelRequest>,
+        ) -> Result<tonic::Response<super::Model>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.ModelService/ResumeModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Deletes an existing model.
+        pub async fn delete_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteModelRequest>,
+        ) -> Result<tonic::Response<()>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.ModelService/DeleteModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Lists all the models linked to this event store.
+        pub async fn list_models(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListModelsRequest>,
+        ) -> Result<tonic::Response<super::ListModelsResponse>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.ModelService/ListModels",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Update of model metadata. Only fields that
+        /// currently can be updated are: `filtering_option` and
+        /// `periodic_tuning_state`.
+        /// If other values are provided, this API method ignores them.
+        pub async fn update_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateModelRequest>,
+        ) -> Result<tonic::Response<super::Model>, tonic::Status> {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.ModelService/UpdateModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Tunes an existing model.
+        pub async fn tune_model(
+            &mut self,
+            request: impl tonic::IntoRequest<super::TuneModelRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.retail.v2beta.ModelService/TuneModel",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+}
 ///  Request message for Predict method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PredictRequest {
@@ -4931,13 +5655,14 @@ pub struct PredictRequest {
     ///  \[UserInfo.user_id][google.cloud.retail.v2beta.UserInfo.user_id\] unset.
     #[prost(message, optional, tag="2")]
     pub user_event: ::core::option::Option<UserEvent>,
-    ///  Maximum number of results to return per page. Set this property
-    ///  to the number of prediction results needed. If zero, the service will
-    ///  choose a reasonable default. The maximum allowed value is 100. Values
-    ///  above 100 will be coerced to 100.
+    ///  Maximum number of results to return. Set this property to the number of
+    ///  prediction results needed. If zero, the service will choose a reasonable
+    ///  default. The maximum allowed value is 100. Values above 100 will be coerced
+    ///  to 100.
     #[prost(int32, tag="3")]
     pub page_size: i32,
-    ///  This field is not used for now; leave it unset.
+    ///  This field is not used; leave it unset.
+    #[deprecated]
     #[prost(string, tag="4")]
     pub page_token: ::prost::alloc::string::String,
     ///  Filter for restricting prediction results with a length limit of 5,000
@@ -5961,9 +6686,9 @@ pub mod product_service_client {
         ///
         /// This process is asynchronous and does not require the
         /// [Product][google.cloud.retail.v2beta.Product] to exist before updating
-        /// fulfillment information. If the request is valid, the update will be
-        /// enqueued and processed downstream. As a consequence, when a response is
-        /// returned, updates are not immediately manifested in the
+        /// fulfillment information. If the request is valid, the update is enqueued
+        /// and processed downstream. As a consequence, when a response is returned,
+        /// updates are not immediately manifested in the
         /// [Product][google.cloud.retail.v2beta.Product] queried by
         /// [ProductService.GetProduct][google.cloud.retail.v2beta.ProductService.GetProduct]
         /// or
@@ -5973,10 +6698,10 @@ pub mod product_service_client {
         /// [ProductService.CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
         /// and
         /// [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct],
-        /// the specified inventory field value(s) will overwrite any existing value(s)
+        /// the specified inventory field value(s) overwrite any existing value(s)
         /// while ignoring the last update time for this field. Furthermore, the last
-        /// update time for the specified inventory fields will be overwritten to the
-        /// time of the
+        /// update times for the specified inventory fields are overwritten by the
+        /// times of the
         /// [ProductService.CreateProduct][google.cloud.retail.v2beta.ProductService.CreateProduct]
         /// or
         /// [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
@@ -5984,11 +6709,11 @@ pub mod product_service_client {
         ///
         /// If no inventory fields are set in
         /// [CreateProductRequest.product][google.cloud.retail.v2beta.CreateProductRequest.product],
-        /// then any pre-existing inventory information for this product will be used.
+        /// then any pre-existing inventory information for this product is used.
         ///
         /// If no inventory fields are set in
         /// [SetInventoryRequest.set_mask][google.cloud.retail.v2beta.SetInventoryRequest.set_mask],
-        /// then any existing inventory information will be preserved.
+        /// then any existing inventory information is preserved.
         ///
         /// Pre-existing inventory information can only be updated with
         /// [ProductService.SetInventory][google.cloud.retail.v2beta.ProductService.SetInventory],
@@ -5996,8 +6721,17 @@ pub mod product_service_client {
         /// and
         /// [ProductService.RemoveFulfillmentPlaces][google.cloud.retail.v2beta.ProductService.RemoveFulfillmentPlaces].
         ///
+        /// The returned [Operation][google.longrunning.Operation]s is obsolete after
+        /// one day, and the [GetOperation][google.longrunning.Operations.GetOperation]
+        /// API returns `NOT_FOUND` afterwards.
+        ///
+        /// If conflicting updates are issued, the
+        /// [Operation][google.longrunning.Operation]s associated with the stale
+        /// updates are not marked as [done][google.longrunning.Operation.done] until
+        /// they are obsolete.
+        ///
         /// This feature is only available for users who have Retail Search enabled.
-        /// Please enable Retail Search on Cloud Console before using this feature.
+        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn set_inventory(
             &mut self,
             request: impl tonic::IntoRequest<super::SetInventoryRequest>,
@@ -6033,8 +6767,17 @@ pub mod product_service_client {
         /// or
         /// [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
         ///
+        /// The returned [Operation][google.longrunning.Operation]s will be obsolete
+        /// after 1 day, and [GetOperation][google.longrunning.Operations.GetOperation]
+        /// API will return NOT_FOUND afterwards.
+        ///
+        /// If conflicting updates are issued, the
+        /// [Operation][google.longrunning.Operation]s associated with the stale
+        /// updates will not be marked as [done][google.longrunning.Operation.done]
+        /// until being obsolete.
+        ///
         /// This feature is only available for users who have Retail Search enabled.
-        /// Please enable Retail Search on Cloud Console before using this feature.
+        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn add_fulfillment_places(
             &mut self,
             request: impl tonic::IntoRequest<super::AddFulfillmentPlacesRequest>,
@@ -6070,8 +6813,17 @@ pub mod product_service_client {
         /// or
         /// [ProductService.ListProducts][google.cloud.retail.v2beta.ProductService.ListProducts].
         ///
+        /// The returned [Operation][google.longrunning.Operation]s will be obsolete
+        /// after 1 day, and [GetOperation][google.longrunning.Operations.GetOperation]
+        /// API will return NOT_FOUND afterwards.
+        ///
+        /// If conflicting updates are issued, the
+        /// [Operation][google.longrunning.Operation]s associated with the stale
+        /// updates will not be marked as [done][google.longrunning.Operation.done]
+        /// until being obsolete.
+        ///
         /// This feature is only available for users who have Retail Search enabled.
-        /// Please enable Retail Search on Cloud Console before using this feature.
+        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn remove_fulfillment_places(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveFulfillmentPlacesRequest>,
@@ -6114,8 +6866,17 @@ pub mod product_service_client {
         /// [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
         /// has no effect on local inventories.
         ///
+        /// The returned [Operation][google.longrunning.Operation]s will be obsolete
+        /// after 1 day, and [GetOperation][google.longrunning.Operations.GetOperation]
+        /// API will return NOT_FOUND afterwards.
+        ///
+        /// If conflicting updates are issued, the
+        /// [Operation][google.longrunning.Operation]s associated with the stale
+        /// updates will not be marked as [done][google.longrunning.Operation.done]
+        /// until being obsolete.
+        ///
         /// This feature is only available for users who have Retail Search enabled.
-        /// Please enable Retail Search on Cloud Console before using this feature.
+        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn add_local_inventories(
             &mut self,
             request: impl tonic::IntoRequest<super::AddLocalInventoriesRequest>,
@@ -6156,8 +6917,17 @@ pub mod product_service_client {
         /// [ProductService.UpdateProduct][google.cloud.retail.v2beta.ProductService.UpdateProduct]
         /// has no effect on local inventories.
         ///
+        /// The returned [Operation][google.longrunning.Operation]s will be obsolete
+        /// after 1 day, and [GetOperation][google.longrunning.Operations.GetOperation]
+        /// API will return NOT_FOUND afterwards.
+        ///
+        /// If conflicting updates are issued, the
+        /// [Operation][google.longrunning.Operation]s associated with the stale
+        /// updates will not be marked as [done][google.longrunning.Operation.done]
+        /// until being obsolete.
+        ///
         /// This feature is only available for users who have Retail Search enabled.
-        /// Please enable Retail Search on Cloud Console before using this feature.
+        /// Enable Retail Search on Cloud Console before using this feature.
         pub async fn remove_local_inventories(
             &mut self,
             request: impl tonic::IntoRequest<super::RemoveLocalInventoriesRequest>,
@@ -6238,8 +7008,6 @@ pub struct PurgeUserEventsResponse {
 }
 ///  Configures metadata that is used to generate serving time results (e.g.
 ///  search results or recommendation predictions).
-///  The ServingConfig is passed in the search and predict request and together
-///  with the Catalog.default_branch, generates results.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ServingConfig {
     ///  Immutable. Fully qualified name
@@ -6253,7 +7021,8 @@ pub struct ServingConfig {
     ///  characters. Otherwise, an INVALID_ARGUMENT error is returned.
     #[prost(string, tag="2")]
     pub display_name: ::prost::alloc::string::String,
-    ///  The id of the model to use at serving time.
+    ///  The id of the model in the same
+    ///  \[Catalog][google.cloud.retail.v2beta.Catalog\] to use at serving time.
     ///  Currently only RecommendationModels are supported:
     ///  <https://cloud.google.com/retail/recommendations-ai/docs/create-models>
     ///  Can be changed but only to a compatible model (e.g.
@@ -6272,13 +7041,13 @@ pub struct ServingConfig {
     ///  click-through and conversion rates.
     ///   Allowed values are:
     ///
-    ///  * 'no-price-reranking'
-    ///  * 'low-price-raranking'
-    ///  * 'medium-price-reranking'
-    ///  * 'high-price-reranking'
+    ///  * `no-price-reranking`
+    ///  * `low-price-raranking`
+    ///  * `medium-price-reranking`
+    ///  * `high-price-reranking`
     ///
     ///  If not specified, we choose default based on model type. Default value:
-    ///  'no-price-reranking'.
+    ///  `no-price-reranking`.
     ///
     ///  Can only be set if
     ///  \[solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types\]
@@ -6407,16 +7176,16 @@ pub struct ServingConfig {
     #[prost(string, repeated, tag="15")]
     pub ignore_control_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     ///  How much diversity to use in recommendation model results e.g.
-    ///  'medium-diversity' or 'high-diversity'. Currently supported values:
+    ///  `medium-diversity` or `high-diversity`. Currently supported values:
     ///
-    ///  * 'no-diversity'
-    ///  * 'low-diversity'
-    ///  * 'medium-diversity'
-    ///  * 'high-diversity'
-    ///  * 'auto-diversity'
+    ///  * `no-diversity`
+    ///  * `low-diversity`
+    ///  * `medium-diversity`
+    ///  * `high-diversity`
+    ///  * `auto-diversity`
     ///
     ///  If not specified, we choose default based on recommendation model
-    ///  type. Default value: 'no-diversity'.
+    ///  type. Default value: `no-diversity`.
     ///
     ///  Can only be set if
     ///  \[solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types\]
@@ -6424,13 +7193,16 @@ pub struct ServingConfig {
     ///  \[SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION\].
     #[prost(string, tag="8")]
     pub diversity_level: ::prost::alloc::string::String,
-    ///  Whether to add additional category filters on the 'similar-items' model.
+    ///  What kind of diversity to use - data driven or rule based.
+    #[prost(enumeration="serving_config::DiversityType", tag="20")]
+    pub diversity_type: i32,
+    ///  Whether to add additional category filters on the `similar-items` model.
     ///  If not specified, we enable it by default.
     ///   Allowed values are:
     ///
-    ///  * 'no-category-match': No additional filtering of original results from
+    ///  * `no-category-match`: No additional filtering of original results from
     ///    the model and the customer's filters.
-    ///  * 'relaxed-category-match': Only keep results with categories that match
+    ///  * `relaxed-category-match`: Only keep results with categories that match
     ///    at least one item categories in the PredictRequests's context item.
     ///    * If customer also sends filters in the PredictRequest, then the results
     ///    will satisfy both conditions (user given and category match).
@@ -6441,10 +7213,55 @@ pub struct ServingConfig {
     ///  \[SOLUTION_TYPE_RECOMMENDATION][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_RECOMMENDATION\].
     #[prost(string, tag="16")]
     pub enable_category_filter_level: ::prost::alloc::string::String,
+    ///  The specification for personalization spec.
+    ///
+    ///  Can only be set if
+    ///  \[solution_types][google.cloud.retail.v2beta.ServingConfig.solution_types\]
+    ///  is
+    ///  \[SOLUTION_TYPE_SEARCH][google.cloud.retail.v2main.SolutionType.SOLUTION_TYPE_SEARCH\].
+    ///
+    ///  Notice that if both
+    ///  \[ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec\]
+    ///  and
+    ///  \[SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec\]
+    ///  are set.
+    ///  \[SearchRequest.personalization_spec][google.cloud.retail.v2beta.SearchRequest.personalization_spec\]
+    ///  will override
+    ///  \[ServingConfig.personalization_spec][google.cloud.retail.v2beta.ServingConfig.personalization_spec\].
+    #[prost(message, optional, tag="21")]
+    pub personalization_spec: ::core::option::Option<search_request::PersonalizationSpec>,
     ///  Required. Immutable. Specifies the solution types that a serving config can
     ///  be associated with. Currently we support setting only one type of solution.
     #[prost(enumeration="SolutionType", repeated, packed="false", tag="19")]
     pub solution_types: ::prost::alloc::vec::Vec<i32>,
+}
+/// Nested message and enum types in `ServingConfig`.
+pub mod serving_config {
+    ///  What type of diversity - data or rule based.
+    ///  If none is specified, default to rule based.
+    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+    #[repr(i32)]
+    pub enum DiversityType {
+        ///  Default value.
+        Unspecified = 0,
+        ///  Rule based diversity.
+        RuleBasedDiversity = 2,
+        ///  Data driven diversity.
+        DataDrivenDiversity = 3,
+    }
+    impl DiversityType {
+        /// String value of the enum field names used in the ProtoBuf definition.
+        ///
+        /// The values are not transformed in any way and thus are considered stable
+        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+        pub fn as_str_name(&self) -> &'static str {
+            match self {
+                DiversityType::Unspecified => "DIVERSITY_TYPE_UNSPECIFIED",
+                DiversityType::RuleBasedDiversity => "RULE_BASED_DIVERSITY",
+                DiversityType::DataDrivenDiversity => "DATA_DRIVEN_DIVERSITY",
+            }
+        }
+    }
 }
 ///  Request for CreateServingConfig method.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -6484,7 +7301,7 @@ pub struct UpdateServingConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DeleteServingConfigRequest {
     ///  Required. The resource name of the ServingConfig to delete. Format:
-    ///  projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -6492,7 +7309,7 @@ pub struct DeleteServingConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetServingConfigRequest {
     ///  Required. The resource name of the ServingConfig to get. Format:
-    ///  projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}`
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
@@ -6500,7 +7317,7 @@ pub struct GetServingConfigRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct ListServingConfigsRequest {
     ///  Required. The catalog resource name. Format:
-    ///  projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}`
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
     ///  Optional. Maximum number of results to return. If unspecified, defaults
@@ -6527,7 +7344,7 @@ pub struct ListServingConfigsResponse {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AddControlRequest {
     ///  Required. The source ServingConfig resource name . Format:
-    ///  projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}`
     #[prost(string, tag="1")]
     pub serving_config: ::prost::alloc::string::String,
     ///  Required. The id of the control to apply. Assumed to be in the same catalog
@@ -6539,7 +7356,7 @@ pub struct AddControlRequest {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RemoveControlRequest {
     ///  Required. The source ServingConfig resource name . Format:
-    ///  projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}
+    ///  `projects/{project_number}/locations/{location_id}/catalogs/{catalog_id}/servingConfigs/{serving_config_id}`
     #[prost(string, tag="1")]
     pub serving_config: ::prost::alloc::string::String,
     ///  Required. The id of the control to apply. Assumed to be in the same catalog
@@ -6819,8 +7636,8 @@ pub struct RejoinUserEventsRequest {
     pub parent: ::prost::alloc::string::String,
     ///  The type of the user event rejoin to define the scope and range of the user
     ///  events to be rejoined with the latest product catalog. Defaults to
-    ///  USER_EVENT_REJOIN_SCOPE_UNSPECIFIED if this field is not set, or set to an
-    ///  invalid integer value.
+    ///  `USER_EVENT_REJOIN_SCOPE_UNSPECIFIED` if this field is not set, or set to
+    ///  an invalid integer value.
     #[prost(enumeration="rejoin_user_events_request::UserEventRejoinScope", tag="2")]
     pub user_event_rejoin_scope: i32,
 }
@@ -6828,11 +7645,11 @@ pub struct RejoinUserEventsRequest {
 pub mod rejoin_user_events_request {
     ///  The scope of user events to be rejoined with the latest product catalog.
     ///  If the rejoining aims at reducing number of unjoined events, set
-    ///  UserEventRejoinScope to UNJOINED_EVENTS.
+    ///  `UserEventRejoinScope` to `UNJOINED_EVENTS`.
     ///  If the rejoining aims at correcting product catalog information in joined
-    ///  events, set UserEventRejoinScope to JOINED_EVENTS.
-    ///  If all events needs to be rejoined, set UserEventRejoinScope to
-    ///  USER_EVENT_REJOIN_SCOPE_UNSPECIFIED.
+    ///  events, set `UserEventRejoinScope` to `JOINED_EVENTS`.
+    ///  If all events needs to be rejoined, set `UserEventRejoinScope` to
+    ///  `USER_EVENT_REJOIN_SCOPE_UNSPECIFIED`.
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
     #[repr(i32)]
     pub enum UserEventRejoinScope {
@@ -6858,14 +7675,14 @@ pub mod rejoin_user_events_request {
         }
     }
 }
-///  Response message for RejoinUserEvents method.
+///  Response message for `RejoinUserEvents` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RejoinUserEventsResponse {
     ///  Number of user events that were joined with latest product catalog.
     #[prost(int64, tag="1")]
     pub rejoined_user_events_count: i64,
 }
-///  Metadata for RejoinUserEvents method.
+///  Metadata for `RejoinUserEvents` method.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RejoinUserEventsMetadata {
 }
@@ -7016,9 +7833,9 @@ pub mod user_event_service_client {
         /// synchronous. Events that already exist are skipped.
         /// Use this method for backfilling historical user events.
         ///
-        /// Operation.response is of type ImportResponse. Note that it is
+        /// `Operation.response` is of type `ImportResponse`. Note that it is
         /// possible for a subset of the items to be successfully inserted.
-        /// Operation.metadata is of type ImportMetadata.
+        /// `Operation.metadata` is of type `ImportMetadata`.
         pub async fn import_user_events(
             &mut self,
             request: impl tonic::IntoRequest<super::ImportUserEventsRequest>,
@@ -7041,14 +7858,14 @@ pub mod user_event_service_client {
             );
             self.inner.unary(request.into_request(), path, codec).await
         }
-        /// Starts a user event rejoin operation with latest product catalog. Events
-        /// will not be annotated with detailed product information if product is
-        /// missing from the catalog at the time the user event is ingested, and these
-        /// events are stored as unjoined events with a limited usage on training and
-        /// serving. This method can be used to start a join operation on specified
-        /// events with latest version of product catalog. It can also be used to
-        /// correct events joined with the wrong product catalog. A rejoin operation
-        /// can take hours or days to complete.
+        /// Starts a user-event rejoin operation with latest product catalog. Events
+        /// are not annotated with detailed product information for products that are
+        /// missing from the catalog when the user event is ingested. These
+        /// events are stored as unjoined events with limited usage on training and
+        /// serving. You can use this method to start a join operation on specified
+        /// events with the latest version of product catalog. You can also use this
+        /// method to correct events joined with the wrong product catalog. A rejoin
+        /// operation can take hours or days to complete.
         pub async fn rejoin_user_events(
             &mut self,
             request: impl tonic::IntoRequest<super::RejoinUserEventsRequest>,

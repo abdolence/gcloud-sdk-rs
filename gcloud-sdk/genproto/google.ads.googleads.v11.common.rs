@@ -9,7 +9,7 @@ pub struct PolicyViolationKey {
     pub policy_name: ::core::option::Option<::prost::alloc::string::String>,
     ///  The text that violates the policy if specified.
     ///  Otherwise, refers to the policy in general
-    ///  (e.g., when requesting to be exempt from the whole policy).
+    ///  (for example, when requesting to be exempt from the whole policy).
     ///  If not specified for criterion exemptions, the whole policy is implied.
     ///  Must be specified for ad exemptions.
     #[prost(string, optional, tag="4")]
@@ -30,7 +30,7 @@ pub struct PolicyValidationParameter {
     pub ignorable_policy_topics: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     ///  The list of policy violation keys that should not cause a
     ///  PolicyViolationError to be reported. Not all policy violations are
-    ///  exemptable, please refer to the is_exemptible field in the returned
+    ///  exemptable, refer to the is_exemptible field in the returned
     ///  PolicyViolationError.
     ///
     ///  Resources violating these polices will be saved, but will not be eligible
@@ -40,8 +40,8 @@ pub struct PolicyValidationParameter {
     #[prost(message, repeated, tag="2")]
     pub exempt_policy_violation_keys: ::prost::alloc::vec::Vec<PolicyViolationKey>,
 }
-///  Policy finding attached to a resource (e.g. alcohol policy associated with
-///  a site that sells alcohol).
+///  Policy finding attached to a resource (for example, alcohol policy associated
+///  with a site that sells alcohol).
 ///
 ///  Each PolicyTopicEntry has a topic that indicates the specific ads policy
 ///  the entry is about and a type to indicate the effect that the entry will have
@@ -60,11 +60,11 @@ pub struct PolicyTopicEntry {
     #[prost(enumeration="super::enums::policy_topic_entry_type_enum::PolicyTopicEntryType", tag="2")]
     pub r#type: i32,
     ///  Additional information that explains policy finding
-    ///  (e.g. the brand name for a trademark finding).
+    ///  (for example, the brand name for a trademark finding).
     #[prost(message, repeated, tag="3")]
     pub evidences: ::prost::alloc::vec::Vec<PolicyTopicEvidence>,
-    ///  Indicates how serving of this resource may be affected (e.g. not serving
-    ///  in a country).
+    ///  Indicates how serving of this resource may be affected (for example, not
+    ///  serving in a country).
     #[prost(message, repeated, tag="4")]
     pub constraints: ::prost::alloc::vec::Vec<PolicyTopicConstraint>,
 }
@@ -414,8 +414,8 @@ pub struct DisplayCallToAction {
     ///  Text for the display-call-to-action.
     #[prost(string, optional, tag="5")]
     pub text: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Text color for the display-call-to-action in hexadecimal, e.g. #ffffff for
-    ///  white.
+    ///  Text color for the display-call-to-action in hexadecimal, for example,
+    ///  # ffffff for white.
     #[prost(string, optional, tag="6")]
     pub text_color: ::core::option::Option<::prost::alloc::string::String>,
     ///  Identifies the URL collection in the `ad.url_collections` field. If not
@@ -603,8 +603,9 @@ pub mod video_ad_info {
 ///  A video responsive ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct VideoResponsiveAdInfo {
-    ///  List of text assets used for the short headline, e.g. the "Call To Action"
-    ///  banner. Currently, only a single value for the short headline is supported.
+    ///  List of text assets used for the short headline, for example, the "Call To
+    ///  Action" banner. Currently, only a single value for the short headline is
+    ///  supported.
     #[prost(message, repeated, tag="1")]
     pub headlines: ::prost::alloc::vec::Vec<AdTextAsset>,
     ///  List of text assets used for the long headline.
@@ -615,8 +616,8 @@ pub struct VideoResponsiveAdInfo {
     ///  Currently, only a single value for the description is supported.
     #[prost(message, repeated, tag="3")]
     pub descriptions: ::prost::alloc::vec::Vec<AdTextAsset>,
-    ///  List of text assets used for the button, e.g. the "Call To Action" button.
-    ///  Currently, only a single value for the button is supported.
+    ///  List of text assets used for the button, for example, the "Call To Action"
+    ///  button. Currently, only a single value for the button is supported.
     #[prost(message, repeated, tag="4")]
     pub call_to_actions: ::prost::alloc::vec::Vec<AdTextAsset>,
     ///  List of YouTube video assets used for the ad.
@@ -686,12 +687,12 @@ pub struct LegacyResponsiveDisplayAdInfo {
     ///  Must be true if `main_color` and `accent_color` are not set.
     #[prost(bool, optional, tag="20")]
     pub allow_flexible_color: ::core::option::Option<bool>,
-    ///  The accent color of the ad in hexadecimal, e.g. #ffffff for white.
+    ///  The accent color of the ad in hexadecimal, for example, #ffffff for white.
     ///  If one of `main_color` and `accent_color` is set, the other is required as
     ///  well.
     #[prost(string, optional, tag="21")]
     pub accent_color: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The main color of the ad in hexadecimal, e.g. #ffffff for white.
+    ///  The main color of the ad in hexadecimal, for example, #ffffff for white.
     ///  If one of `main_color` and `accent_color` is set, the other is required as
     ///  well.
     #[prost(string, optional, tag="22")]
@@ -714,7 +715,7 @@ pub struct LegacyResponsiveDisplayAdInfo {
     ///  Specifies which format the ad will be served in. Default is ALL_FORMATS.
     #[prost(enumeration="super::enums::display_ad_format_setting_enum::DisplayAdFormatSetting", tag="13")]
     pub format_setting: i32,
-    ///  Prefix before price. E.g. 'as low as'.
+    ///  Prefix before price. For example, 'as low as'.
     #[prost(string, optional, tag="28")]
     pub price_prefix: ::core::option::Option<::prost::alloc::string::String>,
     ///  Promotion text used for dynamic formats of responsive ads. For example
@@ -850,12 +851,12 @@ pub struct ResponsiveDisplayAdInfo {
     ///  The advertiser/brand name. Maximum display width is 25.
     #[prost(string, optional, tag="17")]
     pub business_name: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The main color of the ad in hexadecimal, e.g. #ffffff for white.
+    ///  The main color of the ad in hexadecimal, for example, #ffffff for white.
     ///  If one of `main_color` and `accent_color` is set, the other is required as
     ///  well.
     #[prost(string, optional, tag="18")]
     pub main_color: ::core::option::Option<::prost::alloc::string::String>,
-    ///  The accent color of the ad in hexadecimal, e.g. #ffffff for white.
+    ///  The accent color of the ad in hexadecimal, for example, #ffffff for white.
     ///  If one of `main_color` and `accent_color` is set, the other is required as
     ///  well.
     #[prost(string, optional, tag="19")]
@@ -870,7 +871,7 @@ pub struct ResponsiveDisplayAdInfo {
     ///  The call-to-action text for the ad. Maximum display width is 30.
     #[prost(string, optional, tag="21")]
     pub call_to_action_text: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Prefix before price. E.g. 'as low as'.
+    ///  Prefix before price. For example, 'as low as'.
     #[prost(string, optional, tag="22")]
     pub price_prefix: ::core::option::Option<::prost::alloc::string::String>,
     ///  Promotion text used for dynamic formats of responsive ads. For example
@@ -965,12 +966,12 @@ pub struct ResponsiveDisplayAdControlSpec {
 ///  A Smart campaign ad.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SmartCampaignAdInfo {
-    ///  List of text assets for headlines. When the ad serves the headlines will
-    ///  be selected from this list. 3 headlines must be specified.
+    ///  List of text assets, each of which corresponds to a headline when the ad
+    ///  serves. This list consists of a minimum of 3 and up to 15 text assets.
     #[prost(message, repeated, tag="1")]
     pub headlines: ::prost::alloc::vec::Vec<AdTextAsset>,
-    ///  List of text assets for descriptions. When the ad serves the descriptions
-    ///  will be selected from this list. 2 descriptions must be specified.
+    ///  List of text assets, each of which corresponds to a description when the ad
+    ///  serves. This list consists of a minimum of 2 and up to 4 text assets.
     #[prost(message, repeated, tag="2")]
     pub descriptions: ::prost::alloc::vec::Vec<AdTextAsset>,
 }
@@ -1069,7 +1070,7 @@ pub struct DiscoveryMultiAssetAdInfo {
     ///  Call to action text.
     #[prost(string, optional, tag="8")]
     pub call_to_action_text: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Boolean flag that indicates if this ad must be served with lead form.
+    ///  Boolean option that indicates if this ad must be served with lead form.
     #[prost(bool, optional, tag="9")]
     pub lead_form_only: ::core::option::Option<bool>,
 }
@@ -1134,10 +1135,11 @@ pub struct MobileApplicationInfo {
     ///  platform_native_id is the mobile application identifier native to the
     ///  corresponding platform.
     ///  For iOS, this native identifier is the 9 digit string that appears at the
-    ///  end of an App Store URL (e.g., "476943146" for "Flood-It! 2" whose App
-    ///  Store link is "<http://itunes.apple.com/us/app/flood-it!-2/id476943146">).
-    ///  For Android, this native identifier is the application's package name
-    ///  (e.g., "com.labpixies.colordrips" for "Color Drips" given Google Play link
+    ///  end of an App Store URL (for example, "476943146" for "Flood-It! 2" whose
+    ///  App Store link is
+    ///  "<http://itunes.apple.com/us/app/flood-it!-2/id476943146">). For Android,
+    ///  this native identifier is the application's package name (for example,
+    ///  "com.labpixies.colordrips" for "Color Drips" given Google Play link
     ///  "<https://play.google.com/store/apps/details?id=com.labpixies.colordrips">).
     ///  A well formed app id for Google Ads API would thus be "1-476943146" for iOS
     ///  and "2-com.labpixies.colordrips" for Android.
@@ -1402,7 +1404,7 @@ pub struct ProductTypeFullInfo {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UnknownListingDimensionInfo {
 }
-///  Criterion for hotel date selection (default dates vs. user selected).
+///  Criterion for hotel date selection (default dates versus user selected).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct HotelDateSelectionTypeInfo {
     ///  Type of the hotel date selection
@@ -1747,7 +1749,7 @@ pub struct CustomIntentInfo {
     #[prost(string, optional, tag="2")]
     pub custom_intent: ::core::option::Option<::prost::alloc::string::String>,
 }
-///  A radius around a list of locations specified via a feed.
+///  A radius around a list of locations specified through a feed.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LocationGroupInfo {
     ///  Feed specifying locations for targeting.
@@ -1941,7 +1943,8 @@ pub struct LeadFormAsset {
     ///  and the aspect ratio must be 1.91:1 (+-1%).
     #[prost(string, optional, tag="20")]
     pub background_image_asset: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Desired intent for the lead form, e.g. more volume or more qualified.
+    ///  Chosen intent for the lead form, for example, more volume or more
+    ///  qualified.
     #[prost(enumeration="super::enums::lead_form_desired_intent_enum::LeadFormDesiredIntent", tag="21")]
     pub desired_intent: i32,
     ///  Custom disclosure shown along with Google disclaimer on the lead form.
@@ -1977,7 +1980,7 @@ pub mod lead_form_field {
 ///  One custom question input field instance within a form.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct LeadFormCustomQuestionField {
-    ///  The exact custom question field text (e.g. "Do you own a car?").
+    ///  The exact custom question field text (for example, "Do you own a car?").
     #[prost(string, tag="1")]
     pub custom_question_text: ::prost::alloc::string::String,
     ///  Defines answer configuration that this form field accepts. If
@@ -2205,35 +2208,36 @@ pub struct DynamicEducationAsset {
     ///  unique.
     #[prost(string, tag="2")]
     pub location_id: ::prost::alloc::string::String,
-    ///  Required. Program name, e.g. Nursing. Required.
+    ///  Required. Program name, for example, Nursing. Required.
     #[prost(string, tag="3")]
     pub program_name: ::prost::alloc::string::String,
-    ///  Subject of study, e.g. Health.
+    ///  Subject of study, for example, Health.
     #[prost(string, tag="4")]
     pub subject: ::prost::alloc::string::String,
-    ///  Program description, e.g. Nursing Certification.
+    ///  Program description, for example, Nursing Certification.
     #[prost(string, tag="5")]
     pub program_description: ::prost::alloc::string::String,
-    ///  School name, e.g. Mountain View School of Nursing.
+    ///  School name, for example, Mountain View School of Nursing.
     #[prost(string, tag="6")]
     pub school_name: ::prost::alloc::string::String,
     ///  School address which can be specified in one of the following formats.
-    ///  (1) City, state, code, country, e.g. Mountain View, CA, USA.
-    ///  (2) Full address, e.g. 123 Boulevard St, Mountain View, CA 94043.
-    ///  (3) Latitude-longitude in the DDD format, e.g. 41.40338, 2.17403
+    ///  (1) City, state, code, country, for example, Mountain View, CA, USA.
+    ///  (2) Full address, for example, 123 Boulevard St, Mountain View, CA 94043.
+    ///  (3) Latitude-longitude in the DDD format, for example, 41.40338, 2.17403
     #[prost(string, tag="7")]
     pub address: ::prost::alloc::string::String,
-    ///  Contextual keywords, e.g. Nursing certification, Health, Mountain View.
+    ///  Contextual keywords, for example, Nursing certification, Health, Mountain
+    ///  View.
     #[prost(string, repeated, tag="8")]
     pub contextual_keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Android deep link, e.g.
+    ///  Android deep link, for example,
     ///  android-app://com.example.android/http/example.com/gizmos?1234.
     #[prost(string, tag="9")]
     pub android_app_link: ::prost::alloc::string::String,
     ///  Similar program IDs.
     #[prost(string, repeated, tag="10")]
     pub similar_program_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  iOS deep link, e.g. exampleApp://content/page.
+    ///  iOS deep link, for example, exampleApp://content/page.
     #[prost(string, tag="11")]
     pub ios_app_link: ::prost::alloc::string::String,
     ///  iOS app store ID. This is used to check if the user has the app installed
@@ -2241,12 +2245,12 @@ pub struct DynamicEducationAsset {
     ///  ios_app_link field must also be present.
     #[prost(int64, tag="12")]
     pub ios_app_store_id: i64,
-    ///  Thumbnail image url, e.g. <http://www.example.com/thumbnail.png.> The
+    ///  Thumbnail image url, for example, <http://www.example.com/thumbnail.png.> The
     ///  thumbnail image will not be uploaded as image asset.
     #[prost(string, tag="13")]
     pub thumbnail_image_url: ::prost::alloc::string::String,
-    ///  Image url, e.g. <http://www.example.com/image.png.> The image will not be
-    ///  uploaded as image asset.
+    ///  Image url, for example, <http://www.example.com/image.png.> The image will
+    ///  not be uploaded as image asset.
     #[prost(string, tag="14")]
     pub image_url: ::prost::alloc::string::String,
 }
@@ -2367,47 +2371,48 @@ pub struct DynamicRealEstateAsset {
     ///  unique and match the values of remarketing tag. Required.
     #[prost(string, tag="1")]
     pub listing_id: ::prost::alloc::string::String,
-    ///  Required. Listing name, e.g. Boulevard Bungalow. Required.
+    ///  Required. Listing name, for example, Boulevard Bungalow. Required.
     #[prost(string, tag="2")]
     pub listing_name: ::prost::alloc::string::String,
-    ///  City name, e.g. Mountain View, California.
+    ///  City name, for example, Mountain View, California.
     #[prost(string, tag="3")]
     pub city_name: ::prost::alloc::string::String,
-    ///  Description, e.g. 3 beds, 2 baths, 1568 sq. ft.
+    ///  Description, for example, 3 beds, 2 baths, 1568 sq. ft.
     #[prost(string, tag="4")]
     pub description: ::prost::alloc::string::String,
     ///  Address which can be specified in one of the following formats.
-    ///  (1) City, state, code, country, e.g. Mountain View, CA, USA.
-    ///  (2) Full address, e.g. 123 Boulevard St, Mountain View, CA 94043.
-    ///  (3) Latitude-longitude in the DDD format, e.g. 41.40338, 2.17403
+    ///  (1) City, state, code, country, for example, Mountain View, CA, USA.
+    ///  (2) Full address, for example, 123 Boulevard St, Mountain View, CA 94043.
+    ///  (3) Latitude-longitude in the DDD format, for example, 41.40338, 2.17403
     #[prost(string, tag="5")]
     pub address: ::prost::alloc::string::String,
     ///  Price which can be number followed by the alphabetic currency code,
-    ///  ISO 4217 standard. Use '.' as the decimal mark. e.g. 200,000.00 USD.
+    ///  ISO 4217 standard. Use '.' as the decimal mark, for example, 200,000.00
+    ///  USD.
     #[prost(string, tag="6")]
     pub price: ::prost::alloc::string::String,
-    ///  Image URL, e.g. <http://www.example.com/image.png.> The image will not be
-    ///  uploaded as image asset.
+    ///  Image URL, for example, <http://www.example.com/image.png.> The image will
+    ///  not be uploaded as image asset.
     #[prost(string, tag="7")]
     pub image_url: ::prost::alloc::string::String,
-    ///  Property type, e.g. House.
+    ///  Property type, for example, House.
     #[prost(string, tag="8")]
     pub property_type: ::prost::alloc::string::String,
-    ///  Listing type, e.g. For sale.
+    ///  Listing type, for example, For sale.
     #[prost(string, tag="9")]
     pub listing_type: ::prost::alloc::string::String,
-    ///  Contextual keywords, e.g. For sale; Houses for sale.
+    ///  Contextual keywords, for example, For sale; Houses for sale.
     #[prost(string, repeated, tag="10")]
     pub contextual_keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     ///  Formatted price which can be any characters. If set, this attribute will be
-    ///  used instead of 'price', e.g. Starting at $200,000.00.
+    ///  used instead of 'price', for example, Starting at $200,000.00.
     #[prost(string, tag="11")]
     pub formatted_price: ::prost::alloc::string::String,
-    ///  Android deep link, e.g.
+    ///  Android deep link, for example,
     ///  android-app://com.example.android/http/example.com/gizmos?1234.
     #[prost(string, tag="12")]
     pub android_app_link: ::prost::alloc::string::String,
-    ///  iOS deep link, e.g. exampleApp://content/page.
+    ///  iOS deep link, for example, exampleApp://content/page.
     #[prost(string, tag="13")]
     pub ios_app_link: ::prost::alloc::string::String,
     ///  iOS app store ID. This is used to check if the user has the app installed
@@ -2423,60 +2428,61 @@ pub struct DynamicRealEstateAsset {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct DynamicCustomAsset {
     ///  Required. ID which can be any sequence of letters and digits, and must be
-    ///  unique and match the values of remarketing tag, e.g. sedan. Required.
+    ///  unique and match the values of remarketing tag, for example, sedan.
+    ///  Required.
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
-    ///  ID2 which can be any sequence of letters and digits, e.g. red. ID sequence
-    ///  (ID + ID2) must be unique.
+    ///  ID2 which can be any sequence of letters and digits, for example, red. ID
+    ///  sequence (ID + ID2) must be unique.
     #[prost(string, tag="2")]
     pub id2: ::prost::alloc::string::String,
-    ///  Required. Item title, e.g. Mid-size sedan. Required.
+    ///  Required. Item title, for example, Mid-size sedan. Required.
     #[prost(string, tag="3")]
     pub item_title: ::prost::alloc::string::String,
-    ///  Item subtitle, e.g. At your Mountain View dealership.
+    ///  Item subtitle, for example, At your Mountain View dealership.
     #[prost(string, tag="4")]
     pub item_subtitle: ::prost::alloc::string::String,
-    ///  Item description, e.g. Best selling mid-size car.
+    ///  Item description, for example, Best selling mid-size car.
     #[prost(string, tag="5")]
     pub item_description: ::prost::alloc::string::String,
     ///  Item address which can be specified in one of the following formats.
-    ///  (1) City, state, code, country, e.g. Mountain View, CA, USA.
-    ///  (2) Full address, e.g. 123 Boulevard St, Mountain View, CA 94043.
-    ///  (3) Latitude-longitude in the DDD format, e.g. 41.40338, 2.17403
+    ///  (1) City, state, code, country, for example, Mountain View, CA, USA.
+    ///  (2) Full address, for example, 123 Boulevard St, Mountain View, CA 94043.
+    ///  (3) Latitude-longitude in the DDD format, for example, 41.40338, 2.17403
     #[prost(string, tag="6")]
     pub item_address: ::prost::alloc::string::String,
-    ///  Item category, e.g. Sedans.
+    ///  Item category, for example, Sedans.
     #[prost(string, tag="7")]
     pub item_category: ::prost::alloc::string::String,
     ///  Price which can be number followed by the alphabetic currency code,
-    ///  ISO 4217 standard. Use '.' as the decimal mark, e.g. 20,000.00 USD.
+    ///  ISO 4217 standard. Use '.' as the decimal mark, for example, 20,000.00 USD.
     #[prost(string, tag="8")]
     pub price: ::prost::alloc::string::String,
     ///  Sale price which can be number followed by the alphabetic currency code,
-    ///  ISO 4217 standard. Use '.' as the decimal mark, e.g. 15,000.00 USD.
+    ///  ISO 4217 standard. Use '.' as the decimal mark, for example, 15,000.00 USD.
     ///  Must be less than the 'price' field.
     #[prost(string, tag="9")]
     pub sale_price: ::prost::alloc::string::String,
     ///  Formatted price which can be any characters. If set, this attribute will be
-    ///  used instead of 'price', e.g. Starting at $20,000.00.
+    ///  used instead of 'price', for example, Starting at $20,000.00.
     #[prost(string, tag="10")]
     pub formatted_price: ::prost::alloc::string::String,
     ///  Formatted sale price which can be any characters. If set, this attribute
-    ///  will be used instead of 'sale price', e.g. On sale for $15,000.00.
+    ///  will be used instead of 'sale price', for example, On sale for $15,000.00.
     #[prost(string, tag="11")]
     pub formatted_sale_price: ::prost::alloc::string::String,
-    ///  Image URL, e.g. <http://www.example.com/image.png.> The image will not be
-    ///  uploaded as image asset.
+    ///  Image URL, for example, <http://www.example.com/image.png.> The image will
+    ///  not be uploaded as image asset.
     #[prost(string, tag="12")]
     pub image_url: ::prost::alloc::string::String,
-    ///  Contextual keywords, e.g. Sedans, 4 door sedans.
+    ///  Contextual keywords, for example, Sedans, 4 door sedans.
     #[prost(string, repeated, tag="13")]
     pub contextual_keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Android deep link, e.g.
+    ///  Android deep link, for example,
     ///  android-app://com.example.android/http/example.com/gizmos?1234.
     #[prost(string, tag="14")]
     pub android_app_link: ::prost::alloc::string::String,
-    ///  iOS deep link, e.g. exampleApp://content/page.
+    ///  iOS deep link, for example, exampleApp://content/page.
     #[prost(string, tag="16")]
     pub ios_app_link: ::prost::alloc::string::String,
     ///  iOS app store ID. This is used to check if the user has the app installed
@@ -2495,47 +2501,47 @@ pub struct DynamicHotelsAndRentalsAsset {
     ///  unique and match the values of remarketing tag. Required.
     #[prost(string, tag="1")]
     pub property_id: ::prost::alloc::string::String,
-    ///  Required. Property name, e.g. Mountain View Hotel. Required.
+    ///  Required. Property name, for example, Mountain View Hotel. Required.
     #[prost(string, tag="2")]
     pub property_name: ::prost::alloc::string::String,
-    ///  Image URL, e.g. <http://www.example.com/image.png.> The image will not be
-    ///  uploaded as image asset.
+    ///  Image URL, for example, <http://www.example.com/image.png.> The image will
+    ///  not be uploaded as image asset.
     #[prost(string, tag="3")]
     pub image_url: ::prost::alloc::string::String,
-    ///  Destination name, e.g. Downtown Mountain View.
+    ///  Destination name, for example, Downtown Mountain View.
     #[prost(string, tag="4")]
     pub destination_name: ::prost::alloc::string::String,
-    ///  Description, e.g. Close to SJC Airport.
+    ///  Description, for example, Close to SJC Airport.
     #[prost(string, tag="5")]
     pub description: ::prost::alloc::string::String,
     ///  Price which can be number followed by the alphabetic currency code,
-    ///  ISO 4217 standard. Use '.' as the decimal mark, e.g. 100.00 USD.
+    ///  ISO 4217 standard. Use '.' as the decimal mark, for example, 100.00 USD.
     #[prost(string, tag="6")]
     pub price: ::prost::alloc::string::String,
-    ///  ISO 4217 standard. Use '.' as the decimal mark, e.g. 80.00 USD.
+    ///  ISO 4217 standard. Use '.' as the decimal mark, for example, 80.00 USD.
     ///  Must be less than the 'price' field.
     #[prost(string, tag="7")]
     pub sale_price: ::prost::alloc::string::String,
     ///  Star rating. Must be a number between 1 to 5, inclusive.
     #[prost(int64, tag="8")]
     pub star_rating: i64,
-    ///  Category, e.g. Hotel suite.
+    ///  Category, for example, Hotel suite.
     #[prost(string, tag="9")]
     pub category: ::prost::alloc::string::String,
-    ///  Contextual keywords, e.g. Mountain View "Hotels", South Bay hotels.
+    ///  Contextual keywords, for example, Mountain View "Hotels", South Bay hotels.
     #[prost(string, repeated, tag="10")]
     pub contextual_keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     ///  Address which can be specified in one of the following formats.
-    ///  (1) City, state, code, country, e.g. Mountain View, CA, USA.
-    ///  (2) Full address, e.g. 123 Boulevard St, Mountain View, CA 94043.
-    ///  (3) Latitude-longitude in the DDD format, e.g. 41.40338, 2.17403
+    ///  (1) City, state, code, country, for example, Mountain View, CA, USA.
+    ///  (2) Full address, for example, 123 Boulevard St, Mountain View, CA 94043.
+    ///  (3) Latitude-longitude in the DDD format, for example, 41.40338, 2.17403
     #[prost(string, tag="11")]
     pub address: ::prost::alloc::string::String,
-    ///  Android deep link, e.g.
+    ///  Android deep link, for example,
     ///  android-app://com.example.android/http/example.com/gizmos?1234.
     #[prost(string, tag="12")]
     pub android_app_link: ::prost::alloc::string::String,
-    ///  iOS deep link, e.g. exampleApp://content/page.
+    ///  iOS deep link, for example, exampleApp://content/page.
     #[prost(string, tag="13")]
     pub ios_app_link: ::prost::alloc::string::String,
     ///  iOS app store ID. This is used to check if the user has the app installed
@@ -2544,11 +2550,11 @@ pub struct DynamicHotelsAndRentalsAsset {
     #[prost(int64, tag="14")]
     pub ios_app_store_id: i64,
     ///  Formatted price which can be any characters. If set, this attribute will be
-    ///  used instead of 'price', e.g. Starting at $100.00.
+    ///  used instead of 'price', for example, Starting at $100.00.
     #[prost(string, tag="15")]
     pub formatted_price: ::prost::alloc::string::String,
     ///  Formatted sale price which can be any characters. If set, this attribute
-    ///  will be used instead of 'sale price', e.g. On sale for $80.00.
+    ///  will be used instead of 'sale price', for example, On sale for $80.00.
     #[prost(string, tag="16")]
     pub formatted_sale_price: ::prost::alloc::string::String,
     ///  Similar property IDs.
@@ -2566,41 +2572,41 @@ pub struct DynamicFlightsAsset {
     ///  (destination ID + origin ID) must be unique.
     #[prost(string, tag="2")]
     pub origin_id: ::prost::alloc::string::String,
-    ///  Required. Flight description, e.g. Book your ticket. Required.
+    ///  Required. Flight description, for example, Book your ticket. Required.
     #[prost(string, tag="3")]
     pub flight_description: ::prost::alloc::string::String,
-    ///  Image URL, e.g. <http://www.example.com/image.png.> The image will not be
-    ///  uploaded as image asset.
+    ///  Image URL, for example, <http://www.example.com/image.png.> The image will
+    ///  not be uploaded as image asset.
     #[prost(string, tag="4")]
     pub image_url: ::prost::alloc::string::String,
-    ///  Destination name, e.g. Paris.
+    ///  Destination name, for example, Paris.
     #[prost(string, tag="5")]
     pub destination_name: ::prost::alloc::string::String,
-    ///  Origin name, e.g. London.
+    ///  Origin name, for example, London.
     #[prost(string, tag="6")]
     pub origin_name: ::prost::alloc::string::String,
     ///  Flight price which can be number followed by the alphabetic currency code,
-    ///  ISO 4217 standard. Use '.' as the decimal mark. e.g. 100.00 USD.
+    ///  ISO 4217 standard. Use '.' as the decimal mark, for example, 100.00 USD.
     #[prost(string, tag="7")]
     pub flight_price: ::prost::alloc::string::String,
     ///  Flight sale price which can be number followed by the alphabetic currency
-    ///  code, ISO 4217 standard. Use '.' as the decimal mark, e.g. 80.00 USD.
-    ///  Must be less than the 'flight_price' field.
+    ///  code, ISO 4217 standard. Use '.' as the decimal mark, for example, 80.00
+    ///  USD. Must be less than the 'flight_price' field.
     #[prost(string, tag="8")]
     pub flight_sale_price: ::prost::alloc::string::String,
     ///  Formatted price which can be any characters. If set, this attribute will be
-    ///  used instead of 'price', e.g. Starting at $100.00.
+    ///  used instead of 'price', for example, Starting at $100.00.
     #[prost(string, tag="9")]
     pub formatted_price: ::prost::alloc::string::String,
     ///  Formatted sale price which can be any characters. If set, this attribute
-    ///  will be used instead of 'sale price', e.g. On sale for $80.00.
+    ///  will be used instead of 'sale price', for example, On sale for $80.00.
     #[prost(string, tag="10")]
     pub formatted_sale_price: ::prost::alloc::string::String,
-    ///  Android deep link, e.g.
+    ///  Android deep link, for example,
     ///  android-app://com.example.android/http/example.com/gizmos?1234.
     #[prost(string, tag="11")]
     pub android_app_link: ::prost::alloc::string::String,
-    ///  iOS deep link, e.g. exampleApp://content/page.
+    ///  iOS deep link, for example, exampleApp://content/page.
     #[prost(string, tag="12")]
     pub ios_app_link: ::prost::alloc::string::String,
     ///  iOS app store ID. This is used to check if the user has the app installed
@@ -2608,14 +2614,14 @@ pub struct DynamicFlightsAsset {
     ///  ios_app_link field must also be present.
     #[prost(int64, tag="13")]
     pub ios_app_store_id: i64,
-    ///  Similar destination IDs, e.g. PAR,LON.
+    ///  Similar destination IDs, for example, PAR,LON.
     #[prost(string, repeated, tag="14")]
     pub similar_destination_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     ///  A custom field which can be multiple key to values mapping separated by
     ///  delimiters (",", "|" and ":"), in the forms of
     ///  "<KEY_1>: <VALUE_1>, <VALUE_2>, ... ,<VALUE_N> | <KEY_2>: <VALUE_1>, ...
-    ///  ,<VALUE_N> | ... | <KEY_N>: <VALUE_1>, ... ,<VALUE_N>" e.g. wifi: most |
-    ///  aircraft: 320, 77W | flights: 42 | legroom: 32".
+    ///  ,<VALUE_N> | ... | <KEY_N>: <VALUE_1>, ... ,<VALUE_N>" for example, wifi:
+    ///  most | aircraft: 320, 77W | flights: 42 | legroom: 32".
     #[prost(string, tag="15")]
     pub custom_mapping: ::prost::alloc::string::String,
 }
@@ -2651,56 +2657,56 @@ pub struct DynamicTravelAsset {
     ///  (destination ID + origin ID) must be unique.
     #[prost(string, tag="2")]
     pub origin_id: ::prost::alloc::string::String,
-    ///  Required. Title, e.g. Book your train ticket. Required.
+    ///  Required. Title, for example, Book your train ticket. Required.
     #[prost(string, tag="3")]
     pub title: ::prost::alloc::string::String,
-    ///  Destination name, e.g. Paris.
+    ///  Destination name, for example, Paris.
     #[prost(string, tag="4")]
     pub destination_name: ::prost::alloc::string::String,
     ///  Destination address which can be specified in one of the following formats.
-    ///  (1) City, state, code, country, e.g. Mountain View, CA, USA.
-    ///  (2) Full address, e.g. 123 Boulevard St, Mountain View, CA 94043.
-    ///  (3) Latitude-longitude in the DDD format, e.g. 41.40338, 2.17403.
+    ///  (1) City, state, code, country, for example, Mountain View, CA, USA.
+    ///  (2) Full address, for example, 123 Boulevard St, Mountain View, CA 94043.
+    ///  (3) Latitude-longitude in the DDD format, for example, 41.40338, 2.17403.
     #[prost(string, tag="5")]
     pub destination_address: ::prost::alloc::string::String,
-    ///  Origin name, e.g. London.
+    ///  Origin name, for example, London.
     #[prost(string, tag="6")]
     pub origin_name: ::prost::alloc::string::String,
     ///  Price which can be a number followed by the alphabetic currency code,
-    ///  ISO 4217 standard. Use '.' as the decimal mark. e.g. 100.00 USD.
+    ///  ISO 4217 standard. Use '.' as the decimal mark, for example, 100.00 USD.
     #[prost(string, tag="7")]
     pub price: ::prost::alloc::string::String,
     ///  Sale price which can be a number followed by the alphabetic currency
-    ///  code, ISO 4217 standard. Use '.' as the decimal mark, e.g. 80.00 USD.
-    ///  Must be less than the 'price' field.
+    ///  code, ISO 4217 standard. Use '.' as the decimal mark, for example, 80.00
+    ///  USD. Must be less than the 'price' field.
     #[prost(string, tag="8")]
     pub sale_price: ::prost::alloc::string::String,
     ///  Formatted price which can be any characters. If set, this attribute will be
-    ///  used instead of 'price', e.g. Starting at $100.00.
+    ///  used instead of 'price', for example, Starting at $100.00.
     #[prost(string, tag="9")]
     pub formatted_price: ::prost::alloc::string::String,
     ///  Formatted sale price which can be any characters. If set, this attribute
-    ///  will be used instead of 'sale price', e.g. On sale for $80.00.
+    ///  will be used instead of 'sale price', for example, On sale for $80.00.
     #[prost(string, tag="10")]
     pub formatted_sale_price: ::prost::alloc::string::String,
-    ///  Category, e.g. Express.
+    ///  Category, for example, Express.
     #[prost(string, tag="11")]
     pub category: ::prost::alloc::string::String,
-    ///  Contextual keywords, e.g. Paris trains.
+    ///  Contextual keywords, for example, Paris trains.
     #[prost(string, repeated, tag="12")]
     pub contextual_keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Similar destination IDs, e.g. NYC.
+    ///  Similar destination IDs, for example, NYC.
     #[prost(string, repeated, tag="13")]
     pub similar_destination_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  Image URL, e.g. <http://www.example.com/image.png.> The image will not be
-    ///  uploaded as image asset.
+    ///  Image URL, for example, <http://www.example.com/image.png.> The image will
+    ///  not be uploaded as image asset.
     #[prost(string, tag="14")]
     pub image_url: ::prost::alloc::string::String,
-    ///  Android deep link, e.g.
+    ///  Android deep link, for example,
     ///  android-app://com.example.android/http/example.com/gizmos?1234.
     #[prost(string, tag="15")]
     pub android_app_link: ::prost::alloc::string::String,
-    ///  iOS deep link, e.g. exampleApp://content/page.
+    ///  iOS deep link, for example, exampleApp://content/page.
     #[prost(string, tag="16")]
     pub ios_app_link: ::prost::alloc::string::String,
     ///  iOS app store ID. This is used to check if the user has the app installed
@@ -2716,56 +2722,56 @@ pub struct DynamicLocalAsset {
     ///  unique and match the values of remarketing tag. Required.
     #[prost(string, tag="1")]
     pub deal_id: ::prost::alloc::string::String,
-    ///  Required. Deal name, e.g. 50% off at Mountain View Grocers. Required.
+    ///  Required. Deal name, for example, 50% off at Mountain View Grocers. Required.
     #[prost(string, tag="2")]
     pub deal_name: ::prost::alloc::string::String,
-    ///  Subtitle, e.g. Groceries.
+    ///  Subtitle, for example, Groceries.
     #[prost(string, tag="3")]
     pub subtitle: ::prost::alloc::string::String,
-    ///  Description, e.g. Save on your weekly bill.
+    ///  Description, for example, Save on your weekly bill.
     #[prost(string, tag="4")]
     pub description: ::prost::alloc::string::String,
     ///  Price which can be a number followed by the alphabetic currency code,
-    ///  ISO 4217 standard. Use '.' as the decimal mark, e.g. 100.00 USD.
+    ///  ISO 4217 standard. Use '.' as the decimal mark, for example, 100.00 USD.
     #[prost(string, tag="5")]
     pub price: ::prost::alloc::string::String,
     ///  Sale price which can be number followed by the alphabetic currency code,
-    ///  ISO 4217 standard. Use '.' as the decimal mark, e.g. 80.00 USD.
+    ///  ISO 4217 standard. Use '.' as the decimal mark, for example, 80.00 USD.
     ///  Must be less than the 'price' field.
     #[prost(string, tag="6")]
     pub sale_price: ::prost::alloc::string::String,
-    ///  Image URL, e.g. <http://www.example.com/image.png.> The image will not be
-    ///  uploaded as image asset.
+    ///  Image URL, for example, <http://www.example.com/image.png.> The image will
+    ///  not be uploaded as image asset.
     #[prost(string, tag="7")]
     pub image_url: ::prost::alloc::string::String,
     ///  Address which can be specified in one of the following formats.
-    ///  (1) City, state, code, country, e.g. Mountain View, CA, USA.
-    ///  (2) Full address, e.g. 123 Boulevard St, Mountain View, CA 94043.
-    ///  (3) Latitude-longitude in the DDD format, e.g. 41.40338, 2.17403.
+    ///  (1) City, state, code, country, for example, Mountain View, CA, USA.
+    ///  (2) Full address, for example, 123 Boulevard St, Mountain View, CA 94043.
+    ///  (3) Latitude-longitude in the DDD format, for example, 41.40338, 2.17403.
     #[prost(string, tag="8")]
     pub address: ::prost::alloc::string::String,
-    ///  Category, e.g. Food.
+    ///  Category, for example, Food.
     #[prost(string, tag="9")]
     pub category: ::prost::alloc::string::String,
-    ///  Contextual keywords, e.g. Save groceries coupons.
+    ///  Contextual keywords, for example, Save groceries coupons.
     #[prost(string, repeated, tag="10")]
     pub contextual_keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     ///  Formatted price which can be any characters. If set, this attribute will be
-    ///  used instead of 'price', e.g. Starting at $100.00.
+    ///  used instead of 'price', for example, Starting at $100.00.
     #[prost(string, tag="11")]
     pub formatted_price: ::prost::alloc::string::String,
     ///  Formatted sale price which can be any characters. If set, this attribute
-    ///  will be used instead of 'sale price', e.g. On sale for $80.00.
+    ///  will be used instead of 'sale price', for example, On sale for $80.00.
     #[prost(string, tag="12")]
     pub formatted_sale_price: ::prost::alloc::string::String,
-    ///  Android deep link, e.g.
+    ///  Android deep link, for example,
     ///  android-app://com.example.android/http/example.com/gizmos?1234.
     #[prost(string, tag="13")]
     pub android_app_link: ::prost::alloc::string::String,
-    ///  Similar deal IDs, e.g. 1275.
+    ///  Similar deal IDs, for example, 1275.
     #[prost(string, repeated, tag="14")]
     pub similar_deal_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  iOS deep link, e.g. exampleApp://content/page.
+    ///  iOS deep link, for example, exampleApp://content/page.
     #[prost(string, tag="15")]
     pub ios_app_link: ::prost::alloc::string::String,
     ///  iOS app store ID. This is used to check if the user has the app installed
@@ -2785,42 +2791,42 @@ pub struct DynamicJobsAsset {
     ///  sequence (job ID + location ID) must be unique.
     #[prost(string, tag="2")]
     pub location_id: ::prost::alloc::string::String,
-    ///  Required. Job title, e.g. Software engineer. Required.
+    ///  Required. Job title, for example, Software engineer. Required.
     #[prost(string, tag="3")]
     pub job_title: ::prost::alloc::string::String,
-    ///  Job subtitle, e.g. Level II.
+    ///  Job subtitle, for example, Level II.
     #[prost(string, tag="4")]
     pub job_subtitle: ::prost::alloc::string::String,
-    ///  Description, e.g. Apply your technical skills.
+    ///  Description, for example, Apply your technical skills.
     #[prost(string, tag="5")]
     pub description: ::prost::alloc::string::String,
-    ///  Image URL, e.g. <http://www.example.com/image.png.> The image will not be
-    ///  uploaded as image asset.
+    ///  Image URL, for example, <http://www.example.com/image.png.> The image will
+    ///  not be uploaded as image asset.
     #[prost(string, tag="6")]
     pub image_url: ::prost::alloc::string::String,
-    ///  Job category, e.g. Technical.
+    ///  Job category, for example, Technical.
     #[prost(string, tag="7")]
     pub job_category: ::prost::alloc::string::String,
-    ///  Contextual keywords, e.g. Software engineering job.
+    ///  Contextual keywords, for example, Software engineering job.
     #[prost(string, repeated, tag="8")]
     pub contextual_keywords: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     ///  Address which can be specified in one of the following formats.
-    ///  (1) City, state, code, country, e.g. Mountain View, CA, USA.
-    ///  (2) Full address, e.g. 123 Boulevard St, Mountain View, CA 94043.
-    ///  (3) Latitude-longitude in the DDD format, e.g. 41.40338, 2.17403.
+    ///  (1) City, state, code, country, for example, Mountain View, CA, USA.
+    ///  (2) Full address, for example, 123 Boulevard St, Mountain View, CA 94043.
+    ///  (3) Latitude-longitude in the DDD format, for example, 41.40338, 2.17403.
     #[prost(string, tag="9")]
     pub address: ::prost::alloc::string::String,
-    ///  Salary, e.g. $100,000.
+    ///  Salary, for example, $100,000.
     #[prost(string, tag="10")]
     pub salary: ::prost::alloc::string::String,
-    ///  Android deep link, e.g.
+    ///  Android deep link, for example,
     ///  android-app://com.example.android/http/example.com/gizmos?1234.
     #[prost(string, tag="11")]
     pub android_app_link: ::prost::alloc::string::String,
-    ///  Similar job IDs, e.g. 1275.
+    ///  Similar job IDs, for example, 1275.
     #[prost(string, repeated, tag="12")]
     pub similar_job_ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
-    ///  iOS deep link, e.g. exampleApp://content/page.
+    ///  iOS deep link, for example, exampleApp://content/page.
     #[prost(string, tag="13")]
     pub ios_app_link: ::prost::alloc::string::String,
     ///  iOS app store ID. This is used to check if the user has the app installed
@@ -3140,8 +3146,8 @@ pub struct TargetImpressionShare {
     ///  The targeted location on the search results page.
     #[prost(enumeration="super::enums::target_impression_share_location_enum::TargetImpressionShareLocation", tag="1")]
     pub location: i32,
-    ///  The desired fraction of ads to be shown in the targeted location in micros.
-    ///  E.g. 1% equals 10,000.
+    ///  The chosen fraction of ads to be shown in the targeted location in micros.
+    ///  For example, 1% equals 10,000.
     #[prost(int64, optional, tag="4")]
     pub location_fraction_micros: ::core::option::Option<i64>,
     ///  The highest CPC bid the automated bidding system is permitted to specify.
@@ -3154,7 +3160,7 @@ pub struct TargetImpressionShare {
 ///  averaging a specific target return on ad spend (ROAS).
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TargetRoas {
-    ///  Required. The desired revenue (based on conversion data) per unit of spend.
+    ///  Required. The chosen revenue (based on conversion data) per unit of spend.
     ///  Value must be between 0.01 and 1000.0, inclusive.
     #[prost(double, optional, tag="4")]
     pub target_roas: ::core::option::Option<f64>,
@@ -3334,10 +3340,10 @@ pub struct YearMonthRange {
 ///  Year month.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct YearMonth {
-    ///  The year (e.g. 2020).
+    ///  The year (for example, 2020).
     #[prost(int64, tag="1")]
     pub year: i64,
-    ///  The month of the year. (e.g. FEBRUARY).
+    ///  The month of the year. (for example, FEBRUARY).
     #[prost(enumeration="super::enums::month_of_year_enum::MonthOfYear", tag="2")]
     pub month: i32,
 }
@@ -3769,14 +3775,14 @@ pub struct FrequencyCapEntry {
 ///  There can be no more than one frequency cap with the same key.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct FrequencyCapKey {
-    ///  The level on which the cap is to be applied (e.g. ad group ad, ad group).
-    ///  The cap is applied to all the entities of this level.
+    ///  The level on which the cap is to be applied (for example, ad group ad, ad
+    ///  group). The cap is applied to all the entities of this level.
     #[prost(enumeration="super::enums::frequency_cap_level_enum::FrequencyCapLevel", tag="1")]
     pub level: i32,
-    ///  The type of event that the cap applies to (e.g. impression).
+    ///  The type of event that the cap applies to (for example, impression).
     #[prost(enumeration="super::enums::frequency_cap_event_type_enum::FrequencyCapEventType", tag="3")]
     pub event_type: i32,
-    ///  Unit of time the cap is defined at (e.g. day, week).
+    ///  Unit of time the cap is defined at (for example, day, week).
     #[prost(enumeration="super::enums::frequency_cap_time_unit_enum::FrequencyCapTimeUnit", tag="2")]
     pub time_unit: i32,
     ///  Number of time units the cap lasts.
@@ -3839,7 +3845,7 @@ pub struct HistoricalMetricsOptions {
 ///  Monthly search volume.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MonthlySearchVolume {
-    ///  The year of the search volume (e.g. 2020).
+    ///  The year of the search volume (for example, 2020).
     #[prost(int64, optional, tag="4")]
     pub year: ::core::option::Option<i64>,
     ///  The month of the search volume.
@@ -4259,9 +4265,9 @@ pub struct Metrics {
     pub content_impression_share: ::core::option::Option<f64>,
     ///  The last date/time a conversion tag for this conversion action successfully
     ///  fired and was seen by Google Ads. This firing event may not have been the
-    ///  result of an attributable conversion (e.g. because the tag was fired from a
-    ///  browser that did not previously click an ad from an appropriate
-    ///  advertiser). The date/time is in the customer's time zone.
+    ///  result of an attributable conversion (for example, because the tag was
+    ///  fired from a browser that did not previously click an ad from an
+    ///  appropriate advertiser). The date/time is in the customer's time zone.
     #[prost(string, optional, tag="161")]
     pub conversion_last_received_request_date_time: ::core::option::Option<::prost::alloc::string::String>,
     ///  The date of the most recent conversion for this conversion action. The date
@@ -4675,7 +4681,7 @@ pub struct Metrics {
     pub video_views: ::core::option::Option<i64>,
     ///  The total number of view-through conversions.
     ///  These happen when a customer sees an image or rich media ad, then later
-    ///  completes a conversion on your site without interacting with (e.g.,
+    ///  completes a conversion on your site without interacting with (for example,
     ///  clicking on) another ad.
     #[prost(int64, optional, tag="155")]
     pub view_through_conversions: ::core::option::Option<i64>,
@@ -4892,6 +4898,46 @@ pub struct UserAttribute {
     ///  allow-list with the user's consent.
     #[prost(message, optional, tag="7")]
     pub shopping_loyalty: ::core::option::Option<ShoppingLoyalty>,
+    ///  Optional. Advertiser defined lifecycle stage for the user. The accepted values are
+    ///  “Lead”, “Active” and “Churned”.
+    #[prost(string, tag="8")]
+    pub lifecycle_stage: ::prost::alloc::string::String,
+    ///  Optional. Timestamp of the first purchase made by the user.
+    ///  The format is YYYY-MM-DD HH:MM:SS\[+/-HH:MM\], where \[+/-HH:MM\] is an
+    ///  optional timezone offset from UTC. If the offset is absent, the API will
+    ///  use the account's timezone as default.
+    #[prost(string, tag="9")]
+    pub first_purchase_date_time: ::prost::alloc::string::String,
+    ///  Optional. Advertiser defined events and their attributes. All the values in the
+    ///  nested fields are required. Currently this field is in beta.
+    #[prost(message, repeated, tag="10")]
+    pub event_attribute: ::prost::alloc::vec::Vec<EventAttribute>,
+}
+///  Advertiser defined events and their attributes. All the values in the
+///  nested fields are required.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventAttribute {
+    ///  Required. Advertiser defined event to be used for remarketing. The accepted values
+    ///  are “Viewed”, “Cart”, “Purchased” and “Recommended”.
+    #[prost(string, tag="1")]
+    pub event: ::prost::alloc::string::String,
+    ///  Required. Timestamp at which the event happened.
+    ///  The format is YYYY-MM-DD HH:MM:SS\[+/-HH:MM\], where \[+/-HH:MM\] is an
+    ///  optional timezone offset from UTC. If the offset is absent, the API will
+    ///  use the account's timezone as default.
+    #[prost(string, tag="2")]
+    pub event_date_time: ::prost::alloc::string::String,
+    ///  Required. Item attributes of the event.
+    #[prost(message, repeated, tag="3")]
+    pub item_attribute: ::prost::alloc::vec::Vec<EventItemAttribute>,
+}
+///  Event Item attributes of the Customer Match.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EventItemAttribute {
+    ///  Optional. A unique identifier of a product. It can be either the Merchant Center Item
+    ///  ID or GTIN (Global Trade Item Number).
+    #[prost(string, tag="1")]
+    pub item_id: ::prost::alloc::string::String,
 }
 ///  The shopping loyalty related data. Shopping utilizes this data to provide
 ///  users with a better experience.
@@ -4915,10 +4961,9 @@ pub struct CustomerMatchUserListMetadata {
 ///  Metadata for Store Sales Direct.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StoreSalesMetadata {
-    ///  This is the fraction of all transactions that are identifiable (i.e.,
-    ///  associated with any form of customer information).
-    ///  Required.
-    ///  The fraction needs to be between 0 and 1 (excluding 0).
+    ///  This is the fraction of all transactions that are identifiable (for
+    ///  example, associated with any form of customer information). Required. The
+    ///  fraction needs to be between 0 and 1 (excluding 0).
     #[prost(double, optional, tag="5")]
     pub loyalty_fraction: ::core::option::Option<f64>,
     ///  This is the ratio of sales being uploaded compared to the overall sales
@@ -4939,7 +4984,7 @@ pub struct StoreSalesMetadata {
     pub third_party_metadata: ::core::option::Option<StoreSalesThirdPartyMetadata>,
 }
 ///  Metadata for a third party Store Sales.
-///  This product is only for customers on the allow-list. Please contact your
+///  This product is only for customers on the allow-list. Contact your
 ///  Google business development representative for details on the upload
 ///  configuration.
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -5030,10 +5075,10 @@ pub struct Segments {
     #[prost(string, optional, tag="114")]
     pub conversion_action_name: ::core::option::Option<::prost::alloc::string::String>,
     ///  This segments your conversion columns by the original conversion and
-    ///  conversion value vs. the delta if conversions were adjusted. False row has
-    ///  the data as originally stated; While true row has the delta between data
-    ///  now and the data as originally stated. Summing the two together results
-    ///  post-adjustment data.
+    ///  conversion value versus the delta if conversions were adjusted. False row
+    ///  has the data as originally stated; While true row has the delta between
+    ///  data now and the data as originally stated. Summing the two together
+    ///  results post-adjustment data.
     #[prost(bool, optional, tag="115")]
     pub conversion_adjustment: ::core::option::Option<bool>,
     ///  Conversion attribution event type.
@@ -5048,10 +5093,10 @@ pub struct Segments {
     #[prost(enumeration="super::enums::conversion_or_adjustment_lag_bucket_enum::ConversionOrAdjustmentLagBucket", tag="51")]
     pub conversion_or_adjustment_lag_bucket: i32,
     ///  Date to which metrics apply.
-    ///  yyyy-MM-dd format, e.g., 2018-04-17.
+    ///  yyyy-MM-dd format, for example, 2018-04-17.
     #[prost(string, optional, tag="79")]
     pub date: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Day of the week, e.g., MONDAY.
+    ///  Day of the week, for example, MONDAY.
     #[prost(enumeration="super::enums::day_of_week_enum::DayOfWeek", tag="5")]
     pub day_of_week: i32,
     ///  Device to which metrics apply.
@@ -5151,7 +5196,7 @@ pub struct Segments {
     ///  yyyy-MM-dd.
     #[prost(string, optional, tag="90")]
     pub month: ::core::option::Option<::prost::alloc::string::String>,
-    ///  Month of the year, e.g., January.
+    ///  Month of the year, for example, January.
     #[prost(enumeration="super::enums::month_of_year_enum::MonthOfYear", tag="18")]
     pub month_of_year: i32,
     ///  Partner hotel ID.
@@ -5240,8 +5285,8 @@ pub struct Segments {
     #[prost(string, optional, tag="112")]
     pub product_type_l5: ::core::option::Option<::prost::alloc::string::String>,
     ///  Quarter as represented by the date of the first day of a quarter.
-    ///  Uses the calendar year for quarters, e.g., the second quarter of 2018
-    ///  starts on 2018-04-01. Formatted as yyyy-MM-dd.
+    ///  Uses the calendar year for quarters, for example, the second quarter of
+    ///  2018 starts on 2018-04-01. Formatted as yyyy-MM-dd.
     #[prost(string, optional, tag="128")]
     pub quarter: ::core::option::Option<::prost::alloc::string::String>,
     ///  Recommendation type.
@@ -5276,7 +5321,8 @@ pub struct Segments {
     #[prost(int32, optional, tag="131")]
     pub year: ::core::option::Option<i32>,
     ///  iOS Store Kit Ad Network conversion value.
-    ///  Null value means this segment is not applicable, e.g. non-iOS campaign.
+    ///  Null value means this segment is not applicable, for example, non-iOS
+    ///  campaign.
     #[prost(int64, optional, tag="137")]
     pub sk_ad_network_conversion_value: ::core::option::Option<i64>,
     ///  iOS Store Kit Ad Network user type.
@@ -5286,8 +5332,8 @@ pub struct Segments {
     #[prost(enumeration="super::enums::sk_ad_network_ad_event_type_enum::SkAdNetworkAdEventType", tag="142")]
     pub sk_ad_network_ad_event_type: i32,
     ///  App where the ad that drove the iOS Store Kit Ad Network install was
-    ///  shown. Null value means this segment is not applicable, e.g. non-iOS
-    ///  campaign, or was not present in any postbacks sent by Apple.
+    ///  shown. Null value means this segment is not applicable, for example,
+    ///  non-iOS campaign, or was not present in any postbacks sent by Apple.
     #[prost(message, optional, tag="143")]
     pub sk_ad_network_source_app: ::core::option::Option<SkAdNetworkSourceApp>,
     ///  iOS Store Kit Ad Network attribution credit
@@ -5296,12 +5342,13 @@ pub struct Segments {
     ///  Only used with CustomerAsset, CampaignAsset and AdGroupAsset metrics.
     ///  Indicates whether the interaction metrics occurred on the asset itself
     ///  or a different asset or ad unit.
-    ///  Interactions (e.g. clicks) are counted across all the parts of the served
-    ///  ad (e.g. Ad itself and other components like Sitelinks) when they are
-    ///  served together. When interaction_on_this_asset is true, it means the
-    ///  interactions are on this specific asset and when interaction_on_this_asset
-    ///  is false, it means the interactions is not on this specific asset but on
-    ///  other parts of the served ad this asset is served with.
+    ///  Interactions (for example, clicks) are counted across all the parts of the
+    ///  served ad (for example, Ad itself and other components like Sitelinks) when
+    ///  they are served together. When interaction_on_this_asset is true, it means
+    ///  the interactions are on this specific asset and when
+    ///  interaction_on_this_asset is false, it means the interactions is not on
+    ///  this specific asset but on other parts of the served ad this asset is
+    ///  served with.
     #[prost(message, optional, tag="139")]
     pub asset_interaction_target: ::core::option::Option<AssetInteractionTarget>,
 }
@@ -5675,8 +5722,8 @@ pub struct BudgetSimulationPoint {
 pub struct TargetImpressionShareSimulationPoint {
     ///  The simulated target impression share value (in micros) upon which
     ///  projected metrics are based.
-    ///  E.g. 10% impression share, which is equal to 0.1, is stored as 100_000.
-    ///  This value is validated and will not exceed 1M (100%).
+    ///  For example, 10% impression share, which is equal to 0.1, is stored as
+    ///  100_000. This value is validated and will not exceed 1M (100%).
     #[prost(int64, tag="1")]
     pub target_impression_share_micros: i64,
     ///  Projected required daily cpc bid ceiling that the advertiser must set to
@@ -5720,7 +5767,7 @@ pub struct TagSnippet {
     #[prost(enumeration="super::enums::tracking_code_type_enum::TrackingCodeType", tag="1")]
     pub r#type: i32,
     ///  The format of the web page where the tracking tag and snippet will be
-    ///  installed, e.g. HTML.
+    ///  installed, for example, HTML.
     #[prost(enumeration="super::enums::tracking_code_page_format_enum::TrackingCodePageFormat", tag="2")]
     pub page_format: i32,
     ///  The site tag that adds visitors to your basic remarketing lists and sets
@@ -5853,10 +5900,10 @@ pub struct CrmBasedUserListInfo {
     ///  A string that uniquely identifies a mobile application from which the data
     ///  was collected.
     ///  For iOS, the ID string is the 9 digit string that appears at the end of an
-    ///  App Store URL (e.g., "476943146" for "Flood-It! 2" whose App Store link is
-    ///  <http://itunes.apple.com/us/app/flood-it!-2/id476943146>).
-    ///  For Android, the ID string is the application's package name
-    ///  (e.g., "com.labpixies.colordrips" for "Color Drips" given Google Play link
+    ///  App Store URL (for example, "476943146" for "Flood-It! 2" whose App Store
+    ///  link is <http://itunes.apple.com/us/app/flood-it!-2/id476943146>). For
+    ///  Android, the ID string is the application's package name (for example,
+    ///  "com.labpixies.colordrips" for "Color Drips" given Google Play link
     ///  <https://play.google.com/store/apps/details?id=com.labpixies.colordrips>).
     ///  Required when creating CrmBasedUserList for uploading mobile advertising
     ///  IDs.
@@ -6012,6 +6059,33 @@ pub struct ExpressionRuleUserListInfo {
     #[prost(message, optional, tag="1")]
     pub rule: ::core::option::Option<UserListRuleInfo>,
 }
+///  Flexible rule that wraps the common rule and a lookback window.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FlexibleRuleOperandInfo {
+    ///  List of rule item groups that defines this rule.
+    ///  Rule item groups are grouped together.
+    #[prost(message, optional, tag="1")]
+    pub rule: ::core::option::Option<UserListRuleInfo>,
+    ///  Lookback window for this rule in days. From now until X days ago.
+    #[prost(int64, optional, tag="2")]
+    pub lookback_window_days: ::core::option::Option<i64>,
+}
+///  Flexible rule representation of visitors with one or multiple actions.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FlexibleRuleUserListInfo {
+    ///  Operator that defines how the inclusive operands are combined.
+    #[prost(enumeration="super::enums::user_list_flexible_rule_operator_enum::UserListFlexibleRuleOperator", tag="1")]
+    pub inclusive_rule_operator: i32,
+    ///  Actions that are located on the inclusive side.
+    ///  These are joined together by either AND/OR as specified by the
+    ///  inclusive_rule_operator.
+    #[prost(message, repeated, tag="2")]
+    pub inclusive_operands: ::prost::alloc::vec::Vec<FlexibleRuleOperandInfo>,
+    ///  Actions that are located on the exclusive side.
+    ///  These are joined together with OR.
+    #[prost(message, repeated, tag="3")]
+    pub exclusive_operands: ::prost::alloc::vec::Vec<FlexibleRuleOperandInfo>,
+}
 ///  Representation of a userlist that is generated by a rule.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RuleBasedUserListInfo {
@@ -6025,6 +6099,9 @@ pub struct RuleBasedUserListInfo {
     ///  if the request fails.
     #[prost(enumeration="super::enums::user_list_prepopulation_status_enum::UserListPrepopulationStatus", tag="1")]
     pub prepopulation_status: i32,
+    ///  Flexible rule representation of visitors with one or multiple actions.
+    #[prost(message, optional, tag="5")]
+    pub flexible_rule_user_list: ::core::option::Option<FlexibleRuleUserListInfo>,
     ///  Subtypes of rule based user lists.
     #[prost(oneof="rule_based_user_list_info::RuleBasedUserList", tags="2, 4")]
     pub rule_based_user_list: ::core::option::Option<rule_based_user_list_info::RuleBasedUserList>,

@@ -28,54 +28,6 @@ pub struct UpdateWorkloadRequest {
     #[prost(message, optional, tag="2")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
-///  Request for restricting list of available services in Workload environment.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RestrictAllowedServicesRequest {
-    ///  Required. The resource name of the Workload. This is the workloads's
-    ///  relative path in the API, formatted as
-    ///  "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
-    ///  For example,
-    ///  "organizations/123/locations/us-east1/workloads/assured-workload-1".
-    #[prost(string, tag="1")]
-    pub name: ::prost::alloc::string::String,
-    ///  Required. The type of restriction for using gcp services in the Workload environment.
-    #[prost(enumeration="restrict_allowed_services_request::RestrictionType", tag="2")]
-    pub restriction_type: i32,
-}
-/// Nested message and enum types in `RestrictAllowedServicesRequest`.
-pub mod restrict_allowed_services_request {
-    ///  The type of restriction.
-    #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-    #[repr(i32)]
-    pub enum RestrictionType {
-        ///  Unknown restriction type.
-        Unspecified = 0,
-        ///  Allow the use all services. This effectively remove all restrictions
-        ///  placed on the Folder.
-        AllowAllGcpServices = 1,
-        ///  Based on Workload's compliance regime, allowed list changes.
-        ///  See - <https://cloud.google.com/assured-workloads/docs/supported-products>
-        ///  for the list of allowed services.
-        AllowCompliantServices = 2,
-    }
-    impl RestrictionType {
-        /// String value of the enum field names used in the ProtoBuf definition.
-        ///
-        /// The values are not transformed in any way and thus are considered stable
-        /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-        pub fn as_str_name(&self) -> &'static str {
-            match self {
-                RestrictionType::Unspecified => "RESTRICTION_TYPE_UNSPECIFIED",
-                RestrictionType::AllowAllGcpServices => "ALLOW_ALL_GCP_SERVICES",
-                RestrictionType::AllowCompliantServices => "ALLOW_COMPLIANT_SERVICES",
-            }
-        }
-    }
-}
-///  Response for restricting the list of allowed services.
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct RestrictAllowedServicesResponse {
-}
 ///  Request for restricting list of available resources in Workload environment.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RestrictAllowedResourcesRequest {
@@ -149,50 +101,51 @@ pub struct GetWorkloadRequest {
     #[prost(string, tag="1")]
     pub name: ::prost::alloc::string::String,
 }
-///  Request to check if source workload can be moved to target workload.
+///  A request to analyze a hypothetical move of a source project or project-based
+///  workload to a target (destination) folder-based workload.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeWorkloadMoveRequest {
-    ///  Required. The resource name of the Workload to fetch. This is the workloads's
-    ///  relative path in the API, formatted as
-    ///  "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
-    ///  For example,
-    ///  "organizations/123/locations/us-east1/workloads/assured-workload-2".
+    ///  Required. The resource ID of the folder-based destination workload. This workload is
+    ///  where the source project will hypothetically be moved to. Specify the
+    ///  workload's relative resource name, formatted as:
+    ///  "organizations/{ORGANIZATION_ID}/locations/{LOCATION_ID}/workloads/{WORKLOAD_ID}"
+    ///  For example:
+    ///  "organizations/123/locations/us-east1/workloads/assured-workload-2"
     #[prost(string, tag="2")]
     pub target: ::prost::alloc::string::String,
-    ///  Kind of resource to be moved to the destination workload
+    ///  The resource type to be moved to the destination workload. It can be either
+    ///  an existing project or a project-based workload.
     #[prost(oneof="analyze_workload_move_request::ProjectOrWorkloadResource", tags="1, 3")]
     pub project_or_workload_resource: ::core::option::Option<analyze_workload_move_request::ProjectOrWorkloadResource>,
 }
 /// Nested message and enum types in `AnalyzeWorkloadMoveRequest`.
 pub mod analyze_workload_move_request {
-    ///  Kind of resource to be moved to the destination workload
+    ///  The resource type to be moved to the destination workload. It can be either
+    ///  an existing project or a project-based workload.
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ProjectOrWorkloadResource {
-        ///  The Source is project based Workload to be moved. This is the workloads's
-        ///  relative path in the API, formatted as
-        ///  "organizations/{organization_id}/locations/{location_id}/workloads/{workload_id}".
-        ///  For example,
-        ///  "organizations/123/locations/us-east1/workloads/assured-workload-1".
+        ///  The source type is a project-based workload. Specify the workloads's
+        ///  relative resource name, formatted as:
+        ///  "organizations/{ORGANIZATION_ID}/locations/{LOCATION_ID}/workloads/{WORKLOAD_ID}"
+        ///  For example:
+        ///  "organizations/123/locations/us-east1/workloads/assured-workload-1"
         #[prost(string, tag="1")]
         Source(::prost::alloc::string::String),
-        ///  The Source is a project based to be moved.
-        ///  This is the project's relative path in the API, formatted as
-        ///  "cloudresourcemanager.googleapis.com/projects/{project_number}"
-        ///  "projects/{project_number}"
-        ///  "cloudresourcemanager.googleapis.com/projects/{project_id}"
-        ///  "projects/{project_id}"
-        ///  For example,
-        ///  "organizations/123/locations/us-east1/workloads/assured-workload-1".
+        ///  The source type is a project. Specify the project's relative resource
+        ///  name, formatted as either a project number or a project ID:
+        ///  "projects/{PROJECT_NUMBER}" or "projects/{PROJECT_ID}"
+        ///  For example:
+        ///  "projects/951040570662" when specifying a project number, or
+        ///  "projects/my-project-123" when specifying a project ID.
         #[prost(string, tag="3")]
         Project(::prost::alloc::string::String),
     }
 }
-///  Response with the analysis if the source workload can be moved to the target
-///  workload
+///  A response that includes the analysis of the hypothetical resource move.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct AnalyzeWorkloadMoveResponse {
-    ///  List of blockers that prevent moving the source workload to the target
-    ///  workload
+    ///  A list of blockers that should be addressed before moving the source
+    ///  project or project-based workload to the destination folder-based workload.
     #[prost(string, repeated, tag="1")]
     pub blockers: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
 }
@@ -257,7 +210,7 @@ pub struct Workload {
     ///  Output only. Immutable. The Workload creation timestamp.
     #[prost(message, optional, tag="5")]
     pub create_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Input only. The billing account used for the resources which are
+    ///  Output only. The billing account used for the resources which are
     ///  direct children of workload. This billing account is initially associated
     ///  with the resources created as part of Workload creation.
     ///  After the initial creation of these resources, the customer can change
@@ -307,6 +260,12 @@ pub struct Workload {
     ///  In failure cases, user friendly error message is shown in SAA details page.
     #[prost(message, optional, tag="20")]
     pub saa_enrollment_response: ::core::option::Option<workload::SaaEnrollmentResponse>,
+    ///  Output only. Urls for services which are compliant for this Assured Workload, but which
+    ///  are currently disallowed by the ResourceUsageRestriction org policy.
+    ///  Invoke RestrictAllowedResources endpoint to allow your project developers
+    ///  to use these services in their environment."
+    #[prost(string, repeated, tag="24")]
+    pub compliant_but_disallowed_services: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     ///  Settings specific to the selected \[compliance_regime\]
     #[prost(oneof="workload::ComplianceRegimeSettings", tags="7, 8, 11, 12")]
     pub compliance_regime_settings: ::core::option::Option<workload::ComplianceRegimeSettings>,
@@ -516,6 +475,8 @@ pub mod workload {
         CaRegionsAndSupport = 9,
         ///  International Traffic in Arms Regulations
         Itar = 10,
+        ///  Assured Workloads for Australia Regions and Support controls
+        AuRegionsAndUsSupport = 11,
     }
     impl ComplianceRegime {
         /// String value of the enum field names used in the ProtoBuf definition.
@@ -535,6 +496,7 @@ pub mod workload {
                 ComplianceRegime::EuRegionsAndSupport => "EU_REGIONS_AND_SUPPORT",
                 ComplianceRegime::CaRegionsAndSupport => "CA_REGIONS_AND_SUPPORT",
                 ComplianceRegime::Itar => "ITAR",
+                ComplianceRegime::AuRegionsAndUsSupport => "AU_REGIONS_AND_US_SUPPORT",
             }
         }
     }
@@ -715,34 +677,6 @@ pub mod assured_workloads_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/UpdateWorkload",
-            );
-            self.inner.unary(request.into_request(), path, codec).await
-        }
-        /// Restrict the list of services allowed in the Workload environment.
-        /// The current list of allowed services can be found at
-        /// https://cloud.google.com/assured-workloads/docs/supported-products
-        /// In addition to assuredworkloads.workload.update permission, the user should
-        /// also have orgpolicy.policy.set permission on the folder resource
-        /// to use this functionality.
-        pub async fn restrict_allowed_services(
-            &mut self,
-            request: impl tonic::IntoRequest<super::RestrictAllowedServicesRequest>,
-        ) -> Result<
-            tonic::Response<super::RestrictAllowedServicesResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/google.cloud.assuredworkloads.v1beta1.AssuredWorkloadsService/RestrictAllowedServices",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

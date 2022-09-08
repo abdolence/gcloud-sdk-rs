@@ -17,7 +17,7 @@ pub struct Connector {
     ///  Minimum throughput of the connector in Mbps. Default and min is 200.
     #[prost(int32, tag="5")]
     pub min_throughput: i32,
-    ///  Maximum throughput of the connector in Mbps. Default is 200, max is 1000.
+    ///  Maximum throughput of the connector in Mbps. Default is 300, max is 1000.
     #[prost(int32, tag="6")]
     pub max_throughput: i32,
     ///  Output only. List of projects using the connector.
@@ -26,6 +26,15 @@ pub struct Connector {
     ///  The subnet in which to house the VPC Access Connector.
     #[prost(message, optional, tag="8")]
     pub subnet: ::core::option::Option<connector::Subnet>,
+    ///  Machine type of VM Instance underlying connector. Default is e2-micro
+    #[prost(string, tag="10")]
+    pub machine_type: ::prost::alloc::string::String,
+    ///  Minimum value of instances in autoscaling group underlying the connector.
+    #[prost(int32, tag="11")]
+    pub min_instances: i32,
+    ///  Maximum value of instances in autoscaling group underlying the connector.
+    #[prost(int32, tag="12")]
+    pub max_instances: i32,
 }
 /// Nested message and enum types in `Connector`.
 pub mod connector {

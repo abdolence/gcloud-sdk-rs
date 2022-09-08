@@ -1072,7 +1072,6 @@ pub mod read_options {
     #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum ConsistencyType {
         ///  The non-transactional read consistency to use.
-        ///  Cannot be set to `STRONG` for global queries.
         #[prost(enumeration="ReadConsistency", tag="1")]
         ReadConsistency(i32),
         ///  The identifier of the transaction in which to read. A

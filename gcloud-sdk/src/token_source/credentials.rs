@@ -9,14 +9,14 @@ use crate::token_source::{BoxSource, Source, Token};
 
 const USER_AGENT: &str = concat!("gcloud-sdk-rs/v", env!("CARGO_PKG_VERSION"));
 
-#[derive(Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 #[serde(untagged)]
 pub enum Credentials {
     ServiceAccount(ServiceAccount),
     User(User),
 }
 
-#[derive(Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct ServiceAccount {
     client_email: String,
     private_key_id: String,
@@ -26,7 +26,7 @@ pub struct ServiceAccount {
     scopes: Vec<String>,
 }
 
-#[derive(Debug, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct User {
     client_secret: String,
     client_id: String,
@@ -130,11 +130,12 @@ mod jwt {
 
     // https://cloud.google.com/iot/docs/concepts/device-security#security_standards
     fn header(typ: &str, prv_key_id: &str) -> Header {
-        let mut h = Header::default();
-        h.typ = Some(typ.into());
-        h.alg = Algorithm::RS256;
-        h.kid = Some(prv_key_id.into());
-        h
+        Header {
+            typ: Some(typ.into()),
+            alg: Algorithm::RS256,
+            kid: Some(prv_key_id.into()),
+            ..Header::default()
+        }
     }
 
     #[derive(Debug, serde::Serialize, serde::Deserialize)]

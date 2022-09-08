@@ -66,7 +66,7 @@ pub async fn find_default(token_scopes: &[String]) -> crate::error::Result<BoxSo
     Err(crate::error::ErrorKind::TokenSource.into())
 }
 
-#[derive(PartialEq, Serialize, Deserialize, Clone)]
+#[derive(PartialEq, Eq, Hash, Serialize, Deserialize, Clone)]
 pub struct TokenValue(String);
 
 impl Debug for TokenValue {

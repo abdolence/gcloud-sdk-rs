@@ -1,6 +1,6 @@
 use secret_vault_value::SecretValue;
 
-#[derive(Clone, PartialEq, Debug, Default)]
+#[derive(Clone, PartialEq, Eq, Debug, Default)]
 pub struct SecretPayload {
     pub data: SecretValue,
 

@@ -117,11 +117,14 @@ pub struct TripWaypoint {
     ///  The role this waypoint plays in this trip, such as pickup or dropoff.
     #[prost(enumeration="WaypointType", tag="3")]
     pub waypoint_type: i32,
-    ///  The path from the previous waypoint to the current waypoint.
+    ///  The path from the previous waypoint to the current waypoint.  Undefined for
+    ///  the first waypoint in a list. This field is only populated when requested.
     #[prost(message, repeated, tag="4")]
     pub path_to_waypoint: ::prost::alloc::vec::Vec<super::super::super::google::r#type::LatLng>,
     ///  The encoded path from the previous waypoint to the current waypoint.
-    ///  Decoding is not yet supported.
+    ///
+    ///  <p>Note: This field is intended only for use by the Driver SDK and Consumer
+    ///  SDK. Decoding is not yet supported.
     #[prost(string, tag="5")]
     pub encoded_path_to_waypoint: ::prost::alloc::string::String,
     ///  The traffic conditions along the path to this waypoint.  Note that traffic
@@ -129,19 +132,16 @@ pub struct TripWaypoint {
     ///  customers.
     #[prost(message, optional, tag="10")]
     pub traffic_to_waypoint: ::core::option::Option<ConsumableTrafficPolyline>,
-    ///  The path distance from the previous waypoint to the current waypoint. If
-    ///  the waypoint is the first waypoint in the list (e.g.,
-    ///  `Vehicle.waypoints\[0\]` or `Trip.remaining_waypoints\[0\]`), then the value of
-    ///  this field is undefined.
+    ///  The path distance from the previous waypoint to the current waypoint.
+    ///  Undefined for the first waypoint in a list.
     #[prost(message, optional, tag="6")]
     pub distance_meters: ::core::option::Option<i32>,
-    ///  The estimated time of arrival at this waypoint.
+    ///  The estimated time of arrival at this waypoint. Undefined for the first
+    ///  waypoint in a list.
     #[prost(message, optional, tag="7")]
     pub eta: ::core::option::Option<::prost_types::Timestamp>,
-    ///  The travel time from previous waypoint to this point. If the waypoint is
-    ///  the first waypoint in the list (e.g., `Vehicle.waypoints\[0\]` or
-    ///  `Trip.remaining_waypoints\[0\]`), then this value indicates the remaining
-    ///  time to the waypoint.
+    ///  The travel time from previous waypoint to this point. Undefined for the
+    ///  first waypoint in a list.
     #[prost(message, optional, tag="8")]
     pub duration: ::core::option::Option<::prost_types::Duration>,
 }
@@ -582,38 +582,42 @@ pub struct Trip {
     #[prost(message, optional, tag="8")]
     pub dropoff_time: ::core::option::Option<::prost_types::Timestamp>,
     ///  Output only. The full path from the current location to the dropoff point, inclusive.
-    ///  If this is a shared ride, this path could include waypoints from other
-    ///  trips.
+    ///  This path could include waypoints from other trips.
     #[prost(message, repeated, tag="16")]
     pub remaining_waypoints: ::prost::alloc::vec::Vec<TripWaypoint>,
-    ///  This field supports manual ordering of the waypoints for the trip.
-    ///  It contains all of the remaining waypoints of vehicle assigned, as well as
-    ///  the pickup and drop-off waypoints for this trip.
-    ///  If the trip hasn't been assigned to a vehicle, then this field is ignored.
-    ///  For privacy reasons, this field is only populated by the server on
-    ///  UpdateTrip and CreateTrip calls, and NOT on GetTrip calls.
+    ///  This field supports manual ordering of the waypoints for the trip. It
+    ///  contains all of the remaining waypoints for the assigned vehicle, as well
+    ///  as the pickup and drop-off waypoints for this trip. If the trip hasn't been
+    ///  assigned to a vehicle, then this field is ignored. For privacy reasons,
+    ///  this field is only populated by the server on UpdateTrip and CreateTrip
+    ///  calls, NOT on GetTrip calls.
     #[prost(message, repeated, tag="20")]
     pub vehicle_waypoints: ::prost::alloc::vec::Vec<TripWaypoint>,
     ///  Output only. Anticipated route for this trip to the first entry in remaining_waypoints.
-    ///  If back_to_back or shared trips are enabled, the waypoints may belong to a
-    ///  different trip.
+    ///  Note that the first waypoint may belong to a different trip.
     #[prost(message, repeated, tag="9")]
     pub route: ::prost::alloc::vec::Vec<super::super::super::google::r#type::LatLng>,
-    ///  Output only. An encoded path to the next waypoint. This field facilitates journey
-    ///  sharing between a driver app and a rider app. Note: This field is intended
-    ///  only for use by the Driver SDK and Consumer SDK.
+    ///  Output only. An encoded path to the next waypoint.
+    ///
+    ///  Note: This field is intended only for use by the Driver SDK and Consumer
+    ///  SDK. Decoding is not yet supported.
     #[prost(string, tag="21")]
     pub current_route_segment: ::prost::alloc::string::String,
-    ///  Output only. Indicates the last time the route was modified.  Note: This field is
-    ///  intended only for use by the Driver SDK and Consumer SDK.
+    ///  Output only. Indicates the last time the route was modified.
+    ///
+    ///  Note: This field is intended only for use by the Driver SDK and Consumer
+    ///  SDK.
     #[prost(message, optional, tag="17")]
     pub current_route_segment_version: ::core::option::Option<::prost_types::Timestamp>,
     ///  Output only. Indicates the traffic conditions along the `current_route_segment` when
-    ///  they're available. Note: This field is intended only for use by the Driver
-    ///  SDK and Consumer SDK.
+    ///  they're available.
+    ///
+    ///  Note: This field is intended only for use by the Driver SDK and Consumer
+    ///  SDK.
     #[prost(message, optional, tag="28")]
     pub current_route_segment_traffic: ::core::option::Option<ConsumableTrafficPolyline>,
     ///  Output only. Indicates the last time the `current_route_segment_traffic` was modified.
+    ///
     ///  Note: This field is intended only for use by the Driver SDK and Consumer
     ///  SDK.
     #[prost(message, optional, tag="30")]
@@ -621,21 +625,19 @@ pub struct Trip {
     ///  Output only. The waypoint where `current_route_segment` ends.
     #[prost(message, optional, tag="24")]
     pub current_route_segment_end_point: ::core::option::Option<TripWaypoint>,
-    ///  Output only. The remaining driving distance in `current_route_segment` field. This
-    ///  field facilitates journey sharing between a driver and rider. The value
-    ///  is unspecified if the trip is not assigned to a vehicle or the trip is
-    ///  completed or cancelled.
+    ///  Output only. The remaining driving distance in the `current_route_segment` field. The
+    ///  value is unspecified if the trip is not assigned to a vehicle, or the trip
+    ///  is completed or cancelled.
     #[prost(message, optional, tag="12")]
     pub remaining_distance_meters: ::core::option::Option<i32>,
-    ///  Output only. The ETA to the next waypoint (the first entry in the
-    ///  `remaining_waypoints` field). This field facilitates journey sharing
-    ///  between a driver and a consumer. The value is unspecified if the trip is
-    ///  not assigned to a vehicle, or the trip is inactive (completed or
-    ///  cancelled).
+    ///  Output only. The ETA to the next waypoint (the first entry in the `remaining_waypoints`
+    ///  field). The value is unspecified if the trip is not assigned to a vehicle,
+    ///  or the trip is inactive (completed or cancelled).
     #[prost(message, optional, tag="13")]
     pub eta_to_first_waypoint: ::core::option::Option<::prost_types::Timestamp>,
     ///  Output only. The duration from when the Trip data is returned to the time in
-    ///  `Trip.eta_to_first_waypoint`.
+    ///  `Trip.eta_to_first_waypoint`. The value is unspecified if the trip is not
+    ///  assigned to a vehicle, or the trip is inactive (completed or cancelled).
     #[prost(message, optional, tag="27")]
     pub remaining_time_to_first_waypoint: ::core::option::Option<::prost_types::Duration>,
     ///  Output only. Indicates the last time that `remaining_waypoints` was changed (a
@@ -807,7 +809,7 @@ pub struct CreateTripRequest {
     ///
     ///  * Must be a valid Unicode string.
     ///  * Limited to a maximum length of 64 characters.
-    ///  * Normalized according to Unicode Normalization Form C
+    ///  * Normalized according to [Unicode Normalization Form C]
     ///  (<http://www.unicode.org/reports/tr15/>).
     ///  * May not contain any of the following ASCII characters: '/', ':', '?',
     ///  ',', or '#'.
@@ -1274,7 +1276,9 @@ pub struct Vehicle {
     ///  The polyline specifying the route the driver app intends to take to
     ///  the next waypoint. This list is also returned in
     ///  `Trip.current_route_segment` for all active trips assigned to the vehicle.
-    ///  Note: This field is intended only for use by the Driver SDK.
+    ///
+    ///  Note: This field is intended only for use by the Driver SDK. Decoding is
+    ///  not yet supported.
     #[prost(string, tag="20")]
     pub current_route_segment: ::prost::alloc::string::String,
     ///  Input only. Fleet Engine uses this information to improve Journey Sharing.
@@ -1293,31 +1297,28 @@ pub struct Vehicle {
     ///  `current_route_segment` is also specified.
     #[prost(message, optional, tag="24")]
     pub current_route_segment_end_point: ::core::option::Option<TripWaypoint>,
-    ///  The remaining driving distance for the `current_route_segment`. This field
-    ///  facilitates journey sharing between the Driver app and the Consumer app.
-    ///  This value is provided by the Driver SDK. This field is also returned in
-    ///  `Trip.remaining_distance_meters` for all active trips assigned to the
-    ///  vehicle. The value is unspecified if the `current_route_segment` field is
-    ///  empty, or if the Driver SDK has not updated its value.
+    ///  The remaining driving distance for the `current_route_segment`.
+    ///  This value is also returned in `Trip.remaining_distance_meters` for all
+    ///  active trips assigned to the vehicle. The value is unspecified if the
+    ///  `current_route_segment` field is empty.
     #[prost(message, optional, tag="18")]
     pub remaining_distance_meters: ::core::option::Option<i32>,
-    ///  The ETA to the first entry in the `waypoints` field. This field facilitates
-    ///  journey sharing between a driver app and a consumer app.  The Driver SDK
-    ///  provides the value under typical conditions. This field is also returned in
-    ///  `Trip.eta_to_first_waypoint` for all applicable trips assigned to the
-    ///  vehicle. The value is unspecified if the `waypoints` field is empty.
+    ///  The ETA to the first entry in the `waypoints` field.  The value is
+    ///  unspecified if the `waypoints` field is empty or the
+    ///  `Vehicle.current_route_segment` field is empty.
+    ///
+    ///  When updating a vehicle, `remaining_time_seconds` takes precedence over
+    ///  `eta_to_first_waypoint` in the same request.
     #[prost(message, optional, tag="19")]
     pub eta_to_first_waypoint: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Input only. The remaining driving time for the `current_route_segment`. This field
-    ///  facilitates journey sharing between the Driver app and the Consumer app.
-    ///  This value is updated by the Driver SDK. The value is unspecified if the
+    ///  Input only. The remaining driving time for the `current_route_segment`. The value is
+    ///  unspecified if the `waypoints` field is empty or the
     ///  `Vehicle.current_route_segment` field is empty. This value should match
     ///  `eta_to_first_waypoint` - `current_time` if all parties are using the same
     ///  clock.
     ///
-    ///  <p>When updating a vehicle, if you update both `eta_to_first_waypoint` and
-    ///  `remaining_time_seconds` in the same request, `remaining_time_seconds`
-    ///  takes precedence.
+    ///  When updating a vehicle, `remaining_time_seconds` takes precedence over
+    ///  `eta_to_first_waypoint` in the same request.
     #[prost(message, optional, tag="25")]
     pub remaining_time_seconds: ::core::option::Option<i32>,
     ///  The remaining waypoints assigned to this Vehicle.
@@ -1645,7 +1646,7 @@ pub struct CreateVehicleRequest {
     ///
     ///  * Must be a valid Unicode string.
     ///  * Limited to a maximum length of 64 characters.
-    ///  * Normalized according to Unicode Normalization Form C
+    ///  * Normalized according to [Unicode Normalization Form C]
     ///  (<http://www.unicode.org/reports/tr15/>).
     ///  * May not contain any of the following ASCII characters: '/', ':', '?',
     ///  ',', or '#'.

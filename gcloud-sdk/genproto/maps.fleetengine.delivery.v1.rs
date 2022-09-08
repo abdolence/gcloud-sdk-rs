@@ -356,7 +356,7 @@ pub mod vehicle_stop {
         ///
         ///  * Must be a valid Unicode string.
         ///  * Limited to a maximum length of 64 characters.
-        ///  * Normalized according to Unicode Normalization Form C
+        ///  * Normalized according to [Unicode Normalization Form C]
         ///  (<http://www.unicode.org/reports/tr15/>).
         ///  * May not contain any of the following ASCII characters: '/', ':', '?',
         ///  ',', or '#'.
@@ -548,7 +548,7 @@ pub struct Task {
     ///
     ///  * Must be a valid Unicode string.
     ///  * Limited to a maximum length of 64 characters.
-    ///  * Normalized according to Unicode Normalization Form C
+    ///  * Normalized according to [Unicode Normalization Form C]
     ///  (<http://www.unicode.org/reports/tr15/>).
     ///  * May not contain any of the following ASCII characters: '/', ':', '?',
     ///  ',', or '#'.
@@ -559,7 +559,7 @@ pub struct Task {
     ///
     ///  * Must be a valid Unicode string.
     ///  * Limited to a maximum length of 64 characters.
-    ///  * Normalized according to Unicode Normalization Form C
+    ///  * Normalized according to [Unicode Normalization Form C]
     ///  (<http://www.unicode.org/reports/tr15/>).
     ///  * May not contain any of the following ASCII characters: '/', ':', '?',
     ///  ',', or '#'.
@@ -738,7 +738,7 @@ pub struct CreateDeliveryVehicleRequest {
     ///
     ///  * Must be a valid Unicode string.
     ///  * Limited to a maximum length of 64 characters.
-    ///  * Normalized according to Unicode Normalization Form C
+    ///  * Normalized according to [Unicode Normalization Form C]
     ///  (<http://www.unicode.org/reports/tr15/>).
     ///  * May not contain any of the following ASCII characters: '/', ':', '?',
     ///  ',', or '#'.
@@ -798,11 +798,8 @@ pub struct ListDeliveryVehiclesRequest {
     ///  delivery vehicles are returned.
     ///
     ///  Note that the only queries supported for `ListDeliveryVehicles` are
-    ///  equality comparisons on vehicle attributes (`attributes.<key> = <value>`).
-    ///  Comparison operators besides `=` (like `!=`, `>`, `<`, etc.) aren't
-    ///  supported. Queries that include them are rejected. You can combine
-    ///  attribute equality queries with **AND**, but not with any other boolean
-    ///  operator.
+    ///  on vehicle attributes (for example, `attributes.<key> = <value>` or
+    ///  `attributes.<key1> = <value1> AND attributes.<key2> = <value2>`).
     #[prost(string, tag="6")]
     pub filter: ::prost::alloc::string::String,
     ///  Optional. A filter that limits the search area to a rectangle defined by the
@@ -894,7 +891,7 @@ pub struct CreateTaskRequest {
     ///
     ///  * Must be a valid Unicode string.
     ///  * Limited to a maximum length of 64 characters.
-    ///  * Normalized according to Unicode Normalization Form C
+    ///  * Normalized according to [Unicode Normalization Form C]
     ///  (<http://www.unicode.org/reports/tr15/>).
     ///  * May not contain any of the following ASCII characters: '/', ':', '?',
     ///  ',', or '#'.
@@ -942,7 +939,7 @@ pub struct SearchTasksRequest {
     ///
     ///  * Must be a valid Unicode string.
     ///  * Limited to a maximum length of 64 characters.
-    ///  * Normalized according to Unicode Normalization Form C
+    ///  * Normalized according to [Unicode Normalization Form C]
     ///  (<http://www.unicode.org/reports/tr15/>).
     ///  * May not contain any of the following ASCII characters: '/', ':', '?',
     ///  ',', or '#'.

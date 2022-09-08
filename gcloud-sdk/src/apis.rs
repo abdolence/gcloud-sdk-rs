@@ -1,4 +1,8 @@
-#![allow(clippy::large_enum_variant, clippy::too_many_arguments)]
+#![allow(
+    clippy::large_enum_variant,
+    clippy::too_many_arguments,
+    clippy::derive_partial_eq_without_eq
+)]
 
 pub const CERTIFICATES: &[u8] = include_bytes!("../data/roots.pem");
 
