@@ -1,6 +1,6 @@
 [package]
 name = "gcloud-sdk"
-version = "0.18.2"
+version = "0.18.3"
 authors = ["mechiru <u9053u6d41@gmail.com>", "Abdulla Abdurakhmanov <me@abdolence.dev>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -19,7 +19,8 @@ doctest = false
 all-features = true
 
 [features]
-default = []
+default = ["tls-roots"]
+tls-roots = ["tonic/tls-roots"]
 ccc-hosted-marketplace-v2 = []
 google-actions-sdk-v2 = []
 google-actions-sdk-v2-conversation = []
