@@ -76,21 +76,19 @@ The latter obtains user access credentials via a web flow and puts them in the w
 This command is useful when you are developing code that would normally use a service account but need to run the code in a local development environment where it's easier to provide user credentials.
 So to work for local development you need to use `gcloud auth application-default login`.
 
-## Fork
-The library is a fork of [mechiru/googapis](https://github.com/mechiru/googapis) and [mechiru/gouth](https://github.com/mechiru/gouth) to keep up with
-the updates and API proto descriptions from Google more frequently and simplify dependencies management.
+## Fork-based
+The library based on a fork of [mechiru/googapis](https://github.com/mechiru/googapis) and [mechiru/gouth](https://github.com/mechiru/gouth) libraries and also adds additional functionality not available originally:
+
+- Google API client management and Tower-based middleware layer to simplify development to provide an async client implementation that hides complexity working with tokens and TLS.
+- Improved observability with tracing and measuring execution time of endpoints. 
+- Uses synchronisation primitives (such as Mutex) from tokio everywhere and has direct dependencies to tokio runtime..
+- Security-related protocol extensions for Google Secret Manager and KMS
 
 ### Why not to contribute back?
 - Different goals from googapis.
     * This fork focuses on simplicity and provided authentication capabilities natively.
-    * Has direct dependencies to tokio runtime.
-      Uses synchronisation primitives (such as Mutex) from tokio everywhere.
-    * Provides facade API for the caching async client implementation based on Tower middleware
-      that hides complexity working with tokens and TLS.
-    * Improved observability with tracing and measuring execution time of endpoints. 
-- Different development cycles - the original development was updated less frequently than it was needed for me.
-
-I'd be glad to contribute all of the changes back if author sees the same goals.
+    * Provides a high level facade API for Google API client.
+- Different development cycles - the original development was updated less frequently than it was needed.
 
 ## High-level APIs
 Sometimes using proto generated APIs are tedious and cumbersome, so you may need to introduce facade APIs on top of them:
