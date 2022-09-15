@@ -75,6 +75,7 @@ The library based on a fork of [mechiru/googapis](https://github.com/mechiru/goo
 - Google API client management and Tower-based middleware layer to simplify development to provide an async client implementation that hides complexity working with tokens and TLS.
 - Improved observability with tracing and measuring execution time of endpoints. 
 - Uses synchronisation primitives (such as Mutex) from tokio everywhere and has direct dependencies to tokio runtime..
+- Security-related protocol extensions for Google Secret Manager and KMS
 
 ### Why not to contribute back?
 - Different goals from googapis.
