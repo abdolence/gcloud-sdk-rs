@@ -1,10 +1,10 @@
 [package]
 name = "gcloud-sdk"
-version = "0.18.3"
+version = "0.18.4"
 authors = ["mechiru <u9053u6d41@gmail.com>", "Abdulla Abdurakhmanov <me@abdolence.dev>"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
-description = "This library provides generated from proto Google API, authentication support, caching client."
+description = "This library provides generated from proto Google APIs and simple to use APIs client hiding complexity of GCP authentication and secure networking based on Tonic middleware."
 repository = "https://github.com/abdolence/gcloud-sdk-rs"
 documentation = "https://docs.rs/gcloud-sdk"
 categories = ["api-bindings"]

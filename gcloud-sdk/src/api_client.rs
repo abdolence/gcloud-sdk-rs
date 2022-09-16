@@ -18,6 +18,7 @@ where
     fn create_client(&self, channel: GoogleAuthMiddlewareService<Channel>) -> C;
 }
 
+#[derive(Clone)]
 pub struct GoogleApiClient<B, C>
 where
     B: GoogleApiClientBuilder<C>,
@@ -73,6 +74,7 @@ where
     }
 }
 
+#[derive(Clone)]
 pub struct GoogleApiClientBuilderFunction<C>
 where
     C: Clone + Send + Sync,

@@ -1457,8 +1457,8 @@ pub struct Finding {
     ///  Output only. The most recent time this finding was muted or unmuted.
     #[prost(message, optional, tag="21")]
     pub mute_update_time: ::core::option::Option<::prost_types::Timestamp>,
-    ///  Output only. Third party SIEM/SOAR fields within SCC, contains external
-    ///  system information and external system finding fields.
+    ///  Output only. Third party SIEM/SOAR fields within SCC, contains external system
+    ///  information and external system finding fields.
     #[prost(map="string, message", tag="22")]
     pub external_systems: ::std::collections::HashMap<::prost::alloc::string::String, ExternalSystem>,
     ///  MITRE ATT&CK tactics and techniques related to this finding.
@@ -1481,9 +1481,9 @@ pub struct Finding {
     ///  Represents operating system processes associated with the Finding.
     #[prost(message, repeated, tag="30")]
     pub processes: ::prost::alloc::vec::Vec<Process>,
-    ///  Output only. Map containing the point of contacts for the given finding.
-    ///  The key represents the type of contact, while the value contains a list of
-    ///  all the contacts that pertain. Please refer to:
+    ///  Output only. Map containing the points of contact for the given finding. The key
+    ///  represents the type of contact, while the value contains a list of all the
+    ///  contacts that pertain. Please refer to:
     ///  <https://cloud.google.com/resource-manager/docs/managing-notification-contacts#notification-categories>
     ///
     ///      {
@@ -1504,6 +1504,10 @@ pub struct Finding {
     ///  finding.
     #[prost(message, repeated, tag="34")]
     pub compliances: ::prost::alloc::vec::Vec<Compliance>,
+    ///  Output only. The human readable display name of the finding source such as
+    ///  "Event Threat Detection" or "Security Health Analytics".
+    #[prost(string, tag="36")]
+    pub parent_display_name: ::prost::alloc::string::String,
     ///  Contains more detail about the finding.
     #[prost(string, tag="37")]
     pub description: ::prost::alloc::string::String,

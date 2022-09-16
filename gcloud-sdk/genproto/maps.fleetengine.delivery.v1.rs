@@ -799,7 +799,12 @@ pub struct ListDeliveryVehiclesRequest {
     ///
     ///  Note that the only queries supported for `ListDeliveryVehicles` are
     ///  on vehicle attributes (for example, `attributes.<key> = <value>` or
-    ///  `attributes.<key1> = <value1> AND attributes.<key2> = <value2>`).
+    ///  `attributes.<key1> = <value1> AND attributes.<key2> = <value2>`). Also, all
+    ///  attributes are stored as strings, so the only supported comparisons against
+    ///  attributes are string comparisons. In order to compare against number or
+    ///  boolean values, the values must be explicitly quoted to be treated as
+    ///  strings (for example, `attributes.<key> = "10"` or
+    ///  `attributes.<key> = "true"`).
     #[prost(string, tag="6")]
     pub filter: ::prost::alloc::string::String,
     ///  Optional. A filter that limits the search area to a rectangle defined by the

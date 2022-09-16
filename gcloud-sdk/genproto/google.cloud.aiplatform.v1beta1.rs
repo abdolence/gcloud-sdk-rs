@@ -7432,6 +7432,13 @@ pub struct BatchReadFeatureValuesOperationMetadata {
     #[prost(message, optional, tag="1")]
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
 }
+///  Details of operations that delete Feature values.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteFeatureValuesOperationMetadata {
+    ///  Operation metadata for Featurestore delete Features values.
+    #[prost(message, optional, tag="1")]
+    pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
 ///  Details of operations that perform create EntityType.
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct CreateEntityTypeOperationMetadata {
@@ -7452,6 +7459,67 @@ pub struct BatchCreateFeaturesOperationMetadata {
     ///  Operation metadata for Feature.
     #[prost(message, optional, tag="1")]
     pub generic_metadata: ::core::option::Option<GenericOperationMetadata>,
+}
+///  Request message for
+///  \[FeaturestoreService.DeleteFeatureValues][google.cloud.aiplatform.v1beta1.FeaturestoreService.DeleteFeatureValues\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteFeatureValuesRequest {
+    ///  Required. The resource name of the EntityType grouping the Features for
+    ///  which values are being deleted from. Format:
+    ///  `projects/{project}/locations/{location}/featurestores/{featurestore}/entityTypes/{entityType}`
+    #[prost(string, tag="1")]
+    pub entity_type: ::prost::alloc::string::String,
+    ///  Defines options to select feature values to be deleted.
+    #[prost(oneof="delete_feature_values_request::DeleteOption", tags="2")]
+    pub delete_option: ::core::option::Option<delete_feature_values_request::DeleteOption>,
+}
+/// Nested message and enum types in `DeleteFeatureValuesRequest`.
+pub mod delete_feature_values_request {
+    ///  Message to select entity.
+    ///  If an entity id is selected, all the feature values corresponding to the
+    ///  entity id will be deleted, including the entityId.
+    #[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SelectEntity {
+        ///  Required. Selectors choosing feature values of which entity id to be
+        ///  deleted from the EntityType.
+        #[prost(message, optional, tag="1")]
+        pub entity_id_selector: ::core::option::Option<super::EntityIdSelector>,
+    }
+    ///  Defines options to select feature values to be deleted.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DeleteOption {
+        ///  Select feature values to be deleted by specifying entities.
+        #[prost(message, tag="2")]
+        SelectEntity(SelectEntity),
+    }
+}
+///  Response message for
+///  \[FeaturestoreService.DeleteFeatureValues][google.cloud.aiplatform.v1beta1.FeaturestoreService.DeleteFeatureValues\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteFeatureValuesResponse {
+}
+///  Selector for entityId. Getting ids from the given source.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct EntityIdSelector {
+    ///  Source column that holds entity IDs. If not provided, entity IDs are
+    ///  extracted from the column named `entity_id`.
+    #[prost(string, tag="5")]
+    pub entity_id_field: ::prost::alloc::string::String,
+    ///  Details about the source data, including the location of the storage and
+    ///  the format.
+    #[prost(oneof="entity_id_selector::EntityIdsSource", tags="3")]
+    pub entity_ids_source: ::core::option::Option<entity_id_selector::EntityIdsSource>,
+}
+/// Nested message and enum types in `EntityIdSelector`.
+pub mod entity_id_selector {
+    ///  Details about the source data, including the location of the storage and
+    ///  the format.
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum EntityIdsSource {
+        ///  Source of Csv
+        #[prost(message, tag="3")]
+        CsvSource(super::CsvSource),
+    }
 }
 /// Generated client implementations.
 pub mod featurestore_service_client {
@@ -7959,6 +8027,38 @@ pub mod featurestore_service_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.cloud.aiplatform.v1beta1.FeaturestoreService/ExportFeatureValues",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Delete Feature values from Featurestore.
+        ///
+        /// The progress of the deletion is tracked by the returned operation. The
+        /// deleted feature values are guaranteed to be invisible to subsequent read
+        /// operations after the operation is marked as successfully done.
+        ///
+        /// If a delete feature values operation fails, the feature values
+        /// returned from reads and exports may be inconsistent. If consistency is
+        /// required, the caller must retry the same delete request again and wait till
+        /// the new operation returned is marked as successfully done.
+        pub async fn delete_feature_values(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteFeatureValuesRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.cloud.aiplatform.v1beta1.FeaturestoreService/DeleteFeatureValues",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

@@ -1423,6 +1423,14 @@ pub struct Table {
     ///  field will be populated with information about the restore.
     #[prost(message, optional, tag="6")]
     pub restore_info: ::core::option::Option<RestoreInfo>,
+    ///  Set to true to make the table protected against data loss. i.e. deleting
+    ///  the following resources through Admin APIs are prohibited:
+    ///    - The table.
+    ///    - The column families in the table.
+    ///    - The instance containing the table.
+    ///  Note one can still delete the data stored in the table through Data APIs.
+    #[prost(bool, tag="9")]
+    pub deletion_protection: bool,
 }
 /// Nested message and enum types in `Table`.
 pub mod table {
@@ -2063,6 +2071,39 @@ pub struct GetTableRequest {
     #[prost(enumeration="table::View", tag="2")]
     pub view: i32,
 }
+///  The request for
+///  \[UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateTableRequest {
+    ///  Required. The table to update.
+    ///  The table's `name` field is used to identify the table to update.
+    #[prost(message, optional, tag="1")]
+    pub table: ::core::option::Option<Table>,
+    ///  Required. The list of fields to update.
+    ///  A mask specifying which fields (e.g. `deletion_protection`) in the `table`
+    ///  field should be updated. This mask is relative to the `table` field, not to
+    ///  the request message. The wildcard (*) path is currently not supported.
+    ///  Currently UpdateTable is only supported for the following field:
+    ///   * `deletion_protection`
+    ///  If `column_families` is set in `update_mask`, it will return an
+    ///  UNIMPLEMENTED error.
+    #[prost(message, optional, tag="2")]
+    pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
+}
+///  Metadata type for the operation returned by
+///  \[UpdateTable][google.bigtable.admin.v2.BigtableTableAdmin.UpdateTable\].
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UpdateTableMetadata {
+    ///  The name of the table being updated.
+    #[prost(string, tag="1")]
+    pub name: ::prost::alloc::string::String,
+    ///  The time at which this operation started.
+    #[prost(message, optional, tag="2")]
+    pub start_time: ::core::option::Option<::prost_types::Timestamp>,
+    ///  If set, the time at which this operation finished or was canceled.
+    #[prost(message, optional, tag="3")]
+    pub end_time: ::core::option::Option<::prost_types::Timestamp>,
+}
 ///  Request message for
 ///  \[google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable][google.bigtable.admin.v2.BigtableTableAdmin.DeleteTable\]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -2652,6 +2693,29 @@ pub mod bigtable_table_admin_client {
             let codec = tonic::codec::ProstCodec::default();
             let path = http::uri::PathAndQuery::from_static(
                 "/google.bigtable.admin.v2.BigtableTableAdmin/GetTable",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        /// Updates a specified table.
+        pub async fn update_table(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UpdateTableRequest>,
+        ) -> Result<
+            tonic::Response<super::super::super::super::longrunning::Operation>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/google.bigtable.admin.v2.BigtableTableAdmin/UpdateTable",
             );
             self.inner.unary(request.into_request(), path, codec).await
         }

@@ -346,7 +346,8 @@ pub struct CreateBotSessionRequest {
     ///  Required. The farm resource.
     #[prost(string, tag="1")]
     pub parent: ::prost::alloc::string::String,
-    ///  Required. The bot session to create. Server-assigned fields like name must be unset.
+    ///  Required. The bot session to create. Server-assigned fields like name must
+    ///  be unset.
     #[prost(message, optional, tag="2")]
     pub bot_session: ::core::option::Option<BotSession>,
 }
@@ -359,8 +360,8 @@ pub struct UpdateBotSessionRequest {
     ///  Required. The bot session resource to update.
     #[prost(message, optional, tag="2")]
     pub bot_session: ::core::option::Option<BotSession>,
-    ///  Required. The fields on the bot that should be updated. See the BotSession resource
-    ///  for which fields are updatable by which caller.
+    ///  Required. The fields on the bot that should be updated. See the BotSession
+    ///  resource for which fields are updatable by which caller.
     #[prost(message, optional, tag="3")]
     pub update_mask: ::core::option::Option<::prost_types::FieldMask>,
 }
