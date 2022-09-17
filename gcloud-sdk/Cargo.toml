@@ -441,7 +441,7 @@ jsonwebtoken = { version = "8" }
 hyper = { version ="0.14", features = ["client", "http2", "h2"] }
 async-trait = "0.1"
 chrono = { version = "0.4", features = ["serde"] }
-tokio= { version =  "1.20" }
+tokio= { version =  "1.21" }
 tracing = "0.1"
 secret-vault-value = { version="0.3", features=["proto"] }
 
