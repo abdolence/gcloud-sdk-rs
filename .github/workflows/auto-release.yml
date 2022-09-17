@@ -16,4 +16,4 @@ jobs:
           toolchain: stable
           components: rustfmt, clippy
       - run: cargo install cargo-release
-      - run: bash .workflows/autorelease/autorelease.sh
+      - run: bash .github/workflows/autorelease/autorelease.sh
